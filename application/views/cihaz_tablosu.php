@@ -5,18 +5,22 @@ if(count($cihazlar)>0){
         <tr>
             <th scope="col">İşlem Kodu</th>
             <th scope="col">İsim</th>
+            <th scope="col">Cihaz Türü</th>
             <th scope="col">Cihaz</th>
             <th scope="col">Arıza Açıklaması</th>
             <th scope="col">Teslim Durumu</th>
+            <th scope="col">Son İşlem</th>
+            <th scope="col">Giriş Tarihi</th>
             <th scope="col">İşlem</th>
         </tr>
     </thead>
     <tbody>';
-    
+    $this->load->model("Anasayfa_Model");
     foreach ($cihazlar as $cihaz) {
         echo '<tr>
         <th scope="row">' . $cihaz->id . '</th>
         <td>' . $cihaz->musteri_adi . '</td>
+        <td>' . $this->Anasayfa_Model->cihazTuru($cihaz->cihaz_turu). '</td>
         <td>' . $cihaz->cihaz . '</td>
         <td>' . $cihaz->ariza_aciklamasi . '</td>
         <td>';
@@ -26,6 +30,8 @@ if(count($cihazlar)>0){
             echo "Devam Ediyor";
         }
         echo '</td>
+        <td>' . $this->Anasayfa_Model->cihazSonDurumu($cihaz->id) . '</td>
+        <td>' . $this->Anasayfa_Model->tarihDonustur($cihaz->tarih). '</td>
         <td><a href="#" class="btn btn-info text-white">Görüntüle</a><a href="#"  class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal'.$cihaz->id.'">Sil</a></td></tr>';
         echo '<div class="modal fade" id="cihazıSilModal'.$cihaz->id.'" tabindex="-1" aria-labelledby="cihazıSilModal'.$cihaz->id.'Label" aria-hidden="true">
         <div class="modal-dialog">

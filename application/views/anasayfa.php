@@ -24,23 +24,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar));?>
 </div>
 <div class="modal fade" id="yeniCihazEkleModal" tabindex="-1" aria-labelledby="yeniCihazEkleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-		
+  <div class="modal-dialog show">
+    <div class="modal-content">	
       	<div class="modal-header">
         	<h5 class="modal-title" id="yeniCihazEkleModalLabel">Yeni Cihaz Girişi</h5>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       	<div class="modal-body">
-			<form id="newDeviceForm" method="post" action="<?= base_url("anasayfa/cihazEkle");?>">
-	  			<input class="form-control" type="text" name="musteri_adi" placeholder="Müşterinin Adı">
-	  			<input class="form-control mt-3" type="text" name="cihaz" placeholder="Cihaz">
-	  			<input class="form-control mt-3" type="text" name="ariza_aciklamasi" placeholder="Arıza Açıklaması">
+			<form id="yeniCihazForm" method="post" action="<?= base_url("anasayfa/cihazEkle");?>">
+	  			<input class="form-control" type="text" name="musteri_adi" placeholder="Müşterinin Adı" required>
+				<select class="form-select mt-3" name="cihaz_turu" aria-label="Cihaz türü" required>
+					<option value="" selected>Cihaz Türü Seçin</option>
+					<?php
+					foreach($cihazTurleri as $cihazTuru){
+						echo '<option value='.$cihazTuru->id.'>'.$cihazTuru->isim.'</option>';
+					}
+					?>
+				</select>
+	  			<input class="form-control mt-3" type="text" name="cihaz" placeholder="Cihaz" required>
+	  			<input class="form-control mt-3" type="text" name="ariza_aciklamasi" placeholder="Arıza Açıklaması" required>
 			</form>
       	</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-			<button type="button" onClick="$('#newDeviceForm').submit();" class="btn btn-primary">Ekle</button>
+			<input type="submit" class="btn btn-primary" form="yeniCihazForm" value="Ekle"/>
 		</div>
     </div>
   </div>
