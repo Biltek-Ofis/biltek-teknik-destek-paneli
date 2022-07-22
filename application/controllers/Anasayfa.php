@@ -14,36 +14,47 @@ class Anasayfa extends CI_Controller {
 			$veri = array(
 				"teslimEdilenCihazlar" => $this->Anasayfa_Model->teslimEdilenCihazlar(),
 				"devamEdenCihazlar" => $this->Anasayfa_Model->devamEdenCihazlar(),
+				"cihazTurleri" => $this->Anasayfa_Model->cihazTurleri(),
 			);
 			$this->load->view('anasayfa', $veri);
 		}else{
 			$this->load->view('giris', array("girisHatasi"=> ""));
 		}
 	}
+
 	public function cihazEkle()
 	{
-		$musteri_adi = $this->input->post("musteri_adi");
-        $cihaz = $this->input->post("cihaz");
-        $ariza_aciklamasi = $this->input->post("ariza_aciklamasi");
-		$veri = array(
-			"musteri_adi"=> $this->input->post("musteri_adi"),
-			"cihaz"=> $this->input->post("cihaz"),
-			"ariza_aciklamasi"=> $this->input->post("ariza_aciklamasi")
-		);
-		$ekle = $this->Anasayfa_Model->cihazEkle($veri);
-		if($ekle){
-			redirect(base_url());
+		if ($this->Anasayfa_Model->kullaniciGiris()){
+			$veri = array(
+				"musteri_adi"=> $this->input->post("musteri_adi"),
+				"cihaz_turu"=> $this->input->post("cihaz_turu"),
+				"cihaz" => $this->input->post("cihaz"),
+				"ariza_aciklamasi"=> $this->input->post("ariza_aciklamasi")
+			);
+			$ekle = $this->Anasayfa_Model->cihazEkle($veri);
+			if($ekle){
+				redirect(base_url());
+			}else{
+				$this->load->model("Kullanicilar_Model");
+				$this->Kullanicilar_Model->girisUyari();
+			}
 		}else{
-			redirect(base_url());
+			$this->load->model("Kullanicilar_Model");
+			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
 	public function cihazSil($id)
 	{
-		$sil = $this->Anasayfa_Model->cihazSil($id);
-		if($sil){
-			redirect(base_url());
+		if ($this->Anasayfa_Model->kullaniciGiris()){
+			$sil = $this->Anasayfa_Model->cihazSil($id);
+			if($sil){
+				redirect(base_url());
+			}else{
+				redirect(base_url());
+			}
 		}else{
-			redirect(base_url());
+			$this->load->model("Kullanicilar_Model");
+			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
 }
