@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       	<div class="modal-body">
-			<form id="newDeviceForm" method="post" action="<?= base_url("home/cihazEkle");?>">
+			<form id="newDeviceForm" method="post" action="<?= base_url("anasayfa/cihazEkle");?>">
 	  			<input class="form-control" type="text" name="musteri_adi" placeholder="Müşterinin Adı">
 	  			<input class="form-control mt-3" type="text" name="cihaz" placeholder="Cihaz">
 	  			<input class="form-control mt-3" type="text" name="ariza_aciklamasi" placeholder="Arıza Açıklaması">
