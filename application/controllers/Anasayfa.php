@@ -10,14 +10,12 @@ class Anasayfa extends CI_Controller {
     }
 	public function index()
 	{
-		$this->load->library('session');
-		$user = $this->session->USER;
-		if (isset($user)){
-			$data = array(
+		if ($this->Anasayfa_Model->kullaniciGiris()){
+			$veri = array(
 				"teslimEdilenCihazlar" => $this->Anasayfa_Model->teslimEdilenCihazlar(),
 				"devamEdenCihazlar" => $this->Anasayfa_Model->devamEdenCihazlar(),
 			);
-			$this->load->view('anasayfa', $data);
+			$this->load->view('anasayfa', $veri);
 		}else{
 			$this->load->view('giris', array("girisHatasi"=> ""));
 		}
