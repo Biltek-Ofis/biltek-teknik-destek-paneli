@@ -14,23 +14,23 @@ class Home extends CI_Controller {
 		$user = $this->session->USER;
 		if (isset($user)){
 			$data = array(
-				"completed_customers" => $this->Home_Model->getCompletedCustomer(),
-				"not_completed_customers" => $this->Home_Model->getNotCompletedCustomer(),
+				"completed_devices" => $this->Home_Model->getDeliveredDevice(),
+				"not_completed_devices" => $this->Home_Model->getNotDeliveredDevice(),
 			);
 			$this->load->view('home', $data);
 		}else{
 			$this->load->view('login', array("loginError"=> ""));
 		}
 	}
-	public function new_customer()
+	public function new_device()
 	{
 		$customer_name = $this->input->post("customer_name");
         $device = $this->input->post("device");
         $description = $this->input->post("description");
 		$data = array(
-			"customer_name"=> $this->input->post("customer_name"),
-			"device"=> $this->input->post("device"),
-			"description"=> $this->input->post("description")
+			"musteri_adi"=> $this->input->post("customer_name"),
+			"cihaz"=> $this->input->post("device"),
+			"ariza_aciklamasi"=> $this->input->post("description")
 		);
 		$insert = $this->Home_Model->addCustomer($data);
 		if($insert){

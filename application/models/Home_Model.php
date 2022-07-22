@@ -6,15 +6,15 @@ class Home_Model extends CI_Model{
     {
         parent::__construct();
     }
-    public $customerTableName = "Customers";
-    public function getNotCompletedCustomer(){
-        return $this->db->where("status !=","Teslim Edildi")->get($this->customerTableName)->result();
+    public $devicesTableName = "Cihazlar";
+    public function getNotDeliveredDevice(){
+        return $this->db->where("teslim_edildi !=",1)->get($this->devicesTableName)->result();
     }
-    public function getCompletedCustomer(){
-        return $this->db->where("status","Teslim Edildi")->get($this->customerTableName)->result();
+    public function getDeliveredDevice(){
+        return $this->db->where("teslim_edildi",1)->get($this->devicesTableName)->result();
     }
     public function addCustomer($data){
-        return $this->db->insert($this->customerTableName, $data);
+        return $this->db->insert($this->devicesTableName, $data);
     }
 }
 ?>

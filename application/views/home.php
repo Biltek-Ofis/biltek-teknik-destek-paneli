@@ -12,13 +12,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container">
 	<div class="row">
     	<div class="col-12">
-			<button class="btn btn-success float-end me-2" data-bs-toggle="modal" data-bs-target="#newDeviceModal">Yeni Ürün Girişi</button>
+			<button class="btn btn-success float-end me-2" data-bs-toggle="modal" data-bs-target="#newDeviceModal">Yeni Cihaz Girişi</button>
 		</div>
  	 </div>
-	<h5>Devam Eden Cihazlar</h5>
+	<h5 class="mx-2">Devam Eden Cihazlar</h5>
 	
 			<?php
-			if(count($not_completed_customers)>0){
+			if(count($not_completed_devices)>0){
 				echo '<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -32,13 +32,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</thead>
 				<tbody>';
 				
-				foreach ($not_completed_customers as $not_completed_customer) {
+				foreach ($not_completed_devices as $not_completed_device) {
 					echo "<tr>
-					<th scope=\"row\">" . $not_completed_customer->id . "</th>
-					<td>" . $not_completed_customer->customer_name . "</td>
-					<td>" . $not_completed_customer->device . "</td>
-					<td>" . $not_completed_customer->description . "</td>
-					<td>" . $not_completed_customer->status . "</td>
+					<th scope=\"row\">" . $not_completed_device->id . "</th>
+					<td>" . $not_completed_device->musteri_adi . "</td>
+					<td>" . $not_completed_device->cihaz . "</td>
+					<td>" . $not_completed_device->ariza_aciklamasi . "</td>
+					<td>";
+					if($not_completed_device->teslim_edildi == 1){
+						echo "Teslim Edildi";
+					}else{
+						echo "Devam Ediyor";
+					}
+					echo "</td>
 					<td><button class=\"btn btn-info text-white\">Görüntüle</button></td></tr>";
 				}
 				echo '
@@ -51,10 +57,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 			?>
 	
-	<h5>Teslim Edilen Cihazlar</h5>
+	<h5 class="mx-2">Teslim Edilen Cihazlar</h5>
 	
 			<?php
-			if(count($completed_customers)>0){
+			if(count($completed_devices)>0){
 				echo '<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -68,13 +74,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</thead>
 				<tbody>';
 				
-				foreach ($completed_customers as $completed_customer) {
+				foreach ($completed_devices as $completed_device) {
 					echo "<tr>
-					<th scope=\"row\">" . $completed_customer->id . "</th>
-					<td>" . $completed_customer->customer_name . "</td>
-					<td>" . $completed_customer->device . "</td>
-					<td>" . $completed_customer->description . "</td>
-					<td>" . $completed_customer->status . "</td>
+					<th scope=\"row\">" . $completed_device->id . "</th>
+					<td>" . $completed_device->musteri_adi . "</td>
+					<td>" . $completed_device->cihaz . "</td>
+					<td>" . $completed_device->ariza_aciklamasi . "</td>
+					<td>";
+					if($completed_device->teslim_edildi == 1){
+						echo "Teslim Edildi";
+					}else{
+						echo "Devam Ediyor";
+					}
+					echo "</td>
 					<td><button class=\"btn btn-info text-white\">Görüntüle</button></td></tr>";
 				}
 				echo '
@@ -92,18 +104,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="modal-content">
 		
       	<div class="modal-header">
-        	<h5 class="modal-title" id="newDeviceModalLabel">Yeni Ürün Girişi</h5>
+        	<h5 class="modal-title" id="newDeviceModalLabel">Yeni Cihaz Girişi</h5>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<div class="modal-body m-auto">
-			<form id="newDeviceForm" class="p-3 mt-3" method="post" action="<?= base_url("home/new_customer");?>">
+      	<div class="modal-body">
+			<form id="newDeviceForm" method="post" action="<?= base_url("home/new_device");?>">
 	  			<input class="form-control" type="text" name="customer_name" placeholder="Müşterinin Adı">
 	  			<input class="form-control mt-3" type="text" name="device" placeholder="Cihaz">
 	  			<input class="form-control mt-3" type="text" name="description" placeholder="Arıza Açıklaması">
 			</form>
       	</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
 			<button type="button" onClick="$('#newDeviceForm').submit();" class="btn btn-primary">Ekle</button>
 		</div>
     </div>
