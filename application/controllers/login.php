@@ -8,7 +8,15 @@ class Login extends CI_Controller {
     }
     public function index(){
         $this->load->model("Login_Model");
-        print_r($this->Login_Model->user("admin", "123456"));
+        $username = $this->input->post("username");
+        $password = $this->input->post("password");
+        $status = $this->Login_Model->loginStatus($username, $password);
+        if($status){
+            $_SESSION["USER"] = $username;
+            redirect(base_url());
+        }else{
+            $this->load->view("login", array("loginError"=> "Giriş Başarısız. Lütfen tekrar deneyin"));
+        }
     }
 
 }

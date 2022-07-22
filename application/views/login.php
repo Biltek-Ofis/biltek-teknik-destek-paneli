@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Giriş</title>
 	<?php $this->load->view("inc/styles");?>
+    
 </head>
 <body>
 
@@ -19,6 +20,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             Giriş Yap
         </div>
         <form class="p-3 mt-3" method="post" action="<?= base_url("login");?>">
+            <div class="alert alert-danger" style="<?php if(strlen($loginError) == 0){ echo "display:none;";} ?>" role="alert">
+            <?php echo $loginError;?>
+            </div>
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
                 <input type="text" name="username" id="username" placeholder="Kullanıcı Adı">
