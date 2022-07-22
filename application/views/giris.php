@@ -20,16 +20,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             Giriş Yap
         </div>
         <form class="p-3 mt-3" method="post" action="<?= base_url("login");?>">
-            <div class="alert alert-danger" style="<?php if(strlen($loginError) == 0){ echo "display:none;";} ?>" role="alert">
-            <?php echo $loginError;?>
+            <div class="alert alert-danger" style="<?php if(strlen($girisHatasi) == 0){ echo "display:none;";} ?>" role="alert">
+            <?php echo $girisHatasi;?>
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="text" name="username" id="username" placeholder="Kullanıcı Adı">
+                <input type="text" name="kullanici_adi" id="kullanici_adi" placeholder="Kullanıcı Adı">
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
-                <input type="password" name="password" id="pwd" placeholder="Şifre">
+                <input type="password" name="sifre" id="sifre" placeholder="Şifre">
             </div>
             <button class="btn mt-3">Giriş Yap</button>
         </form>

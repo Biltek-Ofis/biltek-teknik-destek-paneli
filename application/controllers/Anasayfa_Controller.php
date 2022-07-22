@@ -1,0 +1,42 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Anasayfa_Controller extends CI_Controller {
+
+	public function __construct()
+    {
+        parent::__construct();
+		$this->load->model("Anasayfa_Model");
+    }
+	public function index()
+	{
+		$this->load->library('session');
+		$user = $this->session->USER;
+		if (isset($user)){
+			$data = array(
+				"teslimEdilenCihazlar" => $this->Anasayfa_Model->teslimEdilenCihazlar(),
+				"devamEdenCihazlar" => $this->Anasayfa_Model->devamEdenCihazlar(),
+			);
+			$this->load->view('anasayfa', $data);
+		}else{
+			$this->load->view('giris', array("girisHatasi"=> ""));
+		}
+	}
+	public function cihazEkle()
+	{
+		$musteri_adi = $this->input->post("musteri_adi");
+        $cihaz = $this->input->post("cihaz");
+        $ariza_aciklamasi = $this->input->post("ariza_aciklamasi");
+		$veri = array(
+			"musteri_adi"=> $this->input->post("musteri_adi"),
+			"cihaz"=> $this->input->post("cihaz"),
+			"ariza_aciklamasi"=> $this->input->post("ariza_aciklamasi")
+		);
+		$ekle = $this->Anasayfa_Model->cihazEkle($veri);
+		if($ekle){
+			redirect(base_url());
+		}else{
+			redirect(base_url());
+		}
+	}
+}
