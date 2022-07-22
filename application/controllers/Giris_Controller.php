@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Giris_Controller extends CI_Controller {
+class Giris extends CI_Controller {
 
     public function __construct()
     {
@@ -18,6 +18,5 @@ class Giris_Controller extends CI_Controller {
             $this->load->view("login", array("girisHatasi"=> "Giriş Başarısız. Lütfen tekrar deneyin"));
         }
     }
-
 }
 ;?>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Anasayfa_Controller extends CI_Controller {
+class Anasayfa extends CI_Controller {
 
 	public function __construct()
     {
@@ -34,6 +34,15 @@ class Anasayfa_Controller extends CI_Controller {
 		);
 		$ekle = $this->Anasayfa_Model->cihazEkle($veri);
 		if($ekle){
+			redirect(base_url());
+		}else{
+			redirect(base_url());
+		}
+	}
+	public function cihazSil($id)
+	{
+		$sil = $this->Anasayfa_Model->cihazSil($id);
+		if($sil){
 			redirect(base_url());
 		}else{
 			redirect(base_url());

@@ -39,8 +39,8 @@ if(count($cihazlar)>0){
                   Bu cihazı silmek istediğinize emin misiniz?
                 </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-success">Evet</button>
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hayır</button>
+                  <a href="'.base_url("anasayfa/cihazSil/".$cihaz->id).'" type="button" class="btn btn-success">Evet</a>
+                  <a href="#" type="button" class="btn btn-danger" data-bs-dismiss="modal">Hayır</a>
               </div>
           </div>
         </div>
