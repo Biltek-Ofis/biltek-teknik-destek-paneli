@@ -5,6 +5,15 @@ class Anasayfa_Model extends CI_Model{
         parent::__construct();
     }
     public $cihazlarTabloAdi = "Cihazlar";
+    public function kullaniciGiris(){
+        return isset($_SESSION["KULLANICI"]);
+    }
+    public function kullaniciOturumAc($kullanici_adi){
+        $_SESSION["KULLANICI"] = $kullanici_adi;
+    }
+    public function oturumSifirla(){
+        unset($_SESSION["KULLANICI"]);
+    }
     public function devamEdenCihazlar(){
         return $this->db->where("teslim_edildi !=",1)->where("silindi",0)->get($this->cihazlarTabloAdi)->result();
     }

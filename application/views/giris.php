@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="text-center mt-4 name">
             Giriş Yap
         </div>
-        <form class="p-3 mt-3" method="post" action="<?= base_url("login");?>">
+        <form class="p-3 mt-3" method="post" action="<?= base_url("giris");?>">
             <div class="alert alert-danger" style="<?php if(strlen($girisHatasi) == 0){ echo "display:none;";} ?>" role="alert">
             <?php echo $girisHatasi;?>
             </div>
