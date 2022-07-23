@@ -9,19 +9,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 <?php $this->load->view("inc/navbar");?>
-<div id="container">
-	<div class="row">
+<div id="container w-100 m-0 p-0">
+	<div class="row m-0 p-0">
     	<div class="col-12">
 			<button class="btn btn-success float-end me-2" data-bs-toggle="modal" data-bs-target="#yeniCihazEkleModal">Yeni Cihaz Girişi</button>
 		</div>
- 	 </div>
-	<h5 class="mx-2">Devam Eden Cihazlar</h5>
-	
-	<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$devamEdenCihazlar));?>
-	
-	<h5 class="mx-2">Teslim Edilen Cihazlar</h5>
-	
-	<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar));?>
+		<div class="col-12">
+			<h5 class="mx-2">Devam Eden Cihazlar</h5>
+			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$devamEdenCihazlar));?>
+			<h5 class="mx-2">Teslim Edilen Cihazlar</h5>
+			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar));?>
+		</div>
+	</div>
 </div>
 <div class="modal fade" id="yeniCihazEkleModal" tabindex="-1" aria-labelledby="yeniCihazEkleModalLabel" aria-hidden="true">
   <div class="modal-dialog show">
