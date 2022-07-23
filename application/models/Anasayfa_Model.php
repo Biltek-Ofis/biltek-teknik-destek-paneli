@@ -61,6 +61,14 @@ class Anasayfa_Model extends CI_Model{
         $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function cihazlarTekTur($tur){
+        $where = array(
+            "silindi" => 0,
+            "cihaz_turu" => $tur,
+        );
+        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
     public function cihazlarJQ($id){
         $where = array(
             "id >"=> $id,
@@ -69,8 +77,24 @@ class Anasayfa_Model extends CI_Model{
         $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function cihazlarTekTurJQ($tur, $id){
+        $where = array(
+            "id >"=> $id,
+            "silindi" => 0,
+            "cihaz_turu" => $tur
+        );
+        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
     public function cihazlarTumuJQ(){
         $result = $this->db->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
+    public function cihazlarTekTurTumuJQ($tur){
+        $where = array(
+            "cihaz_turu" => $tur
+        );
+        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazEkle($veri){
@@ -78,6 +102,52 @@ class Anasayfa_Model extends CI_Model{
     }
     public function cihazSil($id){
         return $this->db->where("id",$id)->update($this->cihazlarTabloAdi,array("silindi"=> 1));
+    }
+    public function cogulEki($yazi){
+        $sesliHarfler =
+            'A'.
+            'a'.
+            'E'.
+            'e'.
+            'I'.
+            'ı'.
+            'İ'.
+            'i'.
+            'O'.
+            'o'.
+            'Ö'.
+            'ö'.
+            'U'.
+            'u'.
+            'Ü'.
+            'ü'
+        ;
+        mb_internal_encoding('UTF-8');
+        mb_regex_encoding('UTF-8');
+        $sesliHarf = mb_ereg_replace('[^'.$sesliHarfler.']','',$yazi);
+        $sonSesliHarf = mb_substr($sesliHarf,-1);
+        switch($sonSesliHarf){
+            case "A":
+            case "a":
+            case "I":
+            case "ı":
+            case "O":
+            case "o":
+            case "U":
+            case "u":
+                return $yazi."lar";
+            case "E":
+            case "E":
+            case "İ":
+            case "İ":
+            case "Ö":
+            case "ö":
+            case "Ü":
+            case "ü":
+                return $yazi."ler";
+            default:
+                return $yazi;
+        }
     }
 }
 ?>
