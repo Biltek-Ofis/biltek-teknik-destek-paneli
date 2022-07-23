@@ -24,9 +24,17 @@ class Anasayfa_Model extends CI_Model{
     public function cihazSonDurumu($cihaz_id){
         $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
         if($query->num_rows() > 0){
-            return $query->result()[0]->durum. " (". $this->tarihDonustur($query->result()[0]->tarih).")";
+            return $query->result()[0]->durum;
         }else{
             return "Bekleniyor";
+        }
+    }
+    public function cihazSonIslemTarih($cihaz_id, $varsayilanTarih){
+        $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
+        if($query->num_rows() > 0){
+            return $this->tarihDonustur($query->result()[0]->tarih);
+        }else{
+            return $this->tarihDonustur($varsayilanTarih);
         }
     }
     public function kullaniciOturumAc($kullanici_adi){
