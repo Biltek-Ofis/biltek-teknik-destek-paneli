@@ -1,18 +1,15 @@
 <?php
 if(count($cihazlar)>0){
+    echo '<div class="table-responsive">';
     echo '<table class="table table-bordered">
     <thead>
         <tr>
             <th scope="col">İşlem Kodu</th>
-            <th scope="col">İsim</th>
+            <th scope="col">Müşteri Adı</th>
             <th scope="col">Cihaz Türü</th>
-            <th scope="col">Cihaz</th>
-            <th scope="col">Arıza Açıklaması</th>
-            <th scope="col">Teslim Durumu</th>
-            <th scope="col">Son İşlem</th>
-            <th scope="col">Son İşlem Tarihi</th>
-            <th scope="col">Giriş Tarihi</th>
-            <th scope="col">İşlem</th>
+            <th class="d-none d-lg-table-cell" scope="col">Cihaz</th>
+            <th class="d-none d-lg-table-cell" scope="col">Giriş Tarihi</th>
+            <th scope="col" colspan="2">İşlem</th>
         </tr>
     </thead>
     <tbody>';
@@ -22,19 +19,11 @@ if(count($cihazlar)>0){
         <th scope="row">' . $cihaz->id . '</th>
         <td>' . $cihaz->musteri_adi . '</td>
         <td>' . $this->Anasayfa_Model->cihazTuru($cihaz->cihaz_turu). '</td>
-        <td>' . $cihaz->cihaz . '</td>
-        <td>' . $cihaz->ariza_aciklamasi . '</td>
-        <td>';
-        if($cihaz->teslim_edildi == 1){
-            echo "Teslim Edildi";
-        }else{
-            echo "Devam Ediyor";
-        }
+        <td class="d-none d-lg-table-cell">' . $cihaz->cihaz . '</td>';
         echo '</td>
-        <td>' . $this->Anasayfa_Model->cihazSonDurumu($cihaz->id) . '</td>
-        <td>' . $this->Anasayfa_Model->cihazSonIslemTarih($cihaz->id,$cihaz->tarih) . '</td>
-        <td>' . $this->Anasayfa_Model->tarihDonustur($cihaz->tarih). '</td>
-        <td><a href="#" class="btn btn-info text-white">Görüntüle</a><a href="#"  class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal'.$cihaz->id.'">Sil</a></td></tr>';
+        <td class="d-none d-lg-table-cell">' . $this->Anasayfa_Model->tarihDonustur($cihaz->tarih). '</td>
+        <td><a href="#" class="btn btn-info text-white">Görüntüle</a></td>
+        <td><a href="#"  class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal'.$cihaz->id.'">Sil</a></td></tr>';
         echo '<div class="modal fade" id="cihazıSilModal'.$cihaz->id.'" tabindex="-1" aria-labelledby="cihazıSilModal'.$cihaz->id.'Label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -56,6 +45,7 @@ if(count($cihazlar)>0){
     echo '
     </tbody>
 </table>';
+echo '</div>';
 }else{
     echo '<div class="alert alert-success" role="alert">
     Bu Kategoride Cihaz Yok
