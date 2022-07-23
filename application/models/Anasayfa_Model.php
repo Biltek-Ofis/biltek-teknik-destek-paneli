@@ -10,14 +10,6 @@ class Anasayfa_Model extends CI_Model{
     public function kullaniciGiris(){
         return isset($_SESSION["KULLANICI"]);
     }
-    public function cihazTuru($tur_id){
-        $query = $this->db->where("id", $tur_id)->get($this->cihazTurleriTabloAdi);
-        if($query->num_rows() > 0){
-            return $query->result()[0]->isim;
-        }else{
-            return "Belirtilmemiş";
-        }
-    }
     public function tarihDonustur($tarih){
        return date("d/m/Y H:i", strtotime($tarih));
     }
@@ -43,14 +35,58 @@ class Anasayfa_Model extends CI_Model{
     public function oturumSifirla(){
         unset($_SESSION["KULLANICI"]);
     }
+    public function cihazTuru($tur_id){
+        $query = $this->db->where("id", $tur_id)->get($this->cihazTurleriTabloAdi);
+        if($query->num_rows() > 0){
+            return $query->result()[0]->isim;
+        }else{
+            return "Belirtilmemiş";
+        }
+    }
     public function cihazTurleri(){
         return $this->db->get($this->cihazTurleriTabloAdi)->result();
     }
+    
+    public function cihazVerileriniDonustur($result){
+        for($i = 0; $i < count($result); $i++){
+             $result[$i]->tarih = $this->tarihDonustur($result[$i]->tarih);
+             $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
+        }
+        return $result;
+     }
     public function devamEdenCihazlar(){
-        return $this->db->where("teslim_edildi !=",1)->where("silindi",0)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        $where = array(
+            "teslim_edildi !=" => 1,
+            "silindi" => 0,
+        );
+        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
+    public function devamEdenCihazlarJQ($id){
+        $where = array(
+            "id >"=> $id,
+            "teslim_edildi !=" => 1,
+            "silindi" => 0
+        );
+        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
     }
     public function teslimEdilenCihazlar(){
-        return $this->db->where("teslim_edildi",1)->where("silindi",0)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        $where = array(
+            "teslim_edildi" => 1,
+            "silindi" => 0,
+        );
+        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
+    public function teslimEdilenCihazlarJQ($id){
+        $where = array(
+            "id >" => $id,
+            "teslim_edildi" => 1,
+            "silindi" => 0,
+        );
+        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
     }
     public function cihazEkle($veri){
         return $this->db->insert($this->cihazlarTabloAdi, $veri);

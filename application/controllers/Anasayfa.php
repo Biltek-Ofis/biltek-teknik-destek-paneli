@@ -21,7 +21,12 @@ class Anasayfa extends CI_Controller {
 			$this->load->view('giris', array("girisHatasi"=> ""));
 		}
 	}
-
+	public function devamEdenCihazlarJQ($id){
+		echo json_encode($this->Anasayfa_Model->devamEdenCihazlarJQ($id));
+	}
+	public function teslimEdilenCihazlarJQ($id){
+		echo json_encode($this->Anasayfa_Model->teslimEdilenCihazlarJQ($id));
+	}
 	public function cihazEkle()
 	{
 		if ($this->Anasayfa_Model->kullaniciGiris()){
