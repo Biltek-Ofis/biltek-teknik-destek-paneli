@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Anasayfa</title>
 	<?php $this->load->view("inc/styles");?>
+	<?php $this->load->view("inc/scripts");?>
 </head>
 <body>
 <?php $this->load->view("inc/navbar");?>
@@ -16,9 +17,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<div class="col-12">
 			<h5 class="mx-2">Devam Eden Cihazlar</h5>
-			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$devamEdenCihazlar));?>
+			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$devamEdenCihazlar, "id"=>"devamEdenCihazlar"));?>
 			<h5 class="mx-2">Teslim Edilen Cihazlar</h5>
-			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar));?>
+			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar, "id"=>"teslimEdilenCihazlar"));?>
 		</div>
 	</div>
 </div>
@@ -51,6 +52,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	</div>
   	</div>
 </div>
-<?php $this->load->view("inc/scripts");?>
 </body>
 </html>
