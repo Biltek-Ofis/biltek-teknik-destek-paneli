@@ -17,12 +17,10 @@ $aktifSayfa
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link<?php if($aktifSayfa == "anasayfa"){ echo " active";}?>" href="<?=base_url();?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Anasayfa
-          </a>
+          <a class="nav-link<?php if($aktifSayfa == "anasayfa"){ echo " active";}?>"<?php if($aktifSayfa == "anasayfa"){ echo ' aria-current="page"';}?> href="<?=base_url();?>">Anasayfa</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle <?php if($aktifSayfa == "cihazlar"){ echo " active";}?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle <?php if($aktifSayfa == "cihazlar"){ echo " active";}?>"<?php if($aktifSayfa == "cihazlar"){ echo ' aria-current="page"';}?> href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cihazlar
           </a>
           <ul class="dropdown-menu">
