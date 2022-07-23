@@ -12,8 +12,7 @@ class Anasayfa extends CI_Controller {
 	{
 		if ($this->Anasayfa_Model->kullaniciGiris()){
 			$veri = array(
-				"teslimEdilenCihazlar" => $this->Anasayfa_Model->teslimEdilenCihazlar(),
-				"devamEdenCihazlar" => $this->Anasayfa_Model->devamEdenCihazlar(),
+				"cihazlar" => $this->Anasayfa_Model->cihazlar(),
 				"cihazTurleri" => $this->Anasayfa_Model->cihazTurleri(),
 			);
 			$this->load->view('anasayfa', $veri);
@@ -21,11 +20,11 @@ class Anasayfa extends CI_Controller {
 			$this->load->view('giris', array("girisHatasi"=> ""));
 		}
 	}
-	public function devamEdenCihazlarJQ($id){
-		echo json_encode($this->Anasayfa_Model->devamEdenCihazlarJQ($id));
+	public function cihazlarJQ($id){
+		echo json_encode($this->Anasayfa_Model->cihazlarJQ($id));
 	}
-	public function teslimEdilenCihazlarJQ($id){
-		echo json_encode($this->Anasayfa_Model->teslimEdilenCihazlarJQ($id));
+	public function cihazlarTumuJQ(){
+		echo json_encode($this->Anasayfa_Model->cihazlarTumuJQ());
 	}
 	public function cihazEkle()
 	{

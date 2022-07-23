@@ -54,38 +54,23 @@ class Anasayfa_Model extends CI_Model{
         }
         return $result;
      }
-    public function devamEdenCihazlar(){
+    public function cihazlar(){
         $where = array(
-            "teslim_edildi !=" => 1,
             "silindi" => 0,
         );
         $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function devamEdenCihazlarJQ($id){
+    public function cihazlarJQ($id){
         $where = array(
             "id >"=> $id,
-            "teslim_edildi !=" => 1,
             "silindi" => 0
         );
         $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function teslimEdilenCihazlar(){
-        $where = array(
-            "teslim_edildi" => 1,
-            "silindi" => 0,
-        );
-        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
-        return $this->cihazVerileriniDonustur($result);
-    }
-    public function teslimEdilenCihazlarJQ($id){
-        $where = array(
-            "id >" => $id,
-            "teslim_edildi" => 1,
-            "silindi" => 0,
-        );
-        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+    public function cihazlarTumuJQ(){
+        $result = $this->db->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazEkle($veri){
