@@ -16,10 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<button class="btn btn-success float-end me-2" data-bs-toggle="modal" data-bs-target="#yeniCihazEkleModal">Yeni Cihaz Girişi</button>
 		</div>
 		<div class="col-12">
-			<h5 class="mx-2">Devam Eden Cihazlar</h5>
-			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$devamEdenCihazlar, "id"=>"devamEdenCihazlar"));?>
-			<h5 class="mx-2">Teslim Edilen Cihazlar</h5>
-			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$teslimEdilenCihazlar, "id"=>"teslimEdilenCihazlar"));?>
+			<h5 class="mx-2">Cihazlar</h5>
+			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$cihazlar,));?>
 		</div>
 	</div>
 </div>

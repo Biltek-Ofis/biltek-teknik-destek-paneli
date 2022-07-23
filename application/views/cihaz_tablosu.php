@@ -11,15 +11,15 @@ echo '<table class="table table-bordered">
         <th scope="col" colspan="2">İşlem</th>
     </tr>
 </thead>
-<tbody id="'.$id.'">';
+<tbody id="cihazlar">';
 $cihazEklendi = false;
-$sonCihazID[$id] = 0;
+$sonCihazID = 0;
 foreach ($cihazlar as $cihaz) {
     if($cihazEklendi == false){
-      $sonCihazID[$id] = $cihaz->id;
+      $sonCihazID = $cihaz->id;
       $cihazEklendi = true;
     }
-    echo '<tr>
+    echo '<tr id="cihaz' . $cihaz->id . '">
     <th scope="row">' . $cihaz->id . '</th>
     <td>' . $cihaz->musteri_adi . '</td>
     <td>' . $cihaz->cihaz_turu. '</td>
@@ -50,19 +50,37 @@ echo '
 </tbody>
 </table>';
 echo '</div>';
-if(count($cihazlar) == 0){
-    echo '<div id="'.$id.'Uyari" class="alert alert-success" role="alert">
+
+    echo '<div id="cihazlarUyari" class="alert alert-success" style="';
+    if(count($cihazlar) > 0){
+      echo 'display:none;';
+    }
+    echo ' role="alert">
     Bu Kategoride Cihaz Yok
 </div>';
-}
 ?>
 <script type="text/javascript">
-  let <?=$id;?>SonCihazID = <?=$sonCihazID[$id];?>;
+  let sonCihazID = <?=$sonCihazID;?>;
   setInterval(() => {
-    $.get('<?=base_url("anasayfa/".$id."JQ");?>/'+ <?=$id;?>SonCihazID , {}, function (data) {
+    $.get('<?=base_url("anasayfa/cihazlarTumuJQ");?>', {}, function (data) {
+      sayac = 0;
       $.each(JSON.parse(data), function( index, value ) {
-        <?=$id;?>SonCihazID = value.id
-        $("#<?=$id;?>").prepend('<tr><th scope="row">' + value.id + '</th><td>' + value.musteri_adi + '</td><td>' + value.cihaz_turu + '</td><td class="d-none d-lg-table-cell">' + value.cihaz + '</td></td><td class="d-none d-lg-table-cell">' + value.tarih + '</td><td><a href="#" class="btn btn-info text-white">Görüntüle</a></td><td><a href="#" class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal' + value.id + '">Sil</a></td></tr><div class="modal fade" id="cihazıSilModal' + value.id + '" tabindex="-1" aria-labelledby="cihazıSilModal' + value.id + 'Label" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazıSilModal' + value.id + 'Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="<?php echo base_url("anasayfa/cihazSil/");?>' + value.id + '" type="button" class="btn btn-success">Evet</a><a href="#" type="button" class="btn btn-danger" data-bs-dismiss="modal">Hayır</a></div></div></div></div>');
+        if(value.silindi == 1){
+          $("#cihaz"+value.id).remove();
+        }else{
+          sonCihazID = value.id;
+          sayac++;
+        }
+      });
+      if(sayac == 0){
+        $("#cihazlarUyari").show();
+      }
+    });
+    $.get('<?=base_url("anasayfa/cihazlarJQ");?>/'+ sonCihazID , {}, function (data) {
+      $.each(JSON.parse(data), function( index, value ) {
+        $("#cihazlarUyari").hide();
+        $("#cihaz"+value.id).remove();
+        $("#cihazlar").prepend('<tr id="cihaz' + value.id + '><th scope="row">' + value.id + '</th><td>' + value.musteri_adi + '</td><td>' + value.cihaz_turu + '</td><td class="d-none d-lg-table-cell">' + value.cihaz + '</td></td><td class="d-none d-lg-table-cell">' + value.tarih + '</td><td><a href="#" class="btn btn-info text-white">Görüntüle</a></td><td><a href="#" class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal' + value.id + '">Sil</a></td></tr><div class="modal fade" id="cihazıSilModal' + value.id + '" tabindex="-1" aria-labelledby="cihazıSilModal' + value.id + 'Label" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazıSilModal' + value.id + 'Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="<?php echo base_url("anasayfa/cihazSil/");?>' + value.id + '" type="button" class="btn btn-success">Evet</a><a href="#" type="button" class="btn btn-danger" data-bs-dismiss="modal">Hayır</a></div></div></div></div>');
       });
     });
   }, 5000);
