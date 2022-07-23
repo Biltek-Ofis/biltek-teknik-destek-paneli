@@ -7,6 +7,7 @@ class Anasayfa_Model extends CI_Model{
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
     public $CihazDurumuTabloAdi = "CihazDurumu";
+    public $silinmeDurumuTabloAdi = "SilinmeDurumu";
     public function kullaniciGiris(){
         return isset($_SESSION["KULLANICI"]);
     }
@@ -102,6 +103,11 @@ class Anasayfa_Model extends CI_Model{
     }
     public function cihazSil($id){
         return $this->db->where("id",$id)->update($this->cihazlarTabloAdi,array("silindi"=> 1));
+    }
+    public function silinenCihazlariBul(){
+        $results = $this->db->get($this->silinmeDurumuTabloAdi)->result();
+        //$this->db->empty_table($this->silinmeDurumuTabloAdi);
+        return $results;
     }
     public function cogulEki($yazi){
         $sesliHarfler =
