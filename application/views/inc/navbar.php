@@ -1,11 +1,9 @@
 <?php
 
 /*
-$activePage 
-  home
-  phones
-  pc
-  printers
+$aktifSayfa
+  anasayfa
+  cihazlar
 */
 
 ?>
@@ -19,18 +17,25 @@ $activePage
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="<?=base_url("cikis");?>">Çıkış Yap</a>
+          <a class="nav-link<?php if($aktifSayfa == "anasayfa"){ echo " active";}?>" href="<?=base_url();?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Anasayfa
+          </a>
         </li>
-        <!--<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle <?php if($aktifSayfa == "cihazlar"){ echo " active";}?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cihazlar
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Tablet / Telefon</a></li>
-            <li><a class="dropdown-item" href="#">Bilgisayar</a></li>
-            <li><a class="dropdown-item" href="#">Yazıcı</a></li>
+            <?php
+            foreach($cihazTurleri as $cihazTuru){
+              echo '<li><a class="dropdown-item" href="'.base_url("cihazlar/".$cihazTuru->id).'">'.$cihazTuru->isim.'</a></li>';
+						}
+            ?>
           </ul>
-        </li>-->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="<?=base_url("cikis");?>">Çıkış Yap</a>
+        </li>
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Ürün ve ya müşteri ara" aria-label="Ara">

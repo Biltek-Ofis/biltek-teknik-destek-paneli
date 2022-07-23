@@ -12,7 +12,6 @@ class Anasayfa extends CI_Controller {
 	{
 		if ($this->Anasayfa_Model->kullaniciGiris()){
 			$veri = array(
-				"cihazlar" => $this->Anasayfa_Model->cihazlar(),
 				"cihazTurleri" => $this->Anasayfa_Model->cihazTurleri(),
 			);
 			$this->load->view('anasayfa', $veri);
@@ -21,10 +20,14 @@ class Anasayfa extends CI_Controller {
 		}
 	}
 	public function cihazlarJQ($id){
-		echo json_encode($this->Anasayfa_Model->cihazlarJQ($id));
+		if ($this->Anasayfa_Model->kullaniciGiris()){
+			echo json_encode($this->Anasayfa_Model->cihazlarJQ($id));
+		}
 	}
 	public function cihazlarTumuJQ(){
-		echo json_encode($this->Anasayfa_Model->cihazlarTumuJQ());
+		if ($this->Anasayfa_Model->kullaniciGiris()){
+			echo json_encode($this->Anasayfa_Model->cihazlarTumuJQ());
+		}
 	}
 	public function cihazEkle()
 	{
@@ -40,11 +43,11 @@ class Anasayfa extends CI_Controller {
 				redirect(base_url());
 			}else{
 				$this->load->model("Kullanicilar_Model");
-				$this->Kullanicilar_Model->girisUyari();
+				$this->Kullanicilar_Model->girisUyari("/");
 			}
 		}else{
 			$this->load->model("Kullanicilar_Model");
-			$this->Kullanicilar_Model->girisUyari();
+			$this->Kullanicilar_Model->girisUyari("/");
 		}
 	}
 	public function cihazSil($id)
@@ -58,7 +61,7 @@ class Anasayfa extends CI_Controller {
 			}
 		}else{
 			$this->load->model("Kullanicilar_Model");
-			$this->Kullanicilar_Model->girisUyari();
+			$this->Kullanicilar_Model->girisUyari("/");
 		}
 	}
 }

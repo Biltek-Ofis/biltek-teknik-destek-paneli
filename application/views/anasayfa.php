@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php $this->load->view("inc/scripts");?>
 </head>
 <body>
-<?php $this->load->view("inc/navbar");?>
+<?php $this->load->view("inc/navbar", array("aktifSayfa"=>"anasayfa","cihazTurleri"=> $cihazTurleri));?>
 <div id="container w-100 m-0 p-0">
 	<div class="row m-0 p-0">
     	<div class="col-12">
@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<div class="col-12">
 			<h5 class="mx-2">Cihazlar</h5>
-			<?php $this->load->view("cihaz_tablosu", array("cihazlar"=>$cihazlar,));?>
+			<?php $this->load->view("cihaz_tablosu");?>
 		</div>
 	</div>
 </div>
