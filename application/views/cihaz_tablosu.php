@@ -10,6 +10,7 @@ if(count($cihazlar)>0){
             <th scope="col">Arıza Açıklaması</th>
             <th scope="col">Teslim Durumu</th>
             <th scope="col">Son İşlem</th>
+            <th scope="col">Son İşlem Tarihi</th>
             <th scope="col">Giriş Tarihi</th>
             <th scope="col">İşlem</th>
         </tr>
@@ -31,12 +32,12 @@ if(count($cihazlar)>0){
         }
         echo '</td>
         <td>' . $this->Anasayfa_Model->cihazSonDurumu($cihaz->id) . '</td>
+        <td>' . $this->Anasayfa_Model->cihazSonIslemTarih($cihaz->id,$cihaz->tarih) . '</td>
         <td>' . $this->Anasayfa_Model->tarihDonustur($cihaz->tarih). '</td>
         <td><a href="#" class="btn btn-info text-white">Görüntüle</a><a href="#"  class="btn btn-danger text-white ms-2" data-bs-toggle="modal" data-bs-target="#cihazıSilModal'.$cihaz->id.'">Sil</a></td></tr>';
         echo '<div class="modal fade" id="cihazıSilModal'.$cihaz->id.'" tabindex="-1" aria-labelledby="cihazıSilModal'.$cihaz->id.'Label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-              
                 <div class="modal-header">
                   <h5 class="modal-title" id="cihazıSilModal'.$cihaz->id.'Label">Cihaz Silme İşlemini Onaylayın</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
