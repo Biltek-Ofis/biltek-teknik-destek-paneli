@@ -64,4 +64,8 @@ class Anasayfa extends CI_Controller {
 			$this->Kullanicilar_Model->girisUyari("/");
 		}
 	}
+	public function silinenCihazlariBul()
+	{
+		echo json_encode($this->Anasayfa_Model->silinenCihazlariBul());
+	}
 }

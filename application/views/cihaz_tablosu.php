@@ -69,6 +69,11 @@ echo '</div>';
 <script type="text/javascript">
   let sonCihazID = <?=$sonCihazID;?>;
   setInterval(() => {
+    $.get('<?=base_url("anasayfa/silinenCihazlariBul");?>' , {}, function (data) {
+      $.each(JSON.parse(data), function( index, value ) {
+        $("#cihaz"+value.cihaz_id).remove();
+      });
+    });
     $.get('<?=base_url(($tur_belirtildimi ? "cihazlar" : "anasayfa")."/cihazlarTumuJQ/".($tur_belirtildimi ? $tur : ""));?>', {}, function (data) {
       sayac = 0;
       $.each(JSON.parse(data), function( index, value ) {
