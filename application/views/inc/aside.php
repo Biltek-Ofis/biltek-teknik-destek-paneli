@@ -33,15 +33,15 @@
                     </a>
                 </li>
                 <li class="nav-header">Yönetim</li>
+                <li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
+                        <i class="nav-icon fas fa-laptop-house"></i>
                         <p>
-                            Kullanıcılar
+                            Cihaz Yönetimi
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-desktop"></i>
