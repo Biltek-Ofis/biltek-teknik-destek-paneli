@@ -1,5 +1,4 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -18,10 +17,10 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Test Başlık</h3>
+                <h3 class="card-title">Anasayfa Başlık</h3>
             </div>
             <div class="card-body">
-                Test İçerik
+                Anasayfa İçerik
             </div>
         </div>
     </section>
