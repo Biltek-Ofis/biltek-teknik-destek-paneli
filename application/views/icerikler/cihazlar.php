@@ -18,7 +18,7 @@
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <?php $this->load->view("icerikler/cihaz_tablosu", array("tur"=> $suankiCihazTuru, "cihaz_turu_gizle"=>true));?>
+                <?php $this->load->view("icerikler/cihaz_tablosu", array("tur"=> $suankiCihazTuru, "cihazTuruGizle"=>true,"silButonuGizle"=>true));?>
             </div>
         </div>
     </section>
