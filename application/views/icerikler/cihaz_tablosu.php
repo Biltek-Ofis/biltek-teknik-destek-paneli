@@ -22,10 +22,11 @@ $cihazEklendi = false;
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz" class="d-none d-lg-table-cell">{cihaz}</td><td id="{id}TeslimDurumu">{teslim_durumu}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td class="text-center"';
 $tabloOrnek .= $silButonuGizle ? ' colspan="2"' : '';
-$tabloOrnek .= '><a href="#" class="btn btn-info text-white">Görüntüle</a></td>';
-$tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><a href="#"  class="btn btn-danger text-white ms-2" data-toggle="modal" data-target="#cihazıSilModal{id}">Sil</a></td>';
+$tabloOrnek .= '><button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button></td>';
+$tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>';
 $tabloOrnek .= '</tr>';
-$cihazModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazıSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazıSilModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazıSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a><a class="btn btn-danger" data-dismiss="modal">Hayır</a></div></div></div></div>';
+$cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazDetayModal{id}Label">Cihaz Detayları</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Detaylar eklenecek</div><div class="modal-footer"><button class="btn btn-secondary">Kapat</button></div></div></div></div>';
+$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihaziSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a><a class="btn btn-danger" data-dismiss="modal">Hayır</a></div></div></div></div>';
 $this->load->model("Cihazlar_Model");
 $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
 foreach ($cihazlar as $cihaz) {
@@ -55,8 +56,9 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->tarih,
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
-  $cihazModal = str_replace($eskiler, $yeniler, $cihazModalOrnek);
-  echo $tablo . $cihazModal;
+  $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
+  $cihazDetayModal = str_replace($eskiler, $yeniler, $cihazDetayModalOrnek);
+  echo $tablo . $cihazSilModal . $cihazDetayModal;
 }
 echo '
 </tbody>
@@ -99,11 +101,15 @@ echo ' role="alert">
         $("#cihazlarUyari").hide();
         $("#cihaz" + value.id).remove();
         let tabloOrnek = '<?= $tabloOrnek; ?>';
-        let modalOrnek = '<?= $cihazModalOrnek; ?>'
+        let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
+        let detayModalOrnek = '<?= $cihazDetayModalOrnek; ?>';
+        
         var tablo = tabloOrnek.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{teslim_durumu}", value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>").replaceAll("{tarih}", value.tarih);
-        var modal = modalOrnek.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{teslim_durumu}", value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>").replaceAll("{tarih}", value.tarih);
+        var silmodal = silModalOrnek.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{teslim_durumu}", value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>").replaceAll("{tarih}", value.tarih);
+        var detayModal = detayModalOrnek.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{teslim_durumu}", value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>").replaceAll("{tarih}", value.tarih);
         $("#cihazlar").prepend(tablo);
-        $("#cihazTablosu").prepend(modal);
+        $("#cihazTablosu").prepend(silmodal);
+        $("#cihazTablosu").prepend(detayModal);
       });
     });
   }, 5000);
