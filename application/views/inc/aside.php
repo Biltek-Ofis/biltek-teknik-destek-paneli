@@ -35,28 +35,37 @@
                 <li class="nav-header">Yönetim</li>
                 <li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="<?=base_url("cihaz_yonetimi");?>" class="nav-link<?php if($aktifSayfa=="cihaz_yonetimi"){echo " active";}?>">
                         <i class="nav-icon fas fa-laptop-house"></i>
                         <p>
                             Cihaz Yönetimi
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                    <i class="fas fa-display"></i>
+                <li class="nav-item<?php if($aktifSayfa=="cihazlar"){echo " menu-is-opening menu-open";}?>">
+                    <a href="#" class="nav-link<?php if($aktifSayfa=="cihazlar"){echo " active";}?>">
+                    <i class="nav-icon fas fa-floppy-disk"></i>
                         <p>
                             Cihazlar
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-mobile-alt nav-icon"></i>
-                                <p>Cihaz Test</p>
-                            </a>
-                        </li>
+                    <ul class="nav nav-treeview"<?php if($aktifSayfa=="cihazlar"){echo ' style="display:block;"';}?>">
+                            <?php
+                            foreach ($cihazTurleri as $cihazTuru) {
+                                echo ' <li class="nav-item">
+                                <a href="'.base_url("cihazlar/".$cihazTuru->id).'" class="nav-link';
+                                if($baslik == $cihazTuru->isim){
+                                    echo " active";
+                                }
+                                echo '">
+                                    <!--<i class="nav-icon fas fa-mobile-alt"></i>-->
+                                    <p>'.$cihazTuru->isim.'</p>
+                                </a>
+                            </li>';
+                            }
+                            ?>
+                       
                     </ul>
                 </li>
             </ul>

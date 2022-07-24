@@ -1,0 +1,65 @@
+<?php
+class Islemler_Model extends CI_Model{
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    public function tasarimArray($baslik, $icerik, $icerik_array = array()){
+        return array(
+            "baslik"=> $baslik,
+            "icerik"=> $icerik,
+            "icerik_array"=> $icerik_array,
+        );
+    }
+    public function tarihDonustur($tarih){
+        return date("d/m/Y H:i", strtotime($tarih));
+    }
+    public function cogulEki($yazi){
+        $sesliHarfler =
+            'A'.
+            'a'.
+            'E'.
+            'e'.
+            'I'.
+            'ı'.
+            'İ'.
+            'i'.
+            'O'.
+            'o'.
+            'Ö'.
+            'ö'.
+            'U'.
+            'u'.
+            'Ü'.
+            'ü'
+        ;
+        mb_internal_encoding('UTF-8');
+        mb_regex_encoding('UTF-8');
+        $sesliHarf = mb_ereg_replace('[^'.$sesliHarfler.']','',$yazi);
+        $sonSesliHarf = mb_substr($sesliHarf,-1);
+        switch($sonSesliHarf){
+            case "A":
+            case "a":
+            case "I":
+            case "ı":
+            case "O":
+            case "o":
+            case "U":
+            case "u":
+                return $yazi."lar";
+            case "E":
+            case "E":
+            case "İ":
+            case "İ":
+            case "Ö":
+            case "ö":
+            case "Ü":
+            case "ü":
+                return $yazi."ler";
+            default:
+                return $yazi;
+        }
+    }
+}
+?>
