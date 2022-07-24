@@ -44,7 +44,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-desktop"></i>
+                    <i class="fas fa-display"></i>
                         <p>
                             Cihazlar
                             <i class="fas fa-angle-left right"></i>
