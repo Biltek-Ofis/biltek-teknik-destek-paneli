@@ -1,13 +1,14 @@
 <?php
 $tur_belirtildimi = isset($tur) ? true : false;
-$cihaz_turu_gizle = isset($cihaz_turu_gizle) ? $cihaz_turu_gizle : false;
+$cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
+$silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table class="table table-bordered">
 <thead>
     <tr>
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
-        <th scope="col"' . ($cihaz_turu_gizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
+        <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th class="d-none d-lg-table-cell" scope="col">Cihaz</th>
         <th>Teslim Durumu</th>
         <th class="d-none d-lg-table-cell" scope="col">Giriş Tarihi</th>
@@ -19,8 +20,12 @@ $teslim_durumu_1 = "Teslim Edildi";
 $teslim_durumu_0 = "Kontrol Ediliyor";
 $cihazEklendi = false;
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihaz_turu_gizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz" class="d-none d-lg-table-cell">{cihaz}</td><td id="{id}TeslimDurumu">{teslim_durumu}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td><a href="#" class="btn btn-info text-white">Görüntüle</a></td><td><a href="#"  class="btn btn-danger text-white ms-2" data-toggle="modal" data-target="#cihazıSilModal{id}">Sil</a></td></tr>';
-$cihazModalOrnek = '<div class="modal fade" id="cihazıSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazıSilModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazıSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a><a class="btn btn-danger" data-dismiss="modal">Hayır</a></div></div></div></div>';
+$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz" class="d-none d-lg-table-cell">{cihaz}</td><td id="{id}TeslimDurumu">{teslim_durumu}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td class="text-center"';
+$tabloOrnek .= $silButonuGizle ? ' colspan="2"' : '';
+$tabloOrnek .= '><a href="#" class="btn btn-info text-white">Görüntüle</a></td>';
+$tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><a href="#"  class="btn btn-danger text-white ms-2" data-toggle="modal" data-target="#cihazıSilModal{id}">Sil</a></td>';
+$tabloOrnek .= '</tr>';
+$cihazModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazıSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazıSilModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazıSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a><a class="btn btn-danger" data-dismiss="modal">Hayır</a></div></div></div></div>';
 $this->load->model("Cihazlar_Model");
 $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
 foreach ($cihazlar as $cihaz) {
