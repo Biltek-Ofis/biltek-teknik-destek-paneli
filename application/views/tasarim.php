@@ -13,9 +13,11 @@
 <div class="wrapper">
   <?php $this->load->view("inc/navbar");?>
   
-  <?php $this->load->view("inc/aside");?>
+  <?php 
+  $this->load->view("inc/aside", array("aktifSayfa"=>$icerik,"baslik"=>$baslik, "cihazTurleri"=> $this->Cihazlar_Model->cihazTurleri()));
+  ?>
 
-  <?php $this->load->view("icerikler/".$icerik);?>
+  <?php $this->load->view("icerikler/".$icerik, $icerik_array);?>
 
   <?php //$this->load->view("inc/footer");?>
 </div>
