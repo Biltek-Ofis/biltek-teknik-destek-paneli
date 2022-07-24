@@ -1,2 +1,3 @@
-<script src="<?php echo base_url("assets/js/jquery-3.6.0.min.js");?>"></script>
-<script src="<?php echo base_url("assets/js/bootstrap.bundle.min.js");?>"></script>
+<script src="<?=base_url("plugins/jquery/jquery.min.js");?>"></script>
+<script src="<?=base_url("plugins/bootstrap/js/bootstrap.bundle.min.js");?>"></script>
+<script src="<?=base_url("dist/js/panel.min.js");?>"></script>
