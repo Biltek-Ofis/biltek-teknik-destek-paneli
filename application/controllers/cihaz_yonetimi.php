@@ -36,11 +36,9 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($ekle){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
-				$this->load->model("Kullanicilar_Model");
 				$this->Kullanicilar_Model->girisUyari("/");
 			}
 		}else{
-			$this->load->model("Kullanicilar_Model");
 			$this->Kullanicilar_Model->girisUyari("/");
 		}
 	}
@@ -54,7 +52,6 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 				redirect(base_url("cihaz_yonetimi"));
 			}
 		}else{
-			$this->load->model("Kullanicilar_Model");
 			$this->Kullanicilar_Model->girisUyari("/");
 		}
 	}
