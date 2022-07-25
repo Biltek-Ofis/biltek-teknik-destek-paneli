@@ -50,7 +50,7 @@ class Cihazlar_Model extends CI_Model{
         $where = array(
             "silindi" => 0,
         );
-        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by("teslim_edildi ASC, tarih DESC")->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTur($tur){
