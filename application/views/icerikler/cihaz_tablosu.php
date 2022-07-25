@@ -19,13 +19,58 @@ $teslim_durumu_1 = "Teslim Edildi";
 $teslim_durumu_0 = "Kontrol Ediliyor";
 $cihazEklendi = false;
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz">{cihaz}</td><td id="{id}Tarih">{tarih}</td><td class="text-center"';
-$tabloOrnek .= $silButonuGizle ? ' colspan="2"' : '';
-$tabloOrnek .= '><button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button></td>';
-$tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>';
-$tabloOrnek .= '</tr>';
-$cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihazDetayModal{id}Label">Cihaz Detayları</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Detaylar eklenecek</div><div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal">Kapat</button></div></div></div></div>';
-$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="cihaziSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body">Bu cihazı silmek istediğinize emin misiniz?</div><div class="modal-footer"><a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a><a class="btn btn-danger" data-dismiss="modal">Hayır</a></div></div></div></div>';
+$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
+  <th scope="row">{id}</th>
+  <td id="{id}MusteriAdi">{musteri_adi}</td>
+  <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
+  <td id="{id}Cihaz">{cihaz}</td>
+  <td id="{id}Tarih">{tarih}</td>
+  <td class="text-center"'.($silButonuGizle ? ' colspan="2"' : '').'>
+    <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
+  </td>
+  '.($silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>').'
+s</tr>';
+
+$cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cihazDetayModal{id}Label">Cihaz Detayları</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Detaylar eklenecek
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>';
+$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cihaziSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Bu cihazı silmek istediğinize emin misiniz?
+      </div>
+      <div class="modal-footer">
+        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a>
+        <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
+      </div>
+    </div>
+  </div>
+</div>';
+$tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
+$cihazDetayModalOrnek = $this->Islemler_Model->trimle($cihazDetayModalOrnek);
+$cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
 $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
 foreach ($cihazlar as $cihaz) {
