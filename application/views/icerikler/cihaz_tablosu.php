@@ -9,7 +9,7 @@ echo '<table class="table table-bordered">
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
-        <th scope="col">Cihaz</th>
+        <th scope="col">Cihaz Modeli</th>
         <th scope="col">Giriş Tarihi</th>
         <th scope="col" colspan="2">İşlem</th>
     </tr>
