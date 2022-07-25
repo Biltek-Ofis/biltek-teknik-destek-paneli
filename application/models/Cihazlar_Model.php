@@ -8,7 +8,7 @@ class Cihazlar_Model extends CI_Model{
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
     public $CihazDurumuTabloAdi = "CihazDurumu";
-    public $silinmeDurumuTabloAdi = "SilinmeDurumu";
+    public $silinenCihazlarTabloAdi = "SilinenCihazlar";
     public function cihazSonDurumu($cihaz_id){
         $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
         if($query->num_rows() > 0){
@@ -47,15 +47,11 @@ class Cihazlar_Model extends CI_Model{
         return $result;
      }
     public function cihazlar(){
-        $where = array(
-            "silindi" => 0,
-        );
-        $result = $this->db->where($where)->order_by("teslim_edildi ASC, tarih DESC")->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->order_by("teslim_edildi ASC, tarih DESC")->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTur($tur){
         $where = array(
-            "silindi" => 0,
             "cihaz_turu" => $tur,
         );
         $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
@@ -64,7 +60,6 @@ class Cihazlar_Model extends CI_Model{
     public function cihazlarJQ($id){
         $where = array(
             "id >"=> $id,
-            "silindi" => 0
         );
         $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
@@ -72,7 +67,6 @@ class Cihazlar_Model extends CI_Model{
     public function cihazlarTekTurJQ($tur, $id){
         $where = array(
             "id >"=> $id,
-            "silindi" => 0,
             "cihaz_turu" => $tur
         );
         $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
@@ -93,11 +87,11 @@ class Cihazlar_Model extends CI_Model{
         return $this->db->insert($this->cihazlarTabloAdi, $veri);
     }
     public function cihazSil($id){
-        return $this->db->where("id",$id)->update($this->cihazlarTabloAdi,array("silindi"=> 1));
+        return $this->db->where("id",$id)->delete($this->cihazlarTabloAdi);
     }
     public function silinenCihazlariBul(){
-        $results = $this->db->get($this->silinmeDurumuTabloAdi)->result();
-        //$this->db->empty_table($this->silinmeDurumuTabloAdi);
+        $results = $this->db->get($this->silinenCihazlarTabloAdi)->result();
+        //$this->db->empty_table($this->silinenCihazlarTabloAdi);
         return $results;
     }
 }
