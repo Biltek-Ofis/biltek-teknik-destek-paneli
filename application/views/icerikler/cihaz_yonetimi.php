@@ -17,7 +17,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Son Cihazlar</h3>
+                <h3 class="card-title">Cihazlar</h3>
             </div>
             <div class="card-body">
                 <div id="container w-100 m-0 p-0">
