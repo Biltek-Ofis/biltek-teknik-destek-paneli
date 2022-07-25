@@ -6,12 +6,10 @@ echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table class="table table-bordered">
 <thead>
     <tr>
-        <th scope="col">Cihaz Kodu</th>
+        <th class="d-none d-lg-table-cell" scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
-        <th class="d-none d-lg-table-cell" scope="col">Cihaz</th>
-        <th class="d-none d-lg-table-cell" scope="col">Arıza Açıklaması</th>
-        <th>Teslim Durumu</th>
+        <th scope="col">Cihaz</th>
         <th class="d-none d-lg-table-cell" scope="col">Giriş Tarihi</th>
         <th scope="col" colspan="2">İşlem</th>
     </tr>
@@ -21,7 +19,7 @@ $teslim_durumu_1 = "Teslim Edildi";
 $teslim_durumu_0 = "Kontrol Ediliyor";
 $cihazEklendi = false;
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz" class="d-none d-lg-table-cell">{cihaz}</td><td id="{id}Aciklama" class="d-none d-lg-table-cell">{aciklama}</td><td id="{id}TeslimDurumu">{teslim_durumu}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td class="text-center"';
+$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th class="d-none d-lg-table-cell" scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz">{cihaz}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td class="text-center"';
 $tabloOrnek .= $silButonuGizle ? ' colspan="2"' : '';
 $tabloOrnek .= '><button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button></td>';
 $tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>';
@@ -42,8 +40,6 @@ foreach ($cihazlar as $cihaz) {
     "{musteri_adi}",
     "{cihaz_turu}",
     "{cihaz}",
-    "{aciklama}",
-    "{teslim_durumu}",
     "{tarih}",
   );
 
@@ -54,8 +50,6 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->musteri_adi,
     $cihaz->cihaz_turu,
     $cihaz->cihaz,
-    $cihaz->ariza_aciklamasi,
-    $cihaz->teslim_edildi == 1 ? $teslim_durumu_1 : $teslim_durumu_0,
     $cihaz->tarih,
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
@@ -79,7 +73,7 @@ echo ' role="alert">
 <script type="text/javascript">
   let sonCihazID = <?= $sonCihazID; ?>;
   function donustur(str, value){
-    return str.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{aciklama}", value.ariza_aciklamasi).replaceAll("{teslim_durumu}", value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>").replaceAll("{tarih}", value.tarih);
+    return str.replaceAll("{class}", "success").replaceAll("{id}", value.id).replaceAll("{musteri_adi}", value.musteri_adi).replaceAll("{cihaz_turu}", value.cihaz_turu).replaceAll("{cihaz}", value.cihaz).replaceAll("{tarih}", value.tarih);
   }
   setInterval(() => {
     $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
@@ -96,7 +90,7 @@ echo ' role="alert">
           sonCihazID = value.id;
           sayac++;
         }
-        $("#" + value.id + "TeslimDurumu").text(value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>");
+        //$("#" + value.id + "TeslimDurumu").text(value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>");
       });
       if (sayac == 0) {
         $("#cihazlarUyari").show();
