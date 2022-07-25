@@ -99,8 +99,8 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{ariza_aciklamasi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Yapılacak İşlem:</span></li>
-                  <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{yapilacak_islem}</li>
+                  <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Servis Türü:</span></li>
+                  <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{servis_turu}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
@@ -176,7 +176,7 @@ foreach ($cihazlar as $cihaz) {
     "{cihaz}",
     "{seri_no}",
     "{ariza_aciklamasi}",
-    "{yapilacak_islem}",
+    "{servis_turu}",
     "{yedek_durumu}",
     "{tasima_cantasi}",
     "{sarj_adaptoru}",
@@ -198,7 +198,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cihaz,
     $cihaz->seri_no,
     $cihaz->ariza_aciklamasi,
-    $cihaz->yapilacak_islem,
+    $cihaz->servis_turu,
     $cihaz->yedek_durumu,
     $cihaz->tasima_cantasi,
     $cihaz->sarj_adaptoru,
@@ -239,7 +239,7 @@ echo ' role="alert">
     .replaceAll("{cihaz}", value.cihaz)
     .replaceAll("{seri_no}", value.seri_no)
     .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
-    .replaceAll("{yapilacak_islem}", value.yapilacak_islem)
+    .replaceAll("{servis_turu}", value.servis_turu)
     .replaceAll("{yedek_durumu}", value.yedek_durumu)
     .replaceAll("{tasima_cantasi}", value.tasima_cantasi)
     .replaceAll("{sarj_adaptoru}", value.sarj_adaptoru)
