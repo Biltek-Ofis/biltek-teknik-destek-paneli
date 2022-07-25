@@ -15,6 +15,10 @@ class Islemler_Model extends CI_Model{
     public function tarihDonustur($tarih){
         return date("d/m/Y H:i", strtotime($tarih));
     }
+    public function trimle($str){
+        $str = trim(preg_replace('/\s+/', ' ', $str));
+        return str_replace("  ", "", $str);
+    }
     public function cogulEki($yazi){
         $sesliHarfler =
             'A'.

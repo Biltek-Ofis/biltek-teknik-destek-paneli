@@ -8,6 +8,7 @@ class Varsayilan_Controller extends CI_Controller{
         $this->load->model("Cihazlar_Model");
         $this->load->model("Giris_Model");
         $this->load->model("Kullanicilar_Model");
+        $this->load->model("Islemler_Model");
     }
 
 }
