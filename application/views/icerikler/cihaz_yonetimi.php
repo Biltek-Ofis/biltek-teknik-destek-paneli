@@ -43,7 +43,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="yeniCihazForm" method="post" action="<?= base_url("cihaz_yonetimi/cihazEkle"); ?>">
+                <form id="yeniCihazForm" autocomplete="off" method="post" action="<?= base_url("cihaz_yonetimi/cihazEkle"); ?>">
                     <div class="form-group">
                         <input class="form-control" type="text" name="musteri_adi" placeholder="Müşterinin Adı" required>
                     </div>
