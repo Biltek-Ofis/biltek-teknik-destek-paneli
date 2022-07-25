@@ -7,6 +7,7 @@ class Cihazlar_Model extends CI_Model{
     }
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
+    public $yapilacakIslemlerTabloAdi = "YapilacakIslemler";
     public $CihazDurumuTabloAdi = "CihazDurumu";
     public $silinenCihazlarTabloAdi = "SilinenCihazlar";
     public function cihazSonDurumu($cihaz_id){
