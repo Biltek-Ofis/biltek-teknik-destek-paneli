@@ -89,8 +89,8 @@
                     </div>
                     <div class="row">
                         <div class="form-group col">
-                            <select class="form-control" name="yapilacak_islem" aria-label="Yapılacak İşlem" required>
-                                <option value="" selected>Yapılacak İşlem Seçin *</option>
+                            <select class="form-control" name="servis_turu" aria-label="Servis Türü" required>
+                                <option value="" selected>Servis Türü Seçin *</option>
                                 <option value="GARANTİ KAPSAMINDA BAKIM/ONARIM">GARANTİ KAPSAMINDA BAKIM/ONARIM</option>
                                 <option value="ANLAŞMALI KAPSAMINDA BAKIM/ONARIM">ANLAŞMALI KAPSAMINDA BAKIM/ONARIM</option>
                                 <option value="ÜCRETLİ BAKIM/ONARIM">ÜCRETLİ BAKIM/ONARIM</option>

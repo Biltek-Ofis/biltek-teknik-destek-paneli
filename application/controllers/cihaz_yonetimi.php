@@ -35,7 +35,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 				"cihaz"=> $this->input->post("cihaz"),
 				"seri_no"=> $this->input->post("seri_no"),
 				"ariza_aciklamasi"=> $this->input->post("ariza_aciklamasi"),
-				"yapilacak_islem"=> $this->input->post("yapilacak_islem"),
+				"servis_turu"=> $this->input->post("servis_turu"),
 				"yedek_durumu"=> $this->input->post("yedek_durumu"),
 				"tasima_cantasi"=> $this->input->post("tasima_cantasi"),
 				"sarj_adaptoru" => $this->input->post("sarj_adaptoru"),
