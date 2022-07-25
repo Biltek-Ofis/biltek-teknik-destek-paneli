@@ -9,7 +9,7 @@
                 <img src="<?= base_url("dist/img/kullanicilar/test.png"); ?>" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Test Kullanıcı İsim</a>
+                <a href="#" class="d-block"><?=$this->Kullanicilar_Model->kullaniciBilgileri()["isim"];?></a>
             </div>
         </div>
         <!--<div class="form-inline">
