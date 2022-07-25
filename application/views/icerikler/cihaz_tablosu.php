@@ -6,11 +6,11 @@ echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table class="table table-bordered">
 <thead>
     <tr>
-        <th class="d-none d-lg-table-cell" scope="col">Cihaz Kodu</th>
+        <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz</th>
-        <th class="d-none d-lg-table-cell" scope="col">Giriş Tarihi</th>
+        <th scope="col">Giriş Tarihi</th>
         <th scope="col" colspan="2">İşlem</th>
     </tr>
 </thead>
@@ -19,7 +19,7 @@ $teslim_durumu_1 = "Teslim Edildi";
 $teslim_durumu_0 = "Kontrol Ediliyor";
 $cihazEklendi = false;
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th class="d-none d-lg-table-cell" scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz">{cihaz}</td><td id="{id}Tarih" class="d-none d-lg-table-cell">{tarih}</td><td class="text-center"';
+$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'success\\\')" class="{class}"><th scope="row">{id}</th><td id="{id}MusteriAdi">{musteri_adi}</td><td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td><td id="{id}Cihaz">{cihaz}</td><td id="{id}Tarih">{tarih}</td><td class="text-center"';
 $tabloOrnek .= $silButonuGizle ? ' colspan="2"' : '';
 $tabloOrnek .= '><button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button></td>';
 $tabloOrnek .= $silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>';
@@ -78,18 +78,14 @@ echo ' role="alert">
   setInterval(() => {
     $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
       $.each(JSON.parse(data), function(index, value) {
-        $("#cihaz" + value.cihaz_id).remove();
+        $("#cihaz" + value.id).remove();
       });
     });
     $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
       sayac = 0;
       $.each(JSON.parse(data), function(index, value) {
-        if (value.silindi == 1) {
-          $("#cihaz" + value.id).remove();
-        } else {
-          sonCihazID = value.id;
-          sayac++;
-        }
+        sonCihazID = value.id;
+        sayac++;
         //$("#" + value.id + "TeslimDurumu").text(value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>");
       });
       if (sayac == 0) {
