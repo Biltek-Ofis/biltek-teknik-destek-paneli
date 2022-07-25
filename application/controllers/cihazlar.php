@@ -40,7 +40,6 @@ class Cihazlar extends Varsayilan_Controller{
 				redirect(base_url("cihazlar/".$tur));
 			}
 		}else{
-			$this->load->model("Kullanicilar_Model");
 			$this->Kullanicilar_Model->girisUyari("cihazlar/".$tur);
 		}
     }
