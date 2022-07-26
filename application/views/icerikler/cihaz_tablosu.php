@@ -95,6 +95,10 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{teslim_edildi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold"><span class="font-weight-bold">Cihazdaki Hasar:</span></span></li>
+                  <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{cihazdaki_hasar}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{ariza_aciklamasi}</li>
                 </ul>
@@ -175,6 +179,7 @@ foreach ($cihazlar as $cihaz) {
     "{cihaz_turu}",
     "{cihaz}",
     "{seri_no}",
+    "{cihazdaki_hasar}",
     "{ariza_aciklamasi}",
     "{servis_turu}",
     "{yedek_durumu}",
@@ -197,6 +202,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cihaz_turu,
     $cihaz->cihaz,
     $cihaz->seri_no,
+    $cihaz->cihazdaki_hasar,
     $cihaz->ariza_aciklamasi,
     $cihaz->servis_turu,
     $cihaz->yedek_durumu,
@@ -238,6 +244,7 @@ echo ' role="alert">
     .replaceAll("{cihaz_turu}", value.cihaz_turu)
     .replaceAll("{cihaz}", value.cihaz)
     .replaceAll("{seri_no}", value.seri_no)
+    .replaceAll("{cihazdaki_hasar}", value.cihazdaki_hasar)
     .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
     .replaceAll("{servis_turu}", value.servis_turu)
     .replaceAll("{yedek_durumu}", value.yedek_durumu)

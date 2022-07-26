@@ -34,13 +34,14 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 				"cihaz_turu"=> $this->input->post("cihaz_turu"),
 				"cihaz"=> $this->input->post("cihaz"),
 				"seri_no"=> $this->input->post("seri_no"),
+				"cihazdaki_hasar"=> ($this->input->post("cihazdaki_hasar") == "Diğer" ? $this->input->post("diger_hasar") : $this->input->post("cihazdaki_hasar")),
 				"ariza_aciklamasi"=> $this->input->post("ariza_aciklamasi"),
 				"servis_turu"=> $this->input->post("servis_turu"),
 				"yedek_durumu"=> $this->input->post("yedek_durumu"),
 				"tasima_cantasi"=> $this->input->post("tasima_cantasi"),
 				"sarj_adaptoru" => $this->input->post("sarj_adaptoru"),
 				"pil"=> $this->input->post("pil"),
-				"diger_aksesuar"=> $this->input->post("diger_aksesuar")
+				"diger_aksesuar"=> $this->input->post("diger_aksesuar"),
 			);
 			$ekle = $this->Cihazlar_Model->cihazEkle($veri);
 			if($ekle){
