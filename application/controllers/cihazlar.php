@@ -47,9 +47,9 @@ class Cihazlar extends Varsayilan_Controller{
 			$this->Kullanicilar_Model->girisUyari("cihazlar/".$tur);
 		}
     }
-	public function teslimEdildi($tur, $id){
+	public function teslimEdildi($tur, $id, $durum){
         if ($this->Giris_Model->kullaniciGiris()){
-			$sil = $this->Cihazlar_Model->teslimEdildi($id);
+			$sil = $this->Cihazlar_Model->teslimEdildi($id, $durum);
 			if($sil){
 				redirect(base_url("cihazlar/".$tur));
 			}else{

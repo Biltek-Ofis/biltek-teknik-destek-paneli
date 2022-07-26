@@ -101,8 +101,8 @@ class Cihazlar_Model extends CI_Model{
     public function yapilanIslemler($id){
         return $this->db->where("cihaz_id", $id)->get($this->yapilanIslemlerTabloAdi);
     }
-    public function teslimEdildi($id){
-        return $this->db->where("id",$id)->update($this->cihazlarTabloAdi, array("teslim_edildi"=>1));
+    public function teslimEdildi($id, $durum){
+        return $this->db->where("id",$id)->update($this->cihazlarTabloAdi, array("teslim_edildi"=> $durum));
     }
 }
 ?>

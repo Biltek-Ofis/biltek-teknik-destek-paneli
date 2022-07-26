@@ -14,8 +14,10 @@ echo '<table class="table table-bordered">
     </tr>
 </thead>
 <tbody id="cihazlar">';
-$teslim_durumu_1 = '<span class="text-success">Teslim Edildi</span>';
-$teslim_durumu_0 = '<span class="text-danger">Teslim Edilmedi</span>';
+$teslim_durumu_1 = 'Teslim Edildi';
+$teslim_durumu_renkli_1 = '<span class="text-success">'.$teslim_durumu_1.'</span>';
+$teslim_durumu_0 = 'Teslim Edilmedi';
+$teslim_durumu_renkli_0 = '<span class="text-danger">'.$teslim_durumu_0 .'</span>';
 $cihazEklendi = false;
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
@@ -61,7 +63,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
+                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
@@ -145,7 +147,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         </div>
       </div>
       <div class="modal-footer">
-      <a href="#" class="btn btn-success text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas fa-check"></i> Teslim Edildi</a>
+      <a href="#" class="btn {teslim_durumu_class} text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas {teslim_durumu_icon}"></i> {teslim_edildi_btn}</a>
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
       '.($silButonuGizle ? '': '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>').'
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
@@ -164,10 +166,10 @@ $cihazTeslimEdildiModalOrnek = '<div class="modal fade" id="cihazTeslimEdildiMod
         </button>
       </div>
       <div class="modal-body">
-      Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?
+      {teslim_durumu_uyari}
       </div>
       <div class="modal-footer">
-        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/teslimEdildi/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a>
+        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/teslimEdildi/" . ($tur_belirtildimi ? $tur : "")) . '/{id}/{teslim_durumu_id}" class="btn btn-success">Evet</a>
         <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
       </div>
     </div>
@@ -237,6 +239,11 @@ $eskiler = array(
   "{teslim_edildi}",
   "{tarih}",
   "{yapilan_islemler}",
+  "{teslim_edildi_btn}",
+  "{teslim_durumu_uyari}",
+  "{teslim_durumu_id}",
+  "{teslim_durumu_class}",
+  "{teslim_durumu_icon}",
 );
 foreach ($cihazlar as $cihaz) {
   if ($cihazEklendi == false) {
@@ -304,9 +311,14 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->sarj_adaptoru,
     $cihaz->pil,
     $cihaz->diger_aksesuar,
-    $cihaz->teslim_edildi == 1 ? $teslim_durumu_1 : $teslim_durumu_0,
+    $cihaz->teslim_edildi == 1 ? $teslim_durumu_renkli_1 : $teslim_durumu_renkli_0,
     $cihaz->tarih,
     $yapilanİslemler,
+    $cihaz->teslim_edildi == 1 ? $teslim_durumu_0 : $teslim_durumu_1,
+    $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
+    $cihaz->teslim_edildi == 1 ? 0 : 1,
+    $cihaz->teslim_edildi == 1 ? "btn-danger" : "btn-success",
+    $cihaz->teslim_edildi == 1 ? "fa-times" : "fa-check",
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
@@ -372,9 +384,14 @@ echo ' role="alert">
       .replaceAll("{sarj_adaptoru}", value.sarj_adaptoru)
       .replaceAll("{pil}", value.pil)
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
-      .replaceAll("{teslim_edildi}", value.teslim_edildi)
+      .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
       .replaceAll("{tarih}", value.tarih)
-      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos.$toplam2.$kdv2.$genel_toplam2; ?>');
+      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos.$toplam2.$kdv2.$genel_toplam2; ?>')
+      .replaceAll("{teslim_edildi_btn}", value.teslim_edildi == 1 ? '<?=$teslim_durumu_0;?>' : '<?=$teslim_durumu_1;?>')
+      .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
+      .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1)
+      .replaceAll("{teslim_durumu_class}", value.teslim_edildi == 1 ? "btn-danger" : "btn-success")
+      .replaceAll("{teslim_durumu_icon}", value.teslim_edildi == 1 ? "fa-times" : "fa-check");
   }
   setInterval(() => {
     $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
@@ -387,7 +404,7 @@ echo ' role="alert">
       $.each(JSON.parse(data), function(index, value) {
         sonCihazID = value.id;
         sayac++;
-        //$("#" + value.id + "TeslimDurumu").text(value.teslim_edildi == 1 ? "<?= $teslim_durumu_1; ?>" : "<?= $teslim_durumu_0; ?>");
+        $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
       });
       if (sayac == 0) {
         $("#cihazlarUyari").show();
@@ -415,9 +432,9 @@ echo ' role="alert">
         }, function(data) {
           $("#cihazTablosu").prepend(data);
         });
-        $("#cihazTablosu").prepend(detayModal);
         $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
         $("#cihazTablosu").prepend(silmodal);
+        $("#cihazTablosu").prepend(detayModal);
       });
     });
   }, 5000);
