@@ -32,7 +32,7 @@
         </div>
     </section>
 </div>
-<div class="modal fade" id="yeniCihazEkleModal" tabindex="-1" role="dialog" aria-labelledby="yeniCihazEkleModalTitle" aria-hidden="true">
+<div class="modal fade" id="yeniCihazEkleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="yeniCihazEkleModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
