@@ -87,6 +87,37 @@
                             <input class="form-control" type="text" name="ariza_aciklamasi" placeholder="Belirtilen arıza açıklaması *" required>
                         </div>
                     </div>
+                    <div class="row mt-2">
+                        <h5 class="col">Cihazın Hasar Bilgisi</h5>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="form-check form-check-inline pl-2 col-2">
+                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar1" onchange="hasarDurumu()" value="Yok" checked>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar1">Yok</label>
+                        </div>
+                        <div class="form-check form-check-inline col-2">
+                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar2" onchange="hasarDurumu()" value="Çizik">
+                            <label class="form-check-label col-12" for="cihazdaki_hasar2">Çizik</label>
+                        </div>
+                        <div class="form-check form-check-inline col-2">
+                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar3" onchange="hasarDurumu()" value="Kırık">
+                            <label class="form-check-label col-12" for="cihazdaki_hasar3">Kırık</label>
+                        </div>
+                        <div class="form-check form-check-inline col-2">
+                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar4" onchange="hasarDurumu()" value="Çatlak">
+                            <label class="form-check-label col-12" for="cihazdaki_hasar4">Çatlak</label>
+                        </div>
+                        <div class="form-check form-check-inline pl-2 col">
+                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar5" onchange="hasarDurumu()" value="Diğer">
+                            <label class="form-check-label" for="cihazdaki_hasar5">Diğer</label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="form-group col-12 col">
+                            <input id="diger_hasar" class="form-control" type="text" name="diger_hasar" placeholder="Diğer hasar bilgileri" readonly="true">
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col">
                             <select class="form-control" name="servis_turu" aria-label="Servis Türü" required>
@@ -130,3 +161,9 @@
         </div>
     </div>
 </div>
+<script>
+    function hasarDurumu() {
+        $("#diger_hasar").attr("readonly", !$("#cihazdaki_hasar5").prop("checked"));
+        $("#diger_hasar").attr("required", $("#cihazdaki_hasar5").prop("checked"));
+    }
+</script>
