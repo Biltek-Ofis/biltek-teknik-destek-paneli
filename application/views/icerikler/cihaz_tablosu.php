@@ -10,13 +10,12 @@ echo '<table class="table table-bordered">
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Modeli</th>
-        <th scope="col">Giriş Tarihi</th>
         <th scope="col">Detaylar</th>
     </tr>
 </thead>
 <tbody id="cihazlar">';
-$teslim_durumu_1 = "Teslim Edildi";
-$teslim_durumu_0 = "Kontrol Ediliyor";
+$teslim_durumu_1 = '<span class="text-success">Teslim Edildi</span>';
+$teslim_durumu_0 = '<span class="text-danger">Teslim Edilmedi</span>';
 $cihazEklendi = false;
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
@@ -24,7 +23,6 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz}</td>
-  <td id="{id}Tarih">{tarih}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
   </td>
@@ -147,7 +145,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         </div>
       </div>
       <div class="modal-footer">
-      <a href="#" class="btn btn-success text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas fa-check"></i></a>
+      <a href="#" class="btn btn-success text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas fa-check"></i> Teslim Edildi</a>
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
       '.($silButonuGizle ? '': '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>').'
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
