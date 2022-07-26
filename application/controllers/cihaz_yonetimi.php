@@ -70,10 +70,10 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 	{
 		echo json_encode($this->Cihazlar_Model->silinenCihazlariBul());
 	}
-	public function teslimEdildi($id)
+	public function teslimEdildi($id, $durum)
 	{
 		if ($this->Giris_Model->kullaniciGiris()){
-			$sil = $this->Cihazlar_Model->teslimEdildi($id);
+			$sil = $this->Cihazlar_Model->teslimEdildi($id, $durum);
 			if($sil){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
