@@ -31,6 +31,10 @@ class Cihazlar extends Varsayilan_Controller{
 		    echo json_encode($this->Cihazlar_Model->cihazlarTekTurTumuJQ($tur));
         }
 	}
+	public function yapilanIslemlerJQ($id)
+	{
+		echo json_encode($this->Cihazlar_Model->yapilanIslemler($id)->result());
+	}
 	public function cihazSil($tur, $id){
         if ($this->Giris_Model->kullaniciGiris()){
 			$sil = $this->Cihazlar_Model->cihazSil($id);

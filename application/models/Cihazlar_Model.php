@@ -7,9 +7,9 @@ class Cihazlar_Model extends CI_Model{
     }
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
-    public $yapilacakIslemlerTabloAdi = "YapilacakIslemler";
     public $CihazDurumuTabloAdi = "CihazDurumu";
     public $silinenCihazlarTabloAdi = "SilinenCihazlar";
+    public $yapilanIslemlerTabloAdi = "YapilanIslemler";
     public function cihazSonDurumu($cihaz_id){
         $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
         if($query->num_rows() > 0){
@@ -94,6 +94,9 @@ class Cihazlar_Model extends CI_Model{
         $results = $this->db->get($this->silinenCihazlarTabloAdi)->result();
         //$this->db->empty_table($this->silinenCihazlarTabloAdi);
         return $results;
+    }
+    public function yapilanIslemler($id){
+        return $this->db->where("cihaz_id", $id)->get($this->yapilanIslemlerTabloAdi);
     }
 }
 ?>
