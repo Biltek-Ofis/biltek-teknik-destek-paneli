@@ -47,6 +47,15 @@ class Cihazlar extends Varsayilan_Controller{
 			$this->Kullanicilar_Model->girisUyari("cihazlar/".$tur);
 		}
     }
+	public function yapilanIslemlerJS($id){
+		$yapilanIslemlerSatiri = $this->input->post("yapilanIslemlerSatiri");
+		$yapilanIslemlerSatiriBos = $this->input->post("yapilanIslemlerSatiriBos");
+		$yapilanIslemToplam = $this->input->post("yapilanIslemToplam");
+        $this->load->view("icerikler/yapilan_islemler_js",array(
+			"id"=>$id,
+			"yapilanIslemlerSatiri"=>$yapilanIslemlerSatiri,
+			"yapilanIslemlerSatiriBos"=>$yapilanIslemlerSatiriBos,
+			"yapilanIslemToplam"=>$yapilanIslemToplam,
+		));
+    }
 }
-
-?>
