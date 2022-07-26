@@ -148,7 +148,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         </div>
       </div>
       <div class="modal-footer">
-      <a href="'.base_url("cihaz").'/{id}" class="btn btn-success">Düzenle</a>
+      <a href="' . base_url("cihaz") . '/{id}" class="btn btn-success">Düzenle</a>
       <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
@@ -291,37 +291,12 @@ foreach ($cihazlar as $cihaz) {
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
   $cihazDetayModal = str_replace($eskiler, $yeniler, $cihazDetayModalOrnek);
   echo $tablo . $cihazSilModal . $cihazDetayModal;
-?>
-  <script>
-    setInterval(() => {
-      $.get('<?= base_url("cihazlar/yapilanIslemlerJQ/" . $cihaz->id); ?>', {}, function(data) {
-        var jsonData = JSON.parse(data);
-        var htmlRes = "";
-        var islemlerSatiri = '<?= $yapilanIslemlerSatiri; ?>';
-        var islemlerSatiriBos = '<?= $yapilanIslemlerSatiriBos; ?>';
-        var toplam = 0;
-        if (Object.keys(jsonData).length > 0) {
-          $.each(jsonData, function(index, value) {
-            toplam = toplam + value.fiyat;
-            htmlRes += islemlerSatiri
-              .replaceAll("{islem}", value.islem)
-              .replaceAll("{miktar}", value.miktar)
-              .replaceAll("{fiyat}", value.fiyat);
-          });
-        } else {
-          var htmlRes = islemlerSatiriBos;
-        }
-        var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
-        var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
-        var kdv = toplam * 0.18;
-        var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV (%18)").replaceAll("{toplam_fiyat}", kdv);
-        var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
-        htmlRes += toplamDiv + kdvDiv + genelToplamDiv;
-        $("#yapilanIslem<?= $cihaz->id; ?>").html(htmlRes);
-      });
-    }, 5000);
-  </script>
-<?php
+  $this->load->view("icerikler/yapilan_islemler_js", array(
+    "id" => $cihaz->id,
+    "yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
+    "yapilanIslemlerSatiriBos" => $yapilanIslemlerSatiriBos,
+    "yapilanIslemToplam" => $yapilanIslemToplam,
+  ));
 }
 echo '
 </tbody>
@@ -338,6 +313,23 @@ echo ' role="alert">
 ?>
 <script type="text/javascript">
   let sonCihazID = <?= $sonCihazID; ?>;
+  <?php
+  $yapilanIslemToplamYeni2 = array(
+    "Toplam",
+    "0",
+  );
+  $yapilanIslemToplamKDVYeni2 = array(
+    "KDV (%18)",
+    "0",
+  );
+  $yapilanIslemGenelToplamYeni2  = array(
+    "Genel Toplam",
+    "0",
+  );
+  $toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni2, $yapilanIslemToplam);
+  $kdv2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni2, $yapilanIslemToplam);
+  $genel_toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni2, $yapilanIslemToplam);
+  ?>
 
   function donustur(str, value) {
     return str.
@@ -359,7 +351,8 @@ echo ' role="alert">
       .replaceAll("{pil}", value.pil)
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{teslim_edildi}", value.teslim_edildi)
-      .replaceAll("{tarih}", value.tarih);
+      .replaceAll("{tarih}", value.tarih)
+      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos.$toplam2.$kdv2.$genel_toplam2; ?>');
   }
   setInterval(() => {
     $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
@@ -391,6 +384,13 @@ echo ' role="alert">
         var silmodal = donustur(silModalOrnek, value);
         var detayModal = donustur(detayModalOrnek, value);
         $("#cihazlar").prepend(tablo);
+        $.post('<?= base_url("cihazlar/yapilanIslemlerJS"); ?>/' + value.id, {
+          "yapilanIslemlerSatiri": '<?= $yapilanIslemlerSatiri; ?>',
+          "yapilanIslemlerSatiriBos": '<?= $yapilanIslemlerSatiriBos; ?>',
+          "yapilanIslemToplam": '<?= $yapilanIslemToplam; ?>',
+        }, function(data) {
+          $("#cihazTablosu").prepend(data);
+        });
         $("#cihazTablosu").prepend(silmodal);
         $("#cihazTablosu").prepend(detayModal);
       });
