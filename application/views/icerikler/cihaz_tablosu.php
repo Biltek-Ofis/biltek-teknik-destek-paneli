@@ -135,9 +135,9 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
               </div>
               <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:'.$ucluIlkOgeGenislik.';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
-                  <li class="list-group-item" style="width:'.$ucluIkinciOgeGenislik.';"><span class="font-weight-bold">Miktar</span></li>
-                  <li class="list-group-item" style="width:'.$ucluUcuncuOgeGenislik.';"><span class="font-weight-bold">Fiyat</span></li>
+                  <li class="list-group-item" style="width:' . $ucluIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
+                  <li class="list-group-item" style="width:' . $ucluIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
+                  <li class="list-group-item" style="width:' . $ucluUcuncuOgeGenislik . ';"><span class="font-weight-bold">Fiyat</span></li>
                 </ul>
                 <div id="yapilanIslem{id}">
                   {yapilan_islemler}
@@ -172,13 +172,18 @@ $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazi
   </div>
 </div>';
 $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
-<li class="list-group-item" style="width:'.$ucluIlkOgeGenislik.';">{islem}</li>
-<li class="list-group-item" style="width:'.$ucluIkinciOgeGenislik.';">{miktar}</li>
-<li class="list-group-item" style="width:'.$ucluUcuncuOgeGenislik.';">{fiyat} TL</li>
+<li class="list-group-item" style="width:' . $ucluIlkOgeGenislik . ';">{islem}</li>
+<li class="list-group-item" style="width:' . $ucluIkinciOgeGenislik . ';">{miktar}</li>
+<li class="list-group-item" style="width:' . $ucluUcuncuOgeGenislik . ';">{fiyat} TL</li>
+</ul>';
+$yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
+<li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">{toplam_aciklama}</span></li>
+<li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span class="font-weight-bold">{toplam_fiyat} TL</span></li>
 </ul>';
 $yapilanIslemlerSatiriBos = '<ul class="list-group">
 <li class="list-group-item text-center">Şuanda yapılmış bir işlem yok.</li>
 </ul>';
+$yapilanIslemToplam = $this->Islemler_Model->trimle($yapilanIslemToplam);
 $yapilanIslemlerSatiri = $this->Islemler_Model->trimle($yapilanIslemlerSatiri);
 $yapilanIslemlerSatiriBos = $this->Islemler_Model->trimle($yapilanIslemlerSatiriBos);
 $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
@@ -215,6 +220,10 @@ foreach ($cihazlar as $cihaz) {
     $sonCihazID = $cihaz->id;
     $cihazEklendi = true;
   }
+  $yapilanIslemToplamEskiArray = array(
+    "{toplam_aciklama}",
+    "{toplam_fiyat}",
+  );
   $yapilanIslemEskiArray = array(
     "{islem}",
     "{miktar}",
@@ -222,6 +231,7 @@ foreach ($cihazlar as $cihaz) {
   );
   $yapilanİslemler = "";
   $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
+  $toplam_fiyat = 0;
   if ($yapilanIslemlerModel->num_rows() > 0) {
     foreach ($yapilanIslemlerModel->result() as $yapilanIslemModel) {
       $yapilanIslemYeniArray = array(
@@ -229,11 +239,29 @@ foreach ($cihazlar as $cihaz) {
         $yapilanIslemModel->miktar,
         $yapilanIslemModel->fiyat,
       );
+      $toplam_fiyat = $toplam_fiyat + $yapilanIslemModel->fiyat;
       $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray, $yapilanIslemlerSatiri);
     }
   } else {
     $yapilanİslemler = $yapilanIslemlerSatiriBos;
   }
+  $yapilanIslemToplamYeni = array(
+    "Toplam",
+    $toplam_fiyat,
+  );
+  $kdv = $toplam_fiyat * 0.18;
+  $yapilanIslemToplamKDVYeni = array(
+    "KDV (%18)",
+    $kdv,
+  );
+  $yapilanIslemGenelToplamYeni  = array(
+    "Genel Toplam",
+    $toplam_fiyat + $kdv,
+  );
+  $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
+  $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
+  $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
+  $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
   $yeniler = array(
     "",
     "",
@@ -269,8 +297,10 @@ foreach ($cihazlar as $cihaz) {
         var htmlRes = "";
         var islemlerSatiri = '<?= $yapilanIslemlerSatiri; ?>';
         var islemlerSatiriBos = '<?= $yapilanIslemlerSatiriBos; ?>';
+        var toplam = 0;
         if (Object.keys(jsonData).length > 0) {
           $.each(jsonData, function(index, value) {
+            toplam = toplam + value.fiyat;
             htmlRes += islemlerSatiri
               .replaceAll("{islem}", value.islem)
               .replaceAll("{miktar}", value.miktar)
@@ -279,6 +309,12 @@ foreach ($cihazlar as $cihaz) {
         } else {
           var htmlRes = islemlerSatiriBos;
         }
+        var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
+        var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
+        var kdv = toplam * 0.18;
+        var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV (%18)").replaceAll("{toplam_fiyat}", kdv);
+        var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
+        htmlRes += toplamDiv + kdvDiv + genelToplamDiv;
         $("#yapilanIslem<?= $cihaz->id; ?>").html(htmlRes);
       });
     }, 5000);
