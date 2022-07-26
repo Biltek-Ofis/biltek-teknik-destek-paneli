@@ -18,6 +18,9 @@ class Cihazlar_Model extends CI_Model{
             return "Bekleniyor";
         }
     }
+    public function cihazBul($id){
+        return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
+    }
     public function cihazSonIslemTarih($cihaz_id, $varsayilanTarih){
         $this->load->model("Islemler_Model");
         $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);

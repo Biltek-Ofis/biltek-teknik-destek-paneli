@@ -148,6 +148,8 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         </div>
       </div>
       <div class="modal-footer">
+      <a href="'.base_url("cihaz").'/{id}" class="btn btn-success">Düzenle</a>
+      <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
   </div>
