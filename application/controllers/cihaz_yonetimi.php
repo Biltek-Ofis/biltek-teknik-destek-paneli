@@ -70,6 +70,19 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 	{
 		echo json_encode($this->Cihazlar_Model->silinenCihazlariBul());
 	}
+	public function teslimEdildi($id)
+	{
+		if ($this->Giris_Model->kullaniciGiris()){
+			$sil = $this->Cihazlar_Model->teslimEdildi($id);
+			if($sil){
+				redirect(base_url("cihaz_yonetimi"));
+			}else{
+				redirect(base_url("cihaz_yonetimi"));
+			}
+		}else{
+			$this->Kullanicilar_Model->girisUyari("/");
+		}
+	}
 }
 
 ?>

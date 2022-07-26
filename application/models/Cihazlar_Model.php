@@ -51,7 +51,7 @@ class Cihazlar_Model extends CI_Model{
         return $result;
      }
     public function cihazlar(){
-        $result = $this->db->order_by("teslim_edildi ASC, tarih DESC")->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->order_by("tarih", "DESC")->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTur($tur){
@@ -100,6 +100,9 @@ class Cihazlar_Model extends CI_Model{
     }
     public function yapilanIslemler($id){
         return $this->db->where("cihaz_id", $id)->get($this->yapilanIslemlerTabloAdi);
+    }
+    public function teslimEdildi($id){
+        return $this->db->where("id",$id)->update($this->cihazlarTabloAdi, array("teslim_edildi"=>1));
     }
 }
 ?>

@@ -11,7 +11,7 @@ echo '<table class="table table-bordered">
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Modeli</th>
         <th scope="col">Giriş Tarihi</th>
-        <th scope="col" colspan="2">İşlem</th>
+        <th scope="col">Detaylar</th>
     </tr>
 </thead>
 <tbody id="cihazlar">';
@@ -25,10 +25,9 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz}</td>
   <td id="{id}Tarih">{tarih}</td>
-  <td class="text-center"' . ($silButonuGizle ? ' colspan="2"' : '') . '>
+  <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
   </td>
-  ' . ($silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>') . '
 </tr>';
 $ilkOgeGenislik = "40%";
 $ikinciOgeGenislik = "60%";
@@ -63,6 +62,10 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{tarih}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{musteri_adi}</li>
                 </ul>
@@ -94,10 +97,6 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                 </ul>
               </div>
               <div class="tab-pane fade" id="list-teknik-servis-bilgileri-{id}" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-{id}-list">
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durum:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
-                </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Cihazdaki Hasar:</span></span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cihazdaki_hasar}</li>
@@ -148,12 +147,35 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         </div>
       </div>
       <div class="modal-footer">
-      <a href="' . base_url("cihaz") . '/{id}" class="btn btn-success">Düzenle</a>
-      <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+      <a href="#" class="btn btn-success text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas fa-check"></i></a>
+      <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
+      '.($silButonuGizle ? '': '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>').'
+      <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
   </div>
 </div>';
+
+$cihazTeslimEdildiModalOrnek = '<div class="modal fade" id="cihazTeslimEdildiModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazTeslimEdildiModal{id}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cihazTeslimEdildiModal{id}Label">Teslim Edilme Durumunu Onaylayın</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?
+      </div>
+      <div class="modal-footer">
+        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/teslimEdildi/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a>
+        <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
+      </div>
+    </div>
+  </div>
+</div>';
+
 $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -190,6 +212,7 @@ $yapilanIslemlerSatiri = $this->Islemler_Model->trimle($yapilanIslemlerSatiri);
 $yapilanIslemlerSatiriBos = $this->Islemler_Model->trimle($yapilanIslemlerSatiriBos);
 $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
 $cihazDetayModalOrnek = $this->Islemler_Model->trimle($cihazDetayModalOrnek);
+$cihazTeslimEdildiModalOrnek = $this->Islemler_Model->trimle($cihazTeslimEdildiModalOrnek);
 $cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
 $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
@@ -288,9 +311,10 @@ foreach ($cihazlar as $cihaz) {
     $yapilanİslemler,
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
+  $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
   $cihazDetayModal = str_replace($eskiler, $yeniler, $cihazDetayModalOrnek);
-  echo $tablo . $cihazSilModal . $cihazDetayModal;
+  echo $tablo. $cihazDetayModal . $cihazSilModal  . $cihazTeslimEdildiModal;
   $this->load->view("icerikler/yapilan_islemler_js", array(
     "id" => $cihaz->id,
     "yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
@@ -377,12 +401,14 @@ echo ' role="alert">
         $("#cihazlarUyari").hide();
         $("#cihaz" + value.id).remove();
         let tabloOrnek = '<?= $tabloOrnek; ?>';
-        let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
         let detayModalOrnek = '<?= $cihazDetayModalOrnek; ?>';
+        let cihazTeslimEdildiModalOrnek = '<?= $cihazTeslimEdildiModalOrnek; ?>';
+        let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
 
         var tablo = donustur(tabloOrnek, value);
-        var silmodal = donustur(silModalOrnek, value);
         var detayModal = donustur(detayModalOrnek, value);
+        var cihazTeslimEdildiModal = donustur(cihazTeslimEdildiModalOrnek, value);
+        var silmodal = donustur(silModalOrnek, value);
         $("#cihazlar").prepend(tablo);
         $.post('<?= base_url("cihazlar/yapilanIslemlerJS"); ?>/' + value.id, {
           "yapilanIslemlerSatiri": '<?= $yapilanIslemlerSatiri; ?>',
@@ -391,8 +417,9 @@ echo ' role="alert">
         }, function(data) {
           $("#cihazTablosu").prepend(data);
         });
-        $("#cihazTablosu").prepend(silmodal);
         $("#cihazTablosu").prepend(detayModal);
+        $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
+        $("#cihazTablosu").prepend(silmodal);
       });
     });
   }, 5000);

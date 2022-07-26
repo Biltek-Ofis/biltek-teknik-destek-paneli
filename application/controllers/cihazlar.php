@@ -47,6 +47,18 @@ class Cihazlar extends Varsayilan_Controller{
 			$this->Kullanicilar_Model->girisUyari("cihazlar/".$tur);
 		}
     }
+	public function teslimEdildi($tur, $id){
+        if ($this->Giris_Model->kullaniciGiris()){
+			$sil = $this->Cihazlar_Model->teslimEdildi($id);
+			if($sil){
+				redirect(base_url("cihazlar/".$tur));
+			}else{
+				redirect(base_url("cihazlar/".$tur));
+			}
+		}else{
+			$this->Kullanicilar_Model->girisUyari("cihazlar/".$tur);
+		}
+    }
 	public function yapilanIslemlerJS($id){
 		$yapilanIslemlerSatiri = $this->input->post("yapilanIslemlerSatiri");
 		$yapilanIslemlerSatiriBos = $this->input->post("yapilanIslemlerSatiriBos");
