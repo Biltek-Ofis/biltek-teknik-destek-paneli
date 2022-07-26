@@ -29,7 +29,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
   </td>
   '.($silButonuGizle ? '' : '<td class="text-center"><button class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</button></td>').'
-s</tr>';
+</tr>';
 $ilkOgeGenislik = "40%";
 $ikinciOgeGenislik = "60%";
 $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true">
@@ -45,15 +45,15 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
         <div class="row">
           <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
-              <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-list" data-toggle="list" href="#list-genel-bilgiler" role="tab" aria-controls="genel-bilgiler">Genel Bilgiler</a>
-              <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-list" data-toggle="list" href="#list-cihaz-bilgileri" role="tab" aria-controls="cihaz-bilgileri">Cihaz Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-list" data-toggle="list" href="#list-teknik-servis-bilgileri" role="tab" aria-controls="teknik-servis-bilgileri">Teknik Servis Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-aksesuar-bilgileri-list" data-toggle="list" href="#list-aksesuar-bilgileri" role="tab" aria-controls="aksesuar-bilgileri">Aksesuar Bilgileri</a>
+              <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-{id}-list" data-toggle="list" href="#list-genel-bilgiler-{id}" role="tab" aria-controls="genel-bilgiler-{id}">Genel Bilgiler</a>
+              <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-{id}-list" data-toggle="list" href="#list-cihaz-bilgileri-{id}" role="tab" aria-controls="cihaz-bilgileri-{id}">Cihaz Bilgileri</a>
+              <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-{id}-list" data-toggle="list" href="#list-teknik-servis-bilgileri-{id}" role="tab" aria-controls="teknik-servis-bilgileri-{id}">Teknik Servis Bilgileri</a>
+              <a class="list-group-item list-group-item-action" id="list-aksesuar-bilgileri-{id}-list" data-toggle="list" href="#list-aksesuar-bilgileri-{id}" role="tab" aria-controls="aksesuar-bilgileri-{id}">Aksesuar Bilgileri</a>
             </div>
           </div>
           <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="list-genel-bilgiler" role="tabpanel" aria-labelledby="list-genel-bilgiler-list">
+              <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{tarih}</li>
@@ -75,7 +75,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{tel_faks}</li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-cihaz-bilgileri" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-list">
+              <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Cihaz Türü:</span></li>
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{cihaz_turu}</li>
@@ -89,7 +89,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{seri_no}</li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-teknik-servis-bilgileri" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-list">
+              <div class="tab-pane fade" id="list-teknik-servis-bilgileri-{id}" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Teslim Durum:</span></li>
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{teslim_edildi}</li>
@@ -111,7 +111,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:'.$ikinciOgeGenislik.';">{yedek_durumu}</li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-aksesuar-bilgileri" role="tabpanel" aria-labelledby="list-aksesuar-bilgileri-list">
+              <div class="tab-pane fade" id="list-aksesuar-bilgileri-{id}" role="tabpanel" aria-labelledby="list-aksesuar-bilgileri-{id}-list">
               
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:'.$ilkOgeGenislik.';"><span class="font-weight-bold">Taşıma Çantası:</span></li>
