@@ -21,21 +21,50 @@
             body {
                 margin: 1.6cm;
             }
+
+            .table thead tr td {
+                border: 0 !important;
+                padding: 0 !important;
+                height: 0 !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .table tbody tr td {
+                border-width: 1px !important;
+                border-style: solid !important;
+                border-color: black !important;
+                padding: 2px;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+    <style>
+        .table thead tr td {
+            border: 0 !important;
+            padding: 0 !important;
+            height: 0 !important;
+        }
+
+        .table tbody tr td {
+            border-width: 1px !important;
+            border-style: solid !important;
+            border-color: black !important;
+            padding: 2px;
         }
     </style>
 </head>
 
 <body onafterprint="self.close()">
-    <table class="table table-bordered table-sm">
+    <table class="table table-bordered table-sm w-100">
         <tbody>
             <tr>
-                <th colspan="20" class="text-center">TEKNİK SERVİS FORMU</th>
+                <td colspan="20" class="text-center font-weight-bold">TEKNİK SERVİS FORMU</td>
             </tr>
             <tr>
-                <th colspan="20" class="text-center">GENEL BİLGİLER</th>
+                <td colspan="20" class="text-center font-weight-bold">GENEL BİLGİLER</td>
             </tr>
             <tr>
-                <th colspan="8">MÜŞTERİ ADI SOYADI</th>
+                <td colspan="8" class="font-weight-bold">MÜŞTERİ ADI SOYADI</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">Müşteri Adı Test</td>
             </tr>
@@ -50,17 +79,12 @@
                 <td colspan="10">GSM & E-Mail Test</td>
             </tr>
             <tr>
-                <th colspan="8">TEL-FAKS</th>
-                <td colspan="2" class="text-center">:</td>
-                <td colspan="10">TEL-FAKS Test</td>
-            </tr>
-            <tr>
-                <th colspan="8">CİHAZIN MARKA / MODELİ</th>
+                <td colspan="8" class="font-weight-bold">CİHAZIN MARKA / MODELİ</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">Marka Model Test</td>
             </tr>
             <tr>
-                <th colspan="8">Cihazın Seri Numarası</th>
+                <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">Seri No Test</td>
             </tr>
@@ -71,52 +95,46 @@
             </tr>
 
             <tr>
-                <th colspan="20" class="text-center">YAPILACAK İŞLEM</th>
+                <td colspan="20" class="text-center font-weight-bold">YAPILACAK İŞLEM</td>
             </tr>
             <tr>
-                <th colspan="8"></th>
+                <td colspan="8"></td>
                 <td colspan="2" class="text-center"></td>
-                <tH colspan="4" class="text-center">AKSESUAR</tH>
+                <td colspan="4" class="text-center font-weight-bold">AKSESUAR</tH>
                 <td colspan="3" class="text-center">HASARLI</td>
                 <td colspan="3" class="text-center">HASARSIZ</td>
             </tr>
             <tr>
-                <th colspan="8">GARANTİ KAPSAMINDA BAKIM/ONARIM</th>
+                <td colspan="8" class="font-weight-bold">GARANTİ KAPSAMINDA BAKIM/ONARIM</td>
                 <td colspan="2" class="text-center align-middle"><i class="fas fa-check"></i></td>
                 <td colspan="4" class="text-center">TAŞIMA ÇANTASI</td>
                 <td colspan="3" class="text-center align-middle"></td>
                 <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
             </tr>
             <tr>
-                <th colspan="8">ANLAŞMALI KAPSAMINDA BAKIM/ONARIM</th>
+                <td colspan="8" class="font-weight-bold">ANLAŞMALI KAPSAMINDA BAKIM/ONARIM</td>
                 <td colspan="2" class="text-center align-middle"></td>
                 <td colspan="4" class="text-center">SARJ ADAPTÖRÜ</td>
                 <td colspan="3" class="text-center align-middle"></td>
                 <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
             </tr>
             <tr>
-                <th colspan="8">ÜCRETLİ BAKIM/ONARIM</th>
+                <td colspan="8" class="font-weight-bold">ÜCRETLİ BAKIM/ONARIM</td>
                 <td colspan="2" class="text-center align-middle"></td>
                 <td colspan="4" class="text-center">PİL</td>
                 <td colspan="3" class="text-center align-middle"></td>
                 <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
             </tr>
             <tr>
-                <th colspan="8">ÜCRETLİ ARIZA TESPİTİ</th>
+                <td colspan="8" class="font-weight-bold">ÜCRETLİ ARIZA TESPİTİ</td>
                 <td colspan="2" class="text-center align-middle"></td>
                 <td colspan="4" class="text-center">DİĞER</td>
                 <td colspan="6" class="text-center"></td>
             </tr>
             <tr>
                 <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
-                <td colspan="2" rowspan="3" class="text-center">:</td>
-                <td colspan="10" rowspan="3">Açıklama Test</td>
-            </tr>
-            <tr>
-                <td colspan="8"></td>
-            </tr>
-            <tr>
-                <td colspan="8"></td>
+                <td colspan="2" class="text-center">:</td>
+                <td colspan="10">Açıklama Testt</td>
             </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>
@@ -129,14 +147,14 @@
                 <td colspan="10">BU ŞIKKIN İŞARETLENMESİ DURUMUNDA MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME ÜCRETE TABİDİR.</td>
             </tr>
             <tr>
-                <th colspan="20" class="text-center">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</th>
+                <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>
             <tr>
-                <th colspan="10" rowspan="7" class="text-center">HASARLI DURUMLARDA İŞARETLENECEK</th>
-                <th colspan="5" class="text-center">MALZEME/İŞÇİLİK</th>
-                <th colspan="1" class="text-center">MİKTAR</th>
-                <th colspan="2" class="text-center">FİYAT</th>
-                <th colspan="2" class="text-center">TUTAR</th>
+                <td colspan="10" rowspan="7" class="text-center font-weight-bold">HASARLI DURUMLARDA İŞARETLENECEK</td>
+                <td colspan="5" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
+                <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
+                <td colspan="2" class="text-center font-weight-bold">FİYAT</td>
+                <td colspan="2" class="text-center font-weight-bold">TUTAR</td>
             </tr>
             <tr>
                 <td colspan="5">Test Malzeme 1</td>
@@ -189,9 +207,9 @@
                 <td colspan="2" class="text-center">39884 TL</td>
             </tr>
             <tr>
-                <th colspan="7" class="text-center">TESLİM ALAN</th>
-                <th colspan="7" class="text-center">TESLİM EDEN</th>
-                <th colspan="6" class="text-center">TEKNİK SORUMLU</th>
+                <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
+                <td colspan="7" class="text-center font-weight-bold">TESLİM EDEN</td>
+                <td colspan="6" class="text-center font-weight-bold">TEKNİK SORUMLU</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">ADI</td>
@@ -224,26 +242,26 @@
         </tbody>
         <thead>
             <tr>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
-                <th style="width:5%;"></th>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 5%;"></td>
             </tr>
         </thead>
     </table>
