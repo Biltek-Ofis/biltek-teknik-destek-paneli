@@ -1,7 +1,5 @@
 <?php
 
-use Dompdf\Dompdf;
-
 require_once("varsayilan_controller.php");
 class Cihaz extends Varsayilan_Controller
 {
@@ -31,10 +29,9 @@ class Cihaz extends Varsayilan_Controller
         $cihaz = $this->Cihazlar_Model->cihazBul($id);
         if ($cihaz->num_rows() > 0) {
             $cihaz_bilg = $cihaz->result()[0];
-            $this->load->view("teknik_servis_formu", array("cihaz" => $cihaz_bilg));
+            $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $cihaz_bilg));
         } else {
             redirect(base_url());
         }
     }
-
 }
