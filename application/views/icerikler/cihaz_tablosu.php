@@ -145,6 +145,10 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
               </div>
               <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{yapilan_islem_aciklamasi}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ucluIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
                   <li class="list-group-item" style="width:' . $ucluIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
                   <li class="list-group-item" style="width:' . $ucluUcuncuOgeGenislik . ';"><span class="font-weight-bold">Fiyat</span></li>
@@ -248,6 +252,7 @@ $eskiler = array(
   "{sarj_adaptoru}",
   "{pil}",
   "{diger_aksesuar}",
+  "{yapilan_islem_aciklamasi}",
   "{teslim_edildi}",
   "{tarih}",
   "{yapilan_islemler}",
@@ -317,12 +322,13 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->hasar_tespiti,
     $cihaz->cihazdaki_hasar,
     $cihaz->ariza_aciklamasi,
-    $cihaz->servis_turu,
-    $cihaz->yedek_durumu,
-    $cihaz->tasima_cantasi,
-    $cihaz->sarj_adaptoru,
-    $cihaz->pil,
+    $this->Islemler_Model->servisTuru($cihaz->servis_turu),
+    $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
+    $this->Islemler_Model->hasarDurumu($cihaz->tasima_cantasi),
+    $this->Islemler_Model->hasarDurumu($cihaz->sarj_adaptoru),
+    $this->Islemler_Model->hasarDurumu($cihaz->pil),
     $cihaz->diger_aksesuar,
+    $cihaz->yapilan_islem_aciklamasi,
     $cihaz->teslim_edildi == 1 ? $teslim_durumu_renkli_1 : $teslim_durumu_renkli_0,
     $cihaz->tarih,
     $yapilanİslemler,
@@ -377,6 +383,46 @@ echo ' role="alert">
   $genel_toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni2, $yapilanIslemToplam);
   ?>
 
+  function servisTuru(id) {
+    switch (id) {
+      case 1:
+        return '<?= $this->Islemler_Model->servisTuru(1); ?>';
+      case 2:
+        return '<?= $this->Islemler_Model->servisTuru(2); ?>';
+      case 3:
+        return '<?= $this->Islemler_Model->servisTuru(3); ?>';
+      case 4:
+        return '<?= $this->Islemler_Model->servisTuru(4); ?>';
+      default:
+        return '<?= $this->Islemler_Model->servisTuru(3); ?>'
+    }
+  }
+
+function hasarDurumu(id) {
+  switch (id) {
+    case 1:
+      return '<?= $this->Islemler_Model->hasarDurumu(1); ?>';
+    case 2:
+      return '<?= $this->Islemler_Model->hasarDurumu(2); ?>';
+    case 3:
+      return '<?= $this->Islemler_Model->hasarDurumu(3); ?>';
+    default:
+      return '<?= $this->Islemler_Model->hasarDurumu(1); ?>'
+  }
+}
+
+function evetHayir(id) {
+  switch (id) {
+    case 1:
+      return '<?= $this->Islemler_Model->evetHayir(1); ?>';
+    case 0:
+      return '<?= $this->Islemler_Model->evetHayir(0); ?>';
+   
+    default:
+      return '<?= $this->Islemler_Model->evetHayir(0); ?>'
+  }
+}
+
   function donustur(str, value) {
     return str.
     replaceAll("{class}", "bg-success")
@@ -390,12 +436,13 @@ echo ' role="alert">
       .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
       .replaceAll("{cihazdaki_hasar}", value.cihazdaki_hasar)
       .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
-      .replaceAll("{servis_turu}", value.servis_turu)
-      .replaceAll("{yedek_durumu}", value.yedek_durumu)
-      .replaceAll("{tasima_cantasi}", value.tasima_cantasi)
-      .replaceAll("{sarj_adaptoru}", value.sarj_adaptoru)
-      .replaceAll("{pil}", value.pil)
+      .replaceAll("{servis_turu}", servisTuru(value.servis_turu))
+      .replaceAll("{yedek_durumu}", evetHayir(value.yedek_durumu))
+      .replaceAll("{tasima_cantasi}", hasarDurumu(value.tasima_cantasi))
+      .replaceAll("{sarj_adaptoru}", hasarDurumu(value.sarj_adaptoru))
+      .replaceAll("{pil}", hasarDurumu(value.pil))
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
+      .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
       .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
