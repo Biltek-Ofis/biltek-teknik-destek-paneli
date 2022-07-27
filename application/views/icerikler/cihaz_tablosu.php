@@ -160,7 +160,7 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
       <div class="modal-footer">
       <a href="#" class="btn {teslim_durumu_class} text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas {teslim_durumu_icon}"></i> {teslim_edildi_btn}</a>
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
-      <a href="#" onclick="yazdir({id})" class="btn btn-warning text-white">Yazdır</a>
+      <a href="#" onclick="yazdir({id})" class="btn btn-dark text-white">Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
