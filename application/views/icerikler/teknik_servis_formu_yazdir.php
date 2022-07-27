@@ -4,14 +4,28 @@
 <head>
     <?php $this->load->view("inc/meta"); ?>
 
-    <title>TEKNİK SERVİS FORMU</title>
+    <title>TEKNİK SERVİS FORMU <?= $cihaz->id; ?></title>
 
     <?php $this->load->view("inc/styles"); ?>
     <?php $this->load->view("inc/scripts"); ?>
+    <style>
+        @page {
+            margin: 0;
+        }
 
+        @media print {
+            @page {
+                margin: 0;
+            }
+
+            body {
+                margin: 1.6cm;
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body onafterprint="self.close()">
     <table class="table table-bordered table-sm">
         <tbody>
             <tr>
@@ -55,7 +69,7 @@
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">Açıklama Test</td>
             </tr>
-            
+
             <tr>
                 <th colspan="20" class="text-center">YAPILACAK İŞLEM</th>
             </tr>

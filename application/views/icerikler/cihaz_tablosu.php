@@ -1,3 +1,14 @@
+<script>
+  function yazdir(id) {
+    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/'+id, 'teknikServisFormuPencere'+id, 'status=1');
+    $(teknikServisFormuPencere).ready(function() {
+      teknikServisFormuPencere.print();
+    });
+  }
+  $(document).ready(function() {
+    //window.print();
+  });
+</script>
 <?php
 $tur_belirtildimi = isset($tur) ? true : false;
 $cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
@@ -15,9 +26,9 @@ echo '<table class="table table-bordered">
 </thead>
 <tbody id="cihazlar">';
 $teslim_durumu_1 = 'Teslim Edildi';
-$teslim_durumu_renkli_1 = '<span class="text-success">'.$teslim_durumu_1.'</span>';
+$teslim_durumu_renkli_1 = '<span class="text-success">' . $teslim_durumu_1 . '</span>';
 $teslim_durumu_0 = 'Teslim Edilmedi';
-$teslim_durumu_renkli_0 = '<span class="text-danger">'.$teslim_durumu_0 .'</span>';
+$teslim_durumu_renkli_0 = '<span class="text-danger">' . $teslim_durumu_0 . '</span>';
 $cihazEklendi = false;
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
@@ -149,7 +160,8 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
       <div class="modal-footer">
       <a href="#" class="btn {teslim_durumu_class} text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas {teslim_durumu_icon}"></i> {teslim_edildi_btn}</a>
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
-      '.($silButonuGizle ? '': '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>').'
+      <a href="#" onclick="yazdir({id})" class="btn btn-warning text-white">Yazdır</a>
+      ' . ($silButonuGizle ? '' : '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
@@ -324,7 +336,7 @@ foreach ($cihazlar as $cihaz) {
   $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
   $cihazDetayModal = str_replace($eskiler, $yeniler, $cihazDetayModalOrnek);
-  echo $tablo. $cihazDetayModal . $cihazSilModal  . $cihazTeslimEdildiModal;
+  echo $tablo . $cihazDetayModal . $cihazSilModal  . $cihazTeslimEdildiModal;
   $this->load->view("icerikler/yapilan_islemler_js", array(
     "id" => $cihaz->id,
     "yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
@@ -386,8 +398,8 @@ echo ' role="alert">
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
       .replaceAll("{tarih}", value.tarih)
-      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos.$toplam2.$kdv2.$genel_toplam2; ?>')
-      .replaceAll("{teslim_edildi_btn}", value.teslim_edildi == 1 ? '<?=$teslim_durumu_0;?>' : '<?=$teslim_durumu_1;?>')
+      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
+      .replaceAll("{teslim_edildi_btn}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_0; ?>' : '<?= $teslim_durumu_1; ?>')
       .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
       .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1)
       .replaceAll("{teslim_durumu_class}", value.teslim_edildi == 1 ? "btn-danger" : "btn-success")
