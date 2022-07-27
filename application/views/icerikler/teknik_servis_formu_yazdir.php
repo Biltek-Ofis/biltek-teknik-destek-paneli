@@ -66,32 +66,32 @@
             <tr>
                 <td colspan="8" class="font-weight-bold">MÜŞTERİ ADI SOYADI</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Müşteri Adı Test</td>
+                <td colspan="10"><?=$cihaz->musteri_adi;?></td>
             </tr>
             <tr>
                 <td colspan="8">ADRESİ</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Adres Test</td>
+                <td colspan="10"><?=$cihaz->adres;?></td>
             </tr>
             <tr>
                 <td colspan="8">GSM & E-Mail</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">GSM & E-Mail Test</td>
+                <td colspan="10"><?=$cihaz->gsm_mail;?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">CİHAZIN MARKA / MODELİ</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Marka Model Test</td>
+                <td colspan="10"><?=$cihaz->cihaz;?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Seri No Test</td>
+                <td colspan="10"><?=$cihaz->seri_no;?></td>
             </tr>
             <tr>
                 <td colspan="8">BELİRTİLEN ARIZA AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Açıklama Test</td>
+                <td colspan="10"><?=$cihaz->ariza_aciklamasi;?></td>
             </tr>
 
             <tr>
@@ -100,41 +100,41 @@
             <tr>
                 <td colspan="8"></td>
                 <td colspan="2" class="text-center"></td>
-                <td colspan="4" class="text-center font-weight-bold">AKSESUAR</tH>
-                <td colspan="3" class="text-center">HASARLI</td>
-                <td colspan="3" class="text-center">HASARSIZ</td>
+                <td colspan="4" class="text-center font-weight-bold">Aksesuar</tH>
+                <td colspan="3" class="text-center"><?=$this->Islemler_Model->hasarDurumu(2);?></td>
+                <td colspan="3" class="text-center"><?=$this->Islemler_Model->hasarDurumu(3);?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">GARANTİ KAPSAMINDA BAKIM/ONARIM</td>
-                <td colspan="2" class="text-center align-middle"><i class="fas fa-check"></i></td>
+                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(1);?></td>
+                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 1){echo '<i class="fas fa-check"></i>';}?></td>
                 <td colspan="4" class="text-center">TAŞIMA ÇANTASI</td>
-                <td colspan="3" class="text-center align-middle"></td>
-                <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->tasima_cantasi == 1){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->tasima_cantasi == 2){echo '<i class="fas fa-check"></i>';}?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">ANLAŞMALI KAPSAMINDA BAKIM/ONARIM</td>
-                <td colspan="2" class="text-center align-middle"></td>
+                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(2);?></td>
+                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 2){echo '<i class="fas fa-check"></i>';}?></td>
                 <td colspan="4" class="text-center">SARJ ADAPTÖRÜ</td>
-                <td colspan="3" class="text-center align-middle"></td>
-                <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->sarj_adaptoru == 1){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->sarj_adaptoru == 2){echo '<i class="fas fa-check"></i>';}?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">ÜCRETLİ BAKIM/ONARIM</td>
-                <td colspan="2" class="text-center align-middle"></td>
+                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(3);?></td>
+                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 3){echo '<i class="fas fa-check"></i>';}?></td>
                 <td colspan="4" class="text-center">PİL</td>
-                <td colspan="3" class="text-center align-middle"></td>
-                <td colspan="3" class="text-center align-middle"><i class="fas fa-check"></i></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->pil == 1){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if($cihaz->pil == 2){echo '<i class="fas fa-check"></i>';}?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">ÜCRETLİ ARIZA TESPİTİ</td>
-                <td colspan="2" class="text-center align-middle"></td>
+                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(4);?></td>
+                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 4){echo '<i class="fas fa-check"></i>';}?></td>
                 <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="6" class="text-center"></td>
+                <td colspan="6" class="text-center"><?=$cihaz->diger_aksesuar;?></td>
             </tr>
             <tr>
                 <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">Açıklama Testt</td>
+                <td colspan="10"><?=$cihaz->yapilan_islem_aciklamasi;?></td>
             </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>

@@ -118,22 +118,22 @@
                         <div class="form-group col">
                             <select class="form-control" name="servis_turu" aria-label="Servis Türü" required>
                                 <option value="" selected>Servis Türü Seçin *</option>
-                                <option value="GARANTİ KAPSAMINDA BAKIM/ONARIM">GARANTİ KAPSAMINDA BAKIM/ONARIM</option>
-                                <option value="ANLAŞMALI KAPSAMINDA BAKIM/ONARIM">ANLAŞMALI KAPSAMINDA BAKIM/ONARIM</option>
-                                <option value="ÜCRETLİ BAKIM/ONARIM">ÜCRETLİ BAKIM/ONARIM</option>
-                                <option value="ÜCRETLİ ARIZA TESPİTİ">ÜCRETLİ ARIZA TESPİTİ</option>
+                                <option value="1"><?=$this->Islemler_Model->servisTuru(1);?></option>
+                                <option value="2"><?=$this->Islemler_Model->servisTuru(2);?></option>
+                                <option value="3"><?=$this->Islemler_Model->servisTuru(3);?></option>
+                                <option value="4"><?=$this->Islemler_Model->servisTuru(4);?></option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <h9 class="col">Yedek alınacak mı?</h9>
                         <div class="form-check form-check-inline col-3">
-                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu1" value="Evet" checked>
-                            <label class="form-check-label col-12" for="yedek_durumu1">Evet</label>
+                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu1" value="1" checked>
+                            <label class="form-check-label col-12" for="yedek_durumu1"><?=$this->Islemler_Model->evetHayir(1);?></label>
                         </div>
                         <div class="form-check form-check-inline col-3">
-                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu2" value="Hayır">
-                            <label class="form-check-label col-12" for="yedek_durumu2">Hayır</label>
+                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu2" value="0">
+                            <label class="form-check-label col-12" for="yedek_durumu2"><?=$this->Islemler_Model->evetHayir(0);?></label>
                         </div>
                     </div>
                     <div class="row mt-2">
