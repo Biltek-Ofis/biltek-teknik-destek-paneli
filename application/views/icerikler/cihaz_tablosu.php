@@ -1,6 +1,6 @@
 <script>
   function yazdir(id) {
-    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/'+id, 'teknikServisFormuPencere'+id, 'status=1');
+    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/' + id, 'teknikServisFormuPencere' + id, 'status=1');
     $(teknikServisFormuPencere).ready(function() {
       teknikServisFormuPencere.print();
     });
@@ -88,10 +88,6 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM & E-Mail:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{gsm_mail}</li>
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">TEL-FAKS:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{tel_faks}</li>
-                </ul>
               </div>
               <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
@@ -109,8 +105,12 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
               </div>
               <div class="tab-pane fade" id="list-teknik-servis-bilgileri-{id}" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Cihazdaki Hasar:</span></span></li>
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Hasar Türü:</span></span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cihazdaki_hasar}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Yapılan Hasar Tespiti:</span></span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{hasar_tespiti}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
@@ -236,10 +236,10 @@ $eskiler = array(
   "{musteri_adi}",
   "{adres}",
   "{gsm_mail}",
-  "{tel_faks}",
   "{cihaz_turu}",
   "{cihaz}",
   "{seri_no}",
+  "{hasar_tespiti}",
   "{cihazdaki_hasar}",
   "{ariza_aciklamasi}",
   "{servis_turu}",
@@ -311,10 +311,10 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->musteri_adi,
     $cihaz->adres,
     $cihaz->gsm_mail,
-    $cihaz->tel_faks,
     $cihaz->cihaz_turu,
     $cihaz->cihaz,
     $cihaz->seri_no,
+    $cihaz->hasar_tespiti,
     $cihaz->cihazdaki_hasar,
     $cihaz->ariza_aciklamasi,
     $cihaz->servis_turu,
@@ -384,10 +384,10 @@ echo ' role="alert">
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{adres}", value.adres)
       .replaceAll("{gsm_mail}", value.gsm_mail)
-      .replaceAll("{tel_faks}", value.tel_faks)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)
       .replaceAll("{cihaz}", value.cihaz)
       .replaceAll("{seri_no}", value.seri_no)
+      .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
       .replaceAll("{cihazdaki_hasar}", value.cihazdaki_hasar)
       .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
       .replaceAll("{servis_turu}", value.servis_turu)
