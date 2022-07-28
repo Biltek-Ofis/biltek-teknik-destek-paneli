@@ -1,3 +1,12 @@
+<script>
+    $(document).ready(function() {
+        var hash = location.hash.replace(/^#/, '');
+        if (hash) {
+            $('#' + hash).modal('show')
+        }
+    });
+</script>
+
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -104,23 +113,23 @@
                     <div class="row">
                         <div class="form-check form-check-inline pl-2 col-2">
                             <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar1" value="0" checked>
-                            <label class="form-check-label col-12" for="cihazdaki_hasar1"><?=$this->Islemler_Model->cihazdakiHasar(0);?></label>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar1"><?= $this->Islemler_Model->cihazdakiHasar(0); ?></label>
                         </div>
                         <div class="form-check form-check-inline col-2">
                             <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar2" value="1">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar2"><?=$this->Islemler_Model->cihazdakiHasar(1);?></label>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar2"><?= $this->Islemler_Model->cihazdakiHasar(1); ?></label>
                         </div>
                         <div class="form-check form-check-inline col-2">
                             <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar3" value="2">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar3"><?=$this->Islemler_Model->cihazdakiHasar(2);?></label>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar3"><?= $this->Islemler_Model->cihazdakiHasar(2); ?></label>
                         </div>
                         <div class="form-check form-check-inline col-2">
                             <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar4" value="3">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?=$this->Islemler_Model->cihazdakiHasar(3);?></label>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?= $this->Islemler_Model->cihazdakiHasar(3); ?></label>
                         </div>
                         <div class="form-check form-check-inline col-2">
                             <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar4" value="4">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?=$this->Islemler_Model->cihazdakiHasar(4);?></label>
+                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?= $this->Islemler_Model->cihazdakiHasar(4); ?></label>
                         </div>
                     </div>
                     <div class="row mt-2">
