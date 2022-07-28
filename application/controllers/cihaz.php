@@ -28,8 +28,9 @@ class Cihaz extends Varsayilan_Controller
     {
         $cihaz = $this->Cihazlar_Model->cihazBul($id);
         if ($cihaz->num_rows() > 0) {
-            $cihaz_bilg = $cihaz->result()[0];
-            $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $cihaz_bilg));
+            $cihaz_bilg = $cihaz->result();
+            $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
+            $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" =>$veriler));
         } else {
             redirect(base_url());
         }

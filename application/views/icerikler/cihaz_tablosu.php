@@ -42,9 +42,10 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
 </tr>';
 $ilkOgeGenislik = "40%";
 $ikinciOgeGenislik = "60%";
-$ucluIlkOgeGenislik = "40%";
-$ucluIkinciOgeGenislik = "30%";
-$ucluUcuncuOgeGenislik = "30%";
+$dortluIlkOgeGenislik = "40%";
+$dortluIkinciOgeGenislik = "20%";
+$dortluUcuncuOgeGenislik = "20%";
+$dortluDorduncuOgeGenislik = "20%";
 $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
     <div class="modal-content">
@@ -153,9 +154,10 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{yapilan_islem_aciklamasi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ucluIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
-                  <li class="list-group-item" style="width:' . $ucluIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
-                  <li class="list-group-item" style="width:' . $ucluUcuncuOgeGenislik . ';"><span class="font-weight-bold">Fiyat</span></li>
+                  <li class="list-group-item" style="width:' . $dortluIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
+                  <li class="list-group-item" style="width:' . $dortluIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
+                  <li class="list-group-item" style="width:' . $dortluUcuncuOgeGenislik . ';"><span class="font-weight-bold">Birim Fiyatı</span></li>
+                  <li class="list-group-item" style="width:' . $dortluDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
                 </ul>
                 <div id="yapilanIslem{id}">
                   {yapilan_islemler}
@@ -216,9 +218,10 @@ $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazi
   </div>
 </div>';
 $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
-<li class="list-group-item" style="width:' . $ucluIlkOgeGenislik . ';">{islem}</li>
-<li class="list-group-item" style="width:' . $ucluIkinciOgeGenislik . ';">{miktar}</li>
-<li class="list-group-item" style="width:' . $ucluUcuncuOgeGenislik . ';">{fiyat} TL</li>
+<li class="list-group-item" style="width:' . $dortluIlkOgeGenislik . ';">{islem}</li>
+<li class="list-group-item" style="width:' . $dortluIkinciOgeGenislik . ';">{miktar}</li>
+<li class="list-group-item" style="width:' . $dortluUcuncuOgeGenislik . ';">{fiyat} TL</li>
+<li class="list-group-item" style="width:' . $dortluDorduncuOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
 </ul>';
 $yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">{toplam_aciklama}</span></li>
@@ -280,18 +283,21 @@ foreach ($cihazlar as $cihaz) {
     "{islem}",
     "{miktar}",
     "{fiyat}",
+    "{toplam_islem_fiyati}",
   );
   $yapilanİslemler = "";
   $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
   $toplam_fiyat = 0;
   if ($yapilanIslemlerModel->num_rows() > 0) {
     foreach ($yapilanIslemlerModel->result() as $yapilanIslemModel) {
+      $toplam_islem_fiyati = $yapilanIslemModel->birim_fiyati * $yapilanIslemModel->miktar;
       $yapilanIslemYeniArray = array(
         $yapilanIslemModel->islem,
         $yapilanIslemModel->miktar,
-        $yapilanIslemModel->fiyat,
+        $yapilanIslemModel->birim_fiyati,
+        $toplam_islem_fiyati,
       );
-      $toplam_fiyat = $toplam_fiyat + $yapilanIslemModel->fiyat;
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati;
       $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray, $yapilanIslemlerSatiri);
     }
   } else {
@@ -326,7 +332,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cihaz_modeli,
     $cihaz->seri_no,
     $cihaz->hasar_tespiti,
-    $cihaz->cihazdaki_hasar,
+    $this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar),
     $cihaz->ariza_aciklamasi,
     $this->Islemler_Model->servisTuru($cihaz->servis_turu),
     $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
@@ -404,30 +410,45 @@ echo ' role="alert">
     }
   }
 
-function hasarDurumu(id) {
-  switch (id) {
-    case 1:
-      return '<?= $this->Islemler_Model->hasarDurumu(1); ?>';
-    case 2:
-      return '<?= $this->Islemler_Model->hasarDurumu(2); ?>';
-    case 3:
-      return '<?= $this->Islemler_Model->hasarDurumu(3); ?>';
-    default:
-      return '<?= $this->Islemler_Model->hasarDurumu(1); ?>'
+  function hasarDurumu(id) {
+    switch (id) {
+      case 1:
+        return '<?= $this->Islemler_Model->hasarDurumu(1); ?>';
+      case 2:
+        return '<?= $this->Islemler_Model->hasarDurumu(2); ?>';
+      case 3:
+        return '<?= $this->Islemler_Model->hasarDurumu(3); ?>';
+      default:
+        return '<?= $this->Islemler_Model->hasarDurumu(1); ?>'
+    }
   }
-}
 
-function evetHayir(id) {
-  switch (id) {
-    case 1:
-      return '<?= $this->Islemler_Model->evetHayir(1); ?>';
-    case 0:
-      return '<?= $this->Islemler_Model->evetHayir(0); ?>';
-   
-    default:
-      return '<?= $this->Islemler_Model->evetHayir(0); ?>'
+  function evetHayir(id) {
+    switch (id) {
+      case 1:
+        return '<?= $this->Islemler_Model->evetHayir(1); ?>';
+      case 0:
+        return '<?= $this->Islemler_Model->evetHayir(0); ?>';
+
+      default:
+        return '<?= $this->Islemler_Model->evetHayir(0); ?>'
+    }
   }
-}
+
+  function cihazdakiHasar(id) {
+    switch (id) {
+      case 1:
+        return '<?= $this->Islemler_Model->cihazdakiHasar(1); ?>';
+      case 2:
+        return '<?= $this->Islemler_Model->cihazdakiHasar(2); ?>';
+      case 3:
+        return '<?= $this->Islemler_Model->cihazdakiHasar(3); ?>';
+      case 4:
+        return '<?= $this->Islemler_Model->cihazdakiHasar(4); ?>';
+      default:
+        return '<?= $this->Islemler_Model->cihazdakiHasar(0); ?>';
+    }
+  }
 
   function donustur(str, value) {
     return str.
@@ -441,7 +462,7 @@ function evetHayir(id) {
       .replaceAll("{cihaz_modeli}", value.cihaz_modeli)
       .replaceAll("{seri_no}", value.seri_no)
       .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
-      .replaceAll("{cihazdaki_hasar}", value.cihazdaki_hasar)
+      .replaceAll("{cihazdaki_hasar}", cihazdakiHasar(value.cihazdaki_hasar))
       .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
       .replaceAll("{servis_turu}", servisTuru(value.servis_turu))
       .replaceAll("{yedek_durumu}", evetHayir(value.yedek_durumu))

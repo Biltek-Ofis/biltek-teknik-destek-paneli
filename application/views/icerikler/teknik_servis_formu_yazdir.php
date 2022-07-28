@@ -163,55 +163,66 @@
             </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>
-                <td colspan="2" class="text-center align-middle"><i class="fas fa-check"></i></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->yedek_durumu == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="8">YEDEKSİZ İŞLEM</td>
-                <td colspan="2" class="text-center align-middle"></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->yedek_durumu == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
             </tr>
             <tr>
             </tr>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>
+            <?php
+            $yapilan_islemler = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
+            $hasarli_durumlar_rowspan = 5;
+            if ($yapilan_islemler->num_rows() > 0) {
+                $hasarli_durumlar_rowspan = $yapilan_islemler->num_rows();
+            }
+            ?>
             <tr>
-                <td colspan="10" rowspan="7" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
+                <td colspan="10" rowspan="<?= $hasarli_durumlar_rowspan + 2; ?>" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
                 <td colspan="5" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
                 <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
-                <td colspan="2" class="text-center font-weight-bold">FİYAT</td>
+                <td colspan="2" class="text-center font-weight-bold">BİRİM FİYATI</td>
                 <td colspan="2" class="text-center font-weight-bold">TUTAR</td>
             </tr>
-            <tr>
-                <td colspan="5">Test Malzeme 1</td>
-                <td colspan="1" class="text-center">2</td>
-                <td colspan="2" class="text-center">300 TL</td>
-                <td colspan="2" class="text-center">600 TL</td>
-            </tr>
-            <tr>
-                <td colspan="5">Test Malzeme 2</td>
-                <td colspan="1" class="text-center">2</td>
-                <td colspan="2" class="text-center">400 TL</td>
-                <td colspan="2" class="text-center">800 TL</td>
-            </tr>
-            <tr>
-                <td colspan="5">Test Malzeme 3</td>
-                <td colspan="1" class="text-center">3</td>
-                <td colspan="2" class="text-center">300 TL</td>
-                <td colspan="2" class="text-center">900 TL</td>
-            </tr>
-            <tr>
-                <td colspan="5">Test Malzeme 4</td>
-                <td colspan="1" class="text-center">5</td>
-                <td colspan="2" class="text-center">300 TL</td>
-                <td colspan="2" class="text-center">1500 TL</td>
-            </tr>
-            <tr>
-                <td colspan="5">Test Malzeme 5</td>
-                <td colspan="1" class="text-center">3</td>
-                <td colspan="2" class="text-center">10000 TL</td>
-                <td colspan="2" class="text-center">30000 TL</td>
-            </tr>
+            <?php
+            $toplam = "";
+            $kdv = "";
+            $genel_toplam = "";
+            if ($yapilan_islemler->num_rows() > 0) {
+                $yapilan_islemler_result = $yapilan_islemler->result();
+                $toplam = 0;
+                foreach ($yapilan_islemler_result as $yapilan_islem) {
+                    $toplam_islem_fiyati = $yapilan_islem->miktar * $yapilan_islem->birim_fiyati;
+                    echo '<tr>
+                <td colspan="5">'.$yapilan_islem->islem.'</td>
+                <td colspan="1" class="text-center">'.$yapilan_islem->miktar.'</td>
+                <td colspan="2" class="text-center">'.$yapilan_islem->birim_fiyati.' TL</td>
+                <td colspan="2" class="text-center">'.$toplam_islem_fiyati.' TL</td>
+            </tr>';
+                    $toplam = $toplam + $toplam_islem_fiyati;
+                }
+                $kdv = $toplam * 0.18;
+                $genel_toplam = $toplam + $kdv;
+            } else {
+                for ($i = 0; $i < 5; $i++) {
+                    echo '<tr style="height:20px;">
+                    <td colspan="5"></td>
+                    <td colspan="1" class="text-center"></td>
+                    <td colspan="2" class="text-center"></td>
+                    <td colspan="2" class="text-center"></td>
+                </tr>';
+                }
+            }
+            ?>
             <tr>
                 <td colspan="8">TOPLAM</td>
-                <td colspan="2" class="text-center">33800 TL</td>
+                <td colspan="2" class="text-center"><?=$toplam;?></td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center">ÇİZİK</td>
@@ -219,15 +230,23 @@
                 <td colspan="2" class="text-center">ÇATLAK</td>
                 <td colspan="4" class="text-center">DİĞER</td>
                 <td colspan="8">KDV (%18)</td>
-                <td colspan="2" class="text-center">6084 TL</td>
+                <td colspan="2" class="text-center"><?=$kdv;?></td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center align-middle"><i class="fas fa-check"></i></td>
-                <td colspan="2" class="text-center align-middle"></td>
-                <td colspan="2" class="text-center align-middle"></td>
-                <td colspan="4" class="text-center align-middle"></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></i></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 3) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
+                <td colspan="4" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 4) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center">39884 TL</td>
+                <td colspan="2" class="text-center"><?=$genel_toplam;?></td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
