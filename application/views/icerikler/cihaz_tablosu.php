@@ -23,7 +23,7 @@
       "autoWidth": false,
       "responsive": true,
       "oLanguage": {
-        "sSearch": "Ara",
+        "sSearch": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
         "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
         "sInfoEmpty": "0 sonuç gösteriliyor.",
         "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
