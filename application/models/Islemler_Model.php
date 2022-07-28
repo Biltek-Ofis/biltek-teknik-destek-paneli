@@ -81,17 +81,17 @@ class Islemler_Model extends CI_Model
             case 4:
                 return "ÜCRETLİ ARIZA TESPİTİ";
             default:
-                return "ÜCRETLİ BAKIM/ONARIM";
+                return "Belirtilmemiş";
         }
     }
     public function hasarDurumu($id)
     {
         switch ($id) {
-            case 1:
+            case 0:
                 return "Yok";
-            case 2:
+            case 1:
                 return "Hasarlı";
-            case 3:
+            case 2:
                 return "Hasarsız";
             default:
                 return "Yok";
@@ -102,10 +102,10 @@ class Islemler_Model extends CI_Model
         switch ($id) {
             case 1:
                 return "Evet";
-            case 0:
+            case 2:
                 return "Hayır";
             default:
-                return "Hayır";
+                return "Belirtilmemiş";
         }
     }
 }

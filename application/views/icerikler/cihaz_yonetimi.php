@@ -58,7 +58,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col">
-                            <input class="form-control" type="text" name="gsm_mail" placeholder="GSM & E-Mail">
+                            <input class="form-control" type="text" name="gsm_mail" placeholder="GSM & E-Mail *" required>
                         </div>
                     </div>
                     <div class="row">
@@ -75,7 +75,12 @@
                     </div>
                     <div class="row">
                         <div class="form-group col">
-                            <input class="form-control" type="text" name="cihaz" placeholder="Cihaz Marka / Modeli *" required>
+                            <input class="form-control" type="text" name="cihaz" placeholder="Cihaz Markası *" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <input class="form-control" type="text" name="cihaz_modeli" placeholder="Modeli">
                         </div>
                     </div>
                     <div class="row">
@@ -85,7 +90,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col">
-                            <input class="form-control" type="text" name="ariza_aciklamasi" placeholder="Belirtilen arıza açıklaması *" required>
+                            <textarea name="ariza_aciklamasi" class="form-control" rows="3" placeholder="Belirtilen arıza açıklaması *" required></textarea>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -116,32 +121,30 @@
                     </div>
                     <div class="row mt-2">
                         <div class="form-group col">
-                            <select class="form-control" name="servis_turu" aria-label="Servis Türü" required>
-                                <option value="" selected>Servis Türü Seçin *</option>
-                                <option value="1"><?=$this->Islemler_Model->servisTuru(1);?></option>
-                                <option value="2"><?=$this->Islemler_Model->servisTuru(2);?></option>
-                                <option value="3"><?=$this->Islemler_Model->servisTuru(3);?></option>
-                                <option value="4"><?=$this->Islemler_Model->servisTuru(4);?></option>
+                            <select class="form-control" name="servis_turu" aria-label="Servis Türü">
+                                <option value="0" selected>Servis Türü Seçin</option>
+                                <option value="1"><?= $this->Islemler_Model->servisTuru(1); ?></option>
+                                <option value="2"><?= $this->Islemler_Model->servisTuru(2); ?></option>
+                                <option value="3"><?= $this->Islemler_Model->servisTuru(3); ?></option>
+                                <option value="4"><?= $this->Islemler_Model->servisTuru(4); ?></option>
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <h9 class="col">Yedek alınacak mı?</h9>
-                        <div class="form-check form-check-inline col-3">
-                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu1" value="1" checked>
-                            <label class="form-check-label col-12" for="yedek_durumu1"><?=$this->Islemler_Model->evetHayir(1);?></label>
-                        </div>
-                        <div class="form-check form-check-inline col-3">
-                            <input class="form-check-input" type="radio" name="yedek_durumu" id="yedek_durumu2" value="0">
-                            <label class="form-check-label col-12" for="yedek_durumu2"><?=$this->Islemler_Model->evetHayir(0);?></label>
+                    <div class="row mt-2">
+                        <div class="form-group col">
+                            <select class="form-control" name="yedek_durumu" aria-label="Yedekleme İşlemi">
+                                <option value="0" selected>Yedek alınacak mı?</option>
+                                <option value="1"><?= $this->Islemler_Model->evetHayir(1); ?></option>
+                                <option value="2"><?= $this->Islemler_Model->evetHayir(2); ?></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <h5 class="col">Aksesuarlar</h5>
                     </div>
-                    <?php $this->load->view("ogeler/aksesuar_radio", array("isim" => "Taşıma Çantası:", "id" => "tasima_cantasi")); ?>
-                    <?php $this->load->view("ogeler/aksesuar_radio", array("isim" => "Sarj Adaptörü:", "id" => "sarj_adaptoru")); ?>
-                    <?php $this->load->view("ogeler/aksesuar_radio", array("isim" => "Pil:", "id" => "pil")); ?>
+                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi")); ?>
+                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru")); ?>
+                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil")); ?>
 
                     <div class="row mt-2">
                         <div class="form-group col">
