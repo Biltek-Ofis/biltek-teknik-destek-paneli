@@ -36,6 +36,12 @@
                 padding: 2px;
                 -webkit-print-color-adjust: exact;
             }
+
+            .list-group .list-group-item {
+                height: 20px !important;
+                line-height: 20px !important;
+                border: 0 !important;
+            }
         }
     </style>
     <style>
@@ -43,6 +49,12 @@
             border: 0 !important;
             padding: 0 !important;
             height: 0 !important;
+        }
+
+        .list-group .list-group-item {
+            height: 20px !important;
+            line-height: 20px !important;
+            border: 0 !important;
         }
 
         .table tbody tr td {
@@ -57,6 +69,33 @@
 <body onafterprint="self.close()">
     <table class="table table-bordered table-sm w-100">
         <tbody>
+            <tr>
+                <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?=base_url("dist/img/logo.png");?>"/></td>
+            </tr>
+            <tr>
+                <td  style="border:0 !important;" colspan="3"></td>
+            </tr>
+            <tr>
+                <td  style="border:0 !important;" colspan="3"></td>
+            </tr>
+            <tr style="border:0 !important;">
+                <td style="border:0 !important;" colspan="3">Giriş Tarihi: </td>
+                <td style="border:0 !important;" colspan="3"><?=$cihaz->tarih;?></td>
+            </tr>
+            <tr style="border:0 !important;">
+                <td style="border:0 !important;" colspan="3">Bildirim Tarihi: </td>
+                <td style="border:0 !important;" colspan="3"><?=$cihaz->bildirim_tarihi;?></td>
+            </tr>
+            <tr style="border:0 !important;">
+                <td style="border:0 !important;" colspan="3">Çıkış Tarihi: </td>
+                <td style="border:0 !important;" colspan="3"><?=$cihaz->cikis_tarihi;?></td>
+            </tr>
+            <tr>
+                <td  style="border:0 !important;" colspan="3"></td>
+            </tr>
+            <tr>
+                <td  style="border:0 !important;" colspan="3"></td>
+            </tr>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">TEKNİK SERVİS FORMU</td>
             </tr>
@@ -200,10 +239,10 @@
                 foreach ($yapilan_islemler_result as $yapilan_islem) {
                     $toplam_islem_fiyati = $yapilan_islem->miktar * $yapilan_islem->birim_fiyati;
                     echo '<tr>
-                <td colspan="5">'.$yapilan_islem->islem.'</td>
-                <td colspan="1" class="text-center">'.$yapilan_islem->miktar.'</td>
-                <td colspan="2" class="text-center">'.$yapilan_islem->birim_fiyati.' TL</td>
-                <td colspan="2" class="text-center">'.$toplam_islem_fiyati.' TL</td>
+                <td colspan="5">' . $yapilan_islem->islem . '</td>
+                <td colspan="1" class="text-center">' . $yapilan_islem->miktar . '</td>
+                <td colspan="2" class="text-center">' . $yapilan_islem->birim_fiyati . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati . ' TL</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati;
                 }
@@ -222,7 +261,7 @@
             ?>
             <tr>
                 <td colspan="8">TOPLAM</td>
-                <td colspan="2" class="text-center"><?=$toplam;?></td>
+                <td colspan="2" class="text-center"><?= $toplam; ?> TL</td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center">ÇİZİK</td>
@@ -230,7 +269,7 @@
                 <td colspan="2" class="text-center">ÇATLAK</td>
                 <td colspan="4" class="text-center">DİĞER</td>
                 <td colspan="8">KDV (%18)</td>
-                <td colspan="2" class="text-center"><?=$kdv;?></td>
+                <td colspan="2" class="text-center"><?= $kdv; ?> TL</td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 1) {
@@ -246,7 +285,7 @@
                                                                         echo '<i class="fas fa-check"></i>';
                                                                     } ?></td>
                 <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center"><?=$genel_toplam;?></td>
+                <td colspan="2" class="text-center"><?= $genel_toplam; ?> TL</td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>

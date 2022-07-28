@@ -46,6 +46,8 @@ class Cihazlar_Model extends CI_Model{
         $this->load->model("Islemler_Model");
         for($i = 0; $i < count($result); $i++){
              $result[$i]->tarih = $this->Islemler_Model->tarihDonustur($result[$i]->tarih);
+             $result[$i]->bildirim_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->bildirim_tarihi);
+             $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
              $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
         }
         return $result;

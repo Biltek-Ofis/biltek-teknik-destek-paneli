@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="<?=base_url();?>" class="h1 w-100 text-center"><img src="<?=base_url("dist/img/logo.png");?>"/></a>
+                <a href="<?=base_url();?>" class="h1 w-100 text-center"><img height="100" src="<?=base_url("dist/img/logo.png");?>"/></a>
             </div>
             <div class="card-body">
                 <div class="alert alert-danger" style="<?php if (strlen($girisHatasi) == 0) {
