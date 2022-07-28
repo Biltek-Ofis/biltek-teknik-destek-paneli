@@ -66,32 +66,32 @@
             <tr>
                 <td colspan="8" class="font-weight-bold">MÜŞTERİ ADI SOYADI</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->musteri_adi;?></td>
+                <td colspan="10"><?= $cihaz->musteri_adi; ?></td>
             </tr>
             <tr>
                 <td colspan="8">ADRESİ</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->adres;?></td>
+                <td colspan="10"><?= $cihaz->adres; ?></td>
             </tr>
             <tr>
                 <td colspan="8">GSM & E-Mail</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->gsm_mail;?></td>
+                <td colspan="10"><?= $cihaz->gsm_mail; ?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">CİHAZIN MARKA / MODELİ</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->cihaz;?></td>
+                <td colspan="10"><?= $cihaz->cihaz; ?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->seri_no;?></td>
+                <td colspan="10"><?= $cihaz->seri_no; ?></td>
             </tr>
-            <tr>
+            <tr style="height: 80px !important;">
                 <td colspan="8">BELİRTİLEN ARIZA AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->ariza_aciklamasi;?></td>
+                <td colspan="10"><?= $cihaz->ariza_aciklamasi; ?></td>
             </tr>
 
             <tr>
@@ -101,56 +101,74 @@
                 <td colspan="8"></td>
                 <td colspan="2" class="text-center"></td>
                 <td colspan="4" class="text-center font-weight-bold">Aksesuar</tH>
-                <td colspan="3" class="text-center"><?=$this->Islemler_Model->hasarDurumu(2);?></td>
-                <td colspan="3" class="text-center"><?=$this->Islemler_Model->hasarDurumu(3);?></td>
+                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(2); ?></td>
+                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(3); ?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(1);?></td>
-                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 1){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(1); ?></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="4" class="text-center">TAŞIMA ÇANTASI</td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->tasima_cantasi == 1){echo '<i class="fas fa-check"></i>';}?></td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->tasima_cantasi == 2){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->tasima_cantasi == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->tasima_cantasi == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(2);?></td>
-                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 2){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(2); ?></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="4" class="text-center">SARJ ADAPTÖRÜ</td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->sarj_adaptoru == 1){echo '<i class="fas fa-check"></i>';}?></td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->sarj_adaptoru == 2){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->sarj_adaptoru == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->sarj_adaptoru == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(3);?></td>
-                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 3){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(3); ?></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 3) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="4" class="text-center">PİL</td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->pil == 1){echo '<i class="fas fa-check"></i>';}?></td>
-                <td colspan="3" class="text-center align-middle"><?php if($cihaz->pil == 2){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->pil == 1) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->pil == 2) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?=$this->Islemler_Model->servisTuru(4);?></td>
-                <td colspan="2" class="text-center align-middle"><?php if($cihaz->servis_turu == 4){echo '<i class="fas fa-check"></i>';}?></td>
+                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(4); ?></td>
+                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 4) {
+                                                                        echo '<i class="fas fa-check"></i>';
+                                                                    } ?></td>
                 <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="6" class="text-center"><?=$cihaz->diger_aksesuar;?></td>
+                <td colspan="6" class="text-center"><?= $cihaz->diger_aksesuar; ?></td>
             </tr>
-            <tr>
+            <tr style="height: 80px !important;">
                 <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?=$cihaz->yapilan_islem_aciklamasi;?></td>
+                <td colspan="10"><?= $cihaz->yapilan_islem_aciklamasi; ?></td>
             </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>
                 <td colspan="2" class="text-center align-middle"><i class="fas fa-check"></i></td>
-                <td colspan="10">BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR.</td>
-            </tr>
-            <tr>
                 <td colspan="8">YEDEKSİZ İŞLEM</td>
                 <td colspan="2" class="text-center align-middle"></td>
-                <td colspan="10">BU ŞIKKIN İŞARETLENMESİ DURUMUNDA MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME ÜCRETE TABİDİR.</td>
+            </tr>
+            <tr>
             </tr>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>
             <tr>
-                <td colspan="10" rowspan="7" class="text-center font-weight-bold">HASARLI DURUMLARDA İŞARETLENECEK</td>
+                <td colspan="10" rowspan="7" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
                 <td colspan="5" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
                 <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
                 <td colspan="2" class="text-center font-weight-bold">FİYAT</td>
@@ -237,7 +255,11 @@
             </tr>
             <tr>
                 <td colspan="3" class="text-center">NOT</td>
-                <td colspan="17" class="text-center">Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Servis hizmet süresi en fazla <span class="font-weight-bold">20 (yirmi)</span> iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra <span class="font-weight-bold">90 (doksan)</span> gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir. Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.</td>
+                <td colspan="17" class="text-center">
+                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Servis hizmet süresi en fazla <h6 class="font-weight-bold">20 (yirmi)</span> iş günüdür. <span class="font-weight-bold">Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</h6> Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.<br>
+                    BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR.<br>
+                    MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.
+                </td>
             </tr>
         </tbody>
         <thead>
