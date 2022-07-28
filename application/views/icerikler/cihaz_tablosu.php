@@ -299,21 +299,22 @@ $eskiler = array(
   "{teslim_durumu_class}",
   "{teslim_durumu_icon}",
 );
+
+$yapilanIslemToplamEskiArray = array(
+  "{toplam_aciklama}",
+  "{toplam_fiyat}",
+);
+$yapilanIslemEskiArray = array(
+  "{islem}",
+  "{miktar}",
+  "{fiyat}",
+  "{toplam_islem_fiyati}",
+);
 foreach ($cihazlar as $cihaz) {
   if ($cihazEklendi == false) {
     $sonCihazID = $cihaz->id;
     $cihazEklendi = true;
   }
-  $yapilanIslemToplamEskiArray = array(
-    "{toplam_aciklama}",
-    "{toplam_fiyat}",
-  );
-  $yapilanIslemEskiArray = array(
-    "{islem}",
-    "{miktar}",
-    "{fiyat}",
-    "{toplam_islem_fiyati}",
-  );
   $yapilanİslemler = "";
   $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
   $toplam_fiyat = 0;
@@ -395,14 +396,6 @@ echo '
 </tbody>
 </table>';
 echo '</div>';
-
-echo '<div id="cihazlarUyari" class="alert alert-success" style="';
-if (count($cihazlar) > 0) {
-  echo 'display:none;';
-}
-echo ' role="alert">
-    Bu Kategoride Cihaz Yok
-</div>';
 ?>
 <script type="text/javascript">
   let sonCihazID = <?= $sonCihazID; ?>;
@@ -516,20 +509,14 @@ echo ' role="alert">
       });
     });
     $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
-      sayac = 0;
       $.each(JSON.parse(data), function(index, value) {
         sonCihazID = value.id;
-        sayac++;
         $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
       });
-      if (sayac == 0) {
-        $("#cihazlarUyari").show();
-      }
     });
 
     $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
       $.each(JSON.parse(data), function(index, value) {
-        $("#cihazlarUyari").hide();
         $("#cihaz" + value.id).remove();
         let tabloOrnek = '<?= $tabloOrnek; ?>';
         let detayModalOrnek = '<?= $cihazDetayModalOrnek; ?>';
