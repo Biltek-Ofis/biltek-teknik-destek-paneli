@@ -22,7 +22,7 @@
             <div class="card-body">
                 <div id="container w-100 m-0 p-0">
                     <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2" data-toggle="modal" data-target="#yeniCihazEkleModal">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniCihazEkleModal">
                             Yeni Cihaz Girişi
                         </button>
                     </div>
