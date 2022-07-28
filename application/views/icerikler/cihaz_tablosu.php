@@ -99,14 +99,6 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{tarih}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
-                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{musteri_adi}</li>
                 </ul>
@@ -117,6 +109,22 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM & E-Mail:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{gsm_mail}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
+                  <li id="{id}Tarih" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{tarih}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
+                  <li id="{id}BildirimTarihi" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{bildirim_tarihi}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
+                  <li id="{id}CikisTarihi" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cikis_tarihi}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
+                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
                 </ul>
               </div>
               <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
@@ -292,6 +300,8 @@ $eskiler = array(
   "{yapilan_islem_aciklamasi}",
   "{teslim_edildi}",
   "{tarih}",
+  "{bildirim_tarihi}",
+  "{cikis_tarihi}",
   "{yapilan_islemler}",
   "{teslim_edildi_btn}",
   "{teslim_durumu_uyari}",
@@ -373,6 +383,8 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->yapilan_islem_aciklamasi,
     $cihaz->teslim_edildi == 1 ? $teslim_durumu_renkli_1 : $teslim_durumu_renkli_0,
     $cihaz->tarih,
+    $cihaz->bildirim_tarihi,
+    $cihaz->cikis_tarihi,
     $yapilanİslemler,
     $cihaz->teslim_edildi == 1 ? $teslim_durumu_0 : $teslim_durumu_1,
     $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
@@ -495,6 +507,8 @@ echo '</div>';
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
       .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
       .replaceAll("{tarih}", value.tarih)
+      .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
+      .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
       .replaceAll("{teslim_edildi_btn}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_0; ?>' : '<?= $teslim_durumu_1; ?>')
       .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
@@ -514,6 +528,9 @@ echo '</div>';
         sonCihazID = value.id;
         sayac++;
         $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+        $("#" + value.id + "Tarih").html(value.tarih);
+        $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
+        $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
       });
       if (sayac == 0) {
         $("dataTables_empty").show();
