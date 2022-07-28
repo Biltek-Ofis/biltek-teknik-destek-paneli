@@ -11,7 +11,9 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
         if ($this->Giris_Model->kullaniciGiris()){
             $this->load->model("Islemler_Model");
             $this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Cihaz Yönetimi", "cihaz_yonetimi"));
-        }
+        }else{
+			$this->Kullanicilar_Model->girisUyari("/");
+		}
     }
     public function cihazlarJQ($id){
 		if ($this->Giris_Model->kullaniciGiris()){
@@ -47,7 +49,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($ekle){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
-				$this->Kullanicilar_Model->girisUyari("/");
+				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("/");
@@ -60,7 +62,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($sil){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
-				redirect(base_url("cihaz_yonetimi"));
+				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Silme işlemi gerçekleştirilemedi");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("/");

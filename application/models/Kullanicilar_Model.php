@@ -4,9 +4,9 @@ class Kullanicilar_Model extends CI_Model{
     {
         parent::__construct();
     }
-    public function girisUyari($konum){
+    public function girisUyari($konum, $hata = ""){
         echo '<script>
-        var r = confirm("Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!");
+        var r = confirm("'.($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata).'");
         if (r == true) {
             window.location.replace("'.base_url($konum).'");
         }else{
