@@ -53,21 +53,21 @@ class Cihazlar_Model extends CI_Model{
         return $result;
      }
     public function cihazlar(){
-        $result = $this->db->order_by("tarih", "DESC")->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->order_by("id", "DESC")->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTur($tur){
         $where = array(
             "cihaz_turu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('tarih','DESC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by('id','DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarJQ($id){
         $where = array(
             "id >"=> $id,
         );
-        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by('id','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurJQ($tur, $id){
@@ -75,18 +75,18 @@ class Cihazlar_Model extends CI_Model{
             "id >"=> $id,
             "cihaz_turu" => $tur
         );
-        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by('id','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTumuJQ(){
-        $result = $this->db->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->order_by('id','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurTumuJQ($tur){
         $where = array(
             "cihaz_turu" => $tur
         );
-        $result = $this->db->where($where)->order_by('tarih','ASC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by('id','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazEkle($veri){

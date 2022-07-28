@@ -13,8 +13,8 @@ class Cihaz extends Varsayilan_Controller
         if ($this->Giris_Model->kullaniciGiris()) {
             $cihaz = $this->Cihazlar_Model->cihazBul($id);
             if ($cihaz->num_rows() > 0) {
-                $cihaz_bilg = $cihaz->result()[0];
-                $baslik = $cihaz_bilg->musteri_adi . ' - ' . $cihaz_bilg->cihaz . ' - Cihaz Detayları';
+                $cihaz_bilg =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz->result())[0];
+                $baslik = 'Cihaz '.$cihaz_bilg->id.' Detayları';
                 $this->load->view("tasarim", $this->Islemler_Model->tasarimArray($baslik, "cihaz", array("cihaz" => $cihaz_bilg, "baslik" => $baslik)));
             } else {
                 redirect(base_url());
