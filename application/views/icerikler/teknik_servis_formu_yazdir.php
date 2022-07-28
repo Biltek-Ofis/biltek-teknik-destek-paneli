@@ -79,9 +79,14 @@
                 <td colspan="10"><?= $cihaz->gsm_mail; ?></td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">CİHAZIN MARKA / MODELİ</th>
+                <td colspan="8" class="font-weight-bold">CİHAZIN MARKASI</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10"><?= $cihaz->cihaz; ?></td>
+            </tr>
+            <tr>
+                <td colspan="8" class="font-weight-bold">MODELİ</th>
+                <td colspan="2" class="text-center">:</td>
+                <td colspan="10"><?= $cihaz->cihaz_modeli; ?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>

@@ -20,7 +20,7 @@ echo '<table class="table table-bordered">
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
-        <th scope="col">Cihaz Modeli</th>
+        <th scope="col">Cihaz Marka / Modeli</th>
         <th scope="col">Detaylar</th>
     </tr>
 </thead>
@@ -35,7 +35,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <th scope="row">{id}</th>
   <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
-  <td id="{id}Cihaz">{cihaz}</td>
+  <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
   </td>
@@ -95,8 +95,12 @@ $cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabind
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cihaz_turu}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Marka / Modeli:</span></li>
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cihaz}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cihaz_modeli}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
@@ -242,6 +246,7 @@ $eskiler = array(
   "{gsm_mail}",
   "{cihaz_turu}",
   "{cihaz}",
+  "{cihaz_modeli}",
   "{seri_no}",
   "{hasar_tespiti}",
   "{cihazdaki_hasar}",
@@ -318,6 +323,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->gsm_mail,
     $cihaz->cihaz_turu,
     $cihaz->cihaz,
+    $cihaz->cihaz_modeli,
     $cihaz->seri_no,
     $cihaz->hasar_tespiti,
     $cihaz->cihazdaki_hasar,
@@ -432,6 +438,7 @@ function evetHayir(id) {
       .replaceAll("{gsm_mail}", value.gsm_mail)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)
       .replaceAll("{cihaz}", value.cihaz)
+      .replaceAll("{cihaz_modeli}", value.cihaz_modeli)
       .replaceAll("{seri_no}", value.seri_no)
       .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
       .replaceAll("{cihazdaki_hasar}", value.cihazdaki_hasar)

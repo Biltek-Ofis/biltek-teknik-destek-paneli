@@ -34,6 +34,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 				"gsm_mail"=> $this->input->post("gsm_mail"),
 				"cihaz_turu"=> $this->input->post("cihaz_turu"),
 				"cihaz"=> $this->input->post("cihaz"),
+				"cihaz_modeli"=> $this->input->post("cihaz_modeli"),
 				"seri_no"=> $this->input->post("seri_no"),
 				"hasar_tespiti"=> $this->input->post("hasar_tespiti"),
 				"cihazdaki_hasar"=> $this->input->post("cihazdaki_hasar"),
@@ -49,7 +50,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($ekle){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
-				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi. ");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("/");
