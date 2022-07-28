@@ -27,7 +27,7 @@
         "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
         "sInfoEmpty": "0 sonuç gösteriliyor.",
         "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
-        "sZeroRecords": "Aramayla eşleşen cihaz bulunamadı.",
+        "sZeroRecords": "Cihaz bulunamadı.",
         "oPaginate": {
           "sFirst": "İlk",
           "sPrevious": "Önceki",
@@ -509,14 +509,20 @@ echo '</div>';
       });
     });
     $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
+      sayac = 0;
       $.each(JSON.parse(data), function(index, value) {
         sonCihazID = value.id;
+        sayac++;
         $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
       });
+      if (sayac == 0) {
+        $("dataTables_empty").show();
+      }
     });
 
     $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
       $.each(JSON.parse(data), function(index, value) {
+        $("dataTables_empty").hide();
         $("#cihaz" + value.id).remove();
         let tabloOrnek = '<?= $tabloOrnek; ?>';
         let detayModalOrnek = '<?= $cihazDetayModalOrnek; ?>';
