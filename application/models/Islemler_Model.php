@@ -108,4 +108,19 @@ class Islemler_Model extends CI_Model
                 return "Belirtilmemiş";
         }
     }
+    public function cihazdakiHasar($id)
+    {
+        switch ($id) {
+            case 1:
+                return "Çizik";
+            case 2:
+                return "Kırık";
+            case 3:
+                return "Çatlak";
+            case 4:
+                return "Diğer";
+            default:
+                return "Belirtilmemiş";
+        }
+    }
 }

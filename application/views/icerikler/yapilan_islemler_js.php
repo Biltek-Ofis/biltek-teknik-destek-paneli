@@ -8,11 +8,13 @@
       var toplam = 0;
       if (Object.keys(jsonData).length > 0) {
         $.each(jsonData, function(index, value) {
-          toplam = toplam + value.fiyat;
+          var yapilan_islem_tutari = value.birim_fiyati * value.miktar;
+          toplam = toplam + yapilan_islem_tutari;
           htmlRes += islemlerSatiri
             .replaceAll("{islem}", value.islem)
             .replaceAll("{miktar}", value.miktar)
-            .replaceAll("{fiyat}", value.fiyat);
+            .replaceAll("{fiyat}", value.birim_fiyati)
+            .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari);
         });
       } else {
         var htmlRes = islemlerSatiriBos;
