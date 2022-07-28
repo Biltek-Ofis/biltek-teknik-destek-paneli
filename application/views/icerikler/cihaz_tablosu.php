@@ -1,3 +1,8 @@
+<script src="<?= base_url("plugins/datatables/jquery.dataTables.min.js"); ?>"></script>
+<script src="<?= base_url("plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"); ?>"></script>
+<script src="<?= base_url("plugins/datatables-responsive/js/dataTables.responsive.min.js"); ?>"></script>
+<script src="<?= base_url("plugins/datatables-responsive/js/responsive.bootstrap4.min.js"); ?>"></script>
+
 <script>
   function yazdir(id) {
     teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/' + id, 'teknikServisFormuPencere' + id, 'status=1');
@@ -8,13 +13,37 @@
   $(document).ready(function() {
     //window.print();
   });
+  $(function() {
+    $('#cihaz_tablosu').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": false,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "oLanguage": {
+        "sSearch": "Ara",
+        "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
+        "sInfoEmpty": "0 sonuç gösteriliyor.",
+        "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
+        "sZeroRecords": "Aramayla eşleşen cihaz bulunamadı.",
+        "oPaginate": {
+          "sFirst": "İlk",
+          "sPrevious": "Önceki",
+          "sLast": "Son",
+          "sNext": "Sonraki",
+        },
+      },
+    });
+  });
 </script>
 <?php
 $tur_belirtildimi = isset($tur) ? true : false;
 $cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 echo '<div id="cihazTablosu" class="table-responsive">';
-echo '<table class="table table-bordered">
+echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
     <tr>
         <th scope="col">Cihaz Kodu</th>

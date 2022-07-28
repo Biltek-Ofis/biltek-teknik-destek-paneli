@@ -6,12 +6,13 @@ class Islemler_Model extends CI_Model
     {
         parent::__construct();
     }
-    public function tasarimArray($baslik, $icerik, $icerik_array = array())
+    public function tasarimArray($baslik, $icerik, $icerik_array = array(),  $ek_css = "")
     {
         return array(
             "baslik" => $baslik,
             "icerik" => $icerik,
             "icerik_array" => $icerik_array,
+            "ek_css" => $ek_css,
         );
     }
     public function tarihDonustur($tarih)

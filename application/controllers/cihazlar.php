@@ -18,7 +18,7 @@ class Cihazlar extends Varsayilan_Controller
 				"cihazTurleri" => $this->Cihazlar_Model->cihazTurleri(),
 				"suankiCihazTuru" => $tur,
 			);
-			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($this->Cihazlar_Model->cihazTuru($tur), "cihazlar", $veri));
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($this->Cihazlar_Model->cihazTuru($tur), "cihazlar", $veri, "inc/datatables"));
 		} else {
 			$this->load->view('giris', array("girisHatasi" => ""));
 		}

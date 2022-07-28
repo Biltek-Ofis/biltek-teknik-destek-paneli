@@ -4,7 +4,10 @@
   <?php $this->load->view("inc/meta");?>
   
   <title><?=$baslik;?></title>
-
+  <?php
+  if($ek_css != ""){
+    $this->load->view($ek_css);
+  }?>
   <?php $this->load->view("inc/styles");?>
   <?php $this->load->view("inc/scripts");?>
 
