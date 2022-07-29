@@ -15,9 +15,23 @@ class Islemler_Model extends CI_Model
             "ek_css" => $ek_css,
         );
     }
+    public $sqlTarihFormati = "Y-m-d H:i:s.v";
+    public function tarih(){
+        $suankiTarih = new DateTime();
+        //Örnek SQL tarih 2022-07-29 11:13:46.150
+        return $suankiTarih->format($this->sqlTarihFormati);
+    }
+    public function tarihDonusturSQL($tarih)
+    {
+        return $tarih == "" ? "" : date($this->sqlTarihFormati, strtotime($tarih));
+    }
     public function tarihDonustur($tarih)
     {
         return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));
+    }
+    public function tarihDonusturInput($tarih)
+    {
+        return $tarih == "" ? "" : date('Y-m-d\TH:i:s', strtotime($tarih));
     }
     public function trimle($str)
     {
@@ -123,10 +137,5 @@ class Islemler_Model extends CI_Model
             default:
                 return "Belirtilmemiş";
         }
-    }
-    public function tarih(){
-        $suankiTarih = new DateTime();
-        //Örnek SQL tarih 2022-07-29 11:13:46.150
-        return $suankiTarih->format('Y-m-d H:i:s.v');
     }
 }
