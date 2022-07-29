@@ -8,9 +8,9 @@ class Kullanicilar_Model extends CI_Model{
         echo '<script>
         var r = confirm("'.($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata).'");
         if (r == true) {
-            window.location.replace("'.base_url($konum).'");
+            window.location.replace("'.base_url().$konum.'");
         }else{
-            window.location.replace("'.base_url($konum).'");
+            window.location.replace("'.base_url().$konum.'");
         }</script>';
     }
     public $kullanicilarTablosu = "Kullanicilar";
