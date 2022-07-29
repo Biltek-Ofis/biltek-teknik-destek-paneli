@@ -33,6 +33,14 @@
                     </a>
                 </li>
                 <li class="nav-header">Yönetim</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link<?php if($aktifSayfa=="cihaz_yonetimi"){echo " active";}?>">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Kullanıcılar
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
                     <a href="<?=base_url("cihaz_yonetimi");?>" class="nav-link<?php if($aktifSayfa=="cihaz_yonetimi"){echo " active";}?>">
