@@ -2,42 +2,6 @@
 <script src="<?= base_url("plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"); ?>"></script>
 <script src="<?= base_url("plugins/datatables-responsive/js/dataTables.responsive.min.js"); ?>"></script>
 <script src="<?= base_url("plugins/datatables-responsive/js/responsive.bootstrap4.min.js"); ?>"></script>
-
-<script>
-  function yazdir(id) {
-    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/' + id, 'teknikServisFormuPencere' + id, 'status=1');
-    $(teknikServisFormuPencere).ready(function() {
-      teknikServisFormuPencere.print();
-    });
-  }
-  $(document).ready(function() {
-    //window.print();
-  });
-  $(function() {
-    $('#cihaz_tablosu').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": false,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-      "oLanguage": {
-        "sSearch": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
-        "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
-        "sInfoEmpty": "0 sonuç gösteriliyor.",
-        "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
-        "sZeroRecords": "Cihaz bulunamadı.",
-        "oPaginate": {
-          "sFirst": "İlk",
-          "sPrevious": "Önceki",
-          "sLast": "Son",
-          "sNext": "Sonraki",
-        },
-      },
-    });
-  });
-</script>
 <style>
   .modal.modal-fullscreen .modal-dialog {
     width: 100vw;
@@ -46,12 +10,14 @@
     padding: 0;
     max-width: none;
   }
+
   .modal.modal-fullscreen .modal-content {
     height: auto;
     height: 100vh;
     border-radius: 0;
     border: none;
   }
+
   .modal.modal-fullscreen .modal-body {
     overflow-y: auto;
   }
@@ -76,7 +42,6 @@ $teslim_durumu_1 = 'Teslim Edildi';
 $teslim_durumu_renkli_1 = '<span class="text-success">' . $teslim_durumu_1 . '</span>';
 $teslim_durumu_0 = 'Teslim Edilmedi';
 $teslim_durumu_renkli_0 = '<span class="text-danger">' . $teslim_durumu_0 . '</span>';
-$cihazEklendi = false;
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
   <th scope="row">{id}</th>
@@ -338,11 +303,12 @@ $yapilanIslemEskiArray = array(
   "{fiyat}",
   "{toplam_islem_fiyati}",
 );
+$sayac = 0;
 foreach ($cihazlar as $cihaz) {
-  if ($cihazEklendi == false) {
+  if ($sayac == count($cihazlar) - 1) {
     $sonCihazID = $cihaz->id;
-    $cihazEklendi = true;
   }
+  $sayac++;
   $yapilanİslemler = "";
   $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
   $toplam_fiyat = 0;
@@ -534,52 +500,85 @@ echo '</div>';
       .replaceAll("{teslim_durumu_class}", value.teslim_edildi == 1 ? "btn-danger" : "btn-success")
       .replaceAll("{teslim_durumu_icon}", value.teslim_edildi == 1 ? "fa-times" : "fa-check");
   }
-  setInterval(() => {
-    $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
-      $.each(JSON.parse(data), function(index, value) {
-        $("#cihaz" + value.id).remove();
-      });
-    });
-    $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
-      sayac = 0;
-      $.each(JSON.parse(data), function(index, value) {
-        sonCihazID = value.id;
-        sayac++;
-        $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
-        $("#" + value.id + "Tarih").html(value.tarih);
-        $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
-        $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
-      });
-      if (sayac == 0) {
-        $("dataTables_empty").show();
-      }
-    });
 
-    $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
-      $.each(JSON.parse(data), function(index, value) {
-        $("dataTables_empty").hide();
-        $("#cihaz" + value.id).remove();
-        let tabloOrnek = '<?= $tabloOrnek; ?>';
-        let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
-        let cihazTeslimEdildiModalOrnek = '<?= $cihazTeslimEdildiModalOrnek; ?>';
-        let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
-
-        var tablo = donustur(tabloOrnek, value);
-        var detayModal = donustur(detayModalOrnek, value);
-        var cihazTeslimEdildiModal = donustur(cihazTeslimEdildiModalOrnek, value);
-        var silmodal = donustur(silModalOrnek, value);
-        $("#cihazlar").prepend(tablo);
-        $.post('<?= base_url("cihazlar/yapilanIslemlerJS"); ?>/' + value.id, {
-          "yapilanIslemlerSatiri": '<?= $yapilanIslemlerSatiri; ?>',
-          "yapilanIslemlerSatiriBos": '<?= $yapilanIslemlerSatiriBos; ?>',
-          "yapilanIslemToplam": '<?= $yapilanIslemToplam; ?>',
-        }, function(data) {
-          $("#cihazTablosu").prepend(data);
+  function yazdir(id) {
+    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/' + id, 'teknikServisFormuPencere' + id, 'status=1');
+    $(teknikServisFormuPencere).ready(function() {
+      teknikServisFormuPencere.print();
+    });
+  }
+  $(document).ready(function() {
+    var cihazlarTablosu = $('#cihaz_tablosu').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      order:[[0,"DESC"]],
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "oLanguage": {
+        "sSearch": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
+        "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
+        "sInfoEmpty": "0 sonuç gösteriliyor.",
+        "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
+        "sZeroRecords": "Cihaz bulunamadı.",
+        "oPaginate": {
+          "sFirst": "İlk",
+          "sPrevious": "Önceki",
+          "sLast": "Son",
+          "sNext": "Sonraki",
+        },
+      },
+      columnDefs: [{
+        "defaultContent": "-",
+        "targets": "_all"
+      }]
+    });
+    setInterval(() => {
+      $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
+        $.each(JSON.parse(data), function(index, value) {
+          cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
         });
-        $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
-        $("#cihazTablosu").prepend(silmodal);
-        $("#cihazTablosu").prepend(detayModal);
       });
-    });
-  }, 5000);
+      $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
+        sayac = 0;
+        $.each(JSON.parse(data), function(index, value) {
+          sonCihazID = value.id;
+          sayac++;
+          $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+          $("#" + value.id + "Tarih").html(value.tarih);
+          $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
+          $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
+        });
+      });
+
+      $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
+        $.each(JSON.parse(data), function(index, value) {
+          cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+          let tabloOrnek = '<?= $tabloOrnek; ?>';
+          let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
+          let cihazTeslimEdildiModalOrnek = '<?= $cihazTeslimEdildiModalOrnek; ?>';
+          let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
+
+          const tablo = donustur(tabloOrnek, value);
+          var detayModal = donustur(detayModalOrnek, value);
+          var cihazTeslimEdildiModal = donustur(cihazTeslimEdildiModalOrnek, value);
+          var silmodal = donustur(silModalOrnek, value);
+          cihazlarTablosu.row.add($(tablo)).draw();
+          //$("#cihazlar").prepend(tablo);
+          $.post('<?= base_url("cihazlar/yapilanIslemlerJS"); ?>/' + value.id, {
+            "yapilanIslemlerSatiri": '<?= $yapilanIslemlerSatiri; ?>',
+            "yapilanIslemlerSatiriBos": '<?= $yapilanIslemlerSatiriBos; ?>',
+            "yapilanIslemToplam": '<?= $yapilanIslemToplam; ?>',
+          }, function(data) {
+            $("#cihazTablosu").prepend(data);
+          });
+          $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
+          $("#cihazTablosu").prepend(silmodal);
+          $("#cihazTablosu").prepend(detayModal);
+        });
+      });
+    }, 5000);
+  });
 </script>
