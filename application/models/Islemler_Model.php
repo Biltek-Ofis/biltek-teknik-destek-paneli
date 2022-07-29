@@ -124,4 +124,9 @@ class Islemler_Model extends CI_Model
                 return "Belirtilmemiş";
         }
     }
+    public function tarih(){
+        $suankiTarih = new DateTime();
+        //Örnek SQL tarih 2022-07-29 11:13:46.150
+        return $suankiTarih->format('Y-m-d H:i:s.v');
+    }
 }
