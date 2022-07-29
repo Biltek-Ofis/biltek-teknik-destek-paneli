@@ -49,7 +49,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td class="text-center">
-    <button class="btn btn-info text-white" data-toggle="modal" data-target="#'.$this->Cihazlar_Model->cihazDetayModalAdi().'{id}">Detaylar</button>
+    <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
 </tr>';
 $ilkOgeGenislik = "40%";
@@ -58,11 +58,11 @@ $dortluIlkOgeGenislik = "40%";
 $dortluIkinciOgeGenislik = "20%";
 $dortluUcuncuOgeGenislik = "20%";
 $dortluDorduncuOgeGenislik = "20%";
-$cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="'.$this->Cihazlar_Model->cihazDetayModalAdi().'{id}" tabindex="-1" role="dialog" aria-labelledby="'.$this->Cihazlar_Model->cihazDetayModalAdi().'{id}Label" aria-hidden="true">
+$cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" tabindex="-1" role="dialog" aria-labelledby="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="'.$this->Cihazlar_Model->cihazDetayModalAdi().'{id}Label">Cihaz Detayları</h5>
+        <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label">Cihaz Detayları</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -498,21 +498,28 @@ echo '</div>';
     });
   }
   $(document).ready(function() {
-    var cihazlarTablosu = $('#cihaz_tablosu').DataTable({
+    var tabloDiv = "#cihaz_tablosu";
+    var cihazlarTablosu = $(tabloDiv).DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": true,
       "ordering": true,
-      order:[[0,"DESC"]],
+      order: [
+        [0, "DESC"]
+      ],
       "info": true,
       "autoWidth": false,
       "responsive": true,
+      initComplete: function() {
+
+      },
       "oLanguage": {
-        "sSearch": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
+        "sSearch": "Ara:",
         "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
         "sInfoEmpty": "0 sonuç gösteriliyor.",
         "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
         "sZeroRecords": "Cihaz bulunamadı.",
+        //"sSearchPlaceholder": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
         "oPaginate": {
           "sFirst": "İlk",
           "sPrevious": "Önceki",
