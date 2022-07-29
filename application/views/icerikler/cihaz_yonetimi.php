@@ -106,30 +106,19 @@
                         <h5 class="col">Cihazın Hasar Bilgisi</h5>
                     </div>
                     <div class="row mt-2">
-                        <div class="form-group col-12 col">
-                            <input class="form-control" type="text" name="hasar_tespiti" placeholder="Teslim alırken yapılan hasar tespiti">
+                        <div class="form-group col">
+                            <textarea name="hasar_tespiti" class="form-control" rows="3" placeholder="Teslim alınırken yapılan hasar tespiti"></textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-check form-check-inline pl-2 col-2">
-                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar1" value="0" checked>
-                            <label class="form-check-label col-12" for="cihazdaki_hasar1"><?= $this->Islemler_Model->cihazdakiHasar(0); ?></label>
-                        </div>
-                        <div class="form-check form-check-inline col-2">
-                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar2" value="1">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar2"><?= $this->Islemler_Model->cihazdakiHasar(1); ?></label>
-                        </div>
-                        <div class="form-check form-check-inline col-2">
-                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar3" value="2">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar3"><?= $this->Islemler_Model->cihazdakiHasar(2); ?></label>
-                        </div>
-                        <div class="form-check form-check-inline col-2">
-                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar4" value="3">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?= $this->Islemler_Model->cihazdakiHasar(3); ?></label>
-                        </div>
-                        <div class="form-check form-check-inline col-2">
-                            <input class="form-check-input" type="radio" name="cihazdaki_hasar" id="cihazdaki_hasar4" value="4">
-                            <label class="form-check-label col-12" for="cihazdaki_hasar4"><?= $this->Islemler_Model->cihazdakiHasar(4); ?></label>
+                    <div class="row mt-2">
+                        <div class="form-group col">
+                            <select class="form-control" name="cihazdaki_hasar" aria-label="Servis Türü">
+                                <option value="0" selected>Hasar Türü Belirtin</option>
+                                <option value="1"><?= $this->Islemler_Model->cihazdakiHasar(1); ?></option>
+                                <option value="2"><?= $this->Islemler_Model->cihazdakiHasar(2); ?></option>
+                                <option value="3"><?= $this->Islemler_Model->cihazdakiHasar(3); ?></option>
+                                <option value="4"><?= $this->Islemler_Model->cihazdakiHasar(4); ?></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mt-2">
