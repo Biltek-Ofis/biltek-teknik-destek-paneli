@@ -12,7 +12,7 @@
   <?php $this->load->view("inc/scripts");?>
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="sidebar-mini layout-fixed">
 <div class="wrapper">
   <?php $this->load->view("inc/navbar");?>
   
