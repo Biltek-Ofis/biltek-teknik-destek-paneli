@@ -53,14 +53,14 @@ class Cihazlar_Model extends CI_Model{
         return $result;
      }
     public function cihazlar(){
-        $result = $this->db->order_by("id", "DESC")->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->order_by("id", "ASC")->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTur($tur){
         $where = array(
             "cihaz_turu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('id','DESC')->get($this->cihazlarTabloAdi)->result();
+        $result = $this->db->where($where)->order_by('id','ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarJQ($id){
