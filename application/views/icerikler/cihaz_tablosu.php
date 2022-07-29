@@ -38,6 +38,24 @@
     });
   });
 </script>
+<style>
+  .modal.modal-fullscreen .modal-dialog {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+  }
+  .modal.modal-fullscreen .modal-content {
+    height: auto;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .modal.modal-fullscreen .modal-body {
+    overflow-y: auto;
+  }
+</style>
 <?php
 $tur_belirtildimi = isset($tur) ? true : false;
 $cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
@@ -66,7 +84,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td class="text-center">
-    <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetayModal{id}">Detaylar</button>
+    <button class="btn btn-info text-white" data-toggle="modal" data-target="#cihazDetay{id}">Detaylar</button>
   </td>
 </tr>';
 $ilkOgeGenislik = "40%";
@@ -75,11 +93,11 @@ $dortluIlkOgeGenislik = "40%";
 $dortluIkinciOgeGenislik = "20%";
 $dortluUcuncuOgeGenislik = "20%";
 $dortluDorduncuOgeGenislik = "20%";
-$cihazDetayModalOrnek = '<div class="modal fade" id="cihazDetayModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetayModal{id}Label" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+$cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="cihazDetay{id}" tabindex="-1" role="dialog" aria-labelledby="cihazDetay{id}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="cihazDetayModal{id}Label">Cihaz Detayları</h5>
+        <h5 class="modal-title" id="cihazDetay{id}Label">Cihaz Detayları</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -271,7 +289,7 @@ $yapilanIslemToplam = $this->Islemler_Model->trimle($yapilanIslemToplam);
 $yapilanIslemlerSatiri = $this->Islemler_Model->trimle($yapilanIslemlerSatiri);
 $yapilanIslemlerSatiriBos = $this->Islemler_Model->trimle($yapilanIslemlerSatiriBos);
 $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
-$cihazDetayModalOrnek = $this->Islemler_Model->trimle($cihazDetayModalOrnek);
+$cihazDetayOrnek = $this->Islemler_Model->trimle($cihazDetayOrnek);
 $cihazTeslimEdildiModalOrnek = $this->Islemler_Model->trimle($cihazTeslimEdildiModalOrnek);
 $cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
@@ -395,8 +413,8 @@ foreach ($cihazlar as $cihaz) {
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
-  $cihazDetayModal = str_replace($eskiler, $yeniler, $cihazDetayModalOrnek);
-  echo $tablo . $cihazDetayModal . $cihazSilModal  . $cihazTeslimEdildiModal;
+  $cihazDetay = str_replace($eskiler, $yeniler, $cihazDetayOrnek);
+  echo $tablo . $cihazDetay . $cihazSilModal  . $cihazTeslimEdildiModal;
   $this->load->view("icerikler/yapilan_islemler_js", array(
     "id" => $cihaz->id,
     "yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
@@ -542,7 +560,7 @@ echo '</div>';
         $("dataTables_empty").hide();
         $("#cihaz" + value.id).remove();
         let tabloOrnek = '<?= $tabloOrnek; ?>';
-        let detayModalOrnek = '<?= $cihazDetayModalOrnek; ?>';
+        let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
         let cihazTeslimEdildiModalOrnek = '<?= $cihazTeslimEdildiModalOrnek; ?>';
         let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
 
