@@ -82,6 +82,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Kodu:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{id}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{musteri_adi}</li>
                 </ul>
