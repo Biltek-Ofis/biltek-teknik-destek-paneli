@@ -123,7 +123,7 @@ class Cihazlar_Model extends CI_Model
     public function cikisTarihiKontrol($id)
     {
         $cihaz = $this->cihazBul($id)->result()[0];
-        if ($cihaz->cikis_tarihi == "" or $cihaz->cikis_tarihi == "NULL") {
+        if ($cihaz->cikis_tarihi == "") {
             return true;
         } else {
             return false;
