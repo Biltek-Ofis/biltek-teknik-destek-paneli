@@ -107,7 +107,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="cihazDetay{id}"
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
-                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{teslim_edildi}</li>
+                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}TeslimDurumuText">{teslim_edildi}</span> <a href="#" class="text-link" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}">(Değiştir)</a></li>
                 </ul>
               </div>
               <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
@@ -188,7 +188,6 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="cihazDetay{id}"
         </div>
       </div>
       <div class="modal-footer">
-      <a href="#" class="btn {teslim_durumu_class} text-white" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}"><i class="fas {teslim_durumu_icon}"></i> {teslim_edildi_btn}</a>
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
       <a href="#" onclick="yazdir({id})" class="btn btn-dark text-white">Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
@@ -286,11 +285,8 @@ $eskiler = array(
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
   "{yapilan_islemler}",
-  "{teslim_edildi_btn}",
   "{teslim_durumu_uyari}",
   "{teslim_durumu_id}",
-  "{teslim_durumu_class}",
-  "{teslim_durumu_icon}",
 );
 
 $yapilanIslemToplamEskiArray = array(
@@ -370,11 +366,8 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
     $yapilanİslemler,
-    $cihaz->teslim_edildi == 1 ? $teslim_durumu_0 : $teslim_durumu_1,
     $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
     $cihaz->teslim_edildi == 1 ? 0 : 1,
-    $cihaz->teslim_edildi == 1 ? "btn-danger" : "btn-success",
-    $cihaz->teslim_edildi == 1 ? "fa-times" : "fa-check",
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
@@ -494,11 +487,8 @@ echo '</div>';
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
-      .replaceAll("{teslim_edildi_btn}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_0; ?>' : '<?= $teslim_durumu_1; ?>')
       .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
-      .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1)
-      .replaceAll("{teslim_durumu_class}", value.teslim_edildi == 1 ? "btn-danger" : "btn-success")
-      .replaceAll("{teslim_durumu_icon}", value.teslim_edildi == 1 ? "fa-times" : "fa-check");
+      .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1);
   }
 
   function yazdir(id) {
@@ -546,7 +536,7 @@ echo '</div>';
         $.each(JSON.parse(data), function(index, value) {
           sonCihazID = value.id;
           sayac++;
-          $("#" + value.id + "TeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+          $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
