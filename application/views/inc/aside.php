@@ -25,7 +25,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="<?= base_url(); ?>" class="nav-link">
+                    <a href="<?= base_url(); ?>" class="nav-link<?php if($aktifSayfa=="anasayfa"){echo " active";}?>">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Anasayfa
@@ -34,7 +34,7 @@
                 </li>
                 <li class="nav-header">Yönetim</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link<?php if($aktifSayfa=="cihaz_yonetimi"){echo " active";}?>">
+                    <a href="#" class="nav-link<?php if($aktifSayfa=="kullanicilar"){echo " active";}?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Kullanıcılar
