@@ -56,102 +56,58 @@
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" required>
-                        </div>
+                        <?php $this->load->view("ogeler/musteri_adi"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="adres" placeholder="Adresi">
-                        </div>
+                        <?php $this->load->view("ogeler/adres"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="gsm_mail" placeholder="GSM & E-Mail *" required>
-                        </div>
+                        <?php $this->load->view("ogeler/gsm"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <select class="form-control" name="cihaz_turu" aria-label="Cihaz türü" required>
-                                <option value="" selected>Cihaz Türü Seçin *</option>
-                                <?php
-                                foreach ($cihazTurleri as $cihazTuru) {
-                                    echo '<option value=' . $cihazTuru->id . '>' . $cihazTuru->isim . '</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
+                        <?php $this->load->view("ogeler/cihaz_turleri"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="cihaz" placeholder="Cihaz Markası *" required>
-                        </div>
+                        <?php $this->load->view("ogeler/cihaz_markasi"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="cihaz_modeli" placeholder="Modeli">
-                        </div>
+                        <?php $this->load->view("ogeler/cihaz_modeli"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="seri_no" placeholder="Cihazın Seri Numarası">
-                        </div>
+                        <?php $this->load->view("ogeler/seri_no"); ?>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <textarea name="ariza_aciklamasi" class="form-control" rows="3" placeholder="Belirtilen arıza açıklaması *" required></textarea>
-                        </div>
+                        <?php $this->load->view("ogeler/ariza_aciklamasi"); ?>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row">
                         <h5 class="col">Cihazın Hasar Bilgisi</h5>
                     </div>
-                    <div class="row mt-2">
-                        <div class="form-group col">
-                            <textarea name="hasar_tespiti" class="form-control" rows="3" placeholder="Teslim alınırken yapılan hasar tespiti"></textarea>
-                        </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/hasar_tespiti"); ?>
                     </div>
-                    <div class="row mt-2">
-                        <div class="form-group col">
-                            <select class="form-control" name="cihazdaki_hasar" aria-label="Servis Türü">
-                                <option value="0" selected>Hasar Türü Belirtin</option>
-                                <option value="1"><?= $this->Islemler_Model->cihazdakiHasar(1); ?></option>
-                                <option value="2"><?= $this->Islemler_Model->cihazdakiHasar(2); ?></option>
-                                <option value="3"><?= $this->Islemler_Model->cihazdakiHasar(3); ?></option>
-                                <option value="4"><?= $this->Islemler_Model->cihazdakiHasar(4); ?></option>
-                            </select>
-                        </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/hasar_turu"); ?>
                     </div>
-                    <div class="row mt-2">
-                        <div class="form-group col">
-                            <select class="form-control" name="servis_turu" aria-label="Servis Türü">
-                                <option value="0" selected>Servis Türü Seçin</option>
-                                <option value="1"><?= $this->Islemler_Model->servisTuru(1); ?></option>
-                                <option value="2"><?= $this->Islemler_Model->servisTuru(2); ?></option>
-                                <option value="3"><?= $this->Islemler_Model->servisTuru(3); ?></option>
-                                <option value="4"><?= $this->Islemler_Model->servisTuru(4); ?></option>
-                            </select>
-                        </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/servis_turu"); ?>
                     </div>
-                    <div class="row mt-2">
-                        <div class="form-group col">
-                            <select class="form-control" name="yedek_durumu" aria-label="Yedekleme İşlemi">
-                                <option value="0" selected>Yedek alınacak mı?</option>
-                                <option value="1"><?= $this->Islemler_Model->evetHayir(1); ?></option>
-                                <option value="2"><?= $this->Islemler_Model->evetHayir(2); ?></option>
-                            </select>
-                        </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/yedek"); ?>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row">
                         <h5 class="col">Aksesuarlar</h5>
                     </div>
-                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi")); ?>
-                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru")); ?>
-                    <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil")); ?>
-
-                    <div class="row mt-2">
-                        <div class="form-group col">
-                            <input class="form-control" type="text" name="diger_aksesuar" placeholder="Diğer aksesuar bilgileri">
-                        </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi")); ?>
+                    </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru")); ?>
+                    </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil")); ?>
+                    </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/diger_aksesuar_bilgileri"); ?>
                     </div>
                 </form>
             </div>
