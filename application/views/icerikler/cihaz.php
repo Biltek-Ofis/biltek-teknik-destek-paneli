@@ -59,60 +59,43 @@
                                     <tr>
                                         <th class="align-middle">Müşteri Adı: </th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" name="musteri_adi" placeholder="Müşteri Adı" value="<?= $cihaz->musteri_adi; ?>" required>
-                                            </div>
+                                            <?php $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "value" => $cihaz->musteri_adi)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Adresi: </th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" name="adres" placeholder="Adres" value="<?= $cihaz->adres; ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/adres", array("sifirla" => true, "value" => $cihaz->adres)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">GSM & E-Mail: </th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" name="gsm_mail" placeholder="GSM & E-Mail *" value="<?= $cihaz->gsm_mail; ?>" required>
-                                            </div>
+                                            <?php $this->load->view("ogeler/gsm", array("sifirla" => true, "value" => $cihaz->gsm_mail)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Giriş Tarihi:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="datetime-local" name="tarih" value="<?= $this->Islemler_Model->tarihDonusturInput($cihaz->tarih); ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/tarih", array("isim" => "tarih", "sifirla" => true, "value" => $cihaz->tarih)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Bildirim Tarihi:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="datetime-local" name="tarih" value="<?= $this->Islemler_Model->tarihDonusturInput($cihaz->bildirim_tarihi); ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/tarih", array("isim" => "bildirim_tarihi", "sifirla" => true, "value" => $cihaz->bildirim_tarihi)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Çıkış Tarihi:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="datetime-local" name="tarih" value="<?= $this->Islemler_Model->tarihDonusturInput($cihaz->cikis_tarihi); ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/tarih", array("isim" => "cikis_tarihi", "sifirla" => true, "value" => $cihaz->cikis_tarihi)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Teslim Durumu:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <select class="form-control" name="cihaz_turu" aria-label="Cihaz türü">
-                                                    <option value="0" <?= ($cihaz->teslim_edildi == 0) ? " selected" : ""; ?>>Teslim Edilmedi</option>
-                                                    <option value="1" <?= ($cihaz->teslim_edildi == 1) ? " selected" : ""; ?>>Teslim Edildi</option>
-                                                </select>
-                                            </div>
+                                            <?php $this->load->view("ogeler/teslim_durumu", array("sifirla" => true, "value" => $cihaz->teslim_edildi)); ?>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -127,43 +110,25 @@
                                     <tr>
                                         <th class="align-middle">Cihaz Türü:</th>
                                         <td class="align-middle">
-                                            <?php
-                                            $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
-                                            ?>
-                                            <div class="form-group m-0 p-0">
-                                                <select class="form-control" name="cihaz_turu" aria-label="Cihaz türü" required>
-                                                    <option value="" selected>Cihaz Türü Seçin *</option>
-                                                    <?php
-                                                    foreach ($cihazTurleri as $cihazTuru) {
-                                                        echo '<option value="' . $cihazTuru->id . '"' . ($cihaz->cihaz_turu == $cihazTuru->isim ? " selected" : "") . '>' . $cihazTuru->isim . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                            <?php $this->load->view("ogeler/cihaz_turleri", array("sifirla" => true, "value" => $cihaz->cihaz_turu)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Markası:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" name="cihaz" value="<?= $cihaz->cihaz; ?>" required>
-                                            </div>
+                                            <?php $this->load->view("ogeler/cihaz_markasi", array("sifirla" => true, "value" => $cihaz->cihaz)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Modeli:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" name="cihaz" placeholder="Modeli" value="<?= $cihaz->cihaz_modeli; ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/cihaz_modeli", array("sifirla" => true, "value" => $cihaz->cihaz_modeli)); ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="align-middle">Seri Numarası:</th>
                                         <td class="align-middle">
-                                            <div class="form-group m-0 p-0">
-                                                <input class="form-control m-0" type="text" placeholder="Cihazın Seri Numarası" name="seri_no" value="<?= $cihaz->seri_no; ?>">
-                                            </div>
+                                            <?php $this->load->view("ogeler/seri_no", array("sifirla" => true, "value" => $cihaz->seri_no)); ?>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -171,10 +136,76 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="teknik-servis-bilgileri" role="tabpanel" aria-labelledby="teknik-servis-bilgileri">
-                        Teknik servis bilgileri
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/hasar_turu", array("sifirla" => true, "value" => $cihaz->cihazdaki_hasar)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Teslim alınırken yapılan hasar tespiti:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/hasar_tespiti", array("sifirla" => true, "value" => $cihaz->hasar_tespiti)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Arıza Açıklaması:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true, "value" => $cihaz->ariza_aciklamasi)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Servis Türü:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/servis_turu", array("sifirla" => true, "value" => $cihaz->servis_turu)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Yedek Alınacak mı?:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/yedek", array("sifirla" => true, "value" => $cihaz->yedek_durumu)); ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="aksesuar-bilgileri" role="tabpanel" aria-labelledby="aksesuar-bilgileri-bilgileri">
-                        Aksesuar bilgileri
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="align-middle">Taşıma Çantası:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi", "sifirla" => true, "value" => $cihaz->tasima_cantasi)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Sarj Adaptörü:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru", "sifirla" => true, "value" => $cihaz->sarj_adaptoru)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Pil:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil", "sifirla" => true, "value" => $cihaz->pil)); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle">Diğer:</th>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/diger_aksesuar_bilgileri", array("sifirla" => true, "value" => $cihaz->diger_aksesuar)); ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="yapilan-islemler" role="tabpanel" aria-labelledby="yapilan-islemler">
                         Yapılan İşlemler
