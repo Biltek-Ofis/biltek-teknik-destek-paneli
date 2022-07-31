@@ -102,6 +102,35 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function cihazPost($teslim_dahil = false)
+    {
+        $veri = array(
+            "musteri_adi" => $this->input->post("musteri_adi"),
+            "adres" => $this->input->post("adres"),
+            "gsm_mail" => $this->input->post("gsm_mail"),
+            "cihaz_turu" => $this->input->post("cihaz_turu"),
+            "cihaz" => $this->input->post("cihaz"),
+            "cihaz_modeli" => $this->input->post("cihaz_modeli"),
+            "seri_no" => $this->input->post("seri_no"),
+            "hasar_tespiti" => $this->input->post("hasar_tespiti"),
+            "cihazdaki_hasar" => $this->input->post("cihazdaki_hasar"),
+            "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
+            "servis_turu" => $this->input->post("servis_turu"),
+            "yedek_durumu" => $this->input->post("yedek_durumu"),
+            "tasima_cantasi" => $this->input->post("tasima_cantasi"),
+            "sarj_adaptoru" => $this->input->post("sarj_adaptoru"),
+            "pil" => $this->input->post("pil"),
+            "diger_aksesuar" => $this->input->post("diger_aksesuar"),
+        );
+        if ($teslim_dahil) {
+            $veri["teslim_edildi"] = $this->input->post("teslim_edildi");
+        }
+        return $veri;
+    }
+    public function cihazDuzenle($id, $veri)
+    {
+        return $this->db->where("id", $id)->update($this->cihazlarTabloAdi, $veri);
+    }
     public function cihazEkle($veri)
     {
         return $this->db->insert($this->cihazlarTabloAdi, $veri);
@@ -135,9 +164,10 @@ class Cihazlar_Model extends CI_Model
         if ($durum == 1) {
             $veri = array("teslim_edildi" => $durum, "cikis_tarihi" => $this->Islemler_Model->tarih());
         }
-        return $this->db->where("id", $id)->update($this->cihazlarTabloAdi, $veri);
+        return $this->cihazDuzenle($id, $veri);
     }
-    public function cihazDetayModalAdi(){
+    public function cihazDetayModalAdi()
+    {
         return "cihazDetay";
     }
 }
