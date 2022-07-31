@@ -7,11 +7,11 @@ class Giris_Model extends CI_Model
     }
     public function kullaniciGiris()
     {
-        return isset($_SESSION["KULLANICI"]);
+        return isset($_SESSION["KULLANICI_ID"]);
     }
     public function girisDurumu($kullanici_adi, $sifre)
     {
-        //Şifreleme password_hash("123456", PASSWORD_DEFAULT);
+        //Şifreleme $this->Islemler_Model->sifrele($sifre);
         $query = $this->db->limit(1)->where('kullanici_adi', $kullanici_adi)->get("Kullanicilar");
         if ($query->num_rows() > 0) {
             if (password_verify($sifre, $query->result()[0]->sifre)) {
@@ -25,10 +25,13 @@ class Giris_Model extends CI_Model
     }
     public function kullaniciOturumAc($kullanici_adi)
     {
-        $_SESSION["KULLANICI"] = $kullanici_adi;
+        $query = $this->db->limit(1)->where('kullanici_adi', $kullanici_adi)->get("Kullanicilar");
+        if ($query->num_rows() > 0) {
+            $_SESSION["KULLANICI_ID"] = $query->result()[0]->id;
+        }
     }
     public function oturumSifirla()
     {
-        unset($_SESSION["KULLANICI"]);
+        unset($_SESSION["KULLANICI_ID"]);
     }
 }

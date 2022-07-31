@@ -1,36 +1,79 @@
 <?php
-class Kullanicilar_Model extends CI_Model{
+class Kullanicilar_Model extends CI_Model
+{
     public function __construct()
     {
         parent::__construct();
     }
-    public function girisUyari($konum, $hata = ""){
+    public function girisUyari($konum, $hata = "")
+    {
         echo '<script>
-        var r = confirm("'.($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata).'");
+        var r = confirm("' . ($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata) . '");
         if (r == true) {
-            window.location.replace("'.base_url().$konum.'");
+            window.location.replace("' . base_url() . $konum . '");
         }else{
-            window.location.replace("'.base_url().$konum.'");
+            window.location.replace("' . base_url() . $konum . '");
         }</script>';
     }
     public $kullanicilarTablosu = "Kullanicilar";
 
-    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad = "", $soyad = ""){
+    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad = "", $soyad = "", $sifre = "", $yonetici = 0)
+    {
         return array(
-            "id"=> $id,
-            "kullanici_adi"=> $kullanici_adi,
-            "ad"=> $ad,
-            "soyad"=> $soyad,
+            "id" => $id,
+            "kullanici_adi" => $kullanici_adi,
+            "ad" => $ad,
+            "soyad" => $soyad,
+            "sifre" => $sifre,
+            "yonetici" => $yonetici,
         );
     }
 
-    public function kullaniciBilgileri(){
-        if($this->Giris_Model->kullaniciGiris()){
-            $kullanici = $this->db->where("kullanici_adi", $_SESSION["KULLANICI"])->get($this->kullanicilarTablosu)->result()[0];
-            return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad, $kullanici->soyad);
-        }else{
+    public function kullaniciBilgileri()
+    {
+        if ($this->Giris_Model->kullaniciGiris()) {
+            $kullanici = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTablosu)->result()[0];
+            return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad, $kullanici->soyad, $kullanici->sifre, $kullanici->yonetici);
+        } else {
             return $this->kullaniciTablosu();
         }
     }
+    public function yonetici()
+    {
+        return $this->kullaniciBilgileri()["yonetici"] == 1;
+    }
+    public function kullaniciListesi($id = "")
+    {
+        if ($id == "") {
+            return $this->db->get($this->kullanicilarTablosu)->result();
+        } else {
+            return $this->db->where(array("id" => $id))->get($this->kullanicilarTablosu)->result();
+        }
+    }
+    public function ekle($veri)
+    {
+        return $this->db->insert($this->kullanicilarTablosu, $veri);
+    }
+    public function duzenle($id, $veri)
+    {
+        return $this->db->where("id", $id)->update($this->kullanicilarTablosu, $veri);
+    }
+    public function sil($id)
+    {
+        return $this->db->where("id", $id)->delete($this->kullanicilarTablosu);
+    }
+
+    public function kullaniciPost($yonetici_dahil = false)
+    {
+        $veri = array(
+            "kullanici_adi" => $this->input->post("kullanici_adi"),
+            "ad" => $this->input->post("ad"),
+            "soyad" => $this->input->post("soyad"),
+            "sifre" => $this->input->post("sifre"),
+        );
+        if ($yonetici_dahil) {
+            $veri["yonetici"] = $this->input->post("yonetici");
+        }
+        return $veri;
+    }
 }
-?>

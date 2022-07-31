@@ -7,7 +7,7 @@ class Cikis extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-        unset($_SESSION["KULLANICI"]);
+        unset($_SESSION["KULLANICI_ID"]);
         redirect(base_url());
     }
 
