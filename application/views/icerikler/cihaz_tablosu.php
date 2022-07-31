@@ -500,39 +500,7 @@ echo '</div>';
   }
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": true,
-      order: [
-        [0, "DESC"]
-      ],
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-      initComplete: function() {
-
-      },
-      "oLanguage": {
-        "sSearch": "Ara:",
-        "sInfo": "Toplam _TOTAL_ cihazdan _START_ ile _END_ arası gösteriliyor.",
-        "sInfoEmpty": "0 sonuç gösteriliyor.",
-        "sInfoFiltered": "(toplam _MAX_ cihaz içinden)",
-        "sZeroRecords": "Cihaz bulunamadı.",
-        //"sSearchPlaceholder": "Cihaz Kodu / Müşteri Adı / Marka ve Model Ara",
-        "oPaginate": {
-          "sFirst": "İlk",
-          "sPrevious": "Önceki",
-          "sLast": "Son",
-          "sNext": "Sonraki",
-        },
-      },
-      columnDefs: [{
-        "defaultContent": "-",
-        "targets": "_all"
-      }]
-    });
+    var cihazlarTablosu = $(tabloDiv).DataTable(<?=$this->Islemler_Model->datatablesAyarlari([0, "desc"]);?>);
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
