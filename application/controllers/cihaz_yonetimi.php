@@ -12,7 +12,7 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
             $this->load->model("Islemler_Model");
             $this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Cihaz Yönetimi", "cihaz_yonetimi", [], "inc/datatables"));
         }else{
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
     }
     public function cihazlarJQ($id){
@@ -51,10 +51,10 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 				$id = $this->db->insert_id();
 				redirect(base_url("cihaz_yonetimi")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
 			}else{
-				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi. ");
+				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi. ");
 			}
 		}else{
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 	public function cihazSil($id)
@@ -64,10 +64,10 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($sil){
 				redirect(base_url("cihaz_yonetimi"));
 			}else{
-				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi", "Silme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi", "Silme işlemi gerçekleştirilemedi");
 			}
 		}else{
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 	public function silinenCihazlariBul()
@@ -81,10 +81,10 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			if($sil){
 				redirect(base_url("cihaz_yonetimi")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
 			} else {
-				$this->Kullanicilar_Model->girisUyari("/cihaz_yonetimi#".$this->Cihazlar_Model->cihazDetayModalAdi().$id, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi#".$this->Cihazlar_Model->cihazDetayModalAdi().$id, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
 			}
 		}else{
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 }

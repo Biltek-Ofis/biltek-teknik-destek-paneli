@@ -46,10 +46,10 @@ class Cihazlar extends Varsayilan_Controller
 			if ($sil) {
 				redirect(base_url("cihazlar/" . $tur));
 			} else {
-				$this->Kullanicilar_Model->girisUyari("/cihazlar/" . $tur, "Silme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("cihazlar/" . $tur, "Silme işlemi gerçekleştirilemedi");
 			}
 		} else {
-			$this->Kullanicilar_Model->girisUyari("/cihazlar/" . $tur);
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 	public function teslimEdildi($tur, $id, $durum)
@@ -59,10 +59,10 @@ class Cihazlar extends Varsayilan_Controller
 			if ($guncellendi) {
 				redirect(base_url("cihazlar/" . $tur)."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
 			} else {
-				$this->Kullanicilar_Model->girisUyari("/cihazlar/" . $tur, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("cihazlar/" . $tur, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
 			}
 		} else {
-			$this->Kullanicilar_Model->girisUyari("/cihazlar/" . $tur);
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 	public function yapilanIslemlerJS($id)
