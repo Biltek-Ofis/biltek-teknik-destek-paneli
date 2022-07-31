@@ -5,14 +5,14 @@ class Kullanicilar_Model extends CI_Model
     {
         parent::__construct();
     }
-    public function girisUyari($konum, $hata = "")
+    public function girisUyari($konum = "", $hata = "")
     {
         echo '<script>
         var r = confirm("' . ($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata) . '");
         if (r == true) {
-            window.location.replace("' . base_url() . $konum . '");
+            window.location.replace("' . base_url($konum) .'");
         }else{
-            window.location.replace("' . base_url() . $konum . '");
+            window.location.replace("' . base_url($konum) . '");
         }</script>';
     }
     public $kullanicilarTablosu = "Kullanicilar";
@@ -31,9 +31,14 @@ class Kullanicilar_Model extends CI_Model
 
     public function kullaniciBilgileri()
     {
-        if ($this->Giris_Model->kullaniciGiris()) {
-            $kullanici = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTablosu)->result()[0];
-            return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad, $kullanici->soyad, $kullanici->sifre, $kullanici->yonetici);
+        if ($this->Giris_Model->kullaniciTanimi()) {
+            $kullaniciTablo = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTablosu);
+            if ($kullaniciTablo->num_rows() > 0) {
+                $kullanici = $kullaniciTablo->result()[0];
+                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad, $kullanici->soyad, $kullanici->sifre, $kullanici->yonetici);
+            } else {
+                return $this->kullaniciTablosu();
+            }
         } else {
             return $this->kullaniciTablosu();
         }

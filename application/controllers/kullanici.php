@@ -15,7 +15,7 @@ class Kullanici extends Varsayilan_Controller
 			$kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
 			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($kullanici["ad"] . " " . $kullanici["soyad"], "kullanici", [], "inc/datatables"));
 		} else {
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 	public function guncelle()
@@ -35,7 +35,7 @@ class Kullanici extends Varsayilan_Controller
 				$this->Kullanicilar_Model->girisUyari("kullanici", "Bilgileriniz güncellenemedi lütfen daha sonra tekrar deneyin");
 			}
 		} else {
-			$this->Kullanicilar_Model->girisUyari("/");
+			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
 }
