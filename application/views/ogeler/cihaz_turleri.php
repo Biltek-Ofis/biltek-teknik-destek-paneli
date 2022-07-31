@@ -9,7 +9,7 @@ $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
         <?php
         foreach ($cihazTurleri as $cihazTuru) {
             echo '<option value="' . $cihazTuru->id . '"';
-            if (isset($value) && ($value == $cihazTuru->isim or $value == $cihazTuru->id)) {
+            if (isset($cihaz_turu_value) && ($cihaz_turu_value == $cihazTuru->isim or $cihaz_turu_value == $cihazTuru->id)) {
                 echo " selected";
             }
             echo '>' . $cihazTuru->isim . '</option>';
