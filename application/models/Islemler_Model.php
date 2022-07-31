@@ -16,7 +16,8 @@ class Islemler_Model extends CI_Model
         );
     }
     public $sqlTarihFormati = "Y-m-d H:i:s.v";
-    public function tarih(){
+    public function tarih()
+    {
         $suankiTarih = new DateTime();
         //Örnek SQL tarih 2022-07-29 11:13:46.150
         return $suankiTarih->format($this->sqlTarihFormati);
@@ -137,5 +138,41 @@ class Islemler_Model extends CI_Model
             default:
                 return "Belirtilmemiş";
         }
+    }
+    public function datatablesAyarlari($siralama)
+    {
+        return '
+        {
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            order: [
+              ['.$siralama[0].', "'.$siralama[1].'"]
+            ],
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            initComplete: function() {
+      
+            },
+            "oLanguage": {
+              "sSearch": "Ara:",
+              "sInfo": "Toplam _TOTAL_ sonuçtan _START_ ile _END_ arası gösteriliyor.",
+              "sInfoEmpty": "0 sonuç gösteriliyor.",
+              "sInfoFiltered": "(toplam _MAX_ sonuç içinden)",
+              "sZeroRecords": "Sonuç bulunamadı.",
+              "oPaginate": {
+                "sFirst": "İlk",
+                "sPrevious": "Önceki",
+                "sLast": "Son",
+                "sNext": "Sonraki",
+              },
+            },
+            columnDefs: [{
+              "defaultContent": "-",
+              "targets": "_all"
+            }]
+          }';
     }
 }
