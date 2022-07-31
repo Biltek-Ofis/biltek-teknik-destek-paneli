@@ -1,5 +1,5 @@
 <div class="form-group<?php if(isset($sifirla)) {echo " p-0 m-0";} ?> col">
-    <select class="form-control" name="servis_turu" aria-label="Servis Türü">
+    <select id="servis_turu" class="form-control" name="servis_turu" aria-label="Servis Türü">
         <option value="0"<?php if(isset($value) && $value==0) {echo " selected";} ?>>Servis Türü Seçin</option>
         <option value="1"<?php if(isset($value) && $value==1) {echo " selected";} ?>><?= $this->Islemler_Model->servisTuru(1); ?></option>
         <option value="2"<?php if(isset($value) && $value==2) {echo " selected";} ?>><?= $this->Islemler_Model->servisTuru(2); ?></option>
