@@ -178,4 +178,16 @@ class Islemler_Model extends CI_Model
     public function sifrele($sifre){
         return password_hash($sifre, PASSWORD_DEFAULT);
     }
+    public function cihazDurumu($id){
+        switch ($id) {
+            case 1:
+                return "Arıza Tespiti Yapılıyor";
+            case 2:
+                return "Yedek Parça Bekleniyor";
+            case 3:
+                return "Teslim Edilmeye Hazır";
+            default:
+                return "Sırada Bekliyor";
+        }
+    }
 }
