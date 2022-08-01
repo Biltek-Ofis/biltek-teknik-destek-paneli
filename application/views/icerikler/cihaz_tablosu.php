@@ -31,6 +31,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Marka / Modeli</th>
+        <th scope="col">Güncel Durum</th>
         <th scope="col">Teslim Durumu</th>
         <th scope="col">Detaylar</th>
     </tr>
@@ -46,6 +47,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
+  <td id="{id}CihazGuncelDurumu">{guncel_durum}</td>
   <td id="{id}CihazTeslimDurumu">{teslim_edildi}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
@@ -535,7 +537,7 @@ echo '</div>';
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
           $("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
-
+          $("#" + value.id + "CihazGuncelDurumu").html(cihazDurumu(value.guncel_durum));
         });
       });
 
