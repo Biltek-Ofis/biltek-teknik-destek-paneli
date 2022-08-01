@@ -8,31 +8,11 @@ class Cihazlar_Model extends CI_Model
     }
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
-    public $CihazDurumuTabloAdi = "CihazDurumu";
     public $silinenCihazlarTabloAdi = "SilinenCihazlar";
     public $yapilanIslemlerTabloAdi = "YapilanIslemler";
-    public function cihazSonDurumu($cihaz_id)
-    {
-        $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
-        if ($query->num_rows() > 0) {
-            return $query->result()[0]->durum;
-        } else {
-            return "Bekleniyor";
-        }
-    }
     public function cihazBul($id)
     {
         return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
-    }
-    public function cihazSonIslemTarih($cihaz_id, $varsayilanTarih)
-    {
-        $this->load->model("Islemler_Model");
-        $query = $this->db->where("cihaz_id", $cihaz_id)->limit(1)->get($this->CihazDurumuTabloAdi);
-        if ($query->num_rows() > 0) {
-            return $this->Islemler_Model->tarihDonustur($query->result()[0]->tarih);
-        } else {
-            return $this->Islemler_Model->tarihDonustur($varsayilanTarih);
-        }
     }
     public function cihazTuru($tur_id)
     {
