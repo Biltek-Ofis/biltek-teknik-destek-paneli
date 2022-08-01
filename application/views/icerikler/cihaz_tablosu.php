@@ -328,7 +328,7 @@ foreach ($cihazlar as $cihaz) {
     "Toplam",
     $toplam_fiyat,
   );
-  $kdv = $toplam_fiyat * 0.18;
+  $kdv = ceil($toplam_fiyat * 0.18);
   $yapilanIslemToplamKDVYeni = array(
     "KDV (%18)",
     $kdv,
