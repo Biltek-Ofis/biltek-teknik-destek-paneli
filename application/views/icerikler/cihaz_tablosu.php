@@ -31,6 +31,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Müşteri Adı</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Marka / Modeli</th>
+        <th scope="col">Teslim Durumu</th>
         <th scope="col">Detaylar</th>
     </tr>
 </thead>
@@ -45,6 +46,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
+  <td id="{id}CihazTeslimDurumu">{teslim_edildi}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
@@ -513,9 +515,11 @@ echo '</div>';
           sonCihazID = value.id;
           sayac++;
           $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+          $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
+          
         });
       });
 
