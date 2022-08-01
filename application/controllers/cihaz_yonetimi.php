@@ -32,9 +32,9 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			$ekle = $this->Cihazlar_Model->cihazEkle($veri);
 			if($ekle){
 				//$id = $this->db->insert_id();
-				redirect(base_url("cihaz_yonetimi"));
+				redirect(base_url(""));
 			}else{
-				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi", "Ekleme işlemi gerçekleştirilemedi. ");
+				$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. ");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("cikis");
@@ -45,9 +45,9 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 		if ($this->Giris_Model->kullaniciGiris()){
 			$sil = $this->Cihazlar_Model->cihazSil($id);
 			if($sil){
-				redirect(base_url("cihaz_yonetimi"));
+				redirect(base_url(""));
 			}else{
-				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi", "Silme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("", "Silme işlemi gerçekleştirilemedi");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("cikis");
@@ -62,9 +62,9 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 		if ($this->Giris_Model->kullaniciGiris()){
 			$sil = $this->Cihazlar_Model->teslimEdildi($id, $durum);
 			if($sil){
-				redirect(base_url("cihaz_yonetimi")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
+				redirect(base_url("")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
 			} else {
-				$this->Kullanicilar_Model->girisUyari("cihaz_yonetimi#".$this->Cihazlar_Model->cihazDetayModalAdi().$id, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
+				$this->Kullanicilar_Model->girisUyari("#".$this->Cihazlar_Model->cihazDetayModalAdi().$id, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
 			}
 		}else{
 			$this->Kullanicilar_Model->girisUyari("cikis");
