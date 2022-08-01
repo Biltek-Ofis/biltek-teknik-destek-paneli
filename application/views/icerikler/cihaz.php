@@ -241,7 +241,7 @@
                                 <table class="table table-flush">
                                     <thead>
                                         <tr>
-                                            <th>İşlem</th>
+                                            <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
                                             <th>Birim Fiyat (TL)</th>
                                             <th>Tutar</th>
