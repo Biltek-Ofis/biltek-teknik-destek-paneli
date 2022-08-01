@@ -71,7 +71,7 @@
                     <table id="kullanici_tablosu" class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>İsim</th>
+                                <th>Ad Soyad</th>
                                 <th>Kullanıcı Adı</th>
                                 <th>Yönetici</th>
                                 <th>İşlemler</th>
