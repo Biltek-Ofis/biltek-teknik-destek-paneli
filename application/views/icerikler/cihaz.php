@@ -33,7 +33,10 @@
                         <a class="nav-link active" id="genel-bilgiler-tab" data-toggle="pill" href="#genel-bilgiler" role="tab" aria-controls="genel-bilgiler" aria-selected="false">Genel Bilgiler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="yapilan-islemler-tab" data-toggle="pill" href="#yapilan-islemler" role="tab" aria-controls="teknik-servis" aria-selected="false">Yapılan İşlemler</a>
+                        <a class="nav-link" id="yapilan-islemler-tab" data-toggle="pill" href="#yapilan-islemler" role="tab" aria-controls="yapilan-islemler" aria-selected="false">Yapılan İşlemler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="medyalar-tab" data-toggle="pill" href="#medyalar" role="tab" aria-controls="medyalar" aria-selected="false">Medyalar</a>
                     </li>
                 </ul>
             </div>
@@ -233,9 +236,9 @@
                                             </td>
                                         </tr>
                                         <th class="align-middle">Güncel Durum:</th>
-                                            <td class="align-middle">
-                                                <?php $this->load->view("ogeler/guncel_durum", array("sifirla" => true, "guncel_durum_value" => $cihaz->guncel_durum)); ?>
-                                            </td>
+                                        <td class="align-middle">
+                                            <?php $this->load->view("ogeler/guncel_durum", array("sifirla" => true, "guncel_durum_value" => $cihaz->guncel_durum)); ?>
+                                        </td>
                                     </tbody>
                                 </table>
                                 <table class="table table-flush">
@@ -282,7 +285,7 @@
                                         <tr>
                                             <td colspan="4">
                                                 <div class="form-group p-0 m-0 col">
-                                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="one-time-code" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"><?=$cihaz->yapilan_islem_aciklamasi;?></textarea>
+                                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="one-time-code" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"><?= $cihaz->yapilan_islem_aciklamasi; ?></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -345,6 +348,76 @@
                                 }
                             });
                         </script>
+                    </div>
+                    <script>
+                        function _(abc) {
+                            return document.getElementById(abc);
+                        }
+
+                        function dosyaYukle() {
+                            var dosya = _("yuklenecekDosya").files[0];
+                            var formdata = new FormData();
+                            formdata.append("yuklenecekDosya", dosya);
+                            var ajax = new XMLHttpRequest();
+                            ajax.upload.addEventListener("progress", ilerlemeDurumu, false);
+                            ajax.addEventListener("load", tamamlamaDurumu, false);
+                            ajax.addEventListener("error", hataDurumu, false);
+                            ajax.addEventListener("abort", iptalDurumu, false);
+                            ajax.open("POST", "<?= base_url("cihaz/medyaYukle/" . $cihaz->id); ?>");
+                            ajax.send(formdata);
+                        }
+
+                        function ilerlemeDurumu(event) {
+                            var loaded = new Number((event.loaded / 1048576));
+                            var total = new Number((event.total / 1048576));
+                            _("yukleme_durumu").innerHTML = "Yüklendi: " + loaded.toPrecision(5) + " MB / " + total.toPrecision(5)+" MB";
+                            var percent = (event.loaded / event.total) * 100; 
+                            _("progressBar").value = Math.round(percent);
+                            _("durum").innerHTML = Math.round(percent) + "% yüklendi";
+                        }
+
+                        function tamamlamaDurumu(event) {
+                            var sonuc = JSON.parse( event.target.responseText);
+                            _("durum").innerHTML = sonuc.mesaj; 
+                            _("progressBar").value = 0;
+                            document.getElementById('progressDiv').style.display = 'none'; 
+                            if(sonuc.sonuc == 0){
+                                _("yukleme_durumu").innerHTML = '';
+                            }
+                        }
+
+                        function hataDurumu(event) {
+                            _("durum").innerHTML = "Yükleme Başarısız";
+                        }
+
+                        function iptalDurumu(event) {
+                            _("durum").innerHTML = "Yükleme İptal Edildi";
+                        }
+                    </script>
+                    <div class="tab-pane fade" id="medyalar" role="tabpanel" aria-labelledby="medyalar">
+                        <div class="row text-center">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="upload_form" enctype="multipart/form-data" method="post">
+                                    <div class="form-group">
+                                        <input type="file" name="yuklenecekDosya" id="yuklenecekDosya">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="btn btn-primary" type="button" value="Medya Yükle" name="btnSubmit"  accept="image/pjpeg, image/png, image/jpeg, video/mp4" onclick="dosyaYukle()">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="progress" id="progressDiv">
+                                            <progress id="progressBar" value="0" max="100" style="width:100%; height: 1.2rem;"></progress>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <h3 id="durum"></h3>
+                                        <p id="yukleme_durumu"></p>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
                     </div>
                 </div>
             </div>
