@@ -44,25 +44,39 @@ class Cihaz extends Varsayilan_Controller
     {
         if ($this->Giris_Model->kullaniciGiris()) {
             $this->Cihazlar_Model->yapilanIslemleriTemizle($id);
-            $this->Cihazlar_Model->cihazDuzenle($id, array("yapilan_islem_aciklamasi"=>$this->input->post("yapilan_islem_aciklamasi")));
+            $cihaz_verileri = array(
+                "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
+            );
+            $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
+            $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
+            $cikis_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("cikis_tarihi"));
+            if (strlen($tarih) > 0) {
+                $cihaz_verileri["tarih"] = $tarih;
+            }
+            $cihaz_verileri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
+            $cihaz_verileri["cikis_tarihi"] = strlen($cikis_tarihi) > 0 ? $cikis_tarihi : NULL;
+            $this->Cihazlar_Model->cihazDuzenle(
+                $id,
+                $cihaz_verileri,
+            );
             for ($i = 0; $i < 5; $i++) {
-                $islem = $this->input->post("islem".$i);
+                $islem = $this->input->post("islem" . $i);
                 if (strlen($islem) > 0) {
                     $veri = $this->Cihazlar_Model->yapilanIslemArray(
                         $id,
                         $islem,
-                        $this->input->post("miktar".$i),
-                        $this->input->post("birim_fiyati".$i),
+                        $this->input->post("miktar" . $i),
+                        $this->input->post("birim_fiyati" . $i),
                     );
                     $ekle = $this->Cihazlar_Model->yapilanIslemEkle($veri);
                     if (!$ekle) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id."#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ".$this->db->error()["message"]);
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
                         return;
                     }
                 }
             }
 
-            redirect(base_url("cihaz/" . $id."#yapilan-islemler"));
+            redirect(base_url("cihaz/" . $id . "#yapilan-islemler"));
         } else {
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
