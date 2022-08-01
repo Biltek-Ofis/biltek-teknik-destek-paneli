@@ -22,16 +22,6 @@
         </div>-->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="<?= base_url(); ?>" class="nav-link<?php if ($aktifSayfa == "anasayfa") {
-                                                                    echo " active";
-                                                                } ?>">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            Anasayfa
-                        </p>
-                    </a>
-                </li>
                 <?php
 
                 if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
@@ -39,8 +29,8 @@
                     <li class="nav-header">Yönetim</li>
                     <li class="nav-item">
                         <a href="<?= base_url("kullanicilar"); ?>" class="nav-link<?php if ($aktifSayfa == "kullanicilar") {
-                                                                                    echo " active";
-                                                                                } ?>">
+                                                                                        echo " active";
+                                                                                    } ?>">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Kullanıcılar
@@ -52,12 +42,12 @@
                 ?>
                 <li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
-                    <a href="<?= base_url("cihaz_yonetimi"); ?>" class="nav-link<?php if ($aktifSayfa == "cihaz_yonetimi") {
-                                                                                    echo " active";
-                                                                                } ?>">
+                    <a href="<?= base_url(""); ?>" class="nav-link<?php if ($aktifSayfa == "cihaz_yonetimi" or $aktifSayfa == "anasayfa") {
+                                                                        echo " active";
+                                                                    } ?>">
                         <i class="nav-icon fas fa-laptop-house"></i>
                         <p>
-                            Cihaz Yönetimi
+                            Anasayfa
                         </p>
                     </a>
                 </li>
