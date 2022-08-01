@@ -44,6 +44,7 @@ class Cihaz extends Varsayilan_Controller
     {
         if ($this->Giris_Model->kullaniciGiris()) {
             $this->Cihazlar_Model->yapilanIslemleriTemizle($id);
+            $this->Cihazlar_Model->cihazDuzenle($id, array("yapilan_islem_aciklamasi"=>$this->input->post("yapilan_islem_aciklamasi")));
             for ($i = 0; $i < 5; $i++) {
                 $islem = $this->input->post("islem".$i);
                 if (strlen($islem) > 0) {
