@@ -93,4 +93,34 @@ class Cihaz extends Varsayilan_Controller
             redirect(base_url());
         }
     }
+    public function medyaYukle($id)
+    {
+        if ($this->Giris_Model->kullaniciGiris()) {
+            if (!$_FILES["yuklenecekDosya"]["tmp_name"]) {
+                echo json_encode(array("mesaj" => "Hata: Lütfen bir resim veya video seçin", "sonuc" => 0));
+                exit();
+            } else {
+                $uzanti = pathinfo($_FILES['yuklenecekDosya']['name'], PATHINFO_EXTENSION);
+                $uzanti = strtolower($uzanti);
+                if (($_FILES["yuklenecekDosya"]["type"] == "video/mp4")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/pjpeg")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/jpeg")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/png")
+                ) {
+                    $dosyaKonumu = "dist/yuklemeler/";
+                    $orjinal_dosya_adi = $_FILES["yuklenecekDosya"]["name"];
+                    $boyut = $_FILES["yuklenecekDosya"]["size"];
+                    $boyut_mb = number_format(($boyut / 1048576), 2);
+                    if (move_uploaded_file($_FILES["yuklenecekDosya"]["tmp_name"], "$dosyaKonumu" . $id . "_" . $_FILES["yuklenecekDosya"]["name"])) {
+                        echo json_encode(array("mesaj" => "$orjinal_dosya_adi dosyasının yüklemesi tamamlandı.", "sonuc" => 1));
+                    }
+                } else {
+                    echo json_encode(array("mesaj" => "Geçerli bir resim veya video dosyası seçin.", "sonuc" => 0));
+                    exit;
+                }
+            }
+        } else {
+            $this->Kullanicilar_Model->girisUyari("cikis");
+        }
+    }
 }
