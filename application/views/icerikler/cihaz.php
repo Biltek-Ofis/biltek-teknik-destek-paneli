@@ -275,6 +275,13 @@
                                             <th colspan="3">Genel Toplam</th>
                                             <td id="yapilanIslemGenelToplam"><?= $genel_toplam > 0 ? $genel_toplam . " TL" : ""; ?></td>
                                         </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="form-group p-0 m-0 col">
+                                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="one-time-code" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"><?=$cihaz->yapilan_islem_aciklamasi;?></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </form>

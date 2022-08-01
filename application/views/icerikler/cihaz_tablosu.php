@@ -174,7 +174,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{yapilan_islem_aciklamasi}</li>
+                  <li id="{id}yapilanIslemAciklamasi" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{yapilan_islem_aciklamasi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $dortluIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
@@ -510,6 +510,7 @@ echo '</div>';
           sayac++;
           $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+          $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
