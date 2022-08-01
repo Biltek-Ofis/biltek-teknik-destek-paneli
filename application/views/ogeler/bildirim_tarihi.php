@@ -1,7 +1,7 @@
 <div class="form-group<?php if (isset($sifirla)) {
                             echo " p-0 m-0";
                         } ?>">
-    <input id="bildirim_tarihi" class="form-control" type="datetime-local" name="bildirim_tarihi" value="<?php if (isset($bildirim_tarihi_value)) {
+    <input id="bildirim_tarihi" autocomplete="one-time-code" class="form-control" type="datetime-local" name="bildirim_tarihi" value="<?php if (isset($bildirim_tarihi_value)) {
                                                                                                                 echo  $this->Islemler_Model->tarihDonusturInput($bildirim_tarihi_value);
                                                                                                             } ?>">
 </div>
