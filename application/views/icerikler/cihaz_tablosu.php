@@ -494,12 +494,6 @@ echo '</div>';
       .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1);
   }
 
-  function yazdir(id) {
-    teknikServisFormuPencere = window.open('<?= base_url("cihaz/teknik_servis_formu"); ?>/' + id, 'teknikServisFormuPencere' + id, 'status=1');
-    $(teknikServisFormuPencere).ready(function() {
-      teknikServisFormuPencere.print();
-    });
-  }
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
     var cihazlarTablosu = $(tabloDiv).DataTable(<?=$this->Islemler_Model->datatablesAyarlari([0, "desc"]);?>);
