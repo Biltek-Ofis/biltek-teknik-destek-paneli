@@ -46,6 +46,7 @@ class Cihaz extends Varsayilan_Controller
             $this->Cihazlar_Model->yapilanIslemleriTemizle($id);
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
+                "guncel_durum" => $this->input->post("guncel_durum"),
             );
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));

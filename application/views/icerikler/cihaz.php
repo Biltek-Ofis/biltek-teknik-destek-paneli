@@ -232,6 +232,10 @@
                                                 <?php $this->load->view("ogeler/cikis_tarihi", $cihaz->cikis_tarihi == "" ? array("isim" => "cikis_tarihi", "sifirla" => true) : array("isim" => "cikis_tarihi", "sifirla" => true, "cikis_tarihi_value" => $cihaz->cikis_tarihi)); ?>
                                             </td>
                                         </tr>
+                                        <th class="align-middle">Güncel Durum:</th>
+                                            <td class="align-middle">
+                                                <?php $this->load->view("ogeler/guncel_durum", array("sifirla" => true, "guncel_durum_value" => $cihaz->guncel_durum)); ?>
+                                            </td>
                                     </tbody>
                                 </table>
                                 <table class="table table-flush">

@@ -1,4 +1,4 @@
-<?php $this->load->view("inc/datatables_scripts");?>
+<?php $this->load->view("inc/datatables_scripts"); ?>
 <style>
   .modal.modal-fullscreen .modal-dialog {
     width: 100vw;
@@ -107,6 +107,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
                   <li id="{id}CikisTarihi" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{cikis_tarihi}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
+                  <li id="{id}GuncelDurum" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{guncel_durum}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
@@ -287,6 +291,7 @@ $eskiler = array(
   "{tarih}",
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
+  "{guncel_durum}",
   "{yapilan_islemler}",
   "{teslim_durumu_uyari}",
   "{teslim_durumu_id}",
@@ -368,6 +373,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->tarih,
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
+    $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $yapilanİslemler,
     $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
     $cihaz->teslim_edildi == 1 ? 0 : 1,
@@ -464,6 +470,19 @@ echo '</div>';
     }
   }
 
+  function cihazDurumu(id) {
+    switch (id) {
+      case 1:
+        return '<?= $this->Islemler_Model->cihazDurumu(1); ?>';
+      case 2:
+        return '<?= $this->Islemler_Model->cihazDurumu(2); ?>';
+      case 3:
+        return '<?= $this->Islemler_Model->cihazDurumu(3); ?>';
+      default:
+        return '<?= $this->Islemler_Model->cihazDurumu(0); ?>';
+    }
+  }
+
   function donustur(str, value) {
     return str.
     replaceAll("{class}", "bg-success")
@@ -489,6 +508,7 @@ echo '</div>';
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
+      .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
       .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
       .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
       .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1);
@@ -496,7 +516,7 @@ echo '</div>';
 
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(<?=$this->Islemler_Model->datatablesAyarlari([0, "desc"]);?>);
+    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([0, "desc"]); ?>);
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
@@ -514,7 +534,8 @@ echo '</div>';
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
-          
+          $("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
+
         });
       });
 
