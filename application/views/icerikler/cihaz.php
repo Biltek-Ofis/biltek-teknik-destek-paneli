@@ -377,12 +377,15 @@
                         }
 
                         function tamamlamaDurumu(event) {
-                            var sonuc = JSON.parse( event.target.responseText);
-                            _("durum").innerHTML = sonuc.mesaj; 
+                            var response = JSON.parse( event.target.responseText);
+                            _("durum").innerHTML = response.mesaj; 
                             _("progressBar").value = 0;
                             document.getElementById('progressDiv').style.display = 'none'; 
-                            if(sonuc.sonuc == 0){
+                            if(response.sonuc == 0){
                                 _("yukleme_durumu").innerHTML = '';
+                            }
+                            if(response.sonuc == 1){
+                                window.location.reload();
                             }
                         }
 

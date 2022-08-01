@@ -111,8 +111,24 @@ class Cihaz extends Varsayilan_Controller
                     $orjinal_dosya_adi = $_FILES["yuklenecekDosya"]["name"];
                     $boyut = $_FILES["yuklenecekDosya"]["size"];
                     $boyut_mb = number_format(($boyut / 1048576), 2);
-                    if (move_uploaded_file($_FILES["yuklenecekDosya"]["tmp_name"], "$dosyaKonumu" . $id . "_" . $_FILES["yuklenecekDosya"]["name"])) {
-                        echo json_encode(array("mesaj" => "$orjinal_dosya_adi dosyasının yüklemesi tamamlandı.", "sonuc" => 1));
+                    $tasinacakKonum = "$dosyaKonumu" . $id . "_" . rand(1000, 9999) . "_" . $_FILES["yuklenecekDosya"]["name"];
+                    $tur = ($_FILES["yuklenecekDosya"]["type"] == "video/mp4") ? "video" : "resim";
+
+                    $yukleVeri = array(
+                        "konum" => $tasinacakKonum,
+                        "tur" => $tur,
+                    );
+                    $ekle = $this->Cihazlar_Model->medyaYukle($yukleVeri);
+                    if ($ekle) {
+                        $eklenenID = $this->db->insert_id();
+                        if (move_uploaded_file($_FILES["yuklenecekDosya"]["tmp_name"], $tasinacakKonum)) {
+                            echo json_encode(array("mesaj" => "$orjinal_dosya_adi dosyasının yüklemesi tamamlandı.", "sonuc" => 1));
+                        } else {
+                            $this->Cihazlar_Model->medyaSil($eklenenID);
+                            echo json_encode(array("mesaj" => "Dosya yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0));
+                        }
+                    } else {
+                        echo json_encode(array("mesaj" => "Dosya yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0));
                     }
                 } else {
                     echo json_encode(array("mesaj" => "Geçerli bir resim veya video dosyası seçin.", "sonuc" => 0));

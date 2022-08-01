@@ -10,6 +10,7 @@ class Cihazlar_Model extends CI_Model
     public $cihazTurleriTabloAdi = "CihazTurleri";
     public $silinenCihazlarTabloAdi = "SilinenCihazlar";
     public $yapilanIslemlerTabloAdi = "YapilanIslemler";
+    public $medyalarTabloAdi = "Medyalar";
     public function cihazBul($id)
     {
         return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
@@ -165,5 +166,13 @@ class Cihazlar_Model extends CI_Model
     public function cihazDetayModalAdi()
     {
         return "cihazDetay";
+    }
+    public function medyaYukle($veri)
+    {
+        return $this->db->insert($this->medyalarTabloAdi, $veri);
+    }
+    public function medyaSil($id)
+    {
+        return $this->db->where("id", $id)->delete($this->medyalarTabloAdi);
     }
 }
