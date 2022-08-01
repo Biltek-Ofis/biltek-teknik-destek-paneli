@@ -246,7 +246,7 @@
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati;
                 }
-                $kdv = $toplam * 0.18;
+                $kdv = ceil($toplam * 0.18);
                 $genel_toplam = $toplam + $kdv;
             } else {
                 for ($i = 0; $i < 5; $i++) {

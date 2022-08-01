@@ -254,7 +254,7 @@
                                             $tutar = $yapilanIslem->miktar * $yapilanIslem->birim_fiyati;
                                             $toplam = $toplam + $tutar;
                                         }
-                                        $kdv = $toplam * 0.18;
+                                        $kdv = ceil($toplam * 0.18);
                                         $genel_toplam = $toplam + $kdv;
                                         ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 0, "yapilanIslemArr" => $yapilanIslemArr)); ?>
@@ -322,7 +322,7 @@
                                             toplam = toplam + tutar;
                                         }
                                     }
-                                    var kdv = toplam * 0.18;
+                                    var kdv = Math.ceil(toplam * 0.18);
                                     var genel_toplam = toplam + kdv;
                                     $("#yapilanIslemToplam").html(toplam > 0 ? toplam + " TL" : "");
 

@@ -21,7 +21,7 @@
       }
       var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
       var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
-      var kdv = toplam * 0.18;
+      var kdv = Math.ceil(toplam * 0.18);
       var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV (%18)").replaceAll("{toplam_fiyat}", kdv);
       var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
       htmlRes += toplamDiv + kdvDiv + genelToplamDiv;
