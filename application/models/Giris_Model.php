@@ -20,6 +20,7 @@ class Giris_Model extends CI_Model
     public function girisDurumu($kullanici_adi, $sifre)
     {
         //Şifreleme $this->Islemler_Model->sifrele($sifre);
+        //Varsayılan şifre (123456) $2y$10$b0wKhP9Nq5JhjJGH8cS61e20BwaepxxovalwslAZUbX3F3gBQcycm
         $query = $this->db->limit(1)->where('kullanici_adi', $kullanici_adi)->get("Kullanicilar");
         if ($query->num_rows() > 0) {
             if (password_verify($sifre, $query->result()[0]->sifre)) {
