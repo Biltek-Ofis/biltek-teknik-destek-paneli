@@ -70,7 +70,7 @@ class Cihaz extends Varsayilan_Controller
                     );
                     $ekle = $this->Cihazlar_Model->yapilanIslemEkle($veri);
                     if (!$ekle) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ");
                         return;
                     }
                 }
