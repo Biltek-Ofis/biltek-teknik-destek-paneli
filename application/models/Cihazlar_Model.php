@@ -145,9 +145,25 @@ class Cihazlar_Model extends CI_Model
         //$this->db->empty_table($this->silinenCihazlarTabloAdi);
         return $results;
     }
+    
+    public function yapilanIslemArray($cihaz_id, $islem, $miktar, $birim_fiyati){
+        return array(
+            "cihaz_id" => $cihaz_id,
+            "islem" => $islem,
+            "miktar" => $miktar,
+            "birim_fiyati" => $birim_fiyati,
+        );
+    }
     public function yapilanIslemler($id)
     {
         return $this->db->where("cihaz_id", $id)->get($this->yapilanIslemlerTabloAdi);
+    }
+    public function yapilanIslemEkle($veri){
+        return $this->db->insert($this->yapilanIslemlerTabloAdi, $veri);
+    }
+    public function yapilanIslemleriTemizle($id)
+    {
+        return $this->db->where("cihaz_id", $id)->delete($this->yapilanIslemlerTabloAdi);
     }
     public function cikisTarihiKontrol($id)
     {
