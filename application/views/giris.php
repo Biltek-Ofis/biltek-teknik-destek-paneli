@@ -7,10 +7,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <head>
     <meta charset="utf-8">
     <title>Giriş</title>
+    <?php $this->load->view("inc/meta"); ?>
     <?php $this->load->view("inc/styles"); ?>
     <link rel="stylesheet" href="<?= base_url("plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
     <?php $this->load->view("inc/scripts"); ?>
-    <link rel="stylesheet" href="<?= base_url("dist/css/giris.css"); ?>">
 </head>
 <body class="login-page" style="min-height: 466px;">
     <div class="login-box">
