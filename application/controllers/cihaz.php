@@ -39,6 +39,33 @@ class Cihaz extends Varsayilan_Controller
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
     }
+
+    public function yapilanIslemDuzenle($id)
+    {
+        if ($this->Giris_Model->kullaniciGiris()) {
+            $this->Cihazlar_Model->yapilanIslemleriTemizle($id);
+            for ($i = 0; $i < 5; $i++) {
+                $islem = $this->input->post("islem".$i);
+                if (strlen($islem) > 0) {
+                    $veri = $this->Cihazlar_Model->yapilanIslemArray(
+                        $id,
+                        $islem,
+                        $this->input->post("miktar".$i),
+                        $this->input->post("birim_fiyati".$i),
+                    );
+                    $ekle = $this->Cihazlar_Model->yapilanIslemEkle($veri);
+                    if (!$ekle) {
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id."#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ".$this->db->error()["message"]);
+                        return;
+                    }
+                }
+            }
+
+            redirect(base_url("cihaz/" . $id."#yapilan-islemler"));
+        } else {
+            $this->Kullanicilar_Model->girisUyari("cikis");
+        }
+    }
     public function teknik_servis_formu($id)
     {
         $cihaz = $this->Cihazlar_Model->cihazBul($id);
