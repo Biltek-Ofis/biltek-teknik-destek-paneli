@@ -175,4 +175,7 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->where("id", $id)->delete($this->medyalarTabloAdi);
     }
+    public function medyalar($id){
+        return $this->db->where("cihaz_id",$id)->get($this->medyalarTabloAdi)->result();
+    }
 }
