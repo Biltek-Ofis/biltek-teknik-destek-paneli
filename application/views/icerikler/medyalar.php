@@ -34,9 +34,15 @@
             <?php
             }
             ?>
-            <div class="col-12 mb-2">
-                <a href="<?= base_url("cihaz/medyaSil/" . $id . "/"  . $medya->id); ?>" class="btn btn-danger">Sil</a>
-            </div>
+            <?php
+            if (isset($silButonu) && $silButonu) {
+            ?>
+                <div class="col-12 mb-2">
+                    <a href="<?= base_url("cihaz/medyaSil/" . $id . "/"  . $medya->id); ?>" class="btn btn-danger">Sil</a>
+                </div>
+            <?php
+            }
+            ?>
         </div>
     <?php
     }
