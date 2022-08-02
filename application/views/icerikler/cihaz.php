@@ -398,6 +398,7 @@
                         }
                     </script>
                     <div class="tab-pane fade" id="medyalar" role="tabpanel" aria-labelledby="medyalar">
+                        <?php $this->load->view("icerikler/medyalar", array("id"=>$cihaz->id));?>
                         <div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">

@@ -19,6 +19,13 @@
     overflow-y: auto;
   }
 </style>
+<script>
+  function medyalariYukle(id) {
+    $.post('<?= base_url("medyalar"); ?>/' + id, {}, function(data) {
+      $("#list-medyalar-" + id).html(data);
+    });
+  }
+</script>
 <?php
 $tur_belirtildimi = isset($tur) ? true : false;
 $cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
@@ -77,6 +84,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-{id}-list" data-toggle="list" href="#list-teknik-servis-bilgileri-{id}" role="tab" aria-controls="teknik-servis-bilgileri-{id}">Teknik Servis Bilgileri</a>
               <a class="list-group-item list-group-item-action" id="list-aksesuar-bilgileri-{id}-list" data-toggle="list" href="#list-aksesuar-bilgileri-{id}" role="tab" aria-controls="aksesuar-bilgileri-{id}">Aksesuar Bilgileri</a>
               <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-{id}-list" data-toggle="list" href="#list-yapilan-islemler-{id}" role="tab" aria-controls="yapilan-islemler-{id}">Yapılan İşlemler</a>
+              <a class="list-group-item list-group-item-action" id="list-medyalar-{id}-list" data-toggle="list" href="#list-medyalar-{id}" role="tab" aria-controls="medyalar-{id}">Medyalar</a>
             </div>
           </div>
           <div class="col-8">
@@ -191,6 +199,9 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 <div id="yapilanIslem{id}">
                   {yapilan_islemler}
                 </div>
+              </div>
+              <div class="tab-pane fade" id="list-medyalar-{id}" role="tabpanel" aria-labelledby="list-medyalar-{id}-list">
+                
               </div>
             </div>
           </div>
@@ -378,7 +389,7 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $yapilanİslemler,
     $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
-    $cihaz->teslim_edildi == 1 ? 0 : 1,
+    $cihaz->teslim_edildi == 1 ? 0 : 1
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
@@ -391,6 +402,11 @@ foreach ($cihazlar as $cihaz) {
     "yapilanIslemlerSatiriBos" => $yapilanIslemlerSatiriBos,
     "yapilanIslemToplam" => $yapilanIslemToplam,
   ));
+?>
+  <script>
+    medyalariYukle(<?= $cihaz->id; ?>);
+  </script>
+<?php
 }
 echo '
 </tbody>
@@ -565,6 +581,7 @@ echo '</div>';
           $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
           $("#cihazTablosu").prepend(silmodal);
           $("#cihazTablosu").prepend(detayModal);
+          medyalariYukle(value.id);
         });
       });
     }, 5000);
