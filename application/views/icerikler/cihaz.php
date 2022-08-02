@@ -402,12 +402,12 @@
                         <div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <form id="upload_form" enctype="multipart/form-data" method="post">
+                                <form id="upload_form" onsubmit="dosyaYukle()" enctype="multipart/form-data" method="post">
                                     <div class="form-group">
-                                        <input type="file" name="yuklenecekDosya" id="yuklenecekDosya">
+                                        <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
                                     </div>
                                     <div class="form-group">
-                                        <input class="btn btn-primary" type="button" value="Medya Yükle" name="btnSubmit"  accept="image/pjpeg, image/png, image/jpeg, video/mp4" onclick="dosyaYukle()">
+                                        <input class="btn btn-primary" type="submit" value="Medya Yükle" name="btnSubmit"  accept="image/pjpeg, image/png, image/jpeg, video/mp4">
                                     </div>
                                     <div class="form-group">
                                         <div class="progress" id="progressDiv">
