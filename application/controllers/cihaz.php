@@ -107,7 +107,7 @@ class Cihaz extends Varsayilan_Controller
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/jpeg")
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/png")
                 ) {
-                    $dosyaKonumu = "dist/yuklemeler/";
+                    $dosyaKonumu = "yuklemeler/";
                     $orjinal_dosya_adi = $_FILES["yuklenecekDosya"]["name"];
                     $boyut = $_FILES["yuklenecekDosya"]["size"];
                     $boyut_mb = number_format(($boyut / 1048576), 2);
@@ -115,6 +115,7 @@ class Cihaz extends Varsayilan_Controller
                     $tur = ($_FILES["yuklenecekDosya"]["type"] == "video/mp4") ? "video" : "resim";
 
                     $yukleVeri = array(
+                        "cihaz_id" => $id,
                         "konum" => $tasinacakKonum,
                         "tur" => $tur,
                     );
