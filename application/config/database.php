@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -73,24 +73,65 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$db_dsn = '';
+$db_host = 'DESKTOP-LBB6LM0';
+$db_kullanici = 'sa';
+$db_sifre = '123456';
+$db_teknik_servis = 'teknik_servis';
+$db_firma = 'ADS2016';
+$db_driver = 'sqlsrv';
+$db_prefix = '';
+$db_pconnect = FALSE;
+$db_debug = FALSE;
+$db_cache_on = FALSE;
+$db_cachedir = '';
+$db_char_set = 'utf8';
+$db_collat = 'utf8_general_ci';
+$db_swap_pre = '';
+$db_encrypt = FALSE;
+$db_compress = FALSE;
+$db_stricton = FALSE;
+$db_failover = array();
+$db_save_queries = TRUE;
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'DESKTOP-LBB6LM0',
-	'username' => 'sa',
-	'password' => '123456',
-	'database' => 'teknik_servis',
-	'dbdriver' => 'sqlsrv',//'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => FALSE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
+	'dsn'	=> $db_dsn,
+	'hostname' => $db_host,
+	'username' => $db_kullanici,
+	'password' => $db_sifre,
+	'database' => $db_teknik_servis,
+	'dbdriver' => $db_driver, //'mysqli',
+	'dbprefix' => $db_prefix,
+	'pconnect' => $db_pconnect,
+	'db_debug' => $db_debug,
+	'cache_on' => $db_cache_on,
+	'cachedir' => $db_cachedir,
+	'char_set' => $db_char_set,
+	'dbcollat' => $db_collat,
+	'swap_pre' => $db_swap_pre,
+	'encrypt' => $db_encrypt,
+	'compress' => $db_compress,
+	'stricton' => $db_stricton,
+	'failover' => $db_failover,
+	'save_queries' => $db_save_queries
+);
+$db['firma'] = array(
+	'dsn'	=> $db_dsn,
+	'hostname' => $db_host,
+	'username' => $db_kullanici,
+	'password' => $db_sifre,
+	'database' => $db_firma,
+	'dbdriver' => $db_driver, //'mysqli',
+	'dbprefix' => $db_prefix,
+	'pconnect' => $db_pconnect,
+	'db_debug' => $db_debug,
+	'cache_on' => $db_cache_on,
+	'cachedir' => $db_cachedir,
+	'char_set' => $db_char_set,
+	'dbcollat' => $db_collat,
+	'swap_pre' => $db_swap_pre,
+	'encrypt' => $db_encrypt,
+	'compress' => $db_compress,
+	'stricton' => $db_stricton,
+	'failover' => $db_failover,
+	'save_queries' =>  $db_save_queries
 );
