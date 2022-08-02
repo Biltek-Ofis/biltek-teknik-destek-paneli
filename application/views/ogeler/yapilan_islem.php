@@ -1,17 +1,17 @@
 <tr>
     <td>
         <div class="form-group p-0 m-0 col">
-            <input id="yapilanIslem<?=$index;?>" autocomplete="one-time-code" name="islem<?=$index;?>" class="form-control" type="text" placeholder="İşlem" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->islem : ""; ?>">
+            <input id="yapilanIslem<?=$index;?>" autocomplete="off" name="islem<?=$index;?>" class="form-control" type="text" placeholder="İşlem" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->islem : ""; ?>">
         </div>
     </td>
     <td>
         <div class="form-group p-0 m-0 col">
-            <input id="yapilanIslemMiktar<?=$index;?>" autocomplete="one-time-code" name="miktar<?=$index;?>" class="form-control" type="number" placeholder="Miktar" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->miktar : ""; ?>"<?= isset($yapilanIslemArr[$index]) ? " required" : "";?>>
+            <input id="yapilanIslemMiktar<?=$index;?>" autocomplete="off" name="miktar<?=$index;?>" class="form-control" type="number" placeholder="Miktar" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->miktar : ""; ?>"<?= isset($yapilanIslemArr[$index]) ? " required" : "";?>>
         </div>
     </td>
     <td>
         <div class="form-group p-0 m-0 col">
-            <input id="yapilanIslemFiyat<?=$index;?>" autocomplete="one-time-code" name="birim_fiyati<?=$index;?>" class="form-control" type="number" placeholder="Birim Fiyatı" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->birim_fiyati : ""; ?>"<?= isset($yapilanIslemArr[$index]) ? " required" : "";?>>
+            <input id="yapilanIslemFiyat<?=$index;?>" autocomplete="off" name="birim_fiyati<?=$index;?>" class="form-control" type="number" placeholder="Birim Fiyatı" value="<?= isset($yapilanIslemArr[$index]) ? $yapilanIslemArr[$index]->birim_fiyati : ""; ?>"<?= isset($yapilanIslemArr[$index]) ? " required" : "";?>>
         </div>
     </td>
     <td id="yapilanIslemTutar<?=$index;?>">
