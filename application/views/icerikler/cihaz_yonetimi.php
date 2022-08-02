@@ -6,7 +6,7 @@
         }
     });
 </script>
-
+<script src="<?=base_url("dist/js/cihaz_yonetimi.js");?>"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
