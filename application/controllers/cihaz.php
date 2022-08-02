@@ -140,4 +140,14 @@ class Cihaz extends Varsayilan_Controller
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
     }
+    public function medyaSil($cihaz_id,$id){
+        $medya = $this->Cihazlar_Model->medyaBul($id);
+        unlink($medya->konum);
+        $sil = $this->Cihazlar_Model->medyaSil($id);
+        if($sil){
+            redirect(base_url("cihaz/".$cihaz_id."#medyalar"));
+        }else{
+            $this->Kullanicilar_Model->girisUyari("cihaz/".$cihaz_id."#medyalar", "Medya silinemedi lütfen daha sonra tekrar deneyin");
+        }
+    }
 }
