@@ -41,6 +41,10 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 								index +
 								'" role="option">' +
 								value.CARI_ISIM +
+								(value.CARI_ULKE_KODU ? " / " + value.CARI_ULKE_KODU : "") +
+								(value.CARI_IL ? " / " + value.CARI_IL : "") +
+								(value.CARI_ILCE ? " / " + value.CARI_ILCE : "") +
+								(value.CARI_ADRES ? " / " + value.CARI_ADRES : "") +
 								"</a></li>"
 						);
 						$("#musteri_adi_liste").append(oge);
