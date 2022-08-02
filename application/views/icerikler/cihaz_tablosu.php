@@ -55,7 +55,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}CihazGuncelDurumu">{guncel_durum}</td>
-  <td id="{id}CihazTeslimDurumu">{teslim_edildi}</td>
+  <td id="{id}CihazTeslimDurumu">{teslim_edildi2}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
@@ -301,6 +301,7 @@ $eskiler = array(
   "{diger_aksesuar}",
   "{yapilan_islem_aciklamasi}",
   "{teslim_edildi}",
+  "{teslim_edildi2}",
   "{tarih}",
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
@@ -383,6 +384,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->diger_aksesuar,
     $cihaz->yapilan_islem_aciklamasi,
     $cihaz->teslim_edildi == 1 ? $teslim_durumu_renkli_1 : $teslim_durumu_renkli_0,
+    $cihaz->teslim_edildi == 1 ? $teslim_durumu_1 : $teslim_durumu_0,
     $cihaz->tarih,
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
@@ -523,6 +525,7 @@ echo '</div>';
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
       .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
+      .replaceAll("{teslim_edildi2}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>')
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
@@ -547,7 +550,7 @@ echo '</div>';
           sonCihazID = value.id;
           sayac++;
           $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
-          $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
+          $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>');
           $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
