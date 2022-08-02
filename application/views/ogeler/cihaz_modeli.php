@@ -1,3 +1,3 @@
 <div class="form-group<?php if(isset($sifirla)) {echo " p-0 m-0";} ?> col">
-    <input id="cihaz_modeli" autocomplete="one-time-code" class="form-control" type="text" name="cihaz_modeli" placeholder="Modeli" value="<?php if(isset($cihaz_modeli_value)) {echo $cihaz_modeli_value;} ?>">
+    <input id="cihaz_modeli" autocomplete="off" class="form-control" type="text" name="cihaz_modeli" placeholder="Modeli" value="<?php if(isset($cihaz_modeli_value)) {echo $cihaz_modeli_value;} ?>">
 </div>
