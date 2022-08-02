@@ -6,7 +6,7 @@
         }
     });
 </script>
-<script src="<?=base_url("dist/js/cihaz_yonetimi.js");?>"></script>
+<script src="<?= base_url("dist/js/cihaz_yonetimi.js"); ?>"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -112,8 +112,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
                 <input type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
+                <button type="button" onclick="$('#yeniCihazForm')[0].reset();" class="btn btn-primary">Temizle</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
             </div>
         </div>
     </div>
