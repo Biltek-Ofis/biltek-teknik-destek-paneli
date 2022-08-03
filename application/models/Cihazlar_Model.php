@@ -126,11 +126,12 @@ class Cihazlar_Model extends CI_Model
         return $results;
     }
     
-    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati){
+    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati, $kdv){
         return array(
             "i_ad_".$index => $islem,
             "i_birim_fiyat_".$index => $miktar,
             "i_miktar_".$index => $birim_fiyati,
+            "i_kdv_".$index => $kdv,
         );
     }
     public function cikisTarihiKontrol($id)
