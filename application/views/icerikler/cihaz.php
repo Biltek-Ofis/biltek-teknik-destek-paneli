@@ -247,7 +247,9 @@
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
                                             <th>Birim Fiyat (TL)</th>
+                                            <th>KDV Oranı</th>
                                             <th>Tutar</th>
+                                            <th>KDV</th>
                                         </tr>
                                     </thead>
                                     <tbody id="yapilanIslemBody">
@@ -257,58 +259,77 @@
                                         $genel_toplam = 0;
                                         if ($cihaz->i_ad_1 != "") {
                                             $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
+                                            $toplam_kdv_1 = ($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1;
+                                            $kdv = $kdv + $toplam_kdv_1;
                                             $toplam = $toplam + $toplam_islem_fiyati_1;
                                         }
                                         if ($cihaz->i_ad_2 != "") {
                                             $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
+                                            $toplam_kdv_2 = ($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2;
+                                            $kdv = $kdv + $toplam_kdv_2;
                                             $toplam = $toplam + $toplam_islem_fiyati_2;
                                         }
                                         if ($cihaz->i_ad_3 != "") {
                                             $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
+                                            $toplam_kdv_3 = ($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3;
+                                            $kdv = $kdv + $toplam_kdv_3;
                                             $toplam = $toplam + $toplam_islem_fiyati_3;
                                         }
                                         if ($cihaz->i_ad_4 != "") {
                                             $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
+                                            $toplam_kdv_4 = ($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4;
+                                            $kdv = $kdv + $toplam_kdv_4;
                                             $toplam = $toplam + $toplam_islem_fiyati_4;
                                         }
                                         if ($cihaz->i_ad_5 != "") {
                                             $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
+                                            $toplam_kdv_5 = ($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5;
+                                            $kdv = $kdv + $toplam_kdv_5;
                                             $toplam = $toplam + $toplam_islem_fiyati_5;
                                         }
-                                        $kdv = ceil($toplam * 0.18);
                                         $genel_toplam = $toplam + $kdv;
                                         ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 1, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "stok_kod" => $cihaz->i_stok_kod_1,
                                             "islem" => $cihaz->i_ad_1,
                                             "miktar" => $cihaz->i_miktar_1,
-                                            "birim_fiyati" => $cihaz->i_birim_fiyat_1
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_1,
+                                            "kdv" => $cihaz->i_kdv_1
                                         ) : null)); ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 2, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "stok_kod" => $cihaz->i_stok_kod_2,
                                             "islem" => $cihaz->i_ad_2,
                                             "miktar" => $cihaz->i_miktar_2,
-                                            "birim_fiyati" => $cihaz->i_birim_fiyat_2
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_2,
+                                            "kdv" => $cihaz->i_kdv_2
                                         ) : null)); ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 3, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "stok_kod" => $cihaz->i_stok_kod_3,
                                             "islem" => $cihaz->i_ad_3,
                                             "miktar" => $cihaz->i_miktar_3,
-                                            "birim_fiyati" => $cihaz->i_birim_fiyat_3
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_3,
+                                            "kdv" => $cihaz->i_kdv_3
                                         ) : null)); ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 4, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "stok_kod" => $cihaz->i_stok_kod_4,
                                             "islem" => $cihaz->i_ad_4,
                                             "miktar" => $cihaz->i_miktar_4,
-                                            "birim_fiyati" => $cihaz->i_birim_fiyat_4
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_4,
+                                            "kdv" => $cihaz->i_kdv_4
                                         ) : null)); ?>
                                         <?php $this->load->view("ogeler/yapilan_islem", array("index" => 5, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "stok_kod" => $cihaz->i_stok_kod_5,
                                             "islem" => $cihaz->i_ad_5,
                                             "miktar" => $cihaz->i_miktar_5,
-                                            "birim_fiyati" => $cihaz->i_birim_fiyat_5
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_5,
+                                            "kdv" => $cihaz->i_kdv_5
                                         ) : null)); ?>
                                         <tr>
                                             <th colspan="3">Toplam</th>
                                             <td id="yapilanIslemToplam"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
                                         </tr>
                                         <tr>
-                                            <th colspan="3">KDV (%18)</th>
+                                            <th colspan="3">KDV</th>
                                             <td id="yapilanIslemKdv"><?= $kdv > 0 ? $kdv . " TL" : ""; ?></td>
                                         </tr>
                                         <tr>
@@ -345,12 +366,16 @@
                                             $("#yapilanIslemFiyat" + i).prop('required', false);
                                         }
                                     });
-                                    $("#yapilanIslemMiktar" + i + ", #yapilanIslemFiyat" + i).keyup(function() {
+                                    $("#yapilanIslemMiktar" + i + ", #yapilanIslemFiyat" + i + ", #yapilanIslemKdv" + i).keyup(function() {
                                         var yapilanIslemMiktar = $("#yapilanIslemMiktar" + i).val();
                                         var yapilanIslemFiyat = $("#yapilanIslemFiyat" + i).val();
+                                        var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
                                         if (yapilanIslemMiktar.length > 0 && yapilanIslemFiyat.length) {
                                             var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
+                                            var kdv = Math.ceil((tutar / 100) * yapilanIslemKdv);
+                                            console.log(kdv);
                                             $("#yapilanIslemTutar" + i).html(tutar + " TL");
+                                            $("#yapilanIslemTopKdv" + i).html(kdv > 0 ? kdv + " TL (" + yapilanIslemKdv + "%)" : "0 TL");
                                         } else {
                                             $("#yapilanIslemTutar" + i).html("");
                                         }
@@ -360,18 +385,20 @@
 
                                 function tutarHesapla() {
                                     var toplam = 0;
+                                    var kdv = 0;
                                     for (let i = 1; i <= 5; i++) {
                                         var miktar = $("#yapilanIslemMiktar" + i).val();
                                         var birim_fiyati = $("#yapilanIslemFiyat" + i).val();
+                                        var kdv_orani = $("#yapilanIslemKdv" + i).val() ?? 0;
                                         if (miktar.length > 0 && birim_fiyati > 0) {
                                             miktar = parseInt(miktar);
                                             birim_fiyati = parseInt(birim_fiyati);
                                             var tutar = miktar * birim_fiyati;
-                                            console.log("#yapilanIslemTutar" + i + " " + tutar);
+                                            var top_kdv = Math.ceil((tutar / 100) * kdv_orani);
+                                            kdv = kdv + top_kdv;
                                             toplam = toplam + tutar;
                                         }
                                     }
-                                    var kdv = Math.ceil(toplam * 0.18);
                                     var genel_toplam = toplam + kdv;
                                     $("#yapilanIslemToplam").html(toplam > 0 ? toplam + " TL" : "");
 

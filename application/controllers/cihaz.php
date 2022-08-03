@@ -67,6 +67,7 @@ class Cihaz extends Varsayilan_Controller
                         $islem,
                         $this->input->post("miktar" . $i),
                         $this->input->post("birim_fiyati" . $i),
+                        $this->input->post("kdv_" . $i),
                     );
                     $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                     if (!$duzenle) {
