@@ -129,8 +129,8 @@ class Cihazlar_Model extends CI_Model
     public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati, $kdv){
         return array(
             "i_ad_".$index => $islem,
-            "i_birim_fiyat_".$index => $miktar,
-            "i_miktar_".$index => $birim_fiyati,
+            "i_birim_fiyat_".$index => $birim_fiyati,
+            "i_miktar_".$index => $miktar,
             "i_kdv_".$index => $kdv,
         );
     }

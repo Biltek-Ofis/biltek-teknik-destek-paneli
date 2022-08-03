@@ -118,7 +118,7 @@ function stokVerileri(value, i) {
 	$("#yapilanIslemStokKod" + i).val(value.STOK_KODU);
 	$("#yapilanIslemMiktar" + i).val(1);
 	$("#yapilanIslem" + i).val(value.STOK_ADI);
-	$("#yapilanIslemFiyat" + i).val(value.SATIS_FIAT1);
+	$("#yapilanIslemFiyat" + i).val(parseFloat(value.SATIS_FIAT1).toFixed(2));
 	$("#yapilanIslemKdv" + i).val(value.KDV_ORANI);
 	stok_bilgileri_onaylandi[i - 1] = true;
 	$("#stok_liste_" + i).hide();

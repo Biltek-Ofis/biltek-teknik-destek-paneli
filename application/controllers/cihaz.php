@@ -71,7 +71,7 @@ class Cihaz extends Varsayilan_Controller
                     );
                     $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                     if (!$duzenle) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ");
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ".$this->db->error()["message"]);
                         return;
                     }
                 }
