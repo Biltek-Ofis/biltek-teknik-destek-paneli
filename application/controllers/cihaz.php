@@ -43,7 +43,6 @@ class Cihaz extends Varsayilan_Controller
     public function yapilanIslemDuzenle($id)
     {
         if ($this->Giris_Model->kullaniciGiris()) {
-            $this->Cihazlar_Model->yapilanIslemleriTemizle($id);
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
                 "guncel_durum" => $this->input->post("guncel_durum"),
@@ -60,17 +59,17 @@ class Cihaz extends Varsayilan_Controller
                 $id,
                 $cihaz_verileri,
             );
-            for ($i = 0; $i < 5; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $islem = $this->input->post("islem" . $i);
                 if (strlen($islem) > 0) {
                     $veri = $this->Cihazlar_Model->yapilanIslemArray(
-                        $id,
+                        $i,
                         $islem,
                         $this->input->post("miktar" . $i),
                         $this->input->post("birim_fiyati" . $i),
                     );
-                    $ekle = $this->Cihazlar_Model->yapilanIslemEkle($veri);
-                    if (!$ekle) {
+                    $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
+                    if (!$duzenle) {
                         $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ");
                         return;
                     }

@@ -328,19 +328,62 @@ foreach ($cihazlar as $cihaz) {
   }
   $sayac++;
   $yapilanİslemler = "";
-  $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
   $toplam_fiyat = 0;
-  if ($yapilanIslemlerModel->num_rows() > 0) {
-    foreach ($yapilanIslemlerModel->result() as $yapilanIslemModel) {
-      $toplam_islem_fiyati = $yapilanIslemModel->birim_fiyati * $yapilanIslemModel->miktar;
-      $yapilanIslemYeniArray = array(
-        $yapilanIslemModel->islem,
-        $yapilanIslemModel->miktar,
-        $yapilanIslemModel->birim_fiyati,
-        $toplam_islem_fiyati,
+  if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+    if ($cihaz->i_ad_1 != "") {
+      $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
+      $yapilanIslemYeniArray_1 = array(
+        $cihaz->i_ad_1,
+        $cihaz->i_miktar_1,
+        $cihaz->i_birim_fiyat_1,
+        $toplam_islem_fiyati_1,
       );
-      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati;
-      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray, $yapilanIslemlerSatiri);
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_1;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_1, $yapilanIslemlerSatiri);
+    }
+    if ($cihaz->i_ad_2 != "") {
+      $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
+      $yapilanIslemYeniArray_2 = array(
+        $cihaz->i_ad_2,
+        $cihaz->i_miktar_2,
+        $cihaz->i_birim_fiyat_2,
+        $toplam_islem_fiyati_2,
+      );
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_2;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_2, $yapilanIslemlerSatiri);
+    }
+    if ($cihaz->i_ad_3 != "") {
+      $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
+      $yapilanIslemYeniArray_3 = array(
+        $cihaz->i_ad_3,
+        $cihaz->i_miktar_3,
+        $cihaz->i_birim_fiyat_3,
+        $toplam_islem_fiyati_3,
+      );
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_3;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_3, $yapilanIslemlerSatiri);
+    }
+    if ($cihaz->i_ad_4 != "") {
+      $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
+      $yapilanIslemYeniArray_4 = array(
+        $cihaz->i_ad_4,
+        $cihaz->i_miktar_4,
+        $cihaz->i_birim_fiyat_4,
+        $toplam_islem_fiyati_4,
+      );
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_4;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_4, $yapilanIslemlerSatiri);
+    }
+    if ($cihaz->i_ad_5 != "") {
+      $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
+      $yapilanIslemYeniArray_5 = array(
+        $cihaz->i_ad_5,
+        $cihaz->i_miktar_5,
+        $cihaz->i_birim_fiyat_5,
+        $toplam_islem_fiyati_5,
+      );
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_5, $yapilanIslemlerSatiri);
     }
   } else {
     $yapilanİslemler = $yapilanIslemlerSatiriBos;
@@ -398,12 +441,6 @@ foreach ($cihazlar as $cihaz) {
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
   $cihazDetay = str_replace($eskiler, $yeniler, $cihazDetayOrnek);
   echo $tablo . $cihazDetay . $cihazSilModal  . $cihazTeslimEdildiModal;
-  $this->load->view("icerikler/yapilan_islemler_js", array(
-    "id" => $cihaz->id,
-    "yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
-    "yapilanIslemlerSatiriBos" => $yapilanIslemlerSatiriBos,
-    "yapilanIslemToplam" => $yapilanIslemToplam,
-  ));
 ?>
   <script>
     medyalariYukle(<?= $cihaz->id; ?>);
@@ -548,6 +585,67 @@ echo '</div>';
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
           sonCihazID = value.id;
+          var toplam = 0;
+          var yapilanIslemler = "";
+          var islemlerSatiri = '<?= $yapilanIslemlerSatiri; ?>';
+          var islemlerSatiriBos = '<?= $yapilanIslemlerSatiriBos; ?>';
+          if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5) {
+            if (value.i_ad_1) {
+              var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
+              toplam = toplam + yapilan_islem_tutari_1;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_1)
+                .replaceAll("{miktar}", value.i_miktar_1)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_1)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1);
+            }
+            if (value.i_ad_2) {
+              var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
+              toplam = toplam + yapilan_islem_tutari_2;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_2)
+                .replaceAll("{miktar}", value.i_miktar_2)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_2)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2);
+            }
+            if (value.i_ad_3) {
+              var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
+              toplam = toplam + yapilan_islem_tutari_3;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_3)
+                .replaceAll("{miktar}", value.i_miktar_3)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_3)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3);
+            }
+            if (value.i_ad_4) {
+              var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
+              toplam = toplam + yapilan_islem_tutari_4;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_4)
+                .replaceAll("{miktar}", value.i_miktar_4)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_4)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4);
+            }
+            if (value.i_ad_5) {
+              var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
+              toplam = toplam + yapilan_islem_tutari_5;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_5)
+                .replaceAll("{miktar}", value.i_miktar_5)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_5)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5);
+            }
+          } else {
+            var yapilanIslemler = islemlerSatiriBos;
+          }
+          var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
+          var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
+          var kdv = Math.ceil(toplam * 0.18);
+          var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV (%18)").replaceAll("{toplam_fiyat}", kdv);
+          var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
+          yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
+          $("#yapilanIslem"+value.id).html(yapilanIslemler);
+
           sayac++;
           $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>');
@@ -574,13 +672,6 @@ echo '</div>';
           var silmodal = donustur(silModalOrnek, value);
           cihazlarTablosu.row.add($(tablo)).draw();
           //$("#cihazlar").prepend(tablo);
-          $.post('<?= base_url("cihazlar/yapilanIslemlerJS"); ?>/' + value.id, {
-            "yapilanIslemlerSatiri": '<?= $yapilanIslemlerSatiri; ?>',
-            "yapilanIslemlerSatiriBos": '<?= $yapilanIslemlerSatiriBos; ?>',
-            "yapilanIslemToplam": '<?= $yapilanIslemToplam; ?>',
-          }, function(data) {
-            $("#cihazTablosu").prepend(data);
-          });
           $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
           $("#cihazTablosu").prepend(silmodal);
           $("#cihazTablosu").prepend(detayModal);
