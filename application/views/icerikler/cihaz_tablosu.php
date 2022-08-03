@@ -334,7 +334,7 @@ foreach ($cihazlar as $cihaz) {
   $sayac++;
   $yapilanİslemler = "";
   $toplam_fiyat = 0;
-  $kdv = "";
+  $kdv = 0;
   if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
     $kdv = 0;
     if ($cihaz->i_ad_1 != "") {
