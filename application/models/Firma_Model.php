@@ -11,7 +11,11 @@ class Firma_Model extends CI_Model
         return $this->load->database('firma', TRUE);
     }
     public $musteriTablosu = "TBLCASABIT";
+    public $stokTablosu = "TBLSTSABIT";
     public function musteri_bilgileri($aranacak,$ara){
         return $this->firmadb()->like($aranacak,$ara)->get($this->musteriTablosu)->result();
+    }
+    public function stok($aranacak,$ara){
+        return $this->firmadb()->like($aranacak,$ara)->get($this->stokTablosu)->result();
     }
 }
