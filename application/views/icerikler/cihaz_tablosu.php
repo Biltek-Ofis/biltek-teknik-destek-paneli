@@ -621,7 +621,7 @@ echo '</div>';
               var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
               toplam = toplam + yapilan_islem_tutari_1;
               var kdv_1 = Math.ceil((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
-              kdv = kdv + value.kdv_1;
+              kdv = kdv + kdv_1;
               yapilanIslemler += islemlerSatiri
                 .replaceAll("{islem}", value.i_ad_1)
                 .replaceAll("{miktar}", value.i_miktar_1)
@@ -634,7 +634,7 @@ echo '</div>';
               var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
               toplam = toplam + yapilan_islem_tutari_2;
               var kdv_2 = Math.ceil((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
-              kdv = kdv + value.kdv_2;
+              kdv = kdv + kdv_2;
               yapilanIslemler += islemlerSatiri
                 .replaceAll("{islem}", value.i_ad_2)
                 .replaceAll("{miktar}", value.i_miktar_2)
@@ -647,7 +647,7 @@ echo '</div>';
               var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
               toplam = toplam + yapilan_islem_tutari_3;
               var kdv_3 = Math.ceil((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
-              kdv = kdv + value.kdv_3;
+              kdv = kdv + kdv_3;
               yapilanIslemler += islemlerSatiri
                 .replaceAll("{islem}", value.i_ad_3)
                 .replaceAll("{miktar}", value.i_miktar_3)
@@ -660,7 +660,7 @@ echo '</div>';
               var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
               toplam = toplam + yapilan_islem_tutari_4;
               var kdv_4 = Math.ceil((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
-              kdv = kdv + value.kdv_4;
+              kdv = kdv + kdv_4;
               yapilanIslemler += islemlerSatiri
                 .replaceAll("{islem}", value.i_ad_4)
                 .replaceAll("{miktar}", value.i_miktar_4)
@@ -673,7 +673,7 @@ echo '</div>';
               var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
               toplam = toplam + yapilan_islem_tutari_5;
               var kdv_5 = Math.ceil((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
-              kdv = kdv + value.kdv_5;
+              kdv = kdv + kdv_5;
               yapilanIslemler += islemlerSatiri
                 .replaceAll("{islem}", value.i_ad_5)
                 .replaceAll("{miktar}", value.i_miktar_5)
