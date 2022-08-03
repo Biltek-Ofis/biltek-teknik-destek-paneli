@@ -1,5 +1,5 @@
 <?php
-class Js_Model extends CI_Model
+class Firma_Model extends CI_Model
 {
 
     public function __construct()
