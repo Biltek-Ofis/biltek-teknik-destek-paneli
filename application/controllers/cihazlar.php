@@ -35,10 +35,6 @@ class Cihazlar extends Varsayilan_Controller
 			echo json_encode($this->Cihazlar_Model->cihazlarTekTurTumuJQ($tur));
 		}
 	}
-	public function yapilanIslemlerJQ($id)
-	{
-		echo json_encode($this->Cihazlar_Model->yapilanIslemler($id)->result());
-	}
 	public function cihazSil($tur, $id)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
@@ -63,20 +59,6 @@ class Cihazlar extends Varsayilan_Controller
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari("cikis");
-		}
-	}
-	public function yapilanIslemlerJS($id)
-	{
-		if ($this->Giris_Model->kullaniciGiris()) {
-			$yapilanIslemlerSatiri = $this->input->post("yapilanIslemlerSatiri");
-			$yapilanIslemlerSatiriBos = $this->input->post("yapilanIslemlerSatiriBos");
-			$yapilanIslemToplam = $this->input->post("yapilanIslemToplam");
-			$this->load->view("icerikler/yapilan_islemler_js", array(
-				"id" => $id,
-				"yapilanIslemlerSatiri" => $yapilanIslemlerSatiri,
-				"yapilanIslemlerSatiriBos" => $yapilanIslemlerSatiriBos,
-				"yapilanIslemToplam" => $yapilanIslemToplam,
-			));
 		}
 	}
 }

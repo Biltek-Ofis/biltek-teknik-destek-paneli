@@ -9,7 +9,6 @@ class Cihazlar_Model extends CI_Model
     public $cihazlarTabloAdi = "Cihazlar";
     public $cihazTurleriTabloAdi = "CihazTurleri";
     public $silinenCihazlarTabloAdi = "SilinenCihazlar";
-    public $yapilanIslemlerTabloAdi = "YapilanIslemler";
     public $medyalarTabloAdi = "Medyalar";
     public function cihazBul($id)
     {
@@ -127,24 +126,12 @@ class Cihazlar_Model extends CI_Model
         return $results;
     }
     
-    public function yapilanIslemArray($cihaz_id, $islem, $miktar, $birim_fiyati){
+    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati){
         return array(
-            "cihaz_id" => $cihaz_id,
-            "islem" => $islem,
-            "miktar" => $miktar,
-            "birim_fiyati" => $birim_fiyati,
+            "i_ad_".$index => $islem,
+            "i_birim_fiyat_".$index => $miktar,
+            "i_miktar_".$index => $birim_fiyati,
         );
-    }
-    public function yapilanIslemler($id)
-    {
-        return $this->db->where("cihaz_id", $id)->get($this->yapilanIslemlerTabloAdi);
-    }
-    public function yapilanIslemEkle($veri){
-        return $this->db->insert($this->yapilanIslemlerTabloAdi, $veri);
-    }
-    public function yapilanIslemleriTemizle($id)
-    {
-        return $this->db->where("cihaz_id", $id)->delete($this->yapilanIslemlerTabloAdi);
     }
     public function cikisTarihiKontrol($id)
     {

@@ -70,31 +70,31 @@
     <table class="table table-bordered table-sm w-100">
         <tbody>
             <tr>
-                <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?=base_url("dist/img/logo.png");?>"/></td>
+                <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?= base_url("dist/img/logo.png"); ?>" /></td>
             </tr>
             <tr>
-                <td  style="border:0 !important;" colspan="3"></td>
+                <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr>
-                <td  style="border:0 !important;" colspan="3"></td>
+                <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Giriş Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?=$cihaz->tarih;?></td>
+                <td style="border:0 !important;" colspan="3"><?= $cihaz->tarih; ?></td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Bildirim Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?=$cihaz->bildirim_tarihi;?></td>
+                <td style="border:0 !important;" colspan="3"><?= $cihaz->bildirim_tarihi; ?></td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Çıkış Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?=$cihaz->cikis_tarihi;?></td>
+                <td style="border:0 !important;" colspan="3"><?= $cihaz->cikis_tarihi; ?></td>
             </tr>
             <tr>
-                <td  style="border:0 !important;" colspan="3"></td>
+                <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr>
-                <td  style="border:0 !important;" colspan="3"></td>
+                <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">TEKNİK SERVİS FORMU</td>
@@ -216,10 +216,24 @@
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>
             <?php
-            $yapilan_islemler = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
             $hasarli_durumlar_rowspan = 5;
-            if ($yapilan_islemler->num_rows() > 0) {
-                $hasarli_durumlar_rowspan = $yapilan_islemler->num_rows();
+            if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+                $hasarli_durumlar_rowspan = 0;
+                if ($cihaz->i_ad_1 != "") {
+                    $hasarli_durumlar_rowspan++;
+                }
+                if ($cihaz->i_ad_2 != "") {
+                    $hasarli_durumlar_rowspan++;
+                }
+                if ($cihaz->i_ad_3 != "") {
+                    $hasarli_durumlar_rowspan++;
+                }
+                if ($cihaz->i_ad_4 != "") {
+                    $hasarli_durumlar_rowspan++;
+                }
+                if ($cihaz->i_ad_5 != "") {
+                    $hasarli_durumlar_rowspan++;
+                }
             }
             ?>
             <tr>
@@ -233,18 +247,57 @@
             $toplam = "";
             $kdv = "";
             $genel_toplam = "";
-            if ($yapilan_islemler->num_rows() > 0) {
-                $yapilan_islemler_result = $yapilan_islemler->result();
+            if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
                 $toplam = 0;
-                foreach ($yapilan_islemler_result as $yapilan_islem) {
-                    $toplam_islem_fiyati = $yapilan_islem->miktar * $yapilan_islem->birim_fiyati;
+                if ($cihaz->i_ad_1 != "") {
+                    $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
                     echo '<tr>
-                <td colspan="5">' . $yapilan_islem->islem . '</td>
-                <td colspan="1" class="text-center">' . $yapilan_islem->miktar . '</td>
-                <td colspan="2" class="text-center">' . $yapilan_islem->birim_fiyati . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati . ' TL</td>
+                <td colspan="5">' . $cihaz->i_ad_1  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_1 . '</td>
+                <td colspan="2" class="text-center">' .  $cihaz->i_birim_fiyat_1 . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . ' TL</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati;
+                    $toplam = $toplam + $toplam_islem_fiyati_1;
+                }
+                if ($cihaz->i_ad_2 != "") {
+                    $toplam_islem_fiyati_2 =  $cihaz->i_miktar_2 * $cihaz->i_birim_fiyat_2;
+                    echo '<tr>
+                <td colspan="5">' . $cihaz->i_ad_2  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_2 . '</td>
+                <td colspan="2" class="text-center">' .  $cihaz->i_birim_fiyat_2 . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . ' TL</td>
+            </tr>';
+                    $toplam = $toplam + $toplam_islem_fiyati_2;
+                }
+                if ($cihaz->i_ad_3 != "") {
+                    $toplam_islem_fiyati_3 =  $cihaz->i_miktar_3 * $cihaz->i_birim_fiyat_3;
+                    echo '<tr>
+                <td colspan="5">' . $cihaz->i_ad_3  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_3 . '</td>
+                <td colspan="2" class="text-center">' .  $cihaz->i_birim_fiyat_3 . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . ' TL</td>
+            </tr>';
+                    $toplam = $toplam + $toplam_islem_fiyati_3;
+                }
+                if ($cihaz->i_ad_4 != "") {
+                    $toplam_islem_fiyati_4 = $cihaz->i_miktar_4 * $cihaz->i_birim_fiyat_4;
+                    echo '<tr>
+                <td colspan="5">' . $cihaz->i_ad_4  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_4 . '</td>
+                <td colspan="2" class="text-center">' .  $cihaz->i_birim_fiyat_4 . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . ' TL</td>
+            </tr>';
+                    $toplam = $toplam + $toplam_islem_fiyati_4;
+                }
+                if ($cihaz->i_ad_5 != "") {
+                    $toplam_islem_fiyati_5 =  $cihaz->i_miktar_5 * $cihaz->i_birim_fiyat_5;
+                    echo '<tr>
+                <td colspan="5">' . $cihaz->i_ad_5  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_5 . '</td>
+                <td colspan="2" class="text-center">' .  $cihaz->i_birim_fiyat_5 . ' TL</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . ' TL</td>
+            </tr>';
+                    $toplam = $toplam + $toplam_islem_fiyati_5;
                 }
                 $kdv = ceil($toplam * 0.18);
                 $genel_toplam = $toplam + $kdv;

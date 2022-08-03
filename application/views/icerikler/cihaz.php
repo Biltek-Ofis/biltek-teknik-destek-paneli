@@ -252,24 +252,57 @@
                                     </thead>
                                     <tbody id="yapilanIslemBody">
                                         <?php
-                                        $yapilanIslemlerModel = $this->Cihazlar_Model->yapilanIslemler($cihaz->id);
                                         $toplam = 0;
                                         $kdv = 0;
                                         $genel_toplam = 0;
-                                        $islem = 0;
-                                        $yapilanIslemArr = $yapilanIslemlerModel->result();
-                                        foreach ($yapilanIslemArr as $yapilanIslem) {
-                                            $tutar = $yapilanIslem->miktar * $yapilanIslem->birim_fiyati;
-                                            $toplam = $toplam + $tutar;
+                                        if ($cihaz->i_ad_1 != "") {
+                                            $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
+                                            $toplam = $toplam + $toplam_islem_fiyati_1;
+                                        }
+                                        if ($cihaz->i_ad_2 != "") {
+                                            $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
+                                            $toplam = $toplam + $toplam_islem_fiyati_2;
+                                        }
+                                        if ($cihaz->i_ad_3 != "") {
+                                            $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
+                                            $toplam = $toplam + $toplam_islem_fiyati_3;
+                                        }
+                                        if ($cihaz->i_ad_4 != "") {
+                                            $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
+                                            $toplam = $toplam + $toplam_islem_fiyati_4;
+                                        }
+                                        if ($cihaz->i_ad_5 != "") {
+                                            $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
+                                            $toplam = $toplam + $toplam_islem_fiyati_5;
                                         }
                                         $kdv = ceil($toplam * 0.18);
                                         $genel_toplam = $toplam + $kdv;
                                         ?>
-                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 0, "yapilanIslemArr" => $yapilanIslemArr)); ?>
-                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 1, "yapilanIslemArr" => $yapilanIslemArr)); ?>
-                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 2, "yapilanIslemArr" => $yapilanIslemArr)); ?>
-                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 3, "yapilanIslemArr" => $yapilanIslemArr)); ?>
-                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 4, "yapilanIslemArr" => $yapilanIslemArr)); ?>
+                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 1, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "islem" => $cihaz->i_ad_1,
+                                            "miktar" => $cihaz->i_miktar_1,
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_1
+                                        ) : null)); ?>
+                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 2, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "islem" => $cihaz->i_ad_2,
+                                            "miktar" => $cihaz->i_miktar_2,
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_2
+                                        ) : null)); ?>
+                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 3, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "islem" => $cihaz->i_ad_3,
+                                            "miktar" => $cihaz->i_miktar_3,
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_3
+                                        ) : null)); ?>
+                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 4, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "islem" => $cihaz->i_ad_4,
+                                            "miktar" => $cihaz->i_miktar_4,
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_4
+                                        ) : null)); ?>
+                                        <?php $this->load->view("ogeler/yapilan_islem", array("index" => 5, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
+                                            "islem" => $cihaz->i_ad_5,
+                                            "miktar" => $cihaz->i_miktar_5,
+                                            "birim_fiyati" => $cihaz->i_birim_fiyat_5
+                                        ) : null)); ?>
                                         <tr>
                                             <th colspan="3">Toplam</th>
                                             <td id="yapilanIslemToplam"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
@@ -301,7 +334,7 @@
                         </div>
                         <script>
                             $(document).ready(function() {
-                                for (let i = 0; i < 5; i++) {
+                                for (let i = 1; i <= 5; i++) {
                                     $("#yapilanIslem" + i).keyup(function() {
                                         var yapilanIslem = $("#yapilanIslem" + i).val();
                                         if (yapilanIslem.length > 0) {
@@ -327,7 +360,7 @@
 
                                 function tutarHesapla() {
                                     var toplam = 0;
-                                    for (let i = 0; i < 5; i++) {
+                                    for (let i = 1; i <= 5; i++) {
                                         var miktar = $("#yapilanIslemMiktar" + i).val();
                                         var birim_fiyati = $("#yapilanIslemFiyat" + i).val();
                                         if (miktar.length > 0 && birim_fiyati > 0) {
@@ -370,21 +403,21 @@
                         function ilerlemeDurumu(event) {
                             var loaded = new Number((event.loaded / 1048576));
                             var total = new Number((event.total / 1048576));
-                            _("yukleme_durumu").innerHTML = "Yüklendi: " + loaded.toPrecision(5) + " MB / " + total.toPrecision(5)+" MB";
-                            var percent = (event.loaded / event.total) * 100; 
+                            _("yukleme_durumu").innerHTML = "Yüklendi: " + loaded.toPrecision(5) + " MB / " + total.toPrecision(5) + " MB";
+                            var percent = (event.loaded / event.total) * 100;
                             _("progressBar").value = Math.round(percent);
                             _("durum").innerHTML = Math.round(percent) + "% yüklendi";
                         }
 
                         function tamamlamaDurumu(event) {
-                            var response = JSON.parse( event.target.responseText);
-                            _("durum").innerHTML = response.mesaj; 
+                            var response = JSON.parse(event.target.responseText);
+                            _("durum").innerHTML = response.mesaj;
                             _("progressBar").value = 0;
-                            document.getElementById('progressDiv').style.display = 'none'; 
-                            if(response.sonuc == 0){
+                            document.getElementById('progressDiv').style.display = 'none';
+                            if (response.sonuc == 0) {
                                 _("yukleme_durumu").innerHTML = '';
                             }
-                            if(response.sonuc == 1){
+                            if (response.sonuc == 1) {
                                 window.location.reload();
                             }
                         }
@@ -398,7 +431,7 @@
                         }
                     </script>
                     <div class="tab-pane fade" id="medyalar" role="tabpanel" aria-labelledby="medyalar">
-                        <?php $this->load->view("icerikler/medyalar", array("id"=>$cihaz->id,"silButonu"=>true));?>
+                        <?php $this->load->view("icerikler/medyalar", array("id" => $cihaz->id, "silButonu" => true)); ?>
                         <div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">
@@ -407,7 +440,7 @@
                                         <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
                                     </div>
                                     <div class="form-group">
-                                        <input class="btn btn-primary" type="submit" value="Medya Yükle" name="btnSubmit"  accept="image/pjpeg, image/png, image/jpeg, video/mp4">
+                                        <input class="btn btn-primary" type="submit" value="Medya Yükle" name="btnSubmit" accept="image/pjpeg, image/png, image/jpeg, video/mp4">
                                     </div>
                                     <div class="form-group">
                                         <div class="progress" id="progressDiv">
