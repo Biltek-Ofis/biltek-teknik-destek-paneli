@@ -9,6 +9,7 @@
         });
     });
 </script>
+<script src="<?= base_url("dist/js/cihaz.js"); ?>"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -354,115 +355,18 @@
                             </div>
                         </div>
                         <script>
-                            $(document).ready(function() {
-                                for (let i = 1; i <= 5; i++) {
-                                    $("#yapilanIslem" + i).keyup(function() {
-                                        var yapilanIslem = $("#yapilanIslem" + i).val();
-                                        if (yapilanIslem.length > 0) {
-                                            $("#yapilanIslemMiktar" + i).prop('required', true);
-                                            $("#yapilanIslemFiyat" + i).prop('required', true);
-                                        } else {
-                                            $("#yapilanIslemMiktar" + i).prop('required', false);
-                                            $("#yapilanIslemFiyat" + i).prop('required', false);
-                                        }
-                                    });
-                                    $("#yapilanIslemMiktar" + i + ", #yapilanIslemFiyat" + i + ", #yapilanIslemKdv" + i).keyup(function() {
-                                        var yapilanIslemMiktar = $("#yapilanIslemMiktar" + i).val();
-                                        var yapilanIslemFiyat = $("#yapilanIslemFiyat" + i).val();
-                                        var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
-                                        if (yapilanIslemMiktar.length > 0 && yapilanIslemFiyat.length) {
-                                            var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
-                                            var kdv = Math.ceil((tutar / 100) * yapilanIslemKdv);
-                                            console.log(kdv);
-                                            $("#yapilanIslemTutar" + i).html(tutar + " TL");
-                                            $("#yapilanIslemTopKdv" + i).html(kdv > 0 ? kdv + " TL (" + yapilanIslemKdv + "%)" : "0 TL");
-                                        } else {
-                                            $("#yapilanIslemTutar" + i).html("");
-                                        }
-                                        tutarHesapla();
-                                    });
-                                }
 
-                                function tutarHesapla() {
-                                    var toplam = 0;
-                                    var kdv = 0;
-                                    for (let i = 1; i <= 5; i++) {
-                                        var miktar = $("#yapilanIslemMiktar" + i).val();
-                                        var birim_fiyati = $("#yapilanIslemFiyat" + i).val();
-                                        var kdv_orani = $("#yapilanIslemKdv" + i).val() ?? 0;
-                                        if (miktar.length > 0 && birim_fiyati > 0) {
-                                            miktar = parseInt(miktar);
-                                            birim_fiyati = parseInt(birim_fiyati);
-                                            var tutar = miktar * birim_fiyati;
-                                            var top_kdv = Math.ceil((tutar / 100) * kdv_orani);
-                                            kdv = kdv + top_kdv;
-                                            toplam = toplam + tutar;
-                                        }
-                                    }
-                                    var genel_toplam = toplam + kdv;
-                                    $("#yapilanIslemToplam").html(toplam > 0 ? toplam + " TL" : "");
-
-                                    $("#yapilanIslemKdv").html(kdv > 0 ? kdv + " TL" : "");
-
-                                    $("#yapilanIslemGenelToplam").html(genel_toplam > 0 ? genel_toplam + " TL" : "");
-                                }
-                            });
                         </script>
                     </div>
                     <script>
-                        function _(abc) {
-                            return document.getElementById(abc);
-                        }
 
-                        function dosyaYukle() {
-                            var dosya = _("yuklenecekDosya").files[0];
-                            var formdata = new FormData();
-                            formdata.append("yuklenecekDosya", dosya);
-                            var ajax = new XMLHttpRequest();
-                            ajax.upload.addEventListener("progress", ilerlemeDurumu, false);
-                            ajax.addEventListener("load", tamamlamaDurumu, false);
-                            ajax.addEventListener("error", hataDurumu, false);
-                            ajax.addEventListener("abort", iptalDurumu, false);
-                            ajax.open("POST", "<?= base_url("cihaz/medyaYukle/" . $cihaz->id); ?>");
-                            ajax.send(formdata);
-                        }
-
-                        function ilerlemeDurumu(event) {
-                            var loaded = new Number((event.loaded / 1048576));
-                            var total = new Number((event.total / 1048576));
-                            _("yukleme_durumu").innerHTML = "Yüklendi: " + loaded.toPrecision(5) + " MB / " + total.toPrecision(5) + " MB";
-                            var percent = (event.loaded / event.total) * 100;
-                            _("progressBar").value = Math.round(percent);
-                            _("durum").innerHTML = Math.round(percent) + "% yüklendi";
-                        }
-
-                        function tamamlamaDurumu(event) {
-                            var response = JSON.parse(event.target.responseText);
-                            _("durum").innerHTML = response.mesaj;
-                            _("progressBar").value = 0;
-                            document.getElementById('progressDiv').style.display = 'none';
-                            if (response.sonuc == 0) {
-                                _("yukleme_durumu").innerHTML = '';
-                            }
-                            if (response.sonuc == 1) {
-                                window.location.reload();
-                            }
-                        }
-
-                        function hataDurumu(event) {
-                            _("durum").innerHTML = "Yükleme Başarısız";
-                        }
-
-                        function iptalDurumu(event) {
-                            _("durum").innerHTML = "Yükleme İptal Edildi";
-                        }
                     </script>
                     <div class="tab-pane fade" id="medyalar" role="tabpanel" aria-labelledby="medyalar">
                         <?php $this->load->view("icerikler/medyalar", array("id" => $cihaz->id, "silButonu" => true)); ?>
                         <div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <form id="upload_form" onsubmit="dosyaYukle()" enctype="multipart/form-data" method="post">
+                                <form id="upload_form" onsubmit="dosyaYukle(<?= $cihaz->id; ?>)" enctype="multipart/form-data" method="post">
                                     <div class="form-group">
                                         <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
                                     </div>

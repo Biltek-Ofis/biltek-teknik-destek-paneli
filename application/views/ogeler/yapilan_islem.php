@@ -3,6 +3,10 @@
         <input id="yapilanIslemStokKod<?= $index; ?>" autocomplete="off" name="stok_kod<?= $index; ?>" type="hidden" value="<?= isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : ""; ?>">
         <div class="form-group p-0 m-0 col">
             <input id="yapilanIslem<?= $index; ?>" autocomplete="off" name="islem<?= $index; ?>" class="form-control" type="text" placeholder="İşlem" value="<?= isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["islem"] : ""; ?>">
+
+            <ul id="stok_liste_<?= $index; ?>" class="typeahead dropdown-menu col" style="max-height: 300px; overflow-y: auto;display:none;" role="listbox">
+
+            </ul>
         </div>
     </td>
     <td>
@@ -12,7 +16,7 @@
     </td>
     <td>
         <div class="form-group p-0 m-0 col">
-            <input id="yapilanIslemFiyat<?= $index; ?>" autocomplete="off" name="birim_fiyati<?= $index; ?>" class="form-control" type="number" placeholder="Birim Fiyatı" value="<?= isset($yapilanIslemArr["birim_fiyati"]) ? $yapilanIslemArr["birim_fiyati"] : ""; ?>" <?= isset($yapilanIslemArr["islem"]) ? " required" : ""; ?>>
+            <input id="yapilanIslemFiyat<?= $index; ?>" autocomplete="off" name="birim_fiyati<?= $index; ?>" class="form-control" type="number" placeholder="Birim Fiyatı" value="<?= isset($yapilanIslemArr["birim_fiyati"]) ? $yapilanIslemArr["birim_fiyati"] : ""; ?>" step="0.01" <?= isset($yapilanIslemArr["islem"]) ? " required" : ""; ?>>
         </div>
     </td>
     <td>
