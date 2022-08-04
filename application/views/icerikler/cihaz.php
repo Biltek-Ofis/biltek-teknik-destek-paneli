@@ -260,31 +260,31 @@
                                         $genel_toplam = 0;
                                         if ($cihaz->i_ad_1 != "") {
                                             $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
-                                            $toplam_kdv_1 = ($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1;
+                                            $toplam_kdv_1 = ceil(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
                                             $kdv = $kdv + $toplam_kdv_1;
                                             $toplam = $toplam + $toplam_islem_fiyati_1;
                                         }
                                         if ($cihaz->i_ad_2 != "") {
                                             $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
-                                            $toplam_kdv_2 = ($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2;
+                                            $toplam_kdv_2 = ceil(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
                                             $kdv = $kdv + $toplam_kdv_2;
                                             $toplam = $toplam + $toplam_islem_fiyati_2;
                                         }
                                         if ($cihaz->i_ad_3 != "") {
                                             $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
-                                            $toplam_kdv_3 = ($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3;
+                                            $toplam_kdv_3 = ceil(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
                                             $kdv = $kdv + $toplam_kdv_3;
                                             $toplam = $toplam + $toplam_islem_fiyati_3;
                                         }
                                         if ($cihaz->i_ad_4 != "") {
                                             $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
-                                            $toplam_kdv_4 = ($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4;
+                                            $toplam_kdv_4 = ceil(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
                                             $kdv = $kdv + $toplam_kdv_4;
                                             $toplam = $toplam + $toplam_islem_fiyati_4;
                                         }
                                         if ($cihaz->i_ad_5 != "") {
                                             $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
-                                            $toplam_kdv_5 = ($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5;
+                                            $toplam_kdv_5 = ceil(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
                                             $kdv = $kdv + $toplam_kdv_5;
                                             $toplam = $toplam + $toplam_islem_fiyati_5;
                                         }
