@@ -49,16 +49,7 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 						);
 						$("#musteri_adi_liste").append(oge);
 						$("#musteri_adi_liste_oge_" + index).on("click", function () {
-							cihazGirisiVerileri(
-								value.CARI_ISIM ? value.CARI_ISIM : "",
-								"" +
-									(value.CARI_ADRES ? value.CARI_ADRES : "") +
-									(value.CARI_ILCE ? ", " + value.CARI_ILCE : "") +
-									(value.CARI_IL ? ", " + value.CARI_IL : "") +
-									(value.CARI_ULKE_KODU ? ", " + value.CARI_ULKE_KODU : "") +
-									"",
-								value.CARI_TEL ? value.CARI_TEL : ""
-							);
+							cihazGirisiVerileri(value);
 						});
 					});
 					$("#musteri_adi_liste").show();
@@ -70,10 +61,24 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 		);
 	}
 }
-function cihazGirisiVerileri(musteri_adi, adres, gsm) {
-	$("#musteri_adi").val(musteri_adi);
-	$("#adres").val(adres);
-	$("#gsm_mail").val(gsm);
+function cihazGirisiVerileri(value) {
+	$("#musteri_adi").val(value.CARI_ISIM ? value.CARI_ISIM : "", "");
+	$("#adres").val(
+		+(value.CARI_ADRES ? value.CARI_ADRES : "") +
+			(value.CARI_ILCE ? ", " + value.CARI_ILCE : "") +
+			(value.CARI_IL ? ", " + value.CARI_IL : "") +
+			(value.CARI_ULKE_KODU ? ", " + value.CARI_ULKE_KODU : "") +
+			""
+	);
+	$("#gsm_mail").val(
+		value.CARI_TEL
+			? value.CARI_TEL
+			: value.GSM1
+			? value.GSM1
+			: value.GSM2
+			? value.GSM2
+			: ""
+	);
 	musteri_bilgileri_onaylandi = true;
 	$("#musteri_adi_liste").hide();
 }

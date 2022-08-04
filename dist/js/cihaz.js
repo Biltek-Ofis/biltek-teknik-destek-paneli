@@ -115,11 +115,13 @@ function stoklariGetir(yapilanIslem, i) {
 	}
 }
 function stokVerileri(value, i) {
-	$("#yapilanIslemStokKod" + i).val(value.STOK_KODU);
+	$("#yapilanIslemStokKod" + i).val(value.STOK_KODU ? value.STOK_KODU : "");
 	$("#yapilanIslemMiktar" + i).val(1);
-	$("#yapilanIslem" + i).val(value.STOK_ADI);
-	$("#yapilanIslemFiyat" + i).val(parseFloat(value.SATIS_FIAT1).toFixed(2));
-	$("#yapilanIslemKdv" + i).val(value.KDV_ORANI);
+	$("#yapilanIslem" + i).val(value.STOK_ADI ? value.STOK_ADI : "");
+	$("#yapilanIslemFiyat" + i).val(
+		parseFloat(value.SATIS_FIAT1 ? value.SATIS_FIAT1 : 0).toFixed(2)
+	);
+	$("#yapilanIslemKdv" + i).val(value.KDV_ORANI ? value.KDV_ORANI : 0);
 	stok_bilgileri_onaylandi[i - 1] = true;
 	$("#stok_liste_" + i).hide();
 	islemHesapla(i);
