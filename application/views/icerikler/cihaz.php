@@ -54,8 +54,7 @@
                                         <tr>
                                             <th class="align-middle">Müşteri Adı: </th>
                                             <td class="align-middle">
-                                                <input id="musteri_kod" name="cari_kod" type="hidden">
-                                                <?php $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi)); ?>
+                                                <?php $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi, "musteri_kod_value" => $cihaz->musteri_kod)); ?>
                                             </td>
                                         </tr>
                                         <tr>
