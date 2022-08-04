@@ -22,6 +22,7 @@ $(document).ready(function () {
 		}
 	});
 	musteri_adi_input.keyup(function () {
+		$("#musteri_kod").val("");
 		musteriVerileriniGetirAd(musteri_adi_input);
 	});
 });
@@ -67,8 +68,7 @@ function cihazGirisiVerileri(value) {
 		+(value.CARI_ADRES ? value.CARI_ADRES : "") +
 			(value.CARI_ILCE ? ", " + value.CARI_ILCE : "") +
 			(value.CARI_IL ? ", " + value.CARI_IL : "") +
-			(value.CARI_ULKE_KODU ? ", " + value.CARI_ULKE_KODU : "") +
-			""
+			(value.CARI_ULKE_KODU ? ", " + value.CARI_ULKE_KODU : "")
 	);
 	$("#gsm_mail").val(
 		value.CARI_TEL
@@ -79,6 +79,7 @@ function cihazGirisiVerileri(value) {
 			? value.GSM2
 			: ""
 	);
+	$("#musteri_kod").val(value.CARI_KOD ? value.CARI_KOD : "");
 	musteri_bilgileri_onaylandi = true;
 	$("#musteri_adi_liste").hide();
 }

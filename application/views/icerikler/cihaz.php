@@ -10,6 +10,7 @@
     });
 </script>
 <script src="<?= base_url("dist/js/cihaz.js"); ?>"></script>
+<script src="<?= base_url("dist/js/cihaz_yonetimi.js"); ?>"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -53,6 +54,7 @@
                                         <tr>
                                             <th class="align-middle">Müşteri Adı: </th>
                                             <td class="align-middle">
+                                                <input id="musteri_kod" name="cari_kod" type="hidden">
                                                 <?php $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi)); ?>
                                             </td>
                                         </tr>
