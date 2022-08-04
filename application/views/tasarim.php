@@ -13,6 +13,13 @@
 
 </head>
 <body class="sidebar-mini layout-fixed">
+  <script>
+    $(document).ready(function(){
+      setInterval(function(){
+        window.location.reload();
+      }, 30 * 60 * 1000);
+    });
+  </script>
 <div class="wrapper">
   <?php $this->load->view("inc/navbar");?>
   
