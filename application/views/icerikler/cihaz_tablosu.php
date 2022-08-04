@@ -96,6 +96,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{id}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{musteri_kod}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{musteri_adi}</li>
                 </ul>
@@ -287,6 +291,7 @@ $eskiler = array(
   "{class}",
   "{id}",
   "{musteri_adi}",
+  "{musteri_kod}",
   "{adres}",
   "{gsm_mail}",
   "{cihaz_turu}",
@@ -436,6 +441,7 @@ foreach ($cihazlar as $cihaz) {
     "",
     $cihaz->id,
     $cihaz->musteri_adi,
+    isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
     $cihaz->adres,
     $cihaz->gsm_mail,
     $cihaz->cihaz_turu,
@@ -571,6 +577,7 @@ echo '</div>';
     replaceAll("{class}", "bg-success")
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
+      .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
       .replaceAll("{adres}", value.adres)
       .replaceAll("{gsm_mail}", value.gsm_mail)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)

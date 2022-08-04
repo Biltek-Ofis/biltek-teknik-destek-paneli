@@ -51,6 +51,12 @@
                                     <thead></thead>
                                     <tbody>
 
+                                    <tr>
+                                            <th class="align-middle">Müşteri Kodu: </th>
+                                            <td id="musteri_kod_text" class="align-middle">
+                                                <?=isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok";?>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th class="align-middle">Müşteri Adı: </th>
                                             <td class="align-middle">
