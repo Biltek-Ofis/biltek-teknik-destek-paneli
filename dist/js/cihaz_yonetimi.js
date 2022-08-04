@@ -23,6 +23,7 @@ $(document).ready(function () {
 	});
 	musteri_adi_input.keyup(function () {
 		$("#musteri_kod").val("");
+		$("#musteri_kod_text").html("Yok");
 		musteriVerileriniGetirAd(musteri_adi_input);
 	});
 });
@@ -80,6 +81,7 @@ function cihazGirisiVerileri(value) {
 			: ""
 	);
 	$("#musteri_kod").val(value.CARI_KOD ? value.CARI_KOD : "");
+	$("#musteri_kod_text").html(value.CARI_KOD ? value.CARI_KOD : "");
 	musteri_bilgileri_onaylandi = true;
 	$("#musteri_adi_liste").hide();
 }
