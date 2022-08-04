@@ -84,7 +84,9 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazPost($teslim_dahil = false)
     {
+        $musteri_kod = $this->input->post("musteri_kod");
         $veri = array(
+            "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : NULL,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
             "gsm_mail" => $this->input->post("gsm_mail"),
@@ -125,13 +127,14 @@ class Cihazlar_Model extends CI_Model
         //$this->db->empty_table($this->silinenCihazlarTabloAdi);
         return $results;
     }
-    
-    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati, $kdv){
+
+    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati, $kdv)
+    {
         return array(
-            "i_ad_".$index => $islem,
-            "i_birim_fiyat_".$index => $birim_fiyati,
-            "i_miktar_".$index => $miktar,
-            "i_kdv_".$index => $kdv,
+            "i_ad_" . $index => $islem,
+            "i_birim_fiyat_" . $index => $birim_fiyati,
+            "i_miktar_" . $index => $miktar,
+            "i_kdv_" . $index => $kdv,
         );
     }
     public function cikisTarihiKontrol($id)
@@ -163,12 +166,13 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->where("id", $id)->delete($this->medyalarTabloAdi);
     }
-    
+
     public function medyaBul($id)
     {
         return $this->db->where("id", $id)->get($this->medyalarTabloAdi)->result()[0];
     }
-    public function medyalar($id){
-        return $this->db->where("cihaz_id",$id)->get($this->medyalarTabloAdi)->result();
+    public function medyalar($id)
+    {
+        return $this->db->where("cihaz_id", $id)->get($this->medyalarTabloAdi)->result();
     }
 }

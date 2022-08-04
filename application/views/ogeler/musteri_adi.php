@@ -1,7 +1,9 @@
 <div class="form-group<?php if (isset($sifirla)) {
                             echo " p-0 m-0";
                         } ?> col-12">
-    <input id="musteri_kod" name="cari_kod" type="hidden">
+    <input id="musteri_kod" name="musteri_kod" type="hidden" value="<?php if (isset($musteri_kod_value)) {
+                                                                        echo $musteri_kod_value;
+                                                                    } ?>">
     <input id="musteri_adi" autocomplete="off" class="form-control" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="<?php if (isset($musteri_adi_value)) {
                                                                                                                                                     echo $musteri_adi_value;
                                                                                                                                                 } ?>" required>
