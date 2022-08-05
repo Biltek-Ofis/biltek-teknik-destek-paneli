@@ -51,10 +51,10 @@
                                     <thead></thead>
                                     <tbody>
 
-                                    <tr>
+                                        <tr>
                                             <th class="align-middle">Müşteri Kodu: </th>
                                             <td id="musteri_kod_text" class="align-middle">
-                                                <?=isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok";?>
+                                                <?= isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok"; ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -252,6 +252,7 @@
                                 <table class="table table-flush">
                                     <thead>
                                         <tr>
+                                            <th>SK</th>
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
                                             <th>Birim Fiyat (TL)</th>
@@ -333,19 +334,19 @@
                                             "kdv" => $cihaz->i_kdv_5
                                         ) : null)); ?>
                                         <tr>
-                                            <th colspan="3">Toplam</th>
-                                            <td id="yapilanIslemToplam"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
+                                            <th colspan="5">Toplam</th>
+                                            <td colspan="2" id="yapilanIslemToplam"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
                                         </tr>
                                         <tr>
-                                            <th colspan="3">KDV</th>
-                                            <td id="yapilanIslemKdv"><?= $kdv > 0 ? $kdv . " TL" : ""; ?></td>
+                                            <th colspan="5">KDV</th>
+                                            <td colspan="2" id="yapilanIslemKdv"><?= $kdv > 0 ? $kdv . " TL" : ""; ?></td>
                                         </tr>
                                         <tr>
-                                            <th colspan="3">Genel Toplam</th>
-                                            <td id="yapilanIslemGenelToplam"><?= $genel_toplam > 0 ? $genel_toplam . " TL" : ""; ?></td>
+                                            <th colspan="5">Genel Toplam</th>
+                                            <td colspan="2" id="yapilanIslemGenelToplam"><?= $genel_toplam > 0 ? $genel_toplam . " TL" : ""; ?></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="7">
                                                 <div class="form-group p-0 m-0 col">
                                                     <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"><?= $cihaz->yapilan_islem_aciklamasi; ?></textarea>
                                                 </div>

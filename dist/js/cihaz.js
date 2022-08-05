@@ -24,6 +24,8 @@ $(document).ready(function () {
 			}
 		});
 		$("#yapilanIslem" + i).keyup(function () {
+			$("#stokKodText" + i).html("Yok");
+			$("#yapilanIslemStokKod" + i).val("");
 			var yapilanIslem = $("#yapilanIslem" + i).val();
 			if (yapilanIslem.length > 0) {
 				$("#yapilanIslemMiktar" + i).prop("required", true);
@@ -115,6 +117,7 @@ function stoklariGetir(yapilanIslem, i) {
 	}
 }
 function stokVerileri(value, i) {
+	$("#stokKodText" + i).html(value.STOK_KODU ? value.STOK_KODU : "Yok");
 	$("#yapilanIslemStokKod" + i).val(value.STOK_KODU ? value.STOK_KODU : "");
 	$("#yapilanIslemMiktar" + i).val(1);
 	$("#yapilanIslem" + i).val(value.STOK_ADI ? value.STOK_ADI : "");
