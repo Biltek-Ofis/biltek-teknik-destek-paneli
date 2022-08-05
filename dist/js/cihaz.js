@@ -89,7 +89,7 @@ function tutarHesapla() {
 }
 function stoklariGetir(yapilanIslem, i) {
 	if (yapilanIslem.length > 1) {
-		$.get(base_url + "/js/stok/" + yapilanIslem, {}, function (data) {
+		$.post(base_url + "/js/stok", { ara: yapilanIslem }, function (data) {
 			var jsonData = JSON.parse(data);
 			if (Object.keys(jsonData).length > 0) {
 				$("#stok_liste_" + i).html("");

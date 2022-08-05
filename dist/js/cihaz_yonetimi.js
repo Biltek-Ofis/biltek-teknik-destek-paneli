@@ -30,9 +30,9 @@ $(document).ready(function () {
 function musteriVerileriniGetirAd(musteri_adi_input) {
 	var musteri_adi_input_st = musteri_adi_input.val();
 	if (musteri_adi_input_st.length > 1) {
-		$.get(
-			base_url + "/js/musteri_adi/" + musteri_adi_input_st,
-			{},
+		$.post(
+			base_url + "/js/musteri_adi",
+			{ ara: musteri_adi_input_st },
 			function (data) {
 				var jsonData = JSON.parse(data);
 				if (Object.keys(jsonData).length > 0) {
