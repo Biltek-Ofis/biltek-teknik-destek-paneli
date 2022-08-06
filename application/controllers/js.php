@@ -15,14 +15,14 @@ class Js extends Varsayilan_Controller
     }
     public $musteriAdi = "CARI_ISIM";
     public $stokAdi = "STOK_ADI";
-    public function musteri_adi()
+    public function musteri_adi( )
     {
         $ara = $this->input->post("ara");
-        echo json_encode($this->Firma_Model->musteri_bilgileri($this->musteriAdi, $ara));
+        echo $this->Islemler_Model->turkceKarakter(json_encode($this->Firma_Model->musteri_bilgileri($this->musteriAdi, $ara)));
     }
     public function stok()
     {
         $ara = $this->input->post("ara");
-        echo json_encode($this->Firma_Model->stok($this->stokAdi, $ara));
+        echo $this->Islemler_Model->turkceKarakter(json_encode($this->Firma_Model->stok($this->stokAdi, $ara)));
     }
 }
