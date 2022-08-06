@@ -148,7 +148,7 @@ class Islemler_Model extends CI_Model
             "searching": true,
             "ordering": true,
             order: [
-              ['.$siralama[0].', "'.$siralama[1].'"]
+              [' . $siralama[0] . ', "' . $siralama[1] . '"]
             ],
             "info": true,
             "autoWidth": false,
@@ -175,10 +175,12 @@ class Islemler_Model extends CI_Model
             }]
           }';
     }
-    public function sifrele($sifre){
+    public function sifrele($sifre)
+    {
         return password_hash($sifre, PASSWORD_DEFAULT);
     }
-    public function cihazDurumu($id){
+    public function cihazDurumu($id)
+    {
         switch ($id) {
             case 1:
                 return "Arıza Tespiti Yapılıyor";
@@ -189,5 +191,25 @@ class Islemler_Model extends CI_Model
             default:
                 return "Sırada Bekliyor";
         }
+    }
+    public $bozukHarfler = array(
+        '\u00d0',
+        '\u00de',
+        '\u00dc',
+        '\u00dd',
+        '\u00d6',
+        '\u00c7',
+    );
+    public $buyukHarfler = array(
+        'Ğ',
+        'Ş',
+        'Ü',
+        'İ',
+        'Ö',
+        'Ç',
+    );
+    public function turkceKarakter($str)
+    {
+        return str_replace($this->bozukHarfler, $this->buyukHarfler, $str);
     }
 }
