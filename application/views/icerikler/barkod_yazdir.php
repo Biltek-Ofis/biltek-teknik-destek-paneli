@@ -9,36 +9,34 @@
     <?php $this->load->view("inc/styles"); ?>
     <?php $this->load->view("inc/scripts"); ?>
     <?php
-    $bodyStyle = "width: 100%;
-            height: 100%;";
-    $pageStyle = "width: 8cm;
+    $style = "width: 8cm;
             height: 4cm;
-            size: 8cm 4cm;";
+            size: 8cm 4cm;
+            font-size:10px;
+            word-break: break-word;
+            page-break-before: always;
+            display: inline;";
     ?>
     <style>
-        @page {
+        body {
             margin: 0;
-            <?= $pageStyle; ?>
+            <?= $style; ?>
         }
 
-        body {
-            width: 100%;
-            height: 100%;
+        @page {
             margin: 0;
-            <?= $bodyStyle; ?>
+            <?= $style; ?>
         }
 
         @media print {
             body {
-                width: 100%;
-                height: 100%;
                 margin: 0;
-                <?= $bodyStyle; ?>
+                <?= $style; ?>
             }
 
             @page {
                 margin: 0;
-                <?= $pageStyle; ?>
+                <?= $style; ?>
             }
         }
     </style>
@@ -46,32 +44,36 @@
 
 <body onafterprint="self.close()">
     <table class="table">
-        <tbody>
-            <tr>
-                <td class="p-1 m-0 font-weight-bold"><?php
-                                                        $basamak = 3;
-                                                        $sifirSayisi = 3 - strlen($cihaz->id);
-                                                        $id = "";
-                                                        if ($sifirSayisi > 0) {
-                                                            for ($i = 0; $i < $sifirSayisi; $i++) {
-                                                                $id .= "0";
-                                                            }
-                                                        }
-                                                        $id .= $cihaz->id;
-                                                        echo $id;
-                                                        ?></td>
+        <thead>
+            <tr></tr>
+            <tr></tr>
+        </thead>
+        <tbody class="p-1">
+            <tr class="pl-1">
+                <th class="p-0 pl-1 m-0"><?php
+                                            $basamak = 3;
+                                            $sifirSayisi = 3 - strlen($cihaz->id);
+                                            $id = "";
+                                            if ($sifirSayisi > 0) {
+                                                for ($i = 0; $i < $sifirSayisi; $i++) {
+                                                    $id .= "0";
+                                                }
+                                            }
+                                            $id .= $cihaz->id;
+                                            echo $id;
+                                            ?></th>
+                <td class="p-0 pr-1 m-0 text-right"><?= $cihaz->tarih; ?></td>
             </tr>
             <tr>
-                <td class="p-1 m-0"><?= $cihaz->tarih; ?></td>
+                <td class="p-0 pl-1 pr-1 m-0" colspan="2"><?= $cihaz->musteri_adi; ?></td>
             </tr>
             <tr>
-                <td class="p-1 m-0"><?= $cihaz->musteri_adi; ?></td>
+                <td class="p-0 pl-1 pr-1 m-0" colspan="2"><?= $cihaz->cihaz . " " . $cihaz->cihaz_modeli; ?></td>
             </tr>
             <tr>
-                <td class="p-1 m-0"><?= $cihaz->cihaz . " " . $cihaz->cihaz_modeli; ?></td>
-            </tr>
-            <tr>
-                <td class="p-1 m-0"><?= $cihaz->ariza_aciklamasi; ?></td>
+                <td class="p-0 pl-1 pr-1 m-0" colspan="2">
+                    <p><?= $cihaz->ariza_aciklamasi; ?></p>
+                </td>
             </tr>
         </tbody>
     </table>
