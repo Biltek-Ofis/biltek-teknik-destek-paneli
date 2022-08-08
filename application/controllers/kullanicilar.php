@@ -7,7 +7,6 @@ class Kullanicilar extends Varsayilan_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model("Islemler_Model");
 	}
 	public function index()
 	{
