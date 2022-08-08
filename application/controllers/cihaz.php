@@ -61,19 +61,17 @@ class Cihaz extends Varsayilan_Controller
             );
             for ($i = 1; $i <= 5; $i++) {
                 $islem = $this->input->post("islem" . $i);
-                if (strlen($islem) > 0) {
-                    $veri = $this->Cihazlar_Model->yapilanIslemArray(
-                        $i,
-                        $islem,
-                        $this->input->post("miktar" . $i),
-                        $this->input->post("birim_fiyati" . $i),
-                        $this->input->post("kdv_" . $i),
-                    );
-                    $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
-                    if (!$duzenle) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. ".$this->db->error()["message"]);
-                        return;
-                    }
+                $veri = $this->Cihazlar_Model->yapilanIslemArray(
+                    $i,
+                    strlen($islem) > 0 ? $islem : NULL,
+                    strlen($islem) > 0 ? $this->input->post("miktar" . $i) : 0,
+                    strlen($islem) > 0 ? $this->input->post("birim_fiyati" . $i) : 0,
+                    strlen($islem) > 0 ? $this->input->post("kdv_" . $i) : 0,
+                );
+                $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
+                if (!$duzenle) {
+                    $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                    return;
                 }
             }
 
@@ -151,14 +149,15 @@ class Cihaz extends Varsayilan_Controller
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
     }
-    public function medyaSil($cihaz_id,$id){
+    public function medyaSil($cihaz_id, $id)
+    {
         $medya = $this->Cihazlar_Model->medyaBul($id);
         unlink($medya->konum);
         $sil = $this->Cihazlar_Model->medyaSil($id);
-        if($sil){
-            redirect(base_url("cihaz/".$cihaz_id."#medyalar"));
-        }else{
-            $this->Kullanicilar_Model->girisUyari("cihaz/".$cihaz_id."#medyalar", "Medya silinemedi lütfen daha sonra tekrar deneyin");
+        if ($sil) {
+            redirect(base_url("cihaz/" . $cihaz_id . "#medyalar"));
+        } else {
+            $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id . "#medyalar", "Medya silinemedi lütfen daha sonra tekrar deneyin");
         }
     }
 }
