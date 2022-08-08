@@ -24,6 +24,7 @@ class Firma_Model extends CI_Model
     }
     public function ara($tablo, $aranacak, $ara)
     {
+        $ara = $this->Islemler_Model->turkceKarakterArama($ara);
         return $this->firmadb()->query("SELECT * FROM " . $tablo . " WHERE " . $aranacak . " LIKE N'%" . $ara . "%' collate Turkish_CI_AS")->result();
     }
 }
