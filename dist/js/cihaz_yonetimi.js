@@ -65,12 +65,33 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 }
 function cihazGirisiVerileri(value) {
 	$("#musteri_adi").val(value.CARI_ISIM ? value.CARI_ISIM : "", "");
-	$("#adres").val(
-		+(value.CARI_ADRES ? value.CARI_ADRES : "") +
-			(value.CARI_ILCE ? ", " + value.CARI_ILCE : "") +
-			(value.CARI_IL ? ", " + value.CARI_IL : "") +
-			(value.CARI_ULKE_KODU ? ", " + value.CARI_ULKE_KODU : "")
-	);
+	var adres = "";
+	var adresSayac = 0;
+	if (value.CARI_ADRES) {
+		adres += value.CARI_ADRES;
+		adresSayac++;
+	}
+	if (value.CARI_ILCE) {
+		if (adresSayac > 0) {
+			adres += ", ";
+		}
+		adres += value.CARI_ILCE;
+		adresSayac++;
+	}
+	if (value.CARI_IL) {
+		if (adresSayac > 0) {
+			adres += ", ";
+		}
+		adres += value.CARI_IL;
+		adresSayac++;
+	}
+	if (value.CARI_ULKE_KODU) {
+		if (adresSayac > 0) {
+			adres += ", ";
+		}
+		adres += value.CARI_ULKE_KODU;
+	}
+	$("#adres").val(adres);
 	$("#gsm_mail").val(
 		value.CARI_TEL
 			? value.CARI_TEL
