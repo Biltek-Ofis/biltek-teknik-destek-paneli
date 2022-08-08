@@ -49,34 +49,28 @@ $(document).ready(function () {
 	}
 });
 function islemHesapla(i) {
-	var yapilanIslemMiktar = $("#yapilanIslemMiktar" + i).val();
-	var yapilanIslemFiyat = $("#yapilanIslemFiyat" + i).val();
+	var yapilanIslemMiktar = $("#yapilanIslemMiktar" + i).val() ?? 0;
+	var yapilanIslemFiyat = $("#yapilanIslemFiyat" + i).val() ?? 0;
 	var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
-	if (yapilanIslemMiktar.length > 0 && yapilanIslemFiyat.length) {
-		var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
-		var kdv = Math.ceil((tutar / 100) * yapilanIslemKdv);
-		$("#yapilanIslemTutar" + i).html(tutar + " TL");
-		$("#yapilanIslemTopKdv" + i).html(
-			kdv > 0 ? kdv + " TL (" + yapilanIslemKdv + "%)" : "0 TL"
-		);
-	} else {
-		$("#yapilanIslemTutar" + i).html("");
-	}
+	var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
+	var kdv = Math.ceil((tutar / 100) * yapilanIslemKdv);
+	$("#yapilanIslemTutar" + i).html(tutar > 0 ? tutar+ " TL" : "");
+	$("#yapilanIslemTopKdv" + i).html(
+		kdv > 0 ? kdv + " TL (" + yapilanIslemKdv + "%)" : ""
+	);
 	tutarHesapla();
 }
 function tutarHesapla() {
 	var toplam = 0;
 	var kdv = 0;
 	for (let i = 1; i <= 5; i++) {
-		var miktar = $("#yapilanIslemMiktar" + i).val();
-		var birim_fiyati = $("#yapilanIslemFiyat" + i).val();
+		var miktar = $("#yapilanIslemMiktar" + i).val() ?? 0;
+		var birim_fiyati = $("#yapilanIslemFiyat" + i).val() ?? 0;
 		var kdv_orani = $("#yapilanIslemKdv" + i).val() ?? 0;
-		if (miktar.length > 0 && birim_fiyati > 0) {
-			var tutar = miktar * birim_fiyati;
-			var top_kdv = Math.ceil((tutar / 100) * kdv_orani);
-			kdv = kdv + top_kdv;
-			toplam = toplam + tutar;
-		}
+		var tutar = miktar * birim_fiyati;
+		var top_kdv = Math.ceil((tutar / 100) * kdv_orani);
+		kdv = kdv + top_kdv;
+		toplam = toplam + tutar;
 	}
 	var genel_toplam = toplam + kdv;
 	$("#yapilanIslemToplam").html(toplam > 0 ? toplam + " TL" : "");
