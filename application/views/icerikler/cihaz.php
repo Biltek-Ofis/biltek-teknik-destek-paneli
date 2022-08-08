@@ -257,7 +257,7 @@
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
                                             <th>Birim Fiyat (TL)</th>
-                                            <th>KDV Oranı</th>
+                                            <th>KDV Oranı (%)</th>
                                             <th>Tutar</th>
                                             <th>KDV</th>
                                         </tr>
