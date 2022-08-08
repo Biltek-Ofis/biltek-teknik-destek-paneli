@@ -26,6 +26,9 @@ class Islemler_Model extends CI_Model
     {
         return $tarih == "" ? "" : date($this->sqlTarihFormati, strtotime($tarih));
     }
+    public function guncelTarih(){
+        return date($this->sqlTarihFormati, time());
+    }
     public function tarihDonustur($tarih)
     {
         return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));

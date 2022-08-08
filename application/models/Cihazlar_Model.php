@@ -154,6 +154,11 @@ class Cihazlar_Model extends CI_Model
         }
         return $this->cihazDuzenle($id, $veri);
     }
+    public function cikisTarihi($id)
+    {
+        $veri = array("cikis_tarihi" => $this->Islemler_Model->guncelTarih());
+        return $this->cihazDuzenle($id, $veri);
+    }
     public function cihazDetayModalAdi()
     {
         return "cihazDetay";
