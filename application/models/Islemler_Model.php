@@ -199,6 +199,7 @@ class Islemler_Model extends CI_Model
         '\u00dd',
         '\u00d6',
         '\u00c7',
+        'I',
     );
     public $buyukHarfler = array(
         'Ğ',
@@ -207,9 +208,29 @@ class Islemler_Model extends CI_Model
         'İ',
         'Ö',
         'Ç',
+        'I',
     );
     public function turkceKarakter($str)
     {
         return str_replace($this->bozukHarfler, $this->buyukHarfler, $str);
+    }
+    public $aramaKarakterler = array(
+        'i',
+        'İ',
+        'ğ',
+        'Ğ',
+        'ş',
+        'Ş',
+    );
+    public $aramaSemboller = array(
+        'Ý',
+        'Ý',
+        'Ð',
+        'Ð',
+        'Þ',
+        'Þ',
+    );
+    public function turkceKarakterArama($str){
+        return str_replace($this->aramaKarakterler, $this->aramaSemboller, $str);
     }
 }
