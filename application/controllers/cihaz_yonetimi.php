@@ -31,8 +31,8 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 			$veri = $this->Cihazlar_Model->cihazPost();
 			$ekle = $this->Cihazlar_Model->cihazEkle($veri);
 			if($ekle){
-				//$id = $this->db->insert_id();
-				redirect(base_url(""));
+				$id = $this->db->insert_id();
+				redirect(base_url("")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
 			}else{
 				$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. ");
 			}
