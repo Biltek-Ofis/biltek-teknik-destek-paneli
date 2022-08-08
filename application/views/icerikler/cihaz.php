@@ -169,7 +169,8 @@
                                 <a href="javascript:void(0);" id="sifirlaGenel" class="btn btn-secondary mt-2 mr-2">
                                     Sıfırla
                                 </a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#yazdirModal" class="btn btn-dark text-white mt-2">Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2">Formu Yazdır</a>
                             </div>
                         </div>
                     </div>
@@ -359,7 +360,8 @@
                         <div id="container w-100 m-0 p-0">
                             <div class="row m-0 p-0 d-flex justify-content-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#yazdirModal" class="btn btn-dark text-white mt-2">Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2">Formu Yazdır</a>
                             </div>
                         </div>
                         <script>
@@ -400,11 +402,11 @@
         </div>
     </section>
 </div>
-<div class="modal fade" id="yazdirModal" tabindex="-1" role="dialog" aria-labelledby="yazdirModalLabel" aria-hidden="true">
+<div class="modal fade" id="formuYazdirModal" tabindex="-1" role="dialog" aria-labelledby="formuYazdirModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="yazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
+                <h5 class="modal-title" id="formuYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -413,7 +415,27 @@
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0);" onclick="yazdir(<?= $cihaz->id; ?>);" class="btn btn-dark text-white">Yazdır</a>
+                <a href="javascript:void(0);" onclick="formuYazdir(<?= $cihaz->id; ?>);" class="btn btn-dark text-white">Yazdır</a>
+                <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="barkoduYazdirModal" tabindex="-1" role="dialog" aria-labelledby="barkoduYazdirModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="barkoduYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" onclick="barkoduYazdir(<?= $cihaz->id; ?>);" class="btn btn-dark text-white">Yazdır</a>
                 <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
             </div>
         </div>
