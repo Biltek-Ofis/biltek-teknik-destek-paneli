@@ -259,7 +259,7 @@
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_1 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_1 . ' TL</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . ' TL</td>
-                <td colspan="2" class="text-center">' . $kdv_1 . ' TL ('.$cihaz->i_kdv_1.'%)</td>
+                <td colspan="2" class="text-center">' . ($kdv_1 > 0 ? $kdv_1 . ' TL (' . $cihaz->i_kdv_1 . '%)': "").'</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_1;
                     $kdv = $kdv + $kdv_1;
@@ -272,7 +272,7 @@
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_2 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_2 . ' TL</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . ' TL</td>
-                <td colspan="2" class="text-center">' . $kdv_2 . ' TL ('.$cihaz->i_kdv_2.'%)</td>
+                <td colspan="2" class="text-center">' . ($kdv_2 > 0 ? $kdv_2 . ' TL (' . $cihaz->i_kdv_2 . '%)': "").'</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_2;
                     $kdv = $kdv + $kdv_2;
@@ -285,7 +285,7 @@
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_3 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_3 . ' TL</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . ' TL</td>
-                <td colspan="2" class="text-center">' . $kdv_3 . ' TL ('.$cihaz->i_kdv_3.'%)</td>
+                <td colspan="2" class="text-center">' . ($kdv_3 > 0 ? $kdv_3 . ' TL (' . $cihaz->i_kdv_3 . '%)': "").'</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_3;
                     $kdv = $kdv + $kdv_3;
@@ -298,7 +298,7 @@
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_4 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_4 . ' TL</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . ' TL</td>
-                <td colspan="2" class="text-center">' . $kdv_4 . ' TL ('.$cihaz->i_kdv_4.'%)</td>
+                <td colspan="2" class="text-center">' . ($kdv_4 > 0 ? $kdv_4 . ' TL (' . $cihaz->i_kdv_4 . '%)': "").'</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_4;
                     $kdv = $kdv + $kdv_4;
@@ -311,7 +311,7 @@
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_5 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_5 . ' TL</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . ' TL</td>
-                <td colspan="2" class="text-center">' . $kdv_5 . ' TL ('.$cihaz->i_kdv_5.'%)</td>
+                <td colspan="2" class="text-center">' . ($kdv_5 > 0 ? $kdv_5 . ' TL (' . $cihaz->i_kdv_5 . '%)': "").'</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_5;
                     $kdv = $kdv + $kdv_5;
@@ -339,7 +339,7 @@
                 <td colspan="2" class="text-center">ÇATLAK</td>
                 <td colspan="4" class="text-center">DİĞER</td>
                 <td colspan="8">KDV</td>
-                <td colspan="2" class="text-center"><?= $kdv; ?> TL</td>
+                <td colspan="2" class="text-center"><?= $kdv > 0 ? $kdv . " TL" : ""; ?></td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 1) {
@@ -389,7 +389,7 @@
             <tr>
                 <td colspan="3" class="text-center">NOT</td>
                 <td colspan="17" class="text-center">
-                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Servis hizmet süresi en fazla <h6 class="font-weight-bold">20 (yirmi)</span> iş günüdür. <span class="font-weight-bold">Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</h6> Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.<br>
+                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. <span class="font-weight-bold h5">Servis hizmet süresi en fazla 20 (yirmi) iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span> Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.<br>
                     BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR.<br>
                     MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.
                 </td>
