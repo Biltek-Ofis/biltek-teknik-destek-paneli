@@ -7,7 +7,7 @@ extension=php_sqlsrv_74_ts.dll
 
 ```
 
-Site konumuna .env dosyası oluşturulacak.
+Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin ve satır sonunda boşluk bırakmayın.
 
 ```
 DB_DRIVER=sqlsrv //Değiştirilmeyecek
