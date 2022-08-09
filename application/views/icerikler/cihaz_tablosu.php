@@ -712,7 +712,7 @@ echo '</div>';
           sayac++;
           $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
-          $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_markasi);
+          $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
           $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
           $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>');
           $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
