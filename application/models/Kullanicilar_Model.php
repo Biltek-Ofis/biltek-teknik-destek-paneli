@@ -10,7 +10,7 @@ class Kullanicilar_Model extends CI_Model
         echo '<script>
         var r = confirm("' . ($hata == "" ? "Bu işlemi gerçekleştirmek için gerekli yetkiniz bulunmuyor!" : $hata) . '");
         if (r == true) {
-            window.location.replace("' . base_url($konum) .'");
+            window.location.replace("' . base_url($konum) . '");
         }else{
             window.location.replace("' . base_url($konum) . '");
         }</script>';
@@ -80,5 +80,13 @@ class Kullanicilar_Model extends CI_Model
             $veri["yonetici"] = $this->input->post("yonetici");
         }
         return $veri;
+    }
+    public function kullaniciAdiKontrol($kullanici_adi)
+    {
+        $where = array(
+            "kullanici_adi" => $kullanici_adi,
+        );
+        $query = $this->db->where($where)->get($this->kullanicilarTablosu);
+        return !($query->num_rows() > 0);
     }
 }
