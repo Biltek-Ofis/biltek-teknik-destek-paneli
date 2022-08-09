@@ -42,7 +42,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form id="kullaniciEkleForm" autocomplete="off" method="post" action="<?= base_url("kullanicilar/ekle"); ?>">
+                                <form id="kullaniciEkleForm" autocomplete="off" method="post" action="<?= base_url("yonetim/kullaniciEkle"); ?>">
                                     <div class="row">
                                         <?php $this->load->view("ogeler/kullanici_ad"); ?>
                                     </div>
@@ -83,7 +83,7 @@
                             ?>
                                 <tr>
                                     <td>
-                                        <?= $kullanici->ad; ?> <?= $kullanici->soyad; ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["kullanici_adi"] == $kullanici->kullanici_adi ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
+                                        <?= $kullanici->ad; ?> <?= $kullanici->soyad; ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
                                     </td>
                                     <td>
                                         <?= $kullanici->kullanici_adi; ?>
@@ -93,11 +93,11 @@
                                     </td>
                                     <td class="align-middle text-center">
 
-                                        <?= $this->Kullanicilar_Model->kullaniciBilgileri()["kullanici_adi"] == $kullanici->kullanici_adi ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>'; ?>
+                                        <?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>'; ?>
                                     </td>
                                 </tr>
                                 <?php
-                                if ($this->Kullanicilar_Model->kullaniciBilgileri()["kullanici_adi"] != $kullanici->kullanici_adi) {
+                                if ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] != $kullanici->id) {
                                 ?>
                                     <div class="modal fade" id="kullaniciSilModal<?= $kullanici->id; ?>" tabindex="-1" aria-labelledby="kullaniciSilModal<?= $kullanici->id; ?>Label" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -112,7 +112,7 @@
                                                     <span class="font-weight-bold"><?= $kullanici->ad; ?> <?= $kullanici->soyad; ?> (<?= $kullanici->kullanici_adi; ?>)</span> kullanıcısını silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a href="<?= base_url("kullanicilar/sil/" . $kullanici->id); ?>" class="btn btn-danger">Evet</a>
+                                                    <a href="<?= base_url("yonetim/kullaniciSil/" . $kullanici->id); ?>" class="btn btn-danger">Evet</a>
                                                     <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
                                                 </div>
                                             </div>
@@ -128,7 +128,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form id="kullaniciDuzenleForm<?= $kullanici->id; ?>" autocomplete="off" method="post" action="<?= base_url("kullanicilar/duzenle/" . $kullanici->id); ?>">
+                                                    <form id="kullaniciDuzenleForm<?= $kullanici->id; ?>" autocomplete="off" method="post" action="<?= base_url("yonetim/kullaniciDuzenle/" . $kullanici->id); ?>">
                                                         <div class="row">
                                                             <?php $this->load->view("ogeler/kullanici_ad", array("value" => $kullanici->ad, "id" => $kullanici->id)); ?>
                                                         </div>
