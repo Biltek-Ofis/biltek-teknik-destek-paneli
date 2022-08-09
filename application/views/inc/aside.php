@@ -7,7 +7,7 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
             <h5 class="info w-100 text-center">
-                <a href="<?= base_url("kullanici"); ?>" class="d-block"><?= $this->Kullanicilar_Model->kullaniciBilgileri()["ad"]; ?> <?= $this->Kullanicilar_Model->kullaniciBilgileri()["soyad"]; ?></a>
+                <a href="<?= base_url("kullanici"); ?>" class="d-block"><?= $this->Kullanicilar_Model->kullaniciBilgileri()["ad"]; ?> <?= $this->Kullanicilar_Model->kullaniciBilgileri()["soyad"]; ?><br>(<?= $this->Kullanicilar_Model->kullaniciBilgileri()["kullanici_adi"]; ?>)</a>
             </h5>
         </div>
         <!--<div class="form-inline">
