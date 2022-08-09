@@ -14,7 +14,7 @@
 
 </head>
 
-<body class="sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-fixed"> <!--sidebar-collapse-->
   <div class="wrapper">
     <?php $this->load->view("inc/navbar"); ?>
 
