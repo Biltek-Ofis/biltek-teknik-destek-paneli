@@ -43,9 +43,11 @@ class Cihaz extends Varsayilan_Controller
     public function yapilanIslemDuzenle($id)
     {
         if ($this->Giris_Model->kullaniciGiris()) {
+            $guncel_durum = $this->input->post("guncel_durum");
+            $guncel_durum_suanki = $this->input->post("guncel_durum_suanki");
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
-                "guncel_durum" => $this->input->post("guncel_durum"),
+                "guncel_durum" => $guncel_durum,
             );
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
@@ -53,7 +55,11 @@ class Cihaz extends Varsayilan_Controller
             if (strlen($tarih) > 0) {
                 $cihaz_verileri["tarih"] = $tarih;
             }
-            $cihaz_verileri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
+            if ($guncel_durum_suanki != $guncel_durum) {
+                $cihaz_verileri["bildirim_tarihi"] = $this->Islemler_Model->tarihDonusturSQL($this->Islemler_Model->tarih());
+            } else {
+                $cihaz_verileri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
+            }
             $cihaz_verileri["cikis_tarihi"] = strlen($cikis_tarihi) > 0 ? $cikis_tarihi : NULL;
             $this->Cihazlar_Model->cihazDuzenle(
                 $id,

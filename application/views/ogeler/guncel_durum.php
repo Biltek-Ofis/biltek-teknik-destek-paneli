@@ -1,6 +1,7 @@
 <div class="form-group<?php if (isset($sifirla)) {
                             echo " p-0 m-0";
                         } ?> col">
+    <input type="hidden" name="guncel_durum_suanki" value="<?= isset($guncel_durum_value) ? $guncel_durum_value : 0; ?>">
     <select id="guncel_durum" class="form-control" name="guncel_durum" aria-label="Güncel Durum">
         <?php
         for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
