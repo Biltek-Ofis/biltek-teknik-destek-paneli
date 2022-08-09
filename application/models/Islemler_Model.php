@@ -26,7 +26,8 @@ class Islemler_Model extends CI_Model
     {
         return $tarih == "" ? "" : date($this->sqlTarihFormati, strtotime($tarih));
     }
-    public function guncelTarih(){
+    public function guncelTarih()
+    {
         return date($this->sqlTarihFormati, time());
     }
     public function tarihDonustur($tarih)
@@ -190,6 +191,12 @@ class Islemler_Model extends CI_Model
             case 2:
                 return "Yedek Parça Bekleniyor";
             case 3:
+                return "Fiyatlandırıldı Onay Bekleniyor";
+            case 4:
+                return "Fiyat Onaylandı";
+            case 5:
+                return "Fiyat Onaylanmadı";
+            case 6:
                 return "Teslim Edilmeye Hazır";
             default:
                 return "Sırada Bekliyor";
@@ -233,7 +240,8 @@ class Islemler_Model extends CI_Model
         'Þ',
         'Þ',
     );
-    public function turkceKarakterArama($str){
+    public function turkceKarakterArama($str)
+    {
         return str_replace($this->aramaKarakterler, $this->aramaSemboller, $str);
     }
 }
