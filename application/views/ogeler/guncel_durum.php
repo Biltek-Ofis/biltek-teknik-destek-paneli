@@ -1,8 +1,23 @@
-<div class="form-group<?php if(isset($sifirla)) {echo " p-0 m-0";} ?> col">
+<div class="form-group<?php if (isset($sifirla)) {
+                            echo " p-0 m-0";
+                        } ?> col">
     <select id="guncel_durum" class="form-control" name="guncel_durum" aria-label="Güncel Durum">
-        <option value="0"<?php if(isset($guncel_durum_value) && $guncel_durum_value==0) {echo " selected";} ?>>Güncel Durum Seçin (Sırada Bekliyor)</option>
-        <option value="1"<?php if(isset($guncel_durum_value) && $guncel_durum_value==1) {echo " selected";} ?>><?= $this->Islemler_Model->cihazDurumu(1); ?></option>
-        <option value="2"<?php if(isset($guncel_durum_value) && $guncel_durum_value==2) {echo " selected";} ?>><?= $this->Islemler_Model->cihazDurumu(2); ?></option>
-        <option value="3"<?php if(isset($guncel_durum_value) && $guncel_durum_value==3) {echo " selected";} ?>><?= $this->Islemler_Model->cihazDurumu(3); ?></option>
+        <?php
+        for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
+            echo '<option value="' . $i . '"';
+            if (isset($guncel_durum_value) && $guncel_durum_value == $i) {
+                echo " selected";
+            }
+            echo '>';
+            if ($i == 0) {
+                echo 'Güncel Durum Seçin (';
+            }
+            echo $this->Islemler_Model->cihazDurumu[$i];
+            if ($i == 0) {
+                echo ')';
+            }
+            echo '</option>';
+        }
+        ?>
     </select>
 </div>

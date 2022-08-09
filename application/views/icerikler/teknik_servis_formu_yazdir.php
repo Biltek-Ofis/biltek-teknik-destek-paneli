@@ -145,8 +145,8 @@
                 <td colspan="8"></td>
                 <td colspan="2" class="text-center"></td>
                 <td colspan="4" class="text-center font-weight-bold">Aksesuar</tH>
+                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(1); ?></td>
                 <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(2); ?></td>
-                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(3); ?></td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(1); ?></td>
