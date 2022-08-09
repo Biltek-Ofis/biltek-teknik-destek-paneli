@@ -104,43 +104,55 @@ class Islemler_Model extends CI_Model
                 return "Belirtilmemiş";
         }
     }
-    public function hasarDurumu($id)
+    public $hasarDurumu = array(
+        "Yok",
+        "Hasarlı",
+        "Hasarsız",
+    );
+    public function hasarDurumu($index)
     {
-        switch ($id) {
-            case 0:
-                return "Yok";
-            case 1:
-                return "Hasarlı";
-            case 2:
-                return "Hasarsız";
-            default:
-                return "Yok";
-        }
+        return $this->arrayGetir($this->hasarDurumu, $index);
     }
-    public function evetHayir($id)
+    public $evetHayir = array(
+        "Belirtilmemiş",
+        "Evet",
+        "Hayır",
+    );
+    public function evetHayir($index)
     {
-        switch ($id) {
-            case 1:
-                return "Evet";
-            case 2:
-                return "Hayır";
-            default:
-                return "Belirtilmemiş";
-        }
+        return $this->arrayGetir($this->evetHayir, $index);
     }
-    public function cihazdakiHasar($id)
+    public $cihazdakiHasar = array(
+        "Belirtilmemiş",
+        "Çizik",
+        "Kırık",
+        "Çatlak",
+        "Diğer",
+    );
+    public function cihazdakiHasar($index)
     {
-        switch ($id) {
-            case 1:
-                return "Çizik";
-            case 2:
-                return "Kırık";
-            case 3:
-                return "Çatlak";
-            case 4:
-                return "Diğer";
-            default:
-                return "Belirtilmemiş";
+        return $this->arrayGetir($this->cihazdakiHasar, $index);
+    }
+
+    public $cihazDurumu = array(
+        "Sırada Bekliyor",
+        "Arıza Tespiti Yapılıyor",
+        "Yedek Parça Bekleniyor",
+        "Fiyatlandırıldı Onay Bekleniyor",
+        "Fiyat Onaylandı",
+        "Fiyat Onaylanmadı",
+        "Teslim Edilmeye Hazır",
+    );
+    public function cihazDurumu($index)
+    {
+        return $this->arrayGetir($this->cihazDurumu, $index);
+    }
+    public function arrayGetir($arr, $index)
+    {
+        if ($index > count($arr) - 1) {
+            return $arr[0];
+        } else {
+            return $arr[$index];
         }
     }
     public function datatablesAyarlari($siralama)
@@ -182,25 +194,6 @@ class Islemler_Model extends CI_Model
     public function sifrele($sifre)
     {
         return password_hash($sifre, PASSWORD_DEFAULT);
-    }
-    public function cihazDurumu($id)
-    {
-        switch ($id) {
-            case 1:
-                return "Arıza Tespiti Yapılıyor";
-            case 2:
-                return "Yedek Parça Bekleniyor";
-            case 3:
-                return "Fiyatlandırıldı Onay Bekleniyor";
-            case 4:
-                return "Fiyat Onaylandı";
-            case 5:
-                return "Fiyat Onaylanmadı";
-            case 6:
-                return "Teslim Edilmeye Hazır";
-            default:
-                return "Sırada Bekliyor";
-        }
     }
     public $bozukHarfler = array(
         '\u00d0',

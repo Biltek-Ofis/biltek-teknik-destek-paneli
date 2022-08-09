@@ -121,7 +121,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}CikisTarihi">{cikis_tarihi}</span> <a href="'.base_url().'/cihaz_yonetimi/cikisTarihi/{id}" class="text-link">(Güncelle)</a></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}CikisTarihi">{cikis_tarihi}</span> <a href="' . base_url() . '/cihaz_yonetimi/cikisTarihi/{id}" class="text-link">(Güncelle)</a></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
@@ -519,65 +519,66 @@ echo '</div>';
         return '<?= $this->Islemler_Model->servisTuru(3); ?>'
     }
   }
-
+  <?php
+  echo '
   function hasarDurumu(id) {
-    switch (id) {
-      case 1:
-        return '<?= $this->Islemler_Model->hasarDurumu(1); ?>';
-      case 2:
-        return '<?= $this->Islemler_Model->hasarDurumu(2); ?>';
-      case 3:
-        return '<?= $this->Islemler_Model->hasarDurumu(3); ?>';
-      default:
-        return '<?= $this->Islemler_Model->hasarDurumu(1); ?>'
-    }
+    switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->hasarDurumu); $i++) {
+    echo '
+      case ' . $i . ':
+        return "' . $this->Islemler_Model->hasarDurumu[$i] . '";';
   }
-
+  echo '
+      default:
+        return "' . $this->Islemler_Model->hasarDurumu[0] . '";
+    }
+  }';
+  ?>
+  <?php
+  echo '
   function evetHayir(id) {
-    switch (id) {
-      case 1:
-        return '<?= $this->Islemler_Model->evetHayir(1); ?>';
-      case 0:
-        return '<?= $this->Islemler_Model->evetHayir(0); ?>';
-
-      default:
-        return '<?= $this->Islemler_Model->evetHayir(0); ?>'
-    }
+    switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
+    echo '
+      case ' . $i . ':
+        return "' . $this->Islemler_Model->evetHayir[$i] . '";';
   }
-
+  echo '
+      default:
+        return "' . $this->Islemler_Model->evetHayir[0] . '";
+    }
+  }';
+  ?>
+  <?php
+  echo '
   function cihazdakiHasar(id) {
-    switch (id) {
-      case 1:
-        return '<?= $this->Islemler_Model->cihazdakiHasar(1); ?>';
-      case 2:
-        return '<?= $this->Islemler_Model->cihazdakiHasar(2); ?>';
-      case 3:
-        return '<?= $this->Islemler_Model->cihazdakiHasar(3); ?>';
-      case 4:
-        return '<?= $this->Islemler_Model->cihazdakiHasar(4); ?>';
-      default:
-        return '<?= $this->Islemler_Model->cihazdakiHasar(0); ?>';
-    }
+    switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->cihazdakiHasar); $i++) {
+    echo '
+      case ' . $i . ':
+        return "' . $this->Islemler_Model->cihazdakiHasar[$i] . '";';
   }
-
+  echo '
+      default:
+        return "' . $this->Islemler_Model->cihazdakiHasar[0] . '";
+    }
+  }';
+  ?>
+  <?php
+  echo '
   function cihazDurumu(id) {
-    switch (id) {
-      case 1:
-        return '<?= $this->Islemler_Model->cihazDurumu(1); ?>';
-      case 2:
-        return '<?= $this->Islemler_Model->cihazDurumu(2); ?>';
-      case 3:
-        return '<?= $this->Islemler_Model->cihazDurumu(3); ?>';
-      case 4:
-        return '<?= $this->Islemler_Model->cihazDurumu(4); ?>';
-      case 5:
-        return '<?= $this->Islemler_Model->cihazDurumu(5); ?>';
-      case 6:
-        return '<?= $this->Islemler_Model->cihazDurumu(6); ?>';
-      default:
-        return '<?= $this->Islemler_Model->cihazDurumu(0); ?>';
-    }
+    switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
+    echo '
+      case ' . $i . ':
+        return "' . $this->Islemler_Model->cihazDurumu[$i] . '";';
   }
+  echo '
+      default:
+        return "' . $this->Islemler_Model->cihazDurumu[0] . '";
+    }
+  }';
+  ?>
 
   function donustur(str, value) {
     return str.
