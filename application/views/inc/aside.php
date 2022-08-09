@@ -28,7 +28,7 @@
                 ?>
                     <li class="nav-header">Yönetim</li>
                     <li class="nav-item">
-                        <a href="<?= base_url("kullanicilar"); ?>" class="nav-link<?php if ($aktifSayfa == "kullanicilar") {
+                        <a href="<?= base_url("yonetim/kullanicilar"); ?>" class="nav-link<?php if ($aktifSayfa == "yonetim/kullanicilar") {
                                                                                         echo " active";
                                                                                     } ?>">
                             <i class="nav-icon fas fa-users"></i>
