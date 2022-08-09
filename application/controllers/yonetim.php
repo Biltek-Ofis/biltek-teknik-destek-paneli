@@ -24,13 +24,17 @@ class Yonetim extends Varsayilan_Controller
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$veri = $this->Kullanicilar_Model->kullaniciPost(true);
-			$sifre = $veri["sifre"];
-			$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
-			$ekle = $this->Kullanicilar_Model->ekle($veri);
-			if ($ekle) {
-				redirect(base_url("yonetim/kullanicilar"));
+			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
+				$sifre = $veri["sifre"];
+				$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+				$ekle = $this->Kullanicilar_Model->ekle($veri);
+				if ($ekle) {
+					redirect(base_url("yonetim/kullanicilar"));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#yeniKullaniciEkleModal", "Kullanıcı eklenemedi lütfen daha sonra tekrar deneyin");
+				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar", "Kullanıcı eklenemedi lütfen daha sonra tekrar deneyin");
+				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#yeniKullaniciEkleModal", "Bu kullanıcı adı zaten mevcut.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -40,16 +44,20 @@ class Yonetim extends Varsayilan_Controller
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$veri = $this->Kullanicilar_Model->kullaniciPost(true);
-			$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
-			if ($kullanici->sifre != $veri["sifre"]) {
-				$sifre = $veri["sifre"];
-				$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
-			}
-			$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
-			if ($duzenle) {
-				redirect(base_url("yonetim/kullanicilar"));
+			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
+				$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
+				if ($kullanici->sifre != $veri["sifre"]) {
+					$sifre = $veri["sifre"];
+					$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+				}
+				$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
+				if ($duzenle) {
+					redirect(base_url("yonetim/kullanicilar"));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#kullaniciDuzenleModal".$id, "Kullanıcı düzenlenemedi lütfen daha sonra tekrar deneyin");
+				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar", "Kullanıcı düzenlenemedi lütfen daha sonra tekrar deneyin");
+				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#kullaniciDuzenleModal".$id, "Bu kullanıcı adı zaten mevcut.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
