@@ -139,8 +139,8 @@ class Islemler_Model extends CI_Model
         "Arıza Tespiti Yapılıyor",
         "Yedek Parça Bekleniyor",
         "Fiyatlandırıldı Onay Bekleniyor",
-        "Fiyat Onaylandı",
-        "Fiyat Onaylanmadı",
+        "<span class='text-success'>Fiyat Onaylandı</span>",
+        "<span class='text-danger'>Fiyat Onaylanmadı</span>",
         "Teslim Edilmeye Hazır",
     );
     public function cihazDurumu($index)
