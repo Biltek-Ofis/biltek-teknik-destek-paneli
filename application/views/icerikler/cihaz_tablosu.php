@@ -568,6 +568,12 @@ echo '</div>';
         return '<?= $this->Islemler_Model->cihazDurumu(2); ?>';
       case 3:
         return '<?= $this->Islemler_Model->cihazDurumu(3); ?>';
+      case 4:
+        return '<?= $this->Islemler_Model->cihazDurumu(4); ?>';
+      case 5:
+        return '<?= $this->Islemler_Model->cihazDurumu(5); ?>';
+      case 6:
+        return '<?= $this->Islemler_Model->cihazDurumu(6); ?>';
       default:
         return '<?= $this->Islemler_Model->cihazDurumu(0); ?>';
     }
