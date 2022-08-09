@@ -36,6 +36,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
     <tr>
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
+        <th scope="col">GSM & Email</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Marka / Modeli</th>
         <th scope="col">Güncel Durum</th>
@@ -52,6 +53,7 @@ $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
   <th scope="row">{id}</th>
   <td id="{id}MusteriAdi">{musteri_adi}</td>
+  <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
@@ -715,7 +717,7 @@ echo '</div>';
           $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>');
           $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
           $("#" + value.id + "MusteriAdres").html(value.adres);
-          $("#" + value.id + "MusteriGSM2").html(value.gsm_mail);
+          $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
           $("#" + value.id + "Tarih").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
