@@ -121,13 +121,13 @@ class CI_Exceptions {
 	{
 		if (is_cli())
 		{
-			$heading = 'Not Found';
-			$message = 'The controller/method pair you requested was not found.';
+			$heading = 'Bulunamadı';
+			$message = 'Aradığınız sayfa bulunamadı.';
 		}
 		else
 		{
-			$heading = '404 Page Not Found';
-			$message = 'The page you requested was not found.';
+			$heading = '404 Sayfa Bulunamadı';
+			$message = 'Aradığınız sayfa bulunamadı.';
 		}
 
 		// By default we log this, but allow a dev to skip it
