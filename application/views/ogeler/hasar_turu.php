@@ -12,7 +12,7 @@
             if($i == 0){
                 echo 'Hasar Türü Belirtin';
             }else{
-                $this->Islemler_Model->cihazdakiHasar[$i];
+                echo $this->Islemler_Model->cihazdakiHasar[$i];
             }
             echo '</option>';
         }
