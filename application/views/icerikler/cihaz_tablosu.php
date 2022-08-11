@@ -704,19 +704,24 @@ echo '</div>';
 
       $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
-          cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-          let tabloOrnek = '<?= $tabloOrnek; ?>';
-          let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
-          let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
+          const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (!cihazVarmi) {
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            let tabloOrnek = '<?= $tabloOrnek; ?>';
+            let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
+            let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
 
-          const tablo = donustur(tabloOrnek, value);
-          var detayModal = donustur(detayModalOrnek, value);
-          var silmodal = donustur(silModalOrnek, value);
-          cihazlarTablosu.row.add($(tablo)).draw();
-          //$("#cihazlar").prepend(tablo);
-          $("#cihazTablosu").prepend(silmodal);
-          $("#cihazTablosu").prepend(detayModal);
-          medyalariYukle(value.id);
+            const tablo = donustur(tabloOrnek, value);
+            var detayModal = donustur(detayModalOrnek, value);
+            var silmodal = donustur(silModalOrnek, value);
+            cihazlarTablosu.row.add($(tablo)).draw();
+            //$("#cihazlar").prepend(tablo);
+            $("#cihazTablosu").prepend(silmodal);
+            $("#cihazTablosu").prepend(detayModal);
+            medyalariYukle(value.id);
+          }
         });
       });
     }, 5000);
