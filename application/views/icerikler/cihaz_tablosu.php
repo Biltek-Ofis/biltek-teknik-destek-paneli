@@ -45,9 +45,9 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 </thead>
 <tbody id="cihazlar">';
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
+$tabloOrnek = '<tr id="cihaz{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row">{id}</th>
-  <td id="{id}MusteriAdi">{musteri_adi}</td>
+  <td><span  id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
@@ -264,7 +264,7 @@ $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $t
 
 $eskiler = array(
   "\\",
-  "{class}",
+  "{yeni}",
   "{id}",
   "{musteri_adi}",
   "{musteri_kod}",
@@ -550,7 +550,7 @@ echo '</div>';
 
   function donustur(str, value) {
     return str.
-    replaceAll("{class}", "bg-success")
+    replaceAll("{yeni}", ' <span id="'+value.id+'Yeni" class="badge badge-danger">Yeni</span>')
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
