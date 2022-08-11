@@ -1,12 +1,12 @@
 <script>
     $(document).ready(function() {
-        var hash = location.hash.replace(/^#/, '');
+        /*var hash = location.hash.replace(/^#/, '');
         if (hash) {
             $('#' + hash + '-tab').click();
         }
         $('.nav-tabs a').on('shown.bs.tab', function(e) {
             window.location.hash = e.target.hash;
-        });
+        });*/
     });
 </script>
 <script src="<?= base_url("dist/js/cihaz.js"); ?>"></script>
