@@ -170,7 +170,8 @@
                                     Sıfırla
                                 </a>
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
                     </div>
@@ -359,7 +360,8 @@
                             <div class="row m-0 p-0 d-flex justify-content-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
                         <script>
