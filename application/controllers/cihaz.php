@@ -27,7 +27,7 @@ class Cihaz extends Varsayilan_Controller
     public function duzenle($id)
     {
         if ($this->Giris_Model->kullaniciGiris()) {
-            $veri = $this->Cihazlar_Model->cihazPost(true);
+            $veri = $this->Cihazlar_Model->cihazPost();
             $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
             if ($duzenle) {
                 //$id = $this->db->insert_id();

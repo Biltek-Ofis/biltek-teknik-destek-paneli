@@ -40,15 +40,10 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
         <th scope="col">Cihaz Marka / Modeli</th>
         <th scope="col">Güncel Durum</th>
-        <th scope="col">Teslim Durumu</th>
         <th scope="col">Detaylar</th>
     </tr>
 </thead>
 <tbody id="cihazlar">';
-$teslim_durumu_1 = 'Teslim Edildi';
-$teslim_durumu_renkli_1 = '<span class="text-success">' . $teslim_durumu_1 . '</span>';
-$teslim_durumu_0 = 'Teslim Edilmedi';
-$teslim_durumu_renkli_0 = '<span class="text-danger">' . $teslim_durumu_0 . '</span>';
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\')" class="{class}">
   <th scope="row">{id}</th>
@@ -57,7 +52,6 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(this).removeClass(\\\'bg-success\\\
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
-  <td id="{id}CihazTeslimDurumu">{teslim_edildi2}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
@@ -128,10 +122,6 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}GuncelDurum2">{guncel_durum}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Durumu:</span></li>
-                  <li id="{id}TeslimDurumu" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}TeslimDurumuText">{teslim_edildi}</span> <a href="#" class="text-link" data-toggle="modal" data-target="#cihazTeslimEdildiModal{id}">(Değiştir)</a></li>
                 </ul>
               </div>
               <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
@@ -230,26 +220,6 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
   </div>
 </div>';
 
-$cihazTeslimEdildiModalOrnek = '<div class="modal fade" id="cihazTeslimEdildiModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihazTeslimEdildiModal{id}Label" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="cihazTeslimEdildiModal{id}Label">Teslim Edilme Durumunu Onaylayın</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      {teslim_durumu_uyari}
-      </div>
-      <div class="modal-footer">
-        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/teslimEdildi/" . ($tur_belirtildimi ? $tur : "")) . '/{id}/{teslim_durumu_id}" class="btn btn-success">Evet</a>
-        <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
-      </div>
-    </div>
-  </div>
-</div>';
-
 $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -288,7 +258,6 @@ $yapilanIslemlerSatiri = $this->Islemler_Model->trimle($yapilanIslemlerSatiri);
 $yapilanIslemlerSatiriBos = $this->Islemler_Model->trimle($yapilanIslemlerSatiriBos);
 $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
 $cihazDetayOrnek = $this->Islemler_Model->trimle($cihazDetayOrnek);
-$cihazTeslimEdildiModalOrnek = $this->Islemler_Model->trimle($cihazTeslimEdildiModalOrnek);
 $cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
 $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
@@ -316,15 +285,11 @@ $eskiler = array(
   "{pil}",
   "{diger_aksesuar}",
   "{yapilan_islem_aciklamasi}",
-  "{teslim_edildi}",
-  "{teslim_edildi2}",
   "{tarih}",
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
   "{guncel_durum}",
   "{yapilan_islemler}",
-  "{teslim_durumu_uyari}",
-  "{teslim_durumu_id}",
 );
 
 $yapilanIslemToplamEskiArray = array(
@@ -467,21 +432,16 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->hasarDurumu($cihaz->pil),
     $cihaz->diger_aksesuar,
     $cihaz->yapilan_islem_aciklamasi,
-    $cihaz->teslim_edildi == 1 ? $teslim_durumu_renkli_1 : $teslim_durumu_renkli_0,
-    $cihaz->teslim_edildi == 1 ? $teslim_durumu_1 : $teslim_durumu_0,
     $cihaz->tarih,
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $yapilanİslemler,
-    $cihaz->teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?",
-    $cihaz->teslim_edildi == 1 ? 0 : 1
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
-  $cihazTeslimEdildiModal = str_replace($eskiler, $yeniler, $cihazTeslimEdildiModalOrnek);
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
   $cihazDetay = str_replace($eskiler, $yeniler, $cihazDetayOrnek);
-  echo $tablo . $cihazDetay . $cihazSilModal  . $cihazTeslimEdildiModal;
+  echo $tablo . $cihazDetay . $cihazSilModal;
 ?>
   <script>
     medyalariYukle(<?= $cihaz->id; ?>);
@@ -611,15 +571,11 @@ echo '</div>';
       .replaceAll("{pil}", hasarDurumu(value.pil))
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
-      .replaceAll("{teslim_edildi}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>')
-      .replaceAll("{teslim_edildi2}", value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>')
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
-      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>')
-      .replaceAll("{teslim_durumu_uyari}", value.teslim_edildi == 1 ? "Bu cihazı teslim edilmedi olarak işaretlemek istediğinize emin misiniz?" : "Bu cihazı teslim edildi olarak işaretlemek istediğinize emin misiniz?")
-      .replaceAll("{teslim_durumu_id}", value.teslim_edildi == 1 ? 0 : 1);
+      .replaceAll("{yapilan_islemler}", '<?= $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2; ?>');
   }
 
   $(document).ready(function() {
@@ -721,7 +677,6 @@ echo '</div>';
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
           $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
           $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
-          $("#" + value.id + "CihazTeslimDurumu").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_1; ?>' : '<?= $teslim_durumu_0; ?>');
           $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
           $("#" + value.id + "MusteriAdres").html(value.adres);
           $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
@@ -741,12 +696,7 @@ echo '</div>';
           $("#" + value.id + "SarjAdaptoru").html(hasarDurumu(value.sarj_adaptoru));
           $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
           $("#" + value.id + "DigerAksesuar").html(value.diger_aksesuar);
-
-          
-          $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
-
-
         });
       });
 
@@ -755,16 +705,13 @@ echo '</div>';
           cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
           let tabloOrnek = '<?= $tabloOrnek; ?>';
           let detayModalOrnek = '<?= $cihazDetayOrnek; ?>';
-          let cihazTeslimEdildiModalOrnek = '<?= $cihazTeslimEdildiModalOrnek; ?>';
           let silModalOrnek = '<?= $cihazSilModalOrnek; ?>';
 
           const tablo = donustur(tabloOrnek, value);
           var detayModal = donustur(detayModalOrnek, value);
-          var cihazTeslimEdildiModal = donustur(cihazTeslimEdildiModalOrnek, value);
           var silmodal = donustur(silModalOrnek, value);
           cihazlarTablosu.row.add($(tablo)).draw();
           //$("#cihazlar").prepend(tablo);
-          $("#cihazTablosu").prepend(cihazTeslimEdildiModal);
           $("#cihazTablosu").prepend(silmodal);
           $("#cihazTablosu").prepend(detayModal);
           medyalariYukle(value.id);

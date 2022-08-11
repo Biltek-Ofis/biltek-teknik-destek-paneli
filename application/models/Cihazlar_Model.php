@@ -82,7 +82,7 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'ASC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazPost($teslim_dahil = false)
+    public function cihazPost()
     {
         $musteri_kod = $this->input->post("musteri_kod");
         $veri = array(
@@ -105,9 +105,6 @@ class Cihazlar_Model extends CI_Model
             "pil" => $this->input->post("pil"),
             "diger_aksesuar" => $this->input->post("diger_aksesuar"),
         );
-        if ($teslim_dahil) {
-            $veri["teslim_edildi"] = $this->input->post("teslim_edildi");
-        }
         return $veri;
     }
     public function cihazDuzenle($id, $veri)
@@ -146,14 +143,6 @@ class Cihazlar_Model extends CI_Model
         } else {
             return false;
         }
-    }
-    public function teslimEdildi($id, $durum)
-    {
-        $veri = array("teslim_edildi" => $durum);
-        if ($durum == 1) {
-            $veri = array("teslim_edildi" => $durum, "cikis_tarihi" => $this->Islemler_Model->tarih());
-        }
-        return $this->cihazDuzenle($id, $veri);
     }
     public function cikisTarihi($id)
     {

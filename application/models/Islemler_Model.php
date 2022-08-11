@@ -142,6 +142,7 @@ class Islemler_Model extends CI_Model
         "<span class='text-success'>Fiyat Onaylandı</span>",
         "<span class='text-danger'>Fiyat Onaylanmadı</span>",
         "Teslim Edilmeye Hazır",
+        "Teslim Edildi",
     );
     public function cihazDurumu($index)
     {
