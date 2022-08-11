@@ -306,7 +306,7 @@ $yapilanIslemEskiArray = array(
 );
 $sayac = 0;
 foreach ($cihazlar as $cihaz) {
-  if ($sayac == count($cihazlar) - 1) {
+  if ($sayac == 0) {
     $sonCihazID = $cihaz->id;
   }
   $sayac++;
@@ -590,7 +590,10 @@ echo '</div>';
       $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
-          sonCihazID = value.id;
+          if (sayac == 0) {
+            sonCihazID = value.id;
+          }
+          sayac++;
           var toplam = 0;
           var kdv = 0;
           var yapilanIslemler = "";
@@ -672,7 +675,6 @@ echo '</div>';
           yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
           $("#yapilanIslem" + value.id).html(yapilanIslemler);
 
-          sayac++;
           $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
           $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
