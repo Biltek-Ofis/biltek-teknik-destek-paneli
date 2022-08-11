@@ -106,6 +106,12 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th class="align-middle">Cihaz Şifresi:</th>
+                                            <td class="align-middle">
+                                                <?php $this->load->view("ogeler/cihaz_sifresi", array("sifirla" => true, "cihaz_sifresi_value" => $cihaz->cihaz_sifresi)); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
                                             <td class="align-middle">
                                                 <?php $this->load->view("ogeler/hasar_turu", array("sifirla" => true, "cihazdaki_hasar_value" => $cihaz->cihazdaki_hasar)); ?>
