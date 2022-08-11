@@ -7,9 +7,6 @@
         $('.nav-tabs a').on('shown.bs.tab', function(e) {
             window.location.hash = e.target.hash;
         });
-        window.onbeforeunload = function() {
-            return "Yaptığınız değişiklikleri kaydedilmemiş olabilir?";
-        };
     });
 </script>
 <script src="<?= base_url("dist/js/cihaz.js"); ?>"></script>
