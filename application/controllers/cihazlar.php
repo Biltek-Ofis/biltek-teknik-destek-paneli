@@ -47,17 +47,4 @@ class Cihazlar extends Varsayilan_Controller
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
-	public function teslimEdildi($tur, $id, $durum)
-	{
-		if ($this->Giris_Model->kullaniciGiris()) {
-			$guncellendi = $this->Cihazlar_Model->teslimEdildi($id, $durum);
-			if ($guncellendi) {
-				redirect(base_url("cihazlar/" . $tur)."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
-			} else {
-				$this->Kullanicilar_Model->girisUyari("cihazlar/" . $tur, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
-			}
-		} else {
-			$this->Kullanicilar_Model->girisUyari("cikis");
-		}
-	}
 }

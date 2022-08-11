@@ -76,12 +76,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th class="align-middle">Teslim Durumu:</th>
-                                            <td class="align-middle">
-                                                <?php $this->load->view("ogeler/teslim_durumu", array("sifirla" => true, "teslim_edildi_value" => $cihaz->teslim_edildi)); ?>
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <th class="align-middle">Cihaz Türü:</th>
                                             <td class="align-middle">
                                                 <?php $this->load->view("ogeler/cihaz_turleri", array("sifirla" => true, "cihaz_turu_value" => $cihaz->cihaz_turu)); ?>
@@ -200,7 +194,6 @@
                             var tarih = $("#tarih").val();
                             var bildirim_tarihi = $("#bildirim_tarihi").val();
                             var cikis_tarihi = $("#cikis_tarihi").val();
-                            var teslim_edildi = $("#teslim_edildi").prop('selectedIndex');
                             var yedek_durumu = $("#yedek_durumu").prop('selectedIndex');
                             $("#sifirlaGenel").on("click", function() {
                                 $("#adres").val(adres);
@@ -221,7 +214,6 @@
                                 $("#tarih").val(tarih);
                                 $("#bildirim_tarihi").val(bildirim_tarihi);
                                 $("#cikis_tarihi").val(cikis_tarihi);
-                                $("#teslim_edildi").prop('selectedIndex', teslim_edildi);
                                 $("#yedek_durumu").prop('selectedIndex', yedek_durumu);
                             });
                         });
