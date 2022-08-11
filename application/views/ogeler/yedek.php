@@ -8,10 +8,11 @@
             if (isset($yedek_durumu_value) && $yedek_durumu_value == $i) {
                 echo " selected";
             }
+            echo ">";
             if ($i == 0) {
-                echo '>Yedek alınacak mı?';
+                echo 'Yedek alınacak mı?';
             } else {
-                $this->Islemler_Model->evetHayir[$i];
+                echo $this->Islemler_Model->evetHayir[$i];
             }
             echo '</option>';
         }
