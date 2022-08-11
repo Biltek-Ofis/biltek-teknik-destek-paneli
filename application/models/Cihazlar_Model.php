@@ -135,20 +135,6 @@ class Cihazlar_Model extends CI_Model
             "i_kdv_" . $index => $kdv,
         );
     }
-    public function cikisTarihiKontrol($id)
-    {
-        $cihaz = $this->cihazBul($id)->result()[0];
-        if ($cihaz->cikis_tarihi == "") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public function cikisTarihi($id)
-    {
-        $veri = array("cikis_tarihi" => $this->Islemler_Model->guncelTarih());
-        return $this->cihazDuzenle($id, $veri);
-    }
     public function cihazDetayModalAdi()
     {
         return "cihazDetay";

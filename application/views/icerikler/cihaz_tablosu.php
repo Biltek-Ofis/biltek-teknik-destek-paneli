@@ -117,7 +117,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}CikisTarihi">{cikis_tarihi}</span> <a href="' . base_url() . '/cihaz_yonetimi/cikisTarihi/{id}" class="text-link">(Güncelle)</a></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}CikisTarihi">{cikis_tarihi}</span></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>

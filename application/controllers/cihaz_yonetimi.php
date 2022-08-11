@@ -57,19 +57,6 @@ class Cihaz_Yonetimi extends Varsayilan_Controller{
 	{
 		echo json_encode($this->Cihazlar_Model->silinenCihazlariBul());
 	}
-	public function cikisTarihi($id)
-	{
-		if ($this->Giris_Model->kullaniciGiris()){
-			$sil = $this->Cihazlar_Model->cikisTarihi($id);
-			if($sil){
-				redirect(base_url("")."#".$this->Cihazlar_Model->cihazDetayModalAdi().$id);
-			} else {
-				$this->Kullanicilar_Model->girisUyari("#".$this->Cihazlar_Model->cihazDetayModalAdi().$id, "Teslim durumu güncelleme işlemi gerçekleştirilemedi");
-			}
-		}else{
-			$this->Kullanicilar_Model->girisUyari("cikis");
-		}
-	}
 }
 
 ?>
