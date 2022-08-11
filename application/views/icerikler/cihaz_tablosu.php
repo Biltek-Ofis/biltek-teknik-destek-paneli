@@ -151,6 +151,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}SeriNo">{seri_no}</li>
                 </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazSifresi">{cihaz_sifresi}</li>
+                </ul>
               </div>
               <div class="tab-pane fade" id="list-teknik-servis-bilgileri-{id}" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
@@ -301,6 +305,7 @@ $eskiler = array(
   "{cihaz}",
   "{cihaz_modeli}",
   "{seri_no}",
+  "{cihaz_sifresi}",
   "{hasar_tespiti}",
   "{cihazdaki_hasar}",
   "{ariza_aciklamasi}",
@@ -451,6 +456,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cihaz,
     $cihaz->cihaz_modeli,
     $cihaz->seri_no,
+    $cihaz->cihaz_sifresi,
     $cihaz->hasar_tespiti,
     $this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar),
     $cihaz->ariza_aciklamasi,
@@ -594,6 +600,7 @@ echo '</div>';
       .replaceAll("{cihaz}", value.cihaz)
       .replaceAll("{cihaz_modeli}", value.cihaz_modeli)
       .replaceAll("{seri_no}", value.seri_no)
+      .replaceAll("{cihaz_sifresi}", value.cihaz_sifresi)
       .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
       .replaceAll("{cihazdaki_hasar}", cihazdakiHasar(value.cihazdaki_hasar))
       .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
@@ -724,6 +731,7 @@ echo '</div>';
           $("#" + value.id + "CihazMarka").html(value.cihaz);
           $("#" + value.id + "CihazModeli").html(value.cihaz_modeli);
           $("#" + value.id + "SeriNo").html(value.seri_no);
+          $("#" + value.id + "CihazSifresi").html(value.cihaz_sifresi);
           $("#" + value.id + "CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
           $("#" + value.id + "HasarTespiti").html(value.hasar_tespiti);
           $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
@@ -734,7 +742,7 @@ echo '</div>';
           $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
           $("#" + value.id + "DigerAksesuar").html(value.diger_aksesuar);
 
-
+          
           $("#" + value.id + "TeslimDurumuText").html(value.teslim_edildi == 1 ? '<?= $teslim_durumu_renkli_1; ?>' : '<?= $teslim_durumu_renkli_0; ?>');
           $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
 

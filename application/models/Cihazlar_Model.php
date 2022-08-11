@@ -94,6 +94,7 @@ class Cihazlar_Model extends CI_Model
             "cihaz" => $this->input->post("cihaz"),
             "cihaz_modeli" => $this->input->post("cihaz_modeli"),
             "seri_no" => $this->input->post("seri_no"),
+            "cihaz_sifresi" => $this->input->post("cihaz_sifresi"),
             "hasar_tespiti" => $this->input->post("hasar_tespiti"),
             "cihazdaki_hasar" => $this->input->post("cihazdaki_hasar"),
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),

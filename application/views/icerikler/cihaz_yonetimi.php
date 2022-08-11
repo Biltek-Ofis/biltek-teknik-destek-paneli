@@ -77,6 +77,9 @@
                         <?php $this->load->view("ogeler/seri_no"); ?>
                     </div>
                     <div class="row">
+                        <?php $this->load->view("ogeler/cihaz_sifresi"); ?>
+                    </div>
+                    <div class="row">
                         <?php $this->load->view("ogeler/ariza_aciklamasi"); ?>
                     </div>
                     <div class="row">
