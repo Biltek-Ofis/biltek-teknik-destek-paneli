@@ -14,13 +14,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kullanıcılar</h1>
+                    <h1>Personel</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
-                        <li class="breadcrumb-item active">Kullanıcılar</li>
+                        <li class="breadcrumb-item active">Personel</li>
                     </ol>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 <div id="container w-100 m-0 p-0">
                     <div class="row m-0 p-0 d-flex justify-content-end">
                         <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniKullaniciEkleModal">
-                            Yeni Kullanıcı Ekle
+                            Yeni Personel Ekle
                         </button>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="yeniKullaniciEkleModalLabel">Kullanıcı Ekle</h5>
+                                <h5 class="modal-title" id="yeniKullaniciEkleModalLabel">Personel Ekle</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -107,13 +107,13 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="kullaniciSilModal<?= $kullanici->id; ?>Label">Kullanıcı Sil</h5>
+                                                    <h5 class="modal-title" id="kullaniciSilModal<?= $kullanici->id; ?>Label">Personel Sil</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold"><?= $kullanici->ad; ?> <?= $kullanici->soyad; ?> (<?= $kullanici->kullanici_adi; ?>)</span> kullanıcısını silmek istediğinize emin misiniz?
+                                                    <span class="font-weight-bold"><?= $kullanici->ad; ?> <?= $kullanici->soyad; ?> (<?= $kullanici->kullanici_adi; ?>)</span> personelini silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="<?= base_url("yonetim/kullaniciSil/" . $kullanici->id); ?>" class="btn btn-danger">Evet</a>
@@ -126,7 +126,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="kullaniciDuzenleModal<?= $kullanici->id; ?>Label">Kullanıcı Düzenle</h5>
+                                                    <h5 class="modal-title" id="kullaniciDuzenleModal<?= $kullanici->id; ?>Label">Personel Düzenle</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -140,6 +140,7 @@
                                                             <?php $this->load->view("ogeler/kullanici_soyad", array("value" => $kullanici->soyad, "id" => $kullanici->id)); ?>
                                                         </div>
                                                         <div class="row">
+                                                            <input type="hidden" name="kullanici_adi_orj<?= $kullanici->id; ?>" value="<?=$kullanici->kullanici_adi;?>">
                                                             <?php $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id)); ?>
                                                         </div>
                                                         <div class="row">
