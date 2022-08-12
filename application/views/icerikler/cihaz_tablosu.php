@@ -584,7 +584,12 @@ echo '</div>';
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
-          cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+          const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (cihazVarmi) {
+            cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+          }
         });
       });
       $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
