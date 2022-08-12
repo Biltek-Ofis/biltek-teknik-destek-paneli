@@ -47,11 +47,11 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row">{id}</th>
-  <td><span  id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
+  <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
-  <td id="{id}GuncelDurum">{guncel_durum}</td>
+  <td><span id="{id}GuncelDurum">{guncel_durum}</span>{yeni}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
@@ -550,7 +550,7 @@ echo '</div>';
 
   function donustur(str, value) {
     return str.
-    replaceAll("{yeni}", ' <span id="'+value.id+'Yeni" class="badge badge-danger">Yeni</span>')
+    replaceAll("{yeni}", ' <span id="' + value.id + 'Yeni" class="badge badge-danger">Yeni</span>')
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
