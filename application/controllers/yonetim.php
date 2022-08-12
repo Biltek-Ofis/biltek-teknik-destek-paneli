@@ -12,10 +12,10 @@ class Yonetim extends Varsayilan_Controller
 	{
 		redirect(base_url());
 	}
-	public function kullanicilar()
+	public function personel()
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
-			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Kullanıcılar", "yonetim/kullanicilar", [], "inc/datatables"));
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Personel", "yonetim/personel", [], "inc/datatables"));
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
 		}
@@ -29,12 +29,12 @@ class Yonetim extends Varsayilan_Controller
 				$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
 				$ekle = $this->Kullanicilar_Model->ekle($veri);
 				if ($ekle) {
-					redirect(base_url("yonetim/kullanicilar"));
+					redirect(base_url("yonetim/personel"));
 				} else {
-					$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#yeniKullaniciEkleModal", "Kullanıcı eklenemedi lütfen daha sonra tekrar deneyin");
+					$this->Kullanicilar_Model->girisUyari("yonetim/personel#yeniKullaniciEkleModal", "Personel eklenemedi lütfen daha sonra tekrar deneyin");
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#yeniKullaniciEkleModal", "Bu kullanıcı adı zaten mevcut.");
+				$this->Kullanicilar_Model->girisUyari("yonetim/personel#yeniKullaniciEkleModal", "Bu kullanıcı adı zaten mevcut.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -44,7 +44,7 @@ class Yonetim extends Varsayilan_Controller
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$veri = $this->Kullanicilar_Model->kullaniciPost(true);
-			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
+			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj" . $id)) {
 				$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
 				if ($kullanici->sifre != $veri["sifre"]) {
 					$sifre = $veri["sifre"];
@@ -52,12 +52,12 @@ class Yonetim extends Varsayilan_Controller
 				}
 				$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
 				if ($duzenle) {
-					redirect(base_url("yonetim/kullanicilar"));
+					redirect(base_url("yonetim/personel"));
 				} else {
-					$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#kullaniciDuzenleModal".$id, "Kullanıcı düzenlenemedi lütfen daha sonra tekrar deneyin");
+					$this->Kullanicilar_Model->girisUyari("yonetim/personel#kullaniciDuzenleModal" . $id, "Personel düzenlenemedi lütfen daha sonra tekrar deneyin");
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar#kullaniciDuzenleModal".$id, "Bu kullanıcı adı zaten mevcut.");
+				$this->Kullanicilar_Model->girisUyari("yonetim/personel#kullaniciDuzenleModal" . $id, "Bu kullanıcı adı zaten mevcut.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -68,9 +68,9 @@ class Yonetim extends Varsayilan_Controller
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$sil = $this->Kullanicilar_Model->sil($id);
 			if ($sil) {
-				redirect(base_url("yonetim/kullanicilar"));
+				redirect(base_url("yonetim/personel"));
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/kullanicilar", "Kullanıcı silinemedi lütfen daha sonra tekrar deneyin");
+				$this->Kullanicilar_Model->girisUyari("yonetim/personel", "Personel silinemedi lütfen daha sonra tekrar deneyin");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();

@@ -28,16 +28,17 @@ $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
                         <?php $this->load->view("ogeler/kullanici_soyad", array("value" => $kullanici["soyad"])); ?>
                     </div>
                     <div class="row">
+                        <input type="hidden" name="kullanici_adi_orj" value="<?= $kullanici["kullanici_adi"]; ?>">
                         <?php $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici["kullanici_adi"])); ?>
                     </div>
                     <div class="row">
                         <?php $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici["sifre"])); ?>
                     </div>
                     <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <input type="submit" class="btn btn-success me-2 mb-2" value="Kaydet">
+                        <div class="row m-0 p-0 d-flex justify-content-end">
+                            <input type="submit" class="btn btn-success me-2 mb-2" value="Kaydet">
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>

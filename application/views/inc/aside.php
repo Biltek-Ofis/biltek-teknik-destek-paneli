@@ -28,12 +28,12 @@
                 ?>
                     <li class="nav-header">Yönetim</li>
                     <li class="nav-item">
-                        <a href="<?= base_url("yonetim/kullanicilar"); ?>" class="nav-link<?php if ($aktifSayfa == "yonetim/kullanicilar") {
+                        <a href="<?= base_url("yonetim/personel"); ?>" class="nav-link<?php if ($aktifSayfa == "yonetim/personel") {
                                                                                         echo " active";
                                                                                     } ?>">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Kullanıcılar
+                                Personel
                             </p>
                         </a>
                     </li>
