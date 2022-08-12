@@ -48,12 +48,12 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row">{id}</th>
-  <td id="{id}MusteriAdi">{musteri_adi}</td>
+  <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}Tarih">{tarih2}</td>
-  <td><span id="{id}GuncelDurum">{guncel_durum}</span>{yeni}</td>
+  <td id="{id}GuncelDurum">{guncel_durum}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
