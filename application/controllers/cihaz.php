@@ -76,12 +76,12 @@ class Cihaz extends Varsayilan_Controller
                 );
                 $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                 if (!$duzenle) {
-                    $this->Kullanicilar_Model->girisUyari("cihaz/" . $id . "#yapilan-islemler", "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                    $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
                     return;
                 }
             }
 
-            redirect(base_url("cihaz/" . $id . "#yapilan-islemler"));
+            redirect(base_url("cihaz/" . $id));
         } else {
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
@@ -161,9 +161,9 @@ class Cihaz extends Varsayilan_Controller
         unlink($medya->konum);
         $sil = $this->Cihazlar_Model->medyaSil($id);
         if ($sil) {
-            redirect(base_url("cihaz/" . $cihaz_id . "#medyalar"));
+            redirect(base_url("cihaz/" . $cihaz_id));
         } else {
-            $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id . "#medyalar", "Medya silinemedi lütfen daha sonra tekrar deneyin");
+            $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Medya silinemedi lütfen daha sonra tekrar deneyin");
         }
     }
 }
