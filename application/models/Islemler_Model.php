@@ -144,14 +144,28 @@ class Islemler_Model extends CI_Model
         "Arıza Tespiti Yapılıyor",
         "Yedek Parça Bekleniyor",
         "Fiyatlandırıldı Onay Bekleniyor",
-        "<span class='text-success'>Fiyat Onaylandı</span>",
-        "<span class='text-danger'>Fiyat Onaylanmadı</span>",
+        "Fiyat Onaylandı",
+        "Fiyat Onaylanmadı",
         "Teslim Edilmeye Hazır",
         "Teslim Edildi",
+    );
+    public $cihazDurumuClass = array(
+        "bg-dark",
+        "bg-secondary",
+        "bg-secondary",
+        "bg-warning",
+        "bg-primary",
+        "bg-danger",
+        "bg-primary",
+        "bg-success",
     );
     public function cihazDurumu($index)
     {
         return $this->arrayGetir($this->cihazDurumu, $index);
+    }
+    public function cihazDurumuClass($index)
+    {
+        return $this->arrayGetir($this->cihazDurumuClass, $index);
     }
     public function arrayGetir($arr, $index)
     {
