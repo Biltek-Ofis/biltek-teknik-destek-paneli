@@ -105,6 +105,10 @@ class Cihazlar_Model extends CI_Model
             "pil" => $this->input->post("pil"),
             "diger_aksesuar" => $this->input->post("diger_aksesuar"),
         );
+        $tarih = $this->input->post("tarih");
+        if (isset($tarih)) {
+            $veri["tarih"] =  $this->Islemler_Model->tarihDonusturSQL($tarih);
+        }
         return $veri;
     }
     public function cihazDuzenle($id, $veri)
