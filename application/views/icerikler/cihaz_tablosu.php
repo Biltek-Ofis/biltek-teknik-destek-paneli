@@ -46,7 +46,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 </thead>
 <tbody id="cihazlar">';
 $sonCihazID = 0;
-$tabloOrnek = '<tr id="cihaz{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
+$tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row">{id}</th>
   <td id="{id}MusteriAdi">{musteri_adi}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
@@ -267,6 +267,7 @@ $cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $t
 $eskiler = array(
   "\\",
   "{yeni}",
+  "{class}",
   "{id}",
   "{musteri_adi}",
   "{musteri_kod}",
@@ -415,6 +416,7 @@ foreach ($cihazlar as $cihaz) {
   $yeniler = array(
     "",
     "",
+    $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
     $cihaz->id,
     $cihaz->musteri_adi,
     isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
@@ -551,16 +553,35 @@ echo '</div>';
     }
   }';
   ?>
-  function tarihDonusturSiralama(tarih){
+
+  <?php
+  echo '
+  function cihazDurumuClass(id) {
+    switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuClass); $i++) {
+    echo '
+      case ' . $i . ':
+        return "' . $this->Islemler_Model->cihazDurumuClass[$i] . '";';
+  }
+  echo '
+      default:
+        return "' . $this->Islemler_Model->cihazDurumuClass[0] . '";
+    }
+  }';
+  ?>
+
+  function tarihDonusturSiralama(tarih) {
     var gun = tarih.slice(0, 2);
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
     var saat = tarih.slice(11, 16);
-    return yil+"."+ay+"."+gun+" "+saat;
+    return yil + "." + ay + "." + gun + " " + saat;
   }
+
   function donustur(str, value) {
     return str.
     replaceAll("{yeni}", ' <span id="' + value.id + 'Yeni" class="badge badge-danger">Yeni</span>')
+      .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
@@ -690,7 +711,8 @@ echo '</div>';
           var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
           yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
           $("#yapilanIslem" + value.id).html(yapilanIslemler);
-
+          $("#cihaz" + value.id).attr('class', '');
+          $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
           $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
           $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
