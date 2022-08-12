@@ -1,9 +1,16 @@
 <script>
+    function createDateAsUTC(date) {
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+    }
     $(document).ready(function() {
         var hash = location.hash.replace(/^#/, '');
         if (hash) {
             $('#' + hash).modal('show')
         }
+        $('#yeniCihazEkleModal').on('show.bs.modal', function(e) {
+            var tarih = createDateAsUTC(new Date());
+            $("#tarih").val(tarih.toJSON().slice(0, 19));
+        });
     });
 </script>
 <script src="<?= base_url("dist/js/cihaz_yonetimi.js"); ?>"></script>
@@ -54,6 +61,9 @@
                 <form id="yeniCihazForm" autocomplete="off" method="post" action="<?= base_url("cihaz_yonetimi/cihazEkle"); ?>">
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
+                    </div>
+                    <div class="row">
+                        <?php $this->load->view("ogeler/tarih"); ?>
                     </div>
                     <div class="row">
                         <?php $this->load->view("ogeler/musteri_adi"); ?>

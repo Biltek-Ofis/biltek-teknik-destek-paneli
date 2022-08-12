@@ -38,7 +38,8 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Müşteri Adı</th>
         <th scope="col">GSM & Email</th>
         <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
-        <th scope="col">Cihaz Marka / Modeli</th>
+        <th scope="col">Cihaz</th>
+        <th scope="col">Giriş Tarihi</th>
         <th scope="col">Güncel Durum</th>
         <th scope="col">Detaylar</th>
     </tr>
@@ -51,6 +52,7 @@ $tabloOrnek = '<tr id="cihaz{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
+  <td id="{id}Tarih">{tarih2}</td>
   <td><span id="{id}GuncelDurum">{guncel_durum}</span>{yeni}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
@@ -109,7 +111,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Tarih">{tarih}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Tarih2">{tarih}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
@@ -285,6 +287,7 @@ $eskiler = array(
   "{pil}",
   "{diger_aksesuar}",
   "{yapilan_islem_aciklamasi}",
+  "{tarih2}",
   "{tarih}",
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
@@ -432,6 +435,7 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->hasarDurumu($cihaz->pil),
     $cihaz->diger_aksesuar,
     $cihaz->yapilan_islem_aciklamasi,
+    $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->tarih,
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
@@ -547,7 +551,13 @@ echo '</div>';
     }
   }';
   ?>
-
+  function tarihDonusturSiralama(tarih){
+    var gun = tarih.slice(0, 2);
+    var ay = tarih.slice(3, 5);
+    var yil = tarih.slice(6, 10);
+    var saat = tarih.slice(11, 16);
+    return yil+"."+ay+"."+gun+" "+saat;
+  }
   function donustur(str, value) {
     return str.
     replaceAll("{yeni}", ' <span id="' + value.id + 'Yeni" class="badge badge-danger">Yeni</span>')
@@ -571,6 +581,7 @@ echo '</div>';
       .replaceAll("{pil}", hasarDurumu(value.pil))
       .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
+      .replaceAll("{tarih2}", tarihDonusturSiralama(value.tarih))
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
@@ -580,7 +591,7 @@ echo '</div>';
 
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([0, "desc"]); ?>);
+    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([5, "desc"]); ?>);
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
@@ -687,7 +698,8 @@ echo '</div>';
           $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
           $("#" + value.id + "MusteriAdres").html(value.adres);
           $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
-          $("#" + value.id + "Tarih").html(value.tarih);
+          $("#" + value.id + "Tarih").html(tarihDonusturSiralama(value.tarih));
+          $("#" + value.id + "Tarih2").html(value.tarih);
           $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
           $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
           $("#" + value.id + "CihazMarka").html(value.cihaz);
