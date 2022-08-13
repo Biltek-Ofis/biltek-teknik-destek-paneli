@@ -55,6 +55,15 @@ class Kullanicilar_Model extends CI_Model
             return $this->db->where(array("id" => $id))->get($this->kullanicilarTablosu)->result();
         }
     }
+    public function tekKullanici($id)
+    {
+        $sonuc = $this->db->where(array("id" => $id))->get($this->kullanicilarTablosu);
+        if ($sonuc->num_rows() > 0) {
+            return $sonuc->result()[0];
+        } else {
+            return null;
+        }
+    }
     public function ekle($veri)
     {
         return $this->db->insert($this->kullanicilarTablosu, $veri);
