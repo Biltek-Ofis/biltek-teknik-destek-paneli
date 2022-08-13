@@ -150,9 +150,9 @@ class Islemler_Model extends CI_Model
         "Teslim Edildi",
     );
     public $cihazDurumuClass = array(
-        "bg-dark",
-        "bg-secondary",
-        "bg-secondary",
+        "bg-warning",
+        "bg-warning",
+        "bg-warning",
         "bg-warning",
         "bg-primary",
         "bg-danger",
