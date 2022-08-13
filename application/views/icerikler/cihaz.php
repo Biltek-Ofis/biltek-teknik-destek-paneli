@@ -82,6 +82,29 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th class="align-middle">Sorumlu Personel:</th>
+                                            <td class="align-middle">
+                                                <?php
+                                                if ($this->Kullanicilar_Model->yonetici()) {
+                                                ?>
+                                                    <?php $this->load->view("ogeler/sorumlu_select", array("sifirla" => true, "sorumlu_value" => $cihaz->sorumlu)); ?>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <?php
+                                                    $sorumluBul = $this->Kullanicilar_Model->tekKullanici($cihaz->sorumlu);
+                                                    $this->load->view("ogeler/sorumlu_text", array("sorumlu_text_value" => $cihaz->sorumlu));
+                                                    if (isset($sorumluBul->id)) {
+                                                        echo $sorumluBul->ad . " " . $sorumluBul->soyad;
+                                                    } else {
+                                                        echo "Atanmamış";
+                                                    } ?>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th class="align-middle">Markası:</th>
                                             <td class="align-middle">
                                                 <?php $this->load->view("ogeler/cihaz_markasi", array("sifirla" => true, "cihaz_value" => $cihaz->cihaz)); ?>

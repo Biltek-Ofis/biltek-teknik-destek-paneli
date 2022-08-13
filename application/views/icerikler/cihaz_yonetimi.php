@@ -77,6 +77,19 @@
                     <div class="row">
                         <?php $this->load->view("ogeler/cihaz_turleri"); ?>
                     </div>
+                    <?php
+                    if ($this->Kullanicilar_Model->yonetici()) {
+                    ?>
+                        <div class="row">
+                            <?php $this->load->view("ogeler/sorumlu_select"); ?>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <?php $this->load->view("ogeler/sorumlu_text"); ?>
+                    <?php
+                    }
+                    ?>
                     <div class="row">
                         <?php $this->load->view("ogeler/cihaz_markasi"); ?>
                     </div>
