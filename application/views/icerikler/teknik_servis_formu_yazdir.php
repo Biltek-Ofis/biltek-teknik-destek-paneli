@@ -73,7 +73,7 @@
                 <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?= base_url("dist/img/logo.png"); ?>" /></td>
             </tr>
             <tr>
-                <th style="border:0 !important;" class="text-right pr-3" colspan="6">No: <?=$cihaz->id;?></th>
+                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: <?= $cihaz->id; ?></th>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="6"></td>
@@ -245,21 +245,19 @@
                 <td colspan="2" class="text-center font-weight-bold">KDV</td>
             </tr>
             <?php
-            $toplam = "";
-            $kdv = "";
-            $genel_toplam = "";
+            $toplam = 0;
+            $kdv = 0;
+            $genel_toplam = 0;
             if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
-                $toplam = 0;
-                $kdv = 0;
                 if ($cihaz->i_ad_1 != "") {
                     $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
                     $kdv_1 = ceil(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
                     echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_1  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_1 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_1 . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . ' TL</td>
-                <td colspan="2" class="text-center">' . ($kdv_1 > 0 ? $kdv_1 . ' TL (' . $cihaz->i_kdv_1 . '%)': "").'</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_1 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_1 > 0 ? $kdv_1 . ' (' . $cihaz->i_kdv_1 . '%)' : "") . '</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_1;
                     $kdv = $kdv + $kdv_1;
@@ -270,9 +268,9 @@
                     echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_2  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_2 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_2 . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . ' TL</td>
-                <td colspan="2" class="text-center">' . ($kdv_2 > 0 ? $kdv_2 . ' TL (' . $cihaz->i_kdv_2 . '%)': "").'</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_2 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_2 > 0 ? $kdv_2 . ' (' . $cihaz->i_kdv_2 . '%)' : "") . '</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_2;
                     $kdv = $kdv + $kdv_2;
@@ -283,9 +281,9 @@
                     echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_3  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_3 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_3 . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . ' TL</td>
-                <td colspan="2" class="text-center">' . ($kdv_3 > 0 ? $kdv_3 . ' TL (' . $cihaz->i_kdv_3 . '%)': "").'</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_3 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_3 > 0 ? $kdv_3 . ' (' . $cihaz->i_kdv_3 . '%)' : "") . '</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_3;
                     $kdv = $kdv + $kdv_3;
@@ -296,9 +294,9 @@
                     echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_4  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_4 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_4 . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . ' TL</td>
-                <td colspan="2" class="text-center">' . ($kdv_4 > 0 ? $kdv_4 . ' TL (' . $cihaz->i_kdv_4 . '%)': "").'</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_4 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_4 > 0 ? $kdv_4 . ' (' . $cihaz->i_kdv_4 . '%)' : "") . '</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_4;
                     $kdv = $kdv + $kdv_4;
@@ -309,9 +307,9 @@
                     echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_5  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_5 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_5 . ' TL</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . ' TL</td>
-                <td colspan="2" class="text-center">' . ($kdv_5 > 0 ? $kdv_5 . ' TL (' . $cihaz->i_kdv_5 . '%)': "").'</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_5 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_5 > 0 ? $kdv_5 . ' (' . $cihaz->i_kdv_5 . '%)' : "") . '</td>
             </tr>';
                     $toplam = $toplam + $toplam_islem_fiyati_5;
                     $kdv = $kdv + $kdv_5;
@@ -331,7 +329,7 @@
             ?>
             <tr>
                 <td colspan="8">TOPLAM</td>
-                <td colspan="2" class="text-center"><?= $toplam; ?> TL</td>
+                <td colspan="2" class="text-center"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center">ÇİZİK</td>
@@ -355,7 +353,7 @@
                                                                         echo '<i class="fas fa-check"></i>';
                                                                     } ?></td>
                 <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center"><?= $genel_toplam; ?> TL</td>
+                <td colspan="2" class="text-center"><?= $genel_toplam > 0 ? $genel_toplam . " TL" : ""; ?></td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
