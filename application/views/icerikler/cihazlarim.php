@@ -8,7 +8,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
-                        <li class="breadcrumb-item active">Cihazlar</li>
                         <li class="breadcrumb-item active"><?= $baslik; ?></li>
                     </ol>
                 </div>
@@ -18,7 +17,7 @@
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <?php $this->load->view("icerikler/cihaz_tablosu", array("sorumlu_personel" => $sorumlu_personel, "silButonuGizle" => true)); ?>
+                <?php $this->load->view("icerikler/cihaz_tablosu", array("suankiPersonel" => $suankiPersonel, "silButonuGizle" => true)); ?>
             </div>
         </div>
     </section>

@@ -54,6 +54,14 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function cihazlarTekPersonel($tur)
+    {
+        $where = array(
+            "sorumlu" => $tur,
+        );
+        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
     public function cihazlarJQ($id)
     {
         $where = array(
@@ -71,6 +79,15 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function cihazlarTekPersonelJQ($sorumlu_personel, $id)
+    {
+        $where = array(
+            "id >" => $id,
+            "sorumlu" => $sorumlu_personel
+        );
+        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
     public function cihazlarTumuJQ()
     {
         $result = $this->db->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
@@ -80,6 +97,14 @@ class Cihazlar_Model extends CI_Model
     {
         $where = array(
             "cihaz_turu" => $tur
+        );
+        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
+    public function cihazlarTekPersonelTumuJQ($sorumlu_personel)
+    {
+        $where = array(
+            "sorumlu" => $sorumlu_personel
         );
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);

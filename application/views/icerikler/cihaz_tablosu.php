@@ -27,8 +27,7 @@
   }
 </script>
 <?php
-$tur_belirtildimi = isset($tur) ? true : false;
-$cihazTuruGizle = isset($cihazTuruGizle) ? $cihazTuruGizle : false;
+$sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
@@ -37,7 +36,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col">GSM & Email</th>
-        <th scope="col"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>Cihaz Türü</th>
+        <th scope="col">Cihaz Türü</th>
         <th scope="col">Cihaz</th>
         <th scope="col">Giriş Tarihi</th>
         <th scope="col">Güncel Durum</th>
@@ -51,7 +50,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <th scope="row" id="{id}CihazKod">{cihaz_kod}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
-  <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
+  <td  id="{id}CihazTuru">{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}Tarih">{tarih2}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
@@ -241,7 +240,7 @@ $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazi
       Bu cihazı silmek istediğinize emin misiniz?
       </div>
       <div class="modal-footer">
-        <a href="' . base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazSil/" . ($tur_belirtildimi ? $tur : "")) . '/{id}" class="btn btn-success">Evet</a>
+        <a href="' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazSil/") . '/{id}" class="btn btn-success">Evet</a>
         <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
       </div>
     </div>
@@ -268,7 +267,7 @@ $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
 $cihazDetayOrnek = $this->Islemler_Model->trimle($cihazDetayOrnek);
 $cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
-$cihazlar = $tur_belirtildimi ? $this->Cihazlar_Model->cihazlarTekTur($tur) : $this->Cihazlar_Model->cihazlar();
+$cihazlar = $sorumlu_belirtildimi ? $this->Cihazlar_Model->cihazlarTekPersonel($suankiPersonel) : $this->Cihazlar_Model->cihazlar();
 
 $eskiler = array(
   "\\",
@@ -636,7 +635,7 @@ echo '</div>';
           }
         });
       });
-      $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarTumuJQ/" . ($tur_belirtildimi ? $tur : "")); ?>', {}, function(data) {
+      $.get('<?= base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazlarTumuJQ/"); ?>', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
           if (sayac == 0) {
@@ -755,7 +754,7 @@ echo '</div>';
         });
       });
 
-      $.get('<?= base_url(($tur_belirtildimi ? "cihazlar" : "cihaz_yonetimi") . "/cihazlarJQ/" . ($tur_belirtildimi ? $tur . "/" : "")); ?>' + sonCihazID, {}, function(data) {
+      $.get('<?= base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazlarJQ/"); ?>' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id

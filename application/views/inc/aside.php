@@ -29,8 +29,8 @@
                     <li class="nav-header">Yönetim</li>
                     <li class="nav-item">
                         <a href="<?= base_url("yonetim/kullanicilar"); ?>" class="nav-link<?php if ($aktifSayfa == "yonetim/kullanicilar") {
-                                                                                        echo " active";
-                                                                                    } ?>">
+                                                                                                echo " active";
+                                                                                            } ?>">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Kullanıcılar
@@ -51,23 +51,33 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item<?php if ($aktifSayfa == "cihazlar") {
-                                        echo " menu-is-opening menu-open";
-                                    } ?>">
-                    <a href="#" class="nav-link<?php if ($aktifSayfa == "cihazlar") {
+                <li class="nav-item">
+                    <a href="<?= base_url("cihazlarim"); ?>" class="nav-link<?php if ($aktifSayfa == "cihazlarim") {
+                                                                                echo " active";
+                                                                            } ?>">
+                        <i class="nav-icon fas fa-laptop-house"></i>
+                        <p>
+                            Cihazlarim
+                        </p>
+                    </a>
+                </li>
+                <!--<li class="nav-item<?php /*if ($aktifSayfa == "cihazlar") {
+                                            echo " menu-is-opening menu-open";
+                                        }*/ ?>">
+                    <a href="#" class="nav-link<?php /*if ($aktifSayfa == "cihazlar") {
                                                     echo " active";
-                                                } ?>">
+                                                }*/ ?>">
                         <i class="nav-icon fas fa-floppy-disk"></i>
                         <p>
                             Cihazlar
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview" <?php if ($aktifSayfa == "cihazlar") {
+                    <ul class="nav nav-treeview" <?php /*if ($aktifSayfa == "cihazlar") {
                                                         echo ' style="display:block;"';
-                                                    } ?>">
+                                                    }*/ ?>">
                         <?php
-                        foreach ($cihazTurleri as $cihazTuru) {
+                        /*foreach ($cihazTurleri as $cihazTuru) {
                             echo ' <li class="nav-item">
                                 <a href="' . base_url("cihazlar/" . $cihazTuru->id) . '" class="nav-link';
                             if ($baslik == $cihazTuru->isim) {
@@ -78,11 +88,11 @@
                                     <p>' . $cihazTuru->isim . '</p>
                                 </a>
                             </li>';
-                        }
+                        }*/
                         ?>
 
                     </ul>
-                </li>
+                </li>-->
             </ul>
         </nav>
     </div>
