@@ -87,7 +87,7 @@
                             ?>
                                 <tr>
                                     <td>
-                                        <?= $kullanici->ad; ?> <?= $kullanici->soyad; ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
+                                        <?= $this->Kullanicilar_Model->adSoyad($kullanici->ad, $kullanici->soyad); ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
                                     </td>
                                     <td>
                                         <?= $kullanici->kullanici_adi; ?>
@@ -113,7 +113,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold"><?= $kullanici->ad; ?> <?= $kullanici->soyad; ?> (<?= $kullanici->kullanici_adi; ?>)</span> personelini silmek istediğinize emin misiniz?
+                                                    <span class="font-weight-bold"><?= $this->Kullanicilar_Model->adSoyad($kullanici->ad, $kullanici->soyad); ?> (<?= $kullanici->kullanici_adi; ?>)</span> personelini silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="<?= base_url("yonetim/kullaniciSil/" . $kullanici->id); ?>" class="btn btn-danger">Evet</a>
@@ -140,7 +140,7 @@
                                                             <?php $this->load->view("ogeler/kullanici_soyad", array("value" => $kullanici->soyad, "id" => $kullanici->id)); ?>
                                                         </div>
                                                         <div class="row">
-                                                            <input type="hidden" name="kullanici_adi_orj<?= $kullanici->id; ?>" value="<?=$kullanici->kullanici_adi;?>">
+                                                            <input type="hidden" name="kullanici_adi_orj<?= $kullanici->id; ?>" value="<?= $kullanici->kullanici_adi; ?>">
                                                             <?php $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id)); ?>
                                                         </div>
                                                         <div class="row">

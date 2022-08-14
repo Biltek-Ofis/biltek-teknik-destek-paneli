@@ -64,6 +64,11 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
+
+    public function adSoyad($ad, $soyad)
+    {
+        return $ad . " " . $soyad;
+    }
     public function ekle($veri)
     {
         return $this->db->insert($this->kullanicilarTablosu, $veri);
