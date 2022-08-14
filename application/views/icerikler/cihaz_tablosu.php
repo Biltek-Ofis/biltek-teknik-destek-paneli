@@ -421,12 +421,6 @@ foreach ($cihazlar as $cihaz) {
   $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
   $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
   $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
-
-  $sorumluBul = $this->Kullanicilar_Model->tekKullanici($cihaz->sorumlu);
-  $sorumluPersonel = "Atanmamış";
-  if (isset($sorumluBul->id)) {
-    $sorumluPersonel = $sorumluBul->ad . " " . $sorumluBul->soyad;
-  }
   $yeniler = array(
     "",
     "",
@@ -438,7 +432,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->adres,
     $cihaz->gsm_mail,
     $cihaz->cihaz_turu,
-    $sorumluPersonel,
+    $cihaz->sorumlu,
     $cihaz->cihaz,
     $cihaz->cihaz_modeli,
     $cihaz->seri_no,
@@ -605,6 +599,7 @@ echo '</div>';
       .replaceAll("{adres}", value.adres)
       .replaceAll("{gsm_mail}", value.gsm_mail)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)
+      .replaceAll("{sorumlu}", value.sorumlu)
       .replaceAll("{cihaz}", value.cihaz)
       .replaceAll("{cihaz_modeli}", value.cihaz_modeli)
       .replaceAll("{seri_no}", value.seri_no)
@@ -733,6 +728,7 @@ echo '</div>';
           $("#" + value.id + "CihazKod, #" + value.id + "CihazKod2").html(value.cihaz_kod);
           $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
+          $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
           $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
           $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
           $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
