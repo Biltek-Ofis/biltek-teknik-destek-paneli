@@ -41,6 +41,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Cihaz</th>
         <th scope="col">Giriş Tarihi</th>
         <th scope="col">Güncel Durum</th>
+        <th scope="col">Sorumlu Personel</th>
         <th scope="col">Detaylar</th>
     </tr>
 </thead>
@@ -54,6 +55,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}Tarih">{tarih2}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
+  <td id="{id}Sorumlu">{sorumlu}</td>
   <td class="text-center">
     <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
   </td>
@@ -190,6 +192,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               </div>
               <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Sorumlu2">{sorumlu}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}yapilanIslemAciklamasi">{yapilan_islem_aciklamasi}</li>
                 </ul>
@@ -275,6 +281,7 @@ $eskiler = array(
   "{adres}",
   "{gsm_mail}",
   "{cihaz_turu}",
+  "{sorumlu}",
   "{cihaz}",
   "{cihaz_modeli}",
   "{seri_no}",
@@ -414,6 +421,12 @@ foreach ($cihazlar as $cihaz) {
   $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
   $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
   $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
+
+  $sorumluBul = $this->Kullanicilar_Model->tekKullanici($cihaz->sorumlu);
+  $sorumluPersonel = "Atanmamış";
+  if (isset($sorumluBul->id)) {
+    $sorumluPersonel = $sorumluBul->ad . " " . $sorumluBul->soyad;
+  }
   $yeniler = array(
     "",
     "",
@@ -425,6 +438,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->adres,
     $cihaz->gsm_mail,
     $cihaz->cihaz_turu,
+    $sorumluPersonel,
     $cihaz->cihaz,
     $cihaz->cihaz_modeli,
     $cihaz->seri_no,
