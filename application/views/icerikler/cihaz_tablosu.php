@@ -47,7 +47,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <tbody id="cihazlar">';
 $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
-  <th scope="row">{id}</th>
+  <th scope="row" id="{id}CihazKod">{cihaz_kod}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
   <td  id="{id}CihazTuru"' . ($cihazTuruGizle ? ' style="display:none;"' : '') . '>{cihaz_turu}</td>
@@ -91,7 +91,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Kodu:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">{id}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazKod2">{cihaz_kod}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
@@ -268,6 +268,7 @@ $eskiler = array(
   "\\",
   "{yeni}",
   "{class}",
+  "{cihaz_kod}",
   "{id}",
   "{musteri_adi}",
   "{musteri_kod}",
@@ -417,6 +418,7 @@ foreach ($cihazlar as $cihaz) {
     "",
     "",
     $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
+    $cihaz->cihaz_kod,
     $cihaz->id,
     $cihaz->musteri_adi,
     isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
@@ -582,6 +584,7 @@ echo '</div>';
     return str.
     replaceAll("{yeni}", ' <span id="' + value.id + 'Yeni" class="badge badge-danger">Yeni</span>')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
+      .replaceAll("{cihaz_kod}", value.cihaz_kod)
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
@@ -713,6 +716,7 @@ echo '</div>';
           $("#yapilanIslem" + value.id).html(yapilanIslemler);
           $("#cihaz" + value.id).attr('class', '');
           $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
+          $("#" + value.id + "CihazKod, #" + value.id + "CihazKod2").html(value.cihaz_kod);
           $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
           $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
           $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
