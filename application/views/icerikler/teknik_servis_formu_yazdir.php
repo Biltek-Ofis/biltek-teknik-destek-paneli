@@ -73,7 +73,7 @@
                 <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?= base_url("dist/img/logo.png"); ?>" /></td>
             </tr>
             <tr>
-                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: <?= $cihaz->id; ?></th>
+                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: <?= $cihaz->cihaz_kod; ?></th>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="6"></td>

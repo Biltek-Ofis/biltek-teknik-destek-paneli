@@ -50,18 +50,7 @@
         </thead>
         <tbody class="p-1">
             <tr class="pl-1">
-                <th class="p-0 pl-1 m-0"><?php
-                                            $basamak = 3;
-                                            $sifirSayisi = 3 - strlen($cihaz->id);
-                                            $id = "";
-                                            if ($sifirSayisi > 0) {
-                                                for ($i = 0; $i < $sifirSayisi; $i++) {
-                                                    $id .= "0";
-                                                }
-                                            }
-                                            $id .= $cihaz->id;
-                                            echo $id;
-                                            ?></th>
+                <th class="p-0 pl-1 m-0"><?= $cihaz->cihaz_kod; ?></th>
                 <td class="p-0 pr-1 m-0 text-right"><?= $cihaz->tarih; ?></td>
             </tr>
             <tr>
