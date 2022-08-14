@@ -37,13 +37,9 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
             $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
             $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($result[$i]->sorumlu);
-            $result[$i]->sorumlu = isset($sorumlu_per) ? $this->adSoyad($sorumlu_per->ad, $sorumlu_per->soyad) : "Atanmamış";
+            $result[$i]->sorumlu = isset($sorumlu_per) ? $this->Kullanicilar_Model->adSoyad($sorumlu_per->ad, $sorumlu_per->soyad) : "Atanmamış";
         }
         return $result;
-    }
-    public function adSoyad($ad, $soyad)
-    {
-        return $ad . " " . $soyad;
     }
     public function cihazlar()
     {
