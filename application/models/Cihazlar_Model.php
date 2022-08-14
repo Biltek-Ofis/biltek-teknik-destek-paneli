@@ -36,8 +36,14 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->bildirim_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->bildirim_tarihi);
             $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
             $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
+            $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($result[$i]->sorumlu);
+            $result[$i]->sorumlu = isset($sorumlu_per) ? $this->adSoyad($sorumlu_per->ad, $sorumlu_per->soyad) : "Atanmamış";
         }
         return $result;
+    }
+    public function adSoyad($ad, $soyad)
+    {
+        return $ad . " " . $soyad;
     }
     public function cihazlar()
     {
@@ -91,7 +97,6 @@ class Cihazlar_Model extends CI_Model
             "adres" => $this->input->post("adres"),
             "gsm_mail" => $this->input->post("gsm_mail"),
             "cihaz_turu" => $this->input->post("cihaz_turu"),
-            "sorumlu" => $this->input->post("sorumlu"),
             "cihaz" => $this->input->post("cihaz"),
             "cihaz_modeli" => $this->input->post("cihaz_modeli"),
             "seri_no" => $this->input->post("seri_no"),
@@ -106,6 +111,10 @@ class Cihazlar_Model extends CI_Model
             "pil" => $this->input->post("pil"),
             "diger_aksesuar" => $this->input->post("diger_aksesuar"),
         );
+        $sorumlu = $this->input->post("sorumlu");
+        if (isset($sorumlu)) {
+            $veri["sorumlu"]  = $sorumlu;
+        }
         $tarih = $this->input->post("tarih");
         if (isset($tarih)) {
             $veri["tarih"] =  $this->Islemler_Model->tarihDonusturSQL($tarih);

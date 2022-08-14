@@ -90,16 +90,7 @@
                                                     <?php $this->load->view("ogeler/sorumlu_select", array("sifirla" => true, "sorumlu_value" => $cihaz->sorumlu)); ?>
                                                 <?php
                                                 } else {
-                                                ?>
-                                                    <?php
-                                                    $sorumluBul = $this->Kullanicilar_Model->tekKullanici($cihaz->sorumlu);
-                                                    $this->load->view("ogeler/sorumlu_text", array("sorumlu_text_value" => $cihaz->sorumlu));
-                                                    if (isset($sorumluBul->id)) {
-                                                        echo $sorumluBul->ad . " " . $sorumluBul->soyad;
-                                                    } else {
-                                                        echo "Atanmamış";
-                                                    } ?>
-                                                <?php
+                                                    echo $cihaz->sorumlu;
                                                 }
                                                 ?>
                                             </td>
