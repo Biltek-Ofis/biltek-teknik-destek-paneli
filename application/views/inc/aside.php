@@ -55,7 +55,7 @@
                     <a href="<?= base_url(""); ?>" class="nav-link<?php if ($aktifSayfa == "cihaz_yonetimi" or $aktifSayfa == "anasayfa") {
                                                                         echo " active";
                                                                     } ?>">
-                        <i class="nav-icon fas fa-laptop-house"></i>
+                        <i class="nav-icon fas fa-home"></i>
                         <p>
                             Anasayfa
                         </p>
