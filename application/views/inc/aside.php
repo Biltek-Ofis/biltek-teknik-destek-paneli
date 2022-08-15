@@ -1,3 +1,12 @@
+<style>
+    .break-sec-w {
+        width: 100%;
+        border-bottom: 1px solid #4f5962 !important;
+        border-bottom-width: 1px !important;
+        border-bottom-style: solid !important;
+        border-bottom-color: rgb(79, 89, 98) !important;
+    }
+</style>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="<?= base_url(); ?>" class="brand-link">
         <img src="<?= base_url("dist/img/favicon.ico"); ?>" style="height: 33px;" alt="Biltek Bilgisayar Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -47,6 +56,7 @@
                             </p>
                         </a>
                     </li>
+                    <hr class="break-sec-w">
                 <?php
                 }
                 ?>
