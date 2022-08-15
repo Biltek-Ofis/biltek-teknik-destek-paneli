@@ -361,20 +361,12 @@
                 <td colspan="6" class="text-center font-weight-bold">TEKNİK SORUMLU</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">ADI</td>
+                <td colspan="3" class="text-center">ADI SOYADI</td>
                 <td colspan="4" class="text-center"></td>
-                <td colspan="3" class="text-center">ADI</td>
+                <td colspan="3" class="text-center">ADI SOYADI</td>
                 <td colspan="4" class="text-center"></td>
-                <td colspan="3" class="text-center">ADI</td>
-                <td colspan="3" class="text-center"></td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-center">SOYADI</td>
-                <td colspan="4" class="text-center"></td>
-                <td colspan="3" class="text-center">SOYADI</td>
-                <td colspan="4" class="text-center"></td>
-                <td colspan="3" class="text-center">SOYADI</td>
-                <td colspan="3" class="text-center"></td>
+                <td colspan="3" class="text-center">ADI SOYADI</td>
+                <td colspan="3" class="text-center"><?=$cihaz->sorumlu;?></td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">İMZASI</td>
