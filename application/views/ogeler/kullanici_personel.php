@@ -3,15 +3,15 @@
                         } ?> col">
     <label for="kullanici_yonetici<?php if (isset($id)) {
                                         echo $id;
-                                    } ?>">Yönetici</label>
+                                    } ?>">Hesap Türü</label>
     <select id="kullanici_yonetici<?php if (isset($id)) {
                                         echo $id;
                                     } ?>" class="form-control" name="yonetici" aria-label="Yönetici">
         <option value="0" <?php if (isset($value) && $value == 0) {
                                 echo " selected";
-                            } ?>>Hayır</option>
+                            } ?>>Personel</option>
         <option value="1" <?php if (isset($value) && $value == 1) {
                                 echo " selected";
-                            } ?>>Evet</option>
+                            } ?>>Kullanıcı</option>
     </select>
 </div>
