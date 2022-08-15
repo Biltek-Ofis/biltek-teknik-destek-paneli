@@ -57,7 +57,7 @@
                                                                             } ?>">
                         <i class="nav-icon fas fa-laptop-house"></i>
                         <p>
-                            Cihazlarim
+                            Cihazlarım
                         </p>
                     </a>
                 </li>
