@@ -653,7 +653,7 @@ echo '</div>';
 
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([4, "desc"]); ?>);
+    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([5, "desc"]); ?>);
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
