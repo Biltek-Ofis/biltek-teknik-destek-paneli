@@ -36,7 +36,6 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Cihaz Kodu</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col">GSM & Email</th>
-        <th scope="col">Cihaz Türü</th>
         <th scope="col">Cihaz</th>
         <th scope="col">Giriş Tarihi</th>
         <th scope="col">Güncel Durum</th>
@@ -50,7 +49,6 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <th scope="row" id="{id}CihazKod">{cihaz_kod}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{gsm_mail}</td>
-  <td  id="{id}CihazTuru">{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}Tarih">{tarih2}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
@@ -130,7 +128,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazTuru2">{cihaz_turu}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazTuru">{cihaz_turu}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
@@ -623,7 +621,7 @@ echo '</div>';
 
   $(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([5, "desc"]); ?>);
+    var cihazlarTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari([4, "desc"]); ?>);
     setInterval(() => {
       $.get('<?= base_url("cihaz_yonetimi/silinenCihazlariBul"); ?>', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
@@ -730,7 +728,7 @@ echo '</div>';
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "CihazKod, #" + value.id + "CihazKod2").html(value.cihaz_kod);
             $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
-            $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
+            $("#" + value.id + "CihazTuru").html(value.cihaz_turu);
             $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
             $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
             $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
