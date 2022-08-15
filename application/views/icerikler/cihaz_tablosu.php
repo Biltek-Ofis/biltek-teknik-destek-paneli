@@ -638,14 +638,14 @@ echo '</div>';
       $.get('<?= base_url("cihaz_yonetimi" . "/cihazlarTumuJQ/"); ?>', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
+          if (sayac == 0) {
+            sonCihazID = value.id;
+          }
+          sayac++;
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
-            if (sayac == 0) {
-              sonCihazID = value.id;
-            }
-            sayac++;
             var toplam = 0;
             var kdv = 0;
             var yapilanIslemler = "";
