@@ -21,6 +21,7 @@
 
   :root {
     --transparan: 0.3;
+    --transparan-kirmizi: 0.4;
     --yazi-rengi: #1f2d3d;
   }
 
@@ -30,7 +31,7 @@
   }
 
   .bg-pink {
-    background-color: rgba(232, 62, 140, var(--transparan)) !important;
+    background-color: rgba(232, 62, 140, var(--transparan-kirmizi)) !important;
     color: var(--yazi-rengi) !important;
   }
 
@@ -40,7 +41,7 @@
   }
 
   .bg-danger {
-    background-color: rgba(220, 53, 69, var(--transparan)) !important;
+    background-color: rgba(220, 53, 69, var(--transparan-kirmizi)) !important;
     color: var(--yazi-rengi) !important;
   }
 
