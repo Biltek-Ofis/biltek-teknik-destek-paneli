@@ -789,7 +789,7 @@ echo '</div>';
             if ($sorumlu_belirtildimi) {
               $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
               echo '
-            if(value.sorumlu != "' . $this->Kullanicilar_Model->adSoyad($kullaniciBilgileri["ad"],  $kullaniciBilgileri["soyad"]) . '"){
+            if(value.sorumlu != "' . $kullaniciBilgileri["ad_soyad"] . '"){
               cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             }';
             }

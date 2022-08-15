@@ -17,13 +17,12 @@ class Kullanicilar_Model extends CI_Model
     }
     public $kullanicilarTablosu = "Kullanicilar";
 
-    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad = "", $soyad = "", $sifre = "", $yonetici = 0)
+    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0)
     {
         return array(
             "id" => $id,
             "kullanici_adi" => $kullanici_adi,
-            "ad" => $ad,
-            "soyad" => $soyad,
+            "ad_soyad" => $ad_soyad,
             "sifre" => $sifre,
             "yonetici" => $yonetici,
         );
@@ -35,7 +34,7 @@ class Kullanicilar_Model extends CI_Model
             $kullaniciTablo = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTablosu);
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
-                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad, $kullanici->soyad, $kullanici->sifre, $kullanici->yonetici);
+                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici);
             } else {
                 return $this->kullaniciTablosu();
             }
@@ -67,11 +66,6 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
-
-    public function adSoyad($ad, $soyad)
-    {
-        return $ad . " " . $soyad;
-    }
     public function ekle($veri)
     {
         return $this->db->insert($this->kullanicilarTablosu, $veri);
@@ -89,8 +83,7 @@ class Kullanicilar_Model extends CI_Model
     {
         $veri = array(
             "kullanici_adi" => $this->input->post("kullanici_adi"),
-            "ad" => $this->input->post("ad"),
-            "soyad" => $this->input->post("soyad"),
+            "ad_soyad" => $this->input->post("ad_soyad"),
             "sifre" => $this->input->post("sifre"),
         );
         if ($yonetici_dahil) {
