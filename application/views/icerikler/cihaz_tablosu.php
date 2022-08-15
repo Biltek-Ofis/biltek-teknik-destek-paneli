@@ -635,122 +635,136 @@ echo '</div>';
           }
         });
       });
-      $.get('<?= base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazlarTumuJQ/"); ?>', {}, function(data) {
+      $.get('<?= base_url("cihaz_yonetimi" . "/cihazlarTumuJQ/"); ?>', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
-          if (sayac == 0) {
-            sonCihazID = value.id;
+          const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (cihazVarmi) {
+            if (sayac == 0) {
+              sonCihazID = value.id;
+            }
+            sayac++;
+            var toplam = 0;
+            var kdv = 0;
+            var yapilanIslemler = "";
+            var islemlerSatiri = '<?= $yapilanIslemlerSatiri; ?>';
+            var islemlerSatiriBos = '<?= $yapilanIslemlerSatiriBos; ?>';
+            if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5) {
+              if (value.i_ad_1) {
+                var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
+                toplam = toplam + yapilan_islem_tutari_1;
+                var kdv_1 = Math.ceil((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
+                kdv = kdv + kdv_1;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_1)
+                  .replaceAll("{miktar}", value.i_miktar_1)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_1)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1)
+                  .replaceAll("{toplam_islem_kdv}", kdv_1)
+                  .replaceAll("{kdv_orani}", value.i_kdv_1);
+              }
+              if (value.i_ad_2) {
+                var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
+                toplam = toplam + yapilan_islem_tutari_2;
+                var kdv_2 = Math.ceil((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
+                kdv = kdv + kdv_2;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_2)
+                  .replaceAll("{miktar}", value.i_miktar_2)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_2)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2)
+                  .replaceAll("{toplam_islem_kdv}", kdv_2)
+                  .replaceAll("{kdv_orani}", value.i_kdv_2);
+              }
+              if (value.i_ad_3) {
+                var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
+                toplam = toplam + yapilan_islem_tutari_3;
+                var kdv_3 = Math.ceil((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
+                kdv = kdv + kdv_3;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_3)
+                  .replaceAll("{miktar}", value.i_miktar_3)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_3)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3)
+                  .replaceAll("{toplam_islem_kdv}", kdv_3)
+                  .replaceAll("{kdv_orani}", value.i_kdv_3);
+              }
+              if (value.i_ad_4) {
+                var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
+                toplam = toplam + yapilan_islem_tutari_4;
+                var kdv_4 = Math.ceil((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
+                kdv = kdv + kdv_4;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_4)
+                  .replaceAll("{miktar}", value.i_miktar_4)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_4)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4)
+                  .replaceAll("{toplam_islem_kdv}", kdv_4)
+                  .replaceAll("{kdv_orani}", value.i_kdv_4);
+              }
+              if (value.i_ad_5) {
+                var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
+                toplam = toplam + yapilan_islem_tutari_5;
+                var kdv_5 = Math.ceil((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
+                kdv = kdv + kdv_5;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_5)
+                  .replaceAll("{miktar}", value.i_miktar_5)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_5)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
+                  .replaceAll("{toplam_islem_kdv}", kdv_5)
+                  .replaceAll("{kdv_orani}", value.i_kdv_5);
+              }
+            } else {
+              var yapilanIslemler = islemlerSatiriBos;
+            }
+            var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
+            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
+            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", kdv);
+            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
+            yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
+            $("#yapilanIslem" + value.id).html(yapilanIslemler);
+            $("#cihaz" + value.id).attr('class', '');
+            $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
+            $("#" + value.id + "CihazKod, #" + value.id + "CihazKod2").html(value.cihaz_kod);
+            $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
+            $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
+            $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
+            $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
+            $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
+            $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
+            $("#" + value.id + "MusteriAdres").html(value.adres);
+            $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
+            $("#" + value.id + "Tarih").html(tarihDonusturSiralama(value.tarih));
+            $("#" + value.id + "Tarih2").html(value.tarih);
+            $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
+            $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
+            $("#" + value.id + "CihazMarka").html(value.cihaz);
+            $("#" + value.id + "CihazModeli").html(value.cihaz_modeli);
+            $("#" + value.id + "SeriNo").html(value.seri_no);
+            $("#" + value.id + "CihazSifresi").html(value.cihaz_sifresi);
+            $("#" + value.id + "CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
+            $("#" + value.id + "HasarTespiti").html(value.hasar_tespiti);
+            $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
+            $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
+            $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
+            $("#" + value.id + "TasimaCantasi").html(hasarDurumu(value.tasima_cantasi));
+            $("#" + value.id + "SarjAdaptoru").html(hasarDurumu(value.sarj_adaptoru));
+            $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
+            $("#" + value.id + "DigerAksesuar").html(value.diger_aksesuar);
+            $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
+            <?php
+            if ($sorumlu_belirtildimi) {
+              $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
+              echo '
+            if(value.sorumlu != "' . $this->Kullanicilar_Model->adSoyad($kullaniciBilgileri["ad"],  $kullaniciBilgileri["soyad"]) . '"){
+              cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            }';
+            }
+            ?>
           }
-          sayac++;
-          var toplam = 0;
-          var kdv = 0;
-          var yapilanIslemler = "";
-          var islemlerSatiri = '<?= $yapilanIslemlerSatiri; ?>';
-          var islemlerSatiriBos = '<?= $yapilanIslemlerSatiriBos; ?>';
-          if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5) {
-            if (value.i_ad_1) {
-              var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
-              toplam = toplam + yapilan_islem_tutari_1;
-              var kdv_1 = Math.ceil((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
-              kdv = kdv + kdv_1;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", value.i_ad_1)
-                .replaceAll("{miktar}", value.i_miktar_1)
-                .replaceAll("{fiyat}", value.i_birim_fiyat_1)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1)
-                .replaceAll("{toplam_islem_kdv}", kdv_1)
-                .replaceAll("{kdv_orani}", value.i_kdv_1);
-            }
-            if (value.i_ad_2) {
-              var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
-              toplam = toplam + yapilan_islem_tutari_2;
-              var kdv_2 = Math.ceil((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
-              kdv = kdv + kdv_2;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", value.i_ad_2)
-                .replaceAll("{miktar}", value.i_miktar_2)
-                .replaceAll("{fiyat}", value.i_birim_fiyat_2)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2)
-                .replaceAll("{toplam_islem_kdv}", kdv_2)
-                .replaceAll("{kdv_orani}", value.i_kdv_2);
-            }
-            if (value.i_ad_3) {
-              var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
-              toplam = toplam + yapilan_islem_tutari_3;
-              var kdv_3 = Math.ceil((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
-              kdv = kdv + kdv_3;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", value.i_ad_3)
-                .replaceAll("{miktar}", value.i_miktar_3)
-                .replaceAll("{fiyat}", value.i_birim_fiyat_3)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3)
-                .replaceAll("{toplam_islem_kdv}", kdv_3)
-                .replaceAll("{kdv_orani}", value.i_kdv_3);
-            }
-            if (value.i_ad_4) {
-              var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
-              toplam = toplam + yapilan_islem_tutari_4;
-              var kdv_4 = Math.ceil((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
-              kdv = kdv + kdv_4;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", value.i_ad_4)
-                .replaceAll("{miktar}", value.i_miktar_4)
-                .replaceAll("{fiyat}", value.i_birim_fiyat_4)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4)
-                .replaceAll("{toplam_islem_kdv}", kdv_4)
-                .replaceAll("{kdv_orani}", value.i_kdv_4);
-            }
-            if (value.i_ad_5) {
-              var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
-              toplam = toplam + yapilan_islem_tutari_5;
-              var kdv_5 = Math.ceil((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
-              kdv = kdv + kdv_5;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", value.i_ad_5)
-                .replaceAll("{miktar}", value.i_miktar_5)
-                .replaceAll("{fiyat}", value.i_birim_fiyat_5)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
-                .replaceAll("{toplam_islem_kdv}", kdv_5)
-                .replaceAll("{kdv_orani}", value.i_kdv_5);
-            }
-          } else {
-            var yapilanIslemler = islemlerSatiriBos;
-          }
-          var yapilanIslemToplam = '<?= $yapilanIslemToplam; ?>';
-          var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
-          var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", kdv);
-          var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
-          yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
-          $("#yapilanIslem" + value.id).html(yapilanIslemler);
-          $("#cihaz" + value.id).attr('class', '');
-          $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
-          $("#" + value.id + "CihazKod, #" + value.id + "CihazKod2").html(value.cihaz_kod);
-          $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
-          $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
-          $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
-          $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
-          $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
-          $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
-          $("#" + value.id + "MusteriAdres").html(value.adres);
-          $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
-          $("#" + value.id + "Tarih").html(tarihDonusturSiralama(value.tarih));
-          $("#" + value.id + "Tarih2").html(value.tarih);
-          $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
-          $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
-          $("#" + value.id + "CihazMarka").html(value.cihaz);
-          $("#" + value.id + "CihazModeli").html(value.cihaz_modeli);
-          $("#" + value.id + "SeriNo").html(value.seri_no);
-          $("#" + value.id + "CihazSifresi").html(value.cihaz_sifresi);
-          $("#" + value.id + "CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
-          $("#" + value.id + "HasarTespiti").html(value.hasar_tespiti);
-          $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
-          $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
-          $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
-          $("#" + value.id + "TasimaCantasi").html(hasarDurumu(value.tasima_cantasi));
-          $("#" + value.id + "SarjAdaptoru").html(hasarDurumu(value.sarj_adaptoru));
-          $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
-          $("#" + value.id + "DigerAksesuar").html(value.diger_aksesuar);
-          $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
         });
       });
 
