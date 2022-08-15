@@ -37,6 +37,16 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url("yonetim/personel"); ?>" class="nav-link<?php if ($aktifSayfa == "yonetim/personel") {
+                                                                                            echo " active";
+                                                                                        } ?>">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Personel
+                            </p>
+                        </a>
+                    </li>
                 <?php
                 }
                 ?>
