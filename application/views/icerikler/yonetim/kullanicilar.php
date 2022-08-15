@@ -54,9 +54,6 @@ $kullaniciTuru = $kullaniciTuru ?? 1;
                                         <?php $this->load->view("ogeler/kullanici_ad"); ?>
                                     </div>
                                     <div class="row">
-                                        <?php $this->load->view("ogeler/kullanici_soyad"); ?>
-                                    </div>
-                                    <div class="row">
                                         <?php $this->load->view("ogeler/kullanici_adi"); ?>
                                     </div>
                                     <div class="row">
@@ -93,7 +90,7 @@ $kullaniciTuru = $kullaniciTuru ?? 1;
                                         <?= $kullanici->id; ?>
                                     </td>
                                     <td>
-                                        <?= $this->Kullanicilar_Model->adSoyad($kullanici->ad, $kullanici->soyad); ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
+                                        <?= $kullanici->ad_soyad; ?><?= $this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "" ?>
                                     </td>
                                     <td>
                                         <?= $kullanici->kullanici_adi; ?>
@@ -116,7 +113,7 @@ $kullaniciTuru = $kullaniciTuru ?? 1;
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold"><?= $this->Kullanicilar_Model->adSoyad($kullanici->ad, $kullanici->soyad); ?> (<?= $kullanici->kullanici_adi; ?>)</span> personelini silmek istediğinize emin misiniz?
+                                                    <span class="font-weight-bold"><?= $kullanici->ad_soyad; ?> (<?= $kullanici->kullanici_adi; ?>)</span> personelini silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="<?= base_url("yonetim/kullaniciSil/" . $kullanici->id) . "/" . $kullaniciTuru; ?>" class="btn btn-danger">Evet</a>
@@ -137,10 +134,7 @@ $kullaniciTuru = $kullaniciTuru ?? 1;
                                                 <div class="modal-body">
                                                     <form id="kullaniciDuzenleForm<?= $kullanici->id; ?>" autocomplete="off" method="post" action="<?= base_url("yonetim/kullaniciDuzenle/" . $kullanici->id . "/" . $kullaniciTuru); ?>">
                                                         <div class="row">
-                                                            <?php $this->load->view("ogeler/kullanici_ad", array("value" => $kullanici->ad, "id" => $kullanici->id)); ?>
-                                                        </div>
-                                                        <div class="row">
-                                                            <?php $this->load->view("ogeler/kullanici_soyad", array("value" => $kullanici->soyad, "id" => $kullanici->id)); ?>
+                                                            <?php $this->load->view("ogeler/kullanici_ad", array("value" => $kullanici->ad_soyad, "id" => $kullanici->id)); ?>
                                                         </div>
                                                         <div class="row">
                                                             <input type="hidden" name="kullanici_adi_orj<?= $kullanici->id; ?>" value="<?= $kullanici->kullanici_adi; ?>">

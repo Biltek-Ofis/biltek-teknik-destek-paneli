@@ -12,7 +12,7 @@ class Kullanici extends Varsayilan_Controller
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
 			$kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
-			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($kullanici["ad"] . " " . $kullanici["soyad"], "kullanici", [], "inc/datatables"));
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($kullanici["ad_soyad"], "kullanici", [], "inc/datatables"));
 		} else {
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}

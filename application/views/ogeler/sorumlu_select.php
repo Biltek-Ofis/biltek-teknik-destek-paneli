@@ -9,11 +9,10 @@ $sorumlular123 = $this->Kullanicilar_Model->kullaniciListesi();
         <?php
         foreach ($sorumlular123 as $sorumlu) {
             echo '<option value="' . $sorumlu->id . '"';
-            $sorumTamAd = $this->Kullanicilar_Model->adSoyad($sorumlu->ad, $sorumlu->soyad);
-            if (isset($sorumlu_value) && ($sorumlu_value == $sorumTamAd || $sorumlu_value == $sorumlu->id)) {
+            if (isset($sorumlu_value) && ($sorumlu_value == $sorumlu->ad_soyad || $sorumlu_value == $sorumlu->id)) {
                 echo " selected";
             }
-            echo '>' . $sorumTamAd . '</option>';
+            echo '>' . $sorumlu->ad_soyad . '</option>';
         }
         ?>
     </select>
