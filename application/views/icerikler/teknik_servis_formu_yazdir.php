@@ -366,7 +366,11 @@
                 <td colspan="3" class="text-center">ADI SOYADI</td>
                 <td colspan="4" class="text-center"></td>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
-                <td colspan="3" class="text-center"><?=$cihaz->sorumlu;?></td>
+                <td colspan="3" class="text-center">
+                    <?php
+                    /* echo $cihaz->sorumlu;*/
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">İMZASI</td>
