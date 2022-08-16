@@ -53,10 +53,12 @@ function islemHesapla(i) {
 	var yapilanIslemFiyat = $("#yapilanIslemFiyat" + i).val() ?? 0;
 	var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
 	var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
-	var kdv = Math.ceil((tutar / 100) * yapilanIslemKdv);
-	$("#yapilanIslemTutar" + i).html(tutar > 0 ? tutar+ " TL" : "");
+	var kdv = (tutar / 100) * yapilanIslemKdv;
+	$("#yapilanIslemTutar" + i).html(
+		tutar > 0 ? parseFloat(tutar).toFixed(2) + " TL" : ""
+	);
 	$("#yapilanIslemTopKdv" + i).html(
-		kdv > 0 ? kdv + " TL (" + yapilanIslemKdv + "%)" : ""
+		kdv > 0 ? parseFloat(kdv).toFixed(2) + " TL (" + yapilanIslemKdv + "%)" : ""
 	);
 	tutarHesapla();
 }
@@ -68,17 +70,19 @@ function tutarHesapla() {
 		var birim_fiyati = $("#yapilanIslemFiyat" + i).val() ?? 0;
 		var kdv_orani = $("#yapilanIslemKdv" + i).val() ?? 0;
 		var tutar = miktar * birim_fiyati;
-		var top_kdv = Math.ceil((tutar / 100) * kdv_orani);
+		var top_kdv = (tutar / 100) * kdv_orani;
 		kdv = kdv + top_kdv;
 		toplam = toplam + tutar;
 	}
 	var genel_toplam = toplam + kdv;
-	$("#yapilanIslemToplam").html(toplam > 0 ? toplam + " TL" : "");
+	$("#yapilanIslemToplam").html(
+		toplam > 0 ? parseFloat(toplam).toFixed(2) + " TL" : ""
+	);
 
-	$("#yapilanIslemKdv").html(kdv > 0 ? kdv + " TL" : "");
+	$("#yapilanIslemKdv").html(kdv > 0 ? parseFloat(kdv).toFixed(2) + " TL" : "");
 
 	$("#yapilanIslemGenelToplam").html(
-		genel_toplam > 0 ? genel_toplam + " TL" : ""
+		genel_toplam > 0 ? parseFloat(genel_toplam).toFixed(2) + " TL" : ""
 	);
 }
 function stoklariGetir(yapilanIslem, i) {

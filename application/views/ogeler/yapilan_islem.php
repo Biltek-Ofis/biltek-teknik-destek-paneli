@@ -30,6 +30,6 @@ echo '<tr>
         ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"])) ? $yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"] . " TL" : "" ). '
     </td>
     <td id="yapilanIslemTopKdv' . $index . '">
-        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["kdv"])) ? ceil((($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]) / 100) * $yapilanIslemArr["kdv"]) . " TL (" . $yapilanIslemArr["kdv"] . "%)" : "") . '
+        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["kdv"])) ? $this->Islemler_Model->tutarGetir((($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]) / 100) * $yapilanIslemArr["kdv"]) . " TL (" . $yapilanIslemArr["kdv"] . "%)" : "") . '
     </td>
 </tr>';

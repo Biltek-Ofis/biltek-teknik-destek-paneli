@@ -34,7 +34,7 @@ class Islemler_Model extends CI_Model
     {
         return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));
     }
-    
+
     public function tarihDonusturSiralama($tarih)
     {
         return $tarih == "" ? "" : date("Y.m.d H:i", strtotime($tarih));
@@ -258,5 +258,9 @@ class Islemler_Model extends CI_Model
     public function turkceKarakterArama($str)
     {
         return str_replace($this->aramaKarakterler, $this->aramaSemboller, $str);
+    }
+    public function tutarGetir($numara)
+    {
+        return number_format((float)$numara, 2, '.', '');
     }
 }

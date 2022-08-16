@@ -358,7 +358,7 @@ foreach ($cihazlar as $cihaz) {
     $kdv = 0;
     if ($cihaz->i_ad_1 != "") {
       $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
-      $kdv_1 = ceil(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
+      $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
       $yapilanIslemYeniArray_1 = array(
         $cihaz->i_ad_1,
         $cihaz->i_miktar_1,
@@ -373,7 +373,7 @@ foreach ($cihazlar as $cihaz) {
     }
     if ($cihaz->i_ad_2 != "") {
       $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
-      $kdv_2 = ceil(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
+      $kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
       $yapilanIslemYeniArray_2 = array(
         $cihaz->i_ad_2,
         $cihaz->i_miktar_2,
@@ -388,7 +388,7 @@ foreach ($cihazlar as $cihaz) {
     }
     if ($cihaz->i_ad_3 != "") {
       $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
-      $kdv_3 = ceil(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
+      $kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
       $yapilanIslemYeniArray_3 = array(
         $cihaz->i_ad_3,
         $cihaz->i_miktar_3,
@@ -403,7 +403,7 @@ foreach ($cihazlar as $cihaz) {
     }
     if ($cihaz->i_ad_4 != "") {
       $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
-      $kdv_4 = ceil(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
+      $kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
       $yapilanIslemYeniArray_4 = array(
         $cihaz->i_ad_4,
         $cihaz->i_miktar_4,
@@ -418,7 +418,7 @@ foreach ($cihazlar as $cihaz) {
     }
     if ($cihaz->i_ad_5 != "") {
       $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
-      $kdv_5 = ceil(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
+      $kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
       $yapilanIslemYeniArray_5 = array(
         $cihaz->i_ad_5,
         $cihaz->i_miktar_5,
@@ -680,75 +680,75 @@ echo '<script type="text/javascript">
               if (value.i_ad_1) {
                 var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
                 toplam = toplam + yapilan_islem_tutari_1;
-                var kdv_1 = Math.ceil((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
+                var kdv_1 = ((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
                 kdv = kdv + kdv_1;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", value.i_ad_1)
                   .replaceAll("{miktar}", value.i_miktar_1)
                   .replaceAll("{fiyat}", value.i_birim_fiyat_1)
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1)
-                  .replaceAll("{toplam_islem_kdv}", kdv_1)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_1).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_1);
               }
               if (value.i_ad_2) {
                 var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
                 toplam = toplam + yapilan_islem_tutari_2;
-                var kdv_2 = Math.ceil((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
+                var kdv_2 = ((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
                 kdv = kdv + kdv_2;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", value.i_ad_2)
                   .replaceAll("{miktar}", value.i_miktar_2)
                   .replaceAll("{fiyat}", value.i_birim_fiyat_2)
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2)
-                  .replaceAll("{toplam_islem_kdv}", kdv_2)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_2).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_2);
               }
               if (value.i_ad_3) {
                 var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
                 toplam = toplam + yapilan_islem_tutari_3;
-                var kdv_3 = Math.ceil((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
+                var kdv_3 = ((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
                 kdv = kdv + kdv_3;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", value.i_ad_3)
                   .replaceAll("{miktar}", value.i_miktar_3)
                   .replaceAll("{fiyat}", value.i_birim_fiyat_3)
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3)
-                  .replaceAll("{toplam_islem_kdv}", kdv_3)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_3).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_3);
               }
               if (value.i_ad_4) {
                 var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
                 toplam = toplam + yapilan_islem_tutari_4;
-                var kdv_4 = Math.ceil((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
+                var kdv_4 = ((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
                 kdv = kdv + kdv_4;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", value.i_ad_4)
                   .replaceAll("{miktar}", value.i_miktar_4)
                   .replaceAll("{fiyat}", value.i_birim_fiyat_4)
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4)
-                  .replaceAll("{toplam_islem_kdv}", kdv_4)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_4).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_4);
               }
               if (value.i_ad_5) {
                 var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
                 toplam = toplam + yapilan_islem_tutari_5;
-                var kdv_5 = Math.ceil((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
+                var kdv_5 = ((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
                 kdv = kdv + kdv_5;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", value.i_ad_5)
                   .replaceAll("{miktar}", value.i_miktar_5)
                   .replaceAll("{fiyat}", value.i_birim_fiyat_5)
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
-                  .replaceAll("{toplam_islem_kdv}", kdv_5)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_5).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_5);
               }
             } else {
               var yapilanIslemler = islemlerSatiriBos;
             }
             var yapilanIslemToplam = \''.$yapilanIslemToplam.'\';
-            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", toplam);
-            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", kdv);
-            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", toplam + kdv);
+            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
+            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
+            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
             yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
             $("#yapilanIslem" + value.id).html(yapilanIslemler);
             $("#cihaz" + value.id).attr(\'class\', \'\');
