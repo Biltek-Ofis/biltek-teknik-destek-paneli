@@ -1,7 +1,12 @@
-<div class="form-group<?php if (isset($sifirla)) {
-                            echo " p-0 m-0";
-                        } ?>">
-    <input id="cikis_tarihi" autocomplete="off" class="form-control" type="datetime-local" name="cikis_tarihi" value="<?php if (isset($cikis_tarihi_value)) {
-                                                                                                        echo  $this->Islemler_Model->tarihDonusturInput($cikis_tarihi_value);
-                                                                                                    } ?>">
-</div>
+<?php
+echo '<div class="form-group';
+if (isset($sifirla)) {
+    echo " p-0 m-0";
+}
+echo '">
+    <input id="cikis_tarihi" autocomplete="off" class="form-control" type="datetime-local" name="cikis_tarihi" value="';
+if (isset($cikis_tarihi_value)) {
+    echo  $this->Islemler_Model->tarihDonusturInput($cikis_tarihi_value);
+}
+echo '">
+</div>';
