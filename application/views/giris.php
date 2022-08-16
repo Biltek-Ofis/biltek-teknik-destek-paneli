@@ -1,31 +1,33 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-?>
-<!DOCTYPE html>
+
+echo '<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Giriş</title>
-    <?php $this->load->view("inc/meta"); ?>
-    <?php $this->load->view("inc/styles"); ?>
-    <link rel="stylesheet" href="<?= base_url("plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
-    <?php $this->load->view("inc/scripts"); ?>
-</head>
+    <title>Giriş</title>';
+$this->load->view("inc/meta");
+$this->load->view("inc/styles");
+echo '<link rel="stylesheet" href="' . base_url("plugins/icheck-bootstrap/icheck-bootstrap.min.css") . '">';
+$this->load->view("inc/scripts");
+echo '</head>
 <body class="login-page" style="min-height: 466px;">
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="<?=base_url();?>" class="h1 w-100 text-center"><img height="100" src="<?=base_url("dist/img/logo.png");?>"/></a>
+                <a href="' . base_url() . '" class="h1 w-100 text-center"><img height="100" src="' . base_url("dist/img/logo.png") . '"/></a>
             </div>
             <div class="card-body">
-                <div class="alert alert-danger" style="<?php if (strlen($girisHatasi) == 0) {
-                                                            echo "display:none;";
-                                                        } ?>" role="alert">
-                    <?= $girisHatasi; ?>
-                </div>
-                <form action="<?= base_url("giris"); ?>" method="post">
+                <div class="alert alert-danger" style="';
+if (strlen($girisHatasi) == 0) {
+    echo "display:none;";
+}
+echo '" role="alert">';
+$girisHatasi;
+echo '</div>
+                <form action="' . base_url("giris") . '" method="post">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -56,13 +58,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         </div>
                     </div>
                 </form>
-                <?php
+                ';
                 //<p class="mb-1">
                 //    <a href="forgot-password.html">Şifremi Unuttum</a>
                 //</p>
-                ?>
-            </div>
+                
+            echo '</div>
         </div>
     </div>
 </body>
-</html>
+</html>';

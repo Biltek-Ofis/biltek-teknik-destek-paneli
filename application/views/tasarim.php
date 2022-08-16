@@ -1,33 +1,33 @@
-<!DOCTYPE html>
+<?php
+echo '<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <?php $this->load->view("inc/meta"); ?>
+<head>';
+$this->load->view("inc/meta");
 
-  <title><?= $baslik; ?><?= SITE_BASLIGI != NULL ? " - " . SITE_BASLIGI : ""; ?></title>
-  <?php
-  if ($ek_css != "") {
-    $this->load->view($ek_css);
-  } ?>
-  <?php $this->load->view("inc/styles"); ?>
-  <?php $this->load->view("inc/scripts"); ?>
+echo '<title>' . $baslik . '' . (SITE_BASLIGI != NULL ? " - " . SITE_BASLIGI : "") . '</title>';
 
-</head>
+if ($ek_css != "") {
+  $this->load->view($ek_css);
+}
+$this->load->view("inc/styles");
+$this->load->view("inc/scripts");
+
+echo '</head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse"> <!--sidebar-collapse-->
-  <div class="wrapper">
-    <?php $this->load->view("inc/navbar"); ?>
+  <div class="wrapper">';
+$this->load->view("inc/navbar");
 
-    <?php
-    $this->load->view("inc/aside", array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri()));
-    ?>
 
-    <?php $this->load->view("icerikler/" . $icerik, $icerik_array); ?>
+$this->load->view("inc/aside", array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri()));
 
-    <?php //$this->load->view("inc/footer");
-    ?>
-  </div>
+
+$this->load->view("icerikler/" . $icerik, $icerik_array);
+
+//$this->load->view("inc/footer");
+echo '</div>
 
 </body>
 
-</html>
+</html>';

@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+<?php
+echo '<!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <?php $this->load->view("inc/meta"); ?>
+<head>';
+$this->load->view("inc/meta");
 
-    <title>TEKNİK SERVİS FORMU <?= $cihaz->id; ?></title>
+echo '<title>TEKNİK SERVİS FORMU ' . $cihaz->id . '</title>';
 
-    <?php $this->load->view("inc/styles"); ?>
-    <?php $this->load->view("inc/scripts"); ?>
-    <style>
+$this->load->view("inc/styles");
+$this->load->view("inc/scripts");
+echo '<style>
         @page {
             margin: 0;
         }
@@ -64,31 +65,31 @@
             padding: 2px;
         }
     </style>
-</head>
+</head>';
 
-<body onafterprint="self.close()">
+echo '<body onafterprint="self.close()">
     <table class="table table-bordered table-sm w-100">
         <tbody>
             <tr>
-                <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="<?= base_url("dist/img/logo.png"); ?>" /></td>
+                <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="' . base_url("dist/img/logo.png") . '" /></td>
             </tr>
             <tr>
-                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: <?= $cihaz->cihaz_kod; ?></th>
+                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: ' . $cihaz->cihaz_kod . '</th>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="6"></td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Giriş Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?= $cihaz->tarih; ?></td>
+                <td style="border:0 !important;" colspan="3">' . $cihaz->tarih . '</td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Bildirim Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?= $cihaz->bildirim_tarihi; ?></td>
+                <td style="border:0 !important;" colspan="3">' . $cihaz->bildirim_tarihi . '</td>
             </tr>
             <tr style="border:0 !important;">
                 <td style="border:0 !important;" colspan="3">Çıkış Tarihi: </td>
-                <td style="border:0 !important;" colspan="3"><?= $cihaz->cikis_tarihi; ?></td>
+                <td style="border:0 !important;" colspan="3">' . $cihaz->cikis_tarihi . '</td>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="3"></td>
@@ -105,37 +106,37 @@
             <tr>
                 <td colspan="8" class="font-weight-bold">MÜŞTERİ ADI SOYADI</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->musteri_adi; ?></td>
+                <td colspan="10">' . $cihaz->musteri_adi . '</td>
             </tr>
             <tr>
                 <td colspan="8">ADRESİ</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->adres; ?></td>
+                <td colspan="10">' . $cihaz->adres . '</td>
             </tr>
             <tr>
                 <td colspan="8">GSM & E-Mail</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->gsm_mail; ?></td>
+                <td colspan="10">' . $cihaz->gsm_mail . '</td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">CİHAZIN MARKASI</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->cihaz; ?></td>
+                <td colspan="10">' . $cihaz->cihaz . '</td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">MODELİ</th>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->cihaz_modeli; ?></td>
+                <td colspan="10">' . $cihaz->cihaz_modeli . '</td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->seri_no; ?></td>
+                <td colspan="10">' . $cihaz->seri_no . '</td>
             </tr>
             <tr style="height: 80px !important;">
                 <td colspan="8">BELİRTİLEN ARIZA AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->ariza_aciklamasi; ?></td>
+                <td colspan="10">' . $cihaz->ariza_aciklamasi . '</td>
             </tr>
 
             <tr>
@@ -145,191 +146,213 @@
                 <td colspan="8"></td>
                 <td colspan="2" class="text-center"></td>
                 <td colspan="4" class="text-center font-weight-bold">Aksesuar</tH>
-                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(1); ?></td>
-                <td colspan="3" class="text-center"><?= $this->Islemler_Model->hasarDurumu(2); ?></td>
+                <td colspan="3" class="text-center">' . $this->Islemler_Model->hasarDurumu(1) . '</td>
+                <td colspan="3" class="text-center">' . $this->Islemler_Model->hasarDurumu(2) . '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(1); ?></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(1) . '</td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->servis_turu == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="4" class="text-center">TAŞIMA ÇANTASI</td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->tasima_cantasi == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->tasima_cantasi == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->tasima_cantasi == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->tasima_cantasi == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(2); ?></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(2) . '</td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->servis_turu == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="4" class="text-center">SARJ ADAPTÖRÜ</td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->sarj_adaptoru == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->sarj_adaptoru == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->sarj_adaptoru == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->sarj_adaptoru == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(3); ?></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 3) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(3) . '</td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->servis_turu == 3) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="4" class="text-center">PİL</td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->pil == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
-                <td colspan="3" class="text-center align-middle"><?php if ($cihaz->pil == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->pil == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
+                <td colspan="3" class="text-center align-middle">';
+if ($cihaz->pil == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold"><?= $this->Islemler_Model->servisTuru(4); ?></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->servis_turu == 4) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(4) . '</td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->servis_turu == 4) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="6" class="text-center"><?= $cihaz->diger_aksesuar; ?></td>
+                <td colspan="6" class="text-center">' . $cihaz->diger_aksesuar . '</td>
             </tr>
             <tr style="height: 80px !important;">
                 <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10"><?= $cihaz->yapilan_islem_aciklamasi; ?></td>
+                <td colspan="10">' . $cihaz->yapilan_islem_aciklamasi . '</td>
             </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->yedek_durumu == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->yedek_durumu == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="8">YEDEKSİZ İŞLEM</td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->yedek_durumu == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->yedek_durumu == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
             </tr>
             <tr>
             </tr>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
-            </tr>
-            <?php
-            $hasarli_durumlar_rowspan = 5;
-            if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
-                $hasarli_durumlar_rowspan = 0;
-                if ($cihaz->i_ad_1 != "") {
-                    $hasarli_durumlar_rowspan++;
-                }
-                if ($cihaz->i_ad_2 != "") {
-                    $hasarli_durumlar_rowspan++;
-                }
-                if ($cihaz->i_ad_3 != "") {
-                    $hasarli_durumlar_rowspan++;
-                }
-                if ($cihaz->i_ad_4 != "") {
-                    $hasarli_durumlar_rowspan++;
-                }
-                if ($cihaz->i_ad_5 != "") {
-                    $hasarli_durumlar_rowspan++;
-                }
-            }
-            ?>
+            </tr>';
+$hasarli_durumlar_rowspan = 5;
+if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+    $hasarli_durumlar_rowspan = 0;
+    if ($cihaz->i_ad_1 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
+    if ($cihaz->i_ad_2 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
+    if ($cihaz->i_ad_3 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
+    if ($cihaz->i_ad_4 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
+    if ($cihaz->i_ad_5 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
+}
+echo '
             <tr>
-                <td colspan="10" rowspan="<?= $hasarli_durumlar_rowspan + 2; ?>" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
+                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 2) . '" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
                 <td colspan="4" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
                 <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
                 <td colspan="1" class="text-center font-weight-bold">BİRİM FİYATI</td>
                 <td colspan="2" class="text-center font-weight-bold">TUTAR</td>
                 <td colspan="2" class="text-center font-weight-bold">KDV</td>
-            </tr>
-            <?php
-            $toplam = 0;
-            $kdv = 0;
-            $genel_toplam = 0;
-            if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
-                if ($cihaz->i_ad_1 != "") {
-                    $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
-                    $kdv_1 = ceil(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
-                    echo '<tr>
+            </tr>';
+$toplam = 0;
+$kdv = 0;
+$genel_toplam = 0;
+if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+    if ($cihaz->i_ad_1 != "") {
+        $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
+        $kdv_1 = ceil(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
+        echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_1  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_1 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_1 . '</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . '</td>
                 <td colspan="2" class="text-center">' . ($kdv_1 > 0 ? $kdv_1 . ' (' . $cihaz->i_kdv_1 . '%)' : "") . '</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati_1;
-                    $kdv = $kdv + $kdv_1;
-                }
-                if ($cihaz->i_ad_2 != "") {
-                    $toplam_islem_fiyati_2 =  $cihaz->i_miktar_2 * $cihaz->i_birim_fiyat_2;
-                    $kdv_2 = ceil(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
-                    echo '<tr>
+        $toplam = $toplam + $toplam_islem_fiyati_1;
+        $kdv = $kdv + $kdv_1;
+    }
+    if ($cihaz->i_ad_2 != "") {
+        $toplam_islem_fiyati_2 =  $cihaz->i_miktar_2 * $cihaz->i_birim_fiyat_2;
+        $kdv_2 = ceil(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
+        echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_2  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_2 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_2 . '</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . '</td>
                 <td colspan="2" class="text-center">' . ($kdv_2 > 0 ? $kdv_2 . ' (' . $cihaz->i_kdv_2 . '%)' : "") . '</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati_2;
-                    $kdv = $kdv + $kdv_2;
-                }
-                if ($cihaz->i_ad_3 != "") {
-                    $toplam_islem_fiyati_3 =  $cihaz->i_miktar_3 * $cihaz->i_birim_fiyat_3;
-                    $kdv_3 = ceil(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
-                    echo '<tr>
+        $toplam = $toplam + $toplam_islem_fiyati_2;
+        $kdv = $kdv + $kdv_2;
+    }
+    if ($cihaz->i_ad_3 != "") {
+        $toplam_islem_fiyati_3 =  $cihaz->i_miktar_3 * $cihaz->i_birim_fiyat_3;
+        $kdv_3 = ceil(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
+        echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_3  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_3 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_3 . '</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . '</td>
                 <td colspan="2" class="text-center">' . ($kdv_3 > 0 ? $kdv_3 . ' (' . $cihaz->i_kdv_3 . '%)' : "") . '</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati_3;
-                    $kdv = $kdv + $kdv_3;
-                }
-                if ($cihaz->i_ad_4 != "") {
-                    $toplam_islem_fiyati_4 = $cihaz->i_miktar_4 * $cihaz->i_birim_fiyat_4;
-                    $kdv_4 = ceil(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
-                    echo '<tr>
+        $toplam = $toplam + $toplam_islem_fiyati_3;
+        $kdv = $kdv + $kdv_3;
+    }
+    if ($cihaz->i_ad_4 != "") {
+        $toplam_islem_fiyati_4 = $cihaz->i_miktar_4 * $cihaz->i_birim_fiyat_4;
+        $kdv_4 = ceil(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
+        echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_4  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_4 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_4 . '</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . '</td>
                 <td colspan="2" class="text-center">' . ($kdv_4 > 0 ? $kdv_4 . ' (' . $cihaz->i_kdv_4 . '%)' : "") . '</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati_4;
-                    $kdv = $kdv + $kdv_4;
-                }
-                if ($cihaz->i_ad_5 != "") {
-                    $toplam_islem_fiyati_5 =  $cihaz->i_miktar_5 * $cihaz->i_birim_fiyat_5;
-                    $kdv_5 = ceil(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
-                    echo '<tr>
+        $toplam = $toplam + $toplam_islem_fiyati_4;
+        $kdv = $kdv + $kdv_4;
+    }
+    if ($cihaz->i_ad_5 != "") {
+        $toplam_islem_fiyati_5 =  $cihaz->i_miktar_5 * $cihaz->i_birim_fiyat_5;
+        $kdv_5 = ceil(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
+        echo '<tr>
                 <td colspan="4">' . $cihaz->i_ad_5  . '</td>
                 <td colspan="1" class="text-center">' . $cihaz->i_miktar_5 . '</td>
                 <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_5 . '</td>
                 <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . '</td>
                 <td colspan="2" class="text-center">' . ($kdv_5 > 0 ? $kdv_5 . ' (' . $cihaz->i_kdv_5 . '%)' : "") . '</td>
             </tr>';
-                    $toplam = $toplam + $toplam_islem_fiyati_5;
-                    $kdv = $kdv + $kdv_5;
-                }
-                $genel_toplam = $toplam + $kdv;
-            } else {
-                for ($i = 0; $i < 5; $i++) {
-                    echo '<tr style="height:20px;">
+        $toplam = $toplam + $toplam_islem_fiyati_5;
+        $kdv = $kdv + $kdv_5;
+    }
+    $genel_toplam = $toplam + $kdv;
+} else {
+    for ($i = 0; $i < 5; $i++) {
+        echo '<tr style="height:20px;">
                     <td colspan="4"></td>
                     <td colspan="1" class="text-center"></td>
                     <td colspan="1" class="text-center"></td>
                     <td colspan="2" class="text-center"></td>
                     <td colspan="2" class="text-center"></td>
                 </tr>';
-                }
-            }
-            ?>
-            <tr>
+    }
+}
+
+echo '<tr>
                 <td colspan="8">TOPLAM</td>
-                <td colspan="2" class="text-center"><?= $toplam > 0 ? $toplam . " TL" : ""; ?></td>
+                <td colspan="2" class="text-center">' . ($toplam > 0 ? $toplam . " TL" : "") . '</td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center">ÇİZİK</td>
@@ -337,23 +360,31 @@
                 <td colspan="2" class="text-center">ÇATLAK</td>
                 <td colspan="4" class="text-center">DİĞER</td>
                 <td colspan="8">KDV</td>
-                <td colspan="2" class="text-center"><?= $kdv > 0 ? $kdv . " TL" : ""; ?></td>
+                <td colspan="2" class="text-center">' . ($kdv > 0 ? $kdv . " TL" : "") . '</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 1) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></i></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 2) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
-                <td colspan="2" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 3) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
-                <td colspan="4" class="text-center align-middle"><?php if ($cihaz->cihazdaki_hasar == 4) {
-                                                                        echo '<i class="fas fa-check"></i>';
-                                                                    } ?></td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->cihazdaki_hasar == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</i></td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->cihazdaki_hasar == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
+                <td colspan="2" class="text-center align-middle">';
+if ($cihaz->cihazdaki_hasar == 3) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
+                <td colspan="4" class="text-center align-middle">';
+if ($cihaz->cihazdaki_hasar == 4) {
+    echo '<i class="fas fa-check"></i>';
+}
+echo '</td>
                 <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center"><?= $genel_toplam > 0 ? $genel_toplam . " TL" : ""; ?></td>
+                <td colspan="2" class="text-center">' . ($genel_toplam > 0 ? $genel_toplam . " TL" : "") . '</td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
@@ -366,11 +397,11 @@
                 <td colspan="3" class="text-center">ADI SOYADI</td>
                 <td colspan="4" class="text-center"></td>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
-                <td colspan="3" class="text-center">
-                    <?php
-                    /* echo $cihaz->sorumlu;*/
-                    ?>
-                </td>
+                <td colspan="3" class="text-center">';
+
+/* echo $cihaz->sorumlu;*/
+
+echo '</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">İMZASI</td>
@@ -414,4 +445,4 @@
     </table>
 </body>
 
-</html>
+</html>';
