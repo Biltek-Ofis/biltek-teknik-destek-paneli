@@ -24,17 +24,19 @@ echo '<style>
             background: none;
             -ms-zoom: 1.665;
         }
-
         div.portre,
         div.dondur {
             border: none;
             background: none;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            page-break-before: always;
+            break-before: always;
         }
 
         div.dondur {
-            transform: rotate(270deg) translate(-'.A4_YUKSEKLIK.'mm, 0);
+            transform: rotate(270deg) translate(-'.(A4_YUKSEKLIK + 100).'mm, 0);
             transform-origin: 0 0;
         }
     }
 </style>';
-?>

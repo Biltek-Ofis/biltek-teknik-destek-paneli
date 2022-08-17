@@ -87,4 +87,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 define('SITE_BASLIGI', 'Biltek Bilgisayar');
 define('A4_GENISLIK', 210);
-define('A4_YUKSEKLIK', 397);
+define('A4_YUKSEKLIK', 297);

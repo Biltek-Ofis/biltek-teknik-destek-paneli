@@ -103,6 +103,9 @@ echo '</div>
 <div class="row">';
     $this->load->view("ogeler/ariza_aciklamasi");
 echo '</div>
+<div class="row">';
+    $this->load->view("ogeler/teslim_alinanlar");
+echo '</div>
 <div class="row">
     <h5 class="col">Cihazın Hasar Bilgisi</h5>
 </div>
@@ -117,21 +120,6 @@ echo '</div>
 echo '</div>
 <div class="row">';
     $this->load->view("ogeler/yedek");
-echo '</div>
-<div class="row">
-    <h5 class="col">Aksesuarlar</h5>
-</div>
-<div class="row">';
-    $this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi"));
-echo '</div>
-<div class="row">';
-    $this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru"));
-echo '</div>
-<div class="row">';
-    $this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil"));
-echo '</div>
-<div class="row">';
-    $this->load->view("ogeler/diger_aksesuar_bilgileri");
 echo '</div>
 </form>
 </div>

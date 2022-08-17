@@ -112,15 +112,13 @@ echo '<body onafterprint="self.close()">
                 <td colspan="10">' . $cihaz->ariza_aciklamasi . '</td>
             </tr>
 
-            <tr>
-                <td colspan="20" class="text-center font-weight-bold">YAPILACAK İŞLEM</td>
+            <tr style="height: 80px !important;">
+                <td colspan="8">TESLİM ALINANLAR</td>
+                <td colspan="2" class="text-center">:</td>
+                <td colspan="10">' . $cihaz->teslim_alinanlar . '</td>
             </tr>
             <tr>
-                <td colspan="8"></td>
-                <td colspan="2" class="text-center"></td>
-                <td colspan="4" class="text-center font-weight-bold">Aksesuar</tH>
-                <td colspan="3" class="text-center">' . $this->Islemler_Model->hasarDurumu(1) . '</td>
-                <td colspan="3" class="text-center">' . $this->Islemler_Model->hasarDurumu(2) . '</td>
+                <td colspan="20" class="text-center font-weight-bold">YAPILACAK İŞLEM</td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(1) . '</td>
@@ -129,65 +127,27 @@ if ($cihaz->servis_turu == 1) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="4" class="text-center">TAŞIMA ÇANTASI</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->tasima_cantasi == 1) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->tasima_cantasi == 2) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
-            </tr>
-            <tr>
-                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(2) . '</td>
-                <td colspan="2" class="text-center align-middle">';
+<td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(2) . '</td>
+<td colspan="2" class="text-center align-middle">';
 if ($cihaz->servis_turu == 2) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="4" class="text-center">SARJ ADAPTÖRÜ</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->sarj_adaptoru == 1) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->sarj_adaptoru == 2) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(3) . '</td>
-                <td colspan="2" class="text-center align-middle">';
+            <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(3) . '</td>
+            <td colspan="2" class="text-center align-middle">';
 if ($cihaz->servis_turu == 3) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="4" class="text-center">PİL</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->pil == 1) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
-                <td colspan="3" class="text-center align-middle">';
-if ($cihaz->pil == 2) {
-    echo '<i class="fas fa-check"></i>';
-}
-echo '</td>
-            </tr>
-            <tr>
-                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(4) . '</td>
-                <td colspan="2" class="text-center align-middle">';
+<td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(4) . '</td>
+<td colspan="2" class="text-center align-middle">';
 if ($cihaz->servis_turu == 4) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="6" class="text-center">' . $cihaz->diger_aksesuar . '</td>
+                
             </tr>
             <tr style="height: 80px !important;">
                 <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
