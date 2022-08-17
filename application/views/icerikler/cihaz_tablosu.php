@@ -63,7 +63,7 @@ echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
     <tr>
-        <th scope="col">Cihaz Kodu</th>
+        <th scope="col">Servis No</th>
         <th scope="col">Müşteri Adı</th>
         <th scope="col">GSM & Email</th>
         <th scope="col">Tür</th>
