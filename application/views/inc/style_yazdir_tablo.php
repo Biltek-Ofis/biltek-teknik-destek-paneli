@@ -2,7 +2,9 @@
 echo '
     <style>
     @media print {
-
+        .table thead{
+            height:0 !important;
+        }
         .table thead tr td, .table thead tr th {
             border: 0 !important;
             padding: 0 !important;

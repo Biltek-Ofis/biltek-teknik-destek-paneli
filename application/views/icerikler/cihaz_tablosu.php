@@ -112,7 +112,6 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
               <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-{id}-list" data-toggle="list" href="#list-genel-bilgiler-{id}" role="tab" aria-controls="genel-bilgiler-{id}">Genel Bilgiler</a>
               <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-{id}-list" data-toggle="list" href="#list-cihaz-bilgileri-{id}" role="tab" aria-controls="cihaz-bilgileri-{id}">Cihaz Bilgileri</a>
               <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-{id}-list" data-toggle="list" href="#list-teknik-servis-bilgileri-{id}" role="tab" aria-controls="teknik-servis-bilgileri-{id}">Teknik Servis Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-aksesuar-bilgileri-{id}-list" data-toggle="list" href="#list-aksesuar-bilgileri-{id}" role="tab" aria-controls="aksesuar-bilgileri-{id}">Aksesuar Bilgileri</a>
               <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-{id}-list" data-toggle="list" href="#list-yapilan-islemler-{id}" role="tab" aria-controls="yapilan-islemler-{id}">Yapılan İşlemler</a>
               <a class="list-group-item list-group-item-action" id="list-medyalar-{id}-list" data-toggle="list" href="#list-medyalar-{id}" role="tab" aria-controls="medyalar-{id}">Medyalar</a>
             </div>
@@ -175,6 +174,10 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}SeriNo">{seri_no}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TeslimAlinanlar">{teslim_alinanlar}</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazSifresi">{cihaz_sifresi}</li>
                 </ul>
@@ -199,24 +202,6 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}YedekDurumu">{yedek_durumu}</li>
-                </ul>
-              </div>
-              <div class="tab-pane fade" id="list-aksesuar-bilgileri-{id}" role="tabpanel" aria-labelledby="list-aksesuar-bilgileri-{id}-list">
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Taşıma Çantası:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TasimaCantasi">{tasima_cantasi}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sarj Adaptörü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}SarjAdaptoru">{sarj_adaptoru}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Pil:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Pil">{pil}</li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Diğer:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}DigerAksesuar">{diger_aksesuar}</li>
                 </ul>
               </div>
               <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
@@ -314,16 +299,13 @@ $eskiler = array(
   "{cihaz}",
   "{cihaz_modeli}",
   "{seri_no}",
+  "{teslim_alinanlar}",
   "{cihaz_sifresi}",
   "{hasar_tespiti}",
   "{cihazdaki_hasar}",
   "{ariza_aciklamasi}",
   "{servis_turu}",
   "{yedek_durumu}",
-  "{tasima_cantasi}",
-  "{sarj_adaptoru}",
-  "{pil}",
-  "{diger_aksesuar}",
   "{yapilan_islem_aciklamasi}",
   "{tarih2}",
   "{tarih}",
@@ -465,16 +447,13 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cihaz,
     $cihaz->cihaz_modeli,
     $cihaz->seri_no,
+    $cihaz->teslim_alinanlar,
     $cihaz->cihaz_sifresi,
     $cihaz->hasar_tespiti,
     $this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar),
     $cihaz->ariza_aciklamasi,
     $this->Islemler_Model->servisTuru($cihaz->servis_turu),
     $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
-    $this->Islemler_Model->hasarDurumu($cihaz->tasima_cantasi),
-    $this->Islemler_Model->hasarDurumu($cihaz->sarj_adaptoru),
-    $this->Islemler_Model->hasarDurumu($cihaz->pil),
-    $cihaz->diger_aksesuar,
     $cihaz->yapilan_islem_aciklamasi,
     $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->tarih,
@@ -627,16 +606,13 @@ echo '<script type="text/javascript">
       .replaceAll("{cihaz}", value.cihaz)
       .replaceAll("{cihaz_modeli}", value.cihaz_modeli)
       .replaceAll("{seri_no}", value.seri_no)
+      .replaceAll("{teslim_alinanlar}", value.teslim_alinanlar)
       .replaceAll("{cihaz_sifresi}", value.cihaz_sifresi)
       .replaceAll("{hasar_tespiti}", value.hasar_tespiti)
       .replaceAll("{cihazdaki_hasar}", cihazdakiHasar(value.cihazdaki_hasar))
       .replaceAll("{ariza_aciklamasi}", value.ariza_aciklamasi)
       .replaceAll("{servis_turu}", servisTuru(value.servis_turu))
       .replaceAll("{yedek_durumu}", evetHayir(value.yedek_durumu))
-      .replaceAll("{tasima_cantasi}", hasarDurumu(value.tasima_cantasi))
-      .replaceAll("{sarj_adaptoru}", hasarDurumu(value.sarj_adaptoru))
-      .replaceAll("{pil}", hasarDurumu(value.pil))
-      .replaceAll("{diger_aksesuar}", value.diger_aksesuar)
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
       .replaceAll("{tarih2}", tarihDonusturSiralama(value.tarih))
       .replaceAll("{tarih}", value.tarih)
@@ -769,16 +745,14 @@ echo '<script type="text/javascript">
             $("#" + value.id + "CihazMarka").html(value.cihaz);
             $("#" + value.id + "CihazModeli").html(value.cihaz_modeli);
             $("#" + value.id + "SeriNo").html(value.seri_no);
+            $("#" + value.id + "TeslimAlinanlar").html(value.teslim_alinanlar);
             $("#" + value.id + "CihazSifresi").html(value.cihaz_sifresi);
             $("#" + value.id + "CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
             $("#" + value.id + "HasarTespiti").html(value.hasar_tespiti);
             $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
             $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
             $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
-            $("#" + value.id + "TasimaCantasi").html(hasarDurumu(value.tasima_cantasi));
-            $("#" + value.id + "SarjAdaptoru").html(hasarDurumu(value.sarj_adaptoru));
             $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
-            $("#" + value.id + "DigerAksesuar").html(value.diger_aksesuar);
             $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);';
             if ($sorumlu_belirtildimi) {
               $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();

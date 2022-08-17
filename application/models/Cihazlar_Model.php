@@ -127,10 +127,6 @@ class Cihazlar_Model extends CI_Model
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
             "servis_turu" => $this->input->post("servis_turu"),
             "yedek_durumu" => $this->input->post("yedek_durumu"),
-            "tasima_cantasi" => $this->input->post("tasima_cantasi"),
-            "sarj_adaptoru" => $this->input->post("sarj_adaptoru"),
-            "pil" => $this->input->post("pil"),
-            "diger_aksesuar" => $this->input->post("diger_aksesuar"),
         );
         $sorumlu = $this->input->post("sorumlu");
         if (isset($sorumlu)) {

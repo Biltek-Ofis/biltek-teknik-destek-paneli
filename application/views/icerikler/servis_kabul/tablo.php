@@ -4,20 +4,23 @@ $(document).ready(function(){
     ' . $barcode_script . '
 });
 </script>';
-echo '<table class="table col-5">
+echo '
+<table class="table col-5">
 <thead>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
-    <tr col="1"></tr>
+    <tr>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+        <td class="col-1"></td>
+    </tr>
 </thead>
 <tbody>';
 
@@ -64,71 +67,35 @@ echo '<tr>
 <th colspan="3">Model:</th>
 <td colspan="3">' . $cihaz->cihaz_modeli . '</td>
 </tr>
-<tr>
+<tr class="iki">
 <th colspan="3">Arıza:</th>
 <td colspan="9">' . $cihaz->ariza_aciklamasi . '</td>
 </tr>
 <tr>
-<th colspan="4">Teslim Alınmadan Önce Yapılan Hasar Tespiti:</th>
-<td colspan="8">' . $cihaz->hasar_tespiti . '</td>
+<th colspan="3">Cihaz Durumu:</th>
+<td colspan="9">' . $cihaz->hasar_tespiti . '</td>
+</tr>
+<tr class="iki">
+<th colspan="3">Teslim Alınanlar:</th>
+<td colspan="9">' . $cihaz->teslim_alinanlar . '</td>
 </tr>
 <tr>
 <th colspan="3">Teknik Sorumlu:</th>
-<td colspan="8">';
+<td colspan="9">';
 
 $sorumlu_personel = $this->Kullanicilar_Model->tekKullaniciIsım($cihaz->sorumlu);
 
 if (isset($sorumlu_personel)) {
     //echo $sorumlu_personel->id . ' - ';
 }
-$cihaz->sorumlu;
-echo '</tr>
-<tr>
-<th class="text-center" colspan="12">Aksesuarlar</th>
-</tr>';
-$aksesuar_sayisi = 0;
-if ($cihaz->tasima_cantasi != 0) {
-    $aksesuar_sayisi++;
-
-    echo '<tr>
-<th colspan="3">Taşıma Çantası:</th>
-<td colspan="9">' . $this->Islemler_Model->hasarDurumu($cihaz->tasima_cantasi) . '</td>
-</tr>';
-}
-if ($cihaz->sarj_adaptoru != 0) {
-    $aksesuar_sayisi++;
-
-    echo '<tr>
-<th colspan="3">Sarj Adaptörü:</th>
-<td colspan="9">' . $this->Islemler_Model->hasarDurumu($cihaz->sarj_adaptoru) . '</td>
-</tr>';
-}
-if ($cihaz->pil != 0) {
-    $aksesuar_sayisi++;
-    echo '
-<tr>
-<th colspan="3">Pil:</th>
-<td colspan="9">' . $this->Islemler_Model->hasarDurumu($cihaz->pil) . '</td>
-</tr>';
-}
-if ($aksesuar_sayisi == 0) {
-    echo '
-<tr>
-<td>Cihaz ile birlikte teslim edilen aksesuar yok.</td>
-</tr>';
-}
+echo $cihaz->sorumlu;
+echo '</tr>';
 echo '
-<tr>
-<th colspan="6">Teslim Alan</th>
-<th colspan="6">Teslim Eden</th>
+<th colspan="12"class="text-center alt_cizgi"><h7 class="font-weight-bold">Formun ön ve arka sayfasında yazılan tüm bilgileri okudum ve kabul ediyorum.</h7></th>
 </tr>
 <tr>
-<th colspan="6">Ad Soyad:</th>
-<th colspan="6">Ad Soyad:</th>
-</tr>
-<tr>
-<th colspan="6">İmza:</th>
-<th colspan="6">İmza:</th>
+<th colspan="6" style="border:0 !important;" class="text-center m-auto">Teslim Alan</th>
+<th colspan="6" style="border:0 !important;" class="text-center m-auto">Teslim Eden</th>
 </tr>';
 echo '</tbody>
 </table>';

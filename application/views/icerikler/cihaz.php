@@ -138,6 +138,12 @@ $this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true, "ariza_aci
 echo '</td>
                                         </tr>
                                         <tr>
+                                            <th class="align-middle">Teslim Alınanlar:</th>
+                                            <td class="align-middle">';
+$this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true, "teslim_alinanlar_value" => $cihaz->teslim_alinanlar));
+echo '</td>
+                                        </tr>
+                                        <tr>
                                             <th class="align-middle">Servis Türü:</th>
                                             <td class="align-middle">';
 $this->load->view("ogeler/servis_turu", array("sifirla" => true, "servis_turu_value" => $cihaz->servis_turu));
@@ -147,30 +153,6 @@ echo '</td>
                                             <th class="align-middle">Yedek Alınacak mı?:</th>
                                             <td class="align-middle">';
 $this->load->view("ogeler/yedek", array("sifirla" => true, "yedek_durumu_value" => $cihaz->yedek_durumu));
-echo '</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="align-middle">Taşıma Çantası:</th>
-                                            <td class="align-middle">';
-$this->load->view("ogeler/aksesuar_select", array("isim" => "Taşıma Çantası", "id" => "tasima_cantasi", "sifirla" => true, "aksesuar_value" => $cihaz->tasima_cantasi));
-echo '</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="align-middle">Sarj Adaptörü:</th>
-                                            <td class="align-middle">';
-$this->load->view("ogeler/aksesuar_select", array("isim" => "Sarj Adaptörü", "id" => "sarj_adaptoru", "sifirla" => true, "aksesuar_value" => $cihaz->sarj_adaptoru));
-echo '</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="align-middle">Pil:</th>
-                                            <td class="align-middle">';
-$this->load->view("ogeler/aksesuar_select", array("isim" => "Pil", "id" => "pil", "sifirla" => true, "aksesuar_value" => $cihaz->pil));
-echo '</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="align-middle">Diğer:</th>
-                                            <td class="align-middle">';
-$this->load->view("ogeler/diger_aksesuar_bilgileri", array("sifirla" => true, "diger_aksesuar_value" => $cihaz->diger_aksesuar));
 echo '</td>
                                         </tr>
                                     </tbody>
@@ -192,14 +174,12 @@ echo '</td>
                     <script>
                         $(document).ready(function() {
                             var adres = $("#adres").val();
-                            var tasima_cantasi = $("#tasima_cantasi").prop(\'selectedIndex\');
-                            var sarj_adaptoru = $("#sarj_adaptoru").prop(\'selectedIndex\');
                             var pil = $("#pil").prop(\'selectedIndex\');
                             var ariza_aciklamasi = $("#ariza_aciklamasi").val();
                             var cihaz = $("#cihaz").val();
                             var cihaz_modeli = $("#cihaz_modeli").val();
                             var cihaz_turu = $("#cihaz_turu").prop(\'selectedIndex\');
-                            var diger_aksesuar = $("#diger_aksesuar").val();
+                            var teslim_alinanlar = $("#teslim_alinanlar").val();
                             var gsm_mail = $("#gsm_mail").val();
                             var hasar_tespiti = $("#hasar_tespiti").val();
                             var cihazdaki_hasar = $("#cihazdaki_hasar").prop(\'selectedIndex\');
@@ -212,14 +192,12 @@ echo '</td>
                             var yedek_durumu = $("#yedek_durumu").prop(\'selectedIndex\');
                             $("#sifirlaGenel").on("click", function() {
                                 $("#adres").val(adres);
-                                $("#tasima_cantasi").prop(\'selectedIndex\', tasima_cantasi);
-                                $("#sarj_adaptoru").prop(\'selectedIndex\', sarj_adaptoru);
                                 $("#pil").prop(\'selectedIndex\', pil);
                                 $("#ariza_aciklamasi").val(ariza_aciklamasi);
                                 $("#cihaz").val(cihaz);
                                 $("#cihaz_modeli").val(cihaz_modeli);
                                 $("#cihaz_turu").prop(\'selectedIndex\', cihaz_turu);
-                                $("#diger_aksesuar").val(diger_aksesuar);
+                                $("#teslim_alinanlar").val(teslim_alinanlar);
                                 $("#gsm_mail").val(gsm_mail);
                                 $("#hasar_tespiti").val(hasar_tespiti);
                                 $("#cihazdaki_hasar").prop(\'selectedIndex\', cihazdaki_hasar);
