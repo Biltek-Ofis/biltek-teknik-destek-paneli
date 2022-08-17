@@ -100,7 +100,7 @@ class Islemler_Model extends CI_Model
             case 1:
                 return "GARANTİ KAPSAMINDA BAKIM/ONARIM";
             case 2:
-                return "ANLAŞMALI KAPSAMINDA BAKIM/ONARIM";
+                return "ANLAŞMALI BAKIM/ONARIM";
             case 3:
                 return "ÜCRETLİ BAKIM/ONARIM";
             case 4:

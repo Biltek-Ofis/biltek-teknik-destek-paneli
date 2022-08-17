@@ -183,7 +183,7 @@ echo '</td>
                                 <a href="javascript:void(0);" id="sifirlaGenel" class="btn btn-secondary mt-2 mr-2">
                                     Sıfırla
                                 </a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır (Test)</a>
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
@@ -373,7 +373,7 @@ echo '<tr>
                         <div id="container w-100 m-0 p-0">
                             <div class="row m-0 p-0 d-flex justify-content-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Barkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır (Test)</a>
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
@@ -436,11 +436,11 @@ echo '<div class="row text-center">
     </div>
 </div>
 
-<div class="modal fade" id="barkoduYazdirModal" tabindex="-1" role="dialog" aria-labelledby="barkoduYazdirModalLabel" aria-hidden="true">
+<div class="modal fade" id="servisKabulYazdirModal" tabindex="-1" role="dialog" aria-labelledby="servisKabulYazdirModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="barkoduYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
+                <h5 class="modal-title" id="servisKabulYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -449,7 +449,7 @@ echo '<div class="row text-center">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0);" onclick="barkoduYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
+                <a href="javascript:void(0);" onclick="servisKabulYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
                 <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
             </div>
         </div>

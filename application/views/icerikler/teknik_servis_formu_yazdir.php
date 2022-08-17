@@ -9,6 +9,7 @@ echo '<title>TEKNİK SERVİS FORMU ' . $cihaz->id . '</title>';
 
 $this->load->view("inc/styles");
 $this->load->view("inc/scripts");
+$this->load->view("inc/style_yazdir_tablo");
 echo '<style>
         @page {
             margin: 0;
@@ -23,21 +24,6 @@ echo '<style>
                 margin: 1.6cm;
             }
 
-            .table thead tr td {
-                border: 0 !important;
-                padding: 0 !important;
-                height: 0 !important;
-                -webkit-print-color-adjust: exact;
-            }
-
-            .table tbody tr td {
-                border-width: 1px !important;
-                border-style: solid !important;
-                border-color: black !important;
-                padding: 2px;
-                -webkit-print-color-adjust: exact;
-            }
-
             .list-group .list-group-item {
                 height: 20px !important;
                 line-height: 20px !important;
@@ -46,23 +32,10 @@ echo '<style>
         }
     </style>
     <style>
-        .table thead tr td {
-            border: 0 !important;
-            padding: 0 !important;
-            height: 0 !important;
-        }
-
         .list-group .list-group-item {
             height: 20px !important;
             line-height: 20px !important;
             border: 0 !important;
-        }
-
-        .table tbody tr td {
-            border-width: 1px !important;
-            border-style: solid !important;
-            border-color: black !important;
-            padding: 2px;
         }
     </style>
 </head>';
