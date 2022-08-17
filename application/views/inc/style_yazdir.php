@@ -35,7 +35,7 @@ echo '<style>
         }
 
         div.dondur {
-            transform: rotate(270deg) translate(-'.(A4_YUKSEKLIK + 100).'mm, 0);
+            transform: rotate(270deg) translate(-'.(A4_YUKSEKLIK).'mm, 0);
             transform-origin: 0 0;
         }
     }
