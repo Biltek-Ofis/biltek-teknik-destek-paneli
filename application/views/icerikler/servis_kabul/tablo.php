@@ -37,7 +37,7 @@ echo '<tr>
 </tr>
 <tr>
 <th colspan="3" class="align-middle">Servis No:</th>
-<td colspan="3" class="align-middle">' . $cihaz->cihaz_kod . '</td>
+<td colspan="3" class="align-middle">' . $cihaz->servis_no . '</td>
 <td colspan="6" class="align-middle">' . $barcode_div . '</td>
 </tr>
 <tr>
