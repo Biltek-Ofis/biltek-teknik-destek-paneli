@@ -27,8 +27,6 @@ echo '<style>
 
         div.portre,
         div.dondur {
-            margin: 0;
-            padding: 0;
             border: none;
             background: none;
         }

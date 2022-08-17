@@ -115,7 +115,7 @@ class Cihaz extends Varsayilan_Controller
         if ($cihaz->num_rows() > 0) {
             $cihaz_bilg = $cihaz->result();
             $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
-            $this->load->view("icerikler/servis_kabul", array("cihaz" => $veriler));
+            $this->load->view("icerikler/servis_kabul/form", array("cihaz" => $veriler));
         } else {
             redirect(base_url());
         }
