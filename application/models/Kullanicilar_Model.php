@@ -66,6 +66,15 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
+    public function tekKullaniciIsım($isim)
+    {
+        $sonuc = $this->db->where(array("ad_soyad" => $isim))->get($this->kullanicilarTablosu);
+        if ($sonuc->num_rows() > 0) {
+            return $sonuc->result()[0];
+        } else {
+            return null;
+        }
+    }
     public function ekle($veri)
     {
         return $this->db->insert($this->kullanicilarTablosu, $veri);

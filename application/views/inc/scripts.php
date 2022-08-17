@@ -23,4 +23,14 @@ echo '<script src="'. base_url("plugins/jquery/jquery.min.js").'"></script>
 			barkodPencere.print();
 		});
 	}
+	function servisKabulYazdir(id) {
+		servisKabulPencere = window.open(
+			\''. base_url("cihaz/servis_kabul").'/\' + id,
+			"servisKabulPencere" + id,
+			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
+		);
+		$(servisKabulPencere).ready(function() {
+			servisKabulPencere.print();
+		});
+	}
 </script>';
