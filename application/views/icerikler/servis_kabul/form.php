@@ -24,14 +24,14 @@ echo '<body onafterprint="self.close()">
     <div class="dondur">
         <div class="row">
             ';
-$this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz, "barcode_script" => 'JsBarcode("#barcode1", "' . $cihaz->cihaz_kod . '", {
+$this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz, "barcode_script" => 'JsBarcode("#barcode1", "' . $cihaz->servis_no . '", {
     width: 2,
     height: 40,
     displayValue: false
 });', "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'));
 echo '<div class="col-2"></div>';
 $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
-	text: "' . $cihaz->cihaz_kod . '",
+	text: "' . $cihaz->servis_no . '",
 	width: 40,
 	height: 40,
 	colorDark : "#000000",

@@ -51,7 +51,7 @@ echo '<body onafterprint="self.close()">
         </thead>
         <tbody class="p-1">
             <tr class="pl-1">
-                <th class="p-0 pl-1 m-0">'.$cihaz->cihaz_kod.'</th>
+                <th class="p-0 pl-1 m-0">'.$cihaz->servis_no.'</th>
                 <td class="p-0 pr-1 m-0 text-right">'.$cihaz->tarih.'</td>
             </tr>
             <tr>

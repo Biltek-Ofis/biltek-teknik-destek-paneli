@@ -14,7 +14,7 @@ class Cihaz extends Varsayilan_Controller
             $cihaz = $this->Cihazlar_Model->cihazBul($id);
             if ($cihaz->num_rows() > 0) {
                 $cihaz_bilg =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz->result())[0];
-                $baslik = 'Cihaz ' . $cihaz_bilg->cihaz_kod . ' Detayları';
+                $baslik = 'Cihaz ' . $cihaz_bilg->servis_no . ' Detayları';
                 $this->load->view("tasarim", $this->Islemler_Model->tasarimArray($baslik, "cihaz", array("cihaz" => $cihaz_bilg, "baslik" => $baslik)));
             } else {
                 redirect(base_url());
