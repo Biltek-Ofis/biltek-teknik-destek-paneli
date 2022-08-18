@@ -13,6 +13,7 @@ echo '<script>
             $("#tarih").val(tarih.toJSON().slice(0, 19));
         });
     });
+    var base_url = "'.base_url().'";
 </script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <div class="content-wrapper">

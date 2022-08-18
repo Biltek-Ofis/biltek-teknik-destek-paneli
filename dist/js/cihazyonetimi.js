@@ -1,4 +1,3 @@
-var base_url = process.env.TEKNIK_SERVIS_URL;
 var musteri_bilgileri_onaylandi = false;
 var musteri_listesi_hover = false;
 $(document).ready(function () {
