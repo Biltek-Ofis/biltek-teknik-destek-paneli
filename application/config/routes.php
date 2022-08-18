@@ -53,5 +53,6 @@ $route['default_controller'] = 'Anasayfa';
 $route['cihazlar/(:any)'] = 'cihazlar/index/$1';
 $route['cihaz/(:any)'] = 'cihaz/index/$1';
 $route['medyalar/(:any)'] = 'medyalar/index/$1';
+$route['serviskabul/(:any)'] = 'serviskabul/index/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
