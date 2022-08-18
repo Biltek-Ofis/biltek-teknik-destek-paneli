@@ -1,7 +1,7 @@
 <?php
 
-require_once("varsayilan_controller.php");
-class Cihaz extends Varsayilan_Controller
+require_once("Varsayilancontroller.php");
+class Cihaz extends Varsayilancontroller
 {
 
     public function __construct()

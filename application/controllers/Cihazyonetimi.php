@@ -1,7 +1,7 @@
 <?php
-require_once("varsayilan_controller.php");
+require_once("Varsayilancontroller.php");
 
-class Cihaz_Yonetimi extends Varsayilan_Controller{
+class Cihazyonetimi extends Varsayilancontroller{
     public function __construct()
     {
         parent::__construct();

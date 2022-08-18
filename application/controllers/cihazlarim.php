@@ -1,7 +1,7 @@
 <?php
-require_once("varsayilan_controller.php");
+require_once("Varsayilancontroller.php");
 
-class Cihazlarim extends Varsayilan_Controller
+class Cihazlarim extends Varsayilancontroller
 {
     private $kullaniciID;
 

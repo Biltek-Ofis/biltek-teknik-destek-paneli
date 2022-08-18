@@ -1,4 +1,4 @@
-var base_url = window.location.origin;
+var base_url = process.env.TEKNIK_SERVIS_URL;
 var islemBilgileriHover = [false, false, false, false, false];
 var stok_bilgileri_onaylandi = [false, false, false, false, false];
 $(document).ready(function () {

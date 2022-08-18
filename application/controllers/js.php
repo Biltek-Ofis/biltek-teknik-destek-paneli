@@ -1,7 +1,7 @@
 <?php
-require_once("varsayilan_controller.php");
+require_once("Varsayilancontroller.php");
 
-class Js extends Varsayilan_Controller
+class Js extends Varsayilancontroller
 {
 
     public function __construct()

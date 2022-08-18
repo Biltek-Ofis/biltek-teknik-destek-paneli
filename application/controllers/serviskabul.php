@@ -1,7 +1,7 @@
 <?php
-require_once("varsayilan_controller.php");
+require_once("Varsayilancontroller.php");
 
-class ServisKabul extends Varsayilan_Controller
+class ServisKabul extends Varsayilancontroller
 {
 
     public function __construct()
