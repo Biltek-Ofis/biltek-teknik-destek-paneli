@@ -14,6 +14,13 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
     }
+    public function servisNo($servis_no)
+    {
+        $bul = array(
+            "servis_no" => $servis_no,
+        );
+        return $this->db->where($bul)->limit(1)->get($this->cihazlarTabloAdi);
+    }
     public function cihazTuru($tur_id)
     {
         $query = $this->db->where("id", $tur_id)->get($this->cihazTurleriTabloAdi);
