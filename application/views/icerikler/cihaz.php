@@ -165,7 +165,7 @@ echo '</td>
                                 <a href="javascript:void(0);" id="sifirlaGenel" class="btn btn-secondary mt-2 mr-2">
                                     Sıfırla
                                 </a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır (Test)</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
@@ -351,7 +351,7 @@ echo '<tr>
                         <div id="container w-100 m-0 p-0">
                             <div class="row m-0 p-0 d-flex justify-content-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır (Test)</a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
