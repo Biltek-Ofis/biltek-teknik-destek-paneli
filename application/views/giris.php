@@ -58,7 +58,7 @@ echo '</div>
                         </div>
                         
                         <div class="col-12 mt-2">
-                            <a href="'.base_url("serviskabul").'" class="btn btn-info btn-block">Servis Kabul</a>
+                            <a href="'.base_url("serviskabul").'" class="btn btn-info btn-block">Cihazımın Durumunu Görüntüle</a>
                         </div>
                     </div>
                 </form>
