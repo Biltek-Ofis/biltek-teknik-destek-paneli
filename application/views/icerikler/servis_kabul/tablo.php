@@ -98,8 +98,13 @@ if (isset($sorumlu_personel)) {
 }
 echo $cihaz->sorumlu;
 echo '</tr>';
-echo '
-<th colspan="12"class="text-center alt_cizgi"><h7 class="font-weight-bold">Formun ön ve arka sayfasında yazılan tüm bilgileri okudum ve kabul ediyorum.</h7></th>
+if (!str_contains(base_url(), "localhost") && !str_contains(base_url(), '192.168')) {
+    echo '<tr>
+    <td colspan="12" class="text-center">Cihazınızın güncel durumunu ' . base_url("serviskabul") . ' adresinden kontrol edebilirsiniz.</td>
+    </tr>';
+}
+echo '<tr>
+<th colspan="12" class="text-center alt_cizgi"><h7>Formun ön ve arka sayfasında yazılan tüm bilgileri okudum ve kabul ediyorum.</h7></th>
 </tr>
 <tr>
 <th colspan="6" style="border:0 !important;" class="text-center m-auto">Teslim Alan</th>
