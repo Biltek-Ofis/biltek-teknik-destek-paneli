@@ -1,7 +1,7 @@
 <?php
-require_once("varsayilan_controller.php");
+require_once("Varsayilancontroller.php");
 
-class Medyalar extends Varsayilan_Controller
+class Medyalar extends Varsayilancontroller
 {
 
 	public function __construct()

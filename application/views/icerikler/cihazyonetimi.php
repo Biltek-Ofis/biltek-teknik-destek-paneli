@@ -14,7 +14,7 @@ echo '<script>
         });
     });
 </script>
-<script src="' . base_url("dist/js/cihaz_yonetimi.min.js") . '"></script>
+<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -59,7 +59,7 @@ echo '</div>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="yeniCihazForm" autocomplete="off" method="post" action="' . base_url("cihaz_yonetimi/cihazEkle") . '">
+                <form id="yeniCihazForm" autocomplete="off" method="post" action="' . base_url("cihazyonetimi/cihazEkle") . '">
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>

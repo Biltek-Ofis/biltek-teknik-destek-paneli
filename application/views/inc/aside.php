@@ -64,7 +64,7 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
 echo '<li class="nav-header">Teknik Destek</li>
                 <li class="nav-item">
                     <a href="' . base_url("") . '" class="nav-link';
-if ($aktifSayfa == "cihaz_yonetimi" or $aktifSayfa == "anasayfa") {
+if ($aktifSayfa == "cihazyonetimi" or $aktifSayfa == "anasayfa") {
     echo " active";
 }
 echo '">

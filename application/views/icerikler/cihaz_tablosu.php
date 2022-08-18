@@ -255,7 +255,7 @@ $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazi
       Bu cihazı silmek istediğinize emin misiniz?
       </div>
       <div class="modal-footer">
-        <a href="' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazSil/") . '/{id}" class="btn btn-success">Evet</a>
+        <a href="' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazSil/") . '/{id}" class="btn btn-success">Evet</a>
         <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
       </div>
     </div>
@@ -626,7 +626,7 @@ echo '<script type="text/javascript">
     var tabloDiv = "#cihaz_tablosu";
     var cihazlarTablosu = $(tabloDiv).DataTable('.$this->Islemler_Model->datatablesAyarlari([5, "desc"]).');
     setInterval(() => {
-      $.get(\''. base_url("cihaz_yonetimi/silinenCihazlariBul").'\', {}, function(data) {
+      $.get(\''. base_url("cihazyonetimi/silinenCihazlariBul").'\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
@@ -636,7 +636,7 @@ echo '<script type="text/javascript">
           }
         });
       });
-      $.get(\''.base_url("cihaz_yonetimi" . "/cihazlarTumuJQ/").'\', {}, function(data) {
+      $.get(\''.base_url("cihazyonetimi" . "/cihazlarTumuJQ/").'\', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
           if (sayac == 0) {
@@ -766,7 +766,7 @@ echo '<script type="text/javascript">
         });
       });
 
-      $.get(\''. base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihaz_yonetimi") . "/cihazlarJQ/").'\' + sonCihazID, {}, function(data) {
+      $.get(\''. base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/").'\' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
