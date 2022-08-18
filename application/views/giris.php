@@ -56,6 +56,10 @@ echo '</div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
                         </div>
+                        
+                        <div class="col-12 mt-2">
+                            <a href="'.base_url("serviskabul").'" class="btn btn-info btn-block">Servis Kabul</a>
+                        </div>
                     </div>
                 </form>
                 ';
