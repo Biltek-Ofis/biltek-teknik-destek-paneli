@@ -233,7 +233,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
       </div>
       <div class="modal-footer">
       <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
-      <a href="#" onclick="servisKabulYazdir({id})" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır (Test)</a>
+      <a href="#" onclick="servisKabulYazdir({id})" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a href="#" onclick="formuYazdir({id})" class="btn btn-dark text-white">Formu Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>

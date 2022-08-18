@@ -39,49 +39,57 @@ echo '<tr>
 <td style="border:0 !important;" colspan="6">Giriş Tarihi: ' . $cihaz->tarih . '</td>
 </tr>
 <tr>
-<th colspan="3" class="align-middle">Servis No:</th>
+<th colspan="4" class="align-middle">Servis No:</th>
 <td colspan="3" class="align-middle">' . $cihaz->servis_no . '</td>
 <td colspan="6" class="align-middle m-auto text-center">' . $barcode_div . '</td>
 </tr>
 <tr>
-<th colspan="3">Onarım Türü:</th>
-<td colspan="9">' . $this->Islemler_Model->servisTuru($cihaz->servis_turu) . '</td>
+<th colspan="4">Onarım Türü:</th>
+<td colspan="8">' . $this->Islemler_Model->servisTuru($cihaz->servis_turu) . '</td>
 </tr>
 <tr>
-<th colspan="3">Müşteri:</th>
-<td colspan="9">' . $cihaz->musteri_adi . '</td>
+<th colspan="4">Müşteri:</th>
+<td colspan="8">' . $cihaz->musteri_adi . '</td>
+</tr>
+<tr style="height: 2cm !important;">
+<th colspan="4">Adres:</th>
+<td colspan="8">' . $cihaz->adres . '</td>
 </tr>
 <tr>
-<th colspan="3">Telefon & Email:</th>
-<td colspan="9">' . $cihaz->gsm_mail . '</td>
+<th colspan="4">Telefon & Email:</th>
+<td colspan="8">' . $cihaz->gsm_mail . '</td>
 </tr>
 <tr>
-<th colspan="3">Cihaz Tipi:</th>
-<td colspan="3">' . $cihaz->cihaz_turu . '</td>
-<th colspan="3">Marka:</th>
-<td colspan="3">' . $cihaz->cihaz . '</td>
+<th colspan="4">Cihaz Tipi:</th>
+<td colspan="8">' . $cihaz->cihaz_turu . '</td>
 </tr>
 <tr>
-<th colspan="3">Seri No:</th>
-<td colspan="3">' . $cihaz->seri_no . '</td>
-<th colspan="3">Model:</th>
-<td colspan="3">' . $cihaz->cihaz_modeli . '</td>
-</tr>
-<tr class="iki">
-<th colspan="3">Arıza:</th>
-<td colspan="9">' . $cihaz->ariza_aciklamasi . '</td>
+<th colspan="4">Marka:</th>
+<td colspan="8">' . $cihaz->cihaz . '</td>
 </tr>
 <tr>
-<th colspan="3">Cihaz Durumu:</th>
-<td colspan="9">' . $cihaz->hasar_tespiti . '</td>
-</tr>
-<tr class="iki">
-<th colspan="3">Teslim Alınanlar:</th>
-<td colspan="9">' . $cihaz->teslim_alinanlar . '</td>
+<th colspan="4">Seri No:</th>
+<td colspan="8">' . $cihaz->seri_no . '</td>
 </tr>
 <tr>
-<th colspan="3">Teknik Sorumlu:</th>
-<td colspan="9">';
+<th colspan="4">Model:</th>
+<td colspan="8">' . $cihaz->cihaz_modeli . '</td>
+</tr>
+<tr style="height: 2cm !important;">
+<th colspan="4">Arıza:</th>
+<td colspan="8">' . $cihaz->ariza_aciklamasi . '</td>
+</tr>
+<tr style="height: 2cm !important;">
+<th colspan="4">Cihaz Durumu:</th>
+<td colspan="8">' . $cihaz->hasar_tespiti . '</td>
+</tr>
+<tr  style="height: 2cm !important;">
+<th colspan="4">Teslim Alınanlar:</th>
+<td colspan="8">' . $cihaz->teslim_alinanlar . '</td>
+</tr>
+<tr>
+<th colspan="4">Teknik Sorumlu:</th>
+<td colspan="8">';
 
 $sorumlu_personel = $this->Kullanicilar_Model->tekKullaniciIsım($cihaz->sorumlu);
 

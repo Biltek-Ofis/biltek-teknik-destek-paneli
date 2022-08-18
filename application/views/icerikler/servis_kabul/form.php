@@ -15,7 +15,15 @@ $this->load->view("inc/style_yazdir");
 $this->load->view("inc/style_yazdir_tablo");
 echo '<style>';
 echo 'body{
-        font-size:13px !important;
+        font-size:13pt !important;
+    }
+    @media print {
+        body{
+            font-size:13pt !important;
+        }
+        @page {
+            font-size:13pt !important;
+        }
     }';
 echo '</style>';
 echo '</head>';
@@ -28,7 +36,8 @@ $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz, "barc
     width: 2,
     height: 40,
     displayValue: false
-});', "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'));
+});
+$("#barcode1").css({"height":"3cm"})', "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'));
 echo '<div class="col-2"></div>';
 $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
 	text: "' . $cihaz->servis_no . '",
@@ -38,7 +47,7 @@ $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "bar
 	colorLight : "#ffffff",
 	correctLevel : QRCode.CorrectLevel.H
 });
-$("#barcode2 > img").css({"margin":"auto"});', "barcode_div" => '<span style="max-width:20%;" id="barcode2"></span>'));
+$("#barcode2 > img").css({"margin":"auto", "width":"3cm", "height":"3cm"});', "barcode_div" => '<span style="max-width:20%;" id="barcode2"></span>'));
 echo '</div>
     </div>
     <div class="dondur">
