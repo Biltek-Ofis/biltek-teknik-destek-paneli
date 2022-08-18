@@ -100,7 +100,7 @@ echo $cihaz->sorumlu;
 echo '</tr>';
 if (!str_contains(base_url(), "localhost") && !str_contains(base_url(), '192.168')) {
     echo '<tr>
-    <td colspan="12" class="text-center">Cihazınızın güncel durumunu ' . base_url("serviskabul") . ' adresinden kontrol edebilirsiniz.</td>
+    <td colspan="12" class="text-center">Cihazınızın güncel durumunu ' . base_url("serviskabul") . ' adresinden ya da yukarıdaki Barkod/QR Kodu okutarak kontrol edebilirsiniz.</td>
     </tr>';
 }
 echo '<tr>
