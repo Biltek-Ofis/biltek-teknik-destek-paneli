@@ -174,7 +174,7 @@ echo '</td>
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>';
 $hasarli_durumlar_rowspan = 5;
-if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
     $hasarli_durumlar_rowspan = 0;
     if ($cihaz->i_ad_1 != "") {
         $hasarli_durumlar_rowspan++;
@@ -191,6 +191,9 @@ if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cih
     if ($cihaz->i_ad_5 != "") {
         $hasarli_durumlar_rowspan++;
     }
+    if ($cihaz->i_ad_6 != "") {
+        $hasarli_durumlar_rowspan++;
+    }
 }
 echo '
             <tr>
@@ -204,7 +207,7 @@ echo '
 $toplam = 0;
 $kdv = 0;
 $genel_toplam = 0;
-if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
     if ($cihaz->i_ad_1 != "") {
         $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
         $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
@@ -269,6 +272,19 @@ if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cih
             </tr>';
         $toplam = $toplam + $toplam_islem_fiyati_5;
         $kdv = $kdv + $kdv_5;
+    }
+    if ($cihaz->i_ad_6 != "") {
+        $toplam_islem_fiyati_6 =  $cihaz->i_miktar_6 * $cihaz->i_birim_fiyat_6;
+        $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
+        echo '<tr>
+                <td colspan="4">' . $cihaz->i_ad_6  . '</td>
+                <td colspan="1" class="text-center">' . $cihaz->i_miktar_6 . '</td>
+                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_6 . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_6 . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_6 > 0 ? $kdv_6 . ' (' . $cihaz->i_kdv_6 . '%)' : "") . '</td>
+            </tr>';
+        $toplam = $toplam + $toplam_islem_fiyati_6;
+        $kdv = $kdv + $kdv_6;
     }
     $genel_toplam = $toplam + $kdv;
 } else {
@@ -347,7 +363,7 @@ echo '</td>
             <tr>
                 <td colspan="3" class="text-center">NOT</td>
                 <td colspan="17" class="text-center">
-                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. <span class="font-weight-bold h5">Servis hizmet süresi en fazla 20 (yirmi) iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span> Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır. BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.
+                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. <span class="font-weight-bold">Servis hizmet süresi en fazla 20 (yirmi) iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span><!-- Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır. BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.-->
                 </td>
             </tr>
         </tbody>

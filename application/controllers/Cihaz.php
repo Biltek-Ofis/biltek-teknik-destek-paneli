@@ -65,7 +65,7 @@ class Cihaz extends Varsayilancontroller
                 $id,
                 $cihaz_verileri,
             );
-            for ($i = 1; $i <= 5; $i++) {
+            for ($i = 1; $i <= 6; $i++) {
                 $islem = $this->input->post("islem" . $i);
                 $veri = $this->Cihazlar_Model->yapilanIslemArray(
                     $i,
