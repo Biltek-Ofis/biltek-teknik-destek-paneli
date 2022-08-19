@@ -263,4 +263,13 @@ class Islemler_Model extends CI_Model
     {
         return number_format((float)$numara, 2, '.', '');
     }
+    public function sozcukBul($str, $ara){
+        if (!function_exists('str_contains')) {
+            function str_contains(string $haystack, string $needle): bool
+            {
+                return '' === $needle || false !== strpos($haystack, $needle);
+            }
+        }
+        return str_contains($str, $ara);
+    }
 }
