@@ -52,7 +52,7 @@ echo '<style>
 </style>
 <script>
   function medyalariYukle(id) {
-    $.post("'.base_url("medyalar").'/" + id, {}, function(data) {
+    $.post("' . base_url("medyalar") . '/" + id, {}, function(data) {
       $("#list-medyalar-" + id).html(data);
     });
   }
@@ -100,7 +100,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label">Cihaz Detayları</h5>
+        <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label">Cihaz Detayları <span id="ServisNo3">{servis_no}</span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -120,7 +120,7 @@ $cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Ciha
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Kodu:</span></li>
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ServisNo2">{servis_no}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
@@ -483,9 +483,8 @@ foreach ($cihazlar as $cihaz) {
   echo $tablo . $cihazDetay . $cihazSilModal;
 
   echo '<script>
-    medyalariYukle('.$cihaz->id.');
+    medyalariYukle(' . $cihaz->id . ');
   </script>';
-
 }
 echo '
 </tbody>
@@ -493,112 +492,112 @@ echo '
 echo '</div>';
 
 echo '<script type="text/javascript">
-  let sonCihazID = '.$sonCihazID.';';
-  
-  $yapilanIslemToplamYeni2 = array(
-    "Toplam",
-    "0",
-  );
-  $yapilanIslemToplamKDVYeni2 = array(
-    "KDV",
-    "0",
-  );
-  $yapilanIslemGenelToplamYeni2  = array(
-    "Genel Toplam",
-    "0",
-  );
-  $toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni2, $yapilanIslemToplam);
-  $kdv2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni2, $yapilanIslemToplam);
-  $genel_toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni2, $yapilanIslemToplam);
+  let sonCihazID = ' . $sonCihazID . ';';
+
+$yapilanIslemToplamYeni2 = array(
+  "Toplam",
+  "0",
+);
+$yapilanIslemToplamKDVYeni2 = array(
+  "KDV",
+  "0",
+);
+$yapilanIslemGenelToplamYeni2  = array(
+  "Genel Toplam",
+  "0",
+);
+$toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni2, $yapilanIslemToplam);
+$kdv2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni2, $yapilanIslemToplam);
+$genel_toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni2, $yapilanIslemToplam);
 
 
-  echo '
+echo '
   function servisTuru(id) {
     switch (id) {
       case 1:
-        return \''.$this->Islemler_Model->servisTuru(1).'\';
+        return \'' . $this->Islemler_Model->servisTuru(1) . '\';
       case 2:
-        return \''.$this->Islemler_Model->servisTuru(2).'\';
+        return \'' . $this->Islemler_Model->servisTuru(2) . '\';
       case 3:
-        return \''.$this->Islemler_Model->servisTuru(3).'\';
+        return \'' . $this->Islemler_Model->servisTuru(3) . '\';
       case 4:
-        return \''.$this->Islemler_Model->servisTuru(4).'\';
+        return \'' . $this->Islemler_Model->servisTuru(4) . '\';
       default:
-        return \''.$this->Islemler_Model->servisTuru(3).'\'
+        return \'' . $this->Islemler_Model->servisTuru(3) . '\'
     }
   }';
-  echo '
+echo '
   function hasarDurumu(id) {
     switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->hasarDurumu); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->hasarDurumu); $i++) {
+  echo '
       case ' . $i . ':
         return "' . $this->Islemler_Model->hasarDurumu[$i] . '";';
-  }
-  echo '
+}
+echo '
       default:
         return "' . $this->Islemler_Model->hasarDurumu[0] . '";
     }
   }';
 
-  echo '
+echo '
   function evetHayir(id) {
     switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
+  echo '
       case ' . $i . ':
         return "' . $this->Islemler_Model->evetHayir[$i] . '";';
-  }
-  echo '
+}
+echo '
       default:
         return "' . $this->Islemler_Model->evetHayir[0] . '";
     }
   }';
 
-  echo '
+echo '
   function cihazdakiHasar(id) {
     switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->cihazdakiHasar); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->cihazdakiHasar); $i++) {
+  echo '
       case ' . $i . ':
         return "' . $this->Islemler_Model->cihazdakiHasar[$i] . '";';
-  }
-  echo '
+}
+echo '
       default:
         return "' . $this->Islemler_Model->cihazdakiHasar[0] . '";
     }
   }';
 
-  echo '
+echo '
   function cihazDurumu(id) {
     switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
+  echo '
       case ' . $i . ':
         return "' . $this->Islemler_Model->cihazDurumu[$i] . '";';
-  }
-  echo '
+}
+echo '
       default:
         return "' . $this->Islemler_Model->cihazDurumu[0] . '";
     }
   }';
 
-  echo '
+echo '
   function cihazDurumuClass(id) {
     switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuClass); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuClass); $i++) {
+  echo '
       case ' . $i . ':
         return "' . $this->Islemler_Model->cihazDurumuClass[$i] . '";';
-  }
-  echo '
+}
+echo '
       default:
         return "' . $this->Islemler_Model->cihazDurumuClass[0] . '";
     }
   }';
-  
 
-  echo 'function tarihDonusturSiralama(tarih) {
+
+echo 'function tarihDonusturSiralama(tarih) {
     var gun = tarih.slice(0, 2);
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
@@ -606,7 +605,7 @@ echo '<script type="text/javascript">
     return yil + "." + ay + "." + gun + " " + saat;
   }';
 
-  echo 'function donustur(str, value) {
+echo 'function donustur(str, value) {
     return str.
     replaceAll("{yeni}", \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
@@ -634,14 +633,14 @@ echo '<script type="text/javascript">
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
-      .replaceAll("{yapilan_islemler}", \''.$yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2.'\');
+      .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\');
   }';
 
-  echo '$(document).ready(function() {
+echo '$(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable('.$this->Islemler_Model->datatablesAyarlari([5, "desc"]).');
+    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([5, "desc"]) . ');
     setInterval(() => {
-      $.get(\''. base_url("cihazyonetimi/silinenCihazlariBul").'\', {}, function(data) {
+      $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
@@ -651,7 +650,7 @@ echo '<script type="text/javascript">
           }
         });
       });
-      $.get(\''.base_url("cihazyonetimi" . "/cihazlarTumuJQ/").'\', {}, function(data) {
+      $.get(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
           if (sayac == 0) {
@@ -665,8 +664,8 @@ echo '<script type="text/javascript">
             var toplam = 0;
             var kdv = 0;
             var yapilanIslemler = "";
-            var islemlerSatiri = \''.$yapilanIslemlerSatiri.'\';
-            var islemlerSatiriBos = \''.$yapilanIslemlerSatiriBos.'\';
+            var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
+            var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
             if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5 || value.i_ad_6) {
               if (value.i_ad_1) {
                 var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
@@ -749,7 +748,7 @@ echo '<script type="text/javascript">
             } else {
               var yapilanIslemler = islemlerSatiriBos;
             }
-            var yapilanIslemToplam = \''.$yapilanIslemToplam.'\';
+            var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
             var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
             var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
             var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
@@ -757,7 +756,7 @@ echo '<script type="text/javascript">
             $("#yapilanIslem" + value.id).html(yapilanIslemler);
             $("#cihaz" + value.id).attr(\'class\', \'\');
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
-            $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2").html(value.servis_no);
+            $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2, #" + value.id + "ServisNo3").html(value.servis_no);
             $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
             $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
             $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
@@ -782,28 +781,28 @@ echo '<script type="text/javascript">
             $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
             $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
             $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);';
-            if ($sorumlu_belirtildimi) {
-              $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
-              echo '
+if ($sorumlu_belirtildimi) {
+  $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
+  echo '
             if(value.sorumlu != "' . $kullaniciBilgileri["ad_soyad"] . '"){
               cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             }';
-            }
-          echo '
+}
+echo '
           }
         });
       });
 
-      $.get(\''. base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/").'\' + sonCihazID, {}, function(data) {
+      $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
           ).length > 0;
           if (!cihazVarmi) {
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-            let tabloOrnek = \''.$tabloOrnek.'\';
-            let detayModalOrnek = \''. $cihazDetayOrnek.'\';
-            let silModalOrnek = \''.$cihazSilModalOrnek.'\'
+            let tabloOrnek = \'' . $tabloOrnek . '\';
+            let detayModalOrnek = \'' . $cihazDetayOrnek . '\';
+            let silModalOrnek = \'' . $cihazSilModalOrnek . '\'
             
             const tablo = donustur(tabloOrnek, value);
             var detayModal = donustur(detayModalOrnek, value);
@@ -819,4 +818,3 @@ echo '<script type="text/javascript">
     }, 5000);
   });
 </script>';
-?>
