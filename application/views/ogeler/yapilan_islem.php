@@ -1,5 +1,6 @@
 <?php
 echo '<tr>
+    <td>' . $index . '</td>
     <td id="stokKodText' . $index . '">' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "Yok") . '</td>
     <td>
         <input id="yapilanIslemStokKod' . $index . '" autocomplete="off" name="stok_kod' . $index . '" type="hidden" value="' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "") . '">
@@ -27,7 +28,7 @@ echo '<tr>
         </div>
     </td>
     <td id="yapilanIslemTutar' . $index . '">
-        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"])) ? $yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"] . " TL" : "" ). '
+        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"])) ? $yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"] . " TL" : "") . '
     </td>
     <td id="yapilanIslemTopKdv' . $index . '">
         ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["kdv"])) ? $this->Islemler_Model->tutarGetir((($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]) / 100) * $yapilanIslemArr["kdv"]) . " TL (" . $yapilanIslemArr["kdv"] . "%)" : "") . '
