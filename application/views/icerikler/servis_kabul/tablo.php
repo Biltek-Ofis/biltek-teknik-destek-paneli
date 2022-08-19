@@ -98,7 +98,7 @@ if (isset($sorumlu_personel)) {
 }
 echo $cihaz->sorumlu;
 echo '</tr>';
-if (!str_contains(base_url(), "localhost") && !str_contains(base_url(), '192.168')) {
+if (!$this->Islemler_Model->sozcukBul(base_url(), "localhost") && !$this->Islemler_Model->sozcukBul(base_url(), '192.168')) {
     echo '<tr>
     <td colspan="12" class="text-center">Cihazınızın güncel durumunu ' . base_url("serviskabul") . ' adresinden ya da yukarıdaki Barkod/QR Kodu okutarak kontrol edebilirsiniz.</td>
     </tr>';
