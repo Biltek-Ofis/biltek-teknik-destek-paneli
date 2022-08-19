@@ -336,7 +336,7 @@ foreach ($cihazlar as $cihaz) {
   $yapilanİslemler = "";
   $toplam_fiyat = 0;
   $kdv = 0;
-  if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+  if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
     $kdv = 0;
     if ($cihaz->i_ad_1 != "") {
       $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
@@ -412,6 +412,21 @@ foreach ($cihazlar as $cihaz) {
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
       $kdv = $kdv + $kdv_5;
       $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_5, $yapilanIslemlerSatiri);
+    }
+    if ($cihaz->i_ad_6 != "") {
+      $toplam_islem_fiyati_6 = $cihaz->i_birim_fiyat_6 * $cihaz->i_miktar_6;
+      $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
+      $yapilanIslemYeniArray_6 = array(
+        $cihaz->i_ad_6,
+        $cihaz->i_miktar_6,
+        $cihaz->i_birim_fiyat_6,
+        $toplam_islem_fiyati_6,
+        $kdv_6,
+        $cihaz->i_kdv_6,
+      );
+      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
+      $kdv = $kdv + $kdv_6;
+      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_6, $yapilanIslemlerSatiri);
     }
   } else {
     $yapilanİslemler = $yapilanIslemlerSatiriBos;
@@ -652,7 +667,7 @@ echo '<script type="text/javascript">
             var yapilanIslemler = "";
             var islemlerSatiri = \''.$yapilanIslemlerSatiri.'\';
             var islemlerSatiriBos = \''.$yapilanIslemlerSatiriBos.'\';
-            if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5) {
+            if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5 || value.i_ad_6) {
               if (value.i_ad_1) {
                 var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
                 toplam = toplam + yapilan_islem_tutari_1;
@@ -717,6 +732,19 @@ echo '<script type="text/javascript">
                   .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
                   .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_5).toFixed(2))
                   .replaceAll("{kdv_orani}", value.i_kdv_5);
+              }
+              if (value.i_ad_6) {
+                var yapilan_islem_tutari_6 = value.i_birim_fiyat_6 * value.i_miktar_6;
+                toplam = toplam + yapilan_islem_tutari_6;
+                var kdv_6 = ((yapilan_islem_tutari_6 / 100) * value.i_kdv_6);
+                kdv = kdv + kdv_6;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", value.i_ad_6)
+                  .replaceAll("{miktar}", value.i_miktar_6)
+                  .replaceAll("{fiyat}", value.i_birim_fiyat_6)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_6)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_6).toFixed(2))
+                  .replaceAll("{kdv_orani}", value.i_kdv_6);
               }
             } else {
               var yapilanIslemler = islemlerSatiriBos;

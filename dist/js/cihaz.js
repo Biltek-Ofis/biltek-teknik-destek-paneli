@@ -1,7 +1,7 @@
 var islemBilgileriHover = [false, false, false, false, false];
 var stok_bilgileri_onaylandi = [false, false, false, false, false];
 $(document).ready(function () {
-	for (let i = 1; i <= 5; i++) {
+	for (let i = 1; i <= 6; i++) {
 		$("#yapilanIslem" + i).focus;
 		$("#stok_liste_" + i).hover(
 			function () {
@@ -64,7 +64,7 @@ function islemHesapla(i) {
 function tutarHesapla() {
 	var toplam = 0;
 	var kdv = 0;
-	for (let i = 1; i <= 5; i++) {
+	for (let i = 1; i <= 6; i++) {
 		var miktar = $("#yapilanIslemMiktar" + i).val() ?? 0;
 		var birim_fiyati = $("#yapilanIslemFiyat" + i).val() ?? 0;
 		var kdv_orani = $("#yapilanIslemKdv" + i).val() ?? 0;

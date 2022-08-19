@@ -150,6 +150,21 @@ if (strlen($servis_no)) {
         $kdv = $kdv + $kdv_5;
         $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_5, $yapilanIslemlerSatiri);
       }
+      if ($cihaz->i_ad_6 != "") {
+        $toplam_islem_fiyati_6 = $cihaz->i_birim_fiyat_6 * $cihaz->i_miktar_6;
+        $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
+        $yapilanIslemYeniArray_6 = array(
+          $cihaz->i_ad_6,
+          $cihaz->i_miktar_6,
+          $cihaz->i_birim_fiyat_6,
+          $toplam_islem_fiyati_6,
+          $kdv_6,
+          $cihaz->i_kdv_6,
+        );
+        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
+        $kdv = $kdv + $kdv_6;
+        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_6, $yapilanIslemlerSatiri);
+      }
     } else {
       $yapilanİslemler = $yapilanIslemlerSatiriBos;
     }
