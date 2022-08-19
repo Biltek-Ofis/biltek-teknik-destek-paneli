@@ -26,6 +26,7 @@ echo '$(document).ready(function() {
         $("#cihaz_turu").on("change", function() {
             cihazTurleriSifre($(this).val());
         });
+        cihazTurleriSifre($("#cihaz_turu").val());
     });
 </script>
 <div class="form-group';
