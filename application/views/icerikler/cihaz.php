@@ -354,7 +354,7 @@ echo '<tr>
                                         <tr>
                                             <td colspan="7">
                                                 <div class="form-group p-0 m-0 col">
-                                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması">' . $cihaz->yapilan_islem_aciklamasi . ' </textarea>
+                                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması">' . $cihaz->yapilan_islem_aciklamasi . '</textarea>
                                                 </div>
                                             </td>
                                         </tr>
