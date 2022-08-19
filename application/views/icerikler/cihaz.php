@@ -245,6 +245,7 @@ echo '</td>
                                 <table class="table table-flush">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>SK</th>
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
