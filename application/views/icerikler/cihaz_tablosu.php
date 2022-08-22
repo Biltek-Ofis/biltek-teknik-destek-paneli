@@ -96,7 +96,15 @@ $besliIkinciOgeGenislik = "10%";
 $besliUcuncuOgeGenislik = "10%";
 $besliDorduncuOgeGenislik = "20%";
 $besliBesinciOgeGenislik = "20%";
-$cihazDetayOrnek = '<div class="modal modal-fullscreen fade" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" tabindex="-1" role="dialog" aria-labelledby="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label" aria-hidden="true">
+$cihazDetayOrnek = '
+<script>
+$(document).ready(function(){
+  $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}").on("hide.bs.modal", function(e) {
+    history.replaceState("", document.title, window.location.pathname);
+  });
+});
+<\/script>
+<div class="modal modal-fullscreen fade" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" tabindex="-1" role="dialog" aria-labelledby="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -803,7 +811,7 @@ echo '
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             let tabloOrnek = \'' . $tabloOrnek . '\';
             let detayModalOrnek = \'' . $cihazDetayOrnek . '\';
-            let silModalOrnek = \'' . $cihazSilModalOrnek . '\'
+            let silModalOrnek = \'' . $cihazSilModalOrnek . '\';
             
             const tablo = donustur(tabloOrnek, value);
             var detayModal = donustur(detayModalOrnek, value);
