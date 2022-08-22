@@ -13,6 +13,8 @@ Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin 
 DB_DRIVER=sqlsrv //Değiştirilmeyecek
 DB_HOST=192.168.1.10,1433 //Sunucu adresi ve port
 TEKNIK_SERVIS_URL=http://localhost:8080/ //Teknik servisin bulunduğu url
+SITE_BASLIGI="Biltek Bilgisayar" //Firma adı
+FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/ //Firmanın anasayfası
 DB_DATABASE_TS=teknik_servis //script.sql dosyasının aktarıldığı vertabanı adı
 DB_DATABASE_F=FIRMA2022 //Firmanın verilerinin bulunduğu veritabanı
 DB_USERNAME=sa //SQL Kullanıcı adı
