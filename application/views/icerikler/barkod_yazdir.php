@@ -81,6 +81,7 @@ echo '<body onafterprint="self.close()">
             <tr>
                 <td class="p-0 pl-1 pr-1 m-0" colspan="2"><div class="icerik">';
 if (strlen($cihaz->musteri_adi) > 30) {
+    // echo explode(";;", wordwrap($cihaz->musteri_adi, 30, ";;", true))[0] . '...';
     echo str_split($cihaz->musteri_adi, 30)[0] . '...';
 } else {
     echo $cihaz->musteri_adi;
