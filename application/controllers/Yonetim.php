@@ -93,4 +93,49 @@ class Yonetim extends Varsayilancontroller
 		}
 		return $konum;
 	}
+	public function site_ayarlari()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Site Ayarları", "yonetim/site_ayarlari", array("baslik" => "Site Ayarları")));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function env_duzenle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			//$DB_DRIVER = $this->input->post("db_driver");
+			//$DB_HOST = $this->input->post("db_host") . "," . $this->input->post("db_port");
+			//$TEKNIK_SERVIS_URL = $this->input->post("db_base_url");
+			$SITE_BASLIGI = $this->input->post("db_baslik");
+			$FIRMA_SITE_URL = $this->input->post("db_anasayfa");
+			//$DB_DATABASE_TS = $this->input->post("db_ts");
+			//$DB_DATABASE_F = $this->input->post("db_f");
+			//$DB_USERNAME = $this->input->post("db_user");
+			//$DB_PASSWORD = $this->input->post("db_pass");
+			$path = FCPATH . '.env';
+			if (file_exists($path)) {
+				$icerik = file_get_contents($path);
+				$icerik = str_replace(
+					'SITE_BASLIGI="' . getenv("SITE_BASLIGI") . '"',
+					'SITE_BASLIGI="' . $SITE_BASLIGI . '"',
+					$icerik,
+				);
+				$icerik = str_replace(
+					'FIRMA_SITE_URL=' . getenv("FIRMA_SITE_URL"),
+					'FIRMA_SITE_URL=' . $FIRMA_SITE_URL,
+					$icerik,
+				);
+				if (file_put_contents($path, $icerik)) {
+					redirect(base_url("yonetim/site_ayarlari"));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/site_ayarlari", "Ayarlar düzenlenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+				}
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/site_ayarlari", "Ayar dosyası bulunamadı. Lütfen bir README.md dosyasındaki talimatlara göre bir .env dosyası oluşturun.");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 }

@@ -34,6 +34,18 @@ echo '<style>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
 if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
     echo '<li class="nav-header">Yönetim</li>
+                <li class="nav-item">
+                        <a href="' . base_url("yonetim/site_ayarlari") . '" class="nav-link';
+    if ($aktifSayfa == "yonetim/site_ayarlari") {
+        echo " active";
+    }
+    echo '">
+                            <i class="nav-icon fas fa-database"></i>
+                            <p>
+                                Site Ayarları
+                            </p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="' . base_url("yonetim/kullanicilar") . '" class="nav-link';
     if ($aktifSayfa == "yonetim/kullanicilar") {
