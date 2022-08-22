@@ -27,7 +27,7 @@ echo '
 
 echo '<tr>
 <td style="border:0 !important;" class="align-middle text-center" colspan="6">SERVİS KABUL FORMU</td>
-<td class="alt_cizgi" colspan="6">https://www.biltekbilgisayar.com.tr</td>
+<td class="alt_cizgi" colspan="6">' . FIRMA_URL . '</td>
 </tr>
 <tr>
 <td style="border:0 !important;" class="align-middle p-2" colspan="6" rowspan="3"><img height="45" src="' . base_url("dist/img/logo.png") . '" /></td>
