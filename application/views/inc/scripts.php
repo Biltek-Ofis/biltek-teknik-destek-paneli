@@ -17,7 +17,7 @@ echo '<script src="' . base_url("plugins/jquery/jquery.min.js") . '"></script>
 		barkodPencere = window.open(
 			\'' . base_url("cihaz/barkod") . '/\' + id,
 			"barkodPencere" + id,
-			\'status=1,width=\'
+			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
 		);
 		$(barkodPencere).ready(function() {
 			barkodPencere.print();
