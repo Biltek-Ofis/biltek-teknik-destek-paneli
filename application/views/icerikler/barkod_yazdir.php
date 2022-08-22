@@ -17,7 +17,7 @@ $style = "width: 40mm;
             word-break: break-word;
             page-break-before: always;
             display: inline;";
-$barkodYukseklik = "10mm";
+$barkodYukseklik = "12mm";
 $tableStyle = "
             table tr .icerik{
                 font-size:12px !important;
@@ -25,7 +25,7 @@ $tableStyle = "
             }
             table tr:first-child .icerik{
                 font-size:20px !important;
-                max-height: 7mm !important;
+                max-height: 6mm !important;
             }
             table tr:nth-child(3) .icerik{
                 max-height: " . $barkodYukseklik . " !important;
@@ -63,7 +63,7 @@ echo '<body onafterprint="self.close()">
     $(document).ready(function(){
         JsBarcode("#barkod", "' . $cihaz->servis_no . '", {
             width: 2,
-            height: 20,
+            height: 27,
             displayValue: false,
         });
         $("#barkod").css({"height":"' . $barkodYukseklik . '"});
@@ -80,9 +80,9 @@ echo '<body onafterprint="self.close()">
             </tr>
             <tr>
                 <td class="p-0 pl-1 pr-1 m-0" colspan="2"><div class="icerik">';
-if (strlen($cihaz->musteri_adi) > 30) {
+if (strlen($cihaz->musteri_adi) > 38) {
     // echo explode(";;", wordwrap($cihaz->musteri_adi, 30, ";;", true))[0] . '...';
-    echo str_split($cihaz->musteri_adi, 30)[0] . '...';
+    echo rtrim(str_split($cihaz->musteri_adi, 35)[0]) . '...';
 } else {
     echo $cihaz->musteri_adi;
 }
