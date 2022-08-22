@@ -1,11 +1,11 @@
 <?php
-echo '<script src="'. base_url("plugins/jquery/jquery.min.js").'"></script>
-<script src="'. base_url("plugins/bootstrap/js/bootstrap.bundle.min.js").'"></script>
-<script src="'. base_url("dist/js/panel.min.js").'"></script>
+echo '<script src="' . base_url("plugins/jquery/jquery.min.js") . '"></script>
+<script src="' . base_url("plugins/bootstrap/js/bootstrap.bundle.min.js") . '"></script>
+<script src="' . base_url("dist/js/panel.min.js") . '"></script>
 <script>
 	function formuYazdir(id) {
 		teknikServisFormuPencere = window.open(
-			\''. base_url("cihaz/teknik_servis_formu").'/\' + id,
+			\'' . base_url("cihaz/teknik_servis_formu") . '/\' + id,
 			"teknikServisFormuPencere" + id,
 			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
 		);
@@ -15,9 +15,9 @@ echo '<script src="'. base_url("plugins/jquery/jquery.min.js").'"></script>
 	}
 	function barkoduYazdir(id) {
 		barkodPencere = window.open(
-			\''. base_url("cihaz/barkod").'/\' + id,
+			\'' . base_url("cihaz/barkod") . '/\' + id,
 			"barkodPencere" + id,
-			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
+			\'status=1,width=\'
 		);
 		$(barkodPencere).ready(function() {
 			barkodPencere.print();
@@ -25,7 +25,7 @@ echo '<script src="'. base_url("plugins/jquery/jquery.min.js").'"></script>
 	}
 	function servisKabulYazdir(id) {
 		servisKabulPencere = window.open(
-			\''. base_url("cihaz/servis_kabul").'/\' + id,
+			\'' . base_url("cihaz/servis_kabul") . '/\' + id,
 			"servisKabulPencere" + id,
 			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
 		);
