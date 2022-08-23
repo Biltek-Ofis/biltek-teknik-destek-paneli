@@ -70,7 +70,8 @@ echo '<div class="content-wrapper">
                 );
             }
             $(document).ready(function() {
-                var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"]) . ');
+                var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"], 'true', '
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],', 'setTimeout(function(){cihazlarTablosu.buttons().container().appendTo("#" + tabloDiv + "_wrapper .col-md-6:eq(0)");}, 10);') . ');
                 filtreText(musteriInput,1);
                 filtreText(cihazMarkaInput,2);
                 filtreText(cihazModelInput,3);
