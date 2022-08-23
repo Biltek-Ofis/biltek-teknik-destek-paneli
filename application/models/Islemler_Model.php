@@ -37,7 +37,7 @@ class Islemler_Model extends CI_Model
 
     public function tarihDonusturSiralama($tarih)
     {
-        return $tarih == "" ? "" : date("Y.m.d H:i", strtotime($tarih));
+        return $tarih == "" ? "" : date("Y-m-d", strtotime($tarih));
     }
     public function tarihDonusturInput($tarih)
     {
@@ -177,11 +177,11 @@ class Islemler_Model extends CI_Model
             return $arr[$index];
         }
     }
-    public function datatablesAyarlari($siralama)
+    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "")
     {
-        return '
+        $ayar = '
         {
-            "paging": true,
+            "paging": ' . $paging . ',
             "lengthChange": false,
             "searching": true,
             "ordering": true,
@@ -194,24 +194,20 @@ class Islemler_Model extends CI_Model
             initComplete: function() {
       
             },
-            "oLanguage": {
-              "sSearch": "Ara:",
-              "sInfo": "Toplam _TOTAL_ sonuçtan _START_ ile _END_ arası gösteriliyor.",
-              "sInfoEmpty": "0 sonuç gösteriliyor.",
-              "sInfoFiltered": "(toplam _MAX_ sonuç içinden)",
-              "sZeroRecords": "Sonuç bulunamadı.",
-              "oPaginate": {
-                "sFirst": "İlk",
-                "sPrevious": "Önceki",
-                "sLast": "Son",
-                "sNext": "Sonraki",
-              },
+            "language": {
+                url: "'.base_url("plugins/datatables-i18n/tr.json").'"
             },
             columnDefs: [{
               "defaultContent": "-",
               "targets": "_all"
             }]
-          }';
+            ';
+        if (strlen($digerAyarlar) > 0) {
+            $ayar .= ",
+                " . $digerAyarlar;
+        }
+        $ayar .= '}';
+        return $ayar;
     }
     public function sifrele($sifre)
     {
@@ -263,7 +259,8 @@ class Islemler_Model extends CI_Model
     {
         return number_format((float)$numara, 2, '.', '');
     }
-    public function sozcukBul($str, $ara){
+    public function sozcukBul($str, $ara)
+    {
         if (!function_exists('str_contains')) {
             function str_contains(string $haystack, string $needle): bool
             {
