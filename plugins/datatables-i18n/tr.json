@@ -45,7 +45,7 @@
         "colvisRestore": "Görünürlüğü eski haline getir",
         "copySuccess": {
             "1": "1 satır panoya kopyalandı",
-            "_": "%ds satır panoya kopyalandı"
+            "_": "%d satır panoya kopyalandı"
         },
         "copyTitle": "Panoya kopyala",
         "csv": "CSV",
