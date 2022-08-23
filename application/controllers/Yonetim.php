@@ -138,4 +138,12 @@ class Yonetim extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
+	public function rapor()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Rapor", "yonetim/rapor", [], "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 }
