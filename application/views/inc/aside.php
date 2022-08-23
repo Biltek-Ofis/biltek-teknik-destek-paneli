@@ -70,6 +70,18 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="' . base_url("yonetim/rapor") . '" class="nav-link';
+    if ($aktifSayfa == "yonetim/rapor") {
+        echo " active";
+    }
+    echo '">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>
+                                Rapor
+                            </p>
+                        </a>
+                    </li>
                     <hr class="break-sec-w">';
 }
 
