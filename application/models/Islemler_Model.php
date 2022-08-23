@@ -177,10 +177,16 @@ class Islemler_Model extends CI_Model
             return $arr[$index];
         }
     }
-    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "")
+    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "", $initcomplete = "")
     {
         $ayar = '
-        {
+        {';
+
+        if (strlen($digerAyarlar) > 0) {
+            $ayar .= "
+                " . $digerAyarlar;
+        }
+        $ayar .= '
             "paging": ' . $paging . ',
             "lengthChange": false,
             "searching": true,
@@ -192,21 +198,17 @@ class Islemler_Model extends CI_Model
             "autoWidth": false,
             "responsive": true,
             initComplete: function() {
-      
+                ' . $initcomplete . '
             },
             "language": {
-                url: "'.base_url("plugins/datatables-i18n/tr.json").'"
+                url: "' . base_url("plugins/datatables-i18n/tr.json") . '"
             },
             columnDefs: [{
               "defaultContent": "-",
               "targets": "_all"
-            }]
-            ';
-        if (strlen($digerAyarlar) > 0) {
-            $ayar .= ",
-                " . $digerAyarlar;
-        }
-        $ayar .= '}';
+            }]';
+        $ayar .= '
+    }';
         return $ayar;
     }
     public function sifrele($sifre)
