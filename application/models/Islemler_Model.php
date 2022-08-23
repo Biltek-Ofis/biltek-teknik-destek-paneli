@@ -144,7 +144,7 @@ class Islemler_Model extends CI_Model
         "Arıza Tespiti Yapılıyor",
         "Yedek Parça Bekleniyor",
         "Merkez Servise Gönderildi",
-        "Fiyatlandırıldı Onay Bekleniyor",
+        "Fiyat Onayı Bekleniyor",
         "Fiyat Onaylandı",
         "Fiyat Onaylanmadı",
         "Teslim Edilmeye Hazır",
