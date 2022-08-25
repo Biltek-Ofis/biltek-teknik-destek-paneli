@@ -32,6 +32,8 @@ echo '<div class="content-wrapper">
             var cihazMarkaInput = "#cihaz_marka_ara";
             var cihazModelInput = "#cihaz_model_ara";
             var cihazTuruInput = "#cihaz_turu";
+            var personelInput = "#personel";
+            var seciliPersonel = "Tümü";
             var yilInput = "#yil";
             var girisTarihiInput1 = "#giris_tarihi_baslangic_ara";
             var girisTarihiInput2 = "#giris_tarihi_bitis_ara";
@@ -40,8 +42,8 @@ echo '<div class="content-wrapper">
             var sayfaSayisiGoster = false;
             var sayfaSayisiSelect = "#sayfaSayisiKonumu";
             var sayfaSayisiKonumu = "1";
-            var toplamUcretInput = "#toplam_ucret_goster";
-            var toplamUcretGoster = true;
+            var ucretInput = "#ucret_goster";
+            var ucretGoster = true;
             function filtreText(input, sira){
                 $.fn.dataTable.ext.search.push(
                     function( settings, searchData, index, rowData, counter ) {
@@ -139,31 +141,45 @@ echo '<div class="content-wrapper">
             
             $(document).ready(function() {
                 topla();
-                var toplamUcretHesapla = function(){
+                var tutarHesapla = function(){
                     return cihazlarTablosu.column(7,{filter:"applied", search: "applied"}).data().sum();
                 }
-                var toplamUcretHtml = function(){
-                    $("#toplamUcret").html(toplamUcretHesapla);
+                var tutarHtml = function(){
+                    $("#tutarToplam").html(tutarHesapla());
+                }
+                var kdvHesapla = function(){
+                    return cihazlarTablosu.column(8,{filter:"applied", search: "applied"}).data().sum();
+                }
+                var kdvHtml = function(){
+                    $("#kdvToplam").html(kdvHesapla());
+                }
+                var genelToplamHesapla = function(){
+                    return cihazlarTablosu.column(9,{filter:"applied", search: "applied"}).data().sum();
+                }
+                var genelToplamHtml = function(){
+                    $("#genelToplam").html(genelToplamHesapla());
+                }
+                var cihazSayisi = function(){
+                    return cihazlarTablosu.column(0,{filter:"applied", search: "applied"}).data().count();
+                }
+                var cihazSayisiHtml = function(){
+                    $("#cihazSayisi").html(cihazSayisi());
                 }
                 var customize = function ( doc ) {
-                    if(toplamUcretGoster){
-                        doc["header"] = (function(page, pages) {
-                            return {
-                                columns: [
-                                    "",
-                                    "",
-                                    {
-                                        alignment: "right",
-                                        text: [
-                                            { text: "Toplam Ücret: " + toplamUcretHesapla() + " TL", italics: true },
-                                        ]
-                                    }
-                                ],
-                                margin: [10, 10],
-                                fontSize:16
-                            }
-                        });
-                    }
+                    doc["header"] = (function(page, pages) {
+                        return {
+                            columns: [
+                                {
+                                    alignment: "left",
+                                    text: [
+                                        { text: "Personel: " + seciliPersonel + ", Cihaz Sayısı: " + cihazSayisi() + (ucretGoster ?  ", KDV\'siz Tutar: " + tutarHesapla() + " TL, KDV: " + kdvHesapla() + " TL, Genel Toplam: " + genelToplamHesapla() + " TL" : ""), italics: true },
+                                    ]
+                                }
+                            ],
+                            margin: [10, 10],
+                            fontSize:16
+                        }
+                    });
                     
                     if(sayfaSayisiGoster){
                         doc["footer"] = (function(page, pages) {
@@ -213,10 +229,16 @@ echo '<div class="content-wrapper">
                     customize: customize,
                 }],
                 drawCallback: function(){
-                    toplamUcretHtml();
+                    tutarHtml();
+                    kdvHtml();
+                    genelToplamHtml();
+                    cihazSayisiHtml();
                 },', '
                 setTimeout(function(){cihazlarTablosu.buttons().container().appendTo("#" + tabloDiv + "_wrapper .col-md-6:eq(0)");}, 10);
-                toplamUcretHtml();') . ');
+                tutarHtml();
+                kdvHtml();
+                genelToplamHtml();
+                cihazSayisiHtml();') . ');
                 filtreStartsWith(yilInput, 0)
                 filtreText(musteriInput,1);
                 filtreText(cihazMarkaInput,2);
@@ -231,7 +253,16 @@ echo '<div class="content-wrapper">
                 });
                 filtreTarih(girisTarihiInput1, girisTarihiInput2, 5);
                 filtreBirebir(cihazTuruInput, 4);
+                filtreBirebir(personelInput, 10);
                 $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2 + ", " + yilInput + ", " + cihazTuruInput).on("keyup change", function(){
+                    cihazlarTablosu.draw();
+                });
+                $(personelInput).change(function() {
+                    if($(this).val().length > 0){
+                        seciliPersonel = $(this).val();
+                    }else{
+                        seciliPersonel = "Tümü";
+                    }
                     cihazlarTablosu.draw();
                 });
                 $(sayfaSayisiInput).change(function() {
@@ -240,8 +271,8 @@ echo '<div class="content-wrapper">
                 $(sayfaSayisiSelect).change(function() {
                     sayfaSayisiKonumu = $(this).val();
                 });
-                $(toplamUcretInput).change(function() {
-                    toplamUcretGoster = this.checked;
+                $(ucretInput).change(function() {
+                    ucretGoster = this.checked;
                 });
                 $("#csvDonustur").on("click", function(){
                     cihazlarTablosu.button(0).trigger();
@@ -291,18 +322,32 @@ echo '<div class="content-wrapper">
                         </tr>';
 $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
 echo '<tr>
-                        <td class="p-1 m-0" colspan="6">
-                            <div class="form-group p-0 m-0">
-                                <label for="cihaz_turu">Cihaz Türü</label>
-                                <select id="cihaz_turu" class="form-control" aria-label="Cihaz Türü">
-                                <option value="">Cihaz Türü Seçin</option>';
+                                                <td class="p-1 m-0" colspan="6">
+                                                    <div class="form-group p-0 m-0">
+                                                        <label for="cihaz_turu">Cihaz Türü</label>
+                                                        <select id="cihaz_turu" class="form-control" aria-label="Cihaz Türü">
+                                                        <option value="">Cihaz Türü Seçin</option>';
 foreach ($cihazTurleri as $cihazTuru) {
     echo '<option value="' . $cihazTuru->isim . '">' . $cihazTuru->isim . '</option>';
 }
 echo '</select>
-                            </div>
-                        </td>
-                        </tr>';
+                                                    </div>
+                                                </td>
+                                                </tr>';
+$personeller = $this->Kullanicilar_Model->kullanicilar(array());
+echo '<tr>
+        <td class="p-1 m-0" colspan="6">
+            <div class="form-group p-0 m-0">
+                <label for="personel">Personel</label>
+                <select id="personel" class="form-control" aria-label="Personel">
+                <option value="">Tümü</option>';
+foreach ($personeller as $personel) {
+    echo '<option value="' . $personel->ad_soyad . '">' . $personel->ad_soyad . '</option>';
+}
+echo '</select>
+                                                                            </div>
+                                                                        </td>
+                                                                        </tr>';
 echo '<tr>
                             <td class="p-1 m-0" colspan="6">
                                 <div class="form-group p-0 m-0">
@@ -367,8 +412,8 @@ echo '<tr>
                 <tr>
                     <td class="p-1 m-0" colspan="6">
                         <div class="form-group form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="toplam_ucret_goster">
-                            <label class="form-check-label" for="toplam_ucret_goster">Toplam Ücreti Göster</label>
+                            <input type="checkbox" class="form-check-input" id="ucret_goster" checked>
+                            <label class="form-check-label" for="ucret_goster">Ücretleri Göster</label>
                         </div>
                     </td>
                 </tr>
@@ -393,7 +438,13 @@ echo '<tr>
             <div class="card-body">
                 <div id="container w-100 m-0 p-0">
                     <div class="row m-0 p-0 d-flex justify-content-end">
-                        <h6>Toplam Ücret: <span id="toplamUcret"></span> TL</h6>
+                        <h6>Cihaz Sayısı: <span id="cihazSayisi"></span></h6>
+                        <h6>,&nbsp;</h6>
+                        <h6>Tutar Ücret: <span id="tutarToplam"></span> TL</h6>
+                        <h6>,&nbsp;</h6>
+                        <h6>KDV: <span id="kdvToplam"></span> TL</h6>
+                        <h6>,&nbsp;</h6>
+                        <h6>Genel Toplam: <span id="genelToplam"></span> TL</h6>
                     </div>
                 </div>
             <table id="rapor_tablosu" class="table">
@@ -406,7 +457,9 @@ echo '<tr>
                     <th style="width:10% !important;">Tür</th>
                     <th style="width:10% !important;">Giriş</th>
                     <th style="width:10% !important;">Çıkış</th>
-                    <th style="width:10% !important;">Ücret (TL)</th>
+                    <th style="width:10% !important;">Tutar (TL)</th>
+                    <th style="width:10% !important;">KDV</th>
+                    <th style="width:10% !important;">Genel Toplam (TL)</th>
                     <th style="width:10% !important;">Sorumlu</th>
                     <th style="width:10% !important;">Durum</th>
                 </tr>
@@ -424,45 +477,49 @@ foreach ($cihazlar as $cihaz) {
     echo '<td>' . $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih) . '</td>';
     echo '<td>' . $this->Islemler_Model->tarihDonusturSiralama($cihaz->cikis_tarihi) . '</td>';
     $toplam = 0;
+    $kdv = 0;
+    $genel_toplam = 0;
     if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
         if ($cihaz->i_ad_1 != "") {
             $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
             $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
             $toplam = $toplam + $toplam_islem_fiyati_1;
-            $toplam = $toplam + $kdv_1;
+            $kdv = $kdv + $kdv_1;
         }
         if ($cihaz->i_ad_2 != "") {
             $toplam_islem_fiyati_2 =  $cihaz->i_miktar_2 * $cihaz->i_birim_fiyat_2;
             $kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
             $toplam = $toplam + $toplam_islem_fiyati_2;
-            $toplam = $toplam + $kdv_2;
+            $kdv = $kdv + $kdv_2;
         }
         if ($cihaz->i_ad_3 != "") {
             $toplam_islem_fiyati_3 =  $cihaz->i_miktar_3 * $cihaz->i_birim_fiyat_3;
             $kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
             $toplam = $toplam + $toplam_islem_fiyati_3;
-            $toplam = $toplam + $kdv_3;
+            $kdv = $kdv + $kdv_3;
         }
         if ($cihaz->i_ad_4 != "") {
             $toplam_islem_fiyati_4 = $cihaz->i_miktar_4 * $cihaz->i_birim_fiyat_4;
             $kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
             $toplam = $toplam + $toplam_islem_fiyati_4;
-            $toplam = $toplam + $kdv_4;
+            $kdv = $kdv + $kdv_4;
         }
         if ($cihaz->i_ad_5 != "") {
             $toplam_islem_fiyati_5 =  $cihaz->i_miktar_5 * $cihaz->i_birim_fiyat_5;
             $kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
             $toplam = $toplam + $toplam_islem_fiyati_5;
-            $toplam = $toplam + $kdv_5;
+            $kdv = $kdv + $kdv_5;
         }
         if ($cihaz->i_ad_6 != "") {
             $toplam_islem_fiyati_6 =  $cihaz->i_miktar_6 * $cihaz->i_birim_fiyat_6;
             $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
             $toplam = $toplam + $toplam_islem_fiyati_6;
-            $toplam = $toplam + $kdv_6;
+            $kdv = $kdv + $kdv_6;
         }
     }
     echo '<td>' . $toplam . '</td>';
+    echo '<td>' . $kdv . '</td>';
+    echo '<td>' . ($toplam + $kdv) . '</td>';
     echo '<td>' . $cihaz->sorumlu . '</td>';
     echo '<td>' . $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum) . '</td>';
     echo '</tr>';
