@@ -1,6 +1,11 @@
 <?php
 $this->load->view("inc/datatables_scripts");
 $this->load->view("inc/style_tablo");
+echo '<style>
+.dt-buttons{
+    display: none;
+}
+</style>';
 echo '<div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -192,31 +197,17 @@ echo '<div class="content-wrapper">
                 }
                 var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"], 'true', '
                 "buttons": [{
-                    extend: "copyHtml5",
-                    title: baslik(),
-                    pageSize: "LEGAL",
-                    title: baslik(),
-                    customize: customize,
-                }, {
                     extend: "csv",
                     title: baslik(),
                     pageSize: "LEGAL",
                     title: baslik(),
-                    customize: customize,
                 }, {
                     extend: "excel",
                     title: baslik(),
                     pageSize: "LEGAL",
-                    title: baslik(),
-                    customize: customize,
                 }, {
                     extend: "pdfHtml5",
                     orientation: "landscape",
-                    pageSize: "LEGAL",
-                    title: baslik(),
-                    customize: customize,
-                }, {
-                    extend: "print",
                     pageSize: "LEGAL",
                     title: baslik(),
                     customize: customize,
@@ -251,6 +242,15 @@ echo '<div class="content-wrapper">
                 });
                 $(toplamUcretInput).change(function() {
                     toplamUcretGoster = this.checked;
+                });
+                $("#csvDonustur").on("click", function(){
+                    cihazlarTablosu.button(0).trigger();
+                });
+                $("#excDonustur").on("click", function(){
+                    cihazlarTablosu.button(1).trigger();
+                });
+                $("#pdfDonustur").on("click", function(){
+                    cihazlarTablosu.button(2).trigger();
                 });
             });
             </script>
@@ -348,7 +348,7 @@ echo '<tr>
                     <td class="p-1 m-0" colspan="6"> 
                         <div class="form-group form-check mt-2">
                             <input type="checkbox" class="form-check-input" id="sayfa_sayisi_goster">
-                            <label class="form-check-label" for="sayfa_sayisi_goster">Altta Sayfa Sayısını Altta Göster</label>
+                            <label class="form-check-label" for="sayfa_sayisi_goster">Altta Sayfa Sayısını Göster</label>
                         </div>
                     </td>
                 </tr>
@@ -374,6 +374,19 @@ echo '<tr>
                 </tr>
             </tbody>
         </table>
+            <div id="container w-100 m-0 p-0">
+                    <div class="row m-0 p-0 d-flex justify-content-end">
+                        <button id="csvDonustur" type="button" class="btn btn-primary mr-2 mb-2">
+                            CSV
+                        </button>
+                        <button id="excDonustur" type="button" class="btn btn-primary mr-2 mb-2">
+                            Excel
+                        </button>
+                        <button id="pdfDonustur" type="button" class="btn btn-primary mb-2">
+                            PDF
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">
