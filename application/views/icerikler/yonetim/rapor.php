@@ -109,7 +109,23 @@ echo '<div class="content-wrapper">
             }
             $(document).ready(function() {
                 var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"], 'true', '
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],', 'setTimeout(function(){cihazlarTablosu.buttons().container().appendTo("#" + tabloDiv + "_wrapper .col-md-6:eq(0)");}, 10);') . ');
+                "buttons": [{
+                    extend: "copyHtml5",
+                    pageSize: "LEGAL"
+                }, {
+                    extend: "csv",
+                    pageSize: "LEGAL"
+                }, {
+                    extend: "excel",
+                    pageSize: "LEGAL"
+                }, {
+                    extend: "pdfHtml5",
+                    orientation: "landscape",
+                    pageSize: "LEGAL"
+                }, {
+                    extend: "print",
+                    pageSize: "LEGAL"
+                }],', 'setTimeout(function(){cihazlarTablosu.buttons().container().appendTo("#" + tabloDiv + "_wrapper .col-md-6:eq(0)");}, 10);') . ');
                 filtreStartsWith(yilInput, 0)
                 filtreText(musteriInput,1);
                 filtreText(cihazMarkaInput,2);
@@ -200,22 +216,22 @@ echo '<tr>
                 <table id="rapor_tablosu" class="table">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Müşteri</th>
-                            <th>Marka</th>
-                            <th>Model</th>
-                            <th>Tür</th>
-                            <th>Giriş</th>
-                            <th>Çıkış</th>
-                            <th>Sorumlu</th>
-                            <th>Durum</th>
+                            <th style="width:10% !important;">No</th>
+                            <th style="width:10% !important;">Müşteri</th>
+                            <th style="width:10% !important;">Marka</th>
+                            <th style="width:10% !important;">Model</th>
+                            <th style="width:10% !important;">Tür</th>
+                            <th style="width:10% !important;">Giriş</th>
+                            <th style="width:10% !important;">Çıkış</th>
+                            <th style="width:10% !important;">Sorumlu</th>
+                            <th style="width:10% !important;">Durum</th>
                         </tr>
                     </thead>
                     <tbody>
                         ';
 $cihazlar = $this->Cihazlar_Model->cihazlar();
 foreach ($cihazlar as $cihaz) {
-    echo '<tr class="' . $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum) . '">';
+    echo '<tr>';
     echo '<td>' . $cihaz->servis_no . '</td>';
     echo '<td>' . $cihaz->musteri_adi . '</td>';
     echo '<td>' . $cihaz->cihaz . '</td>';
