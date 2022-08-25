@@ -211,11 +211,11 @@ $(document).ready(function(){
         </div>
       </div>
       <div class="modal-footer">
-      <a href="' . base_url("cihaz") . '/{id}" class="btn btn-primary">Düzenle</a>
+      <a id="duzenleBtn{id}" href="' . base_url("cihaz") . '/{id}" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
       <a href="#" onclick="servisKabulYazdir({id})" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a href="#" onclick="barkoduYazdir({id})" class="btn btn-dark text-white">Barkodu Yazdır</a>
       <a href="#" onclick="formuYazdir({id})" class="btn btn-dark text-white">Formu Yazdır</a>
-      ' . ($silButonuGizle ? '' : '<a href="#" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
+      ' . ($silButonuGizle ? '' : '<a id="silBtn{id}" href="#" style="{display_kilit}" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
@@ -268,6 +268,7 @@ $eskiler = array(
   "\\",
   "{yeni}",
   "{class}",
+  "{display_kilit}",
   "{servis_no}",
   "{id}",
   "{musteri_adi}",
@@ -431,6 +432,7 @@ foreach ($cihazlar as $cihaz) {
     "",
     "",
     $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
+    ($cihaz->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) ? "display:none;" : "",
     $cihaz->servis_no,
     $cihaz->id,
     $cihaz->musteri_adi,
@@ -589,6 +591,7 @@ echo 'function donustur(str, value) {
     return str.
     replaceAll("{yeni}", \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
+      .replaceAll("{display_kilit}", value.guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' ? "display:none;" : "")
       .replaceAll("{servis_no}", value.servis_no)
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
@@ -735,6 +738,14 @@ echo '$(document).ready(function() {
             yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
             $("#yapilanIslem" + value.id).html(yapilanIslemler);
             $("#cihaz" + value.id).attr(\'class\', \'\');
+            $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
+            if(value.guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 1) . '){
+              $("#duzenleBtn" + value.id).hide();
+              $("#silBtn" + value.id).hide();
+            }else{
+              $("#duzenleBtn" + value.id).show();
+              $("#silBtn" + value.id).show();
+            }
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2, #" + value.id + "ServisNo3").html(value.servis_no);
             $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
