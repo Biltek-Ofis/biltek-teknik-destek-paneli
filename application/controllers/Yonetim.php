@@ -146,4 +146,53 @@ class Yonetim extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
+	public function cihaz_turleri()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Cihaz Türleri", "yonetim/cihaz_turleri", [], "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazTuruEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->cihazTuruPost();
+			$ekle = $this->Cihazlar_Model->cihazTuruEkle($veri);
+			if ($ekle) {
+				redirect(base_url("yonetim/cihaz_turleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri#yeniCihazTuruEkleModal", "Cihaz türü eklenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazTuruDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->cihazTuruPost();
+			$ekle = $this->Cihazlar_Model->cihazTuruDuzenle($id, $veri);
+			if ($ekle) {
+				redirect(base_url("yonetim/cihaz_turleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri#yeniCihazTuruEkleModal", "Cihaz türü eklenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazTuruSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$sil = $this->Cihazlar_Model->cihazTuruSil($id);
+			if ($sil) {
+				redirect(base_url("yonetim/cihaz_turleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri", "Cihaz türü eklenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 }

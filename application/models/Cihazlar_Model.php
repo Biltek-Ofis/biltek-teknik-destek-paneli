@@ -34,7 +34,26 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->get($this->cihazTurleriTabloAdi)->result();
     }
-
+    public function cihazTuruEkle($veri)
+    {
+        return $this->db->insert($this->cihazTurleriTabloAdi, $veri);
+    }
+    public function cihazTuruDuzenle($id, $veri)
+    {
+        return $this->db->where("id", $id)->update($this->cihazTurleriTabloAdi, $veri);
+    }
+    public function cihazTuruSil($id)
+    {
+        return $this->db->where("id", $id)->delete($this->cihazTurleriTabloAdi);
+    }
+    public function cihazTuruPost()
+    {
+        $veri = array(
+            "isim" => $this->input->post("isim"),
+            "sifre" => $this->input->post("sifre"),
+        );
+        return $veri;
+    }
     public function cihazVerileriniDonustur($result)
     {
         $this->load->model("Islemler_Model");
