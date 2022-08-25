@@ -31,8 +31,8 @@ echo '<div class="content-wrapper">
             var girisTarihiInput1 = "#giris_tarihi_baslangic_ara";
             var girisTarihiInput2 = "#giris_tarihi_bitis_ara";
             var girisTarBas, girisTarBit;
-            var sayfaSayisiAltInput = "#sayfa_sayisi_alt";
-            var sayfaSayisiAltGoster = false;
+            var sayfaSayisiInput = "#sayfa_sayisi_goster";
+            var sayfaSayisiGoster = false;
             var sayfaSayisiSelect = "#sayfaSayisiKonumu";
             var sayfaSayisiKonumu = "1";
             var toplamUcretInput = "#toplam_ucret_goster";
@@ -150,7 +150,7 @@ echo '<div class="content-wrapper">
                                     {
                                         alignment: "right",
                                         text: [
-                                            { text: "Toplam: " + toplamUcretHesapla() + " TL", italics: true },
+                                            { text: "Toplam Ücret: " + toplamUcretHesapla() + " TL", italics: true },
                                         ]
                                     }
                                 ],
@@ -160,7 +160,7 @@ echo '<div class="content-wrapper">
                         });
                     }
                     
-                    if(sayfaSayisiAltGoster){
+                    if(sayfaSayisiGoster){
                         doc["footer"] = (function(page, pages) {
                             return {
                                 columns: [
@@ -243,22 +243,14 @@ echo '<div class="content-wrapper">
                 $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2 + ", " + yilInput + ", " + cihazTuruInput).on("keyup change", function(){
                     cihazlarTablosu.draw();
                 });
-                $(sayfaSayisiAltInput).change(function() {
-                    if(this.checked) {
-                        sayfaSayisiAltGoster = true;
-                    }else{
-                        sayfaSayisiAltGoster = false;
-                    } 
+                $(sayfaSayisiInput).change(function() {
+                    sayfaSayisiGoster = this.checked;
                 });
                 $(sayfaSayisiSelect).change(function() {
                     sayfaSayisiKonumu = $(this).val();
                 });
                 $(toplamUcretInput).change(function() {
-                    if(this.checked) {
-                        toplamUcretGoster = true;
-                    }else{
-                        toplamUcretGoster = false;
-                    } 
+                    toplamUcretGoster = this.checked;
                 });
             });
             </script>
@@ -353,13 +345,15 @@ echo '<tr>
             <tbody>
                 <tr><th class="h5 font-weight-bold" colspan="6">Sayfa Özellikleri</th></tr>
                 <tr>
-                    <td class="p-1 m-0" colspan="3"> 
+                    <td class="p-1 m-0" colspan="6"> 
                         <div class="form-group form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="sayfa_sayisi_alt">
-                            <label class="form-check-label" for="sayfa_sayisi_alt">Altta Sayfa Sayısını Altta Göster</label>
+                            <input type="checkbox" class="form-check-input" id="sayfa_sayisi_goster">
+                            <label class="form-check-label" for="sayfa_sayisi_goster">Altta Sayfa Sayısını Altta Göster</label>
                         </div>
                     </td>
-                    <td class="p-1 m-0" colspan="3">
+                </tr>
+                <tr>
+                    <td class="p-1 m-0" colspan="6">
                         <div class="form-group">
                             <label for="sayfaSayisiKonumu">Sayfa Sayısı Konumu</label>
                             <select class="form-control" id="sayfaSayisiKonumu">
@@ -386,7 +380,7 @@ echo '<tr>
             <div class="card-body">
                 <div id="container w-100 m-0 p-0">
                     <div class="row m-0 p-0 d-flex justify-content-end">
-                        <h6>Toplam: <span id="toplamUcret"></span> TL</h6>
+                        <h6>Toplam Ücret: <span id="toplamUcret"></span> TL</h6>
                     </div>
                 </div>
             <table id="rapor_tablosu" class="table">
