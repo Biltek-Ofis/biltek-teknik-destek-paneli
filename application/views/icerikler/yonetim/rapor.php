@@ -393,7 +393,7 @@ echo '<tr>
                     <td class="p-1 m-0" colspan="6"> 
                         <div class="form-group form-check mt-2">
                             <input type="checkbox" class="form-check-input" id="sayfa_sayisi_goster">
-                            <label class="form-check-label" for="sayfa_sayisi_goster">Altta Sayfa Sayısını Göster</label>
+                            <label class="form-check-label" for="sayfa_sayisi_goster">Sayfa Sayısını Göster</label>
                         </div>
                     </td>
                 </tr>
@@ -440,7 +440,7 @@ echo '<tr>
                     <div class="row m-0 p-0 d-flex justify-content-end">
                         <h6>Cihaz Sayısı: <span id="cihazSayisi"></span></h6>
                         <h6>,&nbsp;</h6>
-                        <h6>Tutar Ücret: <span id="tutarToplam"></span> TL</h6>
+                        <h6>KDV\'siz Tutar: <span id="tutarToplam"></span> TL</h6>
                         <h6>,&nbsp;</h6>
                         <h6>KDV: <span id="kdvToplam"></span> TL</h6>
                         <h6>,&nbsp;</h6>
