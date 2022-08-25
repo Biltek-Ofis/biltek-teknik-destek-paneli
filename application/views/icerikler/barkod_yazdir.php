@@ -71,7 +71,7 @@ echo '<body onafterprint="self.close()">
             width: 2,
             height: 30,
             displayValue: true,
-            fontSize: 12,
+            fontSize: 18,
             fontOptions: "bold"
         });
         $("#barkod").css({"height":"' . $barkodYukseklik . '"});
