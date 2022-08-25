@@ -71,6 +71,18 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="' . base_url("yonetim/cihaz_turleri") . '" class="nav-link';
+    if ($aktifSayfa == "yonetim/cihaz_turleri") {
+        echo " active";
+    }
+    echo '">
+                            <i class="nav-icon fas fa-laptop-medical"></i>
+                            <p>
+                                Cihaz Türleri
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="' . base_url("yonetim/rapor") . '" class="nav-link';
     if ($aktifSayfa == "yonetim/rapor") {
         echo " active";
