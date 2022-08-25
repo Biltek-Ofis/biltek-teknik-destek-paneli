@@ -26,6 +26,8 @@ echo '<div class="content-wrapper">
             var musteriInput = "#musteri_ara";
             var cihazMarkaInput = "#cihaz_marka_ara";
             var cihazModelInput = "#cihaz_model_ara";
+            var cihazTuruInput = "#cihaz_turu";
+            var yilInput = "#yil";
             var girisTarihiInput1 = "#giris_tarihi_baslangic_ara";
             var girisTarihiInput2 = "#giris_tarihi_bitis_ara";
             var girisTarBas, girisTarBit;
@@ -37,6 +39,42 @@ echo '<div class="content-wrapper">
                         }
                         var input_val = $(input).val().toLocaleUpperCase("tr-TR");
                         var input_val_tablo = searchData[sira].toLocaleUpperCase("tr-TR").includes(input_val);
+                        var input_val_goster = (!input_val || (input_val && input_val_tablo))
+    
+                        if (input_val_goster)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+            }
+            function filtreBirebir(input, sira){
+                $.fn.dataTable.ext.search.push(
+                    function( settings, searchData, index, rowData, counter ) {
+                        if (settings.nTable.id !== tabloDiv){
+                            return true;
+                        }
+                        var input_val = $(input).val().toLocaleUpperCase("tr-TR");
+                        var input_val_tablo = searchData[sira].toLocaleUpperCase("tr-TR") == input_val;
+                        var input_val_goster = (!input_val || (input_val && input_val_tablo))
+    
+                        if (input_val_goster)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+            }
+            function filtreStartsWith(input, sira){
+                $.fn.dataTable.ext.search.push(
+                    function( settings, searchData, index, rowData, counter ) {
+                        if (settings.nTable.id !== tabloDiv){
+                            return true;
+                        }
+                        var input_val = $(input).val()
+                        var input_val_tablo = searchData[sira].startsWith(input_val);
                         var input_val_goster = (!input_val || (input_val && input_val_tablo))
     
                         if (input_val_goster)
@@ -72,6 +110,7 @@ echo '<div class="content-wrapper">
             $(document).ready(function() {
                 var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"], 'true', '
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],', 'setTimeout(function(){cihazlarTablosu.buttons().container().appendTo("#" + tabloDiv + "_wrapper .col-md-6:eq(0)");}, 10);') . ');
+                filtreStartsWith(yilInput, 0)
                 filtreText(musteriInput,1);
                 filtreText(cihazMarkaInput,2);
                 filtreText(cihazModelInput,3);
@@ -84,12 +123,13 @@ echo '<div class="content-wrapper">
                     locale: "tr"
                 });
                 filtreTarih(girisTarihiInput1, girisTarihiInput2, 5);
-                $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2).on("keyup change", function(){
+                filtreBirebir(cihazTuruInput, 4);
+                $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2 + ", " + yilInput + ", " + cihazTuruInput).on("keyup change", function(){
                     cihazlarTablosu.draw();
                 });
             });
             </script>
-                <table class="table table-borderless">
+                <table class="table table-borderless mb-3">
                     <thead>
                         <tr>
                             <th></th>
@@ -98,36 +138,58 @@ echo '<div class="content-wrapper">
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="2">
-                                <div class="form-group">
-                                    <label for="db_anasayfa">Müşteri</label>
+                            <td class="p-1 m-0" colspan="2">
+                                <div class="form-group p-0 m-0">
+                                    <label for="musteri_ara">Müşteri</label>
                                     <input id="musteri_ara" type="text" class="form-control" placeholder="Müşteri Adı">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <div class="form-group">
+                            <td class="p-1 m-0">
+                                <div class="form-group p-0 m-0">
                                     <label for="cihaz_marka_ara">Cihaz Markası</label>
                                     <input id="cihaz_marka_ara" type="text" class="form-control" placeholder="Cihaz Markası">
                                 </div>
                             </td>
-                            <td>
-                                <div class="form-group">
+                            <td class="p-1 m-0">
+                                <div class="form-group p-0 m-0">
                                     <label for="cihaz_model_ara">Modeli</label>
                                     <input id="cihaz_model_ara" type="text" class="form-control" placeholder="Cihaz Modeli">
                                 </div>
                             </td>
+                        </tr>';
+$cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
+echo '<tr>
+                        <td class="p-1 m-0" colspan="2">
+                            <div class="form-group p-0 m-0">
+                                <label for="cihaz_turu">Cihaz Türü</label>
+                                <select id="cihaz_turu" class="form-control" aria-label="Cihaz Türü">
+                                <option value="">Cihaz Türü Seçin</option>';
+foreach ($cihazTurleri as $cihazTuru) {
+    echo '<option value="' . $cihazTuru->isim . '">' . $cihazTuru->isim . '</option>';
+}
+echo '</select>
+                            </div>
+                        </td>
+                        </tr>';
+echo '<tr>
+                            <td class="p-1 m-0" colspan="2">
+                                <div class="form-group p-0 m-0">
+                                    <label for="yil">Yıl</label>
+                                    <input id="yil" type="number" min="1900" max="2099" step="1" class="form-control" placeholder="' . date("Y") . '">
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td>
-                                <div class="form-group">
+                            <td class="p-1 m-0">
+                                <div class="form-group p-0 m-0">
                                     <label for="giris_tarihi_baslangic_ara">Giriş Tarihi Başlangıç</label>
                                     <input id="giris_tarihi_baslangic_ara" type="text" class="form-control" placeholder="Giriş Tarihi Başlangıç">
                                 </div>
                             </td>
-                            <td>
-                                <div class="form-group">
+                            <td class="p-1 m-0">
+                                <div class="form-group p-0 m-0">
                                     <label for="giris_tarihi_bitis_ara">Bitiş</label>
                                     <input id="giris_tarihi_bitis_ara" type="text" class="form-control" placeholder="Giriş Tarihi Bitiş">
                                 </div>
