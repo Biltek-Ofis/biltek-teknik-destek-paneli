@@ -790,7 +790,6 @@ echo '$(document).ready(function() {
             $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
             $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
             $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
-            $("#" + value.id + "Pil").html(hasarDurumu(value.pil));{id}TahsilatSekli
             $("#" + value.id + "TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli))
             $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);';
 if ($sorumlu_belirtildimi) {
