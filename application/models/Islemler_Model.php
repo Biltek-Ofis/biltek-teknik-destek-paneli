@@ -148,6 +148,7 @@ class Islemler_Model extends CI_Model
         "Fiyat Onaylandı",
         "Fiyat Onaylanmadı",
         "Teslim Edilmeye Hazır",
+        "Teslim Edildi / Ödeme Alınmadı",
         "Teslim Edildi",
     );
     public $cihazDurumuClass = array(
@@ -159,6 +160,7 @@ class Islemler_Model extends CI_Model
         "bg-primary",
         "bg-danger",
         "bg-primary",
+        "bg-danger",
         "bg-success",
     );
     public function cihazDurumu($index)
