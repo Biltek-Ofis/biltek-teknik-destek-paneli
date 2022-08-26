@@ -169,6 +169,17 @@ class Islemler_Model extends CI_Model
     {
         return $this->arrayGetir($this->cihazDurumuClass, $index);
     }
+    public $tahsilatSekli = array(
+        "",
+        "Nakit",
+        "Kredi Kartı",
+        "Mail Order",
+        "Açık Hesap",
+    );
+    public function tahsilatSekli($index)
+    {
+        return $this->arrayGetir($this->tahsilatSekli, $index);
+    }
     public function arrayGetir($arr, $index)
     {
         if ($index > count($arr) - 1) {

@@ -237,10 +237,18 @@ echo '</td>
 $this->load->view("ogeler/cikis_tarihi", $cihaz->cikis_tarihi == "" ? array("isim" => "cikis_tarihi", "sifirla" => true) : array("isim" => "cikis_tarihi", "sifirla" => true, "cikis_tarihi_value" => $cihaz->cikis_tarihi));
 echo '</td>
                                         </tr>
+                                        <tr>
                                         <th class="align-middle">Güncel Durum:</th>
                                         <td class="align-middle">';
 $this->load->view("ogeler/guncel_durum", array("sifirla" => true, "guncel_durum_value" => $cihaz->guncel_durum));
 echo '</td>
+</tr>
+<tr>
+<th class="align-middle">Tahsilat Şekli:</th>
+<td class="align-middle">';
+$this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true, "tahsilat_sekli_value" => $cihaz->tahsilat_sekli));
+echo '</td>
+</tr>
                                     </tbody>
                                 </table>
                                 <table class="table table-flush">

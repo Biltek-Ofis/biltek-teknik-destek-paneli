@@ -112,7 +112,7 @@ echo '<body onafterprint="self.close()">
                 <td colspan="10">' . $cihaz->ariza_aciklamasi . '</td>
             </tr>
 
-            <tr style="height: 80px !important;">
+            <tr>
                 <td colspan="8">TESLİM ALINANLAR</td>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">' . $cihaz->teslim_alinanlar . '</td>
@@ -197,7 +197,7 @@ if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cih
 }
 echo '
             <tr>
-                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 2) . '" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
+                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 3) . '" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
                 <td colspan="4" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
                 <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
                 <td colspan="1" class="text-center font-weight-bold">BİRİM FİYATI</td>
@@ -304,12 +304,16 @@ echo '<tr>
                 <td colspan="2" class="text-center">' . ($toplam > 0 ? $toplam . " TL" : "") . '</td>
             </tr>
             <tr>
+                <td colspan="8">KDV</td>
+                <td colspan="2" class="text-center">' . ($kdv > 0 ? $kdv . " TL" : "") . '</td>
+            </tr>
+            <tr>  
                 <td colspan="2" class="text-center">ÇİZİK</td>
                 <td colspan="2" class="text-center">KIRIK</td>
                 <td colspan="2" class="text-center">ÇATLAK</td>
                 <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="8">KDV</td>
-                <td colspan="2" class="text-center">' . ($kdv > 0 ? $kdv . " TL" : "") . '</td>
+                <td colspan="8">GENEL TOPLAM</td>
+                <td colspan="2" class="text-center">' . ($genel_toplam > 0 ? $genel_toplam . " TL" : "") . '</td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center align-middle">';
@@ -317,23 +321,24 @@ if ($cihaz->cihazdaki_hasar == 1) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</i></td>
-                <td colspan="2" class="text-center align-middle">';
+                                <td colspan="2" class="text-center align-middle">';
 if ($cihaz->cihazdaki_hasar == 2) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="2" class="text-center align-middle">';
+                                <td colspan="2" class="text-center align-middle">';
 if ($cihaz->cihazdaki_hasar == 3) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="4" class="text-center align-middle">';
+                                <td colspan="4" class="text-center align-middle">';
 if ($cihaz->cihazdaki_hasar == 4) {
     echo '<i class="fas fa-check"></i>';
 }
 echo '</td>
-                <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center">' . ($genel_toplam > 0 ? $genel_toplam . " TL" : "") . '</td>
+            <td colspan="5">TAHSİLAT ŞEKLİ</td>
+            <td colspan="5" class="text-center">' . $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli) . '</td>
+
             </tr>
             <tr>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
