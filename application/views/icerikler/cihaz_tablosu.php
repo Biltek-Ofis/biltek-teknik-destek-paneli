@@ -36,7 +36,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
     <tr>
         <th scope="col">Servis No</th>
         <th scope="col">Müşteri Adı</th>
-        <th scope="col">GSM & Email</th>
+        <th scope="col">GSM</th>
         <th scope="col">Tür</th>
         <th scope="col">Cihaz</th>
         <th scope="col">Giriş Tarihi</th>
@@ -50,7 +50,7 @@ $sonCihazID = 0;
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row" id="{id}ServisNo">{servis_no}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
-  <td id="{id}MusteriGSM">{gsm_mail}</td>
+  <td id="{id}MusteriGSM">{telefon_numarasi}</td>
   <td id="{id}CihazTuru">{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
   <td id="{id}Tarih">{tarih2}</td>
@@ -115,8 +115,8 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriAdres">{adres}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM & E-Mail:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriGSM2">{gsm_mail}</li>
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriGSM2">{telefon_numarasi}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
@@ -278,7 +278,7 @@ $eskiler = array(
   "{musteri_adi}",
   "{musteri_kod}",
   "{adres}",
-  "{gsm_mail}",
+  "{telefon_numarasi}",
   "{cihaz_turu}",
   "{sorumlu}",
   "{cihaz}",
@@ -443,7 +443,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->musteri_adi,
     isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
     $cihaz->adres,
-    $cihaz->gsm_mail,
+    $cihaz->telefon_numarasi,
     $cihaz->cihaz_turu,
     $cihaz->sorumlu,
     $cihaz->cihaz,
@@ -616,7 +616,7 @@ echo 'function donustur(str, value) {
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
       .replaceAll("{adres}", value.adres)
-      .replaceAll("{gsm_mail}", value.gsm_mail)
+      .replaceAll("{telefon_numarasi}", value.telefon_numarasi)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)
       .replaceAll("{sorumlu}", value.sorumlu)
       .replaceAll("{cihaz}", value.cihaz)
@@ -775,7 +775,7 @@ echo '$(document).ready(function() {
             $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
             $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
             $("#" + value.id + "MusteriAdres").html(value.adres);
-            $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.gsm_mail);
+            $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.telefon_numarasi);
             $("#" + value.id + "Tarih").html(tarihDonusturSiralama(value.tarih));
             $("#" + value.id + "Tarih2").html(value.tarih);
             $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);

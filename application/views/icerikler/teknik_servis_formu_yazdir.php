@@ -87,9 +87,9 @@ echo '<body onafterprint="self.close()">
                 <td colspan="10">' . $cihaz->adres . '</td>
             </tr>
             <tr>
-                <td colspan="8">GSM & E-Mail</td>
+                <td colspan="8">GSM</td>
                 <td colspan="2" class="text-center">:</td>
-                <td colspan="10">' . $cihaz->gsm_mail . '</td>
+                <td colspan="10">' . $cihaz->telefon_numarasi . '</td>
             </tr>
             <tr>
                 <td colspan="8" class="font-weight-bold">CİHAZIN MARKASI</th>

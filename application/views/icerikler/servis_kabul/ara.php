@@ -214,8 +214,8 @@ if (strlen($servis_no)) {
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriAdres">' . $cihaz->adres . '</li>
               </ul>
               <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM & E-Mail:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriGSM2">' . $cihaz->gsm_mail . '</li>
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriGSM2">' . $cihaz->telefon_numarasi . '</li>
               </ul>
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>

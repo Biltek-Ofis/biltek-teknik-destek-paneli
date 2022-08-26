@@ -142,7 +142,7 @@ class Cihazlar_Model extends CI_Model
             "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : NULL,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
-            "gsm_mail" => $this->input->post("gsm_mail"),
+            "telefon_numarasi" => $this->input->post("telefon_numarasi"),
             "cihaz_turu" => $this->input->post("cihaz_turu"),
             "cihaz" => $this->input->post("cihaz"),
             "cihaz_modeli" => $this->input->post("cihaz_modeli"),
