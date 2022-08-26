@@ -49,9 +49,11 @@ class Cihaz extends Varsayilancontroller
         if ($this->Giris_Model->kullaniciGiris()) {
             $guncel_durum = $this->input->post("guncel_durum");
             $guncel_durum_suanki = $this->input->post("guncel_durum_suanki");
+            $tahsilat_sekli = $this->input->post("tahsilat_sekli");
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
                 "guncel_durum" => $guncel_durum,
+                "tahsilat_sekli" => $tahsilat_sekli,
             );
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));

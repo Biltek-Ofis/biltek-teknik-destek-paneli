@@ -202,6 +202,10 @@ $(document).ready(function(){
                 <div id="yapilanIslem{id}">
                   {yapilan_islemler}
                 </div>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Tahsilat Şekli</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TahsilatSekli">{tahsilat_sekli}</li>
+                </ul>
               </div>
               <div class="tab-pane fade" id="list-medyalar-{id}" role="tabpanel" aria-labelledby="list-medyalar-{id}-list">
                 
@@ -293,6 +297,7 @@ $eskiler = array(
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
   "{guncel_durum}",
+  "{tahsilat_sekli}",
   "{yapilan_islemler}",
 );
 
@@ -457,6 +462,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
+    $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
     $yapilanİslemler,
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
@@ -550,7 +556,7 @@ echo '
     }
   }';
 
-echo '
+  echo '
   function cihazDurumu(id) {
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
@@ -563,6 +569,19 @@ echo '
         return "' . $this->Islemler_Model->cihazDurumu[0] . '";
     }
   }';
+  echo '
+    function tahsilatSekli(id) {
+      switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
+    echo '
+        case ' . $i . ':
+          return "' . $this->Islemler_Model->tahsilatSekli[$i] . '";';
+  }
+  echo '
+        default:
+          return "' . $this->Islemler_Model->tahsilatSekli[0] . '";
+      }
+    }';
 
 echo '
   function cihazDurumuClass(id) {
@@ -616,6 +635,7 @@ echo 'function donustur(str, value) {
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
+      .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\');
   }';
 
@@ -770,7 +790,8 @@ echo '$(document).ready(function() {
             $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
             $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
             $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
-            $("#" + value.id + "Pil").html(hasarDurumu(value.pil));
+            $("#" + value.id + "Pil").html(hasarDurumu(value.pil));{id}TahsilatSekli
+            $("#" + value.id + "TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli))
             $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);';
 if ($sorumlu_belirtildimi) {
   $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
