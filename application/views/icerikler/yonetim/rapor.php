@@ -33,7 +33,9 @@ echo '<div class="content-wrapper">
             var cihazModelInput = "#cihaz_model_ara";
             var cihazTuruInput = "#cihaz_turu";
             var personelInput = "#personel";
+            var cihazDurumuInput = "#cihaz_durumu";
             var seciliPersonel = "Tümü";
+            var seciliCihazDurumu = "Hepsi";
             var yilInput = "#yil";
             var girisTarihiInput1 = "#giris_tarihi_baslangic_ara";
             var girisTarihiInput2 = "#giris_tarihi_bitis_ara";
@@ -172,7 +174,7 @@ echo '<div class="content-wrapper">
                                 {
                                     alignment: "left",
                                     text: [
-                                        { text: "Personel: " + seciliPersonel + ", Cihaz Sayısı: " + cihazSayisi() + (ucretGoster ?  ", KDV\'siz Tutar: " + tutarHesapla() + " TL, KDV: " + kdvHesapla() + " TL, Genel Toplam: " + genelToplamHesapla() + " TL" : ""), italics: true },
+                                        { text: "Cihaz Sayısı: " + cihazSayisi() + (ucretGoster ?  ", KDV\'siz Tutar: " + tutarHesapla() + " TL, KDV: " + kdvHesapla() + " TL, Genel Toplam: " + genelToplamHesapla() + " TL" : ""), italics: true },
                                     ]
                                 }
                             ],
@@ -254,6 +256,7 @@ echo '<div class="content-wrapper">
                 filtreTarih(girisTarihiInput1, girisTarihiInput2, 5);
                 filtreBirebir(cihazTuruInput, 4);
                 filtreBirebir(personelInput, 10);
+                filtreBirebir(cihazDurumuInput, 11);
                 $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2 + ", " + yilInput + ", " + cihazTuruInput).on("keyup change", function(){
                     cihazlarTablosu.draw();
                 });
@@ -262,6 +265,14 @@ echo '<div class="content-wrapper">
                         seciliPersonel = $(this).val();
                     }else{
                         seciliPersonel = "Tümü";
+                    }
+                    cihazlarTablosu.draw();
+                });
+                $(cihazDurumuInput).change(function() {
+                    if($(this).val().length > 0){
+                        seciliCihazDurumu = $(this).val();
+                    }else{
+                        seciliCihazDurumu = "Hepsi";
                     }
                     cihazlarTablosu.draw();
                 });
@@ -334,6 +345,19 @@ echo '</select>
                                                     </div>
                                                 </td>
                                                 </tr>';
+echo '<tr>
+        <td class="p-1 m-0" colspan="6">
+            <div class="form-group p-0 m-0">
+                <label for="cihaz_durumu">Cihaz Durumu</label>
+                <select id="cihaz_durumu" class="form-control" aria-label="Cihaz Durumu">
+                <option value="">Hepsi</option>';
+foreach ($this->Islemler_Model->cihazDurumu as $cihazDurumu) {
+    echo '<option value="' . $cihazDurumu . '">' . $cihazDurumu . '</option>';
+}
+echo '</select>
+                                                                            </div>
+                                                                        </td>
+                                                                        </tr>';
 $personeller = $this->Kullanicilar_Model->kullanicilar(array());
 echo '<tr>
         <td class="p-1 m-0" colspan="6">
