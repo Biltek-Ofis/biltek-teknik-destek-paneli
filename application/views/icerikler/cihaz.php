@@ -72,9 +72,9 @@ $this->load->view("ogeler/adres", array("sifirla" => true, "adres_value" => $cih
 echo '</td>
                                         </tr>
                                         <tr>
-                                            <th class="align-middle">GSM & E-Mail: </th>
+                                            <th class="align-middle">GSM *: </th>
                                             <td class="align-middle">';
-$this->load->view("ogeler/gsm", array("sifirla" => true, "gsm_mail_value" => $cihaz->gsm_mail));
+$this->load->view("ogeler/gsm", array("sifirla" => true, "telefon_numarasi_value" => $cihaz->telefon_numarasi));
 echo '</td>
                                         </tr>
                                         <tr>
@@ -182,7 +182,7 @@ echo '</td>
                             var cihaz_modeli = $("#cihaz_modeli").val();
                             var cihaz_turu = $("#cihaz_turu").prop(\'selectedIndex\');
                             var teslim_alinanlar = $("#teslim_alinanlar").val();
-                            var gsm_mail = $("#gsm_mail").val();
+                            var telefon_numarasi = $("#telefon_numarasi").val();
                             var hasar_tespiti = $("#hasar_tespiti").val();
                             var cihazdaki_hasar = $("#cihazdaki_hasar").prop(\'selectedIndex\');
                             var musteri_adi = $("#musteri_adi").val();
@@ -200,7 +200,7 @@ echo '</td>
                                 $("#cihaz_modeli").val(cihaz_modeli);
                                 $("#cihaz_turu").prop(\'selectedIndex\', cihaz_turu);
                                 $("#teslim_alinanlar").val(teslim_alinanlar);
-                                $("#gsm_mail").val(gsm_mail);
+                                $("#telefon_numarasi").val(telefon_numarasi);
                                 $("#hasar_tespiti").val(hasar_tespiti);
                                 $("#cihazdaki_hasar").prop(\'selectedIndex\', cihazdaki_hasar);
                                 $("#musteri_adi").val(musteri_adi);

@@ -91,7 +91,7 @@ function cihazGirisiVerileri(value) {
 		adres += value.CARI_ULKE_KODU;
 	}
 	$("#adres").val(adres);
-	$("#gsm_mail").val(
+	$("#telefon_numarasi").val(
 		value.CARI_TEL
 			? value.CARI_TEL
 			: value.GSM1

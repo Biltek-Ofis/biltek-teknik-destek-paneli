@@ -56,8 +56,8 @@ echo '<tr>
 <td colspan="8">' . $cihaz->adres . '</td>
 </tr>
 <tr>
-<th colspan="4">Telefon & Email:</th>
-<td colspan="8">' . $cihaz->gsm_mail . '</td>
+<th colspan="4">Telefon:</th>
+<td colspan="8">' . $cihaz->telefon_numarasi . '</td>
 </tr>
 <tr>
 <th colspan="4">Cihaz Tipi:</th>
