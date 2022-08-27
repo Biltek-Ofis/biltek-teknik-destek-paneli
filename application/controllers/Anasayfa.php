@@ -16,6 +16,9 @@ class Anasayfa extends Varsayilancontroller{
 			$this->load->view('giris', array("girisHatasi"=> ""));
 		}
     }
+    public function test(){
+        $this->load->view("icerikler/test");
+    }
 }
 
 ?>
