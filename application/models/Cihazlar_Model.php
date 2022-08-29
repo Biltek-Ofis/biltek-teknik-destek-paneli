@@ -172,6 +172,57 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->insert($this->cihazlarTabloAdi, $veri);
     }
+    public $ozelIDTabloAdi = "ozelid";
+    public function insertTrigger()
+    {
+        $isim = date("Y");
+        $grup = date("Y");
+        $sonID = $this->Cihazlar_Model->sonIDBul($isim, $grup);
+        if ($sonID == 0) {
+            $sonID = $sonID + 1;
+            $ekle = $this->Cihazlar_Model->sonIDEkle($isim, $grup, $sonID);
+            if (!$ekle) {
+                return 0;
+            }
+        } else {
+            $sonID = $sonID + 1;
+            $duzenle1 = $this->Cihazlar_Model->sonIDGuncelle($isim, $grup, $sonID);
+            if (!$duzenle1) {
+                return 0;
+            }
+        }
+        return $grup . sprintf('%06d', $sonID);
+    }
+    public function sonIDEkle($isim, $grup, $sonID)
+    {
+        $veri = array(
+            "id_adi" => $isim,
+            "id_grup" => $grup,
+            "id_val" => $sonID
+        );
+        return $this->db->insert($this->ozelIDTabloAdi,  $veri);
+    }
+    public function sonIDGuncelle($isim, $grup, $sonID)
+    {
+        $where = array(
+            "id_adi" => $isim,
+            "id_grup" => $grup
+        );
+        return $this->db->where($where)->update($this->ozelIDTabloAdi, array("id_val" => $sonID));
+    }
+    public function sonIDBul($isim, $grup)
+    {
+        $where = array(
+            "id_adi" => $isim,
+            "id_grup" => $grup
+        );
+        $query = $this->db->where($where)->limit(1)->get($this->ozelIDTabloAdi);
+        if ($query->num_rows() > 0) {
+            return $query->result()[0]->id_val;
+        } else {
+            return 0;
+        }
+    }
     public function cihazSil($id)
     {
         return $this->db->where("id", $id)->delete($this->cihazlarTabloAdi);
