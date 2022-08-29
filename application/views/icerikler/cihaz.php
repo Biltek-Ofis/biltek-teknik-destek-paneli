@@ -13,6 +13,7 @@ echo '<script>
 </script>
 <script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
+<script src="' . base_url("dist/js/forms.js") . '"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
