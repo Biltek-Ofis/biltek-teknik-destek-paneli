@@ -6,10 +6,10 @@ class Cihazlar_Model extends CI_Model
     {
         parent::__construct();
     }
-    public $cihazlarTabloAdi = "Cihazlar";
-    public $cihazTurleriTabloAdi = "CihazTurleri";
-    public $silinenCihazlarTabloAdi = "SilinenCihazlar";
-    public $medyalarTabloAdi = "Medyalar";
+    public $cihazlarTabloAdi = "cihazlar";
+    public $cihazTurleriTabloAdi = "cihazturleri";
+    public $silinenCihazlarTabloAdi = "silinencihazlar";
+    public $medyalarTabloAdi = "medyalar";
     public function cihazBul($id)
     {
         return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
