@@ -501,6 +501,7 @@ $genel_toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelTop
 
 echo '
   function servisTuru(id) {
+    id = parseInt(id);
     switch (id) {
       case 1:
         return \'' . $this->Islemler_Model->servisTuru(1) . '\';
@@ -516,6 +517,7 @@ echo '
   }';
 echo '
   function hasarDurumu(id) {
+    id = parseInt(id);
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->hasarDurumu); $i++) {
   echo '
@@ -530,6 +532,7 @@ echo '
 
 echo '
   function evetHayir(id) {
+    id = parseInt(id);
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
   echo '
@@ -544,6 +547,7 @@ echo '
 
 echo '
   function cihazdakiHasar(id) {
+    id = parseInt(id);
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->cihazdakiHasar); $i++) {
   echo '
@@ -556,8 +560,9 @@ echo '
     }
   }';
 
-  echo '
+echo '
   function cihazDurumu(id) {
+    id = parseInt(id);
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
   echo '
@@ -569,15 +574,16 @@ echo '
         return "' . $this->Islemler_Model->cihazDurumu[0] . '";
     }
   }';
-  echo '
+echo '
     function tahsilatSekli(id) {
+      id = parseInt(id);
       switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
-    echo '
+for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
+  echo '
         case ' . $i . ':
           return "' . $this->Islemler_Model->tahsilatSekli[$i] . '";';
-  }
-  echo '
+}
+echo '
         default:
           return "' . $this->Islemler_Model->tahsilatSekli[0] . '";
       }
@@ -585,6 +591,7 @@ echo '
 
 echo '
   function cihazDurumuClass(id) {
+    id = parseInt(id);
     switch (id) {';
 for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuClass); $i++) {
   echo '
@@ -766,7 +773,6 @@ echo '$(document).ready(function() {
               $("#duzenleBtn" + value.id).show();
               $("#silBtn" + value.id).show();
             }
-            $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2, #" + value.id + "ServisNo3").html(value.servis_no);
             $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
             $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
