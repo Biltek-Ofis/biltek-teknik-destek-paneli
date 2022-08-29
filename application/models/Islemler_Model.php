@@ -12,7 +12,7 @@ class Islemler_Model extends CI_Model
             "baslik" => $baslik,
             "icerik" => $icerik,
             "icerik_array" => $icerik_array,
-            "ek_css" => $ek_css,
+            "ek_css" => $ek_css
         );
     }
     public $sqlTarihFormati = "Y-m-d H:i:s.v";
@@ -112,7 +112,7 @@ class Islemler_Model extends CI_Model
     public $hasarDurumu = array(
         "Yok",
         "Hasarlı",
-        "Hasarsız",
+        "Hasarsız"
     );
     public function hasarDurumu($index)
     {
@@ -121,7 +121,7 @@ class Islemler_Model extends CI_Model
     public $evetHayir = array(
         "Belirtilmemiş",
         "Evet",
-        "Hayır",
+        "Hayır"
     );
     public function evetHayir($index)
     {
@@ -149,7 +149,7 @@ class Islemler_Model extends CI_Model
         "Fiyat Onaylanmadı",
         "Teslim Edilmeye Hazır",
         "Teslim Edildi / Ödeme Alınmadı",
-        "Teslim Edildi",
+        "Teslim Edildi"
     );
     public $cihazDurumuClass = array(
         "bg-warning",
@@ -161,7 +161,7 @@ class Islemler_Model extends CI_Model
         "bg-danger",
         "bg-primary",
         "bg-danger",
-        "bg-success",
+        "bg-success"
     );
     public function cihazDurumu($index)
     {
@@ -176,7 +176,7 @@ class Islemler_Model extends CI_Model
         "Nakit",
         "Kredi Kartı",
         "Mail Order",
-        "Açık Hesap",
+        "Açık Hesap"
     );
     public function tahsilatSekli($index)
     {
@@ -235,7 +235,7 @@ class Islemler_Model extends CI_Model
         '\u00dd',
         '\u00d6',
         '\u00c7',
-        'I',
+        'I'
     );
     public $buyukHarfler = array(
         'Ğ',
@@ -244,7 +244,7 @@ class Islemler_Model extends CI_Model
         'İ',
         'Ö',
         'Ç',
-        'I',
+        'I'
     );
     public function turkceKarakter($str)
     {
@@ -256,7 +256,7 @@ class Islemler_Model extends CI_Model
         'ğ',
         'Ğ',
         'ş',
-        'Ş',
+        'Ş'
     );
     public $aramaSemboller = array(
         'Ý',
@@ -264,7 +264,7 @@ class Islemler_Model extends CI_Model
         'Ð',
         'Ð',
         'Þ',
-        'Þ',
+        'Þ'
     );
     public function turkceKarakterArama($str)
     {

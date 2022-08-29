@@ -298,12 +298,12 @@ $eskiler = array(
   "{cikis_tarihi}",
   "{guncel_durum}",
   "{tahsilat_sekli}",
-  "{yapilan_islemler}",
+  "{yapilan_islemler}"
 );
 
 $yapilanIslemToplamEskiArray = array(
   "{toplam_aciklama}",
-  "{toplam_fiyat}",
+  "{toplam_fiyat}"
 );
 $yapilanIslemEskiArray = array(
   "{islem}",
@@ -311,7 +311,7 @@ $yapilanIslemEskiArray = array(
   "{fiyat}",
   "{toplam_islem_fiyati}",
   "{toplam_islem_kdv}",
-  "{kdv_orani}",
+  "{kdv_orani}"
 );
 $sayac = 0;
 foreach ($cihazlar as $cihaz) {
@@ -333,7 +333,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_1,
         $toplam_islem_fiyati_1,
         $kdv_1,
-        $cihaz->i_kdv_1,
+        $cihaz->i_kdv_1
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_1;
       $kdv = $kdv + $kdv_1;
@@ -348,7 +348,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_2,
         $toplam_islem_fiyati_2,
         $kdv_2,
-        $cihaz->i_kdv_2,
+        $cihaz->i_kdv_2
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_2;
       $kdv = $kdv + $kdv_2;
@@ -363,7 +363,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_3,
         $toplam_islem_fiyati_3,
         $kdv_3,
-        $cihaz->i_kdv_3,
+        $cihaz->i_kdv_3
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_3;
       $kdv = $kdv + $kdv_3;
@@ -378,7 +378,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_4,
         $toplam_islem_fiyati_4,
         $kdv_4,
-        $cihaz->i_kdv_4,
+        $cihaz->i_kdv_4
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_4;
       $kdv = $kdv + $kdv_4;
@@ -393,7 +393,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_5,
         $toplam_islem_fiyati_5,
         $kdv_5,
-        $cihaz->i_kdv_5,
+        $cihaz->i_kdv_5
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
       $kdv = $kdv + $kdv_5;
@@ -408,7 +408,7 @@ foreach ($cihazlar as $cihaz) {
         $cihaz->i_birim_fiyat_6,
         $toplam_islem_fiyati_6,
         $kdv_6,
-        $cihaz->i_kdv_6,
+        $cihaz->i_kdv_6
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
       $kdv = $kdv + $kdv_6;
@@ -419,15 +419,15 @@ foreach ($cihazlar as $cihaz) {
   }
   $yapilanIslemToplamYeni = array(
     "Toplam",
-    $toplam_fiyat,
+    $toplam_fiyat
   );
   $yapilanIslemToplamKDVYeni = array(
     "KDV",
-    $kdv,
+    $kdv
   );
   $yapilanIslemGenelToplamYeni  = array(
     "Genel Toplam",
-    $toplam_fiyat + $kdv,
+    $toplam_fiyat + $kdv
   );
   $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
   $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
@@ -463,7 +463,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
-    $yapilanİslemler,
+    $yapilanİslemler
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
@@ -484,15 +484,15 @@ echo '<script type="text/javascript">
 
 $yapilanIslemToplamYeni2 = array(
   "Toplam",
-  "0",
+  "0"
 );
 $yapilanIslemToplamKDVYeni2 = array(
   "KDV",
-  "0",
+  "0"
 );
 $yapilanIslemGenelToplamYeni2  = array(
   "Genel Toplam",
-  "0",
+  "0"
 );
 $toplam2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni2, $yapilanIslemToplam);
 $kdv2 = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni2, $yapilanIslemToplam);

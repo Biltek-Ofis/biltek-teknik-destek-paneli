@@ -24,7 +24,7 @@ class Kullanicilar_Model extends CI_Model
             "kullanici_adi" => $kullanici_adi,
             "ad_soyad" => $ad_soyad,
             "sifre" => $sifre,
-            "yonetici" => $yonetici,
+            "yonetici" => $yonetici
         );
     }
 
@@ -93,7 +93,7 @@ class Kullanicilar_Model extends CI_Model
         $veri = array(
             "kullanici_adi" => $this->input->post("kullanici_adi"),
             "ad_soyad" => $this->input->post("ad_soyad"),
-            "sifre" => $this->input->post("sifre"),
+            "sifre" => $this->input->post("sifre")
         );
         if ($yonetici_dahil) {
             $veri["yonetici"] = $this->input->post("yonetici");
@@ -103,7 +103,7 @@ class Kullanicilar_Model extends CI_Model
     public function kullaniciAdiKontrol($kullanici_adi)
     {
         $where = array(
-            "kullanici_adi" => $kullanici_adi,
+            "kullanici_adi" => $kullanici_adi
         );
         $query = $this->db->where($where)->get($this->kullanicilarTablosu);
         return !($query->num_rows() > 0);

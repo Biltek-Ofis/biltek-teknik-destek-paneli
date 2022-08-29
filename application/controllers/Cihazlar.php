@@ -15,7 +15,7 @@ class Cihazlar extends Varsayilancontroller
 				"baslik" => $this->Cihazlar_Model->cihazTuru($tur),
 				"cihazlar" => $this->Cihazlar_Model->cihazlarTekTur($tur),
 				"cihazTurleri" => $this->Cihazlar_Model->cihazTurleri(),
-				"suankiCihazTuru" => $tur,
+				"suankiCihazTuru" => $tur
 			);
 			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray($this->Cihazlar_Model->cihazTuru($tur), "cihazlar", $veri, "inc/datatables"));
 		} else {
