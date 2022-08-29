@@ -15,7 +15,7 @@ class Kullanicilar_Model extends CI_Model
             window.location.replace("' . base_url($konum) . '");
         }</script>';
     }
-    public $kullanicilarTablosu = "Kullanicilar";
+    public $kullanicilarTablosu = "kullanicilar";
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0)
     {
