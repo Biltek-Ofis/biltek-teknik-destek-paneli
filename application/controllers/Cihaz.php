@@ -53,7 +53,7 @@ class Cihaz extends Varsayilancontroller
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
                 "guncel_durum" => $guncel_durum,
-                "tahsilat_sekli" => $tahsilat_sekli,
+                "tahsilat_sekli" => $tahsilat_sekli
             );
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
@@ -78,7 +78,7 @@ class Cihaz extends Varsayilancontroller
                     strlen($islem) > 0 ? $islem : NULL,
                     strlen($islem) > 0 ? $this->input->post("miktar" . $i) : 0,
                     strlen($islem) > 0 ? $this->input->post("birim_fiyati" . $i) : 0,
-                    strlen($islem) > 0 ? $this->input->post("kdv_" . $i) : 0,
+                    strlen($islem) > 0 ? $this->input->post("kdv_" . $i) : 0
                 );
                 $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                 if (!$duzenle) {
@@ -150,7 +150,7 @@ class Cihaz extends Varsayilancontroller
                     $yukleVeri = array(
                         "cihaz_id" => $id,
                         "konum" => $tasinacakKonum,
-                        "tur" => $tur,
+                        "tur" => $tur
                     );
                     $ekle = $this->Cihazlar_Model->medyaYukle($yukleVeri);
                     if ($ekle) {

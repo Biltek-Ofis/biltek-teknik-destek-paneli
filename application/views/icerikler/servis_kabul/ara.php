@@ -46,7 +46,7 @@ if (strlen($servis_no)) {
 
     $yapilanIslemToplamEskiArray = array(
       "{toplam_aciklama}",
-      "{toplam_fiyat}",
+      "{toplam_fiyat}"
     );
     $yapilanIslemEskiArray = array(
       "{islem}",
@@ -54,7 +54,7 @@ if (strlen($servis_no)) {
       "{fiyat}",
       "{toplam_islem_fiyati}",
       "{toplam_islem_kdv}",
-      "{kdv_orani}",
+      "{kdv_orani}"
     );
     $yapilanIslemlerSatiriBos = '<ul class="list-group">
             <li class="list-group-item text-center">Şuanda yapılmış bir işlem yok.</li>
@@ -84,7 +84,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_1,
           $toplam_islem_fiyati_1,
           $kdv_1,
-          $cihaz->i_kdv_1,
+          $cihaz->i_kdv_1
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_1;
         $kdv = $kdv + $kdv_1;
@@ -99,7 +99,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_2,
           $toplam_islem_fiyati_2,
           $kdv_2,
-          $cihaz->i_kdv_2,
+          $cihaz->i_kdv_2
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_2;
         $kdv = $kdv + $kdv_2;
@@ -114,7 +114,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_3,
           $toplam_islem_fiyati_3,
           $kdv_3,
-          $cihaz->i_kdv_3,
+          $cihaz->i_kdv_3
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_3;
         $kdv = $kdv + $kdv_3;
@@ -129,7 +129,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_4,
           $toplam_islem_fiyati_4,
           $kdv_4,
-          $cihaz->i_kdv_4,
+          $cihaz->i_kdv_4
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_4;
         $kdv = $kdv + $kdv_4;
@@ -144,7 +144,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_5,
           $toplam_islem_fiyati_5,
           $kdv_5,
-          $cihaz->i_kdv_5,
+          $cihaz->i_kdv_5
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
         $kdv = $kdv + $kdv_5;
@@ -159,7 +159,7 @@ if (strlen($servis_no)) {
           $cihaz->i_birim_fiyat_6,
           $toplam_islem_fiyati_6,
           $kdv_6,
-          $cihaz->i_kdv_6,
+          $cihaz->i_kdv_6
         );
         $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
         $kdv = $kdv + $kdv_6;
@@ -170,15 +170,15 @@ if (strlen($servis_no)) {
     }
     $yapilanIslemToplamYeni = array(
       "Toplam",
-      $toplam_fiyat,
+      $toplam_fiyat
     );
     $yapilanIslemToplamKDVYeni = array(
       "KDV",
-      $kdv,
+      $kdv
     );
     $yapilanIslemGenelToplamYeni  = array(
       "Genel Toplam",
-      $toplam_fiyat + $kdv,
+      $toplam_fiyat + $kdv
     );
     $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
     $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);

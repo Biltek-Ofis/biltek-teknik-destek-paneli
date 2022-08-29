@@ -17,7 +17,7 @@ class Cihazlarim extends Varsayilancontroller
                 "baslik" => "Cihazlarım",
                 "cihazlarim" => $this->Cihazlar_Model->cihazlarTekTur($this->kullaniciID),
                 "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri(),
-                "suankiPersonel" => $this->Kullanicilar_Model->kullaniciBilgileri()["id"],
+                "suankiPersonel" => $this->Kullanicilar_Model->kullaniciBilgileri()["id"]
             );
             $this->load->view("tasarim", $this->Islemler_Model->tasarimArray($veri["baslik"], "cihazlarim", $veri, "inc/datatables"));
         } else {

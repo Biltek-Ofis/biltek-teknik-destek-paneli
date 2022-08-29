@@ -119,12 +119,12 @@ class Yonetim extends Varsayilancontroller
 				$icerik = str_replace(
 					'SITE_BASLIGI="' . getenv("SITE_BASLIGI") . '"',
 					'SITE_BASLIGI="' . $SITE_BASLIGI . '"',
-					$icerik,
+					$icerik
 				);
 				$icerik = str_replace(
 					'FIRMA_SITE_URL=' . getenv("FIRMA_SITE_URL"),
 					'FIRMA_SITE_URL=' . $FIRMA_SITE_URL,
-					$icerik,
+					$icerik
 				);
 				if (file_put_contents($path, $icerik)) {
 					redirect(base_url("yonetim/site_ayarlari"));

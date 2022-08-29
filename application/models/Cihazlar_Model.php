@@ -17,7 +17,7 @@ class Cihazlar_Model extends CI_Model
     public function servisNo($servis_no)
     {
         $bul = array(
-            "servis_no" => $servis_no,
+            "servis_no" => $servis_no
         );
         return $this->db->where($bul)->limit(1)->get($this->cihazlarTabloAdi);
     }
@@ -50,7 +50,7 @@ class Cihazlar_Model extends CI_Model
     {
         $veri = array(
             "isim" => $this->input->post("isim"),
-            "sifre" => $this->input->post("sifre"),
+            "sifre" => $this->input->post("sifre")
         );
         return $veri;
     }
@@ -75,7 +75,7 @@ class Cihazlar_Model extends CI_Model
     public function cihazlarTekTur($tur)
     {
         $where = array(
-            "cihaz_turu" => $tur,
+            "cihaz_turu" => $tur
         );
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
@@ -83,7 +83,7 @@ class Cihazlar_Model extends CI_Model
     public function cihazlarTekPersonel($tur)
     {
         $where = array(
-            "sorumlu" => $tur,
+            "sorumlu" => $tur
         );
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
@@ -91,7 +91,7 @@ class Cihazlar_Model extends CI_Model
     public function cihazlarJQ($id)
     {
         $where = array(
-            "id >" => $id,
+            "id >" => $id
         );
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
@@ -152,7 +152,7 @@ class Cihazlar_Model extends CI_Model
             "cihazdaki_hasar" => $this->input->post("cihazdaki_hasar"),
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
             "servis_turu" => $this->input->post("servis_turu"),
-            "yedek_durumu" => $this->input->post("yedek_durumu"),
+            "yedek_durumu" => $this->input->post("yedek_durumu")
         );
         $sorumlu = $this->input->post("sorumlu");
         if (isset($sorumlu)) {
@@ -189,7 +189,7 @@ class Cihazlar_Model extends CI_Model
             "i_ad_" . $index => $islem,
             "i_birim_fiyat_" . $index => $birim_fiyati,
             "i_miktar_" . $index => $miktar,
-            "i_kdv_" . $index => $kdv,
+            "i_kdv_" . $index => $kdv
         );
     }
     public function cihazDetayModalAdi()
