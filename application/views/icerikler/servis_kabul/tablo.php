@@ -2,6 +2,9 @@
 echo '<script>
 $(document).ready(function(){ 
     ' . $barcode_script . '
+    setTimeout(function(){
+        window.print();
+    },1000);
 });
 </script>';
 echo '
