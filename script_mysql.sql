@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 29 Ağu 2022, 13:35:11
--- Sunucu sürümü: 10.4.24-MariaDB
--- PHP Sürümü: 7.4.29
+-- Anamakine: localhost
+-- Üretim Zamanı: 30 Ağu 2022, 10:59:50
+-- Sunucu sürümü: 5.6.51
+-- PHP Sürümü: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `teknik_servis`
+-- Veritabanı: `biltekbi_lisim`
 --
-
-
 
 -- --------------------------------------------------------
 
@@ -31,60 +29,60 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cihazlar` (
   `id` int(11) NOT NULL,
+  `servis_no` varchar(50) DEFAULT NULL,
   `musteri_kod` varchar(20) DEFAULT NULL,
   `musteri_adi` varchar(255) NOT NULL,
   `adres` varchar(255) NOT NULL,
   `telefon_numarasi` varchar(255) NOT NULL,
   `cihaz_turu` int(11) NOT NULL,
+  `sorumlu` int(11) NOT NULL DEFAULT '0',
   `cihaz` varchar(255) NOT NULL,
   `cihaz_modeli` varchar(255) NOT NULL,
   `seri_no` varchar(255) NOT NULL,
+  `cihaz_sifresi` varchar(50) DEFAULT NULL,
   `hasar_tespiti` varchar(255) NOT NULL,
-  `cihazdaki_hasar` tinyint(3) UNSIGNED NOT NULL,
-  `ariza_aciklamasi` longtext DEFAULT NULL,
-  `servis_turu` tinyint(3) UNSIGNED NOT NULL,
-  `yedek_durumu` tinyint(3) UNSIGNED NOT NULL,
-  `teslim_alinanlar` longtext DEFAULT NULL,
-  `yapilan_islem_aciklamasi` longtext DEFAULT NULL,
-  `teslim_edildi` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `tarih` datetime NOT NULL,
+  `cihazdaki_hasar` int(11) NOT NULL,
+  `ariza_aciklamasi` longtext,
+  `servis_turu` int(11) NOT NULL,
+  `yedek_durumu` int(11) NOT NULL,
+  `teslim_alinanlar` longtext,
+  `yapilan_islem_aciklamasi` longtext,
+  `teslim_edildi` int(11) NOT NULL DEFAULT '0',
+  `tarih` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bildirim_tarihi` datetime DEFAULT NULL,
   `cikis_tarihi` datetime DEFAULT NULL,
-  `guncel_durum` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `guncel_durum` int(11) NOT NULL DEFAULT '0',
+  `tahsilat_sekli` int(11) NOT NULL DEFAULT '0',
   `i_stok_kod_1` varchar(50) DEFAULT NULL,
   `i_ad_1` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_1` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_1` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_1` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `i_birim_fiyat_1` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_1` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_1` decimal(5,2) NOT NULL DEFAULT '0.00',
   `i_stok_kod_2` varchar(50) DEFAULT NULL,
   `i_ad_2` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_2` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_2` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_2` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `i_birim_fiyat_2` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_2` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_2` decimal(5,2) NOT NULL DEFAULT '0.00',
   `i_stok_kod_3` varchar(50) DEFAULT NULL,
   `i_ad_3` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_3` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_3` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_3` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `i_birim_fiyat_3` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_3` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_3` decimal(5,2) NOT NULL DEFAULT '0.00',
   `i_stok_kod_4` varchar(50) DEFAULT NULL,
   `i_ad_4` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_4` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_4` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_4` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `i_birim_fiyat_4` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_4` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_4` decimal(5,2) NOT NULL DEFAULT '0.00',
   `i_stok_kod_5` varchar(50) DEFAULT NULL,
   `i_ad_5` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_5` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_5` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_5` decimal(5,2) NOT NULL DEFAULT 0.00,
-  `cihaz_sifresi` varchar(50) DEFAULT NULL,
-  `servis_no` varchar(50) DEFAULT NULL,
-  `sorumlu` int(11) NOT NULL DEFAULT 0,
+  `i_birim_fiyat_5` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_5` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_5` decimal(5,2) NOT NULL DEFAULT '0.00',
   `i_stok_kod_6` varchar(50) DEFAULT NULL,
   `i_ad_6` varchar(255) DEFAULT NULL,
-  `i_birim_fiyat_6` decimal(28,2) NOT NULL DEFAULT 0.00,
-  `i_miktar_6` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_6` decimal(5,2) NOT NULL DEFAULT 0.00,
-  `tahsilat_sekli` tinyint(3) UNSIGNED NOT NULL DEFAULT 0
+  `i_birim_fiyat_6` decimal(28,2) NOT NULL DEFAULT '0.00',
+  `i_miktar_6` int(11) NOT NULL DEFAULT '0',
+  `i_kdv_6` decimal(5,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -96,7 +94,7 @@ CREATE TABLE `cihazlar` (
 CREATE TABLE `cihazturleri` (
   `id` int(11) NOT NULL,
   `isim` varchar(255) NOT NULL,
-  `sifre` tinyint(3) UNSIGNED NOT NULL DEFAULT 0
+  `sifre` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -110,7 +108,7 @@ CREATE TABLE `kullanicilar` (
   `kullanici_adi` varchar(50) DEFAULT NULL,
   `ad_soyad` varchar(100) DEFAULT NULL,
   `sifre` varchar(255) NOT NULL,
-  `yonetici` tinyint(3) UNSIGNED NOT NULL DEFAULT 0
+  `yonetici` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -146,9 +144,12 @@ CREATE TABLE `ozelid` (
 
 CREATE TABLE `silinencihazlar` (
   `id` int(11) NOT NULL,
-  `silinme_tarihi` datetime NOT NULL
+  `silinme_tarihi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dökümü yapılmış tablolar için indeksler
+--
 
 --
 -- Tablo için indeksler `cihazlar`
@@ -194,27 +195,26 @@ ALTER TABLE `silinencihazlar`
 -- Tablo için AUTO_INCREMENT değeri `cihazlar`
 --
 ALTER TABLE `cihazlar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `cihazturleri`
 --
 ALTER TABLE `cihazturleri`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `kullanicilar`
 --
 ALTER TABLE `kullanicilar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `medyalar`
 --
 ALTER TABLE `medyalar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
