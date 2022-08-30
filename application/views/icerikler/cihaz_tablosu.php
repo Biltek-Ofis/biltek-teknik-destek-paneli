@@ -102,6 +102,10 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ServisNo2">{servis_no}</li>
                 </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Takip No:</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TakipNo">{takip_no}</li>
+                </ul>
                 <!--<ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriKod">{musteri_kod}</li>
@@ -274,6 +278,7 @@ $eskiler = array(
   "{class}",
   "{display_kilit}",
   "{servis_no}",
+  "{takip_no}",
   "{id}",
   "{musteri_adi}",
   "{musteri_kod}",
@@ -439,6 +444,7 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
     ($cihaz->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) ? "display:none;" : "",
     $cihaz->servis_no,
+    $cihaz->takip_numarasi,
     $cihaz->id,
     $cihaz->musteri_adi,
     isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
@@ -774,6 +780,7 @@ echo '$(document).ready(function() {
               $("#silBtn" + value.id).show();
             }
             $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2, #" + value.id + "ServisNo3").html(value.servis_no);
+            $("#" + value.id + "TakipNo").html(value.takip_numarasi);
             $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
             $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
             $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);

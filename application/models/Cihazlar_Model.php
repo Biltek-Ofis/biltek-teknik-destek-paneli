@@ -14,10 +14,10 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi);
     }
-    public function servisNo($servis_no)
+    public function takipNumarasi($takip_numarasi)
     {
         $bul = array(
-            "servis_no" => $servis_no
+            "takip_numarasi" => $takip_numarasi
         );
         return $this->db->where($bul)->limit(1)->get($this->cihazlarTabloAdi);
     }
@@ -139,6 +139,7 @@ class Cihazlar_Model extends CI_Model
     {
         $musteri_kod = $this->input->post("musteri_kod");
         $veri = array(
+            "takip_numarasi" => time(),
             "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : NULL,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
