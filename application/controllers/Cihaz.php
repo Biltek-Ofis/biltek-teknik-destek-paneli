@@ -69,7 +69,7 @@ class Cihaz extends Varsayilancontroller
             $cihaz_verileri["cikis_tarihi"] = strlen($cikis_tarihi) > 0 ? $cikis_tarihi : NULL;
             $this->Cihazlar_Model->cihazDuzenle(
                 $id,
-                $cihaz_verileri,
+                $cihaz_verileri
             );
             for ($i = 1; $i <= 6; $i++) {
                 $islem = $this->input->post("islem" . $i);
