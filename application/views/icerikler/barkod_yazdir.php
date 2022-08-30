@@ -62,6 +62,13 @@ echo '
             ' . $tableStyle . '
         }
     </style>
+    <script>
+    $(document).ready(function() {
+        setTimeout(function(){
+            window.print();
+        },1000);
+    });
+    </script>
 </head>';
 
 echo '<body onafterprint="self.close()">

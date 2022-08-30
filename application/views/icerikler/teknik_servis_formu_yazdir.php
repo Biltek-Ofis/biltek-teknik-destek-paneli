@@ -38,6 +38,11 @@ echo '<style>
             border: 0 !important;
         }
     </style>
+    <script>
+    $(document).ready(function() {
+        window.print();
+    });
+    </script>
 </head>';
 
 echo '<body onafterprint="self.close()">
