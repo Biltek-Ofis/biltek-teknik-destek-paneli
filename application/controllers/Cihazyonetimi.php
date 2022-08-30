@@ -54,6 +54,7 @@ class Cihazyonetimi extends Varsayilancontroller
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
 			$sil = $this->Cihazlar_Model->cihazSil($id);
+			$this->Cihazlar_Model->deleteTrigger($id);
 			if ($sil) {
 				redirect(base_url(""));
 			} else {

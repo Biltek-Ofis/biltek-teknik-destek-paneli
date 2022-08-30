@@ -193,6 +193,11 @@ class Cihazlar_Model extends CI_Model
         }
         return $grup . sprintf('%06d', $sonID);
     }
+    public function deleteTrigger($id)
+    {
+        $this->db->query("DELETE FROM " . $this->silinenCihazlarTabloAdi . " WHERE silinme_tarihi < now() - interval 1 day");
+        return $this->db->insert($this->silinenCihazlarTabloAdi, array("id" => $id));
+    }
     public function sonIDEkle($isim, $grup, $sonID)
     {
         $veri = array(
