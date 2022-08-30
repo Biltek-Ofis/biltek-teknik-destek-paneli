@@ -53,7 +53,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <td id="{id}MusteriGSM">{telefon_numarasi}</td>
   <td id="{id}CihazTuru">{cihaz_turu}</td>
   <td id="{id}Cihaz">{cihaz} {cihaz_modeli}</td>
-  <td id="{id}Tarih">{tarih2}</td>
+  <td id="{id}Tarih2">{tarih2}</td>
   <td id="{id}GuncelDurum">{guncel_durum}</td>
   <td id="{id}Sorumlu">{sorumlu}</td>
   <td class="text-center">
@@ -120,7 +120,7 @@ $(document).ready(function(){
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Tarih2">{tarih}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Tarih">{tarih}</li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
@@ -292,8 +292,8 @@ $eskiler = array(
   "{servis_turu}",
   "{yedek_durumu}",
   "{yapilan_islem_aciklamasi}",
-  "{tarih2}",
   "{tarih}",
+  "{tarih2}",
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
   "{guncel_durum}",
@@ -457,8 +457,8 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->servisTuru($cihaz->servis_turu),
     $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
     $cihaz->yapilan_islem_aciklamasi,
-    $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->tarih,
+    $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
@@ -610,7 +610,7 @@ echo 'function tarihDonusturSiralama(tarih) {
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
     var saat = tarih.slice(11, 16);
-    return yil + "." + ay + "." + gun + " " + saat;
+    return yil + "." + ay + "." + gun;
   }';
 
 echo 'function donustur(str, value) {
@@ -637,8 +637,8 @@ echo 'function donustur(str, value) {
       .replaceAll("{servis_turu}", servisTuru(value.servis_turu))
       .replaceAll("{yedek_durumu}", evetHayir(value.yedek_durumu))
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
-      .replaceAll("{tarih2}", tarihDonusturSiralama(value.tarih))
       .replaceAll("{tarih}", value.tarih)
+      .replaceAll("{tarih2}", tarihDonusturSiralama(value.tarih))
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
@@ -782,8 +782,8 @@ echo '$(document).ready(function() {
             $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
             $("#" + value.id + "MusteriAdres").html(value.adres);
             $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.telefon_numarasi);
-            $("#" + value.id + "Tarih").html(tarihDonusturSiralama(value.tarih));
-            $("#" + value.id + "Tarih2").html(value.tarih);
+            $("#" + value.id + "Tarih").html(value.tarih);
+            $("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));
             $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
             $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
             $("#" + value.id + "CihazMarka").html(value.cihaz);
