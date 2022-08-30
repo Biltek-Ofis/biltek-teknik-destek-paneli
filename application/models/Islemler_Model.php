@@ -132,7 +132,7 @@ class Islemler_Model extends CI_Model
         "Çizik",
         "Kırık",
         "Çatlak",
-        "Diğer",
+        "Diğer"
     );
     public function cihazdakiHasar($index)
     {
