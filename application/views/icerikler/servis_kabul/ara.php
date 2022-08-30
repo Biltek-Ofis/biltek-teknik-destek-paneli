@@ -11,27 +11,26 @@ $this->load->view("inc/meta");
 $this->load->view("inc/styles");
 echo '<link rel="stylesheet" href="' . base_url("plugins/icheck-bootstrap/icheck-bootstrap.min.css") . '">';
 $this->load->view("inc/scripts");
-if (strlen($servis_no)) {
-} else {
+if (strlen($takip_numarasi) == 0) {
   echo '<script>
     $(document).ready(function(){
-        var servis_no = $("#servis_no");
+        var takip_numarasi = $("#takip_numarasi");
         $("#ara").on("click", function(){
-            var servis_no_val = servis_no.val();
-            if(servis_no_val.length > 0){
-                window.location.href = "' . base_url("serviskabul") . '/" + servis_no_val;
+            var takip_numarasi_val = takip_numarasi.val();
+            if(takip_numarasi_val.length > 0){
+                window.location.href = "' . base_url("serviskabul") . '/" + takip_numarasi_val;
             }else{
                 $("#uyari").show();
             }
         });
-        servis_no.keyup(function(){
+        takip_numarasi.keyup(function(){
             $("#uyari").hide();
         });
     });
     </script>';
 }
 echo '</head>';
-if (strlen($servis_no)) {
+if (strlen($takip_numarasi)) {
   $hataMesaji = '<style type="text/css">
   
   ::selection { background-color: #E13300; color: white; }
@@ -83,7 +82,7 @@ if (strlen($servis_no)) {
   }
   </style>
   <div id="container">
-  <h1>' . $servis_no . ' Servis numarasına ait cihaz bulunamadı.</h1>
+  <h1>' . $takip_numarasi . time() . ' Takip numarasına ait cihaz bulunamadı.</h1>
   Lütfen servis numaranızı kontrol edip tekrar deneyin.
   <div class="w-100 m-0 p-0">
     <div class="row m-0 p-0 d-flex justify-content-end">
@@ -101,10 +100,10 @@ if (strlen($servis_no)) {
   $besliDorduncuOgeGenislik = "20%";
   $besliBesinciOgeGenislik = "20%";
   echo '<body>';
-  $cihazBul = $this->Cihazlar_Model->servisNo($servis_no);
+  $cihazBul = $this->Cihazlar_Model->takipNumarasi($takip_numarasi);
   if ($cihazBul->num_rows() > 0) {
     $cihaz = $this->Cihazlar_Model->cihazVerileriniDonustur($cihazBul->result())[0];
-    if ($cihaz->guncel_durum < count($this->Islemler_Model->cihazDurumu) - 1) {
+    if ($cihaz->guncel_durum < count($this->Islemler_Model->cihazDurumu) - 2) {
 
       $yapilanIslemToplamEskiArray = array(
         "{toplam_aciklama}",
@@ -263,6 +262,10 @@ if (strlen($servis_no)) {
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'ServisNo2">' . $cihaz->servis_no . '</li>
               </ul>
               <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Takip No:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TakipNo">' . $cihaz->takip_numarasi . '</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazTuru2">' . $cihaz->cihaz_turu . '</li>
               </ul>
@@ -363,7 +366,7 @@ if (strlen($servis_no)) {
                             <span class="fas fa-laptop"></span>
                         </div>
                     </div>
-                    <input type="text" id="servis_no" name="servis_no" class="form-control" placeholder="Servis Numarası">
+                    <input type="text" id="takip_numarasi" name="takip_numarasi" class="form-control" placeholder="Takip Numarası">
                 </div>
                 <div class="row">
                     <div class="col-8">

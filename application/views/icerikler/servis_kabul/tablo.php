@@ -41,7 +41,11 @@ echo '<tr>
 <tr>
 <th colspan="4" class="align-middle">Servis No:</th>
 <td colspan="3" class="align-middle">' . $cihaz->servis_no . '</td>
-<td colspan="6" class="align-middle m-auto text-center">' . $barcode_div . '</td>
+<td colspan="6" rowspan="2" class="align-middle m-auto text-center">' . $barcode_div . '</td>
+</tr>
+<tr>
+<th colspan="4" class="align-middle">Takip Numarasi:</th>
+<td colspan="3" class="align-middle">' . $cihaz->takip_numarasi . '</td>
 </tr>
 <tr>
 <th colspan="4">Onarım Türü:</th>

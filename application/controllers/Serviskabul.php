@@ -8,8 +8,8 @@ class ServisKabul extends Varsayilancontroller
     {
         parent::__construct();
     }
-    public function index($servis_no = "")
+    public function index($takip_numarasi = "")
     {
-        $this->load->view("icerikler/servis_kabul/ara", array("servis_no" => $servis_no));
+        $this->load->view("icerikler/servis_kabul/ara", array("takip_numarasi" => $takip_numarasi));
     }
 }
