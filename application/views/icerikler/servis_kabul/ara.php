@@ -34,9 +34,9 @@ echo '</head>';
 if (strlen($servis_no)) {
   $ilkOgeGenislik = "40%";
   $ikinciOgeGenislik = "60%";
-  $besliIlkOgeGenislik = "40%";
-  $besliIkinciOgeGenislik = "10%";
-  $besliUcuncuOgeGenislik = "10%";
+  $besliIlkOgeGenislik = "20%";
+  $besliIkinciOgeGenislik = "20%";
+  $besliUcuncuOgeGenislik = "20%";
   $besliDorduncuOgeGenislik = "20%";
   $besliBesinciOgeGenislik = "20%";
   echo '<body>';
@@ -187,8 +187,7 @@ if (strlen($servis_no)) {
     echo '<div class="row">
         <div class="col-4">
           <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-' . $cihaz->id . '-list" data-toggle="list" href="#list-genel-bilgiler-' . $cihaz->id . '" role="tab" aria-controls="genel-bilgiler-' . $cihaz->id . '">Genel Bilgiler</a>
-            <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-' . $cihaz->id . '-list" data-toggle="list" href="#list-cihaz-bilgileri-' . $cihaz->id . '" role="tab" aria-controls="cihaz-bilgileri-' . $cihaz->id . '">Cihaz Bilgileri</a>
+            <a class="list-group-item list-group-item-action active" id="list-cihaz-bilgileri-' . $cihaz->id . '-list" data-toggle="list" href="#list-cihaz-bilgileri-' . $cihaz->id . '" role="tab" aria-controls="cihaz-bilgileri-' . $cihaz->id . '">Cihaz Bilgileri</a>
             <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-' . $cihaz->id . '-list" data-toggle="list" href="#list-teknik-servis-bilgileri-' . $cihaz->id . '" role="tab" aria-controls="teknik-servis-bilgileri-' . $cihaz->id . '">Teknik Servis Bilgileri</a>
             <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-' . $cihaz->id . '-list" data-toggle="list" href="#list-yapilan-islemler-' . $cihaz->id . '" role="tab" aria-controls="yapilan-islemler-' . $cihaz->id . '">Yapılan İşlemler</a>
             <a class="list-group-item list-group-item-action" id="list-medyalar-' . $cihaz->id . '-list" data-toggle="list" href="#list-medyalar-' . $cihaz->id . '" role="tab" aria-controls="medyalar-' . $cihaz->id . '">Medyalar</a>
@@ -196,41 +195,11 @@ if (strlen($servis_no)) {
         </div>
         <div class="col-8">
           <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-genel-bilgiler-' . $cihaz->id . '" role="tabpanel" aria-labelledby="list-genel-bilgiler-' . $cihaz->id . '-list">
+            <div class="tab-pane fade show active" id="list-cihaz-bilgileri-' . $cihaz->id . '" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-' . $cihaz->id . '-list">
               <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Kodu:</span></li>
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'ServisNo2">' . $cihaz->servis_no . '</li>
               </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriKod">' . $cihaz->musteri_kod . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriAdi2">' . $cihaz->musteri_adi . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriAdres">' . $cihaz->adres . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriGSM2">' . $cihaz->telefon_numarasi . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'Tarih2">' . $cihaz->tarih . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'BildirimTarihi">' . $cihaz->bildirim_tarihi . '</li>
-              </ul>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="' . $cihaz->id . 'CikisTarihi">' . $cihaz->cikis_tarihi . '</span></li>
-              </ul>
-            </div>
-            <div class="tab-pane fade" id="list-cihaz-bilgileri-' . $cihaz->id . '" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-' . $cihaz->id . '-list">
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazTuru2">' . $cihaz->cihaz_turu . '</li>
