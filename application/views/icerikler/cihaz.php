@@ -54,12 +54,12 @@ echo '<script>
                                     <thead></thead>
                                     <tbody>
 
-                                        <tr>
+                                        <!--<tr>
                                             <th class="align-middle">Müşteri Kodu: </th>
                                             <td id="musteri_kod_text" class="align-middle">
                                                 ' . (isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok") . '
                                             </td>
-                                        </tr>
+                                        </tr>-->
                                         <tr>
                                             <th class="align-middle">Müşteri Adı: </th>
                                             <td class="align-middle">';
@@ -256,7 +256,7 @@ echo '</td>
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>SK</th>
+                                            <!--<th>SK</th>-->
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
                                             <th>Birim Fiyat (TL)</th>

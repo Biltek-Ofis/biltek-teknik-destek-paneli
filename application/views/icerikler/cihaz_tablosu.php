@@ -102,10 +102,10 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ServisNo2">{servis_no}</li>
                 </ul>
-                <ul class="list-group list-group-horizontal">
+                <!--<ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriKod">{musteri_kod}</li>
-                </ul>
+                </ul>-->
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriAdi2">{musteri_adi}</li>

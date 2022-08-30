@@ -1,7 +1,7 @@
 <?php
 echo '<tr>
     <td>' . $index . '</td>
-    <td id="stokKodText' . $index . '">' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "Yok") . '</td>
+    <!--<td id="stokKodText' . $index . '">' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "Yok") . '</td>-->
     <td>
         <input id="yapilanIslemStokKod' . $index . '" autocomplete="off" name="stok_kod' . $index . '" type="hidden" value="' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "") . '">
         <div class="form-group p-0 m-0 col">
