@@ -32,6 +32,67 @@ if (strlen($servis_no)) {
 }
 echo '</head>';
 if (strlen($servis_no)) {
+  $hataMesaji = '<style type="text/css">
+  
+  ::selection { background-color: #E13300; color: white; }
+  ::-moz-selection { background-color: #E13300; color: white; }
+  
+  body {
+      background-color: #fff;
+      margin: 40px;
+      font: 13px/20px normal Helvetica, Arial, sans-serif;
+      color: #4F5155;
+  }
+  
+  a {
+      color: #003399;
+      background-color: transparent;
+      font-weight: normal;
+  }
+  
+  h1 {
+      color: #444;
+      background-color: transparent;
+      border-bottom: 1px solid #D0D0D0;
+      font-size: 19px;
+      font-weight: normal;
+      margin: 0 0 14px 0;
+      padding: 14px 15px 10px 15px;
+  }
+  
+  code {
+      font-family: Consolas, Monaco, Courier New, Courier, monospace;
+      font-size: 12px;
+      background-color: #f9f9f9;
+      border: 1px solid #D0D0D0;
+      color: #002166;
+      display: block;
+      margin: 14px 0 14px 0;
+      padding: 12px 10px 12px 10px;
+  }
+  
+  #container {
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #D0D0D0;
+      box-shadow: 0 0 8px #D0D0D0;
+  }
+  
+  p {
+      margin: 12px 15px 12px 15px;
+  }
+  </style>
+  <div id="container">
+  <h1>' . $servis_no . ' Servis numarasına ait cihaz bulunamadı.</h1>
+  Lütfen servis numaranızı kontrol edip tekrar deneyin.
+  <div class="w-100 m-0 p-0">
+    <div class="row m-0 p-0 d-flex justify-content-end">
+      <a href="javascript:history.go(-1);" class="btn btn-danger me-2 mb-2">
+        Geri
+      </a>
+    </div>
+  </div>
+  </div>';
   $ilkOgeGenislik = "40%";
   $ikinciOgeGenislik = "60%";
   $besliIlkOgeGenislik = "20%";
@@ -43,148 +104,149 @@ if (strlen($servis_no)) {
   $cihazBul = $this->Cihazlar_Model->servisNo($servis_no);
   if ($cihazBul->num_rows() > 0) {
     $cihaz = $this->Cihazlar_Model->cihazVerileriniDonustur($cihazBul->result())[0];
+    if ($cihaz->guncel_durum < count($this->Islemler_Model->cihazDurumu) - 1) {
 
-    $yapilanIslemToplamEskiArray = array(
-      "{toplam_aciklama}",
-      "{toplam_fiyat}"
-    );
-    $yapilanIslemEskiArray = array(
-      "{islem}",
-      "{miktar}",
-      "{fiyat}",
-      "{toplam_islem_fiyati}",
-      "{toplam_islem_kdv}",
-      "{kdv_orani}"
-    );
-    $yapilanIslemlerSatiriBos = '<ul class="list-group">
+      $yapilanIslemToplamEskiArray = array(
+        "{toplam_aciklama}",
+        "{toplam_fiyat}"
+      );
+      $yapilanIslemEskiArray = array(
+        "{islem}",
+        "{miktar}",
+        "{fiyat}",
+        "{toplam_islem_fiyati}",
+        "{toplam_islem_kdv}",
+        "{kdv_orani}"
+      );
+      $yapilanIslemlerSatiriBos = '<ul class="list-group">
             <li class="list-group-item text-center">Şuanda yapılmış bir işlem yok.</li>
         </ul>';
-    $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
+      $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
             <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';">{islem}</li>
             <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';">{miktar}</li>
             <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';">{fiyat} TL</li>
             <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
             <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
         </ul>';
-    $yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
+      $yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
             <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">{toplam_aciklama}</span></li>
             <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span class="font-weight-bold">{toplam_fiyat} TL</span></li>
         </ul>';
-    $yapilanİslemler = "";
-    $toplam_fiyat = 0;
-    $kdv = 0;
-    if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+      $yapilanİslemler = "";
+      $toplam_fiyat = 0;
       $kdv = 0;
-      if ($cihaz->i_ad_1 != "") {
-        $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
-        $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
-        $yapilanIslemYeniArray_1 = array(
-          $cihaz->i_ad_1,
-          $cihaz->i_miktar_1,
-          $cihaz->i_birim_fiyat_1,
-          $toplam_islem_fiyati_1,
-          $kdv_1,
-          $cihaz->i_kdv_1
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_1;
-        $kdv = $kdv + $kdv_1;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_1, $yapilanIslemlerSatiri);
+      if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "") {
+        $kdv = 0;
+        if ($cihaz->i_ad_1 != "") {
+          $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
+          $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
+          $yapilanIslemYeniArray_1 = array(
+            $cihaz->i_ad_1,
+            $cihaz->i_miktar_1,
+            $cihaz->i_birim_fiyat_1,
+            $toplam_islem_fiyati_1,
+            $kdv_1,
+            $cihaz->i_kdv_1
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_1;
+          $kdv = $kdv + $kdv_1;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_1, $yapilanIslemlerSatiri);
+        }
+        if ($cihaz->i_ad_2 != "") {
+          $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
+          $kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
+          $yapilanIslemYeniArray_2 = array(
+            $cihaz->i_ad_2,
+            $cihaz->i_miktar_2,
+            $cihaz->i_birim_fiyat_2,
+            $toplam_islem_fiyati_2,
+            $kdv_2,
+            $cihaz->i_kdv_2
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_2;
+          $kdv = $kdv + $kdv_2;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_2, $yapilanIslemlerSatiri);
+        }
+        if ($cihaz->i_ad_3 != "") {
+          $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
+          $kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
+          $yapilanIslemYeniArray_3 = array(
+            $cihaz->i_ad_3,
+            $cihaz->i_miktar_3,
+            $cihaz->i_birim_fiyat_3,
+            $toplam_islem_fiyati_3,
+            $kdv_3,
+            $cihaz->i_kdv_3
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_3;
+          $kdv = $kdv + $kdv_3;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_3, $yapilanIslemlerSatiri);
+        }
+        if ($cihaz->i_ad_4 != "") {
+          $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
+          $kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
+          $yapilanIslemYeniArray_4 = array(
+            $cihaz->i_ad_4,
+            $cihaz->i_miktar_4,
+            $cihaz->i_birim_fiyat_4,
+            $toplam_islem_fiyati_4,
+            $kdv_4,
+            $cihaz->i_kdv_4
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_4;
+          $kdv = $kdv + $kdv_4;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_4, $yapilanIslemlerSatiri);
+        }
+        if ($cihaz->i_ad_5 != "") {
+          $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
+          $kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
+          $yapilanIslemYeniArray_5 = array(
+            $cihaz->i_ad_5,
+            $cihaz->i_miktar_5,
+            $cihaz->i_birim_fiyat_5,
+            $toplam_islem_fiyati_5,
+            $kdv_5,
+            $cihaz->i_kdv_5
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
+          $kdv = $kdv + $kdv_5;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_5, $yapilanIslemlerSatiri);
+        }
+        if ($cihaz->i_ad_6 != "") {
+          $toplam_islem_fiyati_6 = $cihaz->i_birim_fiyat_6 * $cihaz->i_miktar_6;
+          $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
+          $yapilanIslemYeniArray_6 = array(
+            $cihaz->i_ad_6,
+            $cihaz->i_miktar_6,
+            $cihaz->i_birim_fiyat_6,
+            $toplam_islem_fiyati_6,
+            $kdv_6,
+            $cihaz->i_kdv_6
+          );
+          $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
+          $kdv = $kdv + $kdv_6;
+          $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_6, $yapilanIslemlerSatiri);
+        }
+      } else {
+        $yapilanİslemler = $yapilanIslemlerSatiriBos;
       }
-      if ($cihaz->i_ad_2 != "") {
-        $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
-        $kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
-        $yapilanIslemYeniArray_2 = array(
-          $cihaz->i_ad_2,
-          $cihaz->i_miktar_2,
-          $cihaz->i_birim_fiyat_2,
-          $toplam_islem_fiyati_2,
-          $kdv_2,
-          $cihaz->i_kdv_2
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_2;
-        $kdv = $kdv + $kdv_2;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_2, $yapilanIslemlerSatiri);
-      }
-      if ($cihaz->i_ad_3 != "") {
-        $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
-        $kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
-        $yapilanIslemYeniArray_3 = array(
-          $cihaz->i_ad_3,
-          $cihaz->i_miktar_3,
-          $cihaz->i_birim_fiyat_3,
-          $toplam_islem_fiyati_3,
-          $kdv_3,
-          $cihaz->i_kdv_3
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_3;
-        $kdv = $kdv + $kdv_3;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_3, $yapilanIslemlerSatiri);
-      }
-      if ($cihaz->i_ad_4 != "") {
-        $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
-        $kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
-        $yapilanIslemYeniArray_4 = array(
-          $cihaz->i_ad_4,
-          $cihaz->i_miktar_4,
-          $cihaz->i_birim_fiyat_4,
-          $toplam_islem_fiyati_4,
-          $kdv_4,
-          $cihaz->i_kdv_4
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_4;
-        $kdv = $kdv + $kdv_4;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_4, $yapilanIslemlerSatiri);
-      }
-      if ($cihaz->i_ad_5 != "") {
-        $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
-        $kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
-        $yapilanIslemYeniArray_5 = array(
-          $cihaz->i_ad_5,
-          $cihaz->i_miktar_5,
-          $cihaz->i_birim_fiyat_5,
-          $toplam_islem_fiyati_5,
-          $kdv_5,
-          $cihaz->i_kdv_5
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_5;
-        $kdv = $kdv + $kdv_5;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_5, $yapilanIslemlerSatiri);
-      }
-      if ($cihaz->i_ad_6 != "") {
-        $toplam_islem_fiyati_6 = $cihaz->i_birim_fiyat_6 * $cihaz->i_miktar_6;
-        $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
-        $yapilanIslemYeniArray_6 = array(
-          $cihaz->i_ad_6,
-          $cihaz->i_miktar_6,
-          $cihaz->i_birim_fiyat_6,
-          $toplam_islem_fiyati_6,
-          $kdv_6,
-          $cihaz->i_kdv_6
-        );
-        $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_6;
-        $kdv = $kdv + $kdv_6;
-        $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_6, $yapilanIslemlerSatiri);
-      }
-    } else {
-      $yapilanİslemler = $yapilanIslemlerSatiriBos;
-    }
-    $yapilanIslemToplamYeni = array(
-      "Toplam",
-      $toplam_fiyat
-    );
-    $yapilanIslemToplamKDVYeni = array(
-      "KDV",
-      $kdv
-    );
-    $yapilanIslemGenelToplamYeni  = array(
-      "Genel Toplam",
-      $toplam_fiyat + $kdv
-    );
-    $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
-    $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
-    $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
-    $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
-    echo '<div class="row">
+      $yapilanIslemToplamYeni = array(
+        "Toplam",
+        $toplam_fiyat
+      );
+      $yapilanIslemToplamKDVYeni = array(
+        "KDV",
+        $kdv
+      );
+      $yapilanIslemGenelToplamYeni  = array(
+        "Genel Toplam",
+        $toplam_fiyat + $kdv
+      );
+      $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
+      $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
+      $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
+      $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
+      echo '<div class="row">
         <div class="col-4">
           <div class="list-group" id="list-tab" role="tablist">
             <a class="list-group-item list-group-item-action active" id="list-cihaz-bilgileri-' . $cihaz->id . '-list" data-toggle="list" href="#list-cihaz-bilgileri-' . $cihaz->id . '" role="tab" aria-controls="cihaz-bilgileri-' . $cihaz->id . '">Cihaz Bilgileri</a>
@@ -272,73 +334,16 @@ if (strlen($servis_no)) {
               </div>
             </div>
             <div class="tab-pane fade" id="list-medyalar-' . $cihaz->id . '" role="tabpanel" aria-labelledby="list-medyalar-' . $cihaz->id . '-list">';
-    $this->load->view("icerikler/medyalar", array("id" => $cihaz->id));
-    echo '</div>
+      $this->load->view("icerikler/medyalar", array("id" => $cihaz->id));
+      echo '</div>
           </div>
         </div>
       </div>';
+    } else {
+      echo  $hataMesaji;
+    }
   } else {
-    echo '<style type="text/css">
-
-        ::selection { background-color: #E13300; color: white; }
-        ::-moz-selection { background-color: #E13300; color: white; }
-        
-        body {
-            background-color: #fff;
-            margin: 40px;
-            font: 13px/20px normal Helvetica, Arial, sans-serif;
-            color: #4F5155;
-        }
-        
-        a {
-            color: #003399;
-            background-color: transparent;
-            font-weight: normal;
-        }
-        
-        h1 {
-            color: #444;
-            background-color: transparent;
-            border-bottom: 1px solid #D0D0D0;
-            font-size: 19px;
-            font-weight: normal;
-            margin: 0 0 14px 0;
-            padding: 14px 15px 10px 15px;
-        }
-        
-        code {
-            font-family: Consolas, Monaco, Courier New, Courier, monospace;
-            font-size: 12px;
-            background-color: #f9f9f9;
-            border: 1px solid #D0D0D0;
-            color: #002166;
-            display: block;
-            margin: 14px 0 14px 0;
-            padding: 12px 10px 12px 10px;
-        }
-        
-        #container {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #D0D0D0;
-            box-shadow: 0 0 8px #D0D0D0;
-        }
-        
-        p {
-            margin: 12px 15px 12px 15px;
-        }
-        </style>
-        <div id="container">
-		<h1>' . $servis_no . ' Servis numarasına ait cihaz bulunamadı.</h1>
-        Lütfen servis numaranızı kontrol edip tekrar deneyin.
-        <div class="w-100 m-0 p-0">
-          <div class="row m-0 p-0 d-flex justify-content-end">
-            <a href="javascript:history.go(-1);" class="btn btn-danger me-2 mb-2">
-              Geri
-            </a>
-          </div>
-        </div>
-	    </div>';
+    echo  $hataMesaji;
   }
 
   echo '</body>';
