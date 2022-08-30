@@ -245,6 +245,10 @@ if (strlen($takip_numarasi)) {
       $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
       $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
       $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
+      $detect = new Mobile_Detect();
+      if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
+        echo '<div class="w-100 bg-success p-2">Daha iyi görünüm için telefon/tabletinizi yan çevirin.</div>';
+      }
       echo '<div class="row">
         <div class="col-4">
           <div class="list-group" id="list-tab" role="tablist">
