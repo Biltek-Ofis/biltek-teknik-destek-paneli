@@ -215,10 +215,10 @@ class Islemler_Model extends CI_Model
         $ayar .= '
             "paging": ' . $paging . ',
             "lengthChange": false,
-            "pageLength": 50,
+            "pageLength": ' . getenv('TABLO_OGE') . ',
             "searching": true,
             "ordering": true,
-            order: '.$siralama.',
+            order: ' . $siralama . ',
             "info": true,
             "autoWidth": false,
             "responsive": true,

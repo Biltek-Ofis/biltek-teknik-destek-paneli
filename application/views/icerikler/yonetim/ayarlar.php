@@ -30,6 +30,10 @@ echo '<section class="content">
                         <label for="db_anasayfa">Şirketinizin Websitesi</label>
                         <input id="db_anasayfa" name="db_anasayfa" autocomplete="off" class="form-control" type="text" placeholder="Şirketinizin Websitesi" value="' . getenv("FIRMA_SITE_URL") . '" required>
                     </div>
+                    <div class="form-group col">
+                        <label for="db_anasayfa">Tablolarda Sayfa Başına Gösterilecek Öğe Sayısı</label>
+                        <input id="db_tablo_oge" name="db_tablo_oge" autocomplete="off" class="form-control" type="text" placeholder="Sayfa Başına Öğe" value="' . getenv("TABLO_OGE") . '" required>
+                    </div>
                     <div id="container w-100 m-0 p-0">
                         <div class="row m-0 p-0 d-flex justify-content-end">
                             <input type="submit" class="btn btn-success mt-2 mr-2" value="Kaydet" />
