@@ -37,7 +37,7 @@ class Islemler_Model extends CI_Model
 
     public function tarihDonusturSiralama($tarih)
     {
-        return $tarih == "" ? "" : date("Y-m-d", strtotime($tarih));
+        return $tarih == "" ? "" : date("Y-m-d H:i", strtotime($tarih));
     }
     public function tarihDonusturInput($tarih)
     {
@@ -140,16 +140,16 @@ class Islemler_Model extends CI_Model
     }
 
     public $cihazDurumu = array(
-        "Sırada Bekliyor",
-        "Arıza Tespiti Yapılıyor",
-        "Yedek Parça Bekleniyor",
-        "Merkez Servise Gönderildi",
-        "Fiyat Onayı Bekleniyor",
-        "Fiyat Onaylandı",
-        "Fiyat Onaylanmadı",
-        "Teslim Edilmeye Hazır",
-        "Teslim Edildi / Ödeme Alınmadı",
-        "Teslim Edildi"
+        "001 - Sırada Bekliyor",
+        "002 - Arıza Tespiti Yapılıyor",
+        "003 - Yedek Parça Bekleniyor",
+        "005 - Merkez Servise Gönderildi",
+        "004 - Fiyat Onayı Bekleniyor",
+        "006 - Fiyat Onaylandı",
+        "007 - Fiyat Onaylanmadı",
+        "008 - Teslim Edilmeye Hazır",
+        "009 - Teslim Edildi / Ödeme Alınmadı",
+        "010 - Teslim Edildi"
     );
     public $cihazDurumuClass = array(
         "bg-warning",
@@ -202,11 +202,10 @@ class Islemler_Model extends CI_Model
         $ayar .= '
             "paging": ' . $paging . ',
             "lengthChange": false,
+            "pageLength": 50,
             "searching": true,
             "ordering": true,
-            order: [
-              [' . $siralama[0] . ', "' . $siralama[1] . '"]
-            ],
+            order: '.$siralama.',
             "info": true,
             "autoWidth": false,
             "responsive": true,

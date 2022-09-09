@@ -442,7 +442,7 @@ foreach ($cihazlar as $cihaz) {
     "",
     "",
     $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
-    ($cihaz->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) ? "display:none;" : "",
+    (($cihaz->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) && !$this->Kullanicilar_Model->yonetici()) ? "display:none;" : "",
     $cihaz->servis_no,
     $cihaz->takip_numarasi,
     $cihaz->id,
@@ -616,7 +616,7 @@ echo 'function tarihDonusturSiralama(tarih) {
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
     var saat = tarih.slice(11, 16);
-    return yil + "." + ay + "." + gun;
+    return yil + "." + ay + "." + gun + " " + saat ;
   }';
 
 echo 'function donustur(str, value) {
@@ -654,7 +654,7 @@ echo 'function donustur(str, value) {
 
 echo '$(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([5, "desc"]) . ');
+    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]") . ');
     setInterval(() => {
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
