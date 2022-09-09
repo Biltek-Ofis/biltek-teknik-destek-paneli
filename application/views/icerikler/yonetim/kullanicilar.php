@@ -5,7 +5,7 @@ $kullaniciTuru = $kullaniciTuru ?? 1;
 echo '<script>
     $(document).ready(function() {
         var tabloDiv = "#kullanici_tablosu";
-        var cihazlarTablosu = $(tabloDiv).DataTable('.$this->Islemler_Model->datatablesAyarlari([0, "asc"]).');
+        var cihazlarTablosu = $(tabloDiv).DataTable('.$this->Islemler_Model->datatablesAyarlari('[0, "asc"]').');
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).modal(\'show\');
