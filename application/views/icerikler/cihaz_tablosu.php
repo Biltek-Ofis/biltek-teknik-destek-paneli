@@ -654,6 +654,52 @@ echo 'function donustur(str, value) {
 
 echo '$(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
+    var cihazDurumuSiralama = [ 
+      ';
+for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
+  echo '"' . $this->Islemler_Model->cihazDurumu[$i] . '"';
+  if ($i < count($this->Islemler_Model->cihazDurumu) - 1) {
+    echo ',';
+  }
+}
+echo '
+    ];
+    $.fn.dataTable.ext.type.detect.unshift( function ( data ) {
+      if (typeof data !== "undefined") {
+          if ( data != null )  {
+              var i=0;
+              while ( cihazDurumuSiralama[i] ) {
+                  if ( isNaN(data) ) {
+                      if ( data.search( cihazDurumuSiralama[i] ) > -1 )   {
+                          return "priority";
+                      }
+                  }
+                  i++;
+              }
+          }
+      }
+      return null;
+    });
+    $.extend( $.fn.dataTable.ext.type.order, {
+      "priority-pre": function ( name ) {
+          var cihazDurumuSiralamaNo;
+          ';
+for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuSiralama); $i++) {
+
+  echo ($i > 0 ? "else " : "") . 'if (name == "' . $this->Islemler_Model->cihazDurumu[$i] . '") {
+              cihazDurumuSiralamaNo = ' . $this->Islemler_Model->cihazDurumuSiralama[$i] . ';
+            }';
+}
+echo '
+          return cihazDurumuSiralamaNo;
+      },
+      "priority-asc": function ( a, b ) {
+              return a - b;
+      },
+      "priority-desc": function ( a, b ) {
+              return b - a;
+      }
+    });
     var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]") . ');
     setInterval(() => {
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {

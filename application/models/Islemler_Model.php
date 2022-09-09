@@ -140,16 +140,29 @@ class Islemler_Model extends CI_Model
     }
 
     public $cihazDurumu = array(
-        "001 - Sırada Bekliyor",
-        "002 - Arıza Tespiti Yapılıyor",
-        "003 - Yedek Parça Bekleniyor",
-        "005 - Merkez Servise Gönderildi",
-        "004 - Fiyat Onayı Bekleniyor",
-        "006 - Fiyat Onaylandı",
-        "007 - Fiyat Onaylanmadı",
-        "008 - Teslim Edilmeye Hazır",
-        "009 - Teslim Edildi / Ödeme Alınmadı",
-        "010 - Teslim Edildi"
+        "Sırada Bekliyor",
+        "Arıza Tespiti Yapılıyor",
+        "Yedek Parça Bekleniyor",
+        "Merkez Servise Gönderildi",
+        "Fiyat Onayı Bekleniyor",
+        "Fiyat Onaylandı",
+        "Fiyat Onaylanmadı",
+        "Teslim Edilmeye Hazır",
+        "Teslim Edildi / Ödeme Alınmadı",
+        "Teslim Edildi"
+    );
+
+    public $cihazDurumuSiralama = array(
+        "1",
+        "2",
+        "3",
+        "5",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
     );
     public $cihazDurumuClass = array(
         "bg-warning",
