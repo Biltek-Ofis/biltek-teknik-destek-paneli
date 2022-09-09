@@ -3,7 +3,7 @@
 echo '<script>
     $(document).ready(function() {
         var tabloDiv = "#cihaz_turu_tablosu";
-        var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "asc"]) . ');
+        var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari('[0, "asc"]') . ');
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).modal(\'show\');

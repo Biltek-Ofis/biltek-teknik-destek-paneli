@@ -213,7 +213,7 @@ echo '<div class="content-wrapper">
                     }
                     //doc.defaultStyle.fontSize = 16;
                 }
-                var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari([0, "desc"], 'true', '
+                var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari('[0, "desc"]', 'true', '
                 "buttons": [{
                     extend: "csv",
                     title: baslik(),
