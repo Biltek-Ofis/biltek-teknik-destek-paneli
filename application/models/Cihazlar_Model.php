@@ -152,6 +152,7 @@ class Cihazlar_Model extends CI_Model
             "hasar_tespiti" => $this->input->post("hasar_tespiti"),
             "cihazdaki_hasar" => $this->input->post("cihazdaki_hasar"),
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
+            "teslim_alinanlar" => $this->input->post("teslim_alinanlar"),
             "servis_turu" => $this->input->post("servis_turu"),
             "yedek_durumu" => $this->input->post("yedek_durumu")
         );
