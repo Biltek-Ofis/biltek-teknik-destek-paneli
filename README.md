@@ -10,13 +10,16 @@ extension=php_sqlsrv_74_ts.dll
 Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin ve satır sonunda boşluk bırakmayın.
 
 ```
-DB_DRIVER=sqlsrv //Değiştirilmeyecek
-DB_HOST=192.168.1.10,1433 //Sunucu adresi ve port
-TEKNIK_SERVIS_URL=http://localhost:8080/ //Teknik servisin bulunduğu url
-SITE_BASLIGI="Biltek Bilgisayar" //Firma adı
-FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/ //Firmanın anasayfası
-DB_DATABASE_TS=teknik_servis //script.sql dosyasının aktarıldığı vertabanı adı
-DB_DATABASE_F=FIRMA2022 //Firmanın verilerinin bulunduğu veritabanı
-DB_USERNAME=sa //SQL Kullanıcı adı
-DB_PASSWORD=1234 //SQL Şifre
+DB_DRIVER=mysqli
+DB_HOST="localhost"
+TEKNIK_SERVIS_URL=https://teknikservis.biltekbilgisayar.com.tr/
+SITE_BASLIGI="Biltek Bilgisayar"
+FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/
+TABLO_OGE=50
+DB_DATABASE_TS=TEKNIK_SERVIS_DB
+DB_DATABASE_F=FIRMA_DB
+DB_USERNAME=root
+DB_PASSWORD=1212
+BARKOD_EN="40mm"
+BARKOD_BOY="20mm"
 ```
