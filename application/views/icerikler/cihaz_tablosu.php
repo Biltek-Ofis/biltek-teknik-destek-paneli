@@ -616,7 +616,7 @@ echo 'function tarihDonusturSiralama(tarih) {
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
     var saat = tarih.slice(11, 16);
-    return yil + "." + ay + "." + gun + " " + saat ;
+    return gun + "." + ay + "." + yil + " " + saat ;
   }';
 
 echo 'function donustur(str, value) {
@@ -651,7 +651,9 @@ echo 'function donustur(str, value) {
       .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\');
   }';
-
+echo 'function tarihiFormatla(tarih12){
+  return (tarih12 < 10) ? "0" + tarih12 : tarih12;
+}';
 echo '$(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
     var cihazDurumuSiralama = [ 
@@ -698,9 +700,37 @@ echo '
       },
       "priority-desc": function ( a, b ) {
               return b - a;
+      },
+      "date-tr-pre": function ( name ) {
+        var gun = parseInt(name.slice(0, 2));
+        gun = tarihiFormatla(gun);
+        var ay = parseInt(name.slice(3, 5));
+        ay = tarihiFormatla(ay);
+        var yil = parseInt(name.slice(6, 10));
+        var saat = parseInt(name.slice(11, 13));
+        saat = tarihiFormatla(saat);
+        var dakika = parseInt(name.slice(14, 16));
+        dakika = tarihiFormatla(dakika);
+        return parseInt(yil + "" + ay + "" + gun + "" + saat + "" + dakika);
+      },
+      "date-tr-asc": function ( name ) {
+        return a - b;
+      },
+      "date-tr-desc": function ( name ) {
+        return b - a;
       }
     });
-    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]") . ');
+    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]", "true", ' "aoColumns": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "sType": "date-tr" },
+      null,
+      null,
+      null
+    ],') . ');
     setInterval(() => {
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
