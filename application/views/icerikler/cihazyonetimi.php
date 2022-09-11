@@ -6,7 +6,7 @@ echo '<script>
     $(document).ready(function() {
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
-            $(\'#\' + hash).modal(\'show\')
+            $(\'#\' + hash).click();
         }
         $(\'#yeniCihazEkleModal\').on(\'show.bs.modal\', function(e) {
             var tarih = createDateAsUTC(new Date());

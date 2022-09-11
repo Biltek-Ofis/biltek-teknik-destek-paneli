@@ -23,6 +23,13 @@ class Cihazyonetimi extends Varsayilancontroller
 			echo json_encode($this->Cihazlar_Model->cihazlarJQ($id));
 		}
 	}
+	
+	public function tekCihazJQ($id)
+	{
+		if ($this->Giris_Model->kullaniciGiris()) {
+			echo json_encode($this->Cihazlar_Model->tekCihazJQ($id));
+		}
+	}
 	public function cihazlarTumuJQ()
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
