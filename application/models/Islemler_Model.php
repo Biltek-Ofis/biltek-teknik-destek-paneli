@@ -37,7 +37,7 @@ class Islemler_Model extends CI_Model
 
     public function tarihDonusturSiralama($tarih)
     {
-        return $tarih == "" ? "" : date("Y-m-d H:i", strtotime($tarih));
+        return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));
     }
     public function tarihDonusturInput($tarih)
     {
