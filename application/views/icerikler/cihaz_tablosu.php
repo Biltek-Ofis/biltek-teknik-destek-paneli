@@ -21,15 +21,83 @@ echo '<style>
 </style>
 ';
 $this->load->view("inc/style_tablo");
-echo '<script>
-  function medyalariYukle(id) {
-    $.post("' . base_url("medyalar") . '/" + id, {}, function(data) {
-      $("#list-medyalar-" + id).html(data);
-    });
-  }
-</script>';
+
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
+
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi}\\\',\\\'{adres}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu}\\\',\\\'{cihaz}\\\',\\\'{cihaz_modeli}\\\',\\\'{seri_no}\\\',\\\'{teslim_alinanlar}\\\',\\\'{cihaz_sifresi}\\\',\\\'{cihazdaki_hasar}\\\',\\\'{hasar_tespiti}\\\',\\\'{ariza_aciklamasi}\\\',\\\'{servis_turu}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu}\\\',\\\'{yapilan_islem_aciklamasi}\\\',\\\'{tahsilat_sekli}\\\')';
+$cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
+
+echo '<script>
+  var suankiCihaz = 0;
+  function butonDurumu(guncel_durum){
+    if(guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 2) . '){
+      $("#duzenleBtn").hide();
+      $("#silBtn").hide();
+    }else{
+      $("#duzenleBtn").show();
+      $("#silBtn").show();
+    }
+  }
+  function medyalariYukle(id) {
+    $.post("' . base_url("medyalar") . '/" + id, {}, function(data) {
+      $("#list-medyalar").html(data);
+    });
+  }
+  function silModaliGoster(id, servis_no, musteri_adi){
+    $("#silOnayBtn").attr("href", "' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazSil") . '/" + id);
+
+    $("#ServisNo4").html(servis_no);
+    $("#MusteriAdi3").html(musteri_adi);
+
+    $("#cihaziSilModal").modal("show");
+  }
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli) {
+    /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onclick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
+    suankiCihaz = id;
+    butonDurumu(guncel_durum_sayi);
+
+    $("#ServisNo2, #ServisNo3").html(servis_no);
+    $("#TakipNo").html(takip_no);
+    $("#MusteriKod").html(musteri_kod);
+    $("#MusteriAdi2").html(musteri_adi);
+    $("#MusteriAdres").html(adres);
+    $("#MusteriGSM2").html(telefon_numarasi);
+    $("#Tarih").html(tarih);
+    $("#BildirimTarihi").html(bildirim_tarihi);
+    $("#CikisTarihi").html(cikis_tarihi);
+    $("#GuncelDurum2").html(guncel_durum);
+
+    $("#CihazTuru2").html(cihaz_turu);
+    $("#CihazMarka").html(cihaz);
+    $("#CihazModeli").html(cihaz_modeli);
+    $("#SeriNo").html(seri_no);
+    $("#TeslimAlinanlar").html(teslim_alinanlar);
+    $("#CihazSifresi").html(cihaz_sifresi);
+
+    $("#CihazdakiHasar").html(cihazdaki_hasar);
+    $("#HasarTespiti").html(hasar_tespiti);
+    $("#ArizaAciklamasi").html(ariza_aciklamasi);
+    $("#ServisTuru").html(servis_turu);
+    $("#YedekDurumu").html(yedek_durumu);
+
+    $("#Sorumlu2").html(sorumlu);
+    $("#yapilanIslemAciklamasi").html(yapilan_islem_aciklamasi);
+    $("#TahsilatSekli").html(tahsilat_sekli);
+
+    $("#duzenleBtn").attr("href", "' . base_url("cihaz") . '/" + id);
+    $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
+    $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
+    $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
+    $("#silBtn").attr("onclick", "silModaliGoster(\'" + id + "\',\'" + servis_no + "\',\'" + musteri_adi + "\')");
+
+
+
+    $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("show");
+
+    cihazBilgileriniGetir();
+  }
+</script>';
 echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
@@ -47,6 +115,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 </thead>
 <tbody id="cihazlar">';
 $sonCihazID = 0;
+
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row" id="{id}ServisNo">{servis_no}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
@@ -57,7 +126,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <td id="{id}GuncelDurum">{guncel_durum}</td>
   <td id="{id}Sorumlu">{sorumlu}</td>
   <td class="text-center">
-    <button class="btn btn-info text-white" data-toggle="modal" data-target="#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}">Detaylar</button>
+    <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" class="btn btn-info text-white" onclick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
   </td>
 </tr>';
 $ilkOgeGenislik = "40%";
@@ -70,16 +139,16 @@ $besliBesinciOgeGenislik = "20%";
 $cihazDetayOrnek = '
 <script>
 $(document).ready(function(){
-  $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}").on("hide.bs.modal", function(e) {
+  $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").on("hide.bs.modal", function(e) {
     history.replaceState("", document.title, window.location.pathname);
   });
 });
-<\/script>
-<div class="modal modal-fullscreen fade" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" tabindex="-1" role="dialog" aria-labelledby="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label" aria-hidden="true">
+</script>
+<div class="modal modal-fullscreen fade" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '" tabindex="-1" role="dialog" aria-labelledby="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Label" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}Label">Cihaz Detayları <span id="ServisNo3">{servis_no}</span></h5>
+        <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Label">Cihaz Detayları <span id="ServisNo3"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -88,113 +157,113 @@ $(document).ready(function(){
         <div class="row">
           <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
-              <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-{id}-list" data-toggle="list" href="#list-genel-bilgiler-{id}" role="tab" aria-controls="genel-bilgiler-{id}">Genel Bilgiler</a>
-              <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-{id}-list" data-toggle="list" href="#list-cihaz-bilgileri-{id}" role="tab" aria-controls="cihaz-bilgileri-{id}">Cihaz Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-{id}-list" data-toggle="list" href="#list-teknik-servis-bilgileri-{id}" role="tab" aria-controls="teknik-servis-bilgileri-{id}">Teknik Servis Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-{id}-list" data-toggle="list" href="#list-yapilan-islemler-{id}" role="tab" aria-controls="yapilan-islemler-{id}">Yapılan İşlemler</a>
-              <a class="list-group-item list-group-item-action" id="list-medyalar-{id}-list" data-toggle="list" href="#list-medyalar-{id}" role="tab" aria-controls="medyalar-{id}">Medyalar</a>
+              <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-list" data-toggle="list" href="#list-genel-bilgiler" role="tab" aria-controls="genel-bilgiler">Genel Bilgiler</a>
+              <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-list" data-toggle="list" href="#list-cihaz-bilgileri" role="tab" aria-controls="cihaz-bilgileri">Cihaz Bilgileri</a>
+              <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-list" data-toggle="list" href="#list-teknik-servis-bilgileri" role="tab" aria-controls="teknik-servis-bilgileri">Teknik Servis Bilgileri</a>
+              <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-list" data-toggle="list" href="#list-yapilan-islemler" role="tab" aria-controls="yapilan-islemler">Yapılan İşlemler</a>
+              <a class="list-group-item list-group-item-action" id="list-medyalar-list" data-toggle="list" href="#list-medyalar" role="tab" aria-controls="medyalar">Medyalar</a>
             </div>
           </div>
           <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="list-genel-bilgiler-{id}" role="tabpanel" aria-labelledby="list-genel-bilgiler-{id}-list">
+              <div class="tab-pane fade show active" id="list-genel-bilgiler" role="tabpanel" aria-labelledby="list-genel-bilgiler-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ServisNo2">{servis_no}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisNo2"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Takip No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TakipNo">{takip_no}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TakipNo"></li>
                 </ul>
                 <!--<ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriKod">{musteri_kod}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriKod"></li>
                 </ul>-->
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriAdi2">{musteri_adi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdi2"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriAdres">{adres}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdres"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}MusteriGSM2">{telefon_numarasi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriGSM2"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Tarih">{tarih}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Tarih"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}BildirimTarihi">{bildirim_tarihi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="BildirimTarihi"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="{id}CikisTarihi">{cikis_tarihi}</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="CikisTarihi"></span></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}GuncelDurum2">{guncel_durum}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="GuncelDurum2"></li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-cihaz-bilgileri-{id}" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-{id}-list">
+              <div class="tab-pane fade" id="list-cihaz-bilgileri" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazTuru2">{cihaz_turu}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazTuru2"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazMarka">{cihaz}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazMarka"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazModeli">{cihaz_modeli}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazModeli"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}SeriNo">{seri_no}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="SeriNo"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TeslimAlinanlar">{teslim_alinanlar}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TeslimAlinanlar"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazSifresi">{cihaz_sifresi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazSifresi"></li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-teknik-servis-bilgileri-{id}" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-{id}-list">
+              <div class="tab-pane fade" id="list-teknik-servis-bilgileri" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Belirlenen Hasar Türü:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}CihazdakiHasar">{cihazdaki_hasar}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazdakiHasar"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Yapılan Hasar Tespiti:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}HasarTespiti">{hasar_tespiti}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="HasarTespiti"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ArizaAciklamasi">{ariza_aciklamasi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ArizaAciklamasi"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis Türü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}ServisTuru">{servis_turu}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisTuru"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}YedekDurumu">{yedek_durumu}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="YedekDurumu"></li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-yapilan-islemler-{id}" role="tabpanel" aria-labelledby="list-yapilan-islemler-{id}-list">
+              <div class="tab-pane fade" id="list-yapilan-islemler" role="tabpanel" aria-labelledby="list-yapilan-islemler-list">
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}Sorumlu2">{sorumlu}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Sorumlu2"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}yapilanIslemAciklamasi">{yapilan_islem_aciklamasi}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
                 </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
@@ -203,15 +272,15 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
                   <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">kdv</span></li>
                 </ul>
-                <div id="yapilanIslem{id}">
-                  {yapilan_islemler}
+                <div id="yapilanIslem">
+                  
                 </div>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Tahsilat Şekli</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="{id}TahsilatSekli">{tahsilat_sekli}</li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TahsilatSekli"></li>
                 </ul>
               </div>
-              <div class="tab-pane fade" id="list-medyalar-{id}" role="tabpanel" aria-labelledby="list-medyalar-{id}-list">
+              <div class="tab-pane fade" id="list-medyalar" role="tabpanel" aria-labelledby="list-medyalar-list">
                 
               </div>
             </div>
@@ -219,31 +288,31 @@ $(document).ready(function(){
         </div>
       </div>
       <div class="modal-footer">
-      <a id="duzenleBtn{id}" href="' . base_url("cihaz") . '/{id}" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
-      <a href="#" onclick="servisKabulYazdir({id})" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
-      <a href="#" onclick="barkoduYazdir({id})" class="btn btn-dark text-white">Barkodu Yazdır</a>
-      <a href="#" onclick="formuYazdir({id})" class="btn btn-dark text-white">Formu Yazdır</a>
-      ' . ($silButonuGizle ? '' : '<a id="silBtn{id}" href="#" style="{display_kilit}" class="btn btn-danger text-white" data-toggle="modal" data-target="#cihaziSilModal{id}">Sil</a>') . '
+      <a id="duzenleBtn" href="#" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
+      <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
+      <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
+      <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
+      ' . ($silButonuGizle ? '' : '<a id="silBtn" href="#" style="{display_kilit}" class="btn btn-danger text-white">Sil</a>') . '
       <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
   </div>
 </div>';
 
-$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal{id}" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModal{id}Label" aria-hidden="true">
+$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="cihaziSilModal{id}Label">Cihaz Silme İşlemini Onaylayın</h5>
+        <h5 class="modal-title" id="cihaziSilModalLabel">Cihaz Silme İşlemini Onaylayın</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      Bu cihazı silmek istediğinize emin misiniz?
+      Bu cihazı (<span id="ServisNo4"></span> - <span id="MusteriAdi3"></span>) silmek istediğinize emin misiniz?
       </div>
       <div class="modal-footer">
-        <a href="' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazSil/") . '/{id}" class="btn btn-success">Evet</a>
+        <a id="silOnayBtn" href="#" class="btn btn-success">Evet</a>
         <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
       </div>
     </div>
@@ -302,6 +371,7 @@ $eskiler = array(
   "{bildirim_tarihi}",
   "{cikis_tarihi}",
   "{guncel_durum}",
+  "{guncel_durum_sayi}",
   "{tahsilat_sekli}",
   "{yapilan_islemler}"
 );
@@ -468,17 +538,12 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
+    $cihaz->guncel_durum,
     $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
     $yapilanİslemler
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
-  $cihazSilModal = str_replace($eskiler, $yeniler, $cihazSilModalOrnek);
-  $cihazDetay = str_replace($eskiler, $yeniler, $cihazDetayOrnek);
-  echo $tablo . $cihazDetay . $cihazSilModal;
-
-  echo '<script>
-    medyalariYukle(' . $cihaz->id . ');
-  </script>';
+  echo $tablo;
 }
 echo '
 </tbody>
@@ -648,11 +713,144 @@ echo 'function donustur(str, value) {
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
+      .replaceAll("{guncel_durum_sayi}", value.guncel_durum)
       .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\');
   }';
 echo 'function tarihiFormatla(tarih12){
   return (tarih12 < 10) ? "0" + tarih12 : tarih12;
+}';
+echo 'function cihazBilgileriniGetir(){
+  if(suankiCihaz > 0){
+    $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {}, function(data) {
+      $.each(JSON.parse(data), function(index, value) {
+        const cihazVarmi = document.querySelectorAll(
+          "#cihaz" + value.id
+        ).length > 0;
+        if (cihazVarmi) {
+          butonDurumu(value.guncel_durum);
+          var toplam = 0;
+          var kdv = 0;
+          var yapilanIslemler = "";
+          var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
+          var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
+          if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5 || value.i_ad_6) {
+            if (value.i_ad_1) {
+              var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
+              toplam = toplam + yapilan_islem_tutari_1;
+              var kdv_1 = ((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
+              kdv = kdv + kdv_1;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_1)
+                .replaceAll("{miktar}", value.i_miktar_1)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_1)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_1).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_1);
+            }
+            if (value.i_ad_2) {
+              var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
+              toplam = toplam + yapilan_islem_tutari_2;
+              var kdv_2 = ((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
+              kdv = kdv + kdv_2;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_2)
+                .replaceAll("{miktar}", value.i_miktar_2)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_2)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_2).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_2);
+            }
+            if (value.i_ad_3) {
+              var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
+              toplam = toplam + yapilan_islem_tutari_3;
+              var kdv_3 = ((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
+              kdv = kdv + kdv_3;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_3)
+                .replaceAll("{miktar}", value.i_miktar_3)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_3)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_3).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_3);
+            }
+            if (value.i_ad_4) {
+              var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
+              toplam = toplam + yapilan_islem_tutari_4;
+              var kdv_4 = ((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
+              kdv = kdv + kdv_4;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_4)
+                .replaceAll("{miktar}", value.i_miktar_4)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_4)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_4).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_4);
+            }
+            if (value.i_ad_5) {
+              var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
+              toplam = toplam + yapilan_islem_tutari_5;
+              var kdv_5 = ((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
+              kdv = kdv + kdv_5;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_5)
+                .replaceAll("{miktar}", value.i_miktar_5)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_5)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_5).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_5);
+            }
+            if (value.i_ad_6) {
+              var yapilan_islem_tutari_6 = value.i_birim_fiyat_6 * value.i_miktar_6;
+              toplam = toplam + yapilan_islem_tutari_6;
+              var kdv_6 = ((yapilan_islem_tutari_6 / 100) * value.i_kdv_6);
+              kdv = kdv + kdv_6;
+              yapilanIslemler += islemlerSatiri
+                .replaceAll("{islem}", value.i_ad_6)
+                .replaceAll("{miktar}", value.i_miktar_6)
+                .replaceAll("{fiyat}", value.i_birim_fiyat_6)
+                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_6)
+                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_6).toFixed(2))
+                .replaceAll("{kdv_orani}", value.i_kdv_6);
+            }
+          } else {
+            var yapilanIslemler = islemlerSatiriBos;
+          }
+          var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
+          var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
+          var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
+          var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
+          yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
+          $("#yapilanIslem").html(yapilanIslemler);
+          $("#ServisNo2").html(value.servis_no);
+          $("#TakipNo").html(value.takip_numarasi);
+          $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
+          $("#MusteriAdi2").html(value.musteri_adi);
+          $("#MusteriAdres").html(value.adres);
+          $("#MusteriGSM2").html(value.telefon_numarasi);
+          $("#Tarih").html(value.tarih);
+          $("#BildirimTarihi").html(value.bildirim_tarihi);
+          $("#CikisTarihi").html(value.cikis_tarihi);
+          $("#GuncelDurum2").html(cihazDurumu(value.guncel_durum));
+          $("#CihazTuru2").html(value.cihaz_turu);
+          $("#CihazMarka").html(value.cihaz);
+          $("#CihazModeli").html(value.cihaz_modeli);
+          $("#SeriNo").html(value.seri_no);
+          $("#TeslimAlinanlar").html(value.teslim_alinanlar);
+          $("#CihazSifresi").html(value.cihaz_sifresi);
+          $("#CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
+          $("#HasarTespiti").html(value.hasar_tespiti);
+          $("#ArizaAciklamasi").html(value.ariza_aciklamasi);
+          $("#ServisTuru").html(servisTuru(value.servis_turu));
+          $("#YedekDurumu").html(evetHayir(value.yedek_durumu));
+          $("#Sorumlu2").html(value.sorumlu);
+          $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
+          $("#TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli));
+          medyalariYukle(value.id);
+        }
+      });
+    }); 
+  }
 }';
 echo '$(document).ready(function() {
     var tabloDiv = "#cihaz_tablosu";
@@ -732,6 +930,7 @@ echo '
       null
     ],') . ');
     setInterval(() => {
+      cihazBilgileriniGetir();
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
@@ -753,134 +952,19 @@ echo '
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
-            var toplam = 0;
-            var kdv = 0;
-            var yapilanIslemler = "";
-            var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
-            var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
-            if (value.i_ad_1 || value.i_ad_2 || value.i_ad_3 || value.i_ad_4 || value.i_ad_5 || value.i_ad_6) {
-              if (value.i_ad_1) {
-                var yapilan_islem_tutari_1 = value.i_birim_fiyat_1 * value.i_miktar_1;
-                toplam = toplam + yapilan_islem_tutari_1;
-                var kdv_1 = ((yapilan_islem_tutari_1 / 100) * value.i_kdv_1);
-                kdv = kdv + kdv_1;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_1)
-                  .replaceAll("{miktar}", value.i_miktar_1)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_1)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_1)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_1).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_1);
-              }
-              if (value.i_ad_2) {
-                var yapilan_islem_tutari_2 = value.i_birim_fiyat_2 * value.i_miktar_2;
-                toplam = toplam + yapilan_islem_tutari_2;
-                var kdv_2 = ((yapilan_islem_tutari_2 / 100) * value.i_kdv_2);
-                kdv = kdv + kdv_2;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_2)
-                  .replaceAll("{miktar}", value.i_miktar_2)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_2)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_2)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_2).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_2);
-              }
-              if (value.i_ad_3) {
-                var yapilan_islem_tutari_3 = value.i_birim_fiyat_3 * value.i_miktar_3;
-                toplam = toplam + yapilan_islem_tutari_3;
-                var kdv_3 = ((yapilan_islem_tutari_3 / 100) * value.i_kdv_3);
-                kdv = kdv + kdv_3;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_3)
-                  .replaceAll("{miktar}", value.i_miktar_3)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_3)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_3)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_3).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_3);
-              }
-              if (value.i_ad_4) {
-                var yapilan_islem_tutari_4 = value.i_birim_fiyat_4 * value.i_miktar_4;
-                toplam = toplam + yapilan_islem_tutari_4;
-                var kdv_4 = ((yapilan_islem_tutari_4 / 100) * value.i_kdv_4);
-                kdv = kdv + kdv_4;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_4)
-                  .replaceAll("{miktar}", value.i_miktar_4)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_4)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_4)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_4).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_4);
-              }
-              if (value.i_ad_5) {
-                var yapilan_islem_tutari_5 = value.i_birim_fiyat_5 * value.i_miktar_5;
-                toplam = toplam + yapilan_islem_tutari_5;
-                var kdv_5 = ((yapilan_islem_tutari_5 / 100) * value.i_kdv_5);
-                kdv = kdv + kdv_5;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_5)
-                  .replaceAll("{miktar}", value.i_miktar_5)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_5)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_5)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_5).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_5);
-              }
-              if (value.i_ad_6) {
-                var yapilan_islem_tutari_6 = value.i_birim_fiyat_6 * value.i_miktar_6;
-                toplam = toplam + yapilan_islem_tutari_6;
-                var kdv_6 = ((yapilan_islem_tutari_6 / 100) * value.i_kdv_6);
-                kdv = kdv + kdv_6;
-                yapilanIslemler += islemlerSatiri
-                  .replaceAll("{islem}", value.i_ad_6)
-                  .replaceAll("{miktar}", value.i_miktar_6)
-                  .replaceAll("{fiyat}", value.i_birim_fiyat_6)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_6)
-                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_6).toFixed(2))
-                  .replaceAll("{kdv_orani}", value.i_kdv_6);
-              }
-            } else {
-              var yapilanIslemler = islemlerSatiriBos;
-            }
-            var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
-            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
-            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
-            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
-            yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
-            $("#yapilanIslem" + value.id).html(yapilanIslemler);
+            let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
+            const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
+            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onclick", cihazDetayBtn);
             $("#cihaz" + value.id).attr(\'class\', \'\');
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
-            if(value.guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 1) . '){
-              $("#duzenleBtn" + value.id).hide();
-              $("#silBtn" + value.id).hide();
-            }else{
-              $("#duzenleBtn" + value.id).show();
-              $("#silBtn" + value.id).show();
-            }
-            $("#" + value.id + "ServisNo, #" + value.id + "ServisNo2, #" + value.id + "ServisNo3").html(value.servis_no);
-            $("#" + value.id + "TakipNo").html(value.takip_numarasi);
-            $("#" + value.id + "MusteriAdi, #" + value.id + "MusteriAdi2").html(value.musteri_adi);
-            $("#" + value.id + "CihazTuru, #" + value.id + "CihazTuru2").html(value.cihaz_turu);
-            $("#" + value.id + "Sorumlu, #" + value.id + "Sorumlu2").html(value.sorumlu);
+            $("#" + value.id + "ServisNo, #" + value.id + "ServisNo3").html(value.servis_no);
+            $("#" + value.id + "MusteriAdi").html(value.musteri_adi);
+            $("#" + value.id + "CihazTuru").html(value.cihaz_turu);
+            $("#" + value.id + "Sorumlu").html(value.sorumlu);
             $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
-            $("#" + value.id + "GuncelDurum, #" + value.id + "GuncelDurum2").html(cihazDurumu(value.guncel_durum));
-            $("#" + value.id + "MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
-            $("#" + value.id + "MusteriAdres").html(value.adres);
-            $("#" + value.id + "MusteriGSM, #" + value.id + "MusteriGSM2").html(value.telefon_numarasi);
-            $("#" + value.id + "Tarih").html(value.tarih);
-            $("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));
-            $("#" + value.id + "BildirimTarihi").html(value.bildirim_tarihi);
-            $("#" + value.id + "CikisTarihi").html(value.cikis_tarihi);
-            $("#" + value.id + "CihazMarka").html(value.cihaz);
-            $("#" + value.id + "CihazModeli").html(value.cihaz_modeli);
-            $("#" + value.id + "SeriNo").html(value.seri_no);
-            $("#" + value.id + "TeslimAlinanlar").html(value.teslim_alinanlar);
-            $("#" + value.id + "CihazSifresi").html(value.cihaz_sifresi);
-            $("#" + value.id + "CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
-            $("#" + value.id + "HasarTespiti").html(value.hasar_tespiti);
-            $("#" + value.id + "ArizaAciklamasi").html(value.ariza_aciklamasi);
-            $("#" + value.id + "ServisTuru").html(servisTuru(value.servis_turu));
-            $("#" + value.id + "YedekDurumu").html(evetHayir(value.yedek_durumu));
-            $("#" + value.id + "TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli))
-            $("#" + value.id + "yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);';
+            $("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
+            $("#" + value.id + "MusteriGSM").html(value.telefon_numarasi);
+            $("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));';
 if ($sorumlu_belirtildimi) {
   $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
   echo '
@@ -901,20 +985,15 @@ echo '
           if (!cihazVarmi) {
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             let tabloOrnek = \'' . $tabloOrnek . '\';
-            let detayModalOrnek = \'' . $cihazDetayOrnek . '\';
-            let silModalOrnek = \'' . $cihazSilModalOrnek . '\';
             
             const tablo = donustur(tabloOrnek, value);
-            var detayModal = donustur(detayModalOrnek, value);
-            var silmodal = donustur(silModalOrnek, value);
             cihazlarTablosu.row.add($(tablo)).draw();
             //$("#cihazlar").prepend(tablo);
-            $("#cihazTablosu").prepend(silmodal);
-            $("#cihazTablosu").prepend(detayModal);
-            medyalariYukle(value.id);
           }
         });
       });
     }, 5000);
   });
 </script>';
+echo $cihazDetayOrnek;
+echo $cihazSilModalOrnek;

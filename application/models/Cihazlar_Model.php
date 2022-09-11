@@ -96,6 +96,14 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function tekCihazJQ($id)
+    {
+        $where = array(
+            "id" => $id
+        );
+        $result = $this->db->where($where)->limit(1)->get($this->cihazlarTabloAdi)->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
     public function cihazlarTekTurJQ($tur, $id)
     {
         $where = array(
