@@ -30,13 +30,14 @@ $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 
 echo '<script>
   var suankiCihaz = 0;
+  var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   function butonDurumu(guncel_durum){
-    if(guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 2) . '){
-      $("#duzenleBtn").hide();
-      $("#silBtn").hide();
-    }else{
+    if(guncel_durum < ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' || yonetici){      
       $("#duzenleBtn").show();
       $("#silBtn").show();
+    }else{
+      $("#duzenleBtn").hide();
+      $("#silBtn").hide();
     }
   }
   function medyalariYukle(id) {
