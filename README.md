@@ -23,3 +23,11 @@ DB_PASSWORD=1212
 BARKOD_EN="40mm"
 BARKOD_BOY="20mm"
 ```
+
+lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olacak:
+
+```
+class Env{
+  static String uygulamaAdi = "Başlık";
+}
+```
