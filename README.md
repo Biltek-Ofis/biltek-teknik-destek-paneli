@@ -1,16 +1,25 @@
-# biltekbilgisayar
+# BiltekTeknikDestekPaneli
 
-A new Flutter project.
+- Kullanım için php.ini ayarları
+```
+extension=php_pdo_sqlsrv_74_ts.dll
+extension=php_sqlsrv_74_ts.dll
 
-## Getting Started
+```
 
-This project is a starting point for a Flutter application.
+Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin ve satır sonunda boşluk bırakmayın.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+DB_DRIVER=mysqli
+DB_HOST="localhost"
+TEKNIK_SERVIS_URL=https://teknikservis.biltekbilgisayar.com.tr/
+SITE_BASLIGI="Biltek Bilgisayar"
+FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/
+TABLO_OGE=50
+DB_DATABASE_TS=TEKNIK_SERVIS_DB
+DB_DATABASE_F=FIRMA_DB
+DB_USERNAME=root
+DB_PASSWORD=1212
+BARKOD_EN="40mm"
+BARKOD_BOY="20mm"
+```
