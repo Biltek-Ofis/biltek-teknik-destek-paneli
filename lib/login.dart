@@ -123,8 +123,8 @@ class _GirisYapState extends State<GirisYap> {
           girisHatasi = "";
         });
       },
-      onLoginSuccess: (kullaniciAdi) {
-        SharedPref.girisDurumuEkle(kullaniciAdi).then((value) {
+      onLoginSuccess: (kullaniciID) {
+        SharedPref.girisDurumuEkle(kullaniciID).then((value) {
           if (value) {
             Navigator.pushAndRemoveUntil(
               context,

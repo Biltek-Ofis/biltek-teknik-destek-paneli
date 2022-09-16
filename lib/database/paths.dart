@@ -10,4 +10,8 @@ class Paths {
   static String girisYap(String kullaniciAdi, String sifre) {
     return "${getRelativePath}girisyap/$kullaniciAdi/$sifre";
   }
+
+  static String kullaniciBilgileri(int id) {
+    return "${getRelativePath}kullaniciBilgileri/$id";
+  }
 }
