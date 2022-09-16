@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'env.dart';
+import 'home.dart';
 import 'login.dart';
 import 'utils/sp.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           return materialAppDef(const SplashScreen());
         } else {
           if (snapshot.data == true) {
-            return materialAppDef(const SplashScreen());
+            return materialAppDef(const Anasayfa());
           } else {
             return materialAppDef(const GirisYap());
           }

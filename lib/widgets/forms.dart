@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+typedef OnChanged = void Function(
+  String value,
+);
+
 class TextFieldDef extends StatefulWidget {
   const TextFieldDef({
     super.key,
@@ -15,6 +19,7 @@ class TextFieldDef extends StatefulWidget {
     this.maxHeight,
     this.minHeight,
     this.onSubmit,
+    this.onChanged,
     this.currentFocus,
     this.nextFocus,
     this.autoFocus = false,
@@ -35,6 +40,7 @@ class TextFieldDef extends StatefulWidget {
   final double? maxHeight;
   final double? minHeight;
   final VoidCallback? onSubmit;
+  final OnChanged? onChanged;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
   final bool autoFocus;
@@ -125,6 +131,9 @@ class _TextFieldDefState extends State<TextFieldDef> {
                 return;
               }
             },
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+      },
     );
     return Container(
       width: widget.width,
