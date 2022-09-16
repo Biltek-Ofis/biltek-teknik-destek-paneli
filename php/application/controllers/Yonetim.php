@@ -32,17 +32,25 @@ class Yonetim extends Varsayilancontroller
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$veri = $this->Kullanicilar_Model->kullaniciPost(true);
-			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
-				$sifre = $veri["sifre"];
-				$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
-				$ekle = $this->Kullanicilar_Model->ekle($veri);
-				if ($ekle) {
-					redirect(base_url($this->konum($tur)));
+			if (strlen($veri["kullanici_adi"]) >= 3) {
+				if (strlen($veri["sifre"]) >= 6) {
+					if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
+						$sifre = $veri["sifre"];
+						$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+						$ekle = $this->Kullanicilar_Model->ekle($veri);
+						if ($ekle) {
+							redirect(base_url($this->konum($tur)));
+						} else {
+							$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Hesap eklenemedi lütfen daha sonra tekrar deneyin");
+						}
+					} else {
+						$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Bu kullanıcı adı zaten mevcut.");
+					}
 				} else {
-					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Hesap eklenemedi lütfen daha sonra tekrar deneyin");
+					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Şifre en az 6 karakter olmalıdır.");
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Bu kullanıcı adı zaten mevcut.");
+				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Kullanıcı adı en az 3 karakter olmalıdır.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -52,20 +60,28 @@ class Yonetim extends Varsayilancontroller
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
 			$veri = $this->Kullanicilar_Model->kullaniciPost(true);
-			if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj" . $id)) {
-				$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
-				if ($kullanici->sifre != $veri["sifre"]) {
-					$sifre = $veri["sifre"];
-					$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
-				}
-				$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
-				if ($duzenle) {
-					redirect(base_url($this->konum($tur)));
+			if (strlen($veri["kullanici_adi"]) >= 3) {
+				if (strlen($veri["sifre"]) >= 6) {
+					if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj" . $id)) {
+						$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
+						if ($kullanici->sifre != $veri["sifre"]) {
+							$sifre = $veri["sifre"];
+							$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+						}
+						$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
+						if ($duzenle) {
+							redirect(base_url($this->konum($tur)));
+						} else {
+							$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Hesap düzenlenemedi lütfen daha sonra tekrar deneyin");
+						}
+					} else {
+						$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Bu kullanıcı adı zaten mevcut.");
+					}
 				} else {
-					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Hesap düzenlenemedi lütfen daha sonra tekrar deneyin");
+					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Şifre en az 6 karakter olmalıdır.");
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Bu kullanıcı adı zaten mevcut.");
+				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Kullanıcı adı en az 3 karakter olmalıdır.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
