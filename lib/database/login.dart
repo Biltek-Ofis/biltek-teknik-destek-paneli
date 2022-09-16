@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/animation.dart';
-import 'package:http/http.dart' show get;
+import 'package:biltekbilgisayar/database/connect.dart';
+import 'package:flutter/foundation.dart';
 
-import '../models/response.dart';
+import '../models/kullanici_girisi.dart';
 import 'paths.dart';
 
 typedef OnLoginError = void Function(
@@ -12,7 +12,7 @@ typedef OnLoginError = void Function(
 );
 
 typedef OnLoginSuccess = void Function(
-  String kullaniciAdi,
+  int kullaniciID,
 );
 
 class LoginSQL {
@@ -26,22 +26,29 @@ class LoginSQL {
     beforeLogin?.call();
     if (kullaniciAdi.length >= 3) {
       if (sifre.length >= 6) {
-        final response =
-            await get(Uri.parse(Paths.girisYap(kullaniciAdi, sifre)));
-        if (response.statusCode == 200) {
-          ResponseBool responseBool = ResponseBool.response(response.body);
-          if (responseBool.response) {
-            onLoginSuccess?.call(kullaniciAdi);
+        try {
+          KullaniciGirisiModel kullaniciGirisiModel =
+              KullaniciGirisiModel.fromJson(
+                  await Connect.map(url: Paths.girisYap(kullaniciAdi, sifre)));
+          if (kDebugMode) {
+            print(
+                "Giriş Yap Sonuç: ${kullaniciGirisiModel.id}, ${kullaniciGirisiModel.durum}");
+          }
+          if (kullaniciGirisiModel.durum) {
+            onLoginSuccess?.call(kullaniciGirisiModel.id);
           } else {
             onLoginError?.call(
               "Kullanıcı adı veya şifre yanlış! Lütfen tekrar deneyin!",
-              response.body,
+              "Giriş Durumu: ${kullaniciGirisiModel.durum}",
             );
           }
-        } else {
+        } catch (e) {
+          if (kDebugMode) {
+            print("Giriş Yap Hata: ${e.toString()}");
+          }
           onLoginError?.call(
             "Bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
-            response.statusCode.toString(),
+            e.toString(),
           );
         }
       } else {
