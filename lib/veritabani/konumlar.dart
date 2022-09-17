@@ -14,4 +14,8 @@ class Konumlar {
   static String kullaniciBilgileri(int id) {
     return "${getRelativePath}kullaniciBilgileri/$id";
   }
+
+  static String cihazlar() {
+    return "${getRelativePath}cihazlarTumu";
+  }
 }

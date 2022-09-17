@@ -82,12 +82,21 @@ class _SayfaGorunumuState extends State<SayfaGorunumu> {
                   child: widget.menu,
                 ),
                 Container(width: 0.5, color: Colors.black),
-                Expanded(
-                  child: widget.icerik,
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width:
+                        MediaQuery.of(context).size.width - menuGenisligi - 0.5,
+                    child: widget.icerik,
+                  ),
                 ),
               ],
             )
-          : widget.icerik,
+          : SingleChildScrollView(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: widget.icerik,
+              ),
+            ),
       drawer: genislik >= widget.gerekliGenislik
           ? null
           : SizedBox(
