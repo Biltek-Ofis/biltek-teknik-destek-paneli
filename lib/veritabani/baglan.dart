@@ -15,4 +15,8 @@ class Baglan {
   static Future<Map<String, dynamic>> map({required String url}) async {
     return json.decode(await response(url: url));
   }
+
+  static Future<List> list({required String url}) async {
+    return json.decode(await response(url: url));
+  }
 }

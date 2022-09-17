@@ -7,6 +7,7 @@ class App extends CI_Controller
         parent::__construct();
         $this->load->model("Giris_Model");
         $this->load->model("Kullanicilar_Model");
+        $this->load->model("Cihazlar_Model");
     }
     public function index(){
         redirect(base_url());
@@ -29,5 +30,8 @@ class App extends CI_Controller
     public function kullaniciBilgileri($id){
         $kullanici = $this->Kullanicilar_Model->tekKullanici($id);
         echo json_encode($kullanici);
+    }
+    public function cihazlarTumu(){
+        echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
     }
 }
