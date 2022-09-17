@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'env.dart';
-import 'home.dart';
-import 'login.dart';
-import 'utils/sp.dart';
+import 'sayfalar/anasayfa.dart';
+import 'sayfalar/giris.dart';
+import 'ozellikler/sp.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:biltekbilgisayar/database/connect.dart';
+import 'package:biltekbilgisayar/veritabani/baglan.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/kullanici_girisi.dart';
-import 'paths.dart';
+import '../model/kullanici_girisi.dart';
+import 'konumlar.dart';
 
 typedef OnLoginError = void Function(
   String mesaj,
@@ -15,7 +15,7 @@ typedef OnLoginSuccess = void Function(
   int kullaniciID,
 );
 
-class LoginSQL {
+class GirisSQL {
   static Future<void> girisYap({
     required String kullaniciAdi,
     required String sifre,
@@ -28,8 +28,8 @@ class LoginSQL {
       if (sifre.length >= 6) {
         try {
           KullaniciGirisiModel kullaniciGirisiModel =
-              KullaniciGirisiModel.fromJson(
-                  await Connect.map(url: Paths.girisYap(kullaniciAdi, sifre)));
+              KullaniciGirisiModel.fromJson(await Baglan.map(
+                  url: Konumlar.girisYap(kullaniciAdi, sifre)));
           if (kDebugMode) {
             print(
                 "Giriş Yap Sonuç: ${kullaniciGirisiModel.id}, ${kullaniciGirisiModel.durum}");

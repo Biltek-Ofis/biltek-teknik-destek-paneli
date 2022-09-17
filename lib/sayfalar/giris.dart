@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'database/login.dart';
-import 'home.dart';
-import 'utils/asset.dart';
-import 'utils/device.dart';
-import 'utils/sp.dart';
-import 'widgets/buttons.dart';
-import 'widgets/forms.dart';
+import '../veritabani/giris.dart';
+import 'anasayfa.dart';
+import '../ozellikler/asset.dart';
+import '../ozellikler/sp.dart';
+import '../widget/buttonlar.dart';
+import '../widget/formlar.dart';
 
 class GirisYap extends StatefulWidget {
   const GirisYap({super.key});
@@ -22,10 +21,13 @@ class _GirisYapState extends State<GirisYap> {
   final FocusNode kullaniciAdiFocus = FocusNode();
   final FocusNode sifreFocus = FocusNode();
 
+  double gerekliGenislik = 300;
+
   String girisHatasi = "";
   @override
   Widget build(BuildContext context) {
-    final genislik = Device.isMobile()
+    final tamGenislik = MediaQuery.of(context).size.width;
+    final genislik = tamGenislik >= gerekliGenislik
         ? MediaQuery.of(context).size.width - 100
         : MediaQuery.of(context).size.width / 3;
     return Scaffold(
@@ -115,7 +117,7 @@ class _GirisYapState extends State<GirisYap> {
   }
 
   Future<void> girisYap() async {
-    await LoginSQL.girisYap(
+    await GirisSQL.girisYap(
       kullaniciAdi: kullaniciAdiController.text,
       sifre: sifreController.text,
       beforeLogin: () {

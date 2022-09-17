@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show get;
 
-class Connect {
+class Baglan {
   static Future<String> response({required String url}) async {
     final response = await get(Uri.parse(url));
     if (response.statusCode == 200) {

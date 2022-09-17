@@ -1,4 +1,4 @@
-import 'package:biltekbilgisayar/utils/variables.dart';
+import 'package:biltekbilgisayar/ozellikler/degiskenler.dart';
 
 class KullaniciGirisiModel {
   KullaniciGirisiModel({
@@ -9,8 +9,8 @@ class KullaniciGirisiModel {
   final bool durum;
   factory KullaniciGirisiModel.fromJson(Map<String, dynamic> jsonData) {
     return KullaniciGirisiModel(
-      id: Variables.parseInt(sayi: jsonData['id']),
-      durum: Variables.parseBool(durum: jsonData['durum']),
+      id: Degiskenler.parseInt(sayi: jsonData['id']),
+      durum: Degiskenler.parseBool(durum: jsonData['durum']),
     );
   }
 }

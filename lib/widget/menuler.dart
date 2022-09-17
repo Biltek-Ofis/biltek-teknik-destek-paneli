@@ -1,8 +1,8 @@
-import 'package:biltekbilgisayar/devices.dart';
+import 'package:biltekbilgisayar/sayfalar/cihazlarim.dart';
 import 'package:flutter/material.dart';
 
-import '../home.dart';
-import '../models/menu.dart';
+import '../sayfalar/anasayfa.dart';
+import '../model/menu.dart';
 
 List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
   return [

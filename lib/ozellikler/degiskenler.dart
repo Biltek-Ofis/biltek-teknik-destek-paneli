@@ -1,4 +1,4 @@
-class Variables {
+class Degiskenler {
   static int parseInt({
     required String? sayi,
     int varsayilan = 0,
