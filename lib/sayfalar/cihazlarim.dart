@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'env.dart';
+import '../env.dart';
 import 'sayfa_gorunumu.dart';
-import 'widgets/menus.dart';
+import '../widget/menuler.dart';
 
 class Cihazlarim extends StatefulWidget {
   const Cihazlarim({super.key});

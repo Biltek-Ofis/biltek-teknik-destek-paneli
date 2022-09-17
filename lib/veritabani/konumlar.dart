@@ -1,6 +1,6 @@
 import '../env.dart';
 
-class Paths {
+class Konumlar {
   static String get getRelativePath {
     return Env.path.substring(Env.path.length - 1) == "/"
         ? Env.path

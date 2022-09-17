@@ -1,9 +1,9 @@
-import 'package:biltekbilgisayar/login.dart';
-import 'package:biltekbilgisayar/utils/datas.dart';
-import 'package:biltekbilgisayar/utils/sp.dart';
+import 'package:biltekbilgisayar/sayfalar/giris.dart';
+import 'package:biltekbilgisayar/ozellikler/veriler.dart';
+import 'package:biltekbilgisayar/ozellikler/sp.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/menus.dart';
+import '../widget/menuler.dart';
 
 class SayfaGorunumu extends StatefulWidget {
   const SayfaGorunumu({
@@ -53,7 +53,7 @@ class _SayfaGorunumuState extends State<SayfaGorunumu> {
                 icon: const Icon(Icons.menu))
             : null,
         title: Text(
-          "${Datas.kullaniciBilgileri.adSoyad} (@${Datas.kullaniciBilgileri.kullaniciAdi})",
+          "${Veriler.kullaniciBilgileri.adSoyad} (@${Veriler.kullaniciBilgileri.kullaniciAdi})",
         ),
         actions: [
           IconButton(

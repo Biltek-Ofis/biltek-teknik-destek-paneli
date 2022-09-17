@@ -1,10 +1,10 @@
-import 'package:biltekbilgisayar/database/kullanici.dart';
-import 'package:biltekbilgisayar/utils/datas.dart';
+import 'package:biltekbilgisayar/veritabani/kullanici.dart';
+import 'package:biltekbilgisayar/ozellikler/veriler.dart';
 import 'package:flutter/material.dart';
 
-import 'env.dart';
+import '../env.dart';
 import 'sayfa_gorunumu.dart';
-import 'widgets/menus.dart';
+import '../widget/menuler.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key});
@@ -18,7 +18,7 @@ class _AnasayfaState extends State<Anasayfa> {
   void initState() {
     KullaniciBilgileri.getir().then((value) {
       setState(() {
-        Datas.kullaniciBilgileri = value;
+        Veriler.kullaniciBilgileri = value;
       });
     });
     super.initState();
