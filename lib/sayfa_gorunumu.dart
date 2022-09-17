@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'widgets/menus.dart';
 
-class SayfaGorunumu extends StatelessWidget {
+class SayfaGorunumu extends StatefulWidget {
   const SayfaGorunumu({
     super.key,
     required this.menu,
@@ -20,12 +20,38 @@ class SayfaGorunumu extends StatelessWidget {
   final double gerekliGenislik;
   final double menuGenisligi;
   final String baslik;
+  @override
+  State<SayfaGorunumu> createState() => _SayfaGorunumuState();
+}
+
+class _SayfaGorunumuState extends State<SayfaGorunumu> {
+  double varsayilanMenuGenisligi = 0;
+  double menuGenisligi = 0;
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        menuGenisligi = varsayilanMenuGenisligi = widget.menuGenisligi;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final genislik = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leading: genislik >= widget.gerekliGenislik
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    menuGenisligi =
+                        menuGenisligi == 0 ? varsayilanMenuGenisligi : 0;
+                  });
+                },
+                icon: const Icon(Icons.menu))
+            : null,
         title: Text(
           "${Datas.kullaniciBilgileri.adSoyad} (@${Datas.kullaniciBilgileri.kullaniciAdi})",
         ),
@@ -48,26 +74,26 @@ class SayfaGorunumu extends StatelessWidget {
           ),
         ],
       ),
-      body: genislik >= gerekliGenislik
+      body: genislik >= widget.gerekliGenislik
           ? Row(
               children: [
                 SizedBox(
                   width: menuGenisligi,
-                  child: menu,
+                  child: widget.menu,
                 ),
                 Container(width: 0.5, color: Colors.black),
                 Expanded(
-                  child: icerik,
+                  child: widget.icerik,
                 ),
               ],
             )
-          : icerik,
-      drawer: genislik >= gerekliGenislik
+          : widget.icerik,
+      drawer: genislik >= widget.gerekliGenislik
           ? null
           : SizedBox(
               width: menuGenisligi,
               child: Drawer(
-                child: menu,
+                child: widget.menu,
               ),
             ),
     );
