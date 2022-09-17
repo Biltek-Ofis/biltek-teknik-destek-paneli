@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:biltekbilgisayar/veritabani/baglan.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/kullanici_girisi.dart';
+import 'baglan.dart';
 import 'konumlar.dart';
 
 typedef OnLoginError = void Function(

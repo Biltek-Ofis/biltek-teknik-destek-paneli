@@ -1,11 +1,11 @@
-import 'package:biltekbilgisayar/model/cihaz.dart';
-import 'package:biltekbilgisayar/veritabani/baglan.dart';
-import 'package:biltekbilgisayar/veritabani/konumlar.dart';
-import 'package:biltekbilgisayar/widget/buttonlar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../model/cihaz.dart';
 import '../ozellikler/cihaz_bilgileri.dart';
+import '../widget/buttonlar.dart';
+import 'baglan.dart';
+import 'konumlar.dart';
 
 class Cihazlar {
   static Future<List<CihazModel>> getir() async {

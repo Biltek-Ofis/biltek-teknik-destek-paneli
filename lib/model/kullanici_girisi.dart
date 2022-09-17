@@ -1,4 +1,4 @@
-import 'package:biltekbilgisayar/ozellikler/degiskenler.dart';
+import '../ozellikler/degiskenler.dart';
 
 class KullaniciGirisiModel {
   KullaniciGirisiModel({
