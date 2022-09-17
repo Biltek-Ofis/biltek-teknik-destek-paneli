@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../env.dart';
-import 'sayfa_gorunumu.dart';
 import '../widget/menuler.dart';
+import 'sayfa.dart';
 
 class Cihazlarim extends StatefulWidget {
   const Cihazlarim({super.key});
@@ -14,12 +13,12 @@ class Cihazlarim extends StatefulWidget {
 class _CihazlarimState extends State<Cihazlarim> {
   @override
   Widget build(BuildContext context) {
-    return SayfaGorunumu(
-      menu: const AnaMenu(
+    return const Sayfa(
+      menu: AnaMenu(
         seciliSayfa: "Cihazlarım",
       ),
-      baslik: Env.uygulamaAdi,
-      icerik: const Center(
+      baslik: "Cihazlarım",
+      icerik: Center(
         child: Text("Cihazlarım"),
       ),
     );

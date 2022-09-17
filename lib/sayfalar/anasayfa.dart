@@ -1,12 +1,11 @@
-import 'package:biltekbilgisayar/model/cihaz.dart';
-import 'package:biltekbilgisayar/veritabani/cihazlar.dart';
-import 'package:biltekbilgisayar/veritabani/kullanici.dart';
-import 'package:biltekbilgisayar/ozellikler/veriler.dart';
 import 'package:flutter/material.dart';
 
-import '../env.dart';
-import 'sayfa_gorunumu.dart';
+import '../model/cihaz.dart';
+import '../ozellikler/veriler.dart';
+import '../veritabani/cihazlar.dart';
+import '../veritabani/kullanici.dart';
 import '../widget/menuler.dart';
+import 'sayfa.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key});
@@ -48,11 +47,11 @@ class _AnasayfaState extends State<Anasayfa> {
 
   @override
   Widget build(BuildContext context) {
-    return SayfaGorunumu(
+    return Sayfa(
       menu: const AnaMenu(
         seciliSayfa: "Anasayfa",
       ),
-      baslik: Env.uygulamaAdi,
+      baslik: "Anasayfa",
       icerik: PaginatedDataTable(
         source: cihazlar,
         header: const Text("Cihazlar"),
