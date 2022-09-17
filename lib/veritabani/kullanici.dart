@@ -1,7 +1,7 @@
-import 'package:biltekbilgisayar/model/kullanici.dart';
-import 'package:biltekbilgisayar/ozellikler/sp.dart';
 import 'package:flutter/foundation.dart';
 
+import '../model/kullanici.dart';
+import '../ozellikler/sp.dart';
 import 'baglan.dart';
 import 'konumlar.dart';
 

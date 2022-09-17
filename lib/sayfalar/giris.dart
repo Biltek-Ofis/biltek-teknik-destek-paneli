@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../veritabani/giris.dart';
-import 'anasayfa.dart';
 import '../ozellikler/asset.dart';
 import '../ozellikler/sp.dart';
+import '../veritabani/giris.dart';
 import '../widget/buttonlar.dart';
 import '../widget/formlar.dart';
+import 'anasayfa.dart';
 
 class GirisYap extends StatefulWidget {
   const GirisYap({super.key});
