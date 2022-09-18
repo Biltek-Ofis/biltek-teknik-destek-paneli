@@ -1,5 +1,6 @@
 import "package:decimal/decimal.dart";
 
+import '../ozellikler/cihaz_bilgileri.dart';
 import "../ozellikler/degiskenler.dart";
 
 class CihazModel {
@@ -358,4 +359,45 @@ class CihazModel {
   static String iBirimFiyat6Str = "i_birim_fiyat_6";
   static String iMiktar6Str = "i_miktar_6";
   static String iKdv6Str = "i_kdv_6";
+
+  static int tarihSiralama(String tarih) {
+    String gun = tarih.substring(0, 2);
+    String ay = tarih.substring(3, 5);
+    String yil = tarih.substring(6, 10);
+    String saat = tarih.substring(11, 13);
+    String dakika = tarih.substring(14, 16);
+    return int.tryParse("$yil$ay$gun$saat$dakika") ?? 0;
+  }
+
+  static List<CihazModel> siralaVarsayilanDesc(List<CihazModel> cihazlar) {
+    cihazlar.sort((a, b) {
+      int cmp = cihazDurumuSiralamaGetir(a.guncelDurum)
+          .compareTo(cihazDurumuSiralamaGetir(b.guncelDurum));
+      if (cmp != 0) return cmp;
+      return tarihSiralama(b.tarih).compareTo(tarihSiralama(a.tarih));
+    });
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaVarsayilanAsc(List<CihazModel> cihazlar) {
+    cihazlar.sort((a, b) {
+      int cmp = cihazDurumuSiralamaGetir(b.guncelDurum)
+          .compareTo(cihazDurumuSiralamaGetir(a.guncelDurum));
+      if (cmp != 0) return cmp;
+      return tarihSiralama(a.tarih).compareTo(tarihSiralama(b.tarih));
+    });
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaTarihAsc(List<CihazModel> cihazlar) {
+    cihazlar.sort(
+        (a, b) => tarihSiralama(a.tarih).compareTo(tarihSiralama(b.tarih)));
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaTarihDesc(List<CihazModel> cihazlar) {
+    cihazlar.sort(
+        (a, b) => tarihSiralama(a.tarih).compareTo(tarihSiralama(a.tarih)));
+    return cihazlar;
+  }
 }

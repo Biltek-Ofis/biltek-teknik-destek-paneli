@@ -36,7 +36,7 @@ class _AnasayfaState extends State<Anasayfa> {
 
     Cihazlar.getir().then((value) {
       setState(() {
-        cihazlarTumu = value;
+        cihazlarTumu = CihazModel.siralaVarsayilanDesc(value);
       });
       cihazlariGetir();
     });
@@ -105,7 +105,7 @@ class _AnasayfaState extends State<Anasayfa> {
                         tileColor:
                             cihazDurumuColorGetir(cihazlar[index].guncelDurum),
                         title: Text(
-                          cihazlar[index].servisNo,
+                          "${cihazlar[index].tarih} ${cihazDurumuGetir(cihazlar[index].guncelDurum)}",
                         ),
                       );
                     } else {
