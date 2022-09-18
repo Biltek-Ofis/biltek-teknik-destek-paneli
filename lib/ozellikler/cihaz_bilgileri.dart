@@ -1,4 +1,6 @@
-String arrayGetir(List array, int index) {
+import 'package:flutter/material.dart';
+
+arrayGetir(List array, int index) {
   return index > array.length - 1 ? array[0] : array[index];
 }
 
@@ -49,12 +51,14 @@ final cihazDurumu = [
 ];
 final cihazDurumuSiralama = ["1", "2", "3", "5", "4", "6", "7", "8", "9", "10"];
 
-String turuncu = "0xFFFF9800";
-String pembe = "0xFFE91E63";
-String mavi = "0xFF2196F3";
-String kirmizi = "0xFFF44336";
-String yesil = "0xFF4CAF50";
-final cihazDurumuColor = [
+double transparan = .3;
+double transparanKirmizi = .4;
+Color turuncu = Color.fromRGBO(255, 193, 7, transparan);
+Color pembe = Color.fromRGBO(232, 62, 140, transparan);
+Color mavi = Color.fromRGBO(0, 123, 255, transparan);
+Color kirmizi = Color.fromRGBO(220, 53, 69, transparanKirmizi);
+Color yesil = Color.fromRGBO(40, 167, 69, transparan);
+List<Color> cihazDurumuColor = [
   turuncu,
   turuncu,
   turuncu,
@@ -70,7 +74,7 @@ String cihazDurumuGetir(int index) {
   return arrayGetir(cihazDurumu, index);
 }
 
-String cihazDurumuColorGetir(int index) {
+Color cihazDurumuColorGetir(int index) {
   return arrayGetir(cihazDurumuColor, index);
 }
 

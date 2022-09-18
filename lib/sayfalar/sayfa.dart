@@ -43,12 +43,7 @@ class Sayfa extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: icerik,
-        ),
-      ),
+      body: icerik,
       drawer: SizedBox(
         width: menuGenisligi,
         child: Drawer(
