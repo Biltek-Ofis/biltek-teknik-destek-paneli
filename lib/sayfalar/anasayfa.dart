@@ -1,3 +1,5 @@
+import 'package:biltekbilgisayar/ozellikler/cihaz_bilgileri.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
@@ -15,10 +17,13 @@ class Anasayfa extends StatefulWidget {
 }
 
 class _AnasayfaState extends State<Anasayfa> {
-  CihazlarData cihazlar = CihazlarData(cihazlar: []);
+  List<CihazModel> cihazlarTumu = [];
+  List<CihazModel> cihazlar = [];
 
-  int sortColumnIndex = 0;
-  bool sortAscending = true;
+  final ScrollController scrollController = ScrollController();
+
+  bool yukleniyor = false, hepsiYuklendi = false;
+  int ilkOge = 0, yuklenecekOge = 50;
 
   @override
   void initState() {
@@ -27,22 +32,57 @@ class _AnasayfaState extends State<Anasayfa> {
         Veriler.kullaniciBilgileri = value;
       });
     });
+    super.initState();
 
     Cihazlar.getir().then((value) {
       setState(() {
-        cihazlar = CihazlarData(cihazlar: value);
+        cihazlarTumu = value;
       });
+      cihazlariGetir();
     });
-    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent &&
+          !yukleniyor) {
+        cihazlariGetir();
+      }
+    });
   }
 
-  void sort<T>(Comparable<T> Function(CihazModel cM) getField, int columnIndex,
-      bool ascending) {
-    cihazlar.sort<T>(getField, ascending);
+  cihazlariGetir() async {
+    if (hepsiYuklendi) {
+      return;
+    }
     setState(() {
-      sortColumnIndex = columnIndex;
-      sortAscending = ascending;
+      yukleniyor = true;
     });
+    await Future.delayed(const Duration(milliseconds: 500));
+    int yuklenecekOgeIndex =
+        cihazlar.length + yuklenecekOge < cihazlarTumu.length
+            ? cihazlar.length + yuklenecekOge
+            : cihazlarTumu.length;
+    List<CihazModel> temp = cihazlar.length == cihazlarTumu.length
+        ? []
+        : cihazlarTumu.getRange(ilkOge, yuklenecekOgeIndex).toList();
+    if (kDebugMode) {
+      print("$ilkOge/$yuklenecekOgeIndex arasındaki cihazlar getirildi.");
+    }
+    if (temp.isNotEmpty) {
+      setState(() {
+        cihazlar.addAll(temp);
+        ilkOge += yuklenecekOge;
+      });
+    }
+    setState(() {
+      yukleniyor = false;
+      hepsiYuklendi = temp.isEmpty;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 
   @override
@@ -52,60 +92,68 @@ class _AnasayfaState extends State<Anasayfa> {
         seciliSayfa: "Anasayfa",
       ),
       baslik: "Anasayfa",
-      icerik: PaginatedDataTable(
-        source: cihazlar,
-        header: const Text("Cihazlar"),
-        columns: [
-          DataColumn(
-            label: const Text("Servis No"),
-            onSort: (columnIndex, ascending) => sort<String>(
-              (cM) => cM.servisNo,
-              columnIndex,
-              ascending,
-            ),
-          ),
-          DataColumn(
-            label: const Text("Cihaz"),
-            onSort: (columnIndex, ascending) => sort<String>(
-              (cM) => "${cM.cihaz} ${cM.cihazModeli}",
-              columnIndex,
-              ascending,
-            ),
-          ),
-          DataColumn(
-            label: const Text("Giriş Tarihi"),
-            onSort: (columnIndex, ascending) => sort<String>(
-              (cM) => cM.tarih,
-              columnIndex,
-              ascending,
-            ),
-          ),
-          DataColumn(
-            label: const Text("Güncel Durum"),
-            onSort: (columnIndex, ascending) => sort<String>(
-              (cM) => cM.guncelDurum.toString(),
-              columnIndex,
-              ascending,
-            ),
-          ),
-          DataColumn(
-            label: const Text("Sorumlu Personel"),
-            onSort: (columnIndex, ascending) => sort<String>(
-              (cM) => cM.sorumlu.toString(),
-              columnIndex,
-              ascending,
-            ),
-          ),
-          const DataColumn(
-            label: Text("Detaylar"),
-          ),
-        ],
-        columnSpacing: 0,
-        horizontalMargin: 0,
-        rowsPerPage: 50,
-        showCheckboxColumn: false,
-        sortColumnIndex: sortColumnIndex,
-        sortAscending: sortAscending,
+      icerik: LayoutBuilder(
+        builder: (context, constraints) {
+          if (cihazlar.isNotEmpty) {
+            return Stack(
+              children: [
+                ListView.separated(
+                  controller: scrollController,
+                  itemBuilder: (context, index) {
+                    if (index < cihazlar.length) {
+                      return ListTile(
+                        tileColor:
+                            cihazDurumuColorGetir(cihazlar[index].guncelDurum),
+                        title: Text(
+                          cihazlar[index].servisNo,
+                        ),
+                      );
+                    } else {
+                      return Container(); /*SizedBox(
+                        width: constraints.maxWidth,
+                        height: 59,
+                        child: const Center(
+                          child: Text(
+                            "Gösterilecek başka cihaz yok.",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      );*/
+                    }
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider(
+                      height: 1,
+                    );
+                  },
+                  itemCount: cihazlar.length + (hepsiYuklendi ? 1 : 0),
+                ),
+                if (yukleniyor)
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: SizedBox(
+                      width: constraints.maxWidth,
+                      height: 80,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          } else {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
       ),
     );
   }
