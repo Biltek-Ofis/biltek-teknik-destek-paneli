@@ -49,7 +49,10 @@ final cihazDurumu = [
   "Teslim Edildi / Ödeme Alınmadı",
   "Teslim Edildi"
 ];
-final cihazDurumuSiralama = ["1", "2", "3", "5", "4", "6", "7", "8", "9", "10"];
+final cihazDurumuSiralama = [1, 2, 3, 5, 4, 6, 7, 8, 9, 10];
+int cihazDurumuSiralamaGetir(int index) {
+  return arrayGetir(cihazDurumuSiralama, index);
+}
 
 double transparan = .3;
 double transparanKirmizi = .4;
