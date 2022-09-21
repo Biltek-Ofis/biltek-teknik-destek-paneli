@@ -89,6 +89,52 @@ class _AnasayfaState extends State<Anasayfa> {
     scrollController.dispose();
   }
 
+  Widget gridView({
+    required BuildContext context,
+    required List<CihazModel> cihazListe,
+    int ekCount = 0,
+  }) {
+    int yatayOgeSayisi = 3;
+    double ogeGenisligi = MediaQuery.of(context).size.width / yatayOgeSayisi;
+    double ogeYuksekligi = 50;
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: yatayOgeSayisi,
+        childAspectRatio: (ogeGenisligi / ogeYuksekligi),
+      ),
+      itemCount: cihazListe.length + ekCount,
+      itemBuilder: (context, index) {
+        if (index < cihazListe.length) {
+          return Container(
+            decoration: BoxDecoration(
+              color: cihazDurumuColorGetir(
+                cihazListe[index].guncelDurum,
+              ),
+            ),
+            child: Text(
+              "${cihazListe[index].tarih} ${cihazDurumuGetir(cihazListe[index].guncelDurum)}",
+            ),
+          );
+        } else {
+          return Container(); /*SizedBox(
+                        width: constraints.maxWidth,
+                        height: 59,
+                        child: const Center(
+                          child: Text(
+                            "Gösterilecek başka cihaz yok.",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      );*/
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Sayfa(
@@ -101,38 +147,27 @@ class _AnasayfaState extends State<Anasayfa> {
           if (cihazlar.isNotEmpty) {
             return Stack(
               children: [
-                ListView.separated(
+                ListView(
                   controller: scrollController,
-                  itemBuilder: (context, index) {
-                    if (index < cihazlar.length) {
-                      return ListTile(
-                        tileColor:
-                            cihazDurumuColorGetir(cihazlar[index].guncelDurum),
-                        title: Text(
-                          "${cihazlar[index].tarih} ${cihazDurumuGetir(cihazlar[index].guncelDurum)}",
-                        ),
-                      );
-                    } else {
-                      return Container(); /*SizedBox(
-                        width: constraints.maxWidth,
-                        height: 59,
-                        child: const Center(
-                          child: Text(
-                            "Gösterilecek başka cihaz yok.",
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    for (int i = 0; i < cihazDurumuSiralama.length; i++)
+                      Column(
+                        children: [
+                          Text(
+                            cihazDurumuGetir(cihazDurumuSiralama[i]),
                           ),
-                        ),
-                      );*/
-                    }
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider(
-                      height: 1,
-                    );
-                  },
-                  itemCount: cihazlar.length + (hepsiYuklendi ? 1 : 0),
+                          gridView(
+                            context: context,
+                            cihazListe: cihazlar.where((element) {
+                              return element.guncelDurum ==
+                                  cihazDurumuSiralama[i];
+                            }).toList(),
+                            ekCount: (hepsiYuklendi ? 1 : 0),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
                 if (yukleniyor)
                   Positioned(

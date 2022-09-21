@@ -49,7 +49,7 @@ final cihazDurumu = [
   "Teslim Edildi / Ödeme Alınmadı",
   "Teslim Edildi"
 ];
-final cihazDurumuSiralama = [1, 2, 3, 5, 4, 6, 7, 8, 9, 10];
+final cihazDurumuSiralama = [0, 1, 2, 4, 3, 5, 6, 7, 8, 9];
 int cihazDurumuSiralamaGetir(int index) {
   return arrayGetir(cihazDurumuSiralama, index);
 }
