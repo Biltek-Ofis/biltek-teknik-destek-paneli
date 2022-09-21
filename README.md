@@ -29,7 +29,7 @@ lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olac
 
 ```
 class Env{
-  static String uygulamaAdi = "Başlık";
+  static String uygulamaAdi = "Biltek Bilgisayar";
   static String authToken = "yukarıdaki .env dosyasında belirlediğiniz kod";
 }
 ```
