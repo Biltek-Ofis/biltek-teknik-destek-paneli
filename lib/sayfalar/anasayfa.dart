@@ -28,16 +28,20 @@ class _AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     KullaniciBilgileri.getir().then((value) {
-      setState(() {
-        Veriler.kullaniciBilgileri = value;
-      });
+      if (value != null) {
+        setState(() {
+          Veriler.kullaniciBilgileri = value;
+        });
+      }
     });
     super.initState();
 
     Cihazlar.getir().then((value) {
-      setState(() {
-        cihazlarTumu = CihazModel.siralaVarsayilanDesc(value);
-      });
+      if (value != null) {
+        setState(() {
+          cihazlarTumu = CihazModel.siralaVarsayilanDesc(value);
+        });
+      }
       cihazlariGetir();
     });
     scrollController.addListener(() {
