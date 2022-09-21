@@ -22,6 +22,7 @@ DB_USERNAME=root
 DB_PASSWORD=1212
 BARKOD_EN="40mm"
 BARKOD_BOY="20mm"
+AUTH_TOKEN="rastgele belirlediğiniz bir kod"
 ```
 
 lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olacak:
@@ -29,5 +30,6 @@ lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olac
 ```
 class Env{
   static String uygulamaAdi = "Başlık";
+  static String authToken = "yukarıdaki .env dosyasında belirlediğiniz kod";
 }
 ```
