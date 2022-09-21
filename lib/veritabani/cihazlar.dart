@@ -5,7 +5,7 @@ import 'baglan.dart';
 import 'konumlar.dart';
 
 class Cihazlar {
-  static Future<List<CihazModel>> getir() async {
+  static Future<List<CihazModel>?> getir() async {
     try {
       List cihazlar = await Baglan.list(url: Konumlar.cihazlar());
       return cihazlar.map((cihaz) => CihazModel.fromJson(cihaz)).toList();
@@ -13,7 +13,7 @@ class Cihazlar {
       if (kDebugMode) {
         print("Cihazlar Alınamadı. Hata: ${e.toString()}");
       }
-      return [];
+      return null;
     }
   }
 }
