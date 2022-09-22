@@ -1,4 +1,4 @@
-import 'package:biltekbilgisayar/ozellikler/cihaz_bilgileri.dart';
+import 'package:biltekbilgisayar/widget/liste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -89,102 +89,6 @@ class _AnasayfaState extends State<Anasayfa> {
     scrollController.dispose();
   }
 
-  Widget bilgiler({
-    required String baslik,
-    required String aciklama,
-  }) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1.5, color: Colors.grey),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            baslik,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(aciklama),
-        ],
-      ),
-    );
-  }
-
-  Widget gridView({
-    required BuildContext context,
-    required List<CihazModel> cihazListe,
-    required int yatayOgeSayisi,
-    int ekCount = 0,
-  }) {
-    double ogeGenisligi = MediaQuery.of(context).size.width / yatayOgeSayisi;
-    double ogeYuksekligi = 140;
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: yatayOgeSayisi,
-        childAspectRatio: (ogeGenisligi / ogeYuksekligi),
-      ),
-      itemCount: cihazListe.length + ekCount,
-      itemBuilder: (context, index) {
-        if (index < cihazListe.length) {
-          return Card(
-            elevation: 8,
-            child: ListTile(
-              tileColor: cihazDurumuColorGetir(
-                cihazListe[index].guncelDurum,
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  bilgiler(
-                    baslik: "Servis No: ",
-                    aciklama: cihazListe[index].servisNo,
-                  ),
-                  bilgiler(
-                    baslik: "Müşteri Adı: ",
-                    aciklama: cihazListe[index].musteriAdi,
-                  ),
-                  bilgiler(
-                    baslik: "Cihaz: ",
-                    aciklama:
-                        "${cihazListe[index].cihaz} ${cihazListe[index].cihazModeli}",
-                  ),
-                  bilgiler(
-                    baslik: "Giriş Tarihi: ",
-                    aciklama: cihazListe[index].tarih,
-                  ),
-                  bilgiler(
-                    baslik: "Güncel Durum: ",
-                    aciklama: cihazDurumuGetir(cihazListe[index].guncelDurum),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return Container(); /*SizedBox(
-                        width: constraints.maxWidth,
-                        height: 59,
-                        child: const Center(
-                          child: Text(
-                            "Gösterilecek başka cihaz yok.",
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      );*/
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     int yatayOgeSayisi = 2;
@@ -201,45 +105,22 @@ class _AnasayfaState extends State<Anasayfa> {
       icerik: LayoutBuilder(
         builder: (context, constraints) {
           if (cihazlar.isNotEmpty) {
-            return Stack(
+            return Column(
               children: [
-                ListView(
-                  controller: scrollController,
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    for (int i = 0; i < cihazDurumuSiralama.length; i++)
-                      Column(
-                        children: [
-                          Text(
-                            cihazDurumuGetir(cihazDurumuSiralama[i]),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          gridView(
-                            context: context,
-                            cihazListe: cihazlar.where((element) {
-                              return element.guncelDurum ==
-                                  cihazDurumuSiralama[i];
-                            }).toList(),
-                            yatayOgeSayisi: yatayOgeSayisi,
-                            ekCount: (hepsiYuklendi ? 1 : 0),
-                          ),
-                        ],
-                      ),
-                  ],
+                Expanded(
+                  child: CihazListesi(
+                    controller: scrollController,
+                    cihazlar: cihazlar,
+                    yatayOgeSayisi: yatayOgeSayisi,
+                    ekCount: (hepsiYuklendi ? 1 : 0),
+                  ),
                 ),
                 if (yukleniyor)
-                  Positioned(
-                    left: 0,
-                    bottom: 0,
-                    child: SizedBox(
-                      width: constraints.maxWidth,
-                      height: 80,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    height: 80,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
                   ),
               ],
