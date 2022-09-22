@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.0.15
   http: ^0.13.5
   decimal: ^2.3.0
+  simple_grouped_listview: ^1.0.1
 
 dev_dependencies:
   flutter_test:
