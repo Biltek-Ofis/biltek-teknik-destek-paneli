@@ -1,6 +1,8 @@
+import 'package:biltekbilgisayar/ozellikler/cihaz_bilgileri.dart';
 import 'package:biltekbilgisayar/widget/liste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:turkish/turkish.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/veriler.dart';
@@ -19,8 +21,10 @@ class Anasayfa extends StatefulWidget {
 class _AnasayfaState extends State<Anasayfa> {
   List<CihazModel> cihazlarTumu = [];
   List<CihazModel> cihazlar = [];
+  List<CihazModel> filtreliCihazlar = [];
 
   final ScrollController scrollController = ScrollController();
+  final TextEditingController textEditingController = TextEditingController();
 
   bool yukleniyor = false, hepsiYuklendi = false;
   int ilkOge = 0, yuklenecekOge = 50;
@@ -47,8 +51,48 @@ class _AnasayfaState extends State<Anasayfa> {
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent &&
-          !yukleniyor) {
+          !yukleniyor &&
+          filtreliCihazlar.isEmpty) {
         cihazlariGetir();
+      }
+    });
+    textEditingController.addListener(() {
+      String text = textEditingController.text;
+      if (text.isNotEmpty) {
+        setState(() {
+          filtreliCihazlar = cihazlarTumu.where((element) {
+            return element.servisNo
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.musteriAdi
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.adres.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+                element.telefonNumarasi
+                    .replaceAll("_", "")
+                    .replaceAll("(", "")
+                    .replaceAll(")", "")
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.telefonNumarasi
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.sorumlu
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.cihaz.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+                element.cihazModeli
+                    .toLowerCaseTr()
+                    .contains(text.toLowerCaseTr()) ||
+                element.tarih.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+                cihazDurumuGetir(element.guncelDurum)
+                    .contains(text.toLowerCaseTr());
+          }).toList();
+        });
+      } else {
+        setState(() {
+          filtreliCihazlar = [];
+        });
       }
     });
   }
@@ -104,13 +148,22 @@ class _AnasayfaState extends State<Anasayfa> {
       baslik: "Anasayfa",
       icerik: LayoutBuilder(
         builder: (context, constraints) {
-          if (cihazlar.isNotEmpty) {
+          if (cihazlar.isNotEmpty || filtreliCihazlar.isNotEmpty) {
             return Column(
               children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.centerRight,
+                  child: TextField(
+                    controller: textEditingController,
+                    decoration: const InputDecoration(hintText: "Ara"),
+                  ),
+                ),
                 Expanded(
                   child: CihazListesi(
                     controller: scrollController,
-                    cihazlar: cihazlar,
+                    cihazlar:
+                        filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar,
                     yatayOgeSayisi: yatayOgeSayisi,
                     ekCount: (hepsiYuklendi ? 1 : 0),
                   ),
