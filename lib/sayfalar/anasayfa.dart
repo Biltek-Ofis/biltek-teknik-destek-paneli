@@ -26,6 +26,8 @@ class _AnasayfaState extends State<Anasayfa> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
 
+  bool yukariGit = false;
+
   bool yukleniyor = false, hepsiYuklendi = false;
   int ilkOge = 0, yuklenecekOge = 50;
 
@@ -54,6 +56,15 @@ class _AnasayfaState extends State<Anasayfa> {
           !yukleniyor &&
           filtreliCihazlar.isEmpty) {
         cihazlariGetir();
+      }
+      if (scrollController.offset > 0) {
+        setState(() {
+          yukariGit = true;
+        });
+      } else {
+        setState(() {
+          yukariGit = false;
+        });
       }
     });
     textEditingController.addListener(() {
@@ -145,6 +156,17 @@ class _AnasayfaState extends State<Anasayfa> {
       menu: const AnaMenu(
         seciliSayfa: "Anasayfa",
       ),
+      floatingActionButton: yukariGit
+          ? FloatingActionButton(
+              child: const Icon(Icons.arrow_upward),
+              onPressed: () {
+                scrollController.animateTo(
+                  0.0,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 300),
+                );
+              })
+          : null,
       baslik: "Anasayfa",
       icerik: LayoutBuilder(
         builder: (context, constraints) {

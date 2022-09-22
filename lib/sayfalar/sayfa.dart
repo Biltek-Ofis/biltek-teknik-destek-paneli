@@ -11,12 +11,14 @@ class Sayfa extends StatelessWidget {
     required this.icerik,
     this.menuGenisligi = 240,
     this.baslik = "",
+    this.floatingActionButton,
   });
 
   final AnaMenu menu;
   final Widget icerik;
   final double menuGenisligi;
   final String baslik;
+  final Widget? floatingActionButton;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +45,7 @@ class Sayfa extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: floatingActionButton,
       body: icerik,
       drawer: SizedBox(
         width: menuGenisligi,
