@@ -25,7 +25,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi}\\\',\\\'{adres}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu}\\\',\\\'{cihaz}\\\',\\\'{cihaz_modeli}\\\',\\\'{seri_no}\\\',\\\'{teslim_alinanlar}\\\',\\\'{cihaz_sifresi}\\\',\\\'{cihazdaki_hasar}\\\',\\\'{hasar_tespiti}\\\',\\\'{ariza_aciklamasi}\\\',\\\'{servis_turu}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu}\\\',\\\'{yapilan_islem_aciklamasi}\\\',\\\'{tahsilat_sekli}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 
 echo '<script>
@@ -54,7 +54,7 @@ echo '<script>
     $("#cihaziSilModal").modal("show");
   }
   function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli) {
-    /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onclick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
+    /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = id;
     butonDurumu(guncel_durum_sayi);
 
@@ -127,7 +127,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').
   <td id="{id}GuncelDurum">{guncel_durum}</td>
   <td id="{id}Sorumlu">{sorumlu}</td>
   <td class="text-center">
-    <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . '{id}" class="btn btn-info text-white" onclick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
+    <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
   </td>
 </tr>';
 $ilkOgeGenislik = "40%";
@@ -374,7 +374,22 @@ $eskiler = array(
   "{guncel_durum}",
   "{guncel_durum_sayi}",
   "{tahsilat_sekli}",
-  "{yapilan_islemler}"
+  "{yapilan_islemler}",
+  "{musteri_adi_onclick}",
+  "{adres_onclick}",
+  "{guncel_durum_onclick}",
+  "{cihaz_turu_onclick}",
+  "{cihaz_onclick}",
+  "{cihaz_modeli_onclick}",
+  "{teslim_alinanlar_onclick}",
+  "{cihaz_sifresi_onclick}",
+  "{cihazdaki_hasar_onclick}",
+  "{hasar_tespiti_onclick}",
+  "{ariza_aciklamasi_onclick}",
+  "{servis_turu_onclick}",
+  "{sorumlu_onclick}",
+  "{yapilan_islem_aciklamasi_onclick}",
+  "{tahsilat_sekli_onclick}"
 );
 
 $yapilanIslemToplamEskiArray = array(
@@ -389,6 +404,10 @@ $yapilanIslemEskiArray = array(
   "{toplam_islem_kdv}",
   "{kdv_orani}"
 );
+function donusturOnclick($oge)
+{
+  return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
+}
 $sayac = 0;
 foreach ($cihazlar as $cihaz) {
   if ($sayac == 0) {
@@ -541,7 +560,22 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $cihaz->guncel_durum,
     $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
-    $yapilanİslemler
+    $yapilanİslemler,
+    donusturOnclick($cihaz->musteri_adi),
+    donusturOnclick($cihaz->adres),
+    donusturOnclick($this->Islemler_Model->cihazDurumu($cihaz->guncel_durum)),
+    donusturOnclick($cihaz->cihaz_turu),
+    donusturOnclick($cihaz->cihaz),
+    donusturOnclick($cihaz->cihaz_modeli),
+    donusturOnclick($cihaz->teslim_alinanlar),
+    donusturOnclick($cihaz->cihaz_sifresi),
+    donusturOnclick($this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar)),
+    donusturOnclick($cihaz->hasar_tespiti),
+    donusturOnclick($cihaz->ariza_aciklamasi),
+    donusturOnclick($this->Islemler_Model->servisTuru($cihaz->servis_turu)),
+    donusturOnclick($cihaz->sorumlu),
+    donusturOnclick($cihaz->yapilan_islem_aciklamasi),
+    donusturOnclick($this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli))
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   echo $tablo;
@@ -685,7 +719,15 @@ echo 'function tarihDonusturSiralama(tarih) {
     return gun + "." + ay + "." + yil + " " + saat ;
   }';
 
-echo 'function donustur(str, value) {
+echo '
+function donusturOnclick(oge){
+  if(oge){
+    return oge.replaceAll(/(?:\r\n|\r|\n)/g, "<br>").replaceAll("\'", "\\\\\'");
+  }else{
+    return "";
+  }
+}
+function donustur(str, value) {
     return str.
     replaceAll("{yeni}", \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
@@ -716,7 +758,23 @@ echo 'function donustur(str, value) {
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
       .replaceAll("{guncel_durum_sayi}", value.guncel_durum)
       .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
-      .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\');
+      .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\')
+      .replaceAll("{musteri_adi_onclick}", donusturOnclick(value.musteri_adi))
+      .replaceAll("{adres_onclick}", donusturOnclick(value.adres))
+      .replaceAll("{guncel_durum_onclick}", donusturOnclick(cihazDurumu(value.guncel_durum)))
+      .replaceAll("{cihaz_turu_onclick}", donusturOnclick(value.cihaz_turu))
+      .replaceAll("{cihaz_onclick}", donusturOnclick(value.cihaz))
+      .replaceAll("{cihaz_modeli_onclick}", donusturOnclick(value.cihaz_modeli))
+      .replaceAll("{teslim_alinanlar_onclick}", donusturOnclick(value.teslim_alinanlar))
+      .replaceAll("{cihaz_sifresi_onclick}", donusturOnclick(value.cihaz_sifresi))
+      .replaceAll("{cihazdaki_hasar_onclick}", donusturOnclick(cihazdakiHasar(value.cihazdaki_hasar)))
+      .replaceAll("{hasar_tespiti_onclick}", donusturOnclick(value.hasar_tespiti))
+      .replaceAll("{ariza_aciklamasi_onclick}", donusturOnclick(value.ariza_aciklamasi))
+      .replaceAll("{servis_turu_onclick}", donusturOnclick(servisTuru(value.servis_turu)))
+      .replaceAll("{sorumlu_onclick}", donusturOnclick(value.sorumlu))
+      .replaceAll("{yapilan_islem_aciklamasi_onclick}", donusturOnclick(value.yapilan_islem_aciklamasi))
+      .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(tahsilatSekli(value.tahsilat_sekli)))
+      ;
   }';
 echo 'function tarihiFormatla(tarih12){
   return (tarih12 < 10) ? "0" + tarih12 : tarih12;
@@ -955,7 +1013,8 @@ echo '
           if (cihazVarmi) {
             let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
             const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
-            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onclick", cihazDetayBtn);
+            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onClick", cihazDetayBtn);
+            console.log("Çalıştı");
             $("#cihaz" + value.id).attr(\'class\', \'\');
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "ServisNo, #" + value.id + "ServisNo3").html(value.servis_no);
