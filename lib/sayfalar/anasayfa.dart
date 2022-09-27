@@ -146,12 +146,6 @@ class _AnasayfaState extends State<Anasayfa> {
 
   @override
   Widget build(BuildContext context) {
-    int yatayOgeSayisi = 2;
-    if (MediaQuery.of(context).size.width > 1000) {
-      yatayOgeSayisi = 2;
-    } else {
-      yatayOgeSayisi = 1;
-    }
     return Sayfa(
       menu: const AnaMenu(
         seciliSayfa: "Anasayfa",
@@ -171,31 +165,43 @@ class _AnasayfaState extends State<Anasayfa> {
       icerik: LayoutBuilder(
         builder: (context, constraints) {
           if (cihazlar.isNotEmpty || filtreliCihazlar.isNotEmpty) {
-            return Column(
+            return Stack(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.centerRight,
-                  child: TextField(
-                    controller: textEditingController,
-                    decoration: const InputDecoration(hintText: "Ara"),
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    alignment: Alignment.centerRight,
+                    child: TextField(
+                      controller: textEditingController,
+                      decoration: const InputDecoration(hintText: "Ara"),
+                    ),
                   ),
                 ),
-                Expanded(
+                Positioned(
+                  top: 50,
+                  bottom: yukleniyor ? 80 : 0,
+                  left: 0,
+                  right: 0,
                   child: CihazListesi(
                     controller: scrollController,
                     cihazlar:
                         filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar,
-                    yatayOgeSayisi: yatayOgeSayisi,
                     ekCount: (hepsiYuklendi ? 1 : 0),
                   ),
                 ),
                 if (yukleniyor)
-                  SizedBox(
+                  Positioned(
                     width: constraints.maxWidth,
-                    height: 80,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.white,
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      child: const CircularProgressIndicator(),
                     ),
                   ),
               ],
