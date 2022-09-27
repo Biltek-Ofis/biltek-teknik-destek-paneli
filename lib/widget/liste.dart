@@ -31,9 +31,9 @@ class _CihazListesiState extends State<CihazListesi> {
     });
   }
 
-  int ogeSayisi = 5;
-  int yeniOgeSayisi = 5;
-  double minOgeGenisligi = 200;
+  int ogeSayisi = 8;
+  int yeniOgeSayisi = 8;
+  double minOgeGenisligi = 150;
   double dahaFazlaButonBoyutu = 15;
 
   Widget dahaFazla({
@@ -45,6 +45,7 @@ class _CihazListesiState extends State<CihazListesi> {
       width: width,
       child: Wrap(
         alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           baslikText(text: baslik, fontSize: null),
           bilgilerText(text: aciklama),
@@ -64,19 +65,21 @@ class _CihazListesiState extends State<CihazListesi> {
       },
       elevation: 2.0,
       fillColor: Colors.blue,
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(5.0),
       shape: const CircleBorder(),
       child: SizedBox(
         width: dahaFazlaButonBoyutu,
         height: dahaFazlaButonBoyutu,
-        child: Icon(
-          (menuAcikDurumu.length > index)
-              ? menuAcikDurumu[index]
-                  ? Icons.remove
-                  : Icons.add
-              : Icons.add,
-          size: 13.0,
-          color: Colors.white,
+        child: Center(
+          child: Icon(
+            (menuAcikDurumu.length > index)
+                ? menuAcikDurumu[index]
+                    ? Icons.remove
+                    : Icons.add
+                : Icons.add,
+            size: 15.0,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -88,8 +91,10 @@ class _CihazListesiState extends State<CihazListesi> {
   }) {
     return Container(
       width: width,
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           baslikText(text: baslik),
         ],
@@ -118,6 +123,8 @@ class _CihazListesiState extends State<CihazListesi> {
     return SizedBox(
       width: width,
       child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           bilgilerText(text: aciklama),
         ],
@@ -167,17 +174,32 @@ class _CihazListesiState extends State<CihazListesi> {
                 ),
               if (yeniOgeSayisi >= 3)
                 baslik(
-                  baslik: "Cihaz",
+                  baslik: "GSM",
                   width: ogeGenisligi,
                 ),
               if (yeniOgeSayisi >= 4)
                 baslik(
-                  baslik: "Tarih",
+                  baslik: "Tür",
                   width: ogeGenisligi,
                 ),
               if (yeniOgeSayisi >= 5)
                 baslik(
-                  baslik: "Güncel Durum",
+                  baslik: "Cihaz",
+                  width: ogeGenisligi,
+                ),
+              if (yeniOgeSayisi >= 6)
+                baslik(
+                  baslik: "Tarih",
+                  width: ogeGenisligi,
+                ),
+              if (yeniOgeSayisi >= 7)
+                baslik(
+                  baslik: "Durum",
+                  width: ogeGenisligi,
+                ),
+              if (yeniOgeSayisi >= 8)
+                baslik(
+                  baslik: "Sorumlu",
                   width: ogeGenisligi,
                 ),
             ],
@@ -212,25 +234,44 @@ class _CihazListesiState extends State<CihazListesi> {
                             ),
                           if (yeniOgeSayisi >= 3)
                             bilgiler(
-                              aciklama:
-                                  "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
+                              aciklama: widget.cihazlar[index].telefonNumarasi,
                               width: ogeGenisligi,
                               index: index,
                             ),
                           if (yeniOgeSayisi >= 4)
                             bilgiler(
-                              aciklama: widget.cihazlar[index].tarih,
+                              aciklama: widget.cihazlar[index].cihazTuru,
                               width: ogeGenisligi,
                               index: index,
                             ),
                           if (yeniOgeSayisi >= 5)
+                            bilgiler(
+                              aciklama:
+                                  "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
+                              width: ogeGenisligi,
+                              index: index,
+                            ),
+                          if (yeniOgeSayisi >= 6)
+                            bilgiler(
+                              aciklama: widget.cihazlar[index].tarih,
+                              width: ogeGenisligi,
+                              index: index,
+                            ),
+                          if (yeniOgeSayisi >= 7)
                             bilgiler(
                               aciklama: cihazDurumuGetir(
                                   widget.cihazlar[index].guncelDurum),
                               width: ogeGenisligi,
                               index: index,
                             ),
-                          if (yeniOgeSayisi < 5) dahaFazlaButon(index: index),
+                          if (yeniOgeSayisi >= 8)
+                            bilgiler(
+                              aciklama: widget.cihazlar[index].sorumlu,
+                              width: ogeGenisligi,
+                              index: index,
+                            ),
+                          if (yeniOgeSayisi < ogeSayisi)
+                            dahaFazlaButon(index: index),
                         ],
                       ),
                       if (menuAcikDurumu.length > index)
@@ -241,28 +282,47 @@ class _CihazListesiState extends State<CihazListesi> {
                             children: [
                               if (yeniOgeSayisi < 2)
                                 dahaFazla(
-                                  baslik: "Müşteri Adı",
+                                  baslik: "Müşteri Adı: ",
                                   aciklama: widget.cihazlar[index].musteriAdi,
                                   width: tamBoyut,
                                 ),
                               if (yeniOgeSayisi < 3)
+                                dahaFazla(
+                                  baslik: "GSM: ",
+                                  aciklama:
+                                      widget.cihazlar[index].telefonNumarasi,
+                                  width: tamBoyut,
+                                ),
+                              if (yeniOgeSayisi < 4)
+                                dahaFazla(
+                                  baslik: "Tür: ",
+                                  aciklama: widget.cihazlar[index].cihazTuru,
+                                  width: tamBoyut,
+                                ),
+                              if (yeniOgeSayisi < 5)
                                 dahaFazla(
                                   baslik: "Cihaz: ",
                                   aciklama:
                                       "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
                                   width: tamBoyut,
                                 ),
-                              if (yeniOgeSayisi < 4)
+                              if (yeniOgeSayisi < 6)
                                 dahaFazla(
                                   baslik: "Tarih: ",
                                   aciklama: widget.cihazlar[index].tarih,
                                   width: tamBoyut,
                                 ),
-                              if (yeniOgeSayisi < 5)
+                              if (yeniOgeSayisi < 7)
                                 dahaFazla(
                                   baslik: "Güncel Durum: ",
                                   aciklama: cihazDurumuGetir(
                                       widget.cihazlar[index].guncelDurum),
+                                  width: tamBoyut,
+                                ),
+                              if (yeniOgeSayisi < 8)
+                                dahaFazla(
+                                  baslik: "Sorumlu: ",
+                                  aciklama: widget.cihazlar[index].sorumlu,
                                   width: tamBoyut,
                                 ),
                             ],

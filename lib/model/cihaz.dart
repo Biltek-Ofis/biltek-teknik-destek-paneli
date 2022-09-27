@@ -69,7 +69,7 @@ class CihazModel {
   final String musteriAdi;
   final String adres;
   final String telefonNumarasi;
-  final int cihazTuru;
+  final String cihazTuru;
   final String sorumlu;
   final String cihaz;
   final String cihazModeli;
@@ -129,7 +129,7 @@ class CihazModel {
       adres: Degiskenler.parseString(yazi: jsonData[adresStr]),
       telefonNumarasi:
           Degiskenler.parseString(yazi: jsonData[telefonNumarasiStr]),
-      cihazTuru: Degiskenler.parseInt(sayi: jsonData[cihazTuruStr]),
+      cihazTuru: Degiskenler.parseString(yazi: jsonData[cihazTuruStr]),
       sorumlu: Degiskenler.parseString(yazi: jsonData[sorumluStr]),
       cihaz: Degiskenler.parseString(yazi: jsonData[cihazStr]),
       cihazModeli: Degiskenler.parseString(yazi: jsonData[cihazModeliStr]),
@@ -194,7 +194,7 @@ class CihazModel {
       musteriAdi: "",
       adres: "",
       telefonNumarasi: "",
-      cihazTuru: 0,
+      cihazTuru: "",
       sorumlu: "",
       cihaz: "",
       cihazModeli: "",
