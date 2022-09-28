@@ -206,17 +206,17 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              baslik(
-                baslik: "Servis No",
-                width: ogeGenisligi,
-                sirala: CihazSiralama.servisNo,
-              ),
               if (yeniOgeSayisi >= 2)
                 baslik(
-                  baslik: "Müşteri Adı",
+                  baslik: "Servis No",
                   width: ogeGenisligi,
-                  sirala: CihazSiralama.musteriAdi,
+                  sirala: CihazSiralama.servisNo,
                 ),
+              baslik(
+                baslik: "Müşteri Adı",
+                width: ogeGenisligi,
+                sirala: CihazSiralama.musteriAdi,
+              ),
               if (yeniOgeSayisi >= 3)
                 baslik(
                   baslik: "GSM",
@@ -261,6 +261,22 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
               if (index < widget.cihazlar.length) {
+                Widget yeniWidgeti = Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
+                  height: 25,
+                  child: const Text(
+                    "Yeni",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                );
                 return ListTile(
                   tileColor: cihazDurumuColorGetir(
                     widget.cihazlar[index].guncelDurum,
@@ -275,43 +291,28 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            bilgiler(
-                              aciklama: widget.cihazlar[index].servisNo,
-                              widget: Row(
-                                children: [
-                                  if (widget.cihazlar[index].yeni)
-                                    Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.red,
-                                      ),
-                                      height: 25,
-                                      child: const Text(
-                                        "Yeni",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  if (yeniOgeSayisi == 1)
-                                    dahaFazlaButon(index: index),
-                                ],
-                              ),
-                              width: ogeGenisligi,
-                              index: index,
-                            ),
                             if (yeniOgeSayisi >= 2)
                               bilgiler(
-                                aciklama: widget.cihazlar[index].musteriAdi,
-                                widget: (yeniOgeSayisi == 2)
-                                    ? dahaFazlaButon(index: index)
+                                aciklama: widget.cihazlar[index].servisNo,
+                                widget: (widget.cihazlar[index].yeni)
+                                    ? yeniWidgeti
                                     : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
+                            bilgiler(
+                              aciklama: widget.cihazlar[index].musteriAdi,
+                              widget: (yeniOgeSayisi == 2 || yeniOgeSayisi == 1)
+                                  ? Row(
+                                      children: [
+                                        if (yeniOgeSayisi == 1) yeniWidgeti,
+                                        dahaFazlaButon(index: index),
+                                      ],
+                                    )
+                                  : null,
+                              width: ogeGenisligi,
+                              index: index,
+                            ),
                             if (yeniOgeSayisi >= 3)
                               bilgiler(
                                 aciklama:
@@ -376,8 +377,8 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                               children: [
                                 if (yeniOgeSayisi < 2)
                                   dahaFazla(
-                                    baslik: "Müşteri Adı: ",
-                                    aciklama: widget.cihazlar[index].musteriAdi,
+                                    baslik: "Servis No: ",
+                                    aciklama: widget.cihazlar[index].servisNo,
                                     width: tamBoyut,
                                   ),
                                 if (yeniOgeSayisi < 3)
