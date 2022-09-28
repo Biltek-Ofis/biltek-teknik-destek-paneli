@@ -156,12 +156,19 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
     return Container(
       width: width,
       padding: const EdgeInsets.all(5),
-      child: Wrap(
-        alignment: WrapAlignment.start,
-        runAlignment: WrapAlignment.start,
-        crossAxisAlignment: WrapCrossAlignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          bilgilerText(text: aciklama),
+          Expanded(
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              runAlignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                bilgilerText(text: aciklama),
+              ],
+            ),
+          ),
           if (widget != null) widget,
         ],
       ),
@@ -270,8 +277,10 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                           children: [
                             bilgiler(
                               aciklama: widget.cihazlar[index].servisNo,
-                              widget: widget.cihazlar[index].yeni
-                                  ? Container(
+                              widget: Row(
+                                children: [
+                                  if (widget.cihazlar[index].yeni)
+                                    Container(
                                       padding: const EdgeInsets.all(5),
                                       decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
@@ -286,14 +295,20 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
-                                    )
-                                  : null,
+                                    ),
+                                  if (yeniOgeSayisi == 1)
+                                    dahaFazlaButon(index: index),
+                                ],
+                              ),
                               width: ogeGenisligi,
                               index: index,
                             ),
                             if (yeniOgeSayisi >= 2)
                               bilgiler(
                                 aciklama: widget.cihazlar[index].musteriAdi,
+                                widget: (yeniOgeSayisi == 2)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
@@ -301,12 +316,18 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                               bilgiler(
                                 aciklama:
                                     widget.cihazlar[index].telefonNumarasi,
+                                widget: (yeniOgeSayisi == 3)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
                             if (yeniOgeSayisi >= 4)
                               bilgiler(
                                 aciklama: widget.cihazlar[index].cihazTuru,
+                                widget: (yeniOgeSayisi == 4)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
@@ -314,12 +335,18 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                               bilgiler(
                                 aciklama:
                                     "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
+                                widget: (yeniOgeSayisi == 5)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
                             if (yeniOgeSayisi >= 6)
                               bilgiler(
                                 aciklama: widget.cihazlar[index].tarih,
+                                widget: (yeniOgeSayisi == 6)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
@@ -327,6 +354,9 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                               bilgiler(
                                 aciklama: cihazDurumuGetir(
                                     widget.cihazlar[index].guncelDurum),
+                                widget: (yeniOgeSayisi == 7)
+                                    ? dahaFazlaButon(index: index)
+                                    : null,
                                 width: ogeGenisligi,
                                 index: index,
                               ),
@@ -336,8 +366,6 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                                 width: ogeGenisligi,
                                 index: index,
                               ),
-                            if (yeniOgeSayisi < ogeSayisi)
-                              dahaFazlaButon(index: index),
                           ],
                         ),
                         if (menuAcikDurumu.length > index)
