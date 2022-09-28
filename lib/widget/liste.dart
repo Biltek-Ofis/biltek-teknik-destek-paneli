@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/cihaz_bilgileri.dart';
+import '../sayfalar/statefulwidget.dart';
 
-class CihazListesi extends StatefulWidget {
+class CihazListesi extends VarsayilanStatefulWidget {
   const CihazListesi({
     super.key,
     required this.cihazlar,
@@ -26,7 +27,7 @@ class CihazListesi extends StatefulWidget {
   State<CihazListesi> createState() => _CihazListesiState();
 }
 
-class _CihazListesiState extends State<CihazListesi> {
+class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
   List<bool> menuAcikDurumu = [];
 
   @override

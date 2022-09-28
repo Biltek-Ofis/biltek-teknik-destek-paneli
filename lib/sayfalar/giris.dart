@@ -6,15 +6,16 @@ import '../veritabani/giris.dart';
 import '../widget/buttonlar.dart';
 import '../widget/formlar.dart';
 import 'anasayfa.dart';
+import 'statefulwidget.dart';
 
-class GirisYap extends StatefulWidget {
+class GirisYap extends VarsayilanStatefulWidget {
   const GirisYap({super.key});
 
   @override
   State<GirisYap> createState() => _GirisYapState();
 }
 
-class _GirisYapState extends State<GirisYap> {
+class _GirisYapState extends VarsayilanStatefulWidgetState<GirisYap> {
   final TextEditingController kullaniciAdiController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
 

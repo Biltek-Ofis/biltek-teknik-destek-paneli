@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../sayfalar/statefulwidget.dart';
+
 typedef OnChanged = void Function(
   String value,
 );
 
-class TextFieldDef extends StatefulWidget {
+class TextFieldDef extends VarsayilanStatefulWidget {
   const TextFieldDef({
     super.key,
     required this.width,
@@ -52,7 +54,7 @@ class TextFieldDef extends StatefulWidget {
   State<TextFieldDef> createState() => _TextFieldDefState();
 }
 
-class _TextFieldDefState extends State<TextFieldDef> {
+class _TextFieldDefState extends VarsayilanStatefulWidgetState<TextFieldDef> {
   bool passwordVisible = false;
   ScrollController scrollController = ScrollController();
 

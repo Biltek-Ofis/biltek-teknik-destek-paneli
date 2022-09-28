@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/menu.dart';
 import '../sayfalar/anasayfa.dart';
 import '../sayfalar/cihazlarim.dart';
+import '../sayfalar/statefulwidget.dart';
 
 List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
   return [
@@ -59,7 +60,7 @@ class AnaMenu extends StatelessWidget {
   }
 }
 
-class AnaMenuListTile extends StatefulWidget {
+class AnaMenuListTile extends VarsayilanStatefulWidget {
   const AnaMenuListTile({
     super.key,
     required this.sayfa,
@@ -72,7 +73,8 @@ class AnaMenuListTile extends StatefulWidget {
   State<AnaMenuListTile> createState() => _AnaMenuListTileState();
 }
 
-class _AnaMenuListTileState extends State<AnaMenuListTile> {
+class _AnaMenuListTileState
+    extends VarsayilanStatefulWidgetState<AnaMenuListTile> {
   Color? varsayilanArkaplanRengi;
   Color? varsayilanYaziRengi = const Color(0xFFC2C7d0);
 

@@ -4,6 +4,7 @@ import 'env.dart';
 import 'ozellikler/sp.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris.dart';
+import 'sayfalar/statefulwidget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,14 +57,14 @@ Widget materialAppDef(Widget widget) {
   );
 }
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends VarsayilanStatefulWidget {
   const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends VarsayilanStatefulWidgetState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
