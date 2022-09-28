@@ -23,6 +23,9 @@ class _AnasayfaState extends State<Anasayfa> {
   List<CihazModel> cihazlar = [];
   List<CihazModel> filtreliCihazlar = [];
 
+  CihazSiralama cihazSiralama = CihazSiralama.varsayilan;
+  bool asc = false;
+
   final ScrollController scrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
 
@@ -45,7 +48,7 @@ class _AnasayfaState extends State<Anasayfa> {
     Cihazlar.getir().then((value) {
       if (value != null) {
         setState(() {
-          cihazlarTumu = CihazModel.siralaVarsayilanDesc(value);
+          cihazlarTumu = CihazModel.siralaVarsayilan(value);
         });
       }
       cihazlariGetir();
@@ -105,6 +108,14 @@ class _AnasayfaState extends State<Anasayfa> {
           filtreliCihazlar = [];
         });
       }
+    });
+  }
+
+  temizle() {
+    setState(() {
+      hepsiYuklendi = false;
+      cihazlar.clear();
+      ilkOge = 0;
     });
   }
 
@@ -190,6 +201,34 @@ class _AnasayfaState extends State<Anasayfa> {
                     cihazlar:
                         filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar,
                     ekCount: (hepsiYuklendi ? 1 : 0),
+                    cihazSiralama: cihazSiralama,
+                    asc: asc,
+                    sirala: (konum, artan) {
+                      temizle();
+                      if (cihazSiralama == konum) {
+                        setState(() {
+                          asc = !artan;
+                        });
+                      } else {
+                        setState(() {
+                          asc = false;
+                        });
+                      }
+                      setState(() {
+                        cihazSiralama = konum;
+                      });
+                      if (kDebugMode) {
+                        print("ASC: $asc");
+                      }
+                      setState(() {
+                        cihazlarTumu = CihazModel.sirala(
+                          cihazlar: cihazlarTumu,
+                          cihazSiralama: konum,
+                          asc: asc,
+                        );
+                      });
+                      cihazlariGetir();
+                    },
                   ),
                 ),
                 if (yukleniyor)
