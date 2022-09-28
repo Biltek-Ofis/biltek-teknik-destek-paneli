@@ -33,3 +33,28 @@ class Env{
   static String authToken = "yukarıdaki .env dosyasında belirlediğiniz kod";
 }
 ```
+
+- Önemli:
+
+Uygulamanın web sürümünü test(debug) edebilmek için cmd içinde alttaki kodlar çalıştırılmalı.
+```
+dart pub global activate flutter_cors
+fluttercors --disable
+```
+
+# Derlemeler
+
+- Android
+```
+flutter build apk
+```
+
+- Windows
+```
+flutter build windows
+```
+
+- Web
+```
+flutter build web
+```
