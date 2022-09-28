@@ -7,12 +7,18 @@ class CihazListesi extends StatefulWidget {
   const CihazListesi({
     super.key,
     required this.cihazlar,
+    this.sirala,
     this.ekCount = 0,
     this.controller,
+    this.cihazSiralama = CihazSiralama.varsayilan,
+    this.asc = false,
   });
   final List<CihazModel> cihazlar;
   final int ekCount;
   final ScrollController? controller;
+  final Sirala? sirala;
+  final CihazSiralama cihazSiralama;
+  final bool asc;
 
   @override
   State<CihazListesi> createState() => _CihazListesiState();
@@ -20,6 +26,7 @@ class CihazListesi extends StatefulWidget {
 
 class _CihazListesiState extends State<CihazListesi> {
   List<bool> menuAcikDurumu = [];
+
   @override
   void initState() {
     super.initState();
@@ -88,18 +95,38 @@ class _CihazListesiState extends State<CihazListesi> {
   Widget baslik({
     required String baslik,
     required double width,
+    CihazSiralama? sirala,
   }) {
-    return Container(
+    Widget textWidget = Container(
       width: width,
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Wrap(
-        alignment: WrapAlignment.start,
-        crossAxisAlignment: WrapCrossAlignment.start,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          baslikText(text: baslik),
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            children: [
+              baslikText(text: baslik),
+            ],
+          ),
+          if (sirala != null)
+            if (widget.cihazSiralama == sirala)
+              widget.asc
+                  ? const Icon(Icons.arrow_upward)
+                  : const Icon(Icons.arrow_downward)
         ],
       ),
     );
+    return sirala == null
+        ? textWidget
+        : TextButton(
+            onPressed: () {
+              widget.sirala?.call(sirala, widget.asc);
+            },
+            child: textWidget,
+          );
   }
 
   Widget baslikText({
@@ -166,11 +193,13 @@ class _CihazListesiState extends State<CihazListesi> {
               baslik(
                 baslik: "Servis No",
                 width: ogeGenisligi,
+                sirala: CihazSiralama.servisNo,
               ),
               if (yeniOgeSayisi >= 2)
                 baslik(
                   baslik: "Müşteri Adı",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.musteriAdi,
                 ),
               if (yeniOgeSayisi >= 3)
                 baslik(
@@ -181,26 +210,31 @@ class _CihazListesiState extends State<CihazListesi> {
                 baslik(
                   baslik: "Tür",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.tur,
                 ),
               if (yeniOgeSayisi >= 5)
                 baslik(
                   baslik: "Cihaz",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.cihazVeModel,
                 ),
               if (yeniOgeSayisi >= 6)
                 baslik(
                   baslik: "Tarih",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.tarih,
                 ),
               if (yeniOgeSayisi >= 7)
                 baslik(
                   baslik: "Durum",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.varsayilan,
                 ),
               if (yeniOgeSayisi >= 8)
                 baslik(
                   baslik: "Sorumlu",
                   width: ogeGenisligi,
+                  sirala: CihazSiralama.sorumlu,
                 ),
             ],
           ),

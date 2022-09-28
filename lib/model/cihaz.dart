@@ -1,7 +1,20 @@
 import "package:decimal/decimal.dart";
+import 'package:turkish/turkish.dart';
 
 import '../ozellikler/cihaz_bilgileri.dart';
 import "../ozellikler/degiskenler.dart";
+
+typedef Sirala = void Function(CihazSiralama konum, bool artan);
+
+enum CihazSiralama {
+  varsayilan,
+  servisNo,
+  musteriAdi,
+  tur,
+  cihazVeModel,
+  tarih,
+  sorumlu,
+}
 
 class CihazModel {
   CihazModel({
@@ -369,35 +382,115 @@ class CihazModel {
     return int.tryParse("$yil$ay$gun$saat$dakika") ?? 0;
   }
 
-  static List<CihazModel> siralaVarsayilanDesc(List<CihazModel> cihazlar) {
+  static List<CihazModel> siralaVarsayilan(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
     cihazlar.sort((a, b) {
-      int cmp = cihazDurumuSiralamaGetir(a.guncelDurum)
-          .compareTo(cihazDurumuSiralamaGetir(b.guncelDurum));
-      if (cmp != 0) return cmp;
-      return tarihSiralama(b.tarih).compareTo(tarihSiralama(a.tarih));
-    });
-    return cihazlar;
-  }
-
-  static List<CihazModel> siralaVarsayilanAsc(List<CihazModel> cihazlar) {
-    cihazlar.sort((a, b) {
-      int cmp = cihazDurumuSiralamaGetir(b.guncelDurum)
-          .compareTo(cihazDurumuSiralamaGetir(a.guncelDurum));
+      int cmp = cihazDurumuSiralamaGetir((asc ? b : a).guncelDurum)
+          .compareTo(cihazDurumuSiralamaGetir((asc ? a : b).guncelDurum));
       if (cmp != 0) return cmp;
       return tarihSiralama(a.tarih).compareTo(tarihSiralama(b.tarih));
     });
     return cihazlar;
   }
 
-  static List<CihazModel> siralaTarihAsc(List<CihazModel> cihazlar) {
+  static List<CihazModel> siralaServisNo(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
     cihazlar.sort(
-        (a, b) => tarihSiralama(a.tarih).compareTo(tarihSiralama(b.tarih)));
+        (a, b) => (asc ? a : b).servisNo.compareToTr((asc ? b : a).servisNo));
     return cihazlar;
   }
 
-  static List<CihazModel> siralaTarihDesc(List<CihazModel> cihazlar) {
-    cihazlar.sort(
-        (a, b) => tarihSiralama(a.tarih).compareTo(tarihSiralama(a.tarih)));
+  static List<CihazModel> siralaMusteriAdi(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
+    cihazlar.sort((a, b) =>
+        (asc ? a : b).musteriAdi.compareToTr((asc ? b : a).musteriAdi));
     return cihazlar;
+  }
+
+  static List<CihazModel> siralaTur(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
+    cihazlar.sort(
+        (a, b) => (asc ? a : b).cihazTuru.compareToTr((asc ? b : a).cihazTuru));
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaCihazveModel(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
+    cihazlar.sort((a, b) =>
+        ("${(asc ? a : b).cihaz} ${(asc ? a : b).cihazModeli}").compareToTr(
+            ("${(asc ? b : a).cihaz} ${(asc ? b : a).cihazModeli}")));
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaTarih(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
+    cihazlar.sort((a, b) => tarihSiralama((asc ? a : b).tarih)
+        .compareTo(tarihSiralama((asc ? b : a).tarih)));
+    return cihazlar;
+  }
+
+  static List<CihazModel> siralaSorumlu(
+    List<CihazModel> cihazlar, {
+    bool asc = false,
+  }) {
+    cihazlar.sort(
+        (a, b) => (asc ? a : b).sorumlu.compareToTr((asc ? b : a).sorumlu));
+    return cihazlar;
+  }
+
+  static List<CihazModel> sirala({
+    required List<CihazModel> cihazlar,
+    CihazSiralama cihazSiralama = CihazSiralama.varsayilan,
+    bool asc = false,
+  }) {
+    switch (cihazSiralama) {
+      case CihazSiralama.servisNo:
+        return siralaServisNo(
+          cihazlar,
+          asc: asc,
+        );
+      case CihazSiralama.musteriAdi:
+        return siralaMusteriAdi(
+          cihazlar,
+          asc: asc,
+        );
+      case CihazSiralama.tur:
+        return siralaTur(
+          cihazlar,
+          asc: asc,
+        );
+      case CihazSiralama.cihazVeModel:
+        return siralaCihazveModel(
+          cihazlar,
+          asc: asc,
+        );
+      case CihazSiralama.tarih:
+        return siralaTarih(
+          cihazlar,
+          asc: asc,
+        );
+      case CihazSiralama.sorumlu:
+        return siralaSorumlu(
+          cihazlar,
+          asc: asc,
+        );
+      default:
+        return siralaVarsayilan(
+          cihazlar,
+          asc: asc,
+        );
+    }
   }
 }
