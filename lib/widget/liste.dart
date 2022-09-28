@@ -100,26 +100,35 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
     required double width,
     CihazSiralama? sirala,
   }) {
-    return SizedBox(
-      width: width,
+    return Material(
       child: InkWell(
         onTap: () {
           if (sirala != null) {
             widget.sirala?.call(sirala, widget.asc);
           }
         },
-        child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
-          runAlignment: WrapAlignment.spaceBetween,
-          crossAxisAlignment: WrapCrossAlignment.start,
-          children: [
-            baslikText(text: baslik),
-            if (sirala != null)
-              if (widget.cihazSiralama == sirala)
-                widget.asc
-                    ? const Icon(Icons.arrow_upward)
-                    : const Icon(Icons.arrow_downward),
-          ],
+        child: Container(
+          width: width,
+          padding: const EdgeInsets.all(10),
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runAlignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              baslikText(text: baslik),
+              if (sirala != null)
+                if (widget.cihazSiralama == sirala)
+                  widget.asc
+                      ? const Icon(
+                          Icons.arrow_upward,
+                          size: 20.0,
+                        )
+                      : const Icon(
+                          Icons.arrow_downward,
+                          size: 20.0,
+                        ),
+            ],
+          ),
         ),
       ),
     );
@@ -144,12 +153,13 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
     required int index,
     Widget? widget,
   }) {
-    return SizedBox(
+    return Container(
       width: width,
+      padding: const EdgeInsets.all(5),
       child: Wrap(
         alignment: WrapAlignment.start,
         runAlignment: WrapAlignment.start,
-        crossAxisAlignment: WrapCrossAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           bilgilerText(text: aciklama),
           if (widget != null) widget,
@@ -167,7 +177,7 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
   @override
   Widget build(BuildContext context) {
     yeniOgeSayisi = ogeSayisi;
-    double cikarilacak = 113 + dahaFazlaButonBoyutu;
+    double cikarilacak = 17 + dahaFazlaButonBoyutu;
     bool ogeSayisiGetirildi = false;
     double tamBoyut = MediaQuery.of(context).size.width - cikarilacak;
     for (var index = ogeSayisi; index >= 1; index--) {
