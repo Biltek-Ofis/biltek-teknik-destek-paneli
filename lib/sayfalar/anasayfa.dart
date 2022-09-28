@@ -1,8 +1,8 @@
-import 'package:biltekbilgisayar/ozellikler/cihaz_bilgileri.dart';
+import 'dart:async';
+
 import 'package:biltekbilgisayar/widget/liste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:turkish/turkish.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/veriler.dart';
@@ -33,6 +33,7 @@ class _AnasayfaState extends State<Anasayfa> {
 
   bool yukleniyor = false, hepsiYuklendi = false;
   int ilkOge = 0, yuklenecekOge = 50;
+  Timer? zamanlayici;
 
   @override
   void initState() {
@@ -44,7 +45,6 @@ class _AnasayfaState extends State<Anasayfa> {
       }
     });
     super.initState();
-
     Cihazlar.getir().then((value) {
       if (value != null) {
         setState(() {
@@ -52,6 +52,52 @@ class _AnasayfaState extends State<Anasayfa> {
         });
       }
       cihazlariGetir();
+      zamanlayici = Timer.periodic(const Duration(seconds: 5), (Timer t) async {
+        List<CihazModel> cihazlarTemp = await Cihazlar.getir() ?? [];
+        for (var cihazTemp in cihazlarTemp) {
+          int index =
+              cihazlarTumu.indexWhere((element) => element.id == cihazTemp.id);
+          if (index > -1) {
+            if (cihazlarTumu[index] != cihazTemp) {
+              setState(() {
+                cihazlarTumu[index] = cihazTemp;
+              });
+            }
+          } else {
+            setState(() {
+              cihazlarTumu.insert(0, cihazTemp);
+            });
+            cihazTemp.yeni = true;
+            setState(() {
+              cihazlar.insert(0, cihazTemp);
+              cihazlar.removeAt(cihazlar.length - 1);
+            });
+            cihazTemp.yeni = false;
+          }
+          String text = textEditingController.text;
+          bool filtreli = false;
+          if (text.isNotEmpty) {
+            filtreli = CihazModel.filtre(cihaz: cihazTemp, text: text);
+          }
+          if (filtreli) {
+            cihazTemp.yeni = true;
+            int filtreIndex = filtreliCihazlar
+                .indexWhere((element) => element.id == cihazTemp.id);
+            if (filtreIndex > -1) {
+              if (filtreliCihazlar[filtreIndex] != cihazTemp) {
+                setState(() {
+                  filtreliCihazlar[filtreIndex] = cihazTemp;
+                });
+              }
+            } else {
+              setState(() {
+                filtreliCihazlar.insert(0, cihazTemp);
+              });
+            }
+            cihazTemp.yeni = false;
+          }
+        }
+      });
     });
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
@@ -75,32 +121,7 @@ class _AnasayfaState extends State<Anasayfa> {
       if (text.isNotEmpty) {
         setState(() {
           filtreliCihazlar = cihazlarTumu.where((element) {
-            return element.servisNo
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.musteriAdi
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.adres.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
-                element.telefonNumarasi
-                    .replaceAll("_", "")
-                    .replaceAll("(", "")
-                    .replaceAll(")", "")
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.telefonNumarasi
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.sorumlu
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.cihaz.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
-                element.cihazModeli
-                    .toLowerCaseTr()
-                    .contains(text.toLowerCaseTr()) ||
-                element.tarih.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
-                cihazDurumuGetir(element.guncelDurum)
-                    .contains(text.toLowerCaseTr());
+            return CihazModel.filtre(cihaz: element, text: text);
           }).toList();
         });
       } else {
@@ -153,6 +174,7 @@ class _AnasayfaState extends State<Anasayfa> {
   void dispose() {
     super.dispose();
     scrollController.dispose();
+    zamanlayici?.cancel();
   }
 
   @override
@@ -203,6 +225,17 @@ class _AnasayfaState extends State<Anasayfa> {
                     ekCount: (hepsiYuklendi ? 1 : 0),
                     cihazSiralama: cihazSiralama,
                     asc: asc,
+                    cihazTiklandi: (index) {
+                      setState(() {
+                        if (filtreliCihazlar.isEmpty) {
+                          setState(() {
+                            cihazlar[index].yeni = false;
+                          });
+                        } else {
+                          filtreliCihazlar[index].yeni = false;
+                        }
+                      });
+                    },
                     sirala: (konum, artan) {
                       temizle();
                       if (cihazSiralama == konum) {

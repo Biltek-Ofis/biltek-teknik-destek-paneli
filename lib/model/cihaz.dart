@@ -5,6 +5,7 @@ import '../ozellikler/cihaz_bilgileri.dart';
 import "../ozellikler/degiskenler.dart";
 
 typedef Sirala = void Function(CihazSiralama konum, bool artan);
+typedef CihazTiklandi = void Function(int index);
 
 enum CihazSiralama {
   varsayilan,
@@ -131,6 +132,7 @@ class CihazModel {
   final Decimal iBirimFiyat6;
   final int iMiktar6;
   final Decimal iKdv6;
+  bool yeni = false;
 
   factory CihazModel.fromJson(Map<String, dynamic> jsonData) {
     return CihazModel(
@@ -492,5 +494,26 @@ class CihazModel {
           asc: asc,
         );
     }
+  }
+
+  static bool filtre({
+    required CihazModel cihaz,
+    required String text,
+  }) {
+    return cihaz.servisNo.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.musteriAdi.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.adres.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.telefonNumarasi
+            .replaceAll("_", "")
+            .replaceAll("(", "")
+            .replaceAll(")", "")
+            .toLowerCaseTr()
+            .contains(text.toLowerCaseTr()) ||
+        cihaz.telefonNumarasi.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.sorumlu.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.cihaz.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.cihazModeli.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihaz.tarih.toLowerCaseTr().contains(text.toLowerCaseTr()) ||
+        cihazDurumuGetir(cihaz.guncelDurum).contains(text.toLowerCaseTr());
   }
 }
