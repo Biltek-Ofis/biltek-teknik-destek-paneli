@@ -10,15 +10,16 @@ import '../veritabani/cihazlar.dart';
 import '../veritabani/kullanici.dart';
 import '../widget/menuler.dart';
 import 'sayfa.dart';
+import 'statefulwidget.dart';
 
-class Anasayfa extends StatefulWidget {
+class Anasayfa extends VarsayilanStatefulWidget {
   const Anasayfa({super.key});
 
   @override
   State<Anasayfa> createState() => _AnasayfaState();
 }
 
-class _AnasayfaState extends State<Anasayfa> {
+class _AnasayfaState extends VarsayilanStatefulWidgetState<Anasayfa> {
   List<CihazModel> cihazlarTumu = [];
   List<CihazModel> cihazlar = [];
   List<CihazModel> filtreliCihazlar = [];
