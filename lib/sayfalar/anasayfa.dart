@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:biltekbilgisayar/widget/liste.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/veriler.dart';
 import '../veritabani/cihazlar.dart';
 import '../veritabani/kullanici.dart';
+import '../widget/liste.dart';
 import '../widget/menuler.dart';
 import 'sayfa.dart';
 import 'statefulwidget.dart';
@@ -156,9 +155,6 @@ class _AnasayfaState extends VarsayilanStatefulWidgetState<Anasayfa> {
     List<CihazModel> temp = cihazlar.length == cihazlarTumu.length
         ? []
         : cihazlarTumu.getRange(ilkOge, yuklenecekOgeIndex).toList();
-    if (kDebugMode) {
-      print("$ilkOge/$yuklenecekOgeIndex arasındaki cihazlar getirildi.");
-    }
     if (temp.isNotEmpty) {
       setState(() {
         cihazlar.addAll(temp);
@@ -251,9 +247,6 @@ class _AnasayfaState extends VarsayilanStatefulWidgetState<Anasayfa> {
                       setState(() {
                         cihazSiralama = konum;
                       });
-                      if (kDebugMode) {
-                        print("ASC: $asc");
-                      }
                       setState(() {
                         cihazlarTumu = CihazModel.sirala(
                           cihazlar: cihazlarTumu,
