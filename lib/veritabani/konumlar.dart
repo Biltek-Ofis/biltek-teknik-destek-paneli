@@ -15,7 +15,9 @@ class Konumlar {
     return "${getRelativePath}kullaniciBilgileri/$id/${Env.authToken}";
   }
 
-  static String cihazlar() {
-    return "${getRelativePath}cihazlarTumu/${Env.authToken}";
+  static String cihazlar({
+    required int id,
+  }) {
+    return "${getRelativePath}cihazlarTumu/$id/${Env.authToken}";
   }
 }

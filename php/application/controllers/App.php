@@ -72,23 +72,24 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function cihazlarTumu($token)
+    public function cihazlarTumu($sorumlu, $token)
     {
         $this->headerlar();
         if ($this->token($token)) {
-            echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
+            echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ($sorumlu == 0 ? "" : $sorumlu));
         } else {
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function headerlar(){
+    public function headerlar()
+    {
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             header("Access-Control-Allow-Origin: *");
             header('Access-Control-Allow-Credentials: true');
             header('Access-Control-Max-Age: 86400');
         }
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT");         
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT");
 
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
             header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
