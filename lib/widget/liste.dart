@@ -1,43 +1,124 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/cihaz_bilgileri.dart';
 import '../sayfalar/statefulwidget.dart';
+import '../veritabani/cihazlar.dart';
+
+typedef YukariGitButonDurumu = void Function(bool durum);
 
 class CihazListesi extends VarsayilanStatefulWidget {
   const CihazListesi({
     super.key,
-    required this.cihazlar,
-    this.sirala,
-    this.ekCount = 0,
-    this.controller,
-    this.cihazSiralama = CihazSiralama.varsayilan,
-    this.cihazTiklandi,
-    this.asc = false,
+    required this.controller,
+    this.yukariGitButonDurumu,
   });
-  final List<CihazModel> cihazlar;
-  final int ekCount;
-  final ScrollController? controller;
-  final Sirala? sirala;
-  final CihazSiralama cihazSiralama;
-  final bool asc;
-  final CihazTiklandi? cihazTiklandi;
+  final ScrollController controller;
+  final YukariGitButonDurumu? yukariGitButonDurumu;
 
   @override
   State<CihazListesi> createState() => _CihazListesiState();
 }
 
 class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
+  List<CihazModel> cihazlarTumu = [];
+  List<CihazModel> cihazlar = [];
+  List<CihazModel> filtreliCihazlar = [];
+
+  CihazSiralama cihazSiralama = CihazSiralama.varsayilan;
+  bool asc = false;
+
+  final TextEditingController textEditingController = TextEditingController();
+
+  bool yukleniyor = false, hepsiYuklendi = false;
+  int ilkOge = 0, yuklenecekOge = 50;
+  Timer? zamanlayici;
   List<bool> menuAcikDurumu = [];
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        menuAcikDurumu =
-            List.generate(widget.cihazlar.length, (index) => false);
+    Cihazlar.getir().then((value) {
+      if (value != null) {
+        setState(() {
+          cihazlarTumu = CihazModel.siralaVarsayilan(value);
+        });
+      }
+      cihazlariGetir();
+      zamanlayici = Timer.periodic(const Duration(seconds: 5), (Timer t) async {
+        List<CihazModel> cihazlarTemp = await Cihazlar.getir() ?? [];
+        for (var cihazTemp in cihazlarTemp) {
+          int index =
+              cihazlarTumu.indexWhere((element) => element.id == cihazTemp.id);
+          if (index > -1) {
+            if (cihazlarTumu[index] != cihazTemp) {
+              setState(() {
+                cihazlarTumu[index] = cihazTemp;
+              });
+            }
+          } else {
+            setState(() {
+              cihazlarTumu.insert(0, cihazTemp);
+            });
+            cihazTemp.yeni = true;
+            setState(() {
+              cihazlar.insert(0, cihazTemp);
+              menuAcikDurumu.insert(0, false);
+              cihazlar.removeAt(cihazlar.length - 1);
+              menuAcikDurumu.removeAt(cihazlar.length - 1);
+            });
+            cihazTemp.yeni = false;
+          }
+          String text = textEditingController.text;
+          bool filtreli = false;
+          if (text.isNotEmpty) {
+            filtreli = CihazModel.filtre(cihaz: cihazTemp, text: text);
+          }
+          if (filtreli) {
+            cihazTemp.yeni = true;
+            int filtreIndex = filtreliCihazlar
+                .indexWhere((element) => element.id == cihazTemp.id);
+            if (filtreIndex > -1) {
+              if (filtreliCihazlar[filtreIndex] != cihazTemp) {
+                setState(() {
+                  filtreliCihazlar[filtreIndex] = cihazTemp;
+                });
+              }
+            } else {
+              setState(() {
+                menuAcikDurumu.insert(0, false);
+                filtreliCihazlar.insert(0, cihazTemp);
+              });
+            }
+            cihazTemp.yeni = false;
+          }
+        }
       });
+    });
+    widget.controller.addListener(() {
+      if (widget.controller.position.pixels >=
+              widget.controller.position.maxScrollExtent &&
+          !yukleniyor &&
+          filtreliCihazlar.isEmpty) {
+        cihazlariGetir();
+      }
+      widget.yukariGitButonDurumu?.call(widget.controller.offset > 0);
+    });
+    textEditingController.addListener(() {
+      String text = textEditingController.text;
+      if (text.isNotEmpty) {
+        setState(() {
+          filtreliCihazlar = cihazlarTumu.where((element) {
+            return CihazModel.filtre(cihaz: element, text: text);
+          }).toList();
+        });
+      } else {
+        setState(() {
+          filtreliCihazlar = [];
+        });
+      }
     });
   }
 
@@ -104,7 +185,27 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
       child: InkWell(
         onTap: () {
           if (sirala != null) {
-            widget.sirala?.call(sirala, widget.asc);
+            temizle();
+            if (cihazSiralama == sirala) {
+              setState(() {
+                asc = !asc;
+              });
+            } else {
+              setState(() {
+                asc = false;
+              });
+            }
+            setState(() {
+              cihazSiralama = sirala;
+            });
+            setState(() {
+              cihazlarTumu = CihazModel.sirala(
+                cihazlar: cihazlarTumu,
+                cihazSiralama: sirala,
+                asc: asc,
+              );
+            });
+            cihazlariGetir();
           }
         },
         child: Container(
@@ -117,8 +218,8 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             children: [
               baslikText(text: baslik),
               if (sirala != null)
-                if (widget.cihazSiralama == sirala)
-                  widget.asc
+                if (cihazSiralama == sirala)
+                  asc
                       ? const Icon(
                           Icons.arrow_upward,
                           size: 20.0,
@@ -131,6 +232,410 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    zamanlayici?.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    yeniOgeSayisi = ogeSayisi;
+    double cikarilacak = 17 + dahaFazlaButonBoyutu;
+    bool ogeSayisiGetirildi = false;
+    double tamBoyut = MediaQuery.of(context).size.width - cikarilacak;
+    for (var index = ogeSayisi; index >= 1; index--) {
+      if ((tamBoyut / index) >= minOgeGenisligi) {
+        yeniOgeSayisi = index;
+        ogeSayisiGetirildi = true;
+        break;
+      }
+    }
+    if (!ogeSayisiGetirildi) {
+      yeniOgeSayisi = 1;
+    }
+    double ogeGenisligi = tamBoyut / yeniOgeSayisi;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (cihazlar.isNotEmpty || filtreliCihazlar.isNotEmpty) {
+          return Stack(
+            children: [
+              Positioned(
+                top: 0,
+                child: Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  alignment: Alignment.centerRight,
+                  child: TextField(
+                    controller: textEditingController,
+                    decoration: const InputDecoration(hintText: "Ara"),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 50,
+                bottom: yukleniyor ? 80 : 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (yeniOgeSayisi >= 2)
+                            baslik(
+                              baslik: "Servis No",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.servisNo,
+                            ),
+                          baslik(
+                            baslik: "Müşteri Adı",
+                            width: ogeGenisligi,
+                            sirala: CihazSiralama.musteriAdi,
+                          ),
+                          if (yeniOgeSayisi >= 3)
+                            baslik(
+                              baslik: "GSM",
+                              width: ogeGenisligi,
+                            ),
+                          if (yeniOgeSayisi >= 4)
+                            baslik(
+                              baslik: "Tür",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.tur,
+                            ),
+                          if (yeniOgeSayisi >= 5)
+                            baslik(
+                              baslik: "Cihaz",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.cihazVeModel,
+                            ),
+                          if (yeniOgeSayisi >= 6)
+                            baslik(
+                              baslik: "Tarih",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.tarih,
+                            ),
+                          if (yeniOgeSayisi >= 7)
+                            baslik(
+                              baslik: "Durum",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.varsayilan,
+                            ),
+                          if (yeniOgeSayisi >= 8)
+                            baslik(
+                              baslik: "Sorumlu",
+                              width: ogeGenisligi,
+                              sirala: CihazSiralama.sorumlu,
+                            ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        controller: widget.controller,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          if (index <
+                              (filtreliCihazlar.isEmpty
+                                      ? cihazlar
+                                      : filtreliCihazlar)
+                                  .length) {
+                            Widget yeniWidgeti = Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.red,
+                              ),
+                              height: 25,
+                              child: const Text(
+                                "Yeni",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                            return ListTile(
+                              tileColor: cihazDurumuColorGetir(
+                                (filtreliCihazlar.isEmpty
+                                        ? cihazlar
+                                        : filtreliCihazlar)[index]
+                                    .guncelDurum,
+                              ),
+                              title: GestureDetector(
+                                onTap: () {
+                                  if (filtreliCihazlar.isEmpty) {
+                                    setState(() {
+                                      cihazlar[index].yeni = false;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      filtreliCihazlar[index].yeni = false;
+                                    });
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        if (yeniOgeSayisi >= 2)
+                                          bilgiler(
+                                            aciklama: (filtreliCihazlar.isEmpty
+                                                    ? cihazlar
+                                                    : filtreliCihazlar)[index]
+                                                .servisNo,
+                                            widget: ((filtreliCihazlar.isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .yeni)
+                                                ? yeniWidgeti
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        bilgiler(
+                                          aciklama: (filtreliCihazlar.isEmpty
+                                                  ? cihazlar
+                                                  : filtreliCihazlar)[index]
+                                              .musteriAdi,
+                                          widget: (yeniOgeSayisi == 2 ||
+                                                  yeniOgeSayisi == 1)
+                                              ? Row(
+                                                  children: [
+                                                    if (yeniOgeSayisi == 1)
+                                                      yeniWidgeti,
+                                                    dahaFazlaButon(
+                                                        index: index),
+                                                  ],
+                                                )
+                                              : null,
+                                          width: ogeGenisligi,
+                                          index: index,
+                                        ),
+                                        if (yeniOgeSayisi >= 3)
+                                          bilgiler(
+                                            aciklama: (filtreliCihazlar.isEmpty
+                                                    ? cihazlar
+                                                    : filtreliCihazlar)[index]
+                                                .telefonNumarasi,
+                                            widget: (yeniOgeSayisi == 3)
+                                                ? dahaFazlaButon(index: index)
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        if (yeniOgeSayisi >= 4)
+                                          bilgiler(
+                                            aciklama: (filtreliCihazlar.isEmpty
+                                                    ? cihazlar
+                                                    : filtreliCihazlar)[index]
+                                                .cihazTuru,
+                                            widget: (yeniOgeSayisi == 4)
+                                                ? dahaFazlaButon(index: index)
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        if (yeniOgeSayisi >= 5)
+                                          bilgiler(
+                                            aciklama:
+                                                "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
+                                            widget: (yeniOgeSayisi == 5)
+                                                ? dahaFazlaButon(index: index)
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        if (yeniOgeSayisi >= 6)
+                                          bilgiler(
+                                            aciklama: (filtreliCihazlar.isEmpty
+                                                    ? cihazlar
+                                                    : filtreliCihazlar)[index]
+                                                .tarih,
+                                            widget: (yeniOgeSayisi == 6)
+                                                ? dahaFazlaButon(index: index)
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        if (yeniOgeSayisi >= 7)
+                                          bilgiler(
+                                            aciklama: cihazDurumuGetir(
+                                              (filtreliCihazlar.isEmpty
+                                                      ? cihazlar
+                                                      : filtreliCihazlar)[index]
+                                                  .guncelDurum,
+                                            ),
+                                            widget: (yeniOgeSayisi == 7)
+                                                ? dahaFazlaButon(index: index)
+                                                : null,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                        if (yeniOgeSayisi >= 8)
+                                          bilgiler(
+                                            aciklama: (filtreliCihazlar.isEmpty
+                                                    ? cihazlar
+                                                    : filtreliCihazlar)[index]
+                                                .sorumlu,
+                                            width: ogeGenisligi,
+                                            index: index,
+                                          ),
+                                      ],
+                                    ),
+                                    if (menuAcikDurumu.length > index)
+                                      if (menuAcikDurumu[index])
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            if (yeniOgeSayisi < 2)
+                                              dahaFazla(
+                                                baslik: "Servis No: ",
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .servisNo,
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 3)
+                                              dahaFazla(
+                                                baslik: "GSM: ",
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .telefonNumarasi,
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 4)
+                                              dahaFazla(
+                                                baslik: "Tür: ",
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .cihazTuru,
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 5)
+                                              dahaFazla(
+                                                baslik: "Cihaz: ",
+                                                aciklama:
+                                                    "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 6)
+                                              dahaFazla(
+                                                baslik: "Tarih: ",
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .tarih,
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 7)
+                                              dahaFazla(
+                                                baslik: "Güncel Durum: ",
+                                                aciklama: cihazDurumuGetir(
+                                                    (filtreliCihazlar.isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .guncelDurum),
+                                                width: tamBoyut,
+                                              ),
+                                            if (yeniOgeSayisi < 8)
+                                              dahaFazla(
+                                                baslik: "Sorumlu: ",
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .sorumlu,
+                                                width: tamBoyut,
+                                              ),
+                                          ],
+                                        ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container(); /*SizedBox(
+                        width: constraints.maxWidth,
+                        height: 59,
+                        child: const Center(
+                          child: Text(
+                            "Gösterilecek başka cihaz yok.",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      );*/
+                          }
+                        },
+                        separatorBuilder: (context, index) => const Divider(
+                          height: 1.0,
+                          color: Colors.black87,
+                        ),
+                        itemCount: (filtreliCihazlar.isEmpty
+                                ? cihazlar.length
+                                : filtreliCihazlar.length) +
+                            (hepsiYuklendi ? 1 : 0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (yukleniyor)
+                Positioned(
+                  width: constraints.maxWidth,
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.white,
+                    height: 80,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+            ],
+          );
+        } else {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -181,274 +686,39 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
     return SelectableText(text);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    yeniOgeSayisi = ogeSayisi;
-    double cikarilacak = 17 + dahaFazlaButonBoyutu;
-    bool ogeSayisiGetirildi = false;
-    double tamBoyut = MediaQuery.of(context).size.width - cikarilacak;
-    for (var index = ogeSayisi; index >= 1; index--) {
-      if ((tamBoyut / index) >= minOgeGenisligi) {
-        yeniOgeSayisi = index;
-        ogeSayisiGetirildi = true;
-        break;
-      }
+  temizle() {
+    setState(() {
+      hepsiYuklendi = false;
+      cihazlar.clear();
+      ilkOge = 0;
+    });
+  }
+
+  cihazlariGetir() async {
+    if (hepsiYuklendi) {
+      return;
     }
-    if (!ogeSayisiGetirildi) {
-      yeniOgeSayisi = 1;
+    setState(() {
+      yukleniyor = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+    int yuklenecekOgeIndex =
+        cihazlar.length + yuklenecekOge < cihazlarTumu.length
+            ? cihazlar.length + yuklenecekOge
+            : cihazlarTumu.length;
+    List<CihazModel> temp = cihazlar.length == cihazlarTumu.length
+        ? []
+        : cihazlarTumu.getRange(ilkOge, yuklenecekOgeIndex).toList();
+    if (temp.isNotEmpty) {
+      setState(() {
+        cihazlar.addAll(temp);
+        menuAcikDurumu.addAll(List.generate(temp.length, (index) => false));
+        ilkOge += yuklenecekOge;
+      });
     }
-    double ogeGenisligi = tamBoyut / yeniOgeSayisi;
-    return Column(
-      children: [
-        Container(
-          color: Colors.white,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (yeniOgeSayisi >= 2)
-                baslik(
-                  baslik: "Servis No",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.servisNo,
-                ),
-              baslik(
-                baslik: "Müşteri Adı",
-                width: ogeGenisligi,
-                sirala: CihazSiralama.musteriAdi,
-              ),
-              if (yeniOgeSayisi >= 3)
-                baslik(
-                  baslik: "GSM",
-                  width: ogeGenisligi,
-                ),
-              if (yeniOgeSayisi >= 4)
-                baslik(
-                  baslik: "Tür",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.tur,
-                ),
-              if (yeniOgeSayisi >= 5)
-                baslik(
-                  baslik: "Cihaz",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.cihazVeModel,
-                ),
-              if (yeniOgeSayisi >= 6)
-                baslik(
-                  baslik: "Tarih",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.tarih,
-                ),
-              if (yeniOgeSayisi >= 7)
-                baslik(
-                  baslik: "Durum",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.varsayilan,
-                ),
-              if (yeniOgeSayisi >= 8)
-                baslik(
-                  baslik: "Sorumlu",
-                  width: ogeGenisligi,
-                  sirala: CihazSiralama.sorumlu,
-                ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.separated(
-            controller: widget.controller,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              if (index < widget.cihazlar.length) {
-                Widget yeniWidgeti = Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                  ),
-                  height: 25,
-                  child: const Text(
-                    "Yeni",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-                return ListTile(
-                  tileColor: cihazDurumuColorGetir(
-                    widget.cihazlar[index].guncelDurum,
-                  ),
-                  title: GestureDetector(
-                    onTap: () {
-                      widget.cihazTiklandi?.call(index);
-                    },
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (yeniOgeSayisi >= 2)
-                              bilgiler(
-                                aciklama: widget.cihazlar[index].servisNo,
-                                widget: (widget.cihazlar[index].yeni)
-                                    ? yeniWidgeti
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            bilgiler(
-                              aciklama: widget.cihazlar[index].musteriAdi,
-                              widget: (yeniOgeSayisi == 2 || yeniOgeSayisi == 1)
-                                  ? Row(
-                                      children: [
-                                        if (yeniOgeSayisi == 1) yeniWidgeti,
-                                        dahaFazlaButon(index: index),
-                                      ],
-                                    )
-                                  : null,
-                              width: ogeGenisligi,
-                              index: index,
-                            ),
-                            if (yeniOgeSayisi >= 3)
-                              bilgiler(
-                                aciklama:
-                                    widget.cihazlar[index].telefonNumarasi,
-                                widget: (yeniOgeSayisi == 3)
-                                    ? dahaFazlaButon(index: index)
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            if (yeniOgeSayisi >= 4)
-                              bilgiler(
-                                aciklama: widget.cihazlar[index].cihazTuru,
-                                widget: (yeniOgeSayisi == 4)
-                                    ? dahaFazlaButon(index: index)
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            if (yeniOgeSayisi >= 5)
-                              bilgiler(
-                                aciklama:
-                                    "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
-                                widget: (yeniOgeSayisi == 5)
-                                    ? dahaFazlaButon(index: index)
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            if (yeniOgeSayisi >= 6)
-                              bilgiler(
-                                aciklama: widget.cihazlar[index].tarih,
-                                widget: (yeniOgeSayisi == 6)
-                                    ? dahaFazlaButon(index: index)
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            if (yeniOgeSayisi >= 7)
-                              bilgiler(
-                                aciklama: cihazDurumuGetir(
-                                    widget.cihazlar[index].guncelDurum),
-                                widget: (yeniOgeSayisi == 7)
-                                    ? dahaFazlaButon(index: index)
-                                    : null,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                            if (yeniOgeSayisi >= 8)
-                              bilgiler(
-                                aciklama: widget.cihazlar[index].sorumlu,
-                                width: ogeGenisligi,
-                                index: index,
-                              ),
-                          ],
-                        ),
-                        if (menuAcikDurumu.length > index)
-                          if (menuAcikDurumu[index])
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                if (yeniOgeSayisi < 2)
-                                  dahaFazla(
-                                    baslik: "Servis No: ",
-                                    aciklama: widget.cihazlar[index].servisNo,
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 3)
-                                  dahaFazla(
-                                    baslik: "GSM: ",
-                                    aciklama:
-                                        widget.cihazlar[index].telefonNumarasi,
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 4)
-                                  dahaFazla(
-                                    baslik: "Tür: ",
-                                    aciklama: widget.cihazlar[index].cihazTuru,
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 5)
-                                  dahaFazla(
-                                    baslik: "Cihaz: ",
-                                    aciklama:
-                                        "${widget.cihazlar[index].cihaz} ${widget.cihazlar[index].cihazModeli}",
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 6)
-                                  dahaFazla(
-                                    baslik: "Tarih: ",
-                                    aciklama: widget.cihazlar[index].tarih,
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 7)
-                                  dahaFazla(
-                                    baslik: "Güncel Durum: ",
-                                    aciklama: cihazDurumuGetir(
-                                        widget.cihazlar[index].guncelDurum),
-                                    width: tamBoyut,
-                                  ),
-                                if (yeniOgeSayisi < 8)
-                                  dahaFazla(
-                                    baslik: "Sorumlu: ",
-                                    aciklama: widget.cihazlar[index].sorumlu,
-                                    width: tamBoyut,
-                                  ),
-                              ],
-                            ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container(); /*SizedBox(
-                        width: constraints.maxWidth,
-                        height: 59,
-                        child: const Center(
-                          child: Text(
-                            "Gösterilecek başka cihaz yok.",
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      );*/
-              }
-            },
-            separatorBuilder: (context, index) => const Divider(
-              height: 1.0,
-              color: Colors.black87,
-            ),
-            itemCount: widget.cihazlar.length + widget.ekCount,
-          ),
-        ),
-      ],
-    );
+    setState(() {
+      yukleniyor = false;
+      hepsiYuklendi = temp.isEmpty;
+    });
   }
 }

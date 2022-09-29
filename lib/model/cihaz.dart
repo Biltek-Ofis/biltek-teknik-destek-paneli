@@ -4,9 +4,6 @@ import 'package:turkish/turkish.dart';
 import '../ozellikler/cihaz_bilgileri.dart';
 import "../ozellikler/degiskenler.dart";
 
-typedef Sirala = void Function(CihazSiralama konum, bool artan);
-typedef CihazTiklandi = void Function(int index);
-
 enum CihazSiralama {
   varsayilan,
   servisNo,
