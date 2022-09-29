@@ -43,6 +43,7 @@ class App extends CI_Controller
     }
     public function girisyap($kullaniciAdi, $sifre, $token)
     {
+        $this->headerlar();
         if ($this->token($token)) {
             $durum = $this->Giris_Model->girisDurumu($kullaniciAdi, $sifre);
             $sonuc = array(
@@ -63,6 +64,7 @@ class App extends CI_Controller
     }
     public function kullaniciBilgileri($id, $token)
     {
+        $this->headerlar();
         if ($this->token($token)) {
             $kullanici = $this->Kullanicilar_Model->tekKullanici($id);
             echo json_encode($kullanici);
@@ -72,10 +74,23 @@ class App extends CI_Controller
     }
     public function cihazlarTumu($token)
     {
+        $this->headerlar();
         if ($this->token($token)) {
             echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
         } else {
             echo json_encode($this->hataMesaji(1));
         }
+    }
+    public function headerlar(){
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            header("Access-Control-Allow-Origin: *");
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');
+        }
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT");         
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
     }
 }
