@@ -122,9 +122,13 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTumuJQ()
+    public function cihazlarTumuJQ($sorumlu = "")
     {
-        $result = $this->db->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
+        $where = array();
+        if ($sorumlu != "") {
+            $where["sorumlu"] = $sorumlu;
+        }
+        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi)->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurTumuJQ($tur)
