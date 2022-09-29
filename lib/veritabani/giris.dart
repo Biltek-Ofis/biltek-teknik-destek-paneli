@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../model/kullanici_girisi.dart';
+import '../ozellikler/veriler.dart';
 import 'baglan.dart';
 import 'konumlar.dart';
 
@@ -47,7 +48,7 @@ class GirisSQL {
             print("Giriş Yap Hata: ${e.toString()}");
           }
           onLoginError?.call(
-            "Bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
+            "Bir hata oluştu. Lütfen daha sonra tekrar deneyin!${Veriler.hatayiGoster ? " ${e.toString()}" : ""}",
             e.toString(),
           );
         }
