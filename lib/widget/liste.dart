@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
 import '../ozellikler/cihaz_bilgileri.dart';
+import '../ozellikler/yonlendirme.dart';
+import '../sayfalar/detaylar.dart';
 import '../sayfalar/statefulwidget.dart';
 import '../veritabani/cihazlar.dart';
 
@@ -380,6 +382,17 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                                           .guncelDurum,
                                     ),
                                     title: GestureDetector(
+                                      onDoubleTap: () {
+                                        Yonlendirme.git(
+                                          context,
+                                          "${CihazDetaylari.yol}${CihazDetaylari.argumanlar(
+                                            servisNo: (filtreliCihazlar.isEmpty
+                                                ? cihazlar[index].servisNo
+                                                : filtreliCihazlar[index]
+                                                    .servisNo),
+                                          )}",
+                                        );
+                                      },
                                       onTap: () {
                                         if (filtreliCihazlar.isEmpty) {
                                           setState(() {
