@@ -7,7 +7,12 @@ import 'sayfa.dart';
 import 'statefulwidget.dart';
 
 class Cihazlarim extends VarsayilanStatefulWidget {
-  const Cihazlarim({super.key});
+  const Cihazlarim({
+    super.key,
+    required this.direktGiris,
+  });
+
+  final bool direktGiris;
 
   static const String yol = "/cihazlarim";
 

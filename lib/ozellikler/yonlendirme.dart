@@ -1,3 +1,4 @@
+import 'package:biltekbilgisayar/ozellikler/argumanlar.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -33,34 +34,60 @@ class Yonlendirme {
   }
 
   static Handler anasayfaHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => const Anasayfa(),
+    handlerFunc: (context, Map<String, dynamic> params) {
+      DirektGiris giris =
+          (context!.settings!.arguments as DirektGiris?) ?? DirektGiris(true);
+      return Anasayfa(
+        direktGiris: giris.direktGiris,
+      );
+    },
   );
   static Handler splashScreenHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => const SplashScreen(),
+    handlerFunc: (context, Map<String, dynamic> params) {
+      return const SplashScreen();
+    },
   );
   static Handler girisYapHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => const GirisYap(),
+    handlerFunc: (context, Map<String, dynamic> params) {
+      return const GirisYap();
+    },
   );
   static Handler cihazlarimHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => const Cihazlarim(),
+    handlerFunc: (context, Map<String, dynamic> params) {
+      DirektGiris giris =
+          (context!.settings!.arguments as DirektGiris?) ?? DirektGiris(true);
+      return Cihazlarim(
+        direktGiris: giris.direktGiris,
+      );
+    },
   );
-  static Handler cihazDetaylariHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => CihazDetaylari(
+  static Handler cihazDetaylariHandler =
+      Handler(handlerFunc: (context, Map<String, dynamic> params) {
+    DirektGiris giris =
+        (context!.settings!.arguments as DirektGiris?) ?? DirektGiris(true);
+    return CihazDetaylari(
+      direktGiris: giris.direktGiris,
       servisNo: (params["servisNo"].first as String?) ?? "0",
-    ),
-  );
+    );
+  });
 
-  static void git(BuildContext context, String yol,
-      {bool clearStack = false,
-      bool replace = false,
-      TransitionType transition = TransitionType.fadeIn,
-      t}) {
+  static void git(
+    BuildContext context,
+    String yol, {
+    bool clearStack = false,
+    bool replace = false,
+    TransitionType transition = TransitionType.fadeIn,
+    bool routeGoster = true,
+    RouteSettings? routeSettings,
+  }) {
     router.navigateTo(
       context,
       yol,
       clearStack: clearStack,
       replace: replace,
       transition: transition,
+      routeSettings:
+          routeGoster ? routeSettings ?? direktGirisRouteSettings(false) : null,
     );
   }
 }

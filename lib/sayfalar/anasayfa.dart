@@ -8,7 +8,12 @@ import 'sayfa.dart';
 import 'statefulwidget.dart';
 
 class Anasayfa extends VarsayilanStatefulWidget {
-  const Anasayfa({super.key});
+  const Anasayfa({
+    super.key,
+    required this.direktGiris,
+  });
+
+  final bool direktGiris;
 
   static const String yol = "/";
 

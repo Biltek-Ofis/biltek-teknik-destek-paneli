@@ -5,10 +5,11 @@ import '../ozellikler/sp.dart';
 import '../widget/menuler.dart';
 import 'giris.dart';
 
-class Sayfa extends StatelessWidget {
+class Sayfa extends StatefulWidget {
   const Sayfa({
     super.key,
     this.menu,
+    this.direktGiris = true,
     required this.icerik,
     this.menuGenisligi = 240,
     this.baslik = "",
@@ -16,16 +17,48 @@ class Sayfa extends StatelessWidget {
   });
 
   final AnaMenu? menu;
+  final bool direktGiris;
   final Widget icerik;
   final double menuGenisligi;
   final String baslik;
   final Widget? floatingActionButton;
+
+  @override
+  State<Sayfa> createState() => _SayfaState();
+}
+
+class _SayfaState extends State<Sayfa> {
+  bool kullaniciKontrolEdildi = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPref.girisDurumu().then((value) {
+      if (value) {
+        setState(() {
+          kullaniciKontrolEdildi = true;
+        });
+      } else {
+        Yonlendirme.git(
+          context,
+          GirisYap.yol,
+          clearStack: true,
+          routeGoster: false,
+        );
+      }
+    });
+  }
+
+  bool buildKontrol() {
+    return widget.direktGiris ? kullaniciKontrolEdildi : true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Widget sayfaWidget = Scaffold(
       appBar: AppBar(
         title: Text(
-          baslik,
+          widget.baslik,
         ),
         actions: [
           IconButton(
@@ -36,6 +69,7 @@ class Sayfa extends StatelessWidget {
                     context,
                     GirisYap.yol,
                     clearStack: true,
+                    routeGoster: false,
                   );
                 }
               });
@@ -44,16 +78,25 @@ class Sayfa extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: floatingActionButton,
-      body: icerik,
-      drawer: menu == null
+      floatingActionButton: widget.floatingActionButton,
+      body: widget.icerik,
+      drawer: widget.menu == null
           ? null
           : SizedBox(
-              width: menuGenisligi,
+              width: widget.menuGenisligi,
               child: Drawer(
-                child: menu,
+                child: widget.menu,
               ),
             ),
     );
+    return widget.direktGiris
+        ? kullaniciKontrolEdildi
+            ? sayfaWidget
+            : const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+        : sayfaWidget;
   }
 }
