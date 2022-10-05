@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../ozellikler/asset.dart';
 import '../ozellikler/sp.dart';
+import '../ozellikler/yonlendirme.dart';
 import '../veritabani/giris.dart';
 import '../widget/buttonlar.dart';
 import '../widget/formlar.dart';
@@ -131,10 +132,10 @@ class _GirisYapState extends VarsayilanStatefulWidgetState<GirisYap> {
       onLoginSuccess: (kullaniciID) {
         SharedPref.girisDurumuEkle(kullaniciID).then((value) {
           if (value) {
-            Navigator.pushNamedAndRemoveUntil(
+            Yonlendirme.git(
               context,
               Anasayfa.yol,
-              (route) => false,
+              clearStack: true,
             );
           } else {
             setState(() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/menu.dart';
+import '../ozellikler/yonlendirme.dart';
 import '../sayfalar/anasayfa.dart';
 import '../sayfalar/cihazlarim.dart';
 import '../sayfalar/statefulwidget.dart';
@@ -11,9 +12,10 @@ List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
       icon: Icons.home,
       baslik: "Anasayfa",
       onPressed: () {
-        Navigator.pushReplacementNamed(
+        Yonlendirme.git(
           context,
           Anasayfa.yol,
+          clearStack: true,
         );
       },
     ),
@@ -21,9 +23,10 @@ List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
       icon: Icons.device_hub,
       baslik: "Cihazlarım",
       onPressed: () {
-        Navigator.pushReplacementNamed(
+        Yonlendirme.git(
           context,
           Cihazlarim.yol,
+          clearStack: true,
         );
       },
     ),

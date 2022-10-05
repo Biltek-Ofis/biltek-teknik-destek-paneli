@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../ozellikler/yonlendirme.dart';
 import '../ozellikler/sp.dart';
 import '../widget/menuler.dart';
 import 'giris.dart';
@@ -7,14 +8,14 @@ import 'giris.dart';
 class Sayfa extends StatelessWidget {
   const Sayfa({
     super.key,
-    required this.menu,
+    this.menu,
     required this.icerik,
     this.menuGenisligi = 240,
     this.baslik = "",
     this.floatingActionButton,
   });
 
-  final AnaMenu menu;
+  final AnaMenu? menu;
   final Widget icerik;
   final double menuGenisligi;
   final String baslik;
@@ -31,10 +32,10 @@ class Sayfa extends StatelessWidget {
             onPressed: () {
               SharedPref.girisDurumuSil().then((value) {
                 if (value) {
-                  Navigator.pushNamedAndRemoveUntil(
+                  Yonlendirme.git(
                     context,
                     GirisYap.yol,
-                    (route) => false,
+                    clearStack: true,
                   );
                 }
               });
@@ -45,12 +46,14 @@ class Sayfa extends StatelessWidget {
       ),
       floatingActionButton: floatingActionButton,
       body: icerik,
-      drawer: SizedBox(
-        width: menuGenisligi,
-        child: Drawer(
-          child: menu,
-        ),
-      ),
+      drawer: menu == null
+          ? null
+          : SizedBox(
+              width: menuGenisligi,
+              child: Drawer(
+                child: menu,
+              ),
+            ),
     );
   }
 }
