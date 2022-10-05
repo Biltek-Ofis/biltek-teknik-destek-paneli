@@ -10,6 +10,8 @@ import 'statefulwidget.dart';
 class Anasayfa extends VarsayilanStatefulWidget {
   const Anasayfa({super.key});
 
+  static const String yol = "/";
+
   @override
   State<Anasayfa> createState() => _AnasayfaState();
 }

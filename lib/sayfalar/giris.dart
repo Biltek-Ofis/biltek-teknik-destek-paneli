@@ -11,6 +11,8 @@ import 'statefulwidget.dart';
 class GirisYap extends VarsayilanStatefulWidget {
   const GirisYap({super.key});
 
+  static const String yol = "/giris";
+
   @override
   State<GirisYap> createState() => _GirisYapState();
 }
@@ -129,11 +131,9 @@ class _GirisYapState extends VarsayilanStatefulWidgetState<GirisYap> {
       onLoginSuccess: (kullaniciID) {
         SharedPref.girisDurumuEkle(kullaniciID).then((value) {
           if (value) {
-            Navigator.pushAndRemoveUntil(
+            Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Anasayfa(),
-              ),
+              Anasayfa.yol,
               (route) => false,
             );
           } else {

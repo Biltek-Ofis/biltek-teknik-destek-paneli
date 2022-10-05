@@ -31,11 +31,9 @@ class Sayfa extends StatelessWidget {
             onPressed: () {
               SharedPref.girisDurumuSil().then((value) {
                 if (value) {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const GirisYap(),
-                    ),
+                    GirisYap.yol,
                     (route) => false,
                   );
                 }
