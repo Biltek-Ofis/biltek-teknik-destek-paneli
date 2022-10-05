@@ -11,11 +11,9 @@ List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
       icon: Icons.home,
       baslik: "Anasayfa",
       onPressed: () {
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const Anasayfa(),
-          ),
+          Anasayfa.yol,
         );
       },
     ),
@@ -23,11 +21,9 @@ List<AnaMenuModel> anaMenuOgeler(BuildContext context) {
       icon: Icons.device_hub,
       baslik: "Cihazlarım",
       onPressed: () {
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const Cihazlarim(),
-          ),
+          Cihazlarim.yol,
         );
       },
     ),

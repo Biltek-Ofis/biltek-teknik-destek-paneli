@@ -9,6 +9,8 @@ import 'statefulwidget.dart';
 class Cihazlarim extends VarsayilanStatefulWidget {
   const Cihazlarim({super.key});
 
+  static const String yol = "/cihazlarim";
+
   @override
   State<Cihazlarim> createState() => _CihazlarimState();
 }
