@@ -43,7 +43,6 @@ class _SayfaState extends State<Sayfa> {
           context,
           GirisYap.yol,
           clearStack: true,
-          routeGoster: false,
         );
       }
     });
@@ -69,7 +68,6 @@ class _SayfaState extends State<Sayfa> {
                     context,
                     GirisYap.yol,
                     clearStack: true,
-                    routeGoster: false,
                   );
                 }
               });
