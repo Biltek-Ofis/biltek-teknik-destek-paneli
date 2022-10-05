@@ -77,7 +77,6 @@ class Yonlendirme {
     bool clearStack = false,
     bool replace = false,
     TransitionType transition = TransitionType.fadeIn,
-    bool routeGoster = true,
     RouteSettings? routeSettings,
   }) {
     router.navigateTo(
@@ -87,7 +86,7 @@ class Yonlendirme {
       replace: replace,
       transition: transition,
       routeSettings:
-          routeGoster ? routeSettings ?? direktGirisRouteSettings(false) : null,
+          routeSettings ?? RouteSettings(arguments: DirektGiris(false)),
     );
   }
 }
