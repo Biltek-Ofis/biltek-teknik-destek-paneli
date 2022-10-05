@@ -6,9 +6,11 @@ import 'statefulwidget.dart';
 class CihazDetaylari extends VarsayilanStatefulWidget {
   const CihazDetaylari({
     super.key,
+    required this.direktGiris,
     required this.servisNo,
   });
 
+  final bool direktGiris;
   final String servisNo;
 
   static const String yol = "/detaylar";
