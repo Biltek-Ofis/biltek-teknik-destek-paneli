@@ -34,6 +34,7 @@ class CihazDetaylariState
   @override
   Widget build(BuildContext context) {
     return Sayfa(
+      direktGiris: widget.direktGiris,
       baslik: "Cihaz ${widget.servisNo} Detayları",
       icerik: Center(
         child: Text("ID: ${widget.servisNo}"),

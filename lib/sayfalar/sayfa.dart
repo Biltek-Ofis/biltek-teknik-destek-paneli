@@ -9,7 +9,7 @@ class Sayfa extends StatefulWidget {
   const Sayfa({
     super.key,
     this.menu,
-    this.direktGiris = true,
+    required this.direktGiris,
     required this.icerik,
     this.menuGenisligi = 240,
     this.baslik = "",
@@ -33,19 +33,25 @@ class _SayfaState extends State<Sayfa> {
   @override
   void initState() {
     super.initState();
-    SharedPref.girisDurumu().then((value) {
-      if (value) {
-        setState(() {
-          kullaniciKontrolEdildi = true;
-        });
-      } else {
-        Yonlendirme.git(
-          context,
-          GirisYap.yol,
-          clearStack: true,
-        );
-      }
-    });
+    if (widget.direktGiris) {
+      SharedPref.girisDurumu().then((value) {
+        if (value) {
+          setState(() {
+            kullaniciKontrolEdildi = true;
+          });
+        } else {
+          Yonlendirme.git(
+            context,
+            GirisYap.yol,
+            clearStack: true,
+          );
+        }
+      });
+    } else {
+      setState(() {
+        kullaniciKontrolEdildi = true;
+      });
+    }
   }
 
   bool buildKontrol() {

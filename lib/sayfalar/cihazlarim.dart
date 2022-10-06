@@ -34,6 +34,7 @@ class _CihazlarimState extends VarsayilanStatefulWidgetState<Cihazlarim> {
   @override
   Widget build(BuildContext context) {
     return Sayfa(
+      direktGiris: widget.direktGiris,
       menu: const AnaMenu(
         seciliSayfa: "Cihazlarım",
       ),
