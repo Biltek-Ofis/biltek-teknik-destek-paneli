@@ -35,6 +35,7 @@ class _CihazlarimState extends VarsayilanStatefulWidgetState<Cihazlarim> {
   Widget build(BuildContext context) {
     return Sayfa(
       direktGiris: widget.direktGiris,
+      yeniCihazEkleButonuGoster: true,
       menu: const AnaMenu(
         seciliSayfa: "Cihazlarım",
       ),

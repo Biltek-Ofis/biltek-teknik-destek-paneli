@@ -4,6 +4,7 @@ import '../ozellikler/yonlendirme.dart';
 import '../ozellikler/sp.dart';
 import '../widget/menuler.dart';
 import 'giris.dart';
+import 'yeni_cihaz_girisi.dart';
 
 class Sayfa extends StatefulWidget {
   const Sayfa({
@@ -11,6 +12,7 @@ class Sayfa extends StatefulWidget {
     this.menu,
     required this.direktGiris,
     required this.icerik,
+    this.yeniCihazEkleButonuGoster = false,
     this.menuGenisligi = 240,
     this.baslik = "",
     this.floatingActionButton,
@@ -19,6 +21,7 @@ class Sayfa extends StatefulWidget {
   final AnaMenu? menu;
   final bool direktGiris;
   final Widget icerik;
+  final bool yeniCihazEkleButonuGoster;
   final double menuGenisligi;
   final String baslik;
   final Widget? floatingActionButton;
@@ -66,6 +69,21 @@ class _SayfaState extends State<Sayfa> {
           widget.baslik,
         ),
         actions: [
+          if (widget.yeniCihazEkleButonuGoster)
+            ElevatedButton.icon(
+              onPressed: () {
+                Yonlendirme.git(
+                  context,
+                  YeniCihazGirisi.yol,
+                );
+              },
+              icon: const Icon(Icons.add_outlined),
+              label: Text(
+                MediaQuery.of(context).size.width > 400
+                    ? "Yeni Cihaz Girişi"
+                    : "",
+              ),
+            ),
           IconButton(
             onPressed: () {
               SharedPref.girisDurumuSil().then((value) {
@@ -78,7 +96,7 @@ class _SayfaState extends State<Sayfa> {
                 }
               });
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout_outlined),
           ),
         ],
       ),
