@@ -9,8 +9,12 @@ class KullaniciBilgileri {
   static Future<KullaniciModel?> getir() async {
     try {
       int id = await SharedPref.kullaniciID();
-      KullaniciModel kullaniciModel = KullaniciModel.fromJson(
-          await Baglan.map(url: Konumlar.kullaniciBilgileri(id)));
+      KullaniciModel kullaniciModel = KullaniciModel.fromJson(await Baglan.map(
+        url: Konumlar.kullaniciBilgileri(id),
+        postVerileri: {
+          "id": id.toString(),
+        },
+      ));
       return kullaniciModel;
     } catch (e) {
       if (kDebugMode) {
