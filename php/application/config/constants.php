@@ -85,7 +85,18 @@ defined('EXIT__AUTO_MIN')      or define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
-define('SITE_BASLIGI', getenv('SITE_BASLIGI'));
-define('FIRMA_URL', getenv('FIRMA_SITE_URL'));
-define('A4_GENISLIK', 270);
-define('A4_YUKSEKLIK', 397);
+define("SITE_BASLIGI", "Biltek Bilgisayar"); // Sitenizin başlığı
+define("TEKNIK_SERVIS_URL", "https://teknikservis.biltekbilgisayar.com.tr/"); // Teknik servis sayfası
+define("FIRMA_SITE_URL", "http://www.biltekbilgisayar.com.tr/"); // Firmanızın web sayfası
+define("TABLO_OGE", 50); // web üzerinde tabloda sayfa başına gösterilecek öğe sayısı
+define("DB_DRIVER", "mysqli"); // Veritabanınıza göre "mysqli", "sqlsrv" vb. olarak değiştirin.
+define("DB_HOST", "localhost"); // Uzak veritabanına bağlanmayacaksanız değiştirmeyin.
+define("DB_DATABASE_TS", "biltekbi_lisim"); // Veritabanı adı
+define("DB_DATABASE_F", "BILTEKOFIS2020"); // Firmanızın stok bilgileri veritabanı (Yerel ağda çalıştırmayacaksanız değiştirmenize gerek yok çünkü çalışmayacak)
+define("DB_USERNAME", "biltekbi_lisim"); // Veritabanı kullanıcı adı
+define("DB_PASSWORD", "uc32iWMv"); // Veritabanı şifre
+define("AUTH_TOKEN", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBVVRIX1RPS0VOIjoiY2Y2ZDk2NmI4MDFkNDU4OGI1YjI3MWU5YjBjOWUxNGIifQ.xMY1pDovkGeQ0JXvt30v2-hXlPjtD5g1yGHYZIWidmg"); // lib/Env.dart dosyasında belirttiğiniz token ile aynı olmalı yoksa uygulama çalışmaz.
+define("BARKOD_GENISLIK", "40mm"); // Farklı barkod boyutları için kendinize göre değiştirebilirsiniz.
+define("BARKOD_YUKSEKLIK", "20mm"); // Farklı barkod boyutları için kendinize göre değiştirebilirsiniz.
+define('A4_GENISLIK', 270); // Tekniz servis formu boyutları. (Şuanki A4 kağıdı için ayarlanmış)
+define('A4_YUKSEKLIK', 397); //Tekniz servis formu boyutları. 
