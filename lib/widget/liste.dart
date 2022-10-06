@@ -41,6 +41,7 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
   int ilkOge = 0, yuklenecekOge = 50;
   Timer? zamanlayici;
   List<bool> menuAcikDurumu = [];
+  List<bool> menuAcikDurumuFiltreli = [];
 
   bool getirildi = false;
 
@@ -73,11 +74,17 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
               cihazlarTumu.insert(0, cihazTemp);
             });
             cihazTemp.yeni = true;
+
+            int menuCihazFarki = cihazlar.length - menuAcikDurumu.length;
+            if (menuCihazFarki > 0) {
+              setState(() {
+                menuAcikDurumu
+                    .addAll(List.generate(menuCihazFarki, (index) => false));
+              });
+            }
             setState(() {
               cihazlar.insert(0, cihazTemp);
               menuAcikDurumu.insert(0, false);
-              cihazlar.removeAt(cihazlar.length - 1);
-              menuAcikDurumu.removeAt(cihazlar.length - 1);
             });
             cihazTemp.yeni = false;
           }
@@ -88,6 +95,15 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
           }
           if (filtreli) {
             cihazTemp.yeni = true;
+
+            int menuFiltreFarki =
+                filtreliCihazlar.length - menuAcikDurumuFiltreli.length;
+            if (menuFiltreFarki > 0) {
+              setState(() {
+                menuAcikDurumuFiltreli
+                    .addAll(List.generate(menuFiltreFarki, (index) => false));
+              });
+            }
             int filtreIndex = filtreliCihazlar
                 .indexWhere((element) => element.id == cihazTemp.id);
             if (filtreIndex > -1) {
@@ -98,7 +114,7 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
               }
             } else {
               setState(() {
-                menuAcikDurumu.insert(0, false);
+                menuAcikDurumuFiltreli.insert(0, false);
                 filtreliCihazlar.insert(0, cihazTemp);
               });
             }
@@ -124,9 +140,14 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             return CihazModel.filtre(cihaz: element, text: text);
           }).toList();
         });
+        setState(() {
+          menuAcikDurumuFiltreli =
+              List.generate(filtreliCihazlar.length, (index) => false);
+        });
       } else {
         setState(() {
           filtreliCihazlar = [];
+          menuAcikDurumuFiltreli = [];
         });
       }
     });
