@@ -36,7 +36,7 @@ class CihazDetaylariState
     return Sayfa(
       direktGiris: widget.direktGiris,
       kapatButonuGoster: true,
-      baslik: "Cihaz ${widget.servisNo} Detayları",
+      baslik: "Cihaz ${widget.servisNo}",
       icerik: Center(
         child: Text("ID: ${widget.servisNo}"),
       ),
