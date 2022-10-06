@@ -30,7 +30,12 @@ class GirisSQL {
         try {
           KullaniciGirisiModel kullaniciGirisiModel =
               KullaniciGirisiModel.fromJson(await Baglan.map(
-                  url: Konumlar.girisYap(kullaniciAdi, sifre)));
+            url: Konumlar.girisYap(kullaniciAdi, sifre),
+            postVerileri: {
+              "kullaniciAdi": kullaniciAdi,
+              "sifre": sifre,
+            },
+          ));
           if (kDebugMode) {
             print(
                 "Giriş Yap Sonuç: ${kullaniciGirisiModel.id}, ${kullaniciGirisiModel.durum}");

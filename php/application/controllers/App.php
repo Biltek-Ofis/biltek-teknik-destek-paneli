@@ -25,60 +25,101 @@ class App extends CI_Controller
             return false;
         }
     }
-    public function hataMesaji($kod)
+    public function hataMesaji($kod, $ek = "")
     {
         $sonuc = array(
-            "hata" => $kod
+            "kod" => $kod
         );
+        $ekMesaj = (strlen($ek) > 0 ? " Hata: " . $ek : "");
         switch ($kod) {
             case 1:
-                $sonuc["mesaj"] = "Yetkisiz İşlem";
+                $sonuc["kod"] = 1;
+                $sonuc["mesaj"] = "Yetkisiz İşlem!" . $ekMesaj;
+                break;
+            case 2:
+                $sonuc["kod"] = 2;
+                $sonuc["mesaj"] = "Hatalı post!" . $ekMesaj;
                 break;
             default:
                 $sonuc["kod"] = 99;
-                $sonuc["mesaj"] = "Bir hata oluştu";
+                $sonuc["mesaj"] = "Bir hata oluştu!" . $ekMesaj;
                 break;
         }
         return $sonuc;
     }
-    public function girisyap($kullaniciAdi, $sifre, $token)
+    public function girisyap()
     {
         $this->headerlar();
-        if ($this->token($token)) {
-            $durum = $this->Giris_Model->girisDurumu($kullaniciAdi, $sifre);
-            $sonuc = array(
-                "id" => "0",
-                "durum" => "false"
-            );
-            if ($durum) {
-                $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
-                if (isset($kullaniciBilgileri)) {
-                    $sonuc["durum"] = "true";
-                    $sonuc["id"] = $kullaniciBilgileri->id;
+        $kullaniciAdi = $this->input->post("kullaniciAdi");
+        $sifre = $this->input->post("sifre");
+        $token = $this->input->post("token");
+        if (isset($kullaniciAdi)) {
+            if (isset($sifre)) {
+                if (isset($token)) {
+                    if ($this->token($token)) {
+                        $durum = $this->Giris_Model->girisDurumu($kullaniciAdi, $sifre);
+                        $sonuc = array(
+                            "id" => "0",
+                            "durum" => "false"
+                        );
+                        if ($durum) {
+                            $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
+                            if (isset($kullaniciBilgileri)) {
+                                $sonuc["durum"] = "true";
+                                $sonuc["id"] = $kullaniciBilgileri->id;
+                            }
+                        }
+                        echo json_encode($sonuc);
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(2), "token");
                 }
+            } else {
+                echo json_encode($this->hataMesaji(2, "sifre"));
             }
-            echo json_encode($sonuc);
         } else {
-            echo json_encode($this->hataMesaji(1));
+            echo json_encode($this->hataMesaji(2, "kullaniciAdi"));
         }
     }
-    public function kullaniciBilgileri($id, $token)
+    public function kullaniciBilgileri()
     {
         $this->headerlar();
-        if ($this->token($token)) {
-            $kullanici = $this->Kullanicilar_Model->tekKullanici($id);
-            echo json_encode($kullanici);
+        $id = $this->input->post("id");
+        $token = $this->input->post("token");
+        if (isset($id)) {
+            if (isset($token)) {
+                if ($this->token($token)) {
+                    $kullanici = $this->Kullanicilar_Model->tekKullanici($id);
+                    echo json_encode($kullanici);
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(2, "token"));
+            }
         } else {
-            echo json_encode($this->hataMesaji(1));
+            echo json_encode($this->hataMesaji(2, "id"));
         }
     }
-    public function cihazlarTumu($sorumlu, $token)
+    public function cihazlarTumu()
     {
         $this->headerlar();
-        if ($this->token($token)) {
-            echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ($sorumlu == 0 ? "" : $sorumlu));
+        $sorumlu = $this->input->post("sorumlu");
+        $token = $this->input->post("token");
+        if (isset($sorumlu)) {
+            if (isset($token)) {
+                if ($this->token($token)) {
+                    echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ($sorumlu == 0 ? "" : $sorumlu));
+                } else {
+                    echo json_encode($this->hataMesaji(1, $token));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(2, "token"));
+            }
         } else {
-            echo json_encode($this->hataMesaji(1));
+            echo json_encode($this->hataMesaji(2, "sorumlu"));
         }
     }
     public function headerlar()
