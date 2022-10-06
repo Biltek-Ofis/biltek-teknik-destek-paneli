@@ -13,6 +13,7 @@ class Sayfa extends StatefulWidget {
     required this.direktGiris,
     required this.icerik,
     this.yeniCihazEkleButonuGoster = false,
+    this.kapatButonuGoster = false,
     this.menuGenisligi = 240,
     this.baslik = "",
     this.floatingActionButton,
@@ -22,6 +23,7 @@ class Sayfa extends StatefulWidget {
   final bool direktGiris;
   final Widget icerik;
   final bool yeniCihazEkleButonuGoster;
+  final bool kapatButonuGoster;
   final double menuGenisligi;
   final String baslik;
   final Widget? floatingActionButton;
@@ -84,20 +86,30 @@ class _SayfaState extends State<Sayfa> {
                     : "",
               ),
             ),
-          IconButton(
-            onPressed: () {
-              SharedPref.girisDurumuSil().then((value) {
-                if (value) {
-                  Yonlendirme.git(
-                    context,
-                    GirisYap.yol,
-                    clearStack: true,
-                  );
-                }
-              });
-            },
-            icon: const Icon(Icons.logout_outlined),
-          ),
+          if (!widget.kapatButonuGoster)
+            IconButton(
+              onPressed: () {
+                SharedPref.girisDurumuSil().then((value) {
+                  if (value) {
+                    Yonlendirme.git(
+                      context,
+                      GirisYap.yol,
+                      clearStack: true,
+                    );
+                  }
+                });
+              },
+              icon: const Icon(Icons.logout_outlined),
+            ),
+          if (widget.kapatButonuGoster)
+            IconButton(
+              onPressed: () {
+                Yonlendirme.kapat(context);
+              },
+              icon: const Icon(
+                Icons.close_outlined,
+              ),
+            ),
         ],
       ),
       floatingActionButton: widget.floatingActionButton,

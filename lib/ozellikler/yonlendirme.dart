@@ -102,4 +102,8 @@ class Yonlendirme {
           routeSettings ?? RouteSettings(arguments: DirektGiris(false)),
     );
   }
+
+  static void kapat(BuildContext context) {
+    router.pop(context);
+  }
 }
