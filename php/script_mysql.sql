@@ -148,6 +148,20 @@ CREATE TABLE `silinencihazlar` (
   `silinme_tarihi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ci_sessions`
+--
+
+CREATE TABLE `ci_sessions` (
+        `id` varchar(128) NOT NULL,
+        `ip_address` varchar(45) NOT NULL,
+        `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
+        `data` blob NOT NULL,
+        KEY `ci_sessions_timestamp` (`timestamp`)
+);
+
 --
 -- Dökümü yapılmış tablolar için indeksler
 --
@@ -188,6 +202,11 @@ ALTER TABLE `ozelid`
 ALTER TABLE `silinencihazlar`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Tablo için indeksler `ci_sessions`
+--
+ALTER TABLE `ci_sessions`
+  ADD PRIMARY KEY (`id`);
 --
 -- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
 --

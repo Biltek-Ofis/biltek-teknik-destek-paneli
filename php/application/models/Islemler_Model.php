@@ -215,7 +215,7 @@ class Islemler_Model extends CI_Model
         $ayar .= '
             "paging": ' . $paging . ',
             "lengthChange": false,
-            "pageLength": ' . getenv('TABLO_OGE') . ',
+            "pageLength": ' . TABLO_OGE . ',
             "searching": true,
             "ordering": true,
             order: ' . $siralama . ',

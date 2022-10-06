@@ -7,22 +7,15 @@ extension=php_sqlsrv_74_ts.dll
 
 ```
 
-Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin ve satır sonunda boşluk bırakmayın.
+- php/application/config/constants.php dosyasında en altta bulunan site ayarlarını kendinize göre değiştirebilirsiniz.
 
 ```
-DB_DRIVER=mysqli
-DB_HOST="localhost"
-TEKNIK_SERVIS_URL=https://teknikservis.biltekbilgisayar.com.tr/
-SITE_BASLIGI="Biltek Bilgisayar"
-FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/
-TABLO_OGE=50
-DB_DATABASE_TS=TEKNIK_SERVIS_DB
-DB_DATABASE_F=FIRMA_DB
-DB_USERNAME=root
-DB_PASSWORD=1212
-BARKOD_EN="40mm"
-BARKOD_BOY="20mm"
-AUTH_TOKEN="rastgele belirlediğiniz bir kod"
+define("SITE_BASLIGI", "Biltek Bilgisayar"); // Sitenizin başlığı
+define("TEKNIK_SERVIS_URL", "https://biltek.ozayakcan.com.tr/"); // Teknik servis sayfası
+define("FIRMA_SITE_URL", "http://www.biltekbilgisayar.com.tr/"); // Firmanızın web sayfası
+....
+// Diğer ayarlar
+....
 ```
 
 lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olacak:
@@ -30,7 +23,7 @@ lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olac
 ```
 class Env{
   static String uygulamaAdi = "Biltek Bilgisayar";
-  static String authToken = "yukarıdaki .env dosyasında belirlediğiniz kod";
+  static String authToken = "yukarıdaki php/application/config/constants.php dosyasında belirlediğiniz kod";
 }
 ```
 

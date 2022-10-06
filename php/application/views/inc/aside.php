@@ -82,18 +82,6 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="' . base_url("yonetim/ayarlar") . '" class="nav-link';
-    if ($aktifSayfa == "yonetim/ayarlar") {
-        echo " active";
-    }
-    echo '">
-                            <i class="nav-icon fas fa-gear"></i>
-                            <p>
-                                Ayarlar
-                            </p>
-                        </a>
-                    </li>
                     <hr class="break-sec-w">';
 }
 
