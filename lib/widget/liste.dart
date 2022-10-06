@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:biltekbilgisayar/widget/list_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
@@ -374,26 +375,20 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                                       textAlign: TextAlign.center,
                                     ),
                                   );
-                                  return ListTile(
-                                    tileColor: cihazDurumuColorGetir(
-                                      (filtreliCihazlar.isEmpty
-                                              ? cihazlar
-                                              : filtreliCihazlar)[index]
-                                          .guncelDurum,
-                                    ),
-                                    title: GestureDetector(
-                                      onDoubleTap: () {
-                                        Yonlendirme.git(
-                                          context,
-                                          "${CihazDetaylari.yol}${CihazDetaylari.argumanlar(
-                                            servisNo: (filtreliCihazlar.isEmpty
-                                                ? cihazlar[index].servisNo
-                                                : filtreliCihazlar[index]
-                                                    .servisNo),
-                                          )}",
-                                        );
-                                      },
-                                      onTap: () {
+                                  return CustomListTile(
+                                    onTap: () {
+                                      Yonlendirme.git(
+                                        context,
+                                        "${CihazDetaylari.yol}${CihazDetaylari.argumanlar(
+                                          servisNo: (filtreliCihazlar.isEmpty
+                                              ? cihazlar[index].servisNo
+                                              : filtreliCihazlar[index]
+                                                  .servisNo),
+                                        )}",
+                                      );
+                                    },
+                                    onHover: (hover) {
+                                      if (hover) {
                                         if (filtreliCihazlar.isEmpty) {
                                           setState(() {
                                             cihazlar[index].yeni = false;
@@ -404,226 +399,231 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                                                 false;
                                           });
                                         }
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (yeniOgeSayisi >= 2)
-                                                bilgiler(
-                                                  aciklama: (filtreliCihazlar
-                                                                  .isEmpty
-                                                              ? cihazlar
-                                                              : filtreliCihazlar)[
-                                                          index]
-                                                      .servisNo,
-                                                  widget: ((filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .yeni)
-                                                      ? yeniWidgeti
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
+                                      }
+                                    },
+                                    tileColor: cihazDurumuColorGetir(
+                                      (filtreliCihazlar.isEmpty
+                                              ? cihazlar
+                                              : filtreliCihazlar)[index]
+                                          .guncelDurum,
+                                    ),
+                                    title: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            if (yeniOgeSayisi >= 2)
                                               bilgiler(
                                                 aciklama: (filtreliCihazlar
                                                                 .isEmpty
                                                             ? cihazlar
                                                             : filtreliCihazlar)[
                                                         index]
-                                                    .musteriAdi,
-                                                widget: (yeniOgeSayisi == 2 ||
-                                                        yeniOgeSayisi == 1)
-                                                    ? Row(
-                                                        children: [
-                                                          if (yeniOgeSayisi ==
-                                                              1)
-                                                            yeniWidgeti,
-                                                          dahaFazlaButon(
-                                                              index: index),
-                                                        ],
-                                                      )
+                                                    .servisNo,
+                                                widget: ((filtreliCihazlar
+                                                                    .isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .yeni)
+                                                    ? yeniWidgeti
                                                     : null,
                                                 width: ogeGenisligi,
                                                 index: index,
                                               ),
-                                              if (yeniOgeSayisi >= 3)
-                                                bilgiler(
-                                                  aciklama: (filtreliCihazlar
-                                                                  .isEmpty
+                                            bilgiler(
+                                              aciklama: (filtreliCihazlar
+                                                          .isEmpty
+                                                      ? cihazlar
+                                                      : filtreliCihazlar)[index]
+                                                  .musteriAdi,
+                                              widget: (yeniOgeSayisi == 2 ||
+                                                      yeniOgeSayisi == 1)
+                                                  ? Row(
+                                                      children: [
+                                                        if (yeniOgeSayisi == 1)
+                                                          yeniWidgeti,
+                                                        dahaFazlaButon(
+                                                            index: index),
+                                                      ],
+                                                    )
+                                                  : null,
+                                              width: ogeGenisligi,
+                                              index: index,
+                                            ),
+                                            if (yeniOgeSayisi >= 3)
+                                              bilgiler(
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .telefonNumarasi,
+                                                widget: (yeniOgeSayisi == 3)
+                                                    ? dahaFazlaButon(
+                                                        index: index)
+                                                    : null,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                            if (yeniOgeSayisi >= 4)
+                                              bilgiler(
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .cihazTuru,
+                                                widget: (yeniOgeSayisi == 4)
+                                                    ? dahaFazlaButon(
+                                                        index: index)
+                                                    : null,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                            if (yeniOgeSayisi >= 5)
+                                              bilgiler(
+                                                aciklama:
+                                                    "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
+                                                widget: (yeniOgeSayisi == 5)
+                                                    ? dahaFazlaButon(
+                                                        index: index)
+                                                    : null,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                            if (yeniOgeSayisi >= 6)
+                                              bilgiler(
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .tarih,
+                                                widget: (yeniOgeSayisi == 6)
+                                                    ? dahaFazlaButon(
+                                                        index: index)
+                                                    : null,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                            if (yeniOgeSayisi >= 7)
+                                              bilgiler(
+                                                aciklama: cihazDurumuGetir(
+                                                  (filtreliCihazlar.isEmpty
                                                               ? cihazlar
                                                               : filtreliCihazlar)[
                                                           index]
-                                                      .telefonNumarasi,
-                                                  widget: (yeniOgeSayisi == 3)
-                                                      ? dahaFazlaButon(
-                                                          index: index)
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
+                                                      .guncelDurum,
                                                 ),
-                                              if (yeniOgeSayisi >= 4)
-                                                bilgiler(
-                                                  aciklama: (filtreliCihazlar
-                                                                  .isEmpty
-                                                              ? cihazlar
-                                                              : filtreliCihazlar)[
-                                                          index]
-                                                      .cihazTuru,
-                                                  widget: (yeniOgeSayisi == 4)
-                                                      ? dahaFazlaButon(
-                                                          index: index)
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
-                                              if (yeniOgeSayisi >= 5)
-                                                bilgiler(
-                                                  aciklama:
-                                                      "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
-                                                  widget: (yeniOgeSayisi == 5)
-                                                      ? dahaFazlaButon(
-                                                          index: index)
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
-                                              if (yeniOgeSayisi >= 6)
-                                                bilgiler(
-                                                  aciklama: (filtreliCihazlar
-                                                                  .isEmpty
-                                                              ? cihazlar
-                                                              : filtreliCihazlar)[
-                                                          index]
-                                                      .tarih,
-                                                  widget: (yeniOgeSayisi == 6)
-                                                      ? dahaFazlaButon(
-                                                          index: index)
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
-                                              if (yeniOgeSayisi >= 7)
-                                                bilgiler(
-                                                  aciklama: cihazDurumuGetir(
-                                                    (filtreliCihazlar.isEmpty
+                                                widget: (yeniOgeSayisi == 7)
+                                                    ? dahaFazlaButon(
+                                                        index: index)
+                                                    : null,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                            if (yeniOgeSayisi >= 8)
+                                              bilgiler(
+                                                aciklama: (filtreliCihazlar
+                                                                .isEmpty
+                                                            ? cihazlar
+                                                            : filtreliCihazlar)[
+                                                        index]
+                                                    .sorumlu,
+                                                width: ogeGenisligi,
+                                                index: index,
+                                              ),
+                                          ],
+                                        ),
+                                        if (menuAcikDurumu.length > index)
+                                          if (menuAcikDurumu[index])
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                if (yeniOgeSayisi < 2)
+                                                  dahaFazla(
+                                                    baslik: "Servis No: ",
+                                                    aciklama: (filtreliCihazlar
+                                                                    .isEmpty
                                                                 ? cihazlar
                                                                 : filtreliCihazlar)[
                                                             index]
-                                                        .guncelDurum,
+                                                        .servisNo,
+                                                    width: tamBoyut,
                                                   ),
-                                                  widget: (yeniOgeSayisi == 7)
-                                                      ? dahaFazlaButon(
-                                                          index: index)
-                                                      : null,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
-                                              if (yeniOgeSayisi >= 8)
-                                                bilgiler(
-                                                  aciklama: (filtreliCihazlar
-                                                                  .isEmpty
-                                                              ? cihazlar
-                                                              : filtreliCihazlar)[
-                                                          index]
-                                                      .sorumlu,
-                                                  width: ogeGenisligi,
-                                                  index: index,
-                                                ),
-                                            ],
-                                          ),
-                                          if (menuAcikDurumu.length > index)
-                                            if (menuAcikDurumu[index])
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  if (yeniOgeSayisi < 2)
-                                                    dahaFazla(
-                                                      baslik: "Servis No: ",
-                                                      aciklama: (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .servisNo,
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 3)
-                                                    dahaFazla(
-                                                      baslik: "GSM: ",
-                                                      aciklama: (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .telefonNumarasi,
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 4)
-                                                    dahaFazla(
-                                                      baslik: "Tür: ",
-                                                      aciklama: (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .cihazTuru,
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 5)
-                                                    dahaFazla(
-                                                      baslik: "Cihaz: ",
-                                                      aciklama:
-                                                          "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 6)
-                                                    dahaFazla(
-                                                      baslik: "Tarih: ",
-                                                      aciklama: (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .tarih,
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 7)
-                                                    dahaFazla(
-                                                      baslik: "Güncel Durum: ",
-                                                      aciklama: cihazDurumuGetir(
-                                                          (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[index]
-                                                              .guncelDurum),
-                                                      width: tamBoyut,
-                                                    ),
-                                                  if (yeniOgeSayisi < 8)
-                                                    dahaFazla(
-                                                      baslik: "Sorumlu: ",
-                                                      aciklama: (filtreliCihazlar
-                                                                      .isEmpty
-                                                                  ? cihazlar
-                                                                  : filtreliCihazlar)[
-                                                              index]
-                                                          .sorumlu,
-                                                      width: tamBoyut,
-                                                    ),
-                                                ],
-                                              ),
-                                        ],
-                                      ),
+                                                if (yeniOgeSayisi < 3)
+                                                  dahaFazla(
+                                                    baslik: "GSM: ",
+                                                    aciklama: (filtreliCihazlar
+                                                                    .isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .telefonNumarasi,
+                                                    width: tamBoyut,
+                                                  ),
+                                                if (yeniOgeSayisi < 4)
+                                                  dahaFazla(
+                                                    baslik: "Tür: ",
+                                                    aciklama: (filtreliCihazlar
+                                                                    .isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .cihazTuru,
+                                                    width: tamBoyut,
+                                                  ),
+                                                if (yeniOgeSayisi < 5)
+                                                  dahaFazla(
+                                                    baslik: "Cihaz: ",
+                                                    aciklama:
+                                                        "${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihaz} ${(filtreliCihazlar.isEmpty ? cihazlar : filtreliCihazlar)[index].cihazModeli}",
+                                                    width: tamBoyut,
+                                                  ),
+                                                if (yeniOgeSayisi < 6)
+                                                  dahaFazla(
+                                                    baslik: "Tarih: ",
+                                                    aciklama: (filtreliCihazlar
+                                                                    .isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .tarih,
+                                                    width: tamBoyut,
+                                                  ),
+                                                if (yeniOgeSayisi < 7)
+                                                  dahaFazla(
+                                                    baslik: "Güncel Durum: ",
+                                                    aciklama: cihazDurumuGetir(
+                                                        (filtreliCihazlar
+                                                                        .isEmpty
+                                                                    ? cihazlar
+                                                                    : filtreliCihazlar)[
+                                                                index]
+                                                            .guncelDurum),
+                                                    width: tamBoyut,
+                                                  ),
+                                                if (yeniOgeSayisi < 8)
+                                                  dahaFazla(
+                                                    baslik: "Sorumlu: ",
+                                                    aciklama: (filtreliCihazlar
+                                                                    .isEmpty
+                                                                ? cihazlar
+                                                                : filtreliCihazlar)[
+                                                            index]
+                                                        .sorumlu,
+                                                    width: tamBoyut,
+                                                  ),
+                                              ],
+                                            ),
+                                      ],
                                     ),
                                   );
                                 } else {
@@ -735,7 +735,7 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
   Widget bilgilerText({
     required String text,
   }) {
-    return SelectableText(text);
+    return Text(text);
   }
 
   temizle() {
