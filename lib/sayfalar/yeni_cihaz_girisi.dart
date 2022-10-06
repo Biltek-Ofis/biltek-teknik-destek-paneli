@@ -24,6 +24,7 @@ class YeniCihazGirisiState
   Widget build(BuildContext context) {
     return Sayfa(
       direktGiris: widget.direktGiris,
+      kapatButonuGoster: true,
       baslik: "Yeni Cihaz Girişi",
       icerik: const Center(
         child: Text("Yeni Cihaz Girişi"),

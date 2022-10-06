@@ -35,6 +35,7 @@ class CihazDetaylariState
   Widget build(BuildContext context) {
     return Sayfa(
       direktGiris: widget.direktGiris,
+      kapatButonuGoster: true,
       baslik: "Cihaz ${widget.servisNo} Detayları",
       icerik: Center(
         child: Text("ID: ${widget.servisNo}"),
