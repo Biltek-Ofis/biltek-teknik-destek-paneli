@@ -47,6 +47,7 @@ class _AnasayfaState extends VarsayilanStatefulWidgetState<Anasayfa> {
   Widget build(BuildContext context) {
     return Sayfa(
       direktGiris: widget.direktGiris,
+      yeniCihazEkleButonuGoster: true,
       menu: const AnaMenu(
         seciliSayfa: "Anasayfa",
       ),

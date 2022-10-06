@@ -1,4 +1,3 @@
-import 'package:biltekbilgisayar/ozellikler/argumanlar.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,6 +6,8 @@ import '../sayfalar/cihazlarim.dart';
 import '../sayfalar/detaylar.dart';
 import '../sayfalar/giris.dart';
 import '../sayfalar/splash.dart';
+import '../sayfalar/yeni_cihaz_girisi.dart';
+import 'argumanlar.dart';
 
 class Yonlendirme {
   static FluroRouter router = FluroRouter();
@@ -26,6 +27,10 @@ class Yonlendirme {
     router.define(
       Cihazlarim.yol,
       handler: cihazlarimHandler,
+    );
+    router.define(
+      YeniCihazGirisi.yol,
+      handler: yeniCihazGirisiHandler,
     );
     router.define(
       "${CihazDetaylari.yol}${CihazDetaylari.argumanlar()}",
@@ -61,6 +66,14 @@ class Yonlendirme {
       );
     },
   );
+  static Handler yeniCihazGirisiHandler =
+      Handler(handlerFunc: (context, Map<String, dynamic> params) {
+    DirektGiris giris =
+        (context!.settings!.arguments as DirektGiris?) ?? DirektGiris(true);
+    return YeniCihazGirisi(
+      direktGiris: giris.direktGiris,
+    );
+  });
   static Handler cihazDetaylariHandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
     DirektGiris giris =
