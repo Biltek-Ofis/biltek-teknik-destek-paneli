@@ -116,10 +116,12 @@ class _SayfaState extends State<Sayfa> {
       body: widget.icerik,
       drawer: widget.menu == null
           ? null
-          : SizedBox(
-              width: widget.menuGenisligi,
-              child: Drawer(
-                child: widget.menu,
+          : SafeArea(
+              child: SizedBox(
+                width: widget.menuGenisligi,
+                child: Drawer(
+                  child: widget.menu,
+                ),
               ),
             ),
     );
