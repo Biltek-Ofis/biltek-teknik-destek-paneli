@@ -20,4 +20,7 @@ class Konumlar {
   }) {
     return "${getRelativePath}cihazlarTumu/$id/${Env.authToken}";
   }
+
+  static String silinenCihazlar =
+      "${getRelativePath}silinenCihazlar/${Env.authToken}";
 }

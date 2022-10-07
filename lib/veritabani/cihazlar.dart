@@ -21,4 +21,20 @@ class Cihazlar {
       return null;
     }
   }
+
+  static Future<List<SilinenCihazlar>?> silinenCihazlar() async {
+    try {
+      List silinenCihazlar = await Baglan.list(
+        url: Konumlar.silinenCihazlar,
+      );
+      return silinenCihazlar
+          .map((cihaz) => SilinenCihazlar.fromJson(cihaz))
+          .toList();
+    } catch (e) {
+      if (kDebugMode) {
+        print("Silinen Cihazlar Alınamadı. Hata: ${e.toString()}");
+      }
+      return null;
+    }
+  }
 }

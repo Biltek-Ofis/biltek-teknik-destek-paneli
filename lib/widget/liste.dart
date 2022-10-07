@@ -138,6 +138,39 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             }
           }
         }
+        List<SilinenCihazlar> silinenCihazlar =
+            await Cihazlar.silinenCihazlar() ?? [];
+        for (var silinenCihazlarTemp in silinenCihazlar) {
+          int cihazlarTumuIndex = cihazlarTumu
+              .indexWhere((element) => element.id == silinenCihazlarTemp.id);
+          if (cihazlarTumuIndex > -1) {
+            setState(() {
+              cihazlarTumu.removeAt(cihazlarTumuIndex);
+            });
+          }
+          int cihazlarIndex = cihazlar
+              .indexWhere((element) => element.id == silinenCihazlarTemp.id);
+          if (cihazlarIndex > -1) {
+            setState(() {
+              cihazlar.removeAt(cihazlarIndex);
+              menuAcikDurumu.removeAt(cihazlarIndex);
+            });
+            if (cihazlarTumu.length > cihazlar.length) {
+              setState(() {
+                cihazlar.add(cihazlarTumu[cihazlar.length]);
+                menuAcikDurumu.add(false);
+              });
+            }
+          }
+          int filtreliCihazlarIndex = filtreliCihazlar
+              .indexWhere((element) => element.id == silinenCihazlarTemp.id);
+          if (filtreliCihazlarIndex > -1) {
+            setState(() {
+              filtreliCihazlar.removeAt(cihazlarIndex);
+              menuAcikDurumuFiltreli.removeAt(cihazlarIndex);
+            });
+          }
+        }
       });
     });
     widget.controller.addListener(() {

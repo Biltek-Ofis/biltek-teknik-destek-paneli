@@ -122,6 +122,20 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(2, "sorumlu"));
         }
     }
+    public function silinenCihazlar()
+    {
+        $this->headerlar();
+        $token = $this->input->post("token");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                echo json_encode($this->Cihazlar_Model->silinenCihazlariBul());
+            } else {
+                echo json_encode($this->hataMesaji(1, $token));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(2, "token"));
+        }
+    }
     public function headerlar()
     {
         if (isset($_SERVER['HTTP_ORIGIN'])) {
