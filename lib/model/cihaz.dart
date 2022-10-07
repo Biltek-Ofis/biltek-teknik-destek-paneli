@@ -514,3 +514,23 @@ class CihazModel {
         cihazDurumuGetir(cihaz.guncelDurum).contains(text.toLowerCaseTr());
   }
 }
+
+class SilinenCihazlar {
+  SilinenCihazlar({
+    required this.id,
+    required this.silinmeTarihi,
+  });
+
+  final int id;
+  final String silinmeTarihi;
+
+  static String idStr = "id";
+  static String silinmeTarihiStr = "silinme_tarihi";
+
+  factory SilinenCihazlar.fromJson(Map<String, dynamic> jsonData) {
+    return SilinenCihazlar(
+      id: Degiskenler.parseInt(sayi: jsonData[idStr]),
+      silinmeTarihi: Degiskenler.parseString(yazi: jsonData[silinmeTarihiStr]),
+    );
+  }
+}
