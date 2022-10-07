@@ -389,7 +389,7 @@ class CihazModel {
       int cmp = cihazDurumuSiralamaGetir((asc ? b : a).guncelDurum)
           .compareTo(cihazDurumuSiralamaGetir((asc ? a : b).guncelDurum));
       if (cmp != 0) return cmp;
-      return tarihSiralama(a.tarih).compareTo(tarihSiralama(b.tarih));
+      return tarihSiralama(b.tarih).compareTo(tarihSiralama(a.tarih));
     });
     return cihazlar;
   }
