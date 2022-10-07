@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:biltekbilgisayar/widget/list_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../model/cihaz.dart';
@@ -9,6 +9,7 @@ import '../ozellikler/yonlendirme.dart';
 import '../sayfalar/detaylar.dart';
 import '../sayfalar/statefulwidget.dart';
 import '../veritabani/cihazlar.dart';
+import 'list_tile.dart';
 
 typedef YukariGitButonDurumu = void Function(bool durum);
 
@@ -61,32 +62,48 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             ) ??
             [];
         for (var cihazTemp in cihazlarTemp) {
-          int index =
+          int indexTumu =
               cihazlarTumu.indexWhere((element) => element.id == cihazTemp.id);
-          if (index > -1) {
-            if (cihazlarTumu[index] != cihazTemp) {
+          if (indexTumu > -1) {
+            if (cihazlarTumu[indexTumu] != cihazTemp) {
+              bool yeniDurumu = cihazlarTumu[indexTumu].yeni;
               setState(() {
-                cihazlarTumu[index] = cihazTemp;
+                cihazlarTumu[indexTumu] = cihazTemp;
+                cihazlarTumu[indexTumu].yeni = yeniDurumu;
               });
             }
           } else {
             setState(() {
               cihazlarTumu.insert(0, cihazTemp);
             });
-            cihazTemp.yeni = true;
-
-            int menuCihazFarki = cihazlar.length - menuAcikDurumu.length;
-            if (menuCihazFarki > 0) {
+          }
+          int indexCihazlar =
+              cihazlar.indexWhere((element) => element.id == cihazTemp.id);
+          if (indexCihazlar > -1) {
+            if (cihazlar[indexCihazlar] != cihazTemp) {
+              bool yeniDurumu = cihazlar[indexCihazlar].yeni;
               setState(() {
-                menuAcikDurumu
-                    .addAll(List.generate(menuCihazFarki, (index) => false));
+                cihazlar[indexCihazlar] = cihazTemp;
+                cihazlar[indexCihazlar].yeni = yeniDurumu;
               });
             }
-            setState(() {
-              cihazlar.insert(0, cihazTemp);
-              menuAcikDurumu.insert(0, false);
-            });
-            cihazTemp.yeni = false;
+          } else {
+            if (cihazlar.map((e) => e.id).reduce(max) < cihazTemp.id) {
+              int menuCihazFarki = cihazlar.length - menuAcikDurumu.length;
+              if (menuCihazFarki > 0) {
+                setState(() {
+                  menuAcikDurumu
+                      .addAll(List.generate(menuCihazFarki, (index) => false));
+                });
+              }
+              setState(() {
+                cihazlar.insert(0, cihazTemp);
+                cihazlar[0].yeni = true;
+                menuAcikDurumu.insert(0, false);
+                cihazlar.removeAt(cihazlar.length - 1);
+                menuAcikDurumu.removeAt(cihazlar.length - 1);
+              });
+            }
           }
           String text = textEditingController.text;
           bool filtreli = false;
@@ -94,8 +111,6 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
             filtreli = CihazModel.filtre(cihaz: cihazTemp, text: text);
           }
           if (filtreli) {
-            cihazTemp.yeni = true;
-
             int menuFiltreFarki =
                 filtreliCihazlar.length - menuAcikDurumuFiltreli.length;
             if (menuFiltreFarki > 0) {
@@ -108,17 +123,19 @@ class _CihazListesiState extends VarsayilanStatefulWidgetState<CihazListesi> {
                 .indexWhere((element) => element.id == cihazTemp.id);
             if (filtreIndex > -1) {
               if (filtreliCihazlar[filtreIndex] != cihazTemp) {
+                bool yeniDurumu = filtreliCihazlar[filtreIndex].yeni;
                 setState(() {
                   filtreliCihazlar[filtreIndex] = cihazTemp;
+                  filtreliCihazlar[filtreIndex].yeni = yeniDurumu;
                 });
               }
             } else {
               setState(() {
                 menuAcikDurumuFiltreli.insert(0, false);
                 filtreliCihazlar.insert(0, cihazTemp);
+                filtreliCihazlar[0].yeni = true;
               });
             }
-            cihazTemp.yeni = false;
           }
         }
       });
