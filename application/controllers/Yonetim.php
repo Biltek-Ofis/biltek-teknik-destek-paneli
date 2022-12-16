@@ -126,6 +126,12 @@ class Yonetim extends Varsayilancontroller
 			$SITE_BASLIGI = $this->input->post("db_baslik");
 			$FIRMA_SITE_URL = $this->input->post("db_anasayfa");
 			$TABLO_OGE = $this->input->post("db_tablo_oge");
+			$BARKOD_EN = $this->input->post("db_barkod_en");
+			$BARKOD_BOY = $this->input->post("db_barkod_boy");
+			$BARKOD_BOYUTU = $this->input->post("db_barkod_boyutu");
+			$BARKOD_NUMARASI_BOYUTU = $this->input->post("db_barkod_numarasi_boyutu");
+			$BARKOD_MUSTERI_ADI_BOYUTU = $this->input->post("db_barkod_musteri_adi_boyutu");
+			$BARKOD_SIRKET_ADI_BOYUTU = $this->input->post("db_barkod_sirket_adi_boyutu");
 			//$DB_DATABASE_TS = $this->input->post("db_ts");
 			//$DB_DATABASE_F = $this->input->post("db_f");
 			//$DB_USERNAME = $this->input->post("db_user");
@@ -146,6 +152,36 @@ class Yonetim extends Varsayilancontroller
 				$icerik = str_replace(
 					'TABLO_OGE=' . getenv("TABLO_OGE"),
 					'TABLO_OGE=' . $TABLO_OGE,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_EN=' . getenv("BARKOD_EN"),
+					'BARKOD_EN=' . $BARKOD_EN,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_BOY=' . getenv("BARKOD_BOY"),
+					'BARKOD_BOY=' . $BARKOD_BOY,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_BOYUTU=' . getenv("BARKOD_BOYUTU"),
+					'BARKOD_BOYUTU=' . $BARKOD_BOYUTU,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_NUMARASI_BOYUTU=' . getenv("BARKOD_NUMARASI_BOYUTU"),
+					'BARKOD_NUMARASI_BOYUTU=' . $BARKOD_NUMARASI_BOYUTU,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_MUSTERI_ADI_BOYUTU=' . getenv("BARKOD_MUSTERI_ADI_BOYUTU"),
+					'BARKOD_MUSTERI_ADI_BOYUTU=' . $BARKOD_MUSTERI_ADI_BOYUTU,
+					$icerik
+				);
+				$icerik = str_replace(
+					'BARKOD_SIRKET_ADI_BOYUTU=' . getenv("BARKOD_SIRKET_ADI_BOYUTU"),
+					'BARKOD_SIRKET_ADI_BOYUTU=' . $BARKOD_SIRKET_ADI_BOYUTU,
 					$icerik
 				);
 				if (file_put_contents($path, $icerik)) {
