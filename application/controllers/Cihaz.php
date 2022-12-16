@@ -14,11 +14,11 @@ class Cihaz extends Varsayilancontroller
             $cihaz = $this->Cihazlar_Model->cihazBul($id);
             if ($cihaz->num_rows() > 0) {
                 $cihaz_bilg =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz->result())[0];
-                if ($cihaz_bilg->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) {
-                    $this->Kullanicilar_Model->girisUyari("", "Bu cihazın teslim edildiği için düzenleme yapılamaz.");
-                } else {
+                if ($cihaz_bilg->guncel_durum < count($this->Islemler_Model->cihazDurumu) - 1 || $this->Kullanicilar_Model->yonetici()) {
                     $baslik = 'Cihaz ' . $cihaz_bilg->servis_no . ' Detayları';
                     $this->load->view("tasarim", $this->Islemler_Model->tasarimArray($baslik, "cihaz", array("cihaz" => $cihaz_bilg, "baslik" => $baslik)));
+                } else {
+                    $this->Kullanicilar_Model->girisUyari("", "Bu cihazın teslim edildiği için düzenleme yapılamaz.");  
                 }
             } else {
                 redirect(base_url());
