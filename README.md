@@ -7,47 +7,16 @@ extension=php_sqlsrv_74_ts.dll
 
 ```
 
-- php/application/config/constants.php dosyasında en altta bulunan site ayarlarını kendinize göre değiştirebilirsiniz.
+Site konumuna .env dosyası oluşturulacak. // işaretleri ve sonrasını silin ve satır sonunda boşluk bırakmayın.
 
 ```
-define("SITE_BASLIGI", "Biltek Bilgisayar"); // Sitenizin başlığı
-define("TEKNIK_SERVIS_URL", "https://biltek.ozayakcan.com.tr/"); // Teknik servis sayfası
-define("FIRMA_SITE_URL", "http://www.biltekbilgisayar.com.tr/"); // Firmanızın web sayfası
-....
-// Diğer ayarlar
-....
-```
-
-lib klasöründe env.dart dosyası oluşturulacak ve içeriği şu şekilde olacak:
-
-```
-class Env{
-  static String uygulamaAdi = "Biltek Bilgisayar";
-  static String authToken = "yukarıdaki php/application/config/constants.php dosyasında belirlediğiniz kod";
-}
-```
-
-- Önemli:
-
-Uygulamanın web sürümünü test(debug) edebilmek için cmd içinde alttaki kodlar çalıştırılmalı.
-```
-dart pub global activate flutter_cors
-fluttercors --disable
-```
-
-# Derlemeler
-
-- Android
-```
-flutter build apk
-```
-
-- Windows
-```
-flutter build windows
-```
-
-- Web
-```
-flutter build web
+DB_DRIVER=sqlsrv //Değiştirilmeyecek
+DB_HOST=192.168.1.10,1433 //Sunucu adresi ve port
+TEKNIK_SERVIS_URL=http://localhost:8080/ //Teknik servisin bulunduğu url
+SITE_BASLIGI="Biltek Bilgisayar" //Firma adı
+FIRMA_SITE_URL=http://www.biltekbilgisayar.com.tr/ //Firmanın anasayfası
+DB_DATABASE_TS=teknik_servis //script.sql dosyasının aktarıldığı vertabanı adı
+DB_DATABASE_F=FIRMA2022 //Firmanın verilerinin bulunduğu veritabanı
+DB_USERNAME=sa //SQL Kullanıcı adı
+DB_PASSWORD=1234 //SQL Şifre
 ```
