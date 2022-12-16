@@ -19,4 +19,10 @@ DB_DATABASE_TS=teknik_servis //script.sql dosyasının aktarıldığı vertaban�
 DB_DATABASE_F=FIRMA2022 //Firmanın verilerinin bulunduğu veritabanı
 DB_USERNAME=sa //SQL Kullanıcı adı
 DB_PASSWORD=1234 //SQL Şifre
+BARKOD_EN=40
+BARKOD_BOY=20
+BARKOD_BOYUTU=14
+BARKOD_NUMARASI_BOYUTU=12
+BARKOD_MUSTERI_ADI_BOYUTU=12
+BARKOD_SIRKET_ADI_BOYUTU=10
 ```

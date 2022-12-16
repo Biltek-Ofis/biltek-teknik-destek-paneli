@@ -105,13 +105,17 @@ class Cihaz extends Varsayilancontroller
     }
     public function barkod($id)
     {
-        $cihaz = $this->Cihazlar_Model->cihazBul($id);
-        if ($cihaz->num_rows() > 0) {
-            $cihaz_bilg = $cihaz->result();
-            $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
-            $this->load->view("icerikler/barkod_yazdir", array("cihaz" => $veriler));
-        } else {
-            redirect(base_url());
+        if($id == "test"){
+            $this->load->view("icerikler/barkod_yazdir", array("test" => TRUE));
+        }else{
+            $cihaz = $this->Cihazlar_Model->cihazBul($id);
+            if ($cihaz->num_rows() > 0) {
+                $cihaz_bilg = $cihaz->result();
+                $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
+                $this->load->view("icerikler/barkod_yazdir", array("cihaz" => $veriler, "test" => FALSE));
+            } else {
+                redirect(base_url());
+            }
         }
     }
 
