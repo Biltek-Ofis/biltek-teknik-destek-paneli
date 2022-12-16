@@ -147,6 +147,7 @@ class Islemler_Model extends CI_Model
         "Fiyat Onayı Bekleniyor",
         "Fiyat Onaylandı",
         "Fiyat Onaylanmadı",
+        "İade Edildi",
         "Teslim Edilmeye Hazır",
         "Teslim Edildi / Ödeme Alınmadı",
         "Teslim Edildi"
@@ -162,7 +163,8 @@ class Islemler_Model extends CI_Model
         "7",
         "8",
         "9",
-        "10"
+        "10",
+        "11"
     );
     public $cihazDurumuClass = array(
         "bg-warning",
@@ -171,6 +173,7 @@ class Islemler_Model extends CI_Model
         "bg-pink",
         "bg-warning",
         "bg-primary",
+        "bg-danger",
         "bg-danger",
         "bg-primary",
         "bg-danger",
