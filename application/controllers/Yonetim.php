@@ -125,6 +125,7 @@ class Yonetim extends Varsayilancontroller
 			//$TEKNIK_SERVIS_URL = $this->input->post("db_base_url");
 			$SITE_BASLIGI = $this->input->post("db_baslik");
 			$FIRMA_SITE_URL = $this->input->post("db_anasayfa");
+			$SIRKET_TELEFONU = $this->input->post("db_telefon");
 			$TABLO_OGE = $this->input->post("db_tablo_oge");
 			$BARKOD_EN = $this->input->post("db_barkod_en");
 			$BARKOD_BOY = $this->input->post("db_barkod_boy");
@@ -147,6 +148,11 @@ class Yonetim extends Varsayilancontroller
 				$icerik = str_replace(
 					'FIRMA_SITE_URL=' . getenv("FIRMA_SITE_URL"),
 					'FIRMA_SITE_URL=' . $FIRMA_SITE_URL,
+					$icerik
+				);
+				$icerik = str_replace(
+					'SIRKET_TELEFONU="' . getenv("SIRKET_TELEFONU") . '"',
+					'SIRKET_TELEFONU="' . $SIRKET_TELEFONU . '"',
 					$icerik
 				);
 				$icerik = str_replace(
