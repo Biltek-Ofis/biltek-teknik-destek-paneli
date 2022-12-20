@@ -36,7 +36,7 @@ echo '<tr>
 <td style="border:0 !important;" class="align-middle p-2" colspan="6" rowspan="3"><img height="45" src="' . base_url("dist/img/logo.png") . '" /></td>
 </tr>
 <tr>
-<td class="alt_cizgi" colspan="6">(544) 297 0992</td>
+<td class="alt_cizgi" colspan="6">' . getenv('SIRKET_TELEFONU') . '</td>
 </tr>
 <tr>
 <td style="border:0 !important;" colspan="6">Giriş Tarihi: ' . $cihaz->tarih . '</td>
