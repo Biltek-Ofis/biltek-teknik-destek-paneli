@@ -15,7 +15,9 @@ class Kullanicilar_Model extends CI_Model
             window.location.replace("' . base_url($konum) . '");
         }</script>';
     }
-    public $kullanicilarTablosu = "kullanicilar";
+    public function kullanicilarTabloAdi() {
+        return getenv(DB_ON_EK_STR)."kullanicilar";
+    }
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0)
     {
@@ -31,7 +33,7 @@ class Kullanicilar_Model extends CI_Model
     public function kullaniciBilgileri()
     {
         if ($this->Giris_Model->kullaniciTanimi()) {
-            $kullaniciTablo = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTablosu);
+            $kullaniciTablo = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
                 return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici);
@@ -49,17 +51,17 @@ class Kullanicilar_Model extends CI_Model
     public function kullaniciListesi($id = "")
     {
         if ($id == "") {
-            return $this->db->get($this->kullanicilarTablosu)->result();
+            return $this->db->get($this->kullanicilarTabloAdi())->result();
         } else {
-            return $this->db->where(array("id" => $id))->get($this->kullanicilarTablosu)->result();
+            return $this->db->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
         }
     }
     public function kullanicilar($where){
-        return $this->db->where($where)->get($this->kullanicilarTablosu)->result();
+        return $this->db->where($where)->get($this->kullanicilarTabloAdi())->result();
     }
     public function tekKullanici($id)
     {
-        $sonuc = $this->db->where(array("id" => $id))->get($this->kullanicilarTablosu);
+        $sonuc = $this->db->where(array("id" => $id))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -68,7 +70,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function tekKullaniciIsım($isim)
     {
-        $sonuc = $this->db->where(array("ad_soyad" => $isim))->get($this->kullanicilarTablosu);
+        $sonuc = $this->db->where(array("ad_soyad" => $isim))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -77,7 +79,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function tekKullaniciAdi($kullaniciAdi)
     {
-        $sonuc = $this->db->where(array("kullanici_adi" => $kullaniciAdi))->get($this->kullanicilarTablosu);
+        $sonuc = $this->db->where(array("kullanici_adi" => $kullaniciAdi))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -86,15 +88,15 @@ class Kullanicilar_Model extends CI_Model
     }
     public function ekle($veri)
     {
-        return $this->db->insert($this->kullanicilarTablosu, $veri);
+        return $this->db->insert($this->kullanicilarTabloAdi(), $veri);
     }
     public function duzenle($id, $veri)
     {
-        return $this->db->where("id", $id)->update($this->kullanicilarTablosu, $veri);
+        return $this->db->where("id", $id)->update($this->kullanicilarTabloAdi(), $veri);
     }
     public function sil($id)
     {
-        return $this->db->where("id", $id)->delete($this->kullanicilarTablosu);
+        return $this->db->where("id", $id)->delete($this->kullanicilarTabloAdi());
     }
 
     public function kullaniciPost($yonetici_dahil = false)
@@ -114,7 +116,7 @@ class Kullanicilar_Model extends CI_Model
         $where = array(
             "kullanici_adi" => $kullanici_adi
         );
-        $query = $this->db->where($where)->get($this->kullanicilarTablosu);
+        $query = $this->db->where($where)->get($this->kullanicilarTabloAdi());
         return !($query->num_rows() > 0);
     }
 }
