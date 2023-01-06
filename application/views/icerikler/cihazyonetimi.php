@@ -1,18 +1,39 @@
 <?php
+
 echo '<script>
     function createDateAsUTC(date) {
         return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+    }
+    function tarih_girisi(oge){
+        var secilen = $(oge).find("option:selected").val();
+        if (secilen == "el") {
+            $("#tarih_row").show();
+            $("#tarih").attr("name", "tarih");
+            $("#tarih").attr("type", "datetime-local");
+            $("#tarih").attr("required","required");
+        } else{
+            $("#tarih_row").hide();
+            $("#tarih").attr("name", "tarih1");
+            $("#tarih").attr("type", "hidden");
+            $("#tarih").removeAttr("required");
+        }
     }
     $(document).ready(function() {
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).click();
         }
-        $(\'#yeniCihazEkleModal\').on(\'show.bs.modal\', function(e) {
+        /*$(\'#yeniCihazEkleModal\').on(\'show.bs.modal\', function(e) {
             var tarih = createDateAsUTC(new Date());
             $("#tarih").val(tarih.toJSON().slice(0, 19));
+        });*/
+        tarih_girisi("#tarih_girisi");
+        $("#tarih_girisi").on("change", function(e) {
+            tarih_girisi(this);
+            //console.log(this.value, clickedIndex, newValue, oldValue)
         });
     });
+    
     var base_url = "'.base_url().'";
 </script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
@@ -64,7 +85,10 @@ echo '</div>
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>
-                    <div class="row">';
+                    <div id="giris_tarihi_div" class="row">';
+$this->load->view("ogeler/tarih_girisi");                    
+echo '</div>
+                    <div id="tarih_row" class="row">';
 $this->load->view("ogeler/tarih");
 echo '</div>
                     <div class="row">';
