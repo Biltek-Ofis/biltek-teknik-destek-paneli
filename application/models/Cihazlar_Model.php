@@ -176,6 +176,12 @@ class Cihazlar_Model extends CI_Model
         if (isset($tarih)) {
             $veri["tarih"] =  $this->Islemler_Model->tarihDonusturSQL($tarih);
         }
+        $tarih_girisi = $this->input->post("tarih_girisi");
+        if(isset($tarih_girisi)){
+            if($tarih_girisi == "oto"){
+                $veri["tarih"] = $this->Islemler_Model->tarihDonusturSQLTime(time());
+            }
+        }
         return $veri;
     }
     public function cihazDuzenle($id, $veri)

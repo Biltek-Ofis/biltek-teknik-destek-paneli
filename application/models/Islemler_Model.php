@@ -26,6 +26,10 @@ class Islemler_Model extends CI_Model
     {
         return $tarih == "" ? "" : date($this->sqlTarihFormati, strtotime($tarih));
     }
+    public function tarihDonusturSQLTime($tarih)
+    {
+        return $tarih == "" ? "" : date($this->sqlTarihFormati, $tarih);
+    }
     public function guncelTarih()
     {
         return date($this->sqlTarihFormati, time());
