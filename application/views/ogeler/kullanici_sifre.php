@@ -13,7 +13,13 @@ echo '">Şifre</label>
 if (isset($id)) {
     echo $id;
 }
-echo '" class="form-control" type="password" name="sifre" minlength="6" placeholder="Şifre" autocomplete="off" value="';
+echo '"';
+if(isset($doldurma)){
+    if($doldurma == FALSE){
+        echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
+    }
+}
+echo ' class="form-control" type="password" name="sifre" minlength="6" placeholder="Şifre" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
 if (isset($value)) {
     echo $value;
 }

@@ -51,13 +51,13 @@ echo '<div class="content-wrapper">
                             <div class="modal-body">
                                 <form id="kullaniciEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/kullaniciEkle/" . $kullaniciTuru) . '">
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_ad");
+$this->load->view("ogeler/kullanici_ad", array("doldurma" => FALSE));
 echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_adi");
+$this->load->view("ogeler/kullanici_adi", array("doldurma" => FALSE));
 echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_sifre");
+$this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
 echo '</div>
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_personel");
@@ -134,14 +134,14 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                                 <div class="modal-body">
                                                     <form id="kullaniciDuzenleForm' . $kullanici->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/kullaniciDuzenle/" . $kullanici->id . "/" . $kullaniciTuru) . '">
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_ad", array("value" => $kullanici->ad_soyad, "id" => $kullanici->id));
+        $this->load->view("ogeler/kullanici_ad", array("value" => $kullanici->ad_soyad, "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">
                                                             <input type="hidden" name="kullanici_adi_orj' . $kullanici->id . '" value="' . $kullanici->kullanici_adi . '">';
-        $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id));
+        $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici->sifre, "id" => $kullanici->id));
+        $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici->sifre, "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));

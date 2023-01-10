@@ -13,7 +13,7 @@ echo '">İsim</label>
 if (isset($id)) {
     echo $id;
 }
-echo '" class="form-control" type="text" name="isim" minlength="3" placeholder="İsim" autocomplete="off" value="';
+echo '" class="form-control" type="text" name="isim" minlength="3" placeholder="İsim" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
 if (isset($cihaz_turu_isim_value)) {
     echo $cihaz_turu_isim_value;
 }

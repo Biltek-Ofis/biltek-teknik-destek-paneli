@@ -13,7 +13,13 @@ echo '">Kullanıcı Adı</label>
 if (isset($id)) {
     echo $id;
 }
-echo '" class="form-control" type="text" name="kullanici_adi" minlength="3" placeholder="Kullanıcı Adı" autocomplete="off" value="';
+echo '"';
+if(isset($doldurma)){
+    if($doldurma == FALSE){
+        echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
+    }
+}
+echo ' class="form-control" type="text" name="kullanici_adi" minlength="3" placeholder="Kullanıcı Adı" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
 if (isset($value)) {
     echo $value;
 }

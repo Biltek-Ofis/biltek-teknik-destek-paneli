@@ -303,4 +303,7 @@ class Islemler_Model extends CI_Model
         }
         return str_contains($str, $ara);
     }
+    public function rastgele_yazi(){
+        return strtolower(random_string('alpha', 16));
+    }
 }

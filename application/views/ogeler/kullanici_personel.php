@@ -23,6 +23,6 @@ echo '>Personel</option>
 if (isset($value) && $value == 1) {
     echo " selected";
 }
-echo '>Kullanıcı</option>
+echo '>Yönetici</option>
     </select>
 </div>';
