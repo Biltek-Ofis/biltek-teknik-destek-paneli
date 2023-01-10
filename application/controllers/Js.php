@@ -18,7 +18,7 @@ class Js extends Varsayilancontroller
     public function musteri_adi( )
     {
         $ara = $this->input->post("ara");
-        echo $this->Islemler_Model->turkceKarakter(json_encode($this->Firma_Model->musteri_bilgileri($this->musteriAdi, $ara)));
+        echo $this->Islemler_Model->turkceKarakter(json_encode($this->Firma_Model->musteriBilgileri($this->musteriAdi, $ara)));
     }
     public function stok()
     {
