@@ -13,14 +13,22 @@ echo '">Hesap Türü</label>
 if (isset($id)) {
     echo $id;
 }
+$hesapTuru = -1;
+if(isset($kullaniciTuru)){
+    $hesapTuru = $kullaniciTuru;
+}
 echo '" class="form-control" name="yonetici" aria-label="Yönetici">
         <option value="0"';
 if (isset($value) && $value == 0) {
+    echo " selected";
+}else if($hesapTuru == 0){
     echo " selected";
 }
 echo '>Personel</option>
         <option value="1"';
 if (isset($value) && $value == 1) {
+    echo " selected";
+}else if($hesapTuru == 1){
     echo " selected";
 }
 echo '>Yönetici</option>
