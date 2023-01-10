@@ -46,6 +46,19 @@ class Cihazyonetimi extends Varsayilancontroller
 				$ekle = $this->Cihazlar_Model->cihazEkle($veri);
 				if ($ekle) {
 					$id = $this->db->insert_id();
+					$musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
+					if(((int)$musteriyi_kaydet) == 1){
+						if($veri["musteri_kod"] == NULL){
+							$this->db->reset_query()->insert(
+								$this->Firma_Model->musteriTablosu(),
+								array(
+									"musteri_adi" => $veri["musteri_adi"],
+									"adres" => $veri["adres"],
+									"telefon_numarasi" => $veri["telefon_numarasi"]
+								)
+							);
+						}
+					}
 					redirect(base_url("") . "#" . $this->Cihazlar_Model->cihazDetayModalAdi() . $id);
 				} else {
 					$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] . $servis_no);

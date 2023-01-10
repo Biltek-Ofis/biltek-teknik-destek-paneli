@@ -34,7 +34,7 @@ echo '<script>
         });
     });
     
-    var base_url = "'.base_url().'";
+    var base_url = "' . base_url() . '";
 </script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <div class="content-wrapper">
@@ -86,7 +86,7 @@ echo '</div>
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>
                     <div id="giris_tarihi_div" class="row">';
-$this->load->view("ogeler/tarih_girisi");                    
+$this->load->view("ogeler/tarih_girisi");
 echo '</div>
                     <div id="tarih_row" class="row">';
 $this->load->view("ogeler/tarih");
@@ -96,6 +96,9 @@ $this->load->view("ogeler/musteri_adi");
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/adres");
+echo '</div>
+                    <div class="row">';
+$this->load->view("ogeler/musteriyi_kaydet");
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/gsm");
@@ -114,42 +117,43 @@ if ($this->Kullanicilar_Model->yonetici()) {
 }
 
 echo '<div class="row">';
-    $this->load->view("ogeler/cihaz_markasi");
+$this->load->view("ogeler/cihaz_markasi");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/cihaz_modeli");
+$this->load->view("ogeler/cihaz_modeli");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/seri_no");
+$this->load->view("ogeler/seri_no");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/cihaz_sifresi");
+$this->load->view("ogeler/cihaz_sifresi");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/ariza_aciklamasi");
+$this->load->view("ogeler/ariza_aciklamasi");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/teslim_alinanlar");
+$this->load->view("ogeler/teslim_alinanlar");
 echo '</div>
 <div class="row">
     <h5 class="col">Cihazın Hasar Bilgisi</h5>
 </div>
 <div class="row">';
-    $this->load->view("ogeler/hasar_tespiti");
+$this->load->view("ogeler/hasar_tespiti");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/hasar_turu");
+$this->load->view("ogeler/hasar_turu");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/servis_turu");
+$this->load->view("ogeler/servis_turu");
 echo '</div>
 <div class="row">';
-    $this->load->view("ogeler/yedek");
+$this->load->view("ogeler/yedek");
 echo '</div>
 </form>
 </div>
 <div class="modal-footer">
-    <input type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
+';
+echo '<input type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
     <button type="button" onclick="$(\'#yeniCihazForm\')[0].reset();" class="btn btn-primary">Temizle</button>
     <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
 </div>
