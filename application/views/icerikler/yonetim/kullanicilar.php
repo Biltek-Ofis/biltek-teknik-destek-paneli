@@ -60,7 +60,7 @@ echo '</div>
 $this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
 echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_personel");
+$this->load->view("ogeler/kullanici_personel", array("kullaniciTuru" => $kullaniciTuru));
 echo '</div>
                                 </form>
                             </div>

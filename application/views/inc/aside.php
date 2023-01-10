@@ -35,14 +35,14 @@ echo '<style>
 if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
     echo '<li class="nav-header">Yönetim</li>
                     <li class="nav-item">
-                        <a href="' . base_url("yonetim/kullanicilar") . '" class="nav-link';
+                        <a href="' . base_url("yonetim/yoneticiler") . '" class="nav-link';
     if ($aktifSayfa == "yonetim/kullanicilar") {
         echo " active";
     }
     echo '">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Kullanıcılar
+                                Yönetici Hesapları
                             </p>
                         </a>
                     </li>
@@ -54,7 +54,7 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
     echo '">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
-                                Personel
+                                Personel Hesapları
                             </p>
                         </a>
                     </li>

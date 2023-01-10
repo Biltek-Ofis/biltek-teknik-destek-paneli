@@ -12,10 +12,10 @@ class Yonetim extends Varsayilancontroller
 	{
 		redirect(base_url());
 	}
-	public function kullanicilar()
+	public function yoneticiler()
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
-			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Kullanıcılar", "yonetim/kullanicilar", array("baslik" => "Kullanıcılar"), "inc/datatables"));
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Yönetici Hesapları", "yonetim/kullanicilar", array("baslik" => "Yönetici Hesapları"), "inc/datatables"));
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
 		}
@@ -23,7 +23,7 @@ class Yonetim extends Varsayilancontroller
 	public function personel()
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
-			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Personel", "yonetim/personel", array("baslik" => "Personel"), "inc/datatables"));
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Personel Hesapları", "yonetim/personel", array("baslik" => "Personel Hesapları"), "inc/datatables"));
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
 		}
@@ -105,7 +105,7 @@ class Yonetim extends Varsayilancontroller
 	{
 		$konum = "yonetim/personel";
 		if ($tur == 1) {
-			$konum = "yonetim/kullanicilar";
+			$konum = "yonetim/yoneticiler";
 		}
 		return $konum;
 	}
