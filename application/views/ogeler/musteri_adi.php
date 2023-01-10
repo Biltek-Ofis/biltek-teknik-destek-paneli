@@ -9,7 +9,7 @@ if (isset($musteri_kod_value)) {
     echo $musteri_kod_value;
 }
 echo '">
-    <input id="musteri_adi" autocomplete="off" class="form-control" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
+    <input id="musteri_adi" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
 if (isset($musteri_adi_value)) {
     echo $musteri_adi_value;
 }

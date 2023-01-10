@@ -81,7 +81,7 @@ echo '</div>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="yeniCihazForm" autocomplete="off" method="post" action="' . base_url("cihazyonetimi/cihazEkle") . '">
+                <form id="yeniCihazForm" method="post" action="' . base_url("cihazyonetimi/cihazEkle") . '">
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>

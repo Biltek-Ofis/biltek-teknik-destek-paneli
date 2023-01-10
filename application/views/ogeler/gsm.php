@@ -11,7 +11,7 @@ if (isset($sifirla)) {
 }
 echo ' col">
     <label for="telefon_numarasi">GSM:</label>
-    <input id="telefon_numarasi" autocomplete="off" name="telefon_numarasi" class="form-control" type="tel" value="';
+    <input id="telefon_numarasi" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
 if (isset($telefon_numarasi_value)) {
     echo $telefon_numarasi_value;
 } else {

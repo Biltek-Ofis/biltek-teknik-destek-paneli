@@ -13,7 +13,13 @@ echo '">Ad Soyad</label>
 if (isset($id)) {
     echo $id;
 }
-echo '" class="form-control" type="text" name="ad_soyad" minlength="3" placeholder="Ad Soyad" value="';
+echo '"';
+if(isset($doldurma)){
+    if($doldurma == FALSE){
+        echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
+    }
+}
+echo ' class="form-control" type="text" name="ad_soyad" minlength="3" placeholder="Ad Soyad" value="';
 if (isset($value)) {
     echo $value;
 }
