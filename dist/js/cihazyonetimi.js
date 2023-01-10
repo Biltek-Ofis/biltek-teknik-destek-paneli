@@ -41,11 +41,9 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 							'<li class="active"><a class="dropdown-item" href="javascript:void(0);" id="musteri_adi_liste_oge_' +
 								index +
 								'" role="option">' +
-								value.CARI_ISIM +
-								(value.CARI_ULKE_KODU ? " / " + value.CARI_ULKE_KODU : "") +
-								(value.CARI_IL ? " / " + value.CARI_IL : "") +
-								(value.CARI_ILCE ? " / " + value.CARI_ILCE : "") +
-								(value.CARI_ADRES ? " / " + value.CARI_ADRES : "") +
+								value.musteri_adi +
+								(value.telefon_numarasi ? " / " + value.telefon_numarasi : "") +
+								(value.adres ? " / " + value.adres : "") +
 								"</a></li>"
 						);
 						$("#musteri_adi_liste").append(oge);
@@ -63,45 +61,15 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 	}
 }
 function cihazGirisiVerileri(value) {
-	$("#musteri_adi").val(value.CARI_ISIM ? value.CARI_ISIM : "", "");
-	var adres = "";
-	var adresSayac = 0;
-	if (value.CARI_ADRES) {
-		adres += value.CARI_ADRES;
-		adresSayac++;
+	$("#musteri_adi").val(value.musteri_adi ? value.musteri_adi : "", "");
+	if (value.adres) {
+		$("#adres").val(value.adres);
 	}
-	if (value.CARI_ILCE) {
-		if (adresSayac > 0) {
-			adres += ", ";
-		}
-		adres += value.CARI_ILCE;
-		adresSayac++;
+	if (value.telefon_numarasi){
+		$("#telefon_numarasi").val(value.telefon_numarasi);
 	}
-	if (value.CARI_IL) {
-		if (adresSayac > 0) {
-			adres += ", ";
-		}
-		adres += value.CARI_IL;
-		adresSayac++;
-	}
-	if (value.CARI_ULKE_KODU) {
-		if (adresSayac > 0) {
-			adres += ", ";
-		}
-		adres += value.CARI_ULKE_KODU;
-	}
-	$("#adres").val(adres);
-	$("#telefon_numarasi").val(
-		value.CARI_TEL
-			? value.CARI_TEL
-			: value.GSM1
-			? value.GSM1
-			: value.GSM2
-			? value.GSM2
-			: ""
-	);
-	$("#musteri_kod").val(value.CARI_KOD ? value.CARI_KOD : "");
-	$("#musteri_kod_text").html(value.CARI_KOD ? value.CARI_KOD : "");
+	$("#musteri_kod").val(value.id ? value.id : "");
+	$("#musteri_kod_text").html(value.id ? value.id : "");
 	musteri_bilgileri_onaylandi = true;
 	$("#musteri_adi_liste").hide();
 }

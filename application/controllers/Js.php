@@ -13,7 +13,7 @@ class Js extends Varsayilancontroller
     {
         redirect(base_url());
     }
-    public $musteriAdi = "CARI_ISIM";
+    public $musteriAdi = "musteri_adi";
     public $stokAdi = "STOK_ADI";
     public function musteri_adi( )
     {

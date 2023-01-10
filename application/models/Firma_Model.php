@@ -10,12 +10,14 @@ class Firma_Model extends CI_Model
     {
         return $this->load->database('firma', TRUE);
     }
-    public $musteriTablosu = "TBLCASABIT";
+    public function musteriTablosu() {
+        return getenv(DB_ON_EK_STR)."musteriler";
+    }
     public $stokTablosu = "TBLSTSABIT";
     public function musteri_bilgileri($aranacak, $ara)
     {
-        return $this->ara($this->musteriTablosu, $aranacak, $ara);
-        //return $this->firmadb()->like('LOWER(' . $aranacak . ')', strtolower($ara))->get($this->musteriTablosu)->result();
+        return $this->ara($this->musteriTablosu(), $aranacak, $ara);
+        //return $this->firmadb()->like('LOWER(' . $aranacak . ')', strtolower($ara))->get($this->musteriTablosu())->result();
     }
     public function stok($aranacak, $ara)
     {
@@ -24,7 +26,8 @@ class Firma_Model extends CI_Model
     }
     public function ara($tablo, $aranacak, $ara)
     {
-        $ara = $this->Islemler_Model->turkceKarakterArama($ara);
-        return $this->firmadb()->query("SELECT * FROM " . $tablo . " WHERE " . $aranacak . " LIKE N'%" . $ara . "%' collate Turkish_CI_AS")->result();
+        //$ara = $this->Islemler_Model->turkceKarakterArama($ara);
+        //return $this->firmadb()->query("SELECT * FROM " . $tablo . " WHERE " . $aranacak . " LIKE N'%" . $ara . "%' collate Turkish_CI_AS")->result();
+        return $this->db->like($aranacak, $ara)->get($tablo)->result();
     }
 }
