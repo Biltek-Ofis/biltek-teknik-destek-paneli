@@ -98,7 +98,6 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->where("id", $id)->delete($this->kullanicilarTabloAdi());
     }
-
     public function kullaniciPost($yonetici_dahil = false)
     {
         $veri = array(
@@ -118,5 +117,25 @@ class Kullanicilar_Model extends CI_Model
         );
         $query = $this->db->where($where)->get($this->kullanicilarTabloAdi());
         return !($query->num_rows() > 0);
+    }
+    public function musteriBilgileri(){
+        $this->load->model("Firma_Model");
+        return $this->db->get($this->Firma_Model->musteriTablosu())->result();
+    }
+    public function musteriPost($veri){
+        return array(
+            "musteri_adi" => $this->input->post("musteri_adi"),
+            "adres" => $this->input->post("adres"),
+            "telefon_numarasi" => $this->input->post("telefon_numarasi")
+        );
+    }
+    public function musteriEkle($veri){
+        return $this->db->insert($this->Firma_Model->musteriTablosu(), $veri);
+    }
+    public function musteriDuzenle($id, $veri){
+        return $this->db->where("id", $id)->update($this->Firma_Model->musteriTablosu(), $veri);
+    }
+    public function musteriSil($id){
+        return $this->db->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
     }
 }

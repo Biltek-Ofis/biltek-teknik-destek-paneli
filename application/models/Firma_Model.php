@@ -14,7 +14,7 @@ class Firma_Model extends CI_Model
         return getenv(DB_ON_EK_STR)."musteriler";
     }
     public $stokTablosu = "TBLSTSABIT";
-    public function musteri_bilgileri($aranacak, $ara)
+    public function musteriBilgileri($aranacak, $ara)
     {
         return $this->ara($this->musteriTablosu(), $aranacak, $ara);
         //return $this->firmadb()->like('LOWER(' . $aranacak . ')', strtolower($ara))->get($this->musteriTablosu())->result();

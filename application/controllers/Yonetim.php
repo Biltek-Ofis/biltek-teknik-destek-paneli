@@ -78,10 +78,10 @@ class Yonetim extends Varsayilancontroller
 						$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Bu kullanıcı adı zaten mevcut.");
 					}
 				} else {
-					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Şifre en az 6 karakter olmalıdır.");
+					$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Şifre en az 6 karakter olmalıdır.");
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#yeniKullaniciEkleModal", "Kullanıcı adı en az 3 karakter olmalıdır.");
+				$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Kullanıcı adı en az 3 karakter olmalıdır.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -108,6 +108,82 @@ class Yonetim extends Varsayilancontroller
 			$konum = "yonetim/yoneticiler";
 		}
 		return $konum;
+	}
+	
+	public function musteriler()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Müşteriler", "yonetim/musteriler", array("baslik" => "Müşteriler"), "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function musteriEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Kullanicilar_Model->musteriPost(true);
+			if (strlen($veri["musteri_adi"]) >= 3) {
+				$ekle = $this->Kullanicilar_Model->musteriEkle($veri);
+				if ($ekle) {
+					redirect(base_url("yonetim/musteriler"));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/musteriler#yeniMusteriEkleModal", "Müşteri eklenemedi lütfen daha sonra tekrar deneyin");
+				}
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/musteriler#yeniMusteriEkleModal", "Müşteri adı en az 3 karakter olmalıdır.");
+			}
+		}
+	}
+	public function musteriSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			if(isset($id)){
+				$sil = $this->Kullanicilar_Model->musteriSil($id);
+				if ($sil) {
+					redirect(base_url("yonetim/musteriler"));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/musteriler", "Müşteri silinemedi lütfen daha sonra tekrar deneyin");
+				}
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/musteriler", "Müşteri silinemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function musteriDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			if(isset($id)){
+				$veri = $this->Kullanicilar_Model->musteriPost(true);
+				if (strlen($veri["musteri_adi"]) >= 3) {
+					$duzenle = $this->Kullanicilar_Model->musteriDuzenle($id, $veri);
+					if ($duzenle) {
+						$musteri_cihazlarini_guncelle = $this->input->post('musteri_cihazlarini_guncelle');
+						if(isset($musteri_cihazlarini_guncelle) && ((int)$musteri_cihazlarini_guncelle) == 1){
+							$this->db->reset_query()->where("musteri_kod", $id)->update(
+								$this->Cihazlar_Model->cihazlarTabloAdi(),
+								array(
+									"musteri_adi" => $veri["musteri_adi"],
+									"adres" => $veri["adres"],
+									"telefon_numarasi" => $veri["telefon_numarasi"]
+								)
+							);
+							$this->db->reset_query();
+							redirect(base_url("yonetim/musteriler"));
+						}else{
+							redirect(base_url("yonetim/musteriler"));
+						}
+					} else {
+						$this->Kullanicilar_Model->girisUyari("yonetim/musteriler#kullaniciDuzenleModal" . $id, "Müşteri düzenlenemedi lütfen daha sonra tekrar deneyin");
+					}
+				} else {
+					$this->Kullanicilar_Model->girisUyari("yonetim/musteriler#kullaniciDuzenleModal" . $id, "Müşteri adı en az 3 karakter olmalıdır.");
+				}
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/musteriler#kullaniciDuzenleModal" . $id, "Müşteri düzenlenemedi lütfen daha sonra tekrar deneyin");
+			}
+		}
 	}
 	public function ayarlar()
 	{
