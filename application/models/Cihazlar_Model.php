@@ -26,6 +26,88 @@ class Cihazlar_Model extends CI_Model
     {
         return getenv(DB_ON_EK_STR) . "medyalar";
     }
+    public function musterileriAktar()
+    {
+        $this->load->model("Firma_Model");
+        $cihazlar = $this->db->reset_query()->order_by("tarih", "DESC")->group_by("musteri_adi")->get($this->cihazlarTabloAdi())->result();
+        foreach($cihazlar as $cihaz){
+            $this->db->reset_query()->insert($this->Firma_Model->musteriTablosu(), array(
+                "musteri_adi" => $cihaz->musteri_adi,
+                "adres" => $cihaz->adres,
+                "telefon_numarasi" => $cihaz->telefon_numarasi
+            ));
+            $son_eklenen = $this->db->insert_id();
+            $this->db->reset_query()->where("musteri_adi", $cihaz->musteri_adi)->update($this->cihazlarTabloAdi(),array(
+                "musteri_kod" => $son_eklenen
+            ));
+        }
+    }
+    public function yapilanIslemleriAktar()
+    {
+        $cihazlar = $this->db->reset_query()->order_by("id", "ASC")->get($this->cihazlarTabloAdi())->result();
+        foreach($cihazlar as $cihaz){
+            if(isset($cihaz->i_ad_1)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 1,
+                    "ad" => $cihaz->i_ad_1,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_1,
+                    "miktar" => $cihaz->i_miktar_1,
+                    "kdv" => $cihaz->i_kdv_1
+                ));
+            }
+            if(isset($cihaz->i_ad_2)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 2,
+                    "ad" => $cihaz->i_ad_2,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_2,
+                    "miktar" => $cihaz->i_miktar_2,
+                    "kdv" => $cihaz->i_kdv_2
+                ));
+            }
+            if(isset($cihaz->i_ad_3)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 3,
+                    "ad" => $cihaz->i_ad_3,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_3,
+                    "miktar" => $cihaz->i_miktar_3,
+                    "kdv" => $cihaz->i_kdv_3
+                ));
+            }
+            if(isset($cihaz->i_ad_4)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 4,
+                    "ad" => $cihaz->i_ad_4,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_4,
+                    "miktar" => $cihaz->i_miktar_4,
+                    "kdv" => $cihaz->i_kdv_4
+                ));
+            }
+            if(isset($cihaz->i_ad_5)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 5,
+                    "ad" => $cihaz->i_ad_5,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_5,
+                    "miktar" => $cihaz->i_miktar_5,
+                    "kdv" => $cihaz->i_kdv_5
+                ));
+            }
+            if(isset($cihaz->i_ad_6)){
+                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
+                    "cihaz_id" => $cihaz->id,
+                    "islem_sayisi" => 6,
+                    "ad" => $cihaz->i_ad_6,
+                    "birim_fiyat" => $cihaz->i_birim_fiyat_6,
+                    "miktar" => $cihaz->i_miktar_6,
+                    "kdv" => $cihaz->i_kdv_6
+                ));
+            }
+        }
+    }
     public function cihazBul($id)
     {
         return $this->db->reset_query()->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi());

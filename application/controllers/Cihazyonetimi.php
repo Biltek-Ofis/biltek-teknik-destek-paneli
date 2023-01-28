@@ -17,6 +17,20 @@ class Cihazyonetimi extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
+	public function musterileriAktar()
+	{
+		if ($this->Giris_Model->kullaniciGiris()) {
+			$this->Cihazlar_Model->musterileriAktar();
+			redirect(base_url());
+		}
+	}
+	public function yapilanIslemleriAktar()
+	{
+		if ($this->Giris_Model->kullaniciGiris()) {
+			$this->Cihazlar_Model->yapilanIslemleriAktar();
+			redirect(base_url());
+		}
+	}
 	public function cihazlarJQ($id)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
