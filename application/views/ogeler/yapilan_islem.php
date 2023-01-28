@@ -1,5 +1,5 @@
 <?php
-echo '<tr>
+echo '<tr id="yapilamIslemRow'.$index.'">
     <td>' . $index . '</td>
     <!--<td id="stokKodText' . $index . '">' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "Yok") . '</td>-->
     <td>

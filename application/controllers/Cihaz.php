@@ -71,22 +71,33 @@ class Cihaz extends Varsayilancontroller
                 $id,
                 $cihaz_verileri
             );
-            for ($i = 1; $i <= 6; $i++) {
+            for ($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++) {
                 $islem = $this->input->post("islem" . $i);
-                $veri = $this->Cihazlar_Model->yapilanIslemArray(
-                    $i,
-                    strlen($islem) > 0 ? $islem : NULL,
-                    strlen($islem) > 0 ? $this->input->post("miktar" . $i) : 0,
-                    strlen($islem) > 0 ? $this->input->post("birim_fiyati" . $i) : 0,
-                    strlen($islem) > 0 ? $this->input->post("kdv_" . $i) : 0
-                );
-                $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
-                if (!$duzenle) {
-                    $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
-                    return;
+                $miktar = $this->input->post("miktar" . $i);
+                $birim_fiyati = $this->input->post("birim_fiyati" . $i);
+                $kdv = $this->input->post("kdv_" . $i);
+                if(isset($islem) && !empty($islem)){
+                    $veri = $this->Cihazlar_Model->yapilanIslemArray(
+                        $id, 
+                        $i, 
+                        $islem, 
+                        $birim_fiyati, 
+                        $miktar, 
+                        $kdv
+                    );
+                    $duzenle = $this->Cihazlar_Model->islemDuzenle($id, $veri);
+                    if (!$duzenle) {
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                        return;
+                    }
+                }else{
+                    $sil =$this->Cihazlar_Model->islemSil($id, $i);
+                    if (!$sil) {
+                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                        return;
+                    }
                 }
             }
-
             redirect(base_url("cihaz/" . $id));
         } else {
             $this->Kullanicilar_Model->girisUyari("cikis");
