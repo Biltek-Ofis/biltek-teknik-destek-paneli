@@ -178,28 +178,8 @@ echo '</td>
             <tr>
                 <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>';
-$hasarli_durumlar_rowspan = 5;
-if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
-    $hasarli_durumlar_rowspan = 0;
-    if ($cihaz->i_ad_1 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-    if ($cihaz->i_ad_2 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-    if ($cihaz->i_ad_3 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-    if ($cihaz->i_ad_4 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-    if ($cihaz->i_ad_5 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-    if ($cihaz->i_ad_6 != "") {
-        $hasarli_durumlar_rowspan++;
-    }
-}
+$hasarli_durumlar_rowspan = count($cihaz->islemler) > 5 ? count($cihaz->islemler) : 5;
+
 echo '
             <tr>
                 <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 3) . '" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
@@ -212,85 +192,21 @@ echo '
 $toplam = 0;
 $kdv = 0;
 $genel_toplam = 0;
-if ($cihaz->i_ad_1 != "" || $cihaz->i_ad_2 != "" || $cihaz->i_ad_3 != "" || $cihaz->i_ad_4 != "" || $cihaz->i_ad_5 != "" || $cihaz->i_ad_6 != "") {
-    if ($cihaz->i_ad_1 != "") {
-        $toplam_islem_fiyati_1 =  $cihaz->i_miktar_1 * $cihaz->i_birim_fiyat_1;
-        $kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
+if (count($cihaz->islemler) > 0) {
+    foreach($cihaz->islemler as $islem){
+        $toplam_islem_fiyati_suan =  $islem->miktar * $islem->birim_fiyat;
+        $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->birim_fiyat);
         echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_1  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_1 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_1 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_1 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_1 > 0 ? $kdv_1 . ' (' . $cihaz->i_kdv_1 . '%)' : "") . '</td>
+                <td colspan="4">' . $islem->ad  . '</td>
+                <td colspan="1" class="text-center">' . $islem->miktar . '</td>
+                <td colspan="1" class="text-center">' .  $islem->birim_fiyat . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_suan . '</td>
+                <td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan . ' (' . $islem->kdv . '%)' : "") . '</td>
             </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_1;
-        $kdv = $kdv + $kdv_1;
+        $toplam = $toplam + $toplam_islem_fiyati_suan;
+        $kdv = $kdv + $kdv_suan;
     }
-    if ($cihaz->i_ad_2 != "") {
-        $toplam_islem_fiyati_2 =  $cihaz->i_miktar_2 * $cihaz->i_birim_fiyat_2;
-        $kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
-        echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_2  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_2 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_2 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_2 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_2 > 0 ? $kdv_2 . ' (' . $cihaz->i_kdv_2 . '%)' : "") . '</td>
-            </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_2;
-        $kdv = $kdv + $kdv_2;
-    }
-    if ($cihaz->i_ad_3 != "") {
-        $toplam_islem_fiyati_3 =  $cihaz->i_miktar_3 * $cihaz->i_birim_fiyat_3;
-        $kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
-        echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_3  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_3 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_3 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_3 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_3 > 0 ? $kdv_3 . ' (' . $cihaz->i_kdv_3 . '%)' : "") . '</td>
-            </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_3;
-        $kdv = $kdv + $kdv_3;
-    }
-    if ($cihaz->i_ad_4 != "") {
-        $toplam_islem_fiyati_4 = $cihaz->i_miktar_4 * $cihaz->i_birim_fiyat_4;
-        $kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
-        echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_4  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_4 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_4 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_4 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_4 > 0 ? $kdv_4 . ' (' . $cihaz->i_kdv_4 . '%)' : "") . '</td>
-            </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_4;
-        $kdv = $kdv + $kdv_4;
-    }
-    if ($cihaz->i_ad_5 != "") {
-        $toplam_islem_fiyati_5 =  $cihaz->i_miktar_5 * $cihaz->i_birim_fiyat_5;
-        $kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
-        echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_5  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_5 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_5 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_5 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_5 > 0 ? $kdv_5 . ' (' . $cihaz->i_kdv_5 . '%)' : "") . '</td>
-            </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_5;
-        $kdv = $kdv + $kdv_5;
-    }
-    if ($cihaz->i_ad_6 != "") {
-        $toplam_islem_fiyati_6 =  $cihaz->i_miktar_6 * $cihaz->i_birim_fiyat_6;
-        $kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
-        echo '<tr>
-                <td colspan="4">' . $cihaz->i_ad_6  . '</td>
-                <td colspan="1" class="text-center">' . $cihaz->i_miktar_6 . '</td>
-                <td colspan="1" class="text-center">' .  $cihaz->i_birim_fiyat_6 . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_6 . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_6 > 0 ? $kdv_6 . ' (' . $cihaz->i_kdv_6 . '%)' : "") . '</td>
-            </tr>';
-        $toplam = $toplam + $toplam_islem_fiyati_6;
-        $kdv = $kdv + $kdv_6;
-    }
+
     $genel_toplam = $toplam + $kdv;
 } else {
     for ($i = 0; $i < 5; $i++) {

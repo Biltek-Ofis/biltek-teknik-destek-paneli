@@ -6,32 +6,40 @@ class Cihazlar_Model extends CI_Model
     {
         parent::__construct();
     }
-    public function cihazlarTabloAdi() {
-        return getenv(DB_ON_EK_STR)."cihazlar";
+    public function cihazlarTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "cihazlar";
     }
-    public function cihazTurleriTabloAdi() {
-        return getenv(DB_ON_EK_STR)."cihazturleri";
+    public function islemlerTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "islemler";
     }
-    public function silinenCihazlarTabloAdi() {
-        return getenv(DB_ON_EK_STR)."silinencihazlar";
+    public function cihazTurleriTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "cihazturleri";
     }
-    public function medyalarTabloAdi() {
-        return getenv(DB_ON_EK_STR)."medyalar";
+    public function silinenCihazlarTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "silinencihazlar";
+    }
+    public function medyalarTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "medyalar";
     }
     public function cihazBul($id)
     {
-        return $this->db->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi());
+        return $this->db->reset_query()->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi());
     }
     public function takipNumarasi($takip_numarasi)
     {
         $bul = array(
-            "takip_numarasi" => $takip_numarasi
+            "takip_numarasi" => $takip_numarasi,
         );
-        return $this->db->where($bul)->limit(1)->get($this->cihazlarTabloAdi());
+        return $this->db->reset_query()->where($bul)->limit(1)->get($this->cihazlarTabloAdi());
     }
     public function cihazTuru($tur_id)
     {
-        $query = $this->db->where("id", $tur_id)->get($this->cihazTurleriTabloAdi());
+        $query = $this->db->reset_query()->where("id", $tur_id)->get($this->cihazTurleriTabloAdi());
         if ($query->num_rows() > 0) {
             return $query->result()[0]->isim;
         } else {
@@ -40,25 +48,25 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazTurleri()
     {
-        return $this->db->get($this->cihazTurleriTabloAdi())->result();
+        return $this->db->reset_query()->get($this->cihazTurleriTabloAdi())->result();
     }
     public function cihazTuruEkle($veri)
     {
-        return $this->db->insert($this->cihazTurleriTabloAdi(), $veri);
+        return $this->db->reset_query()->insert($this->cihazTurleriTabloAdi(), $veri);
     }
     public function cihazTuruDuzenle($id, $veri)
     {
-        return $this->db->where("id", $id)->update($this->cihazTurleriTabloAdi(), $veri);
+        return $this->db->reset_query()->where("id", $id)->update($this->cihazTurleriTabloAdi(), $veri);
     }
     public function cihazTuruSil($id)
     {
-        return $this->db->where("id", $id)->delete($this->cihazTurleriTabloAdi());
+        return $this->db->reset_query()->where("id", $id)->delete($this->cihazTurleriTabloAdi());
     }
     public function cihazTuruPost()
     {
         $veri = array(
             "isim" => $this->input->post("isim"),
-            "sifre" => $this->input->post("sifre")
+            "sifre" => $this->input->post("sifre"),
         );
         return $veri;
     }
@@ -72,62 +80,67 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
             $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($result[$i]->sorumlu);
             $result[$i]->sorumlu = isset($sorumlu_per) ? $sorumlu_per->ad_soyad : "Atanmamış";
+            $result[$i]->islemler = $this->islemleriGetir($result[$i]->id);
         }
         return $result;
     }
     public function cihazlar()
     {
-        $result = $this->db->order_by("id", "DESC")->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->order_by("id", "DESC")->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
+    }
+    public function islemleriGetir($cihazID)
+    {
+        return $this->db->reset_query()->where("cihaz_id", $cihazID)->order_by("islem_sayisi", "ASC")->get($this->islemlerTabloAdi())->result();
     }
     public function cihazlarTekTur($tur)
     {
         $where = array(
-            "cihaz_turu" => $tur
+            "cihaz_turu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekPersonel($tur)
     {
         $where = array(
-            "sorumlu" => $tur
+            "sorumlu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarJQ($id)
     {
         $where = array(
-            "id >" => $id
+            "id >" => $id,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function tekCihazJQ($id)
     {
         $where = array(
-            "id" => $id
+            "id" => $id,
         );
-        $result = $this->db->where($where)->limit(1)->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->limit(1)->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurJQ($tur, $id)
     {
         $where = array(
             "id >" => $id,
-            "cihaz_turu" => $tur
+            "cihaz_turu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekPersonelJQ($sorumlu_personel, $id)
     {
         $where = array(
             "id >" => $id,
-            "sorumlu" => $sorumlu_personel
+            "sorumlu" => $sorumlu_personel,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTumuJQ($sorumlu = "")
@@ -136,23 +149,23 @@ class Cihazlar_Model extends CI_Model
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
         }
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurTumuJQ($tur)
     {
         $where = array(
-            "cihaz_turu" => $tur
+            "cihaz_turu" => $tur,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekPersonelTumuJQ($sorumlu_personel)
     {
         $where = array(
-            "sorumlu" => $sorumlu_personel
+            "sorumlu" => $sorumlu_personel,
         );
-        $result = $this->db->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazPost()
@@ -160,7 +173,7 @@ class Cihazlar_Model extends CI_Model
         $musteri_kod = $this->input->post("musteri_kod");
         $veri = array(
             "takip_numarasi" => time(),
-            "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : NULL,
+            "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : null,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
             "telefon_numarasi" => $this->input->post("telefon_numarasi"),
@@ -174,19 +187,19 @@ class Cihazlar_Model extends CI_Model
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
             "teslim_alinanlar" => $this->input->post("teslim_alinanlar"),
             "servis_turu" => $this->input->post("servis_turu"),
-            "yedek_durumu" => $this->input->post("yedek_durumu")
+            "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
         $sorumlu = $this->input->post("sorumlu");
         if (isset($sorumlu)) {
-            $veri["sorumlu"]  = $sorumlu;
+            $veri["sorumlu"] = $sorumlu;
         }
         $tarih = $this->input->post("tarih");
         if (isset($tarih)) {
-            $veri["tarih"] =  $this->Islemler_Model->tarihDonusturSQL($tarih);
+            $veri["tarih"] = $this->Islemler_Model->tarihDonusturSQL($tarih);
         }
         $tarih_girisi = $this->input->post("tarih_girisi");
-        if(isset($tarih_girisi)){
-            if($tarih_girisi == "oto"){
+        if (isset($tarih_girisi)) {
+            if ($tarih_girisi == "oto") {
                 $veri["tarih"] = $this->Islemler_Model->tarihDonusturSQLTime(time());
             }
         }
@@ -194,14 +207,36 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazDuzenle($id, $veri)
     {
-        return $this->db->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
+        return $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
+    }
+    public function islemDuzenle($id, $veri)
+    {
+        $konum = array(
+            "cihaz_id" => $id,
+            "islem_sayisi" => $veri["islem_sayisi"]
+        );
+        $islem_bul = $this->db->reset_query()->where($konum)->get($this->islemlerTabloAdi());
+        if($islem_bul->num_rows() > 0){
+            return $this->db->reset_query()->where($konum)->update($this->islemlerTabloAdi(), $veri);
+        }else{
+            return $this->db->reset_query()->insert($this->islemlerTabloAdi(), $veri);
+        }
+    }
+    
+    public function islemSil($id, $islem_sayisi)
+    {
+        return $this->db->reset_query()->where(array(
+            "cihaz_id" => $id,
+            "islem_sayisi" => $islem_sayisi
+        ))->delete($this->islemlerTabloAdi());
     }
     public function cihazEkle($veri)
     {
-        return $this->db->insert($this->cihazlarTabloAdi(), $veri);
+        return $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
     }
-    public function ozelIDTabloAdi() {
-        return getenv(DB_ON_EK_STR)."ozelid";
+    public function ozelIDTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "ozelid";
     }
     public function insertTrigger()
     {
@@ -225,33 +260,33 @@ class Cihazlar_Model extends CI_Model
     }
     public function deleteTrigger($id)
     {
-        $this->db->query("DELETE FROM " . $this->silinenCihazlarTabloAdi() . " WHERE silinme_tarihi < now() - interval 1 day");
-        return $this->db->insert($this->silinenCihazlarTabloAdi(), array("id" => $id));
+        $this->db->reset_query()->query("DELETE FROM " . $this->silinenCihazlarTabloAdi() . " WHERE silinme_tarihi < now() - interval 1 day");
+        return $this->db->reset_query()->insert($this->silinenCihazlarTabloAdi(), array("id" => $id));
     }
     public function sonIDEkle($isim, $grup, $sonID)
     {
         $veri = array(
             "id_adi" => $isim,
             "id_grup" => $grup,
-            "id_val" => $sonID
+            "id_val" => $sonID,
         );
-        return $this->db->insert($this->ozelIDTabloAdi(),  $veri);
+        return $this->db->reset_query()->insert($this->ozelIDTabloAdi(), $veri);
     }
     public function sonIDGuncelle($isim, $grup, $sonID)
     {
         $where = array(
             "id_adi" => $isim,
-            "id_grup" => $grup
+            "id_grup" => $grup,
         );
-        return $this->db->where($where)->update($this->ozelIDTabloAdi(), array("id_val" => $sonID));
+        return $this->db->reset_query()->where($where)->update($this->ozelIDTabloAdi(), array("id_val" => $sonID));
     }
     public function sonIDBul($isim, $grup)
     {
         $where = array(
             "id_adi" => $isim,
-            "id_grup" => $grup
+            "id_grup" => $grup,
         );
-        $query = $this->db->where($where)->limit(1)->get($this->ozelIDTabloAdi());
+        $query = $this->db->reset_query()->where($where)->limit(1)->get($this->ozelIDTabloAdi());
         if ($query->num_rows() > 0) {
             return $query->result()[0]->id_val;
         } else {
@@ -260,22 +295,24 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazSil($id)
     {
-        return $this->db->where("id", $id)->delete($this->cihazlarTabloAdi());
+        return $this->db->reset_query()->where("id", $id)->delete($this->cihazlarTabloAdi());
     }
     public function silinenCihazlariBul()
     {
-        $results = $this->db->get($this->silinenCihazlarTabloAdi())->result();
-        //$this->db->empty_table($this->silinenCihazlarTabloAdi());
+        $results = $this->db->reset_query()->get($this->silinenCihazlarTabloAdi())->result();
+        //$this->db->reset_query()->empty_table($this->silinenCihazlarTabloAdi());
         return $results;
     }
 
-    public function yapilanIslemArray($index, $islem, $miktar, $birim_fiyati, $kdv)
+    public function yapilanIslemArray($cihaz_id, $islem_sayisi, $ad, $birim_fiyat, $miktar, $kdv)
     {
         return array(
-            "i_ad_" . $index => $islem,
-            "i_birim_fiyat_" . $index => $birim_fiyati,
-            "i_miktar_" . $index => $miktar,
-            "i_kdv_" . $index => $kdv
+            "cihaz_id" => $cihaz_id,
+            "islem_sayisi" => $islem_sayisi,
+            "ad" => $ad,
+            "birim_fiyat" => $birim_fiyat,
+            "miktar" => $miktar,
+            "kdv" => $kdv
         );
     }
     public function cihazDetayModalAdi()
@@ -284,19 +321,19 @@ class Cihazlar_Model extends CI_Model
     }
     public function medyaYukle($veri)
     {
-        return $this->db->insert($this->medyalarTabloAdi(), $veri);
+        return $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
     }
     public function medyaSil($id)
     {
-        return $this->db->where("id", $id)->delete($this->medyalarTabloAdi());
+        return $this->db->reset_query()->where("id", $id)->delete($this->medyalarTabloAdi());
     }
 
     public function medyaBul($id)
     {
-        return $this->db->where("id", $id)->get($this->medyalarTabloAdi())->result()[0];
+        return $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi())->result()[0];
     }
     public function medyalar($id)
     {
-        return $this->db->where("cihaz_id", $id)->get($this->medyalarTabloAdi())->result();
+        return $this->db->reset_query()->where("cihaz_id", $id)->get($this->medyalarTabloAdi())->result();
     }
 }

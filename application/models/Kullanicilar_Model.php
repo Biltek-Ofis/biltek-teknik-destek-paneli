@@ -33,7 +33,7 @@ class Kullanicilar_Model extends CI_Model
     public function kullaniciBilgileri()
     {
         if ($this->Giris_Model->kullaniciTanimi()) {
-            $kullaniciTablo = $this->db->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
+            $kullaniciTablo = $this->db->reset_query()->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
                 return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici);
@@ -51,17 +51,17 @@ class Kullanicilar_Model extends CI_Model
     public function kullaniciListesi($id = "")
     {
         if ($id == "") {
-            return $this->db->get($this->kullanicilarTabloAdi())->result();
+            return $this->db->reset_query()->get($this->kullanicilarTabloAdi())->result();
         } else {
-            return $this->db->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
+            return $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
         }
     }
     public function kullanicilar($where){
-        return $this->db->where($where)->get($this->kullanicilarTabloAdi())->result();
+        return $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi())->result();
     }
     public function tekKullanici($id)
     {
-        $sonuc = $this->db->where(array("id" => $id))->get($this->kullanicilarTabloAdi());
+        $sonuc = $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -70,7 +70,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function tekKullaniciIsım($isim)
     {
-        $sonuc = $this->db->where(array("ad_soyad" => $isim))->get($this->kullanicilarTabloAdi());
+        $sonuc = $this->db->reset_query()->where(array("ad_soyad" => $isim))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -79,7 +79,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function tekKullaniciAdi($kullaniciAdi)
     {
-        $sonuc = $this->db->where(array("kullanici_adi" => $kullaniciAdi))->get($this->kullanicilarTabloAdi());
+        $sonuc = $this->db->reset_query()->where(array("kullanici_adi" => $kullaniciAdi))->get($this->kullanicilarTabloAdi());
         if ($sonuc->num_rows() > 0) {
             return $sonuc->result()[0];
         } else {
@@ -88,15 +88,15 @@ class Kullanicilar_Model extends CI_Model
     }
     public function ekle($veri)
     {
-        return $this->db->insert($this->kullanicilarTabloAdi(), $veri);
+        return $this->db->reset_query()->insert($this->kullanicilarTabloAdi(), $veri);
     }
     public function duzenle($id, $veri)
     {
-        return $this->db->where("id", $id)->update($this->kullanicilarTabloAdi(), $veri);
+        return $this->db->reset_query()->where("id", $id)->update($this->kullanicilarTabloAdi(), $veri);
     }
     public function sil($id)
     {
-        return $this->db->where("id", $id)->delete($this->kullanicilarTabloAdi());
+        return $this->db->reset_query()->where("id", $id)->delete($this->kullanicilarTabloAdi());
     }
     public function kullaniciPost($yonetici_dahil = false)
     {
@@ -115,12 +115,12 @@ class Kullanicilar_Model extends CI_Model
         $where = array(
             "kullanici_adi" => $kullanici_adi
         );
-        $query = $this->db->where($where)->get($this->kullanicilarTabloAdi());
+        $query = $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi());
         return !($query->num_rows() > 0);
     }
     public function musteriBilgileri(){
         $this->load->model("Firma_Model");
-        return $this->db->get($this->Firma_Model->musteriTablosu())->result();
+        return $this->db->reset_query()->get($this->Firma_Model->musteriTablosu())->result();
     }
     public function musteriPost($veri){
         return array(
@@ -130,12 +130,12 @@ class Kullanicilar_Model extends CI_Model
         );
     }
     public function musteriEkle($veri){
-        return $this->db->insert($this->Firma_Model->musteriTablosu(), $veri);
+        return $this->db->reset_query()->insert($this->Firma_Model->musteriTablosu(), $veri);
     }
     public function musteriDuzenle($id, $veri){
-        return $this->db->where("id", $id)->update($this->Firma_Model->musteriTablosu(), $veri);
+        return $this->db->reset_query()->where("id", $id)->update($this->Firma_Model->musteriTablosu(), $veri);
     }
     public function musteriSil($id){
-        return $this->db->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
+        return $this->db->reset_query()->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
     }
 }

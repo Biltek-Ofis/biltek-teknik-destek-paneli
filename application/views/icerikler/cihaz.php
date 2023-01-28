@@ -263,6 +263,7 @@ echo '</td>
                                             <th>KDV Oranı (%)</th>
                                             <th>Tutar</th>
                                             <th>KDV</th>
+                                            <th>Düzenle</th>
                                         </tr>
                                     </thead>
                                     <tbody id="yapilanIslemBody">';
@@ -270,86 +271,22 @@ echo '</td>
 $toplam = 0;
 $kdv = 0;
 $genel_toplam = 0;
-if ($cihaz->i_ad_1 != "") {
-    $toplam_islem_fiyati_1 = $cihaz->i_birim_fiyat_1 * $cihaz->i_miktar_1;
-    $toplam_kdv_1 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_1 / 100) * $cihaz->i_kdv_1);
-    $kdv = $kdv + $toplam_kdv_1;
-    $toplam = $toplam + $toplam_islem_fiyati_1;
-}
-if ($cihaz->i_ad_2 != "") {
-    $toplam_islem_fiyati_2 = $cihaz->i_birim_fiyat_2 * $cihaz->i_miktar_2;
-    $toplam_kdv_2 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_2 / 100) * $cihaz->i_kdv_2);
-    $kdv = $kdv + $toplam_kdv_2;
-    $toplam = $toplam + $toplam_islem_fiyati_2;
-}
-if ($cihaz->i_ad_3 != "") {
-    $toplam_islem_fiyati_3 = $cihaz->i_birim_fiyat_3 * $cihaz->i_miktar_3;
-    $toplam_kdv_3 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_3 / 100) * $cihaz->i_kdv_3);
-    $kdv = $kdv + $toplam_kdv_3;
-    $toplam = $toplam + $toplam_islem_fiyati_3;
-}
-if ($cihaz->i_ad_4 != "") {
-    $toplam_islem_fiyati_4 = $cihaz->i_birim_fiyat_4 * $cihaz->i_miktar_4;
-    $toplam_kdv_4 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_4 / 100) * $cihaz->i_kdv_4);
-    $kdv = $kdv + $toplam_kdv_4;
-    $toplam = $toplam + $toplam_islem_fiyati_4;
-}
-if ($cihaz->i_ad_5 != "") {
-    $toplam_islem_fiyati_5 = $cihaz->i_birim_fiyat_5 * $cihaz->i_miktar_5;
-    $toplam_kdv_5 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_5 / 100) * $cihaz->i_kdv_5);
-    $kdv = $kdv + $toplam_kdv_5;
-    $toplam = $toplam + $toplam_islem_fiyati_5;
-}
-if ($cihaz->i_ad_6 != "") {
-    $toplam_islem_fiyati_6 = $cihaz->i_birim_fiyat_6 * $cihaz->i_miktar_6;
-    $toplam_kdv_6 = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_6 / 100) * $cihaz->i_kdv_6);
-    $kdv = $kdv + $toplam_kdv_6;
-    $toplam = $toplam + $toplam_islem_fiyati_6;
+foreach($cihaz->islemler as $islem){
+    $toplam_islem_fiyati_suan = $islem->birim_fiyat * $islem->miktar;
+    $toplam_kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
+    $kdv = $kdv + $toplam_kdv_suan;
+    $toplam = $toplam + $toplam_islem_fiyati_suan;
 }
 $genel_toplam = $toplam + $kdv;
-
-$this->load->view("ogeler/yapilan_islem", array("index" => 1, "yapilanIslemArr" => isset($cihaz->i_ad_1) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_1,
-    "islem" => $cihaz->i_ad_1,
-    "miktar" => $cihaz->i_miktar_1,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_1,
-    "kdv" => $cihaz->i_kdv_1
-) : null));
-$this->load->view("ogeler/yapilan_islem", array("index" => 2, "yapilanIslemArr" => isset($cihaz->i_ad_2) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_2,
-    "islem" => $cihaz->i_ad_2,
-    "miktar" => $cihaz->i_miktar_2,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_2,
-    "kdv" => $cihaz->i_kdv_2
-) : null));
-$this->load->view("ogeler/yapilan_islem", array("index" => 3, "yapilanIslemArr" => isset($cihaz->i_ad_3) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_3,
-    "islem" => $cihaz->i_ad_3,
-    "miktar" => $cihaz->i_miktar_3,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_3,
-    "kdv" => $cihaz->i_kdv_3
-) : null));
-$this->load->view("ogeler/yapilan_islem", array("index" => 4, "yapilanIslemArr" => isset($cihaz->i_ad_4) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_4,
-    "islem" => $cihaz->i_ad_4,
-    "miktar" => $cihaz->i_miktar_4,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_4,
-    "kdv" => $cihaz->i_kdv_4
-) : null));
-$this->load->view("ogeler/yapilan_islem", array("index" => 5, "yapilanIslemArr" => isset($cihaz->i_ad_5) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_5,
-    "islem" => $cihaz->i_ad_5,
-    "miktar" => $cihaz->i_miktar_5,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_5,
-    "kdv" => $cihaz->i_kdv_5
-) : null));
-$this->load->view("ogeler/yapilan_islem", array("index" => 6, "yapilanIslemArr" => isset($cihaz->i_ad_6) ? array(
-    "stok_kod" => $cihaz->i_stok_kod_6,
-    "islem" => $cihaz->i_ad_6,
-    "miktar" => $cihaz->i_miktar_6,
-    "birim_fiyati" => $cihaz->i_birim_fiyat_6,
-    "kdv" => $cihaz->i_kdv_6
-) : null));
+for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
+    $islem_sira = $i - 1;
+    $this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => isset($cihaz->islemler[$islem_sira]) ? array(
+        "islem" => $cihaz->islemler[$islem_sira]->ad,
+        "miktar" => $cihaz->islemler[$islem_sira]->miktar,
+        "birim_fiyati" => $cihaz->islemler[$islem_sira]->birim_fiyat,
+        "kdv" => $cihaz->islemler[$islem_sira]->kdv
+    ) : null));
+}
 echo '<tr>
                                             <th colspan="5">Toplam</th>
                                             <td colspan="2" id="yapilanIslemToplam">' . ($toplam > 0 ? $toplam . " TL" : "") . ' </td>

@@ -285,6 +285,7 @@ class Islemler_Model extends CI_Model
         'Þ',
         'Þ'
     );
+    public $maxIslemSayisi = 10;
     public function turkceKarakterArama($str)
     {
         return str_replace($this->aramaKarakterler, $this->aramaSemboller, $str);
