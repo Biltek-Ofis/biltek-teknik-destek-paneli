@@ -168,7 +168,7 @@ echo '<div class="content-wrapper">
                     $("#cihazSayisi").html(cihazSayisi());
                 }
                 var customize = function ( doc ) {
-                    doc["header"] = (function(page, pages) {
+                    /*doc["header"] = (function(page, pages) {
                         return {
                             columns: [
                                 {
@@ -181,8 +181,7 @@ echo '<div class="content-wrapper">
                             margin: [10, 10],
                             fontSize:16
                         }
-                    });
-                    
+                    });*/
                     if(sayfaSayisiGoster){
                         doc["footer"] = (function(page, pages) {
                             return {
@@ -218,17 +217,23 @@ echo '<div class="content-wrapper">
                     extend: "csv",
                     title: baslik(),
                     pageSize: "LEGAL",
-                    title: baslik(),
+                    title: baslik()
                 }, {
                     extend: "excel",
                     title: baslik(),
                     pageSize: "LEGAL",
+                    messageBottom: function () {
+                        return "Cihaz Sayısı: " + cihazSayisi() + (ucretGoster ?  ", KDV\'siz Tutar: " + tutarHesapla() + " TL, KDV: " + kdvHesapla() + " TL, Genel Toplam: " + genelToplamHesapla() + " TL" : "");
+                    }
                 }, {
                     extend: "pdfHtml5",
                     orientation: "landscape",
                     pageSize: "LEGAL",
                     title: baslik(),
                     customize: customize,
+                    messageBottom: function () {
+                        return "Cihaz Sayısı: " + cihazSayisi() + (ucretGoster ?  ", KDV\'siz Tutar: " + tutarHesapla() + " TL, KDV: " + kdvHesapla() + " TL, Genel Toplam: " + genelToplamHesapla() + " TL" : "");
+                    }
                 }],
                 drawCallback: function(){
                     tutarHtml();
