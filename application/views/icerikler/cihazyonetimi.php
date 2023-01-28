@@ -60,8 +60,12 @@ echo '<script>
             </div>
             <div class="card-body">
                 <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniCihazEkleModal">
+                    <div class="row m-0 p-0 d-flex justify-content-end">';
+                    if(TEST_ACIK){
+                        echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/musterileriAktar").'">Müşterileri Aktar</a>';
+                        echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/yapilanIslemleriAktar").'">Yapilan İşlemleri Aktar</a>';
+                    }
+                    echo'<button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniCihazEkleModal">
                             Yeni Cihaz Girişi
                         </button>
                     </div>

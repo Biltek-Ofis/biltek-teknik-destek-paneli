@@ -91,3 +91,6 @@ define('A4_GENISLIK', 270);
 define('A4_YUKSEKLIK', 397);
 
 
+define('TEST_ACIK', FALSE);
+
+
