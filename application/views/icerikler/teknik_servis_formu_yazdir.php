@@ -195,7 +195,7 @@ $genel_toplam = 0;
 if (count($cihaz->islemler) > 0) {
     foreach($cihaz->islemler as $islem){
         $toplam_islem_fiyati_suan =  $islem->miktar * $islem->birim_fiyat;
-        $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->birim_fiyat);
+        $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
         echo '<tr>
                 <td colspan="4">' . $islem->ad  . '</td>
                 <td colspan="1" class="text-center">' . $islem->miktar . '</td>
@@ -206,7 +206,17 @@ if (count($cihaz->islemler) > 0) {
         $toplam = $toplam + $toplam_islem_fiyati_suan;
         $kdv = $kdv + $kdv_suan;
     }
-
+    if(count($cihaz->islemler) < 5){
+        for ($i = 0; $i < (5 - count($cihaz->islemler)); $i++) {
+            echo '<tr style="height:20px;">
+                        <td colspan="4"></td>
+                        <td colspan="1" class="text-center"></td>
+                        <td colspan="1" class="text-center"></td>
+                        <td colspan="2" class="text-center"></td>
+                        <td colspan="2" class="text-center"></td>
+                    </tr>';
+        }
+    }
     $genel_toplam = $toplam + $kdv;
 } else {
     for ($i = 0; $i < 5; $i++) {
