@@ -263,7 +263,6 @@ echo '</td>
                                             <th>KDV Oranı (%)</th>
                                             <th>Tutar</th>
                                             <th>KDV</th>
-                                            <th>Düzenle</th>
                                         </tr>
                                     </thead>
                                     <tbody id="yapilanIslemBody">';
