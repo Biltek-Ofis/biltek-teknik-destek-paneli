@@ -61,13 +61,9 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 	}
 }
 function cihazGirisiVerileri(value) {
-	$("#musteri_adi").val(value.musteri_adi ? value.musteri_adi : "", "");
-	if (value.adres) {
-		$("#adres").val(value.adres);
-	}
-	if (value.telefon_numarasi){
-		$("#telefon_numarasi").val(value.telefon_numarasi);
-	}
+	$("#musteri_adi").val(value.musteri_adi ? value.musteri_adi : "");
+	$("#adres").val(value.adres ? value.adres : "");
+	$("#telefon_numarasi").val(value.telefon_numarasi ? value.telefon_numarasi : "");
 	$("#musteri_kod").val(value.id ? value.id : "");
 	$("#musteri_kod_text").html(value.id ? value.id : "");
 	musteri_bilgileri_onaylandi = true;
