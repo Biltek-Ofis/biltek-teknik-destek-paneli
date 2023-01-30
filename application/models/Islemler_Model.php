@@ -202,6 +202,15 @@ class Islemler_Model extends CI_Model
     {
         return $this->arrayGetir($this->tahsilatSekli, $index);
     }
+    public $faturaDurumu = array(
+        "Belirtilmedi",
+        "Fatura Kesilmedi",
+        "Fatura Kesildi"
+    );
+    public function faturaDurumu($index)
+    {
+        return $this->arrayGetir($this->faturaDurumu, $index);
+    }
     public function arrayGetir($arr, $index)
     {
         if ($index > count($arr) - 1) {

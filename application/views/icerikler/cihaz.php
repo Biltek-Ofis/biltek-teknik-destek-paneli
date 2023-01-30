@@ -218,36 +218,52 @@ echo '</td>
                         <div class="table-responsive">
                             <form id="yapilanIslemlerForm" autocomplete="off" method="post" action="' . base_url("cihaz/yapilanIslemDuzenle/" . $cihaz->id) . ' ">
                                 <table class="table table-flush">
-                                    <thead></thead>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
                                     <tbody id="form">
                                         <tr>
-                                            <th class="align-middle">Giriş Tarihi:</th>
-                                            <td class="align-middle">';
+                                            <th class="align-middle" colspan="2">Giriş Tarihi:</th>
+                                            <td class="align-middle" colspan="2">';
 $this->load->view("ogeler/tarih", $cihaz->tarih == "" ? array("isim" => "tarih", "sifirla" => true) : array("isim" => "tarih", "sifirla" => true, "tarih_value" => $cihaz->tarih));
 echo '</td>
                                         </tr>
                                         <tr>
-                                            <th class="align-middle">Bildirim Tarihi:</th>
-                                            <td class="align-middle">';
+                                            <th class="align-middle" colspan="2">Bildirim Tarihi:</th>
+                                            <td class="align-middle" colspan="2">';
 $this->load->view("ogeler/bildirim_tarihi", $cihaz->bildirim_tarihi == "" ? array("sifirla" => true) : array("sifirla" => true, "bildirim_tarihi_value" => $cihaz->bildirim_tarihi));
 echo '</td>
                                         </tr>
                                         <tr>
-                                            <th class="align-middle">Çıkış Tarihi:</th>
-                                            <td class="align-middle">';
+                                            <th class="align-middle" colspan="2">Çıkış Tarihi:</th>
+                                            <td class="align-middle" colspan="2">';
 $this->load->view("ogeler/cikis_tarihi", $cihaz->cikis_tarihi == "" ? array("isim" => "cikis_tarihi", "sifirla" => true) : array("isim" => "cikis_tarihi", "sifirla" => true, "cikis_tarihi_value" => $cihaz->cikis_tarihi));
 echo '</td>
                                         </tr>
                                         <tr>
-                                        <th class="align-middle">Güncel Durum:</th>
-                                        <td class="align-middle">';
+                                        <th class="align-middle" colspan="2">Güncel Durum:</th>
+                                        <td class="align-middle" colspan="2">';
 $this->load->view("ogeler/guncel_durum", array("sifirla" => true, "guncel_durum_value" => $cihaz->guncel_durum));
 echo '</td>
 </tr>
 <tr>
-<th class="align-middle">Tahsilat Şekli:</th>
-<td class="align-middle">';
+<th class="align-middle" colspan="2">Tahsilat Şekli:</th>
+<td class="align-middle" colspan="2">';
 $this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true, "tahsilat_sekli_value" => $cihaz->tahsilat_sekli));
+echo '</td>
+</tr>
+<tr>
+<th class="align-middle" colspan="2">Fatura Durumu:</th>
+<td id="fatura_durumu_td" class="align-middle" colspan="'.($cihaz->fatura_durumu == (count($this->Islemler_Model->faturaDurumu) - 1) ? 1 : 2).'">';
+$this->load->view("ogeler/fatura_durumu", array("sifirla" => true, "fatura_durumu_value" => $cihaz->fatura_durumu));
+echo '</td>
+<td id="fis_no_td" class="align-middle" style="'.($cihaz->fatura_durumu == (count($this->Islemler_Model->faturaDurumu) - 1) ? "" : "display:none;").'" colspan="'.($cihaz->fatura_durumu == (count($this->Islemler_Model->faturaDurumu) - 1) ? 1 : 0).'">';
+$this->load->view("ogeler/fis_no", array("sifirla" => true, "fis_no_value" => $cihaz->fis_no));
 echo '</td>
 </tr>
                                     </tbody>
