@@ -50,10 +50,14 @@ class Cihaz extends Varsayilancontroller
             $guncel_durum = $this->input->post("guncel_durum");
             $guncel_durum_suanki = $this->input->post("guncel_durum_suanki");
             $tahsilat_sekli = $this->input->post("tahsilat_sekli");
+            $fatura_durumu = $this->input->post("fatura_durumu");
+            $fis_no = $this->input->post("fis_no");
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
                 "guncel_durum" => $guncel_durum,
-                "tahsilat_sekli" => $tahsilat_sekli
+                "tahsilat_sekli" => $tahsilat_sekli,
+                "fatura_durumu" => $fatura_durumu,
+                "fis_no" => $fis_no
             );
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));

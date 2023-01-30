@@ -25,7 +25,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 
 echo '<script>
@@ -53,7 +53,7 @@ echo '<script>
 
     $("#cihaziSilModal").modal("show");
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli) {
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = id;
     butonDurumu(guncel_durum_sayi);
@@ -85,6 +85,8 @@ echo '<script>
     $("#Sorumlu2").html(sorumlu);
     $("#yapilanIslemAciklamasi").html(yapilan_islem_aciklamasi);
     $("#TahsilatSekli").html(tahsilat_sekli);
+    $("#faturaDurumu").html(fatura_durumu);
+    $("#fisNo").html(fis_no);
 
     $("#duzenleBtn").attr("href", "' . base_url("cihaz") . '/" + id);
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
@@ -280,6 +282,14 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Tahsilat Şekli</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TahsilatSekli"></li>
                 </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fatura Durumu</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="faturaDurumu"></li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fiş No</span></li>
+                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="fisNo"></li>
+                </ul>
               </div>
               <div class="tab-pane fade" id="list-medyalar" role="tabpanel" aria-labelledby="list-medyalar-list">
                 
@@ -374,6 +384,8 @@ $eskiler = array(
   "{guncel_durum}",
   "{guncel_durum_sayi}",
   "{tahsilat_sekli}",
+  "{fatura_durumu}",
+  "{fis_no}",
   "{yapilan_islemler}",
   "{musteri_adi_onclick}",
   "{adres_onclick}",
@@ -389,7 +401,9 @@ $eskiler = array(
   "{servis_turu_onclick}",
   "{sorumlu_onclick}",
   "{yapilan_islem_aciklamasi_onclick}",
-  "{tahsilat_sekli_onclick}"
+  "{tahsilat_sekli_onclick}",
+  "{fatura_durumu_onclick}",
+  "{fis_no_onclick}"
 );
 
 $yapilanIslemToplamEskiArray = array(
@@ -484,6 +498,8 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $cihaz->guncel_durum,
     $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
+    $this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu),
+    $cihaz->fis_no,
     $yapilanİslemler,
     donusturOnclick($cihaz->musteri_adi),
     donusturOnclick($cihaz->adres),
@@ -499,7 +515,9 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($this->Islemler_Model->servisTuru($cihaz->servis_turu)),
     donusturOnclick($cihaz->sorumlu),
     donusturOnclick($cihaz->yapilan_islem_aciklamasi),
-    donusturOnclick($this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli))
+    donusturOnclick($this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli)),
+    donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
+    donusturOnclick($cihaz->fis_no)
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   echo $tablo;
@@ -604,20 +622,34 @@ echo '
         return "' . $this->Islemler_Model->cihazDurumu[0] . '";
     }
   }';
-echo '
-    function tahsilatSekli(id) {
-      id = parseInt(id);
-      switch (id) {';
-for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
   echo '
-        case ' . $i . ':
-          return "' . $this->Islemler_Model->tahsilatSekli[$i] . '";';
-}
-echo '
-        default:
-          return "' . $this->Islemler_Model->tahsilatSekli[0] . '";
+      function tahsilatSekli(id) {
+        id = parseInt(id);
+        switch (id) {';
+  for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
+    echo '
+          case ' . $i . ':
+            return "' . $this->Islemler_Model->tahsilatSekli[$i] . '";';
+  }
+  echo '
+          default:
+            return "' . $this->Islemler_Model->tahsilatSekli[0] . '";
+        }
+      }';
+      echo '
+          function faturaDurumu(id) {
+            id = parseInt(id);
+            switch (id) {';
+      for ($i = 0; $i < count($this->Islemler_Model->faturaDurumu); $i++) {
+        echo '
+              case ' . $i . ':
+                return "' . $this->Islemler_Model->faturaDurumu[$i] . '";';
       }
-    }';
+      echo '
+              default:
+                return "' . $this->Islemler_Model->faturaDurumu[0] . '";
+            }
+          }';
 
 echo '
   function cihazDurumuClass(id) {
@@ -682,6 +714,8 @@ function donustur(str, value) {
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
       .replaceAll("{guncel_durum_sayi}", value.guncel_durum)
       .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
+      .replaceAll("{fatura_durumu}", faturaDurumu(value.fatura_durumu))
+      .replaceAll("{fis_no}", value.fis_no)
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\')
       .replaceAll("{musteri_adi_onclick}", donusturOnclick(value.musteri_adi))
       .replaceAll("{adres_onclick}", donusturOnclick(value.adres))
@@ -698,6 +732,8 @@ function donustur(str, value) {
       .replaceAll("{sorumlu_onclick}", donusturOnclick(value.sorumlu))
       .replaceAll("{yapilan_islem_aciklamasi_onclick}", donusturOnclick(value.yapilan_islem_aciklamasi))
       .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(tahsilatSekli(value.tahsilat_sekli)))
+      .replaceAll("{fatura_durumu_onclick}", donusturOnclick(faturaDurumu(value.fatura_durumu)))
+      .replaceAll("{fis_no_onclick}", donusturOnclick(value.fis_no))
       ;
   }';
 echo 'function tarihiFormatla(tarih12){
@@ -764,6 +800,8 @@ echo 'function cihazBilgileriniGetir(){
           $("#Sorumlu2").html(value.sorumlu);
           $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
           $("#TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli));
+          $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
+          $("#fisNo").html(value.fis_no);
           medyalariYukle(value.id);
         }
       });
