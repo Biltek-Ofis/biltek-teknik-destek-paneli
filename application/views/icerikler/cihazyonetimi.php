@@ -105,7 +105,7 @@ echo '</div>
 $this->load->view("ogeler/musteriyi_kaydet");
 echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/gsm");
+$this->load->view("ogeler/gsm", array("telefon_numarasi_label"=>TRUE));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/cihaz_turleri");

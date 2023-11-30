@@ -28,16 +28,24 @@ class Cihaz extends Varsayilancontroller
         }
     }
 
-    public function duzenle($id)
+    public function duzenle($id, $tur)
     {
         if ($this->Giris_Model->kullaniciGiris()) {
             $veri = $this->Cihazlar_Model->cihazPost();
             $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
-            if ($duzenle) {
-                //$id = $this->db->insert_id();
-                redirect(base_url("cihaz/" . $id));
-            } else {
-                $this->Kullanicilar_Model->girisUyari("", "Düzenleme işlemi gerçekleştirilemedi. ");
+            if($tur == "post" || $tur == "POST"){
+                if ($duzenle) {
+                    echo json_encode(array("mesaj" => "", "sonuc" => 1));
+                }else{
+                    echo json_encode(array("mesaj" => "Düzenleme başarısız. Lütfen geliştirici ile iletişime geçin.", "sonuc" => 0));
+                }
+            }else{
+                if ($duzenle) {
+                    //$id = $this->db->insert_id();
+                    redirect(base_url("cihaz/" . $id));
+                } else {
+                    $this->Kullanicilar_Model->girisUyari("", "Düzenleme işlemi gerçekleştirilemedi. ");
+                }
             }
         } else {
             $this->Kullanicilar_Model->girisUyari("cikis");

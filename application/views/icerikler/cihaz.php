@@ -48,7 +48,7 @@ echo '<script>
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="genel-bilgiler" role="tabpanel" aria-labelledby="genel-bilgiler-tab">
-                        <form id="cihazDuzenleForm" autocomplete="off" method="post" action="' . base_url("cihaz/duzenle/" . $cihaz->id) . '">
+                        <form id="cihazDuzenleForm" autocomplete="off" method="post" action="' . base_url("cihaz/duzenle/" . $cihaz->id."/get") . '">
                             <div class="table-responsive">
                                 <table class="table table-flush">
                                     <thead></thead>
