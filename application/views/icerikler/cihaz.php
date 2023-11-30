@@ -216,7 +216,7 @@ echo '</td>
                     </script>
                     <div class="tab-pane fade" id="yapilan-islemler" role="tabpanel" aria-labelledby="yapilan-islemler">
                         <div class="table-responsive">
-                            <form id="yapilanIslemlerForm" autocomplete="off" method="post" action="' . base_url("cihaz/yapilanIslemDuzenle/" . $cihaz->id) . ' ">
+                            <form id="yapilanIslemlerForm" autocomplete="off" method="post" action="' . base_url("cihaz/yapilanIslemDuzenle/" . $cihaz->id . "/get") . ' ">
                                 <table class="table table-flush">
                                     <thead>
                                         <tr>

@@ -34,23 +34,37 @@ echo '<script>
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
-  function detaylariGoster(duzenle_butonunu_goster){
+  function detaylariGoster(){
     $("#dt-duzenle").hide();
-    $("#dt-goster").show();
     $("#kaydetBtn").hide();
-    if(duzenle_butonunu_goster){
+    $("#iptalBtn").hide();
+    $("#dt-goster").show();
+    $("#serviskabulBtn").show();
+    $("#barkoduYazdirBtn").show();
+    $("#formuYazdirBtn").show();
+    if($("#silBtn").hasClass("goster")){
+      $("#silBtn").show();
+    }
+    if($("#duzenleBtn").hasClass("goster")){
       $("#duzenleBtn").show();
     }
+    $("#detaylar_body").scrollTop(0);
     duzenleme_modu = false;
   }
   function duzenleyiGoster(){
     $("#dt-goster").hide();
-    $("#dt-duzenle").show();
     $("#duzenleBtn").hide();
+    $("#serviskabulBtn").hide();
+    $("#barkoduYazdirBtn").hide();
+    $("#formuYazdirBtn").hide();
+    $("#silBtn").hide();
+    $("#dt-duzenle").show();
     $("#kaydetBtn").show();
+    $("#iptalBtn").show();
+    $("#detaylar_body").scrollTop(0);
     duzenleme_modu = true;
   }
-  function detaylariKaydet(id){
+  function genelBilgileriKaydet(onComplete){
     var duzenleFormAction = $("#dt-DuzenleForm").attr("action");
     var duzenleFormData = $("#dt-DuzenleForm").serialize();
     $.post(duzenleFormAction, duzenleFormData)
@@ -58,9 +72,7 @@ echo '<script>
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-          detaylariGoster();
-          $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
-          $("#statusSuccessModal").modal("show");
+          onComplete();
         }else{
           $("#hata-mesaji").html(data["mesaj"]);
           $("#statusErrorsModal").modal("show");
@@ -75,16 +87,35 @@ echo '<script>
       $("#statusErrorsModal").modal("show");
     });
   }
+  function detaylariKaydet(){
+    genelBilgileriKaydet(function(){
+      detaylariGoster();
+      $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
+      $("#statusSuccessModal").modal("show");
+    });
+  }
   function butonDurumu(guncel_durum){
     if(guncel_durum < ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' || yonetici){      
       if(!duzenleme_modu){
+        if(!$("#duzenleBtn").hasClass("goster")){
+          $("#duzenleBtn").addClass("goster");
+        }
         $("#duzenleBtn").show();
+      }
+      if(!$("#silBtn").hasClass("goster")){
+        $("#silBtn").addClass("goster");
       }
       $("#silBtn").show();
     }else{
+      if($("#duzenleBtn").hasClass("goster")){
+        $("#duzenleBtn").removeClass("goster");
+      }
       $("#duzenleBtn").hide();
+      if($("#silBtn").hasClass("goster")){
+        $("#silBtn").removeClass("goster");
+      }
       $("#silBtn").hide();
-      detaylariGoster(false);
+      detaylariGoster();
     }
   }
   function medyalariYukle(id) {
@@ -201,7 +232,7 @@ $(document).ready(function(){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div id="detaylar_body" class="modal-body">
         <div class="row">
           <div id="dt-goster" class="col-12">
             <!-- Genel Bilgiler Göster -->
@@ -411,17 +442,21 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/yedek", array(), true).'</li>
               </ul>
             </form>
+            <form id="dt-YapilanIslemlerForm" autocomplete="off" method="post" action="">
+
+            </form>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-      <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
+      <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet()" style="display:none;" class="btn btn-success">Kaydet</a>
+      <a id="iptalBtn" href="#" onclick="detaylariGoster()" style="display:none;" class="btn btn-danger">İptal</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
       <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a id="silBtn" href="#" style="{display_kilit}" class="btn btn-danger text-white">Sil</a>') . '
-      <a href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+      <a id="kapatBtn" href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
       </div>
     </div>
   </div>
@@ -923,7 +958,7 @@ echo 'function cihazBilgileriniGetir(){
           
           // Düzenleme
           $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
-          
+          $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
           $("input#musteri_kod").val(value.musteri_kod);
           $("input#musteri_adi").val(value.musteri_adi);
           $("input#adres").val(value.adres);

@@ -52,7 +52,7 @@ class Cihaz extends Varsayilancontroller
         }
     }
 
-    public function yapilanIslemDuzenle($id)
+    public function yapilanIslemDuzenle($id, $tur)
     {
         if ($this->Giris_Model->kullaniciGiris()) {
             $guncel_durum = $this->input->post("guncel_durum");
