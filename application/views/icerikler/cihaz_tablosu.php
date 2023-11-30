@@ -158,18 +158,13 @@ $(document).ready(function(){
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-4">
-            <div class="list-group" id="list-tab" role="tablist">
-              <a class="list-group-item list-group-item-action active" id="list-genel-bilgiler-list" data-toggle="list" href="#list-genel-bilgiler" role="tab" aria-controls="genel-bilgiler">Genel Bilgiler</a>
-              <a class="list-group-item list-group-item-action" id="list-cihaz-bilgileri-list" data-toggle="list" href="#list-cihaz-bilgileri" role="tab" aria-controls="cihaz-bilgileri">Cihaz Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-teknik-servis-bilgileri-list" data-toggle="list" href="#list-teknik-servis-bilgileri" role="tab" aria-controls="teknik-servis-bilgileri">Teknik Servis Bilgileri</a>
-              <a class="list-group-item list-group-item-action" id="list-yapilan-islemler-list" data-toggle="list" href="#list-yapilan-islemler" role="tab" aria-controls="yapilan-islemler">Yapılan İşlemler</a>
-              <a class="list-group-item list-group-item-action" id="list-medyalar-list" data-toggle="list" href="#list-medyalar" role="tab" aria-controls="medyalar">Medyalar</a>
-            </div>
-          </div>
-          <div class="col-8">
+          <div class="col-12">
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="list-genel-bilgiler" role="tabpanel" aria-labelledby="list-genel-bilgiler-list">
+                <!-- Genel Bilgiler -->
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:100%;"><h3>Genel Bilgiler</h3></li>
+                </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisNo2"></li>
@@ -210,8 +205,10 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="GuncelDurum2"></li>
                 </ul>
-              </div>
-              <div class="tab-pane fade" id="list-cihaz-bilgileri" role="tabpanel" aria-labelledby="list-cihaz-bilgileri-list">
+                <!-- Cihaz Bilgileri -->
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:100%;"><h3>Cihaz Bilgileri</h3></li>
+                </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazTuru2"></li>
@@ -236,8 +233,10 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazSifresi"></li>
                 </ul>
-              </div>
-              <div class="tab-pane fade" id="list-teknik-servis-bilgileri" role="tabpanel" aria-labelledby="list-teknik-servis-bilgileri-list">
+                <!-- Teknik Servis Bilgileri -->
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:100%;"><h3>Teknik Servis Bilgileri</h3></li>
+                </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Belirlenen Hasar Türü:</span></span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazdakiHasar"></li>
@@ -258,8 +257,10 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="YedekDurumu"></li>
                 </ul>
-              </div>
-              <div class="tab-pane fade" id="list-yapilan-islemler" role="tabpanel" aria-labelledby="list-yapilan-islemler-list">
+                <!-- Yapılan İşlemler -->
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:100%;"><h3>Yapılan İşlemler</h3></li>
+                </ul>
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Sorumlu2"></li>
@@ -273,7 +274,7 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
                   <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';"><span class="font-weight-bold">Birim Fiyatı</span></li>
                   <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
-                  <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">kdv</span></li>
+                  <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">KDV</span></li>
                 </ul>
                 <div id="yapilanIslem">
                   
@@ -290,9 +291,14 @@ $(document).ready(function(){
                   <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fiş No</span></li>
                   <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="fisNo"></li>
                 </ul>
-              </div>
-              <div class="tab-pane fade" id="list-medyalar" role="tabpanel" aria-labelledby="list-medyalar-list">
+                <!-- Medyalar -->
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item" style="width:100%;"><h3>Medyalar</h3></li>
+                </ul>
                 
+                <ul class="list-group list-group-horizontal">
+                  <li id="list-medyalar" class="list-group-item" style="width:100%;"></li>
+                </ul>
               </div>
             </div>
           </div>

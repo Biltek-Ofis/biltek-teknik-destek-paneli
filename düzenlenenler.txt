@@ -1,0 +1,2 @@
+application\views\icerikler\cihaz_tablosu.php
+application\views\icerikler\medyalar.php
