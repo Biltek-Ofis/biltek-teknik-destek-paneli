@@ -252,11 +252,10 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazPost()
+    public function cihazPost($yeni = TRUE)
     {
         $musteri_kod = $this->input->post("musteri_kod");
         $veri = array(
-            "takip_numarasi" => time(),
             "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : null,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
@@ -273,6 +272,9 @@ class Cihazlar_Model extends CI_Model
             "servis_turu" => $this->input->post("servis_turu"),
             "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
+        if($yeni){
+            $veri["takip_numarasi"] = time();
+        }
         $sorumlu = $this->input->post("sorumlu");
         if (isset($sorumlu)) {
             $veri["sorumlu"] = $sorumlu;
