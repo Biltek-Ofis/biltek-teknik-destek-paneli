@@ -4,14 +4,22 @@ $(document).ready(function() {
     $("#fatura_durumu").on("change", function() {
         var fatura_durumu = $(this).val();
         if(fatura_durumu == '.(count($this->Islemler_Model->faturaDurumu) - 1).'){
-            $("#fatura_durumu_td").prop("colspan", "1");
-            $("#fis_no_td").prop("colspan", "1");
+            if(!$("#fatura_durumu_td").hasClass("liste")){
+                $("#fatura_durumu_td").prop("colspan", "1");
+            }
+            if(!$("#fis_no_td").hasClass("liste")){
+                $("#fis_no_td").prop("colspan", "1");
+            }
             $("#fis_no_td").show();
             $("#fis_no").prop("required", "required");
         }else{
-            $("#fatura_durumu_td").prop("colspan", "2");
+            if(!$("#fatura_durumu_td").hasClass("liste")){
+                $("#fatura_durumu_td").prop("colspan", "2");
+            }
+            if(!$("#fis_no_td").hasClass("liste")){
+                $("#fis_no_td").prop("colspan", "0");
+            }
             $("#fis_no_td").hide();
-            $("#fis_no_td").prop("colspan", "0");
             $("#fis_no").val("");
             $("#fis_no").removeAttr("required");
         }
