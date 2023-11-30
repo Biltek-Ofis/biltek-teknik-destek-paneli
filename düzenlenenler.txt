@@ -7,4 +7,6 @@ application/views/icerikler/cihazyonetimi.php
 application/views/icerikler/medyalar.php
 application/views/inc/styles.php
 application/views/ogeler/gsm.php
+application/views/ogeler/fatura_durumu.php
+application/views/ogeler/tarih.php
 dist/css/style.css
