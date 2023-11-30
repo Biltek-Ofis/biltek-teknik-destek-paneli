@@ -1,2 +1,10 @@
-application\views\icerikler\cihaz_tablosu.php
-application\views\icerikler\medyalar.php
+README.md
+application/controllers/Cihaz.php
+application/models/Cihazlar_Model.php        
+application/views/icerikler/cihaz.php        
+application/views/icerikler/cihaz_tablosu.php
+application/views/icerikler/cihazyonetimi.php
+application/views/icerikler/medyalar.php
+application/views/inc/styles.php
+application/views/ogeler/gsm.php
+dist/css/style.css

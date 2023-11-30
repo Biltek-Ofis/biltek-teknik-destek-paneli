@@ -1,4 +1,7 @@
 <?php
+if (!isset($telefon_numarasi_label)) {
+    $telefon_numarasi_label = FALSE;
+}
 $telefonNumrasiID = "telefon_numarasi";
 if(isset($gsm_id)){
     $telefonNumrasiID = $gsm_id;
@@ -13,9 +16,11 @@ echo '<div class="form-group';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <label for="' . $telefonNumrasiID . '">GSM:</label>
-    <input id="' . $telefonNumrasiID . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
+echo ' col">';
+if($telefon_numarasi_label){
+    echo '<label for="' . $telefonNumrasiID . '">GSM:</label>';
+}
+echo '<input id="' . $telefonNumrasiID . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
 if (isset($telefon_numarasi_value)) {
     echo $telefon_numarasi_value;
 } else {

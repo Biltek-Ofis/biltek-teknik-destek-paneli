@@ -1,4 +1,6 @@
 <?php $this->load->view("inc/datatables_scripts");
+echo '<script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
+<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>';
 echo '<style>
   .modal.modal-fullscreen .modal-dialog {
     width: 100vw;
@@ -31,13 +33,58 @@ $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 echo '<script>
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
+  var duzenleme_modu = false;
+  function detaylariGoster(duzenle_butonunu_goster){
+    $("#dt-duzenle").hide();
+    $("#dt-goster").show();
+    $("#kaydetBtn").hide();
+    if(duzenle_butonunu_goster){
+      $("#duzenleBtn").show();
+    }
+    duzenleme_modu = false;
+  }
+  function duzenleyiGoster(){
+    $("#dt-goster").hide();
+    $("#dt-duzenle").show();
+    $("#duzenleBtn").hide();
+    $("#kaydetBtn").show();
+    duzenleme_modu = true;
+  }
+  function detaylariKaydet(id){
+    var duzenleFormAction = $("#dt-DuzenleForm").attr("action");
+    var duzenleFormData = $("#dt-DuzenleForm").serialize();
+    $.post(duzenleFormAction, duzenleFormData)
+    .done(function(msg){
+      try{
+        data = $.parseJSON( msg );
+        if(data["sonuc"]==1){
+          detaylariGoster();
+          $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
+          $("#statusSuccessModal").modal("show");
+        }else{
+          $("#hata-mesaji").html(data["mesaj"]);
+          $("#statusErrorsModal").modal("show");
+        }
+      }catch(error){
+        $("#hata-mesaji").html(error);
+        $("#statusErrorsModal").modal("show");
+      }
+    })
+    .fail(function(xhr, status, error) {
+      $("#hata-mesaji").html(error);
+      $("#statusErrorsModal").modal("show");
+    });
+  }
   function butonDurumu(guncel_durum){
     if(guncel_durum < ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' || yonetici){      
-      $("#duzenleBtn").show();
+      if(!duzenleme_modu){
+        $("#duzenleBtn").show();
+      }
       $("#silBtn").show();
     }else{
       $("#duzenleBtn").hide();
       $("#silBtn").hide();
+      detaylariGoster(false);
     }
   }
   function medyalariYukle(id) {
@@ -87,8 +134,6 @@ echo '<script>
     $("#TahsilatSekli").html(tahsilat_sekli);
     $("#faturaDurumu").html(fatura_durumu);
     $("#fisNo").html(fis_no);
-
-    $("#duzenleBtn").attr("href", "' . base_url("cihaz") . '/" + id);
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
@@ -158,154 +203,220 @@ $(document).ready(function(){
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12">
-            <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="list-genel-bilgiler" role="tabpanel" aria-labelledby="list-genel-bilgiler-list">
-                <!-- Genel Bilgiler -->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:100%;"><h3>Genel Bilgiler</h3></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisNo2"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Takip No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TakipNo"></li>
-                </ul>
-                <!--<ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriKod"></li>
-                </ul>-->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdi2"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdres"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriGSM2"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Tarih"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="BildirimTarihi"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="CikisTarihi"></span></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="GuncelDurum2"></li>
-                </ul>
-                <!-- Cihaz Bilgileri -->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:100%;"><h3>Cihaz Bilgileri</h3></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazTuru2"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazMarka"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazModeli"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="SeriNo"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TeslimAlinanlar"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazSifresi"></li>
-                </ul>
-                <!-- Teknik Servis Bilgileri -->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:100%;"><h3>Teknik Servis Bilgileri</h3></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Belirlenen Hasar Türü:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazdakiHasar"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Yapılan Hasar Tespiti:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="HasarTespiti"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ArizaAciklamasi"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis Türü:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisTuru"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="YedekDurumu"></li>
-                </ul>
-                <!-- Yapılan İşlemler -->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:100%;"><h3>Yapılan İşlemler</h3></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Sorumlu2"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
-                  <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
-                  <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';"><span class="font-weight-bold">Birim Fiyatı</span></li>
-                  <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
-                  <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">KDV</span></li>
-                </ul>
-                <div id="yapilanIslem">
-                  
-                </div>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Tahsilat Şekli</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TahsilatSekli"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fatura Durumu</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="faturaDurumu"></li>
-                </ul>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fiş No</span></li>
-                  <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="fisNo"></li>
-                </ul>
-                <!-- Medyalar -->
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item" style="width:100%;"><h3>Medyalar</h3></li>
-                </ul>
-                
-                <ul class="list-group list-group-horizontal">
-                  <li id="list-medyalar" class="list-group-item" style="width:100%;"></li>
-                </ul>
-              </div>
+          <div id="dt-goster" class="col-12">
+            <!-- Genel Bilgiler Göster -->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:100%;"><h3>Genel Bilgiler</h3></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis No:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisNo2"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Takip No:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TakipNo"></li>
+            </ul>
+            <!--<ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Kodu:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriKod"></li>
+            </ul>-->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdi2"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdres"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriGSM2"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Tarih"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Bildirim Tarihi:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="BildirimTarihi"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Çıkış Tarihi:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span id="CikisTarihi"></span></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="GuncelDurum2"></li>
+            </ul>
+            <!-- Cihaz Bilgileri Göster -->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:100%;"><h3>Cihaz Bilgileri</h3></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazTuru2"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazMarka"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazModeli"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="SeriNo"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TeslimAlinanlar"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazSifresi"></li>
+            </ul>
+            <!-- Teknik Servis Bilgileri Göster -->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:100%;"><h3>Teknik Servis Bilgileri</h3></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Belirlenen Hasar Türü:</span></span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazdakiHasar"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Teslim Alınmadan Önce Yapılan Hasar Tespiti:</span></span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="HasarTespiti"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ArizaAciklamasi"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis Türü:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisTuru"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="YedekDurumu"></li>
+            </ul>
+            <!-- Yapılan İşlemler Göster -->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:100%;"><h3>Yapılan İşlemler</h3></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Sorumlu2"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yapılan İşlem Açıklaması:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
+              <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
+              <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';"><span class="font-weight-bold">Birim Fiyatı</span></li>
+              <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
+              <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">KDV</span></li>
+            </ul>
+            <div id="yapilanIslem">
+              
             </div>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Tahsilat Şekli</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TahsilatSekli"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fatura Durumu</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="faturaDurumu"></li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Fiş No</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="fisNo"></li>
+            </ul>
+            <!-- Medyalar Göster-->
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width:100%;"><h3>Medyalar</h3></li>
+            </ul>
+            
+            <ul class="list-group list-group-horizontal">
+              <li id="list-medyalar" class="list-group-item" style="width:100%;"></li>
+            </ul>
+          </div>
+          
+          <div id="dt-duzenle" class="col-12" style="display:none;">
+            <!-- Genel Bilgiler Düzenle-->
+            <form id="dt-DuzenleForm" autocomplete="off" method="post" action="">
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:100%;"><h3>Genel Bilgiler</h3></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/musteri_adi", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/adres", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/gsm", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/cihaz_turleri", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>
+                <li id="dz-sorumlu-personel" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.($this->Kullanicilar_Model->yonetici() ? $this->load->view("ogeler/sorumlu_select", array(), true) : "").'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/cihaz_markasi", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/cihaz_modeli", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri Numarası:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/seri_no", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/cihaz_sifresi", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınırken Belirlenen Hasar Türü:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/hasar_turu", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınırken Yapılan Hasar Tespiti:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/hasar_tespiti", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Arıza Açıklaması:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/ariza_aciklamasi", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/teslim_alinanlar", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Servis Türü:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/servis_turu", array(), true).'</li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Yedek Alınacak mı?:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">'.$this->load->view("ogeler/yedek", array(), true).'</li>
+              </ul>
+            </form>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-      <a id="duzenleBtn" href="#" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
+      <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary">Düzenle</a>
+      <a id="kaydetBtn" href="#" onclick="detaylariKaydet()" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
       <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
@@ -809,12 +920,41 @@ echo 'function cihazBilgileriniGetir(){
           $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
           $("#fisNo").html(value.fis_no);
           medyalariYukle(value.id);
+          
+          // Düzenleme
+          $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
+          
+          $("input#musteri_kod").val(value.musteri_kod);
+          $("input#musteri_adi").val(value.musteri_adi);
+          $("input#adres").val(value.adres);
+          $("input#telefon_numarasi").val(value.telefon_numarasi);
+          $("select#cihaz_turu").val(value.cihaz_turu_val).change();
+          if(yonetici){
+            $("select#sorumlu").val(value.sorumlu_val).change();
+          }else{
+            $("#dz-sorumlu-personel").html(value.sorumlu);
+          }
+          $("input#cihaz").val(value.cihaz);
+          $("input#cihaz_modeli").val(value.cihaz_modeli);
+          $("input#seri_no").val(value.seri_no);
+          $("input#cihaz_sifresi").val(value.cihaz_sifresi);
+          $("select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
+          $("textarea#hasar_tespiti").val(value.hasar_tespiti);
+          $("textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
+          $("textarea#teslim_alinanlar").val(value.teslim_alinanlar);
+          $("select#servis_turu").val(value.servis_turu).change();
+          $("select#yedek_durumu").val(value.yedek_durumu).change();
         }
       });
     }); 
   }
 }';
 echo '$(document).ready(function() {
+    $(document).on("show.bs.modal", ".modal", function() {
+      const zIndex = 1040 + 10 * $(".modal:visible").length;
+      $(this).css("z-index", zIndex);
+      setTimeout(() => $(".modal-backdrop").not(".modal-stack").css("z-index", zIndex - 1).addClass("modal-stack"));
+    });
     var tabloDiv = "#cihaz_tablosu";
     var cihazDurumuSiralama = [ 
       ';
@@ -891,14 +1031,22 @@ echo '
       null,
       null
     ],') . ');
+    
     setInterval(() => {
-      cihazBilgileriniGetir();
+      if(!duzenleme_modu){
+        cihazBilgileriniGetir();
+      }
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
+            if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
+              $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+              $("#cihaziSilModal").modal("hide");
+              $("#cihazSilindiModal").modal("show");
+            }
             cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
           }
         });
@@ -956,7 +1104,67 @@ echo '
         });
       });
     }, 5000);
+    $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").on("hidden.bs.modal", function (e) {
+      detaylariGoster();
+    });
+    $("#statusErrorsModal").on("hide.bs.modal", function(e) {
+      $("#hata-mesaji").html("");
+    });
+    $("#statusSuccessModal").on("hide.bs.modal", function(e) {
+      $("#basarili-mesaji").html("");
+    });
   });
 </script>';
 echo $cihazDetayOrnek;
 echo $cihazSilModalOrnek;
+echo '
+<div class="modal fade" id="cihazSilindiModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="cihazSilindiModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cihazSilindiModalLabel">Cihaz Silindi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Cihaz bir kullanıcı tarafından silindiği için cihaz detaylarına erişilemiyor.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>';
+echo '<div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"> 
+<div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+  <div class="modal-content"> 
+    <div class="modal-body text-center p-lg-4"> 
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+        <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" /> 
+        <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+        <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" /> 
+      </svg> 
+      <h4 class="text-danger mt-3">Başarısız</h4> 
+      <p id="hata-mesaji" class="mt-3"></p>
+      <button type="button" class="btn btn-sm mt-3 btn-danger"  data-dismiss="modal">TAMAM</button> 
+    </div> 
+  </div> 
+</div> 
+</div>';
+
+echo '<div class="modal fade" id="statusSuccessModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"> 
+<div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+  <div class="modal-content"> 
+    <div class="modal-body text-center p-lg-4"> 
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+        <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+        <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
+      </svg> 
+      <h4 class="text-success mt-3">Başarılı</h4> 
+      <p id="basarili-mesaji" class="mt-3"></p>
+      <button type="button" class="btn btn-sm mt-3 btn-success" data-dismiss="modal">TAMAM</button> 
+    </div> 
+  </div> 
+</div> 
+</div>';
