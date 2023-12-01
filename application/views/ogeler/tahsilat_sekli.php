@@ -5,18 +5,13 @@ if (isset($sifirla)) {
 }
 echo ' col">
     <select id="tahsilat_sekli" class="form-control" name="tahsilat_sekli" aria-label="Tahsilat Şekli">';
-for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
-    echo '<option value="' . $i . '"';
-    if (isset($tahsilat_sekli_value) && $tahsilat_sekli_value == $i) {
+    echo '<option value="0">Tahsilat Şekli Seçin</option>';
+foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
+    echo '<option value="' . $tahsilatSekli->id . '"';
+    if (isset($tahsilat_sekli_value) && $tahsilat_sekli_value == $tahsilatSekli->id) {
         echo " selected";
     }
-    echo '>';
-    if ($i == 0) {
-        echo 'Tahsilat Şekli Seçin';
-    } else {
-        echo $this->Islemler_Model->tahsilatSekli[$i];
-    }
-    echo '</option>';
+    echo '>'.$tahsilatSekli->isim.'</option>';
 }
 echo '
     </select>

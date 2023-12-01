@@ -1,0 +1,139 @@
+<?php $this->load->view("inc/datatables_scripts");
+
+echo '<script>
+    $(document).ready(function() {
+        var tabloDiv = "#tahsilat_sekli_tablosu";
+        var tahsilatTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari('[0, "asc"]') . ');
+        var hash = location.hash.replace(/^#/, \'\');
+        if (hash) {
+            $(\'#\' + hash).modal(\'show\');
+        }
+    });
+</script>';
+echo '<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Tahsilat Şekilleri</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
+                        <li class="breadcrumb-item">Yonetim</li>
+                        <li class="breadcrumb-item active">Tahsilat Şekilleri</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="card">
+            <div class="card-body">
+                <div id="container w-100 m-0 p-0">
+                    <div class="row m-0 p-0 d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniTahsilatSekliEkleModal">
+                            Yeni Tahsilat Şekli Ekle
+                        </button>
+                    </div>
+                </div>
+                <div class="modal fade" id="yeniTahsilatSekliEkleModal" tabindex="-1" aria-labelledby="yeniTahsilatSekliEkleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="yeniTahsilatSekliEkleModalLabel">Tahsilat Sekli Ekle</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="tahsilatSekliEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/tahsilatSekliEkle") . '">
+                                    <div class="row">';
+$this->load->view("ogeler/tahsilat_sekli_isim");
+echo '</div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-success" form="tahsilatSekliEkleForm" value="Ekle" />
+                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tahsilat_sekli_tablosu" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Kod</th>
+                                <th>İsim</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
+
+    echo '<tr>
+                                    <td>
+                                        ' . $tahsilatSekli->id . '
+                                    </td>
+                                    <td>
+                                        ' . $tahsilatSekli->isim . '
+                                    </td>
+                                    <td class="align-middle text-center">
+
+                                        <a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#tahsilatSekliDuzenleModal' . $tahsilatSekli->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#tahsilatSekliSilModal' . $tahsilatSekli->id . '">Sil</a>
+                                    </td>
+                                </tr>';
+
+    echo '<div class="modal fade" id="tahsilatSekliSilModal' . $tahsilatSekli->id . '" tabindex="-1" aria-labelledby="tahsilatSekliSilModal' . $tahsilatSekli->id . 'Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="tahsilatSekliSilModal' . $tahsilatSekli->id . 'Label">Tahsilat Şekli Sil</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <span class="font-weight-bold">' . $tahsilatSekli->isim . '</span> türünü silmek istediğinize emin misiniz?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="' . base_url("yonetim/tahsilatSekliSil/" . $tahsilatSekli->id) . '" class="btn btn-danger">Evet</a>
+                                                    <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="tahsilatSekliDuzenleModal' . $tahsilatSekli->id . '" tabindex="-1" aria-labelledby="tahsilatSekliDuzenleModal' . $tahsilatSekli->id . 'Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="tahsilatSekliDuzenleModal' . $tahsilatSekli->id . 'Label">Tahsilat Şekli Düzenle</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="tahsilatSekliDuzenleForm' . $tahsilatSekli->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/tahsilatSekliDuzenle/" . $tahsilatSekli->id) . '">
+                                                        <div class="row">';
+    $this->load->view("ogeler/tahsilat_sekli_isim", array("tahsilat_sekli_isim_value" => $tahsilatSekli->isim, "id" => $tahsilatSekli->id));
+    echo '</div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" class="btn btn-success" form="tahsilatSekliDuzenleForm' . $tahsilatSekli->id . '" value="Kaydet" />
+                                                    <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+}
+echo
+'</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</div>';

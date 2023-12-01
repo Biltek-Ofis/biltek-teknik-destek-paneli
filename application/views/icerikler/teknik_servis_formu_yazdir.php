@@ -268,7 +268,7 @@ if ($cihaz->cihazdaki_hasar == 4) {
 }
 echo '</td>
             <td colspan="5">TAHSİLAT ŞEKLİ</td>
-            <td colspan="5" class="text-center">' . $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli) . '</td>
+            <td colspan="5" class="text-center">' . $cihaz->tahsilat_sekli . '</td>
 
             </tr>
             <tr>

@@ -26,6 +26,11 @@ class Cihazlar_Model extends CI_Model
     {
         return getenv(DB_ON_EK_STR) . "medyalar";
     }
+    
+    public function tahsilatSekilleriTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "tahsilatsekilleri";
+    }
     public function musterileriAktar()
     {
         $this->load->model("Firma_Model");
@@ -152,6 +157,38 @@ class Cihazlar_Model extends CI_Model
         );
         return $veri;
     }
+    public function tahsilatSekli($tur_id)
+    {
+        $query = $this->db->reset_query()->where("id", $tur_id)->get($this->tahsilatSekilleriTabloAdi());
+        if ($query->num_rows() > 0) {
+            return $query->result()[0]->isim;
+        } else {
+            return "";
+        }
+    }
+    public function tahsilatSekilleri()
+    {
+        return $this->db->reset_query()->get($this->tahsilatSekilleriTabloAdi())->result();
+    }
+    public function tahsilatSekliEkle($veri)
+    {
+        return $this->db->reset_query()->insert($this->tahsilatSekilleriTabloAdi(), $veri);
+    }
+    public function tahsilatSekliDuzenle($id, $veri)
+    {
+        return $this->db->reset_query()->where("id", $id)->update($this->tahsilatSekilleriTabloAdi(), $veri);
+    }
+    public function tahsilatSekliSil($id)
+    {
+        return $this->db->reset_query()->where("id", $id)->delete($this->tahsilatSekilleriTabloAdi());
+    }
+    public function tahsilatSekliPost()
+    {
+        $veri = array(
+            "isim" => $this->input->post("isim"),
+        );
+        return $veri;
+    }
     public function cihazVerileriniDonustur($result)
     {
         $this->load->model("Islemler_Model");
@@ -161,6 +198,8 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
             $result[$i]->cihaz_turu_val = $result[$i]->cihaz_turu;
             $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
+            $result[$i]->tahsilat_sekli_val = $result[$i]->tahsilat_sekli;
+            $result[$i]->tahsilat_sekli = $this->tahsilatSekli($result[$i]->tahsilat_sekli);
             $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($result[$i]->sorumlu);
             $result[$i]->sorumlu_val = $result[$i]->sorumlu;
             $result[$i]->sorumlu = isset($sorumlu_per) ? $sorumlu_per->ad_soyad : "Atanmamış";

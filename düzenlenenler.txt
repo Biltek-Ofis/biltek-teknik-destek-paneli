@@ -3,3 +3,5 @@ application/controllers/
 application/models/      
 application/views/
 dist/
+_tahsilatsekilleri.sql
+script.sql
