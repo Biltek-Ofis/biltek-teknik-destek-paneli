@@ -22,7 +22,7 @@ $(document).ready(function () {
 				stoklariGetir(yapilanIslem, i);
 			}
 		});
-		$("#yapilanIslem" + i).keyup(function () {
+		$("#yapilanIslem" + i).change(function () {
 			$("#stokKodText" + i).html("Yok");
 			$("#yapilanIslemStokKod" + i).val("");
 			var yapilanIslem = $("#yapilanIslem" + i).val();
@@ -42,7 +42,7 @@ $(document).ready(function () {
 				i +
 				", #yapilanIslemKdv" +
 				i
-		).keyup(function () {
+		).change(function () {
 			islemHesapla(i);
 		});
 	}

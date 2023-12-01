@@ -99,20 +99,36 @@ class Cihaz extends Varsayilancontroller
                     );
                     $duzenle = $this->Cihazlar_Model->islemDuzenle($id, $veri);
                     if (!$duzenle) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
-                        return;
+                        if($tur=="post"){
+                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+                        }else{
+                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                            return;
+                        }
                     }
                 }else{
                     $sil =$this->Cihazlar_Model->islemSil($id, $i);
                     if (!$sil) {
-                        $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
-                        return;
+                        if($tur=="post"){
+                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+                        }else{
+                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
+                            return;
+                        }
                     }
                 }
             }
-            redirect(base_url("cihaz/" . $id));
+            if($tur=="post"){
+                echo json_encode(array("mesaj" => "", "sonuc" => 1));
+            }else{
+                redirect(base_url("cihaz/" . $id));
+            }
         } else {
-            $this->Kullanicilar_Model->girisUyari("cikis");
+            if($tur=="post"){
+                echo json_encode(array("mesaj" => "Bu işlemi gerçekleştirebilmek için tekrar kullanıcı girişi yapmalısınız! Lütfen sayfayı yenileyin ve tekrar deneyin.", "sonuc" => 0));
+            }else{
+                $this->Kullanicilar_Model->girisUyari("cikis");
+            }
         }
     }
     public function teknik_servis_formu($id)
