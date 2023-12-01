@@ -196,7 +196,8 @@ class Islemler_Model extends CI_Model
         "Nakit",
         "Kredi Kartı",
         "Mail Order",
-        "Açık Hesap"
+        "Açık Hesap",
+        "Banka Havalesi"
     );
     public function tahsilatSekli($index)
     {
