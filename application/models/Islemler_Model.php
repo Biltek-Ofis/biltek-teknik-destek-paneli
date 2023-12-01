@@ -191,18 +191,6 @@ class Islemler_Model extends CI_Model
     {
         return $this->arrayGetir($this->cihazDurumuClass, $index);
     }
-    public $tahsilatSekli = array(
-        "",
-        "Nakit",
-        "Kredi Kartı",
-        "Mail Order",
-        "Açık Hesap",
-        "Banka Havalesi"
-    );
-    public function tahsilatSekli($index)
-    {
-        return $this->arrayGetir($this->tahsilatSekli, $index);
-    }
     public $faturaDurumu = array(
         "Belirtilmedi",
         "Fatura Kesilmedi",

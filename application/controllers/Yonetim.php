@@ -316,7 +316,7 @@ class Yonetim extends Varsayilancontroller
 			if ($ekle) {
 				redirect(base_url("yonetim/cihaz_turleri"));
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri#yeniCihazTuruEkleModal", "Cihaz türü eklenemedi lütfen daha sonra tekrar deneyin");
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri", "Cihaz türü düzenlenemedi lütfen daha sonra tekrar deneyin");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();
@@ -329,7 +329,57 @@ class Yonetim extends Varsayilancontroller
 			if ($sil) {
 				redirect(base_url("yonetim/cihaz_turleri"));
 			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri", "Cihaz türü eklenemedi lütfen daha sonra tekrar deneyin");
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_turleri", "Cihaz türü silinemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	
+	public function tahsilat_sekilleri()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Tahsilat Şekilleri", "yonetim/tahsilat_sekilleri", [], "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function tahsilatSekliEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->tahsilatSekliPost();
+			$ekle = $this->Cihazlar_Model->tahsilatSekliEkle($veri);
+			if ($ekle) {
+				redirect(base_url("yonetim/tahsilat_sekilleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/tahsilat_sekilleri#yeniTahsilatSekliEkleModal", "Tahsilat şekli eklenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function tahsilatSekliDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->tahsilatSekliPost();
+			$ekle = $this->Cihazlar_Model->tahsilatSekliDuzenle($id, $veri);
+			if ($ekle) {
+				redirect(base_url("yonetim/tahsilat_sekilleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/tahsilat_sekilleri", "Tahsilat şekli düzenlenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function tahsilatSekliSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$sil = $this->Cihazlar_Model->tahsilatSekliSil($id);
+			if ($sil) {
+				redirect(base_url("yonetim/tahsilat_sekilleri"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/tahsilat_sekilleri", "Tahsilat şekli silinemedi lütfen daha sonra tekrar deneyin");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();

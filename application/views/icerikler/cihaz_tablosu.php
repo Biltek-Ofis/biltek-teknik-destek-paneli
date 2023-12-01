@@ -751,7 +751,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->cikis_tarihi,
     $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
     $cihaz->guncel_durum,
-    $this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli),
+    $cihaz->tahsilat_sekli,
     $this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu),
     $cihaz->fis_no,
     $yapilanİslemler,
@@ -769,7 +769,7 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($this->Islemler_Model->servisTuru($cihaz->servis_turu)),
     donusturOnclick($cihaz->sorumlu),
     donusturOnclick($cihaz->yapilan_islem_aciklamasi),
-    donusturOnclick($this->Islemler_Model->tahsilatSekli($cihaz->tahsilat_sekli)),
+    donusturOnclick($cihaz->tahsilat_sekli),
     donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
     donusturOnclick($cihaz->fis_no)
   );
@@ -876,20 +876,6 @@ echo '
         return "' . $this->Islemler_Model->cihazDurumu[0] . '";
     }
   }';
-  echo '
-      function tahsilatSekli(id) {
-        id = parseInt(id);
-        switch (id) {';
-  for ($i = 0; $i < count($this->Islemler_Model->tahsilatSekli); $i++) {
-    echo '
-          case ' . $i . ':
-            return "' . $this->Islemler_Model->tahsilatSekli[$i] . '";';
-  }
-  echo '
-          default:
-            return "' . $this->Islemler_Model->tahsilatSekli[0] . '";
-        }
-      }';
       echo '
           function faturaDurumu(id) {
             id = parseInt(id);
@@ -974,7 +960,7 @@ function donustur(str, value) {
       .replaceAll("{cikis_tarihi}", value.cikis_tarihi)
       .replaceAll("{guncel_durum}", cihazDurumu(value.guncel_durum))
       .replaceAll("{guncel_durum_sayi}", value.guncel_durum)
-      .replaceAll("{tahsilat_sekli}", tahsilatSekli(value.tahsilat_sekli))
+      .replaceAll("{tahsilat_sekli}", value.tahsilat_sekli)
       .replaceAll("{fatura_durumu}", faturaDurumu(value.fatura_durumu))
       .replaceAll("{fis_no}", value.fis_no)
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\')
@@ -992,7 +978,7 @@ function donustur(str, value) {
       .replaceAll("{servis_turu_onclick}", donusturOnclick(servisTuru(value.servis_turu)))
       .replaceAll("{sorumlu_onclick}", donusturOnclick(value.sorumlu))
       .replaceAll("{yapilan_islem_aciklamasi_onclick}", donusturOnclick(value.yapilan_islem_aciklamasi))
-      .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(tahsilatSekli(value.tahsilat_sekli)))
+      .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(value.tahsilat_sekli))
       .replaceAll("{fatura_durumu_onclick}", donusturOnclick(faturaDurumu(value.fatura_durumu)))
       .replaceAll("{fis_no_onclick}", donusturOnclick(value.fis_no))
       ;
@@ -1066,7 +1052,7 @@ echo 'function cihazBilgileriniGetir(){
           $("#YedekDurumu").html(evetHayir(value.yedek_durumu));
           $("#Sorumlu2").html(value.sorumlu);
           $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
-          $("#TahsilatSekli").html(tahsilatSekli(value.tahsilat_sekli));
+          $("#TahsilatSekli").html(value.tahsilat_sekli);
           $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
           $("#fisNo").html(value.fis_no);
           medyalariYukle(value.id);
@@ -1098,7 +1084,7 @@ echo 'function cihazBilgileriniGetir(){
           $("input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
           $("input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
           $("select#guncel_durum").val(value.guncel_durum).change();
-          $("select#tahsilat_sekli").val(value.tahsilat_sekli).change();
+          $("select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
           $("select#fatura_durumu").val(value.fatura_durumu).change();
           $("input#fis_no").val(value.fis_no);
           $("textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
