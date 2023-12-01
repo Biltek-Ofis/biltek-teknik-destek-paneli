@@ -74,22 +74,32 @@ echo '<script>
         if(data["sonuc"]==1){
           onComplete();
         }else{
+          $("#kaydetBtn").prop("disabled", false);
+          $("#kaydediliyorModal").modal("hide");
           $("#hata-mesaji").html(data["mesaj"]);
           $("#statusErrorsModal").modal("show");
         }
       }catch(error){
+        $("#kaydetBtn").prop("disabled", false);
+        $("#kaydediliyorModal").modal("hide");
         $("#hata-mesaji").html(error);
         $("#statusErrorsModal").modal("show");
       }
     })
     .fail(function(xhr, status, error) {
+      $("#kaydetBtn").prop("disabled", false);
+      $("#kaydediliyorModal").modal("hide");
       $("#hata-mesaji").html(error);
       $("#statusErrorsModal").modal("show");
     });
   }
   function detaylariKaydet(){
+    $("#kaydediliyorModal").modal("show");
+    $("#kaydetBtn").prop("disabled", true);
     formKaydet("#dt-DuzenleForm", function(){
       formKaydet("#dt-YapilanIslemlerForm", function(){
+        $("#kaydediliyorModal").modal("hide");
+        $("#kaydetBtn").prop("disabled", false);
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
         $("#statusSuccessModal").modal("show");
@@ -1291,7 +1301,7 @@ echo '
   </div>
 </div>';
 echo '
-<div class="modal fade" id="statusErrorsModal" tabindex="-1" aria-labelledby="statusErrorsModalLabel" aria-hidden="true">
+<div class="modal fade" id="statusErrorsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusErrorsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <div class="modal-body text-center p-lg-4">
@@ -1310,7 +1320,7 @@ echo '
 </div>';
 
 echo '
-<div class="modal fade" id="statusSuccessModal" tabindex="-1" aria-labelledby="statusSuccessModalLabel" aria-hidden="true">
+<div class="modal fade" id="statusSuccessModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusSuccessModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <div class="modal-body text-center p-lg-4">
@@ -1318,9 +1328,23 @@ echo '
           <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
           <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
         </svg> 
-        <h4 class="text-success mt-3">Başarısız</h4> 
+        <h4 class="text-success mt-3">Başarılı</h4> 
         <p id="basarili-mesaji" class="mt-3"></p>
         <button type="button" class="btn btn-sm mt-3 btn-success"  data-dismiss="modal">TAMAM</button> 
+      </div>
+    </div>
+  </div>
+</div>';
+
+echo '
+<div class="modal" id="kaydediliyorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="kaydediliyorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center p-lg-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Kaydediliyor...</span>
+        </div>
+        <p>Kaydediliyor...</p>
       </div>
     </div>
   </div>
