@@ -47,7 +47,18 @@ class Cihazyonetimi extends Varsayilancontroller
 	public function cihazlarTumuJQ()
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
-			echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
+			$spesifik = $this->input->post('spesifik');
+			if(isset($spesifik)){
+				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("",$spesifik));
+			}else{
+				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
+			}
+		}
+	}
+	public function sonCihazJQ()
+	{
+		if ($this->Giris_Model->kullaniciGiris()) {
+			echo json_encode($this->Cihazlar_Model->sonCihazJQ());
 		}
 	}
 	public function cihazEkle()

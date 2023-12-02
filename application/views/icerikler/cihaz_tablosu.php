@@ -210,7 +210,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <tbody id="cihazlar">';
 $sonCihazID = 0;
 
-$tabloOrnek = '<tr id="cihaz{id}" class="{class}" onClick="$(\\\'#{id}Yeni\\\').remove()">
+$tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row" id="{id}ServisNo">{servis_no}</th>
   <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
   <td id="{id}MusteriGSM">{telefon_numarasi}</td>
@@ -1268,13 +1268,23 @@ echo '
           }
         });
       });
-      $.get(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {}, function(data) {
+      
+      $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
         sayac = 0;
         $.each(JSON.parse(data), function(index, value) {
           if (sayac == 0) {
             sonCihazID = value.id;
           }
           sayac++;
+        });
+      });
+      var gorunenCihazlarIDs = [];
+
+      $("#cihazlar tr").each(function() {
+        gorunenCihazlarIDs.push($(this).data("cihazid"));
+      });
+      $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {spesifik:gorunenCihazlarIDs}, function(data) {
+        $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
             "#cihaz" + value.id
           ).length > 0;
@@ -1282,7 +1292,6 @@ echo '
             let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
             const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onClick", cihazDetayBtn);
-            console.log("Çalıştı");
             $("#cihaz" + value.id).attr(\'class\', \'\');
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "ServisNo, #" + value.id + "ServisNo3").html(value.servis_no);
@@ -1303,6 +1312,7 @@ if ($sorumlu_belirtildimi) {
 echo '
           }
         });
+        console.log(Object.keys(JSON.parse(data)).length+ " cihaz güncellendi.");
       });
 
       $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
