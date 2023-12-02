@@ -197,6 +197,9 @@ function medyaSil(cihaz_id, id){
 					$("#dt-medyalar #medyaYok").show();
 				}
 			}
+			if($("#medyaSilModal").length > 0){
+				$("#medyaSilModal").modal("hide");
+			}
 			console.log("Medya Silindi");
         }else{
 			alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");

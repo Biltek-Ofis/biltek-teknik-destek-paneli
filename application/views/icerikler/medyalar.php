@@ -32,7 +32,7 @@ foreach ($medyalar as $medya) {
     if (isset($silButonu) && $silButonu) {
         echo '<div class="col-12 mb-2">
                 <!--<a href="' . base_url("cihaz/medyaSil/" . $id . "/"  . $medya->id) . '" class="btn btn-danger">Sil</a>-->
-                <button onclick="medyaSil('.$id.', '.$medya->id.')" class="btn btn-danger">Sil</button>
+                <button onclick="$(\'#medyaSilOnayBtn\').attr(\'onclick\',\'medyaSil('.$id.', '.$medya->id.')\');$(\'#medyaSilModal\').modal(\'show\');" class="btn btn-danger">Sil</button>
             </div>';
     }
 
