@@ -134,6 +134,9 @@ echo '<script>
     $.post("' . base_url("medyalar") . '/" + id, {}, function(data) {
       $("#list-medyalar").html(data);
     });
+    $.post("' . base_url("medyalar") . '/" + id + "/1", {}, function(data) {
+      $("#dt-medyalar").html(data);
+    });
   }
   function silModaliGoster(id, servis_no, musteri_adi){
     $("#silOnayBtn").attr("href", "' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazSil") . '/" + id);
@@ -404,151 +407,194 @@ $(document).ready(function(){
           </div>
           
           <div id="dt-duzenle" class="col-12" style="display:none;">
-              <form id="dt-DuzenleForm" autocomplete="off" method="post" action="">
-                <div class="table-responsive">
-                  <table class="table table-flush">
-                    <thead></thead>
-                    <tbody>
-                      <tr>
-                          <th class="align-middle">Müşteri Adı: </th>
-                          <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Adresi: </th>
-                          <td class="align-middle">'.$this->load->view("ogeler/adres", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">GSM *: </th>
-                          <td class="align-middle">'.$this->load->view("ogeler/gsm", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Cihaz Türü:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/cihaz_turleri", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Sorumlu Personel:</th>
-                          <td id="dz-sorumlu-personel" class="align-middle">'.($this->Kullanicilar_Model->yonetici() ?$this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) : "").'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Markası:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/cihaz_markasi", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Modeli:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/cihaz_modeli", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Seri Numarası:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/seri_no", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Cihaz Şifresi:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/cihaz_sifresi", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/hasar_turu", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Teslim alınırken yapılan hasar tespiti:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/hasar_tespiti", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Arıza Açıklaması:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Teslim Alınanlar:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Servis Türü:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/servis_turu", array("sifirla" => true), true).'</td>
-                      </tr>
-                      <tr>
-                          <th class="align-middle">Yedek Alınacak mı?:</th>
-                          <td class="align-middle">'.$this->load->view("ogeler/yedek", array("sifirla" => true), true).'</td>
-                      </tr>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                  <a class="nav-link active" id="genel-bilgiler-tab" data-toggle="pill" href="#genel-bilgiler" role="tab" aria-controls="genel-bilgiler" aria-selected="false">Genel Bilgiler</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="yapilan-islemler-tab" data-toggle="pill" href="#yapilan-islemler" role="tab" aria-controls="yapilan-islemler" aria-selected="false">Yapılan İşlemler</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="medyalar-tab" data-toggle="pill" href="#medyalar" role="tab" aria-controls="medyalar" aria-selected="false">Medyalar</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="genel-bilgiler" role="tabpanel" aria-labelledby="genel-bilgiler-tab">
+                <form id="dt-DuzenleForm" autocomplete="off" method="post" action="">
+                  <div class="table-responsive">
+                    <table class="table table-flush">
+                      <thead></thead>
+                      <tbody>
+                        <tr>
+                            <th class="align-middle">Müşteri Adı: </th>
+                            <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Adresi: </th>
+                            <td class="align-middle">'.$this->load->view("ogeler/adres", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">GSM *: </th>
+                            <td class="align-middle">'.$this->load->view("ogeler/gsm", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Cihaz Türü:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_turleri", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Sorumlu Personel:</th>
+                            <td id="dz-sorumlu-personel" class="align-middle">'.($this->Kullanicilar_Model->yonetici() ?$this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) : "").'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Markası:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_markasi", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Modeli:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_modeli", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Seri Numarası:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/seri_no", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Cihaz Şifresi:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_sifresi", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/hasar_turu", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Teslim alınırken yapılan hasar tespiti:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/hasar_tespiti", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Arıza Açıklaması:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Teslim Alınanlar:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Servis Türü:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/servis_turu", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Yedek Alınacak mı?:</th>
+                            <td class="align-middle">'.$this->load->view("ogeler/yedek", array("sifirla" => true), true).'</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane fade" id="yapilan-islemler" role="tabpanel" aria-labelledby="yapilan-islemler">
+                <form id="dt-YapilanIslemlerForm" autocomplete="off" method="post" action="">
+                  <div class="table-responsive">
+                    <table class="table table-flush">
+                      <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="form">
+                          <tr>
+                              <th class="align-middle" colspan="2">Giriş Tarihi:</th>
+                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tarih", array("tarih_id"=>"dz-tarih","sifirla" => true), true).'</td>
+                          </tr>
+                          <tr>
+                              <th class="align-middle" colspan="2">Bildirim Tarihi:</th>
+                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/bildirim_tarihi", array("sifirla" => true), true).'</td>
+                          </tr>
+                          <tr>
+                              <th class="align-middle" colspan="2">Çıkış Tarihi:</th>
+                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/cikis_tarihi", array("sifirla" => true), true).'</td>
+                          </tr>
+                          <tr>
+                            <th class="align-middle" colspan="2">Güncel Durum:</th>
+                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/guncel_durum", array("sifirla" => true), true).'</td>
+                          </tr>
+                          <tr>
+                            <th class="align-middle" colspan="2">Tahsilat Şekli:</th>
+                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true), true).'</td>
+                          </tr>
+                          <tr>
+                            <th class="align-middle" colspan="2">Fatura Durumu:</th>
+                            <td id="fatura_durumu_td" class="align-middle" colspan="2">'.$this->load->view("ogeler/fatura_durumu", array("sifirla" => true), true).'</td>
+                            <td id="fis_no_td" class="align-middle" style="display:none;" colspan="0">'.$this->load->view("ogeler/fis_no", array("sifirla" => true), true).'</td>
+                          </tr>
                     </tbody>
-                  </table>
-                </div>
-              </form>
-              <form id="dt-YapilanIslemlerForm" autocomplete="off" method="post" action="">
-                <div class="table-responsive">
-                  <table class="table table-flush">
-                    <thead>
-                      <tr>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                      </tr>
-                    </thead>
-                    <tbody id="form">
+                    </table>
+                    <table class="table table-flush">
+                      <thead>
                         <tr>
-                            <th class="align-middle" colspan="2">Giriş Tarihi:</th>
-                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tarih", array("tarih_id"=>"dz-tarih","sifirla" => true), true).'</td>
+                            <th>#</th>
+                            <!--<th>SK</th>-->
+                            <th>Malzeme/İşçilik</th>
+                            <th>Miktar</th>
+                            <th>Birim Fiyat (TL)</th>
+                            <th>KDV Oranı (%)</th>
+                            <th>Tutar</th>
+                            <th>KDV</th>
+                        </tr>
+                      </thead>
+                      <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
+                        <tr>
+                            <th colspan="5">Toplam</th>
+                            <td colspan="2" id="yapilanIslemToplam">0 TL</td>
                         </tr>
                         <tr>
-                            <th class="align-middle" colspan="2">Bildirim Tarihi:</th>
-                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/bildirim_tarihi", array("sifirla" => true), true).'</td>
+                            <th colspan="5">KDV</th>
+                            <td colspan="2" id="yapilanIslemKdv">0 TL</td>
                         </tr>
                         <tr>
-                            <th class="align-middle" colspan="2">Çıkış Tarihi:</th>
-                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/cikis_tarihi", array("sifirla" => true), true).'</td>
+                            <th colspan="5">Genel Toplam</th>
+                            <td colspan="2" id="yapilanIslemGenelToplam">0 TL</td>
                         </tr>
                         <tr>
-                          <th class="align-middle" colspan="2">Güncel Durum:</th>
-                          <td class="align-middle" colspan="2">'.$this->load->view("ogeler/guncel_durum", array("sifirla" => true), true).'</td>
+                            <td colspan="7">
+                                <div class="form-group p-0 m-0 col">
+                                    <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"></textarea>
+                                </div>
+                            </td>
                         </tr>
-                        <tr>
-                          <th class="align-middle" colspan="2">Tahsilat Şekli:</th>
-                          <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true), true).'</td>
-                        </tr>
-                        <tr>
-                          <th class="align-middle" colspan="2">Fatura Durumu:</th>
-                          <td id="fatura_durumu_td" class="align-middle" colspan="2">'.$this->load->view("ogeler/fatura_durumu", array("sifirla" => true), true).'</td>
-                          <td id="fis_no_td" class="align-middle" style="display:none;" colspan="0">'.$this->load->view("ogeler/fis_no", array("sifirla" => true), true).'</td>
-                        </tr>
-                  </tbody>
-                  </table>
-                  <table class="table table-flush">
-                    <thead>
-                      <tr>
-                          <th>#</th>
-                          <!--<th>SK</th>-->
-                          <th>Malzeme/İşçilik</th>
-                          <th>Miktar</th>
-                          <th>Birim Fiyat (TL)</th>
-                          <th>KDV Oranı (%)</th>
-                          <th>Tutar</th>
-                          <th>KDV</th>
-                      </tr>
-                    </thead>
-                    <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
-                      <tr>
-                          <th colspan="5">Toplam</th>
-                          <td colspan="2" id="yapilanIslemToplam">0 TL</td>
-                      </tr>
-                      <tr>
-                          <th colspan="5">KDV</th>
-                          <td colspan="2" id="yapilanIslemKdv">0 TL</td>
-                      </tr>
-                      <tr>
-                          <th colspan="5">Genel Toplam</th>
-                          <td colspan="2" id="yapilanIslemGenelToplam">0 TL</td>
-                      </tr>
-                      <tr>
-                          <td colspan="7">
-                              <div class="form-group p-0 m-0 col">
-                                  <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"></textarea>
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane fade" id="medyalar" role="tabpanel" aria-labelledby="medyalar">
+                <div id="dt-medyalar"></div>
+                <div class="row text-center">
+                  <div class="col-2"></div>
+                  <div class="col-8">
+                      <form id="dt-UploadForm" onsubmit="" enctype="multipart/form-data" method="post">
+                          <div class="form-group">
+                              <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
+                          </div>
+                          <div class="form-group">
+                              <div class="progress" id="progressDiv">
+                                  <progress id="progressBar" value="0" max="100" style="width:100%; height: 1.2rem;"></progress>
                               </div>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          </div>
+                          <div class="form-group">
+                              <h3 id="durum"></h3>
+                              <p id="yukleme_durumu"></p>
+                          </div>
+                      </form>
+                      <div class="form-group">
+                          <button id="medyaYukleBtn" class="btn btn-primary">Medya Yükle</button>
+                      </div>
+                  </div>
+                  <div class="col-2"></div>
                 </div>
-              </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1062,6 +1108,7 @@ echo 'function cihazBilgileriniGetir(){
           // Düzenleme
           $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
           $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
+          $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
           $("input#musteri_kod").val(value.musteri_kod);
           $("input#musteri_adi").val(value.musteri_adi);
           $("input#adres").val(value.adres);
