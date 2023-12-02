@@ -6,3 +6,4 @@ application/views/
 dist/
 _tahsilatsekilleri.sql
 script.sql
+web.config
