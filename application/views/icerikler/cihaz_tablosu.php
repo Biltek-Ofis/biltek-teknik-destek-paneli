@@ -717,7 +717,9 @@ $eskiler = array(
   "{yapilan_islem_aciklamasi_onclick}",
   "{tahsilat_sekli_onclick}",
   "{fatura_durumu_onclick}",
-  "{fis_no_onclick}"
+  "{fis_no_onclick}",
+  "{takip_no}",
+  "{seri_no_onclick}"
 );
 
 $yapilanIslemToplamEskiArray = array(
@@ -831,7 +833,9 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($cihaz->yapilan_islem_aciklamasi),
     donusturOnclick($cihaz->tahsilat_sekli),
     donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
-    donusturOnclick($cihaz->fis_no)
+    donusturOnclick($cihaz->fis_no),
+    $cihaz->takip_numarasi,
+    donusturOnclick($cihaz->seri_no)
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
   echo $tablo;
@@ -1041,6 +1045,8 @@ function donustur(str, value) {
       .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(value.tahsilat_sekli))
       .replaceAll("{fatura_durumu_onclick}", donusturOnclick(faturaDurumu(value.fatura_durumu)))
       .replaceAll("{fis_no_onclick}", donusturOnclick(value.fis_no))
+      .replaceAll("{takip_no}", value.takip_numarasi)
+      .replaceAll("{seri_no_onclick}", donusturOnclick(value.seri_no))
       ;
   }';
 echo 'function tarihiFormatla(tarih12){
