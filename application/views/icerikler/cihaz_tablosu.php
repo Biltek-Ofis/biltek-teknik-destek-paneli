@@ -615,7 +615,16 @@ $(document).ready(function(){
   </div>
 </div>';
 
-$cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihaziSilModal" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModalLabel" aria-hidden="true">
+$cihazSilModalOrnek = $silButonuGizle ? '' : '<script>
+$(document).ready(function(){
+    $("#cihaziSilModal").on("hidden.bs.modal", function (e) {
+        $("#ServisNo4").html("");
+        $("#MusteriAdi3").html("");
+        $("#silOnayBtn").attr("href", "#");
+    });
+});
+</script>
+<div class="modal fade" id="cihaziSilModal" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -624,7 +633,7 @@ $cihazSilModalOrnek = $silButonuGizle ? '' : '<div class="modal fade" id="cihazi
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div id="" class="modal-body">
       Bu cihazı (<span id="ServisNo4"></span> - <span id="MusteriAdi3"></span>) silmek istediğinize emin misiniz?
       </div>
       <div class="modal-footer">
