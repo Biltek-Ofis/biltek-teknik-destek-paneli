@@ -185,9 +185,17 @@ function medyaSil(cihaz_id, id){
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-			$("#medyaGoster7"+id).remove();
-			if($('.medyaGoster').length==0){
-				$("#medyaYok").show();
+			if($("#list-medyalar").length > 0){
+				$("#list-medyalar #medyaGoster"+id).remove();
+				if($('#list-medyalar .medyaGoster').length==0){
+					$("#list-medyalar #medyaYok").show();
+				}
+			}
+			if($("#dt-medyalar").length > 0){
+				$("#dt-medyalar #medyaGoster"+id).remove();
+				if($('#dt-medyalar .medyaGoster').length==0){
+					$("#dt-medyalar #medyaYok").show();
+				}
 			}
 			console.log("Medya Silindi");
         }else{
