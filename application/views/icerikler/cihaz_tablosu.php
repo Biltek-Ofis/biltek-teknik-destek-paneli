@@ -1252,84 +1252,85 @@ echo '
     setInterval(() => {
       if(!duzenleme_modu){
         cihazBilgileriniGetir();
-      }
-      $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
-        $.each(JSON.parse(data), function(index, value) {
-          const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
-          if (cihazVarmi) {
-            if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
-              $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
-              $("#cihaziSilModal").modal("hide");
-              $("#cihazSilindiModal").modal("show");
-            }
-            cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-          }
-        });
-      });
-      
-      $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
-        sayac = 0;
-        $.each(JSON.parse(data), function(index, value) {
-          if (sayac == 0) {
-            sonCihazID = value.id;
-          }
-          sayac++;
-        });
-      });
-      var gorunenCihazlarIDs = [];
-
-      $("#cihazlar tr").each(function() {
-        gorunenCihazlarIDs.push($(this).data("cihazid"));
-      });
-      $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {spesifik:gorunenCihazlarIDs}, function(data) {
-        $.each(JSON.parse(data), function(index, value) {
-          const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
-          if (cihazVarmi) {
-            let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
-            const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
-            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onClick", cihazDetayBtn);
-            $("#cihaz" + value.id).attr(\'class\', \'\');
-            $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
-            $("#" + value.id + "ServisNo, #" + value.id + "ServisNo3").html(value.servis_no);
-            $("#" + value.id + "MusteriAdi").html(value.musteri_adi);
-            $("#" + value.id + "CihazTuru").html(value.cihaz_turu);
-            $("#" + value.id + "Sorumlu").html(value.sorumlu);
-            $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
-            $("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
-            $("#" + value.id + "MusteriGSM").html(value.telefon_numarasi);
-            $("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));';
-if ($sorumlu_belirtildimi) {
-  $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
-  echo '
-            if(value.sorumlu != "' . $kullaniciBilgileri["ad_soyad"] . '"){
+        $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
+          $.each(JSON.parse(data), function(index, value) {
+            const cihazVarmi = document.querySelectorAll(
+              "#cihaz" + value.id
+            ).length > 0;
+            if (cihazVarmi) {
+              if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
+                $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+                $("#cihaziSilModal").modal("hide");
+                $("#cihazSilindiModal").modal("show");
+              }
               cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-            }';
-}
-echo '
-          }
+            }
+          });
         });
-        console.log(Object.keys(JSON.parse(data)).length+ " cihaz güncellendi.");
-      });
+        
+        $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
+          sayac = 0;
+          $.each(JSON.parse(data), function(index, value) {
+            if (sayac == 0) {
+              sonCihazID = value.id;
+            }
+            sayac++;
+          });
+        });
+        var gorunenCihazlarIDs = [];
 
-      $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
-        $.each(JSON.parse(data), function(index, value) {
-          const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
-          if (!cihazVarmi) {
-            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-            let tabloOrnek = \'' . $tabloOrnek . '\';
-            
-            const tablo = donustur(tabloOrnek, value);
-            cihazlarTablosu.row.add($(tablo)).draw();
-            //$("#cihazlar").prepend(tablo);
-          }
+        $("#cihazlar tr").each(function() {
+          gorunenCihazlarIDs.push($(this).data("cihazid"));
         });
-      });
+        $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {spesifik:gorunenCihazlarIDs}, function(data) {
+          $.each(JSON.parse(data), function(index, value) {
+            const cihazVarmi = document.querySelectorAll(
+              "#cihaz" + value.id
+            ).length > 0;
+            if (cihazVarmi) {
+              let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
+              const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
+              $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onClick", cihazDetayBtn);
+              $("#cihaz" + value.id).attr(\'class\', \'\');
+              $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
+              $("#" + value.id + "ServisNo, #" + value.id + "ServisNo3").html(value.servis_no);
+              $("#" + value.id + "MusteriAdi").html(value.musteri_adi);
+              $("#" + value.id + "CihazTuru").html(value.cihaz_turu);
+              $("#" + value.id + "Sorumlu").html(value.sorumlu);
+              $("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
+              $("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
+              $("#" + value.id + "MusteriGSM").html(value.telefon_numarasi);
+              $("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));';
+  if ($sorumlu_belirtildimi) {
+    $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
+    echo '
+              if(value.sorumlu != "' . $kullaniciBilgileri["ad_soyad"] . '"){
+                cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+              }';
+  }
+  echo '
+            }
+          });
+          console.log(Object.keys(JSON.parse(data)).length+ " cihaz güncellendi.");
+        });
+
+        $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
+          $.each(JSON.parse(data), function(index, value) {
+            const cihazVarmi = document.querySelectorAll(
+              "#cihaz" + value.id
+            ).length > 0;
+            if (!cihazVarmi) {
+              //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+              let tabloOrnek = \'' . $tabloOrnek . '\';
+              
+              const tablo = donustur(tabloOrnek, value);
+              cihazlarTablosu.row.add($(tablo)).draw();
+              //$("#cihazlar").prepend(tablo);
+            }
+          });
+        });
+        
+      }
     }, 5000);
     $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").on("hidden.bs.modal", function (e) {
       detaylariGoster();
