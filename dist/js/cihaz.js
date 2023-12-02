@@ -130,13 +130,13 @@ function _(abc) {
 	return document.getElementById(abc);
 }
 
-function dosyaYukle(id) {
+function dosyaYukle(id, tamamlama_func) {
 	var dosya = _("yuklenecekDosya").files[0];
 	var formdata = new FormData();
 	formdata.append("yuklenecekDosya", dosya);
 	var ajax = new XMLHttpRequest();
 	ajax.upload.addEventListener("progress", ilerlemeDurumu, false);
-	ajax.addEventListener("load", tamamlamaDurumu, false);
+	ajax.addEventListener("load", function(event){tamamlamaDurumu(event,tamamlama_func);}, false);
 	ajax.addEventListener("error", hataDurumu, false);
 	ajax.addEventListener("abort", iptalDurumu, false);
 	ajax.open("POST", base_url + "/cihaz/medyaYukle/" + id);
@@ -157,7 +157,7 @@ function ilerlemeDurumu(event) {
 	_("durum").innerHTML = Math.round(percent) + "% yüklendi";
 }
 
-function tamamlamaDurumu(event) {
+function tamamlamaDurumu(event, tamamlama_func) {
 	var response = JSON.parse(event.target.responseText);
 	_("durum").innerHTML = response.mesaj;
 	_("progressBar").value = 0;
@@ -166,7 +166,8 @@ function tamamlamaDurumu(event) {
 		_("yukleme_durumu").innerHTML = "";
 	}
 	if (response.sonuc == 1) {
-		window.location.reload();
+		$("#yuklenecekDosya").val("");
+		tamamlama_func();
 	}
 }
 

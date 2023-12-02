@@ -346,7 +346,7 @@ $this->load->view("icerikler/medyalar", array("id" => $cihaz->id, "silButonu" =>
 echo '<div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <form id="upload_form" onsubmit="dosyaYukle(' . $cihaz->id . ' )" enctype="multipart/form-data" method="post">
+                                <form id="upload_form" onsubmit="dosyaYukle(' . $cihaz->id . ' , function(){window.location.reload();})" enctype="multipart/form-data" method="post">
                                     <div class="form-group">
                                         <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
                                     </div>
