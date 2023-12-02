@@ -266,13 +266,29 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTumuJQ($sorumlu = "")
+    public function cihazlarTumuJQ($sorumlu = "", $spesifik = array())
     {
         $where = array();
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
         }
-        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $where_in = NULL;
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
+
+        if(count($spesifik)>0){
+            $result = $result->where_in("id", $spesifik);
+        }
+        $result = $result->get($this->cihazlarTabloAdi())->result();
+        return $this->cihazVerileriniDonustur($result);
+    }
+    
+    public function sonCihazJQ($sorumlu = "")
+    {
+        $where = array();
+        if ($sorumlu != "") {
+            $where["sorumlu"] = $sorumlu;
+        }
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->LIMIT(1)->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTekTurTumuJQ($tur)
