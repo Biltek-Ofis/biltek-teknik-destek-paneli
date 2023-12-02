@@ -430,3 +430,5 @@ echo '<div class="row text-center">
         </div>
     </div>
 </div>';
+
+$this->load->view("inc/modal_medyasil");

@@ -1387,3 +1387,5 @@ echo '
     </div>
   </div>
 </div>';
+
+$this->load->view("inc/modal_medyasil");
