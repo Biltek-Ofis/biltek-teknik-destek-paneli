@@ -590,6 +590,9 @@ $(document).ready(function(){
                       <div class="form-group">
                           <button id="medyaYukleBtn" class="btn btn-primary">Medya Yükle</button>
                       </div>
+                      <div class="alert alert-info" role="alert">
+                        Not: Medyaları düzenledikten sonra kaydet butonuna basmanıza gerek yoktur. Medyalar otomatik olarak kaydedilir.
+                      </div>
                   </div>
                   <div class="col-2"></div>
                 </div>
