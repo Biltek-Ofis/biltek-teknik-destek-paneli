@@ -216,15 +216,24 @@ class Cihaz extends Varsayilancontroller
             $this->Kullanicilar_Model->girisUyari("cikis");
         }
     }
-    public function medyaSil($cihaz_id, $id)
+    public function medyaSil($cihaz_id, $id, $json="get")
     {
         $medya = $this->Cihazlar_Model->medyaBul($id);
         unlink($medya->konum);
         $sil = $this->Cihazlar_Model->medyaSil($id);
-        if ($sil) {
-            redirect(base_url("cihaz/" . $cihaz_id));
-        } else {
-            $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Medya silinemedi lütfen daha sonra tekrar deneyin");
+        if($json == "post"){
+            if($sil){
+                echo json_encode(array("mesaj" => "", "sonuc" => 1));
+            }else{
+                echo json_encode(array("mesaj" => "Medya silinemedi lütfen daha sonra tekrar deneyin", "sonuc" => 0));    
+            }
+        }
+        else{
+            if ($sil) {
+                redirect(base_url("cihaz/" . $cihaz_id));
+            } else {
+                $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Medya silinemedi lütfen daha sonra tekrar deneyin");
+            }
         }
     }
 }

@@ -178,3 +178,29 @@ function hataDurumu(event) {
 function iptalDurumu(event) {
 	_("durum").innerHTML = "Yükleme İptal Edildi";
 }
+
+function medyaSil(cihaz_id, id){
+    $.post(base_url+"/cihaz/medyaSil/"+cihaz_id+"/"+id+"/post", {})
+    .done(function(msg){
+      try{
+        data = $.parseJSON( msg );
+        if(data["sonuc"]==1){
+			$("#medyaGoster7"+id).remove();
+			if($('.medyaGoster').length==0){
+				$("#medyaYok").show();
+			}
+			console.log("Medya Silindi");
+        }else{
+			alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
+			console.log("Medya Silinemedi: "+data["sonuc"]);
+        }
+      }catch(error){
+		alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
+		console.log("Medya Silinemedi: "+error);
+      }
+    })
+    .fail(function(xhr, status, error) {
+		alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
+		console.log("Medya Silinemedi: "+error);
+    });
+}
