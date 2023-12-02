@@ -113,11 +113,11 @@ echo '<script>
           $("#duzenleBtn").addClass("goster");
         }
         $("#duzenleBtn").show();
+        if(!$("#silBtn").hasClass("goster")){
+          $("#silBtn").addClass("goster");
+        }
+        $("#silBtn").show();
       }
-      if(!$("#silBtn").hasClass("goster")){
-        $("#silBtn").addClass("goster");
-      }
-      $("#silBtn").show();
     }else{
       if($("#duzenleBtn").hasClass("goster")){
         $("#duzenleBtn").removeClass("goster");
