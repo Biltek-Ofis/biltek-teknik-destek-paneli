@@ -307,6 +307,7 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public $telefon_numarasi_bos = "+90 (___) ___-____";
     public function cihazPost($yeni = TRUE)
     {
         $musteri_kod = $this->input->post("musteri_kod");
@@ -314,7 +315,6 @@ class Cihazlar_Model extends CI_Model
             "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : null,
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
-            "telefon_numarasi" => $this->input->post("telefon_numarasi"),
             "cihaz_turu" => $this->input->post("cihaz_turu"),
             "cihaz" => $this->input->post("cihaz"),
             "cihaz_modeli" => $this->input->post("cihaz_modeli"),
@@ -327,6 +327,13 @@ class Cihazlar_Model extends CI_Model
             "servis_turu" => $this->input->post("servis_turu"),
             "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
+        $tel_no = $this->input->post("telefon_numarasi");
+        if(isset($tel_no)){
+            if($tel_no == $this->telefon_numarasi_bos){
+                $tel_no = "";
+            }
+            $veri["telefon_numarasi"] = $tel_no;
+        }
         if($yeni){
             $veri["takip_numarasi"] = time();
         }
