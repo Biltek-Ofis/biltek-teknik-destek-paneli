@@ -150,7 +150,8 @@ echo '<script>
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = id;
     butonDurumu(guncel_durum_sayi);
-
+    $("#duzenleBtn").prop("disabled", true);
+    $("#silBtn").prop("disabled", true);
     $("#ServisNo2, #ServisNo3").html(servis_no);
     $("#TakipNo").html(takip_no);
     $("#MusteriKod").html(musteri_kod);
@@ -1054,122 +1055,127 @@ echo 'function tarihiFormatla(tarih12){
 }';
 echo 'function cihazBilgileriniGetir(){
   if(suankiCihaz > 0){
-    $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {}, function(data) {
-      $.each(JSON.parse(data), function(index, value) {
-        const cihazVarmi = document.querySelectorAll(
-          "#cihaz" + value.id
-        ).length > 0;
-        if (cihazVarmi) {
-          butonDurumu(value.guncel_durum);
-          var toplam = 0;
-          var kdv = 0;
-          var yapilanIslemler = "";
-          var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
-          var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
-          ';
-          for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
-            echo '
-          $("input#yapilanIslem'.$i.'").val("").change();
-          $("input#yapilanIslemMiktar'.$i.'").val("").change();
-          $("input#yapilanIslemFiyat'.$i.'").val("").change();
-          $("input#yapilanIslemKdv'.$i.'").val("").change();
-          ';
-          }
+    $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {})
+      .done(function(data) {
+        $.each(JSON.parse(data), function(index, value) {
+          const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (cihazVarmi) {
+            butonDurumu(value.guncel_durum);
+            var toplam = 0;
+            var kdv = 0;
+            var yapilanIslemler = "";
+            var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
+            var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
+            ';
+            for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
+              echo '
+            $("input#yapilanIslem'.$i.'").val("").change();
+            $("input#yapilanIslemMiktar'.$i.'").val("").change();
+            $("input#yapilanIslemFiyat'.$i.'").val("").change();
+            $("input#yapilanIslemKdv'.$i.'").val("").change();
+            ';
+            }
 echo '
 
-          if(Object.keys(value.islemler).length > 0){
-            jQuery.each(value.islemler, function(i, islem) {
-              var yapilan_islem_tutari_suan = islem.birim_fiyat * islem.miktar;
-              toplam = toplam + yapilan_islem_tutari_suan;
-              var kdv_suan = ((yapilan_islem_tutari_suan / 100) * islem.kdv);
-              kdv = kdv + kdv_suan;
-              yapilanIslemler += islemlerSatiri
-                .replaceAll("{islem}", islem.ad)
-                .replaceAll("{miktar}", islem.miktar)
-                .replaceAll("{fiyat}", islem.birim_fiyat)
-                .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_suan)
-                .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_suan).toFixed(2))
-                .replaceAll("{kdv_orani}", islem.kdv);
-              // Duzenleme
-              var dz_islemSayisi = i + 1;
-              $("input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
-              $("input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
-              $("input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
-              $("input#yapilanIslemKdv"+dz_islemSayisi).val(parseFloat(kdv_suan).toFixed(2)).change();
-            });
-          } else {
-            var yapilanIslemler = islemlerSatiriBos;
+            if(Object.keys(value.islemler).length > 0){
+              jQuery.each(value.islemler, function(i, islem) {
+                var yapilan_islem_tutari_suan = islem.birim_fiyat * islem.miktar;
+                toplam = toplam + yapilan_islem_tutari_suan;
+                var kdv_suan = ((yapilan_islem_tutari_suan / 100) * islem.kdv);
+                kdv = kdv + kdv_suan;
+                yapilanIslemler += islemlerSatiri
+                  .replaceAll("{islem}", islem.ad)
+                  .replaceAll("{miktar}", islem.miktar)
+                  .replaceAll("{fiyat}", islem.birim_fiyat)
+                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_suan)
+                  .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_suan).toFixed(2))
+                  .replaceAll("{kdv_orani}", islem.kdv);
+                // Duzenleme
+                var dz_islemSayisi = i + 1;
+                $("input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
+                $("input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
+                $("input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
+                $("input#yapilanIslemKdv"+dz_islemSayisi).val(parseFloat(kdv_suan).toFixed(2)).change();
+              });
+            } else {
+              var yapilanIslemler = islemlerSatiriBos;
+            }
+            var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
+            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
+            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
+            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
+            yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
+            $("#yapilanIslem").html(yapilanIslemler);
+            $("#ServisNo2").html(value.servis_no);
+            $("#TakipNo").html(value.takip_numarasi);
+            $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
+            $("#MusteriAdi2").html(value.musteri_adi);
+            $("#MusteriAdres").html(value.adres);
+            $("#MusteriGSM2").html(value.telefon_numarasi);
+            $("#GirisTarihi").html(value.tarih);
+            $("#BildirimTarihi").html(value.bildirim_tarihi);
+            $("#CikisTarihi").html(value.cikis_tarihi);
+            $("#GuncelDurum2").html(cihazDurumu(value.guncel_durum));
+            $("#CihazTuru2").html(value.cihaz_turu);
+            $("#CihazMarka").html(value.cihaz);
+            $("#CihazModeli").html(value.cihaz_modeli);
+            $("#SeriNo").html(value.seri_no);
+            $("#TeslimAlinanlar").html(value.teslim_alinanlar);
+            $("#CihazSifresi").html(value.cihaz_sifresi);
+            $("#CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
+            $("#HasarTespiti").html(value.hasar_tespiti);
+            $("#ArizaAciklamasi").html(value.ariza_aciklamasi);
+            $("#ServisTuru").html(servisTuru(value.servis_turu));
+            $("#YedekDurumu").html(evetHayir(value.yedek_durumu));
+            $("#Sorumlu2").html(value.sorumlu);
+            $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
+            $("#TahsilatSekli").html(value.tahsilat_sekli);
+            $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
+            $("#fisNo").html(value.fis_no);
+            medyalariYukle(value.id);
+            
+            // Düzenleme
+            $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
+            $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
+            $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
+            $("input#musteri_kod").val(value.musteri_kod);
+            $("input#musteri_adi").val(value.musteri_adi);
+            $("input#adres").val(value.adres);
+            $("input#telefon_numarasi").val(value.telefon_numarasi);
+            $("select#cihaz_turu").val(value.cihaz_turu_val).change();
+            if(yonetici){
+              $("select#sorumlu").val(value.sorumlu_val).change();
+            }else{
+              $("#dz-sorumlu-personel").html(value.sorumlu);
+            }
+            $("input#cihaz").val(value.cihaz);
+            $("input#cihaz_modeli").val(value.cihaz_modeli);
+            $("input#seri_no").val(value.seri_no);
+            $("input#cihaz_sifresi").val(value.cihaz_sifresi);
+            $("select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
+            $("textarea#hasar_tespiti").val(value.hasar_tespiti);
+            $("textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
+            $("textarea#teslim_alinanlar").val(value.teslim_alinanlar);
+            $("select#servis_turu").val(value.servis_turu).change();
+            $("select#yedek_durumu").val(value.yedek_durumu).change();
+            $("input#dz-tarih").val(tarihDonusturInput(value.tarih));
+            $("input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
+            $("input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
+            $("select#guncel_durum").val(value.guncel_durum).change();
+            $("select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
+            $("select#fatura_durumu").val(value.fatura_durumu).change();
+            $("input#fis_no").val(value.fis_no);
+            $("textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
+            $("#duzenleBtn").prop("disabled", false);
+            $("#silBtn").prop("disabled", false);
           }
-          var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
-          var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
-          var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
-          var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
-          yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
-          $("#yapilanIslem").html(yapilanIslemler);
-          $("#ServisNo2").html(value.servis_no);
-          $("#TakipNo").html(value.takip_numarasi);
-          $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
-          $("#MusteriAdi2").html(value.musteri_adi);
-          $("#MusteriAdres").html(value.adres);
-          $("#MusteriGSM2").html(value.telefon_numarasi);
-          $("#GirisTarihi").html(value.tarih);
-          $("#BildirimTarihi").html(value.bildirim_tarihi);
-          $("#CikisTarihi").html(value.cikis_tarihi);
-          $("#GuncelDurum2").html(cihazDurumu(value.guncel_durum));
-          $("#CihazTuru2").html(value.cihaz_turu);
-          $("#CihazMarka").html(value.cihaz);
-          $("#CihazModeli").html(value.cihaz_modeli);
-          $("#SeriNo").html(value.seri_no);
-          $("#TeslimAlinanlar").html(value.teslim_alinanlar);
-          $("#CihazSifresi").html(value.cihaz_sifresi);
-          $("#CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
-          $("#HasarTespiti").html(value.hasar_tespiti);
-          $("#ArizaAciklamasi").html(value.ariza_aciklamasi);
-          $("#ServisTuru").html(servisTuru(value.servis_turu));
-          $("#YedekDurumu").html(evetHayir(value.yedek_durumu));
-          $("#Sorumlu2").html(value.sorumlu);
-          $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
-          $("#TahsilatSekli").html(value.tahsilat_sekli);
-          $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
-          $("#fisNo").html(value.fis_no);
-          medyalariYukle(value.id);
-          
-          // Düzenleme
-          $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
-          $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
-          $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
-          $("input#musteri_kod").val(value.musteri_kod);
-          $("input#musteri_adi").val(value.musteri_adi);
-          $("input#adres").val(value.adres);
-          $("input#telefon_numarasi").val(value.telefon_numarasi);
-          $("select#cihaz_turu").val(value.cihaz_turu_val).change();
-          if(yonetici){
-            $("select#sorumlu").val(value.sorumlu_val).change();
-          }else{
-            $("#dz-sorumlu-personel").html(value.sorumlu);
-          }
-          $("input#cihaz").val(value.cihaz);
-          $("input#cihaz_modeli").val(value.cihaz_modeli);
-          $("input#seri_no").val(value.seri_no);
-          $("input#cihaz_sifresi").val(value.cihaz_sifresi);
-          $("select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
-          $("textarea#hasar_tespiti").val(value.hasar_tespiti);
-          $("textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
-          $("textarea#teslim_alinanlar").val(value.teslim_alinanlar);
-          $("select#servis_turu").val(value.servis_turu).change();
-          $("select#yedek_durumu").val(value.yedek_durumu).change();
-          $("input#dz-tarih").val(tarihDonusturInput(value.tarih));
-          $("input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
-          $("input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
-          $("select#guncel_durum").val(value.guncel_durum).change();
-          $("select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
-          $("select#fatura_durumu").val(value.fatura_durumu).change();
-          $("input#fis_no").val(value.fis_no);
-          $("textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
-          
-        }
-      });
-    }); 
+        });
+      }).fail(function(xhr, status, error) {
+        $("#duzenleBtn").prop("disabled", false);
+        $("#silBtn").prop("disabled", false);
+      }); 
   }
 }';
 echo '$(document).ready(function() {
