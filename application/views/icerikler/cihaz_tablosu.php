@@ -1143,7 +1143,11 @@ echo '
             $("input#musteri_kod").val(value.musteri_kod);
             $("input#musteri_adi").val(value.musteri_adi);
             $("input#adres").val(value.adres);
-            $("input#telefon_numarasi").val(value.telefon_numarasi);
+            if(value.telefon_numarasi.length>0){
+              $("input#telefon_numarasi").val(value.telefon_numarasi);
+            }else{
+              $("input#telefon_numarasi").val("+90");
+            }
             $("select#cihaz_turu").val(value.cihaz_turu_val).change();
             if(yonetici){
               $("select#sorumlu").val(value.sorumlu_val).change();

@@ -22,7 +22,11 @@ if($telefon_numarasi_label){
 }
 echo '<input id="' . $telefonNumrasiID . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
 if (isset($telefon_numarasi_value)) {
-    echo $telefon_numarasi_value;
+    if(strlen($telefon_numarasi_value)>0){
+        echo $telefon_numarasi_value;
+    }else{
+        echo "+90";
+    }
 } else {
     echo "+90";
 }
