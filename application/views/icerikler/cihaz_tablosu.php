@@ -1066,6 +1066,17 @@ echo 'function cihazBilgileriniGetir(){
           var yapilanIslemler = "";
           var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
           var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
+          ';
+          for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
+            echo '
+          $("input#yapilanIslem'.$i.'").val("").change();
+          $("input#yapilanIslemMiktar'.$i.'").val("").change();
+          $("input#yapilanIslemFiyat'.$i.'").val("").change();
+          $("input#yapilanIslemKdv'.$i.'").val("").change();
+          ';
+          }
+echo '
+
           if(Object.keys(value.islemler).length > 0){
             jQuery.each(value.islemler, function(i, islem) {
               var yapilan_islem_tutari_suan = islem.birim_fiyat * islem.miktar;
