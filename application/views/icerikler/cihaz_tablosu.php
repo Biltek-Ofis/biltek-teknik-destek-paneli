@@ -1071,10 +1071,10 @@ echo 'function cihazBilgileriniGetir(){
             ';
             for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
               echo '
-            $("input#yapilanIslem'.$i.'").val("").change();
-            $("input#yapilanIslemMiktar'.$i.'").val("").change();
-            $("input#yapilanIslemFiyat'.$i.'").val("").change();
-            $("input#yapilanIslemKdv'.$i.'").val("").change();
+            $("#dt-duzenle input#yapilanIslem'.$i.'").val("").change();
+            $("#dt-duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
+            $("#dt-duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
+            $("#dt-duzenle input#yapilanIslemKdv'.$i.'").val("").change();
             ';
             }
 echo '
@@ -1094,10 +1094,10 @@ echo '
                   .replaceAll("{kdv_orani}", islem.kdv);
                 // Duzenleme
                 var dz_islemSayisi = i + 1;
-                $("input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
-                $("input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
-                $("input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
-                $("input#yapilanIslemKdv"+dz_islemSayisi).val(parseFloat(kdv_suan).toFixed(2)).change();
+                $("#dt-duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
+                $("#dt-duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
+                $("#dt-duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
+                $("#dt-duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(parseFloat(kdv_suan).toFixed(2)).change();
               });
             } else {
               var yapilanIslemler = islemlerSatiriBos;
@@ -1140,38 +1140,38 @@ echo '
             $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
             $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
             $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
-            $("input#musteri_kod").val(value.musteri_kod);
-            $("input#musteri_adi").val(value.musteri_adi);
-            $("input#adres").val(value.adres);
+            $("#dt-duzenle input#musteri_kod").val(value.musteri_kod);
+            $("#dt-duzenle input#musteri_adi").val(value.musteri_adi);
+            $("#dt-duzenle input#adres").val(value.adres);
             if(value.telefon_numarasi.length>0){
-              $("input#telefon_numarasi").val(value.telefon_numarasi);
+              $("#dt-duzenle input#telefon_numarasi").val(value.telefon_numarasi);
             }else{
-              $("input#telefon_numarasi").val("+90");
+              $("#dt-duzenle input#telefon_numarasi").val("+90");
             }
-            $("select#cihaz_turu").val(value.cihaz_turu_val).change();
+            $("#dt-duzenle select#cihaz_turu").val(value.cihaz_turu_val).change();
             if(yonetici){
-              $("select#sorumlu").val(value.sorumlu_val).change();
+              $("#dt-duzenle select#sorumlu").val(value.sorumlu_val).change();
             }else{
-              $("#dz-sorumlu-personel").html(value.sorumlu);
+              $("#dt-duzenle #dz-sorumlu-personel").html(value.sorumlu);
             }
-            $("input#cihaz").val(value.cihaz);
-            $("input#cihaz_modeli").val(value.cihaz_modeli);
-            $("input#seri_no").val(value.seri_no);
-            $("input#cihaz_sifresi").val(value.cihaz_sifresi);
-            $("select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
-            $("textarea#hasar_tespiti").val(value.hasar_tespiti);
-            $("textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
-            $("textarea#teslim_alinanlar").val(value.teslim_alinanlar);
-            $("select#servis_turu").val(value.servis_turu).change();
-            $("select#yedek_durumu").val(value.yedek_durumu).change();
-            $("input#dz-tarih").val(tarihDonusturInput(value.tarih));
-            $("input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
-            $("input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
-            $("select#guncel_durum").val(value.guncel_durum).change();
-            $("select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
-            $("select#fatura_durumu").val(value.fatura_durumu).change();
-            $("input#fis_no").val(value.fis_no);
-            $("textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
+            $("#dt-duzenle input#cihaz").val(value.cihaz);
+            $("#dt-duzenle input#cihaz_modeli").val(value.cihaz_modeli);
+            $("#dt-duzenle input#seri_no").val(value.seri_no);
+            $("#dt-duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
+            $("#dt-duzenle select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
+            $("#dt-duzenle textarea#hasar_tespiti").val(value.hasar_tespiti);
+            $("#dt-duzenle textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
+            $("#dt-duzenle textarea#teslim_alinanlar").val(value.teslim_alinanlar);
+            $("#dt-duzenle select#servis_turu").val(value.servis_turu).change();
+            $("#dt-duzenle select#yedek_durumu").val(value.yedek_durumu).change();
+            $("#dt-duzenle input#dz-tarih").val(tarihDonusturInput(value.tarih));
+            $("#dt-duzenle input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
+            $("#dt-duzenle input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
+            $("#dt-duzenle select#guncel_durum").val(value.guncel_durum).change();
+            $("#dt-duzenle select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
+            $("#dt-duzenle select#fatura_durumu").val(value.fatura_durumu).change();
+            $("#dt-duzenle input#fis_no").val(value.fis_no);
+            $("#dt-duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
             $("#duzenleBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
           }
