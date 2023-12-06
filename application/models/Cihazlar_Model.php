@@ -31,6 +31,10 @@ class Cihazlar_Model extends CI_Model
     {
         return getenv(DB_ON_EK_STR) . "tahsilatsekilleri";
     }
+    public function guncellemeTabloAdi()
+    {
+        return getenv(DB_ON_EK_STR) . "guncelleme";
+    }
     public function musterileriAktar()
     {
         $this->load->model("Firma_Model");
@@ -46,6 +50,7 @@ class Cihazlar_Model extends CI_Model
                 "musteri_kod" => $son_eklenen
             ));
         }
+        $this->veriGuncellendiEkle();
     }
     public function yapilanIslemleriAktar()
     {
@@ -112,6 +117,7 @@ class Cihazlar_Model extends CI_Model
                 ));
             }
         }
+        $this->veriGuncellendiEkle();
     }
     public function cihazBul($id)
     {
@@ -355,10 +361,12 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazDuzenle($id, $veri)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
     }
     public function islemDuzenle($id, $veri)
     {
+        $this->veriGuncellendiEkle();
         $konum = array(
             "cihaz_id" => $id,
             "islem_sayisi" => $veri["islem_sayisi"]
@@ -373,6 +381,7 @@ class Cihazlar_Model extends CI_Model
     
     public function islemSil($id, $islem_sayisi)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->where(array(
             "cihaz_id" => $id,
             "islem_sayisi" => $islem_sayisi
@@ -380,6 +389,7 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazEkle($veri)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
     }
     public function ozelIDTabloAdi()
@@ -443,6 +453,7 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazSil($id)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->where("id", $id)->delete($this->cihazlarTabloAdi());
     }
     public function silinenCihazlariBul()
@@ -469,10 +480,12 @@ class Cihazlar_Model extends CI_Model
     }
     public function medyaYukle($veri)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
     }
     public function medyaSil($id)
     {
+        $this->veriGuncellendiEkle();
         return $this->db->reset_query()->where("id", $id)->delete($this->medyalarTabloAdi());
     }
 
@@ -483,5 +496,29 @@ class Cihazlar_Model extends CI_Model
     public function medyalar($id)
     {
         return $this->db->reset_query()->where("cihaz_id", $id)->get($this->medyalarTabloAdi())->result();
+    }
+    public function veriGuncellendiGetir(){
+        return $this->db->reset_query()->get($this->guncellemeTabloAdi());
+    }
+    public function veriGuncellendi(){
+        $query = $this->veriGuncellendiGetir();
+        if($query->num_rows() > 0){
+            return $this->veriGuncellendiGetir()->first_row();
+        }else{
+            return array("id"=>0,"guncelleme_tarihi"=>strtotime("10 September 2023"));
+        }
+    }
+    public function veriGuncellendiEkle(){
+        $query = $this->veriGuncellendiGetir();
+        if ($query->num_rows() > 0) {
+            $son_guncellenen = $query->first_row();
+            $this->db->reset_query()->where("id", $son_guncellenen->id)->update($this->guncellemeTabloAdi(),array(
+                "guncelleme_tarihi" => time()
+            ));
+        }else{
+            $this->db->reset_query()->insert($this->guncellemeTabloAdi(), array(
+                "guncelleme_tarihi" => time()
+            ));
+        }
     }
 }

@@ -113,4 +113,7 @@ class Cihazyonetimi extends Varsayilancontroller
 	{
 		echo json_encode($this->Cihazlar_Model->silinenCihazlariBul());
 	}
+	public function veriGuncellendi(){
+		echo json_encode($this->Cihazlar_Model->veriGuncellendi());
+	}
 }
