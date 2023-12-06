@@ -1,9 +1,4 @@
-README.md
-application/config/routes.php
-application/controllers/
-application/models/      
-application/views/
-dist/
-_tahsilatsekilleri.sql
+application/controllers/Cihazyonetimi.php
+application/models/Cihazlar_Model.php
+application/views/icerikler/cihaz_tablosu.php
 script.sql
-web.config
