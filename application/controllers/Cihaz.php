@@ -48,7 +48,11 @@ class Cihaz extends Varsayilancontroller
                 }
             }
         } else {
-            $this->Kullanicilar_Model->girisUyari("cikis");
+            if($tur == "post" || $tur == "POST"){
+                echo json_encode(array("mesaj" => "Bu işlemi gerçekleştirebilmek için tekrar kullanıcı girişi yapmalısınız! Lütfen sayfayı yenileyin ve tekrar deneyin.", "sonuc" => 0));
+            }else{
+                $this->Kullanicilar_Model->girisUyari("cikis");
+            }
         }
     }
 
