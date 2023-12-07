@@ -37,14 +37,14 @@ class Cihaz extends Varsayilancontroller
                 if ($duzenle) {
                     echo json_encode(array("mesaj" => "", "sonuc" => 1));
                 }else{
-                    echo json_encode(array("mesaj" => "Düzenleme başarısız. Lütfen geliştirici ile iletişime geçin.", "sonuc" => 0));
+                    echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>".$this->db->error()["message"], "sonuc" => 0));
                 }
             }else{
                 if ($duzenle) {
                     //$id = $this->db->insert_id();
                     redirect(base_url("cihaz/" . $id));
                 } else {
-                    $this->Kullanicilar_Model->girisUyari("", "Düzenleme işlemi gerçekleştirilemedi. ");
+                    $this->Kullanicilar_Model->girisUyari("", "Düzenleme işlemi gerçekleştirilemedi.<br>".$this->db->error()["message"]);
                 }
             }
         } else {
@@ -103,32 +103,32 @@ class Cihaz extends Varsayilancontroller
                     );
                     $duzenle = $this->Cihazlar_Model->islemDuzenle($id, $veri);
                     if (!$duzenle) {
-                        if($tur=="post"){
-                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+                        if($tur == "post" || $tur == "POST"){
+                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));
                         }else{
-                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
-                            return;
+                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"]);
                         }
+                        return;
                     }
                 }else{
                     $sil =$this->Cihazlar_Model->islemSil($id, $i);
                     if (!$sil) {
-                        if($tur=="post"){
-                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+                        if($tur == "post" || $tur == "POST"){
+                            echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));
                         }else{
-                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"]);
-                            return;
+                            $this->Kullanicilar_Model->girisUyari("cihaz/" . $id, "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"]);
                         }
+                        return;
                     }
                 }
             }
-            if($tur=="post"){
+            if($tur == "post" || $tur == "POST"){
                 echo json_encode(array("mesaj" => "", "sonuc" => 1));
             }else{
                 redirect(base_url("cihaz/" . $id));
             }
         } else {
-            if($tur=="post"){
+            if($tur == "post" || $tur == "POST"){
                 echo json_encode(array("mesaj" => "Bu işlemi gerçekleştirebilmek için tekrar kullanıcı girişi yapmalısınız! Lütfen sayfayı yenileyin ve tekrar deneyin.", "sonuc" => 0));
             }else{
                 $this->Kullanicilar_Model->girisUyari("cikis");
