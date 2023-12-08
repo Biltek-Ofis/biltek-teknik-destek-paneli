@@ -18,6 +18,23 @@ echo '<script>
             $("#tarih").removeAttr("required");
         }
     }
+    function cihazTurleriSifre(par, value){
+        var sifreGerekli = true;
+        switch(value){';
+foreach ($cihazTurleri as $cihazTuruJQ) {
+    echo '
+            case "' . $cihazTuruJQ->id . '":
+                sifreGerekli = ' . ($cihazTuruJQ->sifre == 1 ? "true" : "false") . ';
+                break;';
+}
+echo '
+            default:
+                sifreGerekli = false;
+                break;';
+echo '
+        }
+        $(par+" #cihaz_sifresi").prop("required", sifreGerekli);
+    }
     $(document).ready(function() {
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
@@ -31,6 +48,32 @@ echo '<script>
         $("#tarih_girisi").on("change", function(e) {
             tarih_girisi(this);
             //console.log(this.value, clickedIndex, newValue, oldValue)
+        });
+        $("#yeniCihazForm #cihaz_turu, #dt-duzenle #cihaz_turu").on("change", function() {
+            cihazTurleriSifre($(this).val());
+        });
+        cihazTurleriSifre("#yeniCihazForm", $("#yeniCihazForm #cihaz_turu").val());
+        cihazTurleriSifre("#dt-duzenle", $("#dt-duzenle #cihaz_turu").val());
+
+        function faturaDurumuInputlar(par, val_fd){
+            if(val_fd == '.(count($this->Islemler_Model->faturaDurumu) - 1).'){
+                $(par+" #fatura_durumu_td").prop("colspan", "1");
+                $(par+" #fis_no_td").prop("colspan", "1");
+                $(par+" #fis_no_td").show();
+                $(par+" #fis_no").prop("required", "required");
+            }else{
+                $(par+" #fatura_durumu_td").prop("colspan", "2");
+                $(par+" #fis_no_td").prop("colspan", "0");
+                $(par+" #fis_no_td").hide();
+                $(par+" #fis_no").val("");
+                $(par+" #fis_no").removeAttr("required");
+            }
+        }
+        $("#yeniCihazForm #fatura_durumu").on("change", function() {
+            faturaDurumuInputlar("#yeniCihazForm", $(this).val())
+        });
+        $("#dt-duzenle #fatura_durumu").on("change", function() {
+            faturaDurumuInputlar("#dt-duzenle", $(this).val())
         });
     });
     
