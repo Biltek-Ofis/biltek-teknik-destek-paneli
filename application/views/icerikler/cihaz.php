@@ -9,7 +9,6 @@ echo '<script>
             window.location.hash = e.target.hash;
         });*/
     });
-    var base_url = "'.base_url().'";
 </script>
 <script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
