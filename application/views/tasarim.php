@@ -11,8 +11,10 @@ if ($ek_css != "") {
   $this->load->view($ek_css);
 }
 $this->load->view("inc/styles");
+echo '<script>
+  var base_url = "' . base_url() . '";
+</script>';
 $this->load->view("inc/scripts");
-
 echo '</head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse"> <!--sidebar-collapse-->

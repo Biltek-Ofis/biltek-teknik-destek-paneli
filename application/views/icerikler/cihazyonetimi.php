@@ -76,8 +76,6 @@ echo '
             faturaDurumuInputlar("#dt-duzenle", $(this).val())
         });
     });
-    
-    var base_url = "' . base_url() . '";
 </script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <div class="content-wrapper">
