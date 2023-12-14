@@ -1097,7 +1097,7 @@ echo '
                 $("#dt-duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
                 $("#dt-duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
                 $("#dt-duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
-                $("#dt-duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(parseFloat(kdv_suan).toFixed(2)).change();
+                $("#dt-duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(islem.kdv).change();
               });
             } else {
               var yapilanIslemler = islemlerSatiriBos;
@@ -1231,6 +1231,7 @@ for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuSiralama); $i++) {
             }';
 }
 echo '
+          alert(name);
           return cihazDurumuSiralamaNo;
       },
       "priority-asc": function ( a, b ) {
@@ -1369,13 +1370,14 @@ echo '
     var sonGuncelleme = '.time().';
     setInterval(() => {
       if(!duzenleme_modu){
-        $.get(\'' . base_url("cihazyonetimi/veriGuncellendi") . '\', {}).done(function(data) {
+        verileriGuncelle();
+        /*$.get(\'' . base_url("cihazyonetimi/veriGuncellendi") . '\', {}).done(function(data) {
           var guncellenenVeri = JSON.parse(data);
           if(guncellenenVeri.guncelleme_tarihi > sonGuncelleme){
             sonGuncelleme = guncellenenVeri.guncelleme_tarihi;
             verileriGuncelle();
           }
-        });
+        });*/
       }
     }, 5000);
     $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").on("hidden.bs.modal", function (e) {
