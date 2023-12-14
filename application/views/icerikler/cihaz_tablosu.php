@@ -1053,6 +1053,9 @@ function donustur(str, value) {
 echo 'function tarihiFormatla(tarih12){
   return (tarih12 < 10) ? "0" + tarih12 : tarih12;
 }';
+echo 'function spaniSil(veri){
+  return veri.replace(/<\/?span[^>]*>/g, "");
+}';
 echo 'function cihazBilgileriniGetir(){
   if(suankiCihaz > 0){
     $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {})
@@ -1223,6 +1226,7 @@ echo '
     $.extend( $.fn.dataTable.ext.type.order, {
       "priority-pre": function ( name ) {
           var cihazDurumuSiralamaNo;
+          name = spaniSil(name);
           ';
 for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuSiralama); $i++) {
 
@@ -1231,7 +1235,6 @@ for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuSiralama); $i++) {
             }';
 }
 echo '
-          alert(name);
           return cihazDurumuSiralamaNo;
       },
       "priority-asc": function ( a, b ) {
@@ -1241,6 +1244,7 @@ echo '
               return b - a;
       },
       "date-tr-pre": function ( name ) {
+        name = spaniSil(name);
         var gun = parseInt(name.slice(0, 2));
         gun = tarihiFormatla(gun);
         var ay = parseInt(name.slice(3, 5));
