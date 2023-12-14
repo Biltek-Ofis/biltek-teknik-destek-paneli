@@ -26,7 +26,9 @@ if (strlen($girisHatasi) == 0) {
 }
 echo '" role="alert">';
 $girisHatasi;
-echo '</div>
+echo '</div>';
+$this->load->view("inc/tarayici_uyari");
+echo '
                 <form action="' . base_url("giris") . '" method="post">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
