@@ -193,6 +193,7 @@ echo '<script>
     cihazBilgileriniGetir();
   }
 </script>';
+$this->load->view("inc/tarayici_uyari");
 echo '<div id="cihazTablosu" class="table-responsive">';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
