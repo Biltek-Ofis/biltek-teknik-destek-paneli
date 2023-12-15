@@ -258,7 +258,7 @@ $(document).ready(function(){
       <div id="detaylar_body" class="modal-body">
         <div class="row">
           <div id="dt-goster" class="row">
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
               <!-- Genel Bilgiler Göster -->
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:100%;"><h3>Genel Bilgiler</h3></li>
@@ -304,7 +304,7 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="GuncelDurum2"></li>
               </ul>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
               <!-- Cihaz Bilgileri Göster -->
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:100%;"><h3>Cihaz Bilgileri</h3></li>
