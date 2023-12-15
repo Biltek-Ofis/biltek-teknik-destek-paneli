@@ -377,8 +377,9 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';"><span class="font-weight-bold">Malzeme/İşçilik</span></li>
                 <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';"><span class="font-weight-bold">Miktar</span></li>
                 <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';"><span class="font-weight-bold">Birim Fiyatı</span></li>
-                <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar</span></li>
                 <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="font-weight-bold">KDV</span></li>
+                <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Tutar (KDV\'siz)</span></li>
+                <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="font-weight-bold">Toplam</span></li>
               </ul>
               <div id="yapilanIslem">
                 
@@ -541,8 +542,9 @@ $(document).ready(function(){
                             <th>Miktar</th>
                             <th>Birim Fiyat (TL)</th>
                             <th>KDV Oranı (%)</th>
-                            <th>Tutar</th>
                             <th>KDV</th>
+                            <th>Tutar (KDV\'siz)</th>
+                            <th>Toplam</th>
                         </tr>
                       </thead>
                       <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
@@ -649,8 +651,9 @@ $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';">{islem}</li>
 <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';">{miktar}</li>
 <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';">{fiyat} TL</li>
-<li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
 <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
+<li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
+<li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati_kdvli} TL</li>
 </ul>';
 $yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">{toplam_aciklama}</span></li>
@@ -732,8 +735,9 @@ $yapilanIslemEskiArray = array(
   "{islem}",
   "{miktar}",
   "{fiyat}",
-  "{toplam_islem_fiyati}",
   "{toplam_islem_kdv}",
+  "{toplam_islem_fiyati}",
+  "{toplam_islem_fiyati_kdvli}",
   "{kdv_orani}"
 );
 function donusturOnclick($oge)
@@ -757,8 +761,9 @@ foreach ($cihazlar as $cihaz) {
         $islem->ad,
         $islem->kdv,
         $islem->birim_fiyat,
-        $toplam_islem_fiyati_suan,
         $kdv_suan,
+        $toplam_islem_fiyati_suan,
+        $toplam_islem_fiyati_suan + $kdv_suan,
         $islem->kdv
       );
       $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_suan;
@@ -1093,8 +1098,9 @@ echo '
                   .replaceAll("{islem}", islem.ad)
                   .replaceAll("{miktar}", islem.miktar)
                   .replaceAll("{fiyat}", islem.birim_fiyat)
-                  .replaceAll("{toplam_islem_fiyati}", yapilan_islem_tutari_suan)
                   .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_suan).toFixed(2))
+                  .replaceAll("{toplam_islem_fiyati}", parseFloat(yapilan_islem_tutari_suan).toFixed(2))
+                  .replaceAll("{toplam_islem_fiyati_kdvli}", parseFloat(yapilan_islem_tutari_suan + kdv_suan).toFixed(2))
                   .replaceAll("{kdv_orani}", islem.kdv);
                 // Duzenleme
                 var dz_islemSayisi = i + 1;

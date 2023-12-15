@@ -53,11 +53,16 @@ function islemHesapla(i) {
 	var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
 	var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
 	var kdv = (tutar / 100) * yapilanIslemKdv;
+	var toplamKdvli = tutar+kdv;
 	$("#yapilanIslemTutar" + i).html(
 		tutar > 0 ? parseFloat(tutar).toFixed(2) + " TL" : ""
 	);
 	$("#yapilanIslemTopKdv" + i).html(
 		kdv > 0 ? parseFloat(kdv).toFixed(2) + " TL (" + yapilanIslemKdv + "%)" : ""
+	);
+	var toplamKdvli = 
+	$("#yapilanIslemToplam" + i).html(
+		kdv > 0 && tutar > 0? (parseFloat(toplamKdvli).toFixed(2)) + " TL" : ""
 	);
 	tutarHesapla();
 }
