@@ -36,6 +36,39 @@ echo '
         $(par+" #cihaz_sifresi").prop("required", sifreGerekli);
     }
     $(document).ready(function() {
+        $("#yeniCihazGirisiBtn").show();
+        $("#yeniCihazForm").submit(function(e){
+            $("#yeniCihazEkleBtn").prop("disabled", true);
+            var formData = $("#yeniCihazForm").serialize();
+            $.post("' . base_url("cihazyonetimi/cihazEkle/post") . '", formData)
+            .done(function(msg){
+                $("#yeniCihazEkleBtn").prop("disabled", false);
+                try{
+                    data = $.parseJSON( msg );
+                    if(data["sonuc"]==1){
+                        $("#yeniCihazEkleModal").modal("hide");
+                        $(\'#yeniCihazForm\')[0].reset();
+                        $("#basarili-mesaji").html("Yeni kayıt başarıyla eklendi.");
+                        $("#statusSuccessModal").modal("show");
+                    }else{
+                        $("#kaydediliyorModal").modal("hide");
+                        $("#hata-mesaji").html(data["mesaj"]);
+                        $("#statusErrorsModal").modal("show");
+                    }
+                }catch(error){
+                    $("#kaydediliyorModal").modal("hide");
+                    $("#hata-mesaji").html(error);
+                    $("#statusErrorsModal").modal("show");
+                }
+            })
+            .fail(function(xhr, status, error) {
+                $("#yeniCihazEkleBtn").prop("disabled", false);
+                $("#kaydediliyorModal").modal("hide");
+                $("#hata-mesaji").html(error);
+                $("#statusErrorsModal").modal("show");
+            });
+            return false;
+        });
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).click();
@@ -45,11 +78,16 @@ echo '
             $("#tarih").val(tarih.toJSON().slice(0, 19));
         });*/
         tarih_girisi("#tarih_girisi");
-        $("#tarih_girisi").on("change", function(e) {
+        $("#yeniCihazForm #tarih_girisi").on("change", function(e) {
             tarih_girisi(this);
+            $("#yeniCihazEkleBtn").prop("disabled", false);
             //console.log(this.value, clickedIndex, newValue, oldValue)
         });
-        $("#yeniCihazForm #cihaz_turu, #dt-duzenle #cihaz_turu").on("change", function() {
+        $("#yeniCihazForm #cihaz_turu").on("change", function() {
+            cihazTurleriSifre($(this).val());
+            $("#yeniCihazEkleBtn").prop("disabled", false);
+        });
+        $("#dt-duzenle #cihaz_turu").on("change", function() {
             cihazTurleriSifre($(this).val());
         });
         cihazTurleriSifre("#yeniCihazForm", $("#yeniCihazForm #cihaz_turu").val());
@@ -71,9 +109,14 @@ echo '
         }
         $("#yeniCihazForm #fatura_durumu").on("change", function() {
             faturaDurumuInputlar("#yeniCihazForm", $(this).val())
+            $("#yeniCihazEkleBtn").prop("disabled", false);
         });
         $("#dt-duzenle #fatura_durumu").on("change", function() {
             faturaDurumuInputlar("#dt-duzenle", $(this).val())
+        });
+        //#yeniCihazForm #tarih_girisi, #yeniCihazForm #cihaz_turu, #yeniCihazForm #fatura_durumu
+        $("#yeniCihazForm #sorumlu, #yeniCihazForm #cihazdaki_hasar, #yeniCihazForm #servis_turu, #yeniCihazForm #yedek_durumu").on("change", function() {
+            $("#yeniCihazEkleBtn").prop("disabled", false);
         });
     });
 </script>
@@ -106,7 +149,7 @@ echo '
                         echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/musterileriAktar").'">Müşterileri Aktar</a>';
                         echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/yapilanIslemleriAktar").'">Yapilan İşlemleri Aktar</a>';
                     }
-                    echo'<button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniCihazEkleModal">
+                    echo'<button id="yeniCihazGirisiBtn" type="button" class="btn btn-primary me-2 mb-2" style="display:none;" data-toggle="modal" data-target="#yeniCihazEkleModal">
                             Yeni Cihaz Girişi
                         </button>
                     </div>
@@ -126,7 +169,7 @@ echo '</div>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="yeniCihazForm" method="post" action="' . base_url("cihazyonetimi/cihazEkle") . '">
+                <form id="yeniCihazForm" method="post">
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>
@@ -198,7 +241,7 @@ echo '</div>
 </div>
 <div class="modal-footer">
 ';
-echo '<input type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
+echo '<input id="yeniCihazEkleBtn" type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
     <button type="button" onclick="$(\'#yeniCihazForm\')[0].reset();" class="btn btn-primary">Temizle</button>
     <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
 </div>

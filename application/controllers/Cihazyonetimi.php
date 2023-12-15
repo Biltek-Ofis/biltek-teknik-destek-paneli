@@ -61,7 +61,7 @@ class Cihazyonetimi extends Varsayilancontroller
 			echo json_encode($this->Cihazlar_Model->sonCihazJQ());
 		}
 	}
-	public function cihazEkle()
+	public function cihazEkle($tur)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
 			$veri = $this->Cihazlar_Model->cihazPost();
@@ -84,15 +84,31 @@ class Cihazyonetimi extends Varsayilancontroller
 							);
 						}
 					}
-					redirect(base_url("") . "#" . $this->Cihazlar_Model->cihazDetayModalAdi() . $id);
+					if($tur == "POST" || $tur == "post"){
+						echo json_encode(array("mesaj" => "", "sonuc" => 1));
+					}else{
+						redirect(base_url("") . "#" . $this->Cihazlar_Model->cihazDetayModalAdi() . $id);
+					}
 				} else {
-					$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] . $servis_no);
+					if($tur == "POST" || $tur == "post"){
+						echo json_encode(array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+					}else{
+						$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] );
+					}
 				}
 			} else {
-				$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] . $servis_no);
+				if($tur == "POST" || $tur == "post"){
+					echo json_encode(array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+				}else{
+					$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] . $servis_no);
+				}
 			}
 		} else {
-			$this->Kullanicilar_Model->girisUyari("cikis");
+			if($tur == "POST" || $tur == "post"){
+				echo json_encode(array("mesaj" => "Bu işlemi gerçekleştirebilmek için kullanıcı girişi yapmanız gerekmektedir. Lütfen sayfayı yenileyip tekrar deneyin.", "sonuc" => 0));
+			}else{
+				$this->Kullanicilar_Model->girisUyari("cikis");
+			}
 		}
 	}
 	public function cihazSil($id)
