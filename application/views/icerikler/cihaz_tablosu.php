@@ -98,8 +98,8 @@ echo '<script>
     $("#kaydetBtn").prop("disabled", true);
     formKaydet("#dt-DuzenleForm", function(){
       formKaydet("#dt-YapilanIslemlerForm", function(){
-        $("#kaydediliyorModal").modal("hide");
         $("#kaydetBtn").prop("disabled", false);
+        $("#kaydediliyorModal").modal("hide");
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
         $("#statusSuccessModal").modal("show");

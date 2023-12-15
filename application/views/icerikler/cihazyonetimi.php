@@ -39,10 +39,12 @@ echo '
         $("#yeniCihazGirisiBtn").show();
         $("#yeniCihazForm").submit(function(e){
             $("#yeniCihazEkleBtn").prop("disabled", true);
+            $("#kaydediliyorModal").modal("show");
             var formData = $("#yeniCihazForm").serialize();
             $.post("' . base_url("cihazyonetimi/cihazEkle/post") . '", formData)
             .done(function(msg){
                 $("#yeniCihazEkleBtn").prop("disabled", false);
+                $("#kaydediliyorModal").modal("hide");
                 try{
                     data = $.parseJSON( msg );
                     if(data["sonuc"]==1){
@@ -51,12 +53,10 @@ echo '
                         $("#basarili-mesaji").html("Yeni kayıt başarıyla eklendi.");
                         $("#statusSuccessModal").modal("show");
                     }else{
-                        $("#kaydediliyorModal").modal("hide");
                         $("#hata-mesaji").html(data["mesaj"]);
                         $("#statusErrorsModal").modal("show");
                     }
                 }catch(error){
-                    $("#kaydediliyorModal").modal("hide");
                     $("#hata-mesaji").html(error);
                     $("#statusErrorsModal").modal("show");
                 }
