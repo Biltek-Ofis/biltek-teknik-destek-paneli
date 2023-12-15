@@ -26,11 +26,25 @@ echo '<tr id="yapilamIslemRow'.$index.'">
         <div class="form-group p-0 m-0 col">
             <input id="yapilanIslemKdv' . $index . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="kdv_' . $index . '" class="form-control" type="number" placeholder="KDV Oranı" value="' . (isset($yapilanIslemArr["kdv"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["kdv"] : 0) . '" step=".01" required>
         </div>
+    </td>';
+    if(isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["kdv"])){
+        $yapilanIslemKDV = $this->Islemler_Model->tutarGetir((($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]) / 100) * $yapilanIslemArr["kdv"]);
+    }else{
+        $yapilanIslemKDV = NULL;
+    }
+    if (isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"])){
+        $yapilanIslemTutar = ($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]);
+    }else{
+        $yapilanIslemTutar = NULL;
+    }
+echo '   
+    <td id="yapilanIslemTopKdv' . $index . '">
+        ' . (($yapilanIslemKDV != NULL) ? $yapilanIslemKDV . " TL (" . $yapilanIslemArr["kdv"] . "%)" : "") . '
     </td>
     <td id="yapilanIslemTutar' . $index . '">
-        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"])) ? $yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"] . " TL" : "") . '
+        ' . (($yapilanIslemTutar != NULL) ? $yapilanIslemTutar . " TL" : "") . '
     </td>
-    <td id="yapilanIslemTopKdv' . $index . '">
-        ' . ((isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["kdv"])) ? $this->Islemler_Model->tutarGetir((($yapilanIslemArr["miktar"] * $yapilanIslemArr["birim_fiyati"]) / 100) * $yapilanIslemArr["kdv"]) . " TL (" . $yapilanIslemArr["kdv"] . "%)" : "") . '
+    <td id="yapilanIslemToplam' . $index . '">
+        ' . (($yapilanIslemTutar != NULL && $yapilanIslemKDV != NULL) ? $yapilanIslemTutar + $yapilanIslemKDV . " TL" : "") . '
     </td>
 </tr>';
