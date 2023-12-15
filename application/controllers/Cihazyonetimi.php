@@ -111,18 +111,30 @@ class Cihazyonetimi extends Varsayilancontroller
 			}
 		}
 	}
-	public function cihazSil($id)
+	public function cihazSil($id, $tur)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
 			$sil = $this->Cihazlar_Model->cihazSil($id);
 			$this->Cihazlar_Model->deleteTrigger($id);
-			if ($sil) {
-				redirect(base_url(""));
-			} else {
-				$this->Kullanicilar_Model->girisUyari("", "Silme işlemi gerçekleştirilemedi");
+			if($tur == "POST" || $tur == "post"){
+				if ($sil) {
+					echo json_encode(array("mesaj" => "", "sonuc" => 1));
+				}else{
+					echo json_encode(array("mesaj" => "Silme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
+				}
+			}else{
+				if ($sil) {
+					redirect(base_url(""));
+				} else {
+					$this->Kullanicilar_Model->girisUyari("", "Silme işlemi gerçekleştirilemedi");
+				}
 			}
 		} else {
-			$this->Kullanicilar_Model->girisUyari("cikis");
+			if($tur == "POST" || $tur == "post"){
+				echo json_encode(array("mesaj" => "Bu işlemi gerçekleştirebilmek için kullanıcı girişi yapmanız gerekmektedir. Lütfen sayfayı yenileyip tekrar deneyin.", "sonuc" => 0));
+			}else{
+				$this->Kullanicilar_Model->girisUyari("cikis");
+			}
 		}
 	}
 	public function silinenCihazlariBul()
