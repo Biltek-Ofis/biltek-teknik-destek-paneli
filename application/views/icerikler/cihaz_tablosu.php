@@ -213,14 +213,14 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 $sonCihazID = 0;
 
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
-  <th scope="row"><span id="{id}ServisNo">{servis_no}</span></th>
-  <td><span id="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
-  <td><span id="{id}MusteriGSM">{telefon_numarasi}</span></td>
-  <td><span id="{id}CihazTuru">{cihaz_turu}</span></td>
-  <td><span id="{id}Cihaz">{cihaz} {cihaz_modeli}</span></td>
-  <td><span id="{id}Tarih2">{tarih2}</span></td>
-  <td><span id="{id}GuncelDurum">{guncel_durum}</span></td>
-  <td><span id="{id}Sorumlu">{sorumlu}</span></td>
+  <th scope="row"><span class="{id}ServisNo">{servis_no}</span></th>
+  <td><span class="{id}MusteriAdi">{musteri_adi}</span>{yeni}</td>
+  <td><span class="{id}MusteriGSM">{telefon_numarasi}</span></td>
+  <td><span class="{id}CihazTuru">{cihaz_turu}</span></td>
+  <td><span class="{id}Cihaz">{cihaz} {cihaz_modeli}</span></td>
+  <td><span class="{id}Tarih2">{tarih2}</span></td>
+  <td><span class="{id}GuncelDurum">{guncel_durum}</span></td>
+  <td><span class="{id}Sorumlu">{sorumlu}</span></td>
   <td class="text-center">
     <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
   </td>
@@ -1281,8 +1281,8 @@ echo '
       null,
       null
     ],') . ');
-    function idleriGuncelle(tg, dvid, cnt){
-      $(tg+"[id^=\'"+dvid+"\']").each(function () {
+    function classlariGuncelle(className, cnt){
+      $("."+className).each(function () {
         $(this).html(cnt);
       });
     }
@@ -1333,22 +1333,22 @@ echo '
             $("#cihaz" + value.id).attr(\'class\', \'\');
             $("#cihaz" + value.id).addClass(cihazDurumuClass(value.guncel_durum));
             $("#" + value.id + "ServisNo3").html(value.servis_no);
-            //$("#" + value.id + "ServisNo").html(value.servis_no);
-            idleriGuncelle("span", value.id + "ServisNo", value.servis_no);
-            //$("#" + value.id + "MusteriAdi").html(value.musteri_adi);
-            idleriGuncelle("span", value.id + "MusteriAdi", value.musteri_adi);
-            //$("#" + value.id + "CihazTuru").html(value.cihaz_turu);
-            idleriGuncelle("span", value.id + "CihazTuru", value.cihaz_turu);
-            //$("#" + value.id + "Sorumlu").html(value.sorumlu);
-            idleriGuncelle("span", value.id + "Sorumlu", value.sorumlu);
-            //$("#" + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
-            idleriGuncelle("span", value.id + "Cihaz", value.cihaz + " " + value.cihaz_modeli);
-            //$("#" + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
-            idleriGuncelle("span", value.id + "GuncelDurum", cihazDurumu(value.guncel_durum));
-            //$("#" + value.id + "MusteriGSM").html(value.telefon_numarasi);
-            idleriGuncelle("span", value.id + "MusteriGSM", value.telefon_numarasi);
-            //$("#" + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));
-            idleriGuncelle("span", value.id + "Tarih2", tarihDonusturSiralama(value.tarih));';
+            //$("." + value.id + "ServisNo").html(value.servis_no);
+            classlariGuncelle(value.id + "ServisNo", value.servis_no);
+            //$("." + value.id + "MusteriAdi").html(value.musteri_adi);
+            classlariGuncelle(value.id + "MusteriAdi", value.musteri_adi);
+            //$("." + value.id + "CihazTuru").html(value.cihaz_turu);
+            classlariGuncelle(value.id + "CihazTuru", value.cihaz_turu);
+            //$("." + value.id + "Sorumlu").html(value.sorumlu);
+            classlariGuncelle(value.id + "Sorumlu", value.sorumlu);
+            //$("." + value.id + "Cihaz").html(value.cihaz + " " + value.cihaz_modeli);
+            classlariGuncelle(value.id + "Cihaz", value.cihaz + " " + value.cihaz_modeli);
+            //$("." + value.id + "GuncelDurum").html(cihazDurumu(value.guncel_durum));
+            classlariGuncelle(value.id + "GuncelDurum", cihazDurumu(value.guncel_durum));
+            //$("." + value.id + "MusteriGSM").html(value.telefon_numarasi);
+            classlariGuncelle(value.id + "MusteriGSM", value.telefon_numarasi);
+            //$("." + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));
+            classlariGuncelle(value.id + "Tarih2", tarihDonusturSiralama(value.tarih));';
 if ($sorumlu_belirtildimi) {
   $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
   echo '
