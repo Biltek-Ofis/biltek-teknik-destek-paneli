@@ -90,7 +90,7 @@ function tutarHesapla() {
 	);
 }
 function stoklariGetir(yapilanIslem, i) {
-	if (yapilanIslem.length > 1) {
+	/*if (yapilanIslem.length > 1) {
 		$.post(base_url + "/js/stok", { ara: yapilanIslem }, function (data) {
 			var jsonData = JSON.parse(data);
 			if (Object.keys(jsonData).length > 0) {
@@ -116,7 +116,7 @@ function stoklariGetir(yapilanIslem, i) {
 				$("#stok_liste_" + i).hide();
 			}
 		});
-	}
+	}*/
 }
 function stokVerileri(value, i) {
 	$("#stokKodText" + i).html(value.STOK_KODU ? value.STOK_KODU : "Yok");
