@@ -1,6 +1,4 @@
-application/controllers/Cihazyonetimi.php
-application/views/icerikler/cihaz_tablosu.
-application/views/icerikler/cihazyonetimi.php
-application/views/ogeler/yapilan_islem.php   
+application/controllers/*
+application/views/*
 dist/js/cihaz.js
 dist/js/cihaz.min.js

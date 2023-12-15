@@ -138,8 +138,39 @@ echo '<script>
       $("#dt-medyalar").html(data);
     });
   }
+  function cihaziSil(id, sorumlu_belirtildimi){
+    $("#silOnayBtn").prop("disabled", true);
+    $("#kaydediliyorModal").modal("show");
+    var p_url = (sorumlu_belirtildimi ? "' . base_url("cihazlarim/cihazSil") . '" : "' . base_url("cihazyonetimi/cihazSil") . '") + "/" + id +"/post";
+    $.post(p_url)
+    .done(function(msg){
+      $("#silOnayBtn").prop("disabled", false);
+      $("#kaydediliyorModal").modal("hide");
+      try{
+        data = $.parseJSON( msg );
+        if(data["sonuc"]==1){
+          $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
+          $("#cihaziSilModal").modal("hide");
+          $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
+          $("#statusSuccessModal").modal("show");
+        }else{
+          $("#hata-mesaji").html(data["mesaj"]);
+          $("#statusErrorsModal").modal("show");
+        }
+      }catch(error){
+        $("#hata-mesaji").html(error);
+        $("#statusErrorsModal").modal("show");
+      }
+    })
+    .fail(function(xhr, status, error) {
+      $("#silOnayBtn").prop("disabled", false);
+      $("#kaydediliyorModal").modal("hide");
+      $("#hata-mesaji").html(error);
+      $("#statusErrorsModal").modal("show");
+    });
+  }
   function silModaliGoster(id, servis_no, musteri_adi){
-    $("#silOnayBtn").attr("href", "' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazSil") . '/" + id);
+    $("#silOnayBtn").attr("onclick", "cihaziSil(" + id + ", '.($sorumlu_belirtildimi ? "true": "false").')");
 
     $("#ServisNo4").html(servis_no);
     $("#MusteriAdi3").html(musteri_adi);
@@ -624,7 +655,7 @@ $(document).ready(function(){
     $("#cihaziSilModal").on("hidden.bs.modal", function (e) {
         $("#ServisNo4").html("");
         $("#MusteriAdi3").html("");
-        $("#silOnayBtn").attr("href", "#");
+        $("#silOnayBtn").attr("onclick", "");
     });
 });
 </script>
@@ -641,8 +672,8 @@ $(document).ready(function(){
       Bu cihazı (<span id="ServisNo4"></span> - <span id="MusteriAdi3"></span>) silmek istediğinize emin misiniz?
       </div>
       <div class="modal-footer">
-        <a id="silOnayBtn" href="#" class="btn btn-success">Evet</a>
-        <a class="btn btn-danger" data-dismiss="modal">Hayır</a>
+        <button id="silOnayBtn" class="btn btn-success">Evet</button>
+        <button class="btn btn-danger" data-dismiss="modal">Hayır</button>
       </div>
     </div>
   </div>
@@ -1478,9 +1509,9 @@ echo '
     <div class="modal-content">
       <div class="modal-body text-center p-lg-4">
         <div class="spinner-border text-primary" role="status">
-          <span class="sr-only">Kaydediliyor...</span>
+          <span class="sr-only">İşlem gerçekleştiriliyor...</span>
         </div>
-        <p>Kaydediliyor...</p>
+        <p>İşlem gerçekleştiriliyor...</p>
       </div>
     </div>
   </div>
