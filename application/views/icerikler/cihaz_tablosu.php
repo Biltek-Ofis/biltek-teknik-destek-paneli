@@ -1203,6 +1203,19 @@ echo '$(document).ready(function() {
         $("body").addClass("modal-open");
       }
     });
+    $(window).on("resize", function(){
+      $("#cihazlar tr.child").each(function(){
+        $(this).remove();
+      });
+      $("#cihazlar tr").each(function(){
+        if($(this).hasClass("dt-hasChild")){
+          $(this).removeClass("dt-hasChild");
+        }
+        if($(this).hasClass("parent")){
+          $(this).removeClass("parent");
+        }
+      });
+    });
     var tabloDiv = "#cihaz_tablosu";
     var cihazDurumuSiralama = [ 
       ';
