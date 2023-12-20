@@ -2,16 +2,18 @@
 if (!isset($telefon_numarasi_label)) {
     $telefon_numarasi_label = FALSE;
 }
-$telefonNumrasiID = "telefon_numarasi";
+$telefonNumrasiIDOrj = "telefon_numarasi";
+$telefonNumrasiID = $telefonNumrasiIDOrj;
 if(isset($gsm_id)){
     $telefonNumrasiID = $gsm_id;
 }
-echo '<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>';
-echo '<script>
+if($telefonNumrasiID != $telefonNumrasiIDOrj){
+    echo '<script>
     $(document).ready(function(){
         $("#' . $telefonNumrasiID . '").inputmask("+99 (999) 999-9999");
     });
     </script>';
+}
 echo '<div class="form-group';
 if (isset($sifirla)) {
     echo " p-0 m-0";
