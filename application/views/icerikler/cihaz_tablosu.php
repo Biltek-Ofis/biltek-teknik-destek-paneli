@@ -882,7 +882,11 @@ echo '
 </tbody>
 </table>';
 echo '</div>';
-
+echo '<script>
+    $(document).ready(function(){
+        $("#dt-duzenle #telefon_numarasi, #yeniCihazForm #telefon_numarasi").inputmask("+99 (999) 999-9999");
+    });
+    </script>';
 echo '<script type="text/javascript">
   let sonCihazID = ' . $sonCihazID . ';';
 
