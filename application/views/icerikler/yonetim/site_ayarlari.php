@@ -17,7 +17,6 @@ echo '<div class="content-wrapper">
             </div>
         </div>
     </section>';
-$db_host = explode(",", getenv("DB_HOST"));
 echo '<section class="content">
         <div class="card">
             <div class="card-body">

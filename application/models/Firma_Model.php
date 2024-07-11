@@ -11,7 +11,7 @@ class Firma_Model extends CI_Model
         return $this->load->database('firma', TRUE);
     }
     public function musteriTablosu() {
-        return getenv(DB_ON_EK_STR)."musteriler";
+        return DB_ON_EK_STR."musteriler";
     }
     public $stokTablosu = "TBLSTSABIT";
     public function musteriBilgileri($aranacak, $ara)

@@ -83,14 +83,26 @@ defined('EXIT_USER_INPUT')     or define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       or define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      or define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
-define('DB_ON_EK_STR', 'DB_ON_EK');
-
-define('SITE_BASLIGI', getenv('SITE_BASLIGI'));
-define('FIRMA_URL', getenv('FIRMA_SITE_URL'));
-define('A4_GENISLIK', 270);
-define('A4_YUKSEKLIK', 397);
 
 
-define('TEST_ACIK', FALSE);
+// Veritabani baslangic (Bu kısmı düzenleyin)
+
+defined('DB_ON_EK_STR')        or define('DB_ON_EK_STR', 'ts1_');
+defined('DB_DRIVER')           or define('DB_DRIVER', 'mysqli');
+defined('DB_HOST')             or define('DB_HOST', 'localhost');
+defined('DB_DATABASE_TS')      or define('DB_DATABASE_TS', 'veritabani_adi');
+defined('DB_DATABASE_F')       or define('DB_DATABASE_F', 'firmadb');
+defined('DB_USERNAME')         or define('DB_USERNAME', 'kullanici_adi');
+defined('DB_PASSWORD')         or define('DB_PASSWORD', 'sifre');
+
+// Veritabani son
+
+defined('SITE_BASLIGI')        or define('SITE_BASLIGI', getenv('SITE_BASLIGI'));
+defined('FIRMA_URL')           or define('FIRMA_URL', getenv('FIRMA_SITE_URL'));
+defined('A4_GENISLIK')         or define('A4_GENISLIK', 270);
+defined('A4_YUKSEKLIK')        or define('A4_YUKSEKLIK', 397);
+
+
+defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 
 

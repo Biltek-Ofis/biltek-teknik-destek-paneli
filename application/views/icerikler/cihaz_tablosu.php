@@ -225,7 +225,11 @@ echo '<script>
   }
 </script>';
 $this->load->view("inc/tarayici_uyari");
-echo '<div id="cihazTablosu" class="table-responsive">';
+$this->load->view("inc/yukleniyor", array("yukleniyor_mesaj" => "Cihazlar getiriliyor..."));
+echo '<div class="progress-bar">
+  <progress value="75" min="0" max="100" style="visibility:hidden;height:0;width:0;">75%</progress>
+</div>';
+echo '<div id="cihazTablosu" class="table-responsive" style="display:none;">';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
     <tr>
@@ -241,7 +245,8 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
     </tr>
 </thead>
 <tbody id="cihazlar">';
-$sonCihazID = 0;
+$sonCh = $sorumlu_belirtildimi ? $this->Cihazlar_Model->sonCihazJQ($suankiPersonel) : $this->Cihazlar_Model->sonCihazJQ();
+$sonCihazID = count($sonCh) > 0 ? $sonCh[0]->id : 0;
 
 $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$(\\\'#{id}Yeni\\\').remove()">
   <th scope="row"><span class="{id}ServisNo">{servis_no}</span></th>
@@ -700,7 +705,7 @@ $tabloOrnek = $this->Islemler_Model->trimle($tabloOrnek);
 $cihazDetayOrnek = $this->Islemler_Model->trimle($cihazDetayOrnek);
 $cihazSilModalOrnek = $this->Islemler_Model->trimle($cihazSilModalOrnek);
 $this->load->model("Cihazlar_Model");
-$cihazlar = $sorumlu_belirtildimi ? $this->Cihazlar_Model->cihazlarTekPersonel($suankiPersonel) : $this->Cihazlar_Model->cihazlar();
+//$cihazlar = $sorumlu_belirtildimi ? $this->Cihazlar_Model->cihazlarTekPersonel($suankiPersonel) : $this->Cihazlar_Model->cihazlar();
 
 $eskiler = array(
   "\\",
@@ -775,12 +780,8 @@ function donusturOnclick($oge)
 {
   return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
 }
-$sayac = 0;
+/*
 foreach ($cihazlar as $cihaz) {
-  if ($sayac == 0) {
-    $sonCihazID = $cihaz->id;
-  }
-  $sayac++;
   $yapilanİslemler = "";
   $toplam_fiyat = 0;
   $kdv = 0;
@@ -876,8 +877,8 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($cihaz->seri_no)
   );
   $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
-  echo $tablo;
-}
+  //echo $tablo;
+}*/
 echo '
 </tbody>
 </table>';
@@ -1036,9 +1037,9 @@ function donusturOnclick(oge){
     return "";
   }
 }
-function donustur(str, value) {
+function donustur(str, value, yeni) {
     return str.
-    replaceAll("{yeni}", \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\')
+    replaceAll("{yeni}", yeni ? \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\' : \'\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
       .replaceAll("{display_kilit}", value.guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' ? "display:none;" : "")
       .replaceAll("{servis_no}", value.servis_no)
@@ -1227,7 +1228,25 @@ echo '
       }); 
   }
 }';
+echo '
+            function yukleniyorGuncelle(durum){
+              $("#percentagePath").attr("stroke-dasharray", durum + ", 100");
+              $("#percentageText").html(durum + "%");
+            }
+';
 echo '$(document).ready(function() {
+
+        $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {}, function(data) {
+          $.each(JSON.parse(data), function(index, value) {
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            let tabloOrnek = \'' . $tabloOrnek . '\';
+            const tablo = donustur(tabloOrnek, value, false);
+            cihazlarTablosu.row.add($(tablo));
+          });
+          cihazlarTablosu.draw();
+          $("#yukleniyorDaire").hide();
+          $("#cihazTablosu").show();
+        });
     $(document).on("show.bs.modal", ".modal", function() {
       const zIndex = 1040 + 10 * $(".modal:visible").length;
       $(this).css("z-index", zIndex);
@@ -1373,7 +1392,7 @@ echo '
           ).length > 0;
           if (cihazVarmi) {
             let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
-            const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value);
+            const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value, true);
             $("button[id^=\'cihazDetayBtn"+value.id+"\']").each(function () {
               $(this).attr("onclick", cihazDetayBtn);
             });
@@ -1409,7 +1428,6 @@ echo '
         });
         console.log(Object.keys(JSON.parse(data)).length+ " cihaz güncellendi.");
       });
-
       $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = document.querySelectorAll(
@@ -1419,7 +1437,7 @@ echo '
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             let tabloOrnek = \'' . $tabloOrnek . '\';
             
-            const tablo = donustur(tabloOrnek, value);
+            const tablo = donustur(tabloOrnek, value, true);
             cihazlarTablosu.row.add($(tablo)).draw();
             //$("#cihazlar").prepend(tablo);
           }
@@ -1448,6 +1466,7 @@ echo '
     $("#statusSuccessModal").on("hidden.bs.modal", function(e) {
       $("#basarili-mesaji").html("");
     });
+    
   });
 </script>';
 echo $cihazDetayOrnek;
