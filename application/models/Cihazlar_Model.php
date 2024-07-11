@@ -8,32 +8,32 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazlarTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "cihazlar";
+        return DB_ON_EK_STR . "cihazlar";
     }
     public function islemlerTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "islemler";
+        return DB_ON_EK_STR . "islemler";
     }
     public function cihazTurleriTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "cihazturleri";
+        return DB_ON_EK_STR . "cihazturleri";
     }
     public function silinenCihazlarTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "silinencihazlar";
+        return DB_ON_EK_STR . "silinencihazlar";
     }
     public function medyalarTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "medyalar";
+        return DB_ON_EK_STR . "medyalar";
     }
     
     public function tahsilatSekilleriTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "tahsilatsekilleri";
+        return DB_ON_EK_STR . "tahsilatsekilleri";
     }
     public function guncellemeTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "guncelleme";
+        return DB_ON_EK_STR . "guncelleme";
     }
     public function musterileriAktar()
     {
@@ -213,9 +213,13 @@ class Cihazlar_Model extends CI_Model
         }
         return $result;
     }
-    public function cihazlar()
+    public function cihazlar($limit = 0)
     {
-        $result = $this->db->reset_query()->order_by("id", "DESC")->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->order_by("id", "DESC");
+        if($limit > 0){
+            $result = $result->limit($limit);
+        }
+        $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function islemleriGetir($cihazID)
@@ -230,12 +234,16 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTekPersonel($tur)
+    public function cihazlarTekPersonel($tur, $limit = 0)
     {
         $where = array(
             "sorumlu" => $tur,
         );
-        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
+        if($limit > 0){
+            $result = $result->limit($limit);
+        }
+        $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarJQ($id)
@@ -394,7 +402,7 @@ class Cihazlar_Model extends CI_Model
     }
     public function ozelIDTabloAdi()
     {
-        return getenv(DB_ON_EK_STR) . "ozelid";
+        return DB_ON_EK_STR . "ozelid";
     }
     public function insertTrigger()
     {

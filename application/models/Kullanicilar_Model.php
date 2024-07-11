@@ -16,7 +16,7 @@ class Kullanicilar_Model extends CI_Model
         }</script>';
     }
     public function kullanicilarTabloAdi() {
-        return getenv(DB_ON_EK_STR)."kullanicilar";
+        return DB_ON_EK_STR."kullanicilar";
     }
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0)
