@@ -1,5 +1,5 @@
 <?php
-$sorumlular123 = $this->Kullanicilar_Model->kullaniciListesi();
+$sorumlular123 = $this->Kullanicilar_Model->kullanicilar();
 
 echo '<div class="form-group';
 if (isset($sifirla)) {
