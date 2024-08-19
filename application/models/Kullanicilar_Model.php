@@ -48,15 +48,20 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->kullaniciBilgileri()["yonetici"] == 1;
     }
-    public function kullaniciListesi($id = "")
+    public function kullaniciGetir($id = "")
     {
-        if ($id == "") {
-            return $this->db->reset_query()->get($this->kullanicilarTabloAdi())->result();
-        } else {
-            return $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
-        }
+        return $this->db->reset_query()->where(array("id"=> $id))->get($this->kullanicilarTabloAdi())->result();
     }
-    public function kullanicilar($where){
+    public function kullanicilar($where = array()){
+        $kullanici_adi_var = False;
+        foreach($where as $key => $value){
+            if (substr($key, 0, 13) == "kullanici_adi") {
+                $kullanici_adi_var = True;
+            }
+        }
+        if(!$kullanici_adi_var){
+            $where["kullanici_adi !="] = "OZAY";
+        }
         return $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi())->result();
     }
     public function tekKullanici($id)

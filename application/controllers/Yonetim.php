@@ -63,16 +63,21 @@ class Yonetim extends Varsayilancontroller
 			if (strlen($veri["kullanici_adi"]) >= 3) {
 				if (strlen($veri["sifre"]) >= 6) {
 					if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj" . $id)) {
-						$kullanici = $this->Kullanicilar_Model->kullaniciListesi($id)[0];
-						if ($kullanici->sifre != $veri["sifre"]) {
-							$sifre = $veri["sifre"];
-							$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
-						}
-						$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
-						if ($duzenle) {
-							redirect(base_url($this->konum($tur)));
-						} else {
-							$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Hesap düzenlenemedi lütfen daha sonra tekrar deneyin");
+						$kullanicilar = $this->Kullanicilar_Model->kullaniciGetir($id);
+						if(count($kullanicilar) > 0){
+							$kullanici = $kullanicilar[0];
+							if ($kullanici->sifre != $veri["sifre"]) {
+								$sifre = $veri["sifre"];
+								$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+							}
+							$duzenle = $this->Kullanicilar_Model->duzenle($id, $veri);
+							if ($duzenle) {
+								redirect(base_url($this->konum($tur)));
+							} else {
+								$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Hesap düzenlenemedi lütfen daha sonra tekrar deneyin");
+							}
+						}else{
+							$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Kullanıcı bulunamadı lütfen daha sonra tekrar deneyin.");
 						}
 					} else {
 						$this->Kullanicilar_Model->girisUyari($this->konum($tur) . "#kullaniciDuzenleModal" . $id, "Bu kullanıcı adı zaten mevcut.");
