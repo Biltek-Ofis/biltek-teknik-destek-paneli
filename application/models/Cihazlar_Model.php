@@ -178,41 +178,18 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazDurumuYukariTasi($id)
     {
-        $tbl = $this->db->reset_query()->where("id", $id)->get($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+        $tbl = $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
         if($tbl->num_rows() > 0){
-            $res = $tbl->result_array()[0];
-            $cihazDurumlari = $this->db->reset_query()->where('id !=', $res["id"])->order_by("siralama", "ASC")->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result_array();
-            if($res["siralama"] > 1){
+            $res = $tbl->result()[0];
+            if($res->siralama > 1){
                 //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
-                $cihazDurumlariCounter = 0;
-                for ($x = 0; $x < count($cihazDurumlari); $x++) {
-                    $cihazDurumlariCounter++;
-					if($cihazDurumlariCounter == $res["siralama"] - 1){
-						
-						$duzenle = $this->db->reset_query()->where("siralama", $cihazDurumlariCounter)->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), array(
-							"durum"=> $res["durum"],
-							"renk"=> $res["renk"],
-							"kilitle"=> $res["kilitle"],
-							"varsayilan"=> $res["varsayilan"]
-						));
-						if($duzenle){
-							///
-						}else{
-                            return False;
-						}
-						$cihazDurumlariCounter++;
-					}
-					$id = $cihazDurumlari[$x]["id"];
-					unset($cihazDurumlari[$x]["id"]);
-					unset($cihazDurumlari[$x]["siralama"]);
-					$duzenle = $this->db->reset_query()->where(array("siralama"=>$cihazDurumlariCounter))->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), $cihazDurumlari[$x]);
-					if($duzenle){
-						continue;
-					}else{
-                        return False;
-					}
+                $oncekiDurum = $this->db->reset_query()->where('siralama', $res->siralama - 1)->get($this->cihazDurumlariTabloAdi())->result()[0];
+                $duzenle1 = $this->db->reset_query()->where("id", $oncekiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $oncekiDurum->siralama + 1));
+                if(!$duzenle1){
+                    return False;
                 }
-                return True;
+                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $res->siralama - 1));
+                return $duzenle2;
             }else{
                 return False;
             }
@@ -223,40 +200,19 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazDurumuAltaTasi($id)
     {
-        $tbl = $this->db->reset_query()->where("id", $id)->get($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+        $tbl = $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
         if($tbl->num_rows() > 0){
-            $res = $tbl->result_array()[0];
-            $cihazDurumlari = $this->db->reset_query()->where('id !=', $res["id"])->order_by("siralama", "ASC")->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result_array();
-            if($res["siralama"] <= count($cihazDurumlari)){
+            $res = $tbl->result()[0];
+            $cihazDurumlari = $this->db->reset_query()->where('id !=', $res->id)->order_by("siralama", "ASC")->get($this->cihazDurumlariTabloAdi())->result();
+            if($res->siralama <= count($cihazDurumlari)){
                 //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
-                $cihazDurumlariCounter = 0;
-                for ($x = 0; $x < count($cihazDurumlari); $x++) {
-                    $cihazDurumlariCounter++;
-                    $id = $cihazDurumlari[$x]["id"];
-                    unset($cihazDurumlari[$x]["id"]);
-                    unset($cihazDurumlari[$x]["siralama"]);
-                    $duzenle = $this->db->reset_query()->where(array("siralama"=>$cihazDurumlariCounter))->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), $cihazDurumlari[$x]);
-                    if($duzenle){
-                        
-                    }else{
-                        return False;
-                    }
-					if($cihazDurumlariCounter == $res["siralama"]){
-						$cihazDurumlariCounter++;
-						$duzenle = $this->db->reset_query()->where("siralama", $cihazDurumlariCounter)->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), array(
-							"durum"=> $res["durum"],
-							"renk"=> $res["renk"],
-							"kilitle"=> $res["kilitle"],
-							"varsayilan"=> $res["varsayilan"]
-						));
-						if($duzenle){
-							continue;
-						}else{
-                            return False;
-						}
-					}
+                $sonrakiDurum = $this->db->reset_query()->where('siralama', $res->siralama + 1)->get($this->cihazDurumlariTabloAdi())->result()[0];
+                $duzenle1 = $this->db->reset_query()->where("id", $sonrakiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $sonrakiDurum->siralama - 1));
+                if(!$duzenle1){
+                    return False;
                 }
-                return True;
+                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $res->siralama + 1));
+                return $duzenle2;
             }else{
                 return False;
             }
