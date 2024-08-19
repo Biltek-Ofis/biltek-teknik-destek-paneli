@@ -336,6 +336,96 @@ class Yonetim extends Varsayilancontroller
 		}
 	}
 	
+	public function cihaz_durumlari()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Cihaz Durumları", "yonetim/cihaz_durumlari", [], "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazDurumuEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->cihazDurumuPost();
+			$ekle = $this->Cihazlar_Model->cihazDurumuEkle($veri);
+			if ($ekle) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari#yeniCihazDurumuEkleModal", "Cihaz durumu eklenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	
+	public function cihazDurumuYukariTasi($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$yukariTasi = $this->Cihazlar_Model->cihazDurumuYukariTasi($id);
+			if ($yukariTasi) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari", "Cihaz durumu sırası değiştirilemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazDurumuAltaTasi($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			
+			$altaTasi = $this->Cihazlar_Model->cihazDurumuAltaTasi($id);
+			if ($altaTasi) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari", "Cihaz durumu sırası değiştirilemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazDurumuVarsayilanYap($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$ekle = $this->Cihazlar_Model->cihazDurumuVarsayilanYap($id);
+			if ($ekle) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari", "Cihaz durumu düzenlenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazDurumuDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$veri = $this->Cihazlar_Model->cihazDurumuPost();
+			$duzenle = $this->Cihazlar_Model->cihazDurumuDuzenle($id, $veri);
+			if ($duzenle) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari", "Cihaz durumu düzenlenemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function cihazDurumuSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$sil = $this->Cihazlar_Model->cihazDurumuSil($id);
+			if ($sil) {
+				redirect(base_url("yonetim/cihaz_durumlari"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/cihaz_durumlari", "Cihaz durumu silinemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 	public function tahsilat_sekilleri()
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {

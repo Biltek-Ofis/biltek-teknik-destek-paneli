@@ -31,4 +31,9 @@ echo '
   background-color: rgba(40, 167, 69, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }
+
+.bg-secondary {
+  background-color: rgba(108, 117, 125, var(--transparan)) !important;
+  color: var(--yazi-rengi) !important;
+}
 </style>';

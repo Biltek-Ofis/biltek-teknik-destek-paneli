@@ -103,8 +103,12 @@ if (strlen($takip_numarasi)) {
   $cihazBul = $this->Cihazlar_Model->takipNumarasi($takip_numarasi);
   if ($cihazBul->num_rows() > 0) {
     $cihaz = $this->Cihazlar_Model->cihazVerileriniDonustur($cihazBul->result())[0];
-    if ($cihaz->guncel_durum < count($this->Islemler_Model->cihazDurumu) - 2) {
-
+    $kilitle = False;
+    $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
+    if($cDurum->num_rows() > 0){
+        $kilitle = $cDurum->result()[0]->kilitle == 0 ? False : True;
+    }
+    if ($kilitle) {
       $yapilanIslemToplamEskiArray = array(
         "{toplam_aciklama}",
         "{toplam_fiyat}"
@@ -243,7 +247,14 @@ if (strlen($takip_numarasi)) {
             <div class="tab-pane fade" id="list-yapilan-islemler-' . $cihaz->id . '" role="tabpanel" aria-labelledby="list-yapilan-islemler-' . $cihaz->id . '-list">
             <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
-                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'GuncelDurum2">' . $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum) . '</li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'GuncelDurum2">';
+                $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
+                if($cDurum->num_rows() > 0){
+                    echo $cDurum->result()[0]->durum;
+                }else{
+                    echo "Belirtilmemiş";
+                }
+                echo '</li>
             </ul>
             <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Sorumlu Personel:</span></li>

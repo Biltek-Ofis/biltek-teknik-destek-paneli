@@ -356,9 +356,11 @@ echo '<tr>
                 <label for="cihaz_durumu">Cihaz Durumu</label>
                 <select id="cihaz_durumu" class="form-control" aria-label="Cihaz Durumu">
                 <option value="">Hepsi</option>';
-foreach ($this->Islemler_Model->cihazDurumu as $cihazDurumu) {
-    echo '<option value="' . $cihazDurumu . '">' . $cihazDurumu . '</option>';
+$cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
+foreach ($cihazDurumlari as $cihazDurumu) {
+    echo '<option value="' . $cihazDurumu->durum . '">' . $cihazDurumu->durum. '</option>';
 }
+echo '<option value="Belirtilmemiş">Belirtilmemiş</option>';
 echo '</select>
                                                                             </div>
                                                                         </td>
@@ -520,7 +522,14 @@ foreach ($cihazlar as $cihaz) {
     echo '<td>' . $kdv . '</td>';
     echo '<td>' . ($toplam + $kdv) . '</td>';
     echo '<td>' . $cihaz->sorumlu . '</td>';
-    echo '<td>' . $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum) . '</td>';
+    $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
+    echo '<td>';
+    if($cDurum->num_rows() > 0){
+        echo $cDurum->result()[0]->durum;
+    }else{
+        echo "Belirtilmemiş";
+    }
+    echo '</td>';
     echo '</tr>';
 }
 
