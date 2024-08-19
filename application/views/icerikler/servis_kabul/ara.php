@@ -290,12 +290,13 @@ if (strlen($takip_numarasi)) {
 
   echo '</body>';
 } else {
+  $ayarlar = $this->Ayarlar_Model->getir();
   echo '<body class="login-page" style="min-height: 466px;">
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="' . FIRMA_URL . ' target="_blank" class="h1 w-100 text-center"><img height="100" src="' . base_url("dist/img/logo.png") . '"/></a>
+                <a href="' . $ayarlar->firma_url . ' target="_blank" class="h1 w-100 text-center"><img height="100" src="' . base_url("dist/img/logo.png") . '"/></a>
             </div>
             <div class="card-body">
             <div id="uyari" class="alert alert-danger" style="display:none;" role="alert">Lütfen bir servis numarası girin.</div>

@@ -7,6 +7,7 @@ class Yonetim extends Varsayilancontroller
 	public function __construct()
 	{
 		parent::__construct();
+        $this->load->model("Ayarlar_Model");
 	}
 	public function index()
 	{
@@ -198,86 +199,60 @@ class Yonetim extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
-	public function env_duzenle()
+	public function ayarDuzenle()
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
-			//$DB_DRIVER = $this->input->post("db_driver");
-			//$DB_HOST = $this->input->post("db_host") . "," . $this->input->post("db_port");
-			//$TEKNIK_SERVIS_URL = $this->input->post("db_base_url");
+			$veri = array();
 			$SITE_BASLIGI = $this->input->post("db_baslik");
-			$FIRMA_SITE_URL = $this->input->post("db_anasayfa");
+			if(isset($SITE_BASLIGI)){
+				$veri["site_basligi"] = $SITE_BASLIGI;
+			}
+			$FIRMA_URL = $this->input->post("db_anasayfa");
+			if(isset($FIRMA_URL)){
+				$veri["firma_url"] = $FIRMA_URL;
+			}
 			$SIRKET_TELEFONU = $this->input->post("db_telefon");
+			if(isset($SIRKET_TELEFONU)){
+				$veri["sirket_telefonu"] = $SIRKET_TELEFONU;
+			}
 			$TABLO_OGE = $this->input->post("db_tablo_oge");
+			if(isset($TABLO_OGE)){
+				$veri["tablo_oge"] = $TABLO_OGE;
+			}
 			$BARKOD_EN = $this->input->post("db_barkod_en");
+			if(isset($BARKOD_EN)){
+				$veri["barkod_en"] = $BARKOD_EN;
+			}
 			$BARKOD_BOY = $this->input->post("db_barkod_boy");
+			if(isset($BARKOD_BOY)){
+				$veri["barkod_boy"] = $BARKOD_BOY;
+			}
 			$BARKOD_BOYUTU = $this->input->post("db_barkod_boyutu");
+			if(isset($BARKOD_BOYUTU)){
+				$veri["barkod_boyutu"] = $BARKOD_BOYUTU;
+			}
 			$BARKOD_NUMARASI_BOYUTU = $this->input->post("db_barkod_numarasi_boyutu");
+			if(isset($BARKOD_NUMARASI_BOYUTU)){
+				$veri["barkod_numarasi_boyutu"] = $BARKOD_NUMARASI_BOYUTU;
+			}
 			$BARKOD_MUSTERI_ADI_BOYUTU = $this->input->post("db_barkod_musteri_adi_boyutu");
+			if(isset($BARKOD_MUSTERI_ADI_BOYUTU)){
+				$veri["barkod_musteri_adi_boyutu"] = $BARKOD_MUSTERI_ADI_BOYUTU;
+			}
 			$BARKOD_SIRKET_ADI_BOYUTU = $this->input->post("db_barkod_sirket_adi_boyutu");
-			//$DB_DATABASE_TS = $this->input->post("db_ts");
-			//$DB_DATABASE_F = $this->input->post("db_f");
-			//$DB_USERNAME = $this->input->post("db_user");
-			//$DB_PASSWORD = $this->input->post("db_pass");
-			$path = FCPATH . '.env';
-			if (file_exists($path)) {
-				$icerik = file_get_contents($path);
-				$icerik = str_replace(
-					'SITE_BASLIGI="' . getenv("SITE_BASLIGI") . '"',
-					'SITE_BASLIGI="' . $SITE_BASLIGI . '"',
-					$icerik
-				);
-				$icerik = str_replace(
-					'FIRMA_SITE_URL=' . getenv("FIRMA_SITE_URL"),
-					'FIRMA_SITE_URL=' . $FIRMA_SITE_URL,
-					$icerik
-				);
-				$icerik = str_replace(
-					'SIRKET_TELEFONU="' . getenv("SIRKET_TELEFONU") . '"',
-					'SIRKET_TELEFONU="' . $SIRKET_TELEFONU . '"',
-					$icerik
-				);
-				$icerik = str_replace(
-					'TABLO_OGE=' . getenv("TABLO_OGE"),
-					'TABLO_OGE=' . $TABLO_OGE,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_EN=' . getenv("BARKOD_EN"),
-					'BARKOD_EN=' . $BARKOD_EN,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_BOY=' . getenv("BARKOD_BOY"),
-					'BARKOD_BOY=' . $BARKOD_BOY,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_BOYUTU=' . getenv("BARKOD_BOYUTU"),
-					'BARKOD_BOYUTU=' . $BARKOD_BOYUTU,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_NUMARASI_BOYUTU=' . getenv("BARKOD_NUMARASI_BOYUTU"),
-					'BARKOD_NUMARASI_BOYUTU=' . $BARKOD_NUMARASI_BOYUTU,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_MUSTERI_ADI_BOYUTU=' . getenv("BARKOD_MUSTERI_ADI_BOYUTU"),
-					'BARKOD_MUSTERI_ADI_BOYUTU=' . $BARKOD_MUSTERI_ADI_BOYUTU,
-					$icerik
-				);
-				$icerik = str_replace(
-					'BARKOD_SIRKET_ADI_BOYUTU=' . getenv("BARKOD_SIRKET_ADI_BOYUTU"),
-					'BARKOD_SIRKET_ADI_BOYUTU=' . $BARKOD_SIRKET_ADI_BOYUTU,
-					$icerik
-				);
-				if (file_put_contents($path, $icerik)) {
+			if(isset($BARKOD_SIRKET_ADI_BOYUTU)){
+				$veri["barkod_sirket_adi_boyutu"] = $BARKOD_SIRKET_ADI_BOYUTU;
+			}
+
+			if(count($veri) > 0){
+				$duzenle = $this->Ayarlar_Model->duzenle($veri);
+				if ($duzenle) {
 					redirect(base_url("yonetim/ayarlar"));
 				} else {
 					$this->Kullanicilar_Model->girisUyari("yonetim/ayarlar", "Ayarlar düzenlenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
 				}
-			} else {
-				$this->Kullanicilar_Model->girisUyari("yonetim/ayarlar", "Ayar dosyası bulunamadı. Lütfen bir README.md dosyasındaki talimatlara göre bir .env dosyası oluşturun.");
+			}else{
+				$this->Kullanicilar_Model->girisUyari("yonetim/ayarlar", "Ayarlar düzenlenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari();

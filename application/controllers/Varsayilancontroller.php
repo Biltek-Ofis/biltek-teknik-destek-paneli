@@ -5,6 +5,7 @@ class Varsayilancontroller extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Ayarlar_Model");
         $this->load->model("Cihazlar_Model");
         $this->load->model("Firma_Model");
         $this->load->model("Giris_Model");

@@ -8,6 +8,7 @@ class Cihazlarim extends Varsayilancontroller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Ayarlar_Model");
         $this->kullaniciID = $this->Kullanicilar_Model->kullaniciBilgileri()["id"];
     }
     public function index()

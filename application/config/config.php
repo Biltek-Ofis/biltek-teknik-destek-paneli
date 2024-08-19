@@ -25,7 +25,7 @@ date_default_timezone_set('Europe/Istanbul');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = getenv('TEKNIK_SERVIS_URL');
+$config['base_url'] = TEKNIK_SERVIS_URL;
 
 /*
 |--------------------------------------------------------------------------

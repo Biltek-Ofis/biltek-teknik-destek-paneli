@@ -33,34 +33,35 @@ echo '<div class="content-wrapper">
             </div>
         </div>
     </section>';
+    $ayarlar = $this->Ayarlar_Model->getir();
 echo '<section class="content">
         <div class="card">
             <div class="card-body">
-                <form method="post" action="' . base_url("yonetim/env_duzenle") . '">
+                <form method="post" action="' . base_url("yonetim/ayarDuzenle") . '">
                     <h4>Genel Ayarlar</h4>
                     <hr>
                     <div class="form-group col">
                         <label for="db_baslik">Şirket Adı (Kısa)</label>
-                        <input id="db_baslik" name="db_baslik" autocomplete="off" class="form-control" type="text" placeholder="Site Başlığı" value="' . getenv("SITE_BASLIGI") . '" required>
+                        <input id="db_baslik" name="db_baslik" autocomplete="off" class="form-control" type="text" placeholder="Site Başlığı" value="' . $ayarlar->site_basligi . '" required>
                     </div>
                     <div class="form-group col">
                         <label for="db_anasayfa">Şirketinizin Websitesi</label>
-                        <input id="db_anasayfa" name="db_anasayfa" autocomplete="off" class="form-control" type="text" placeholder="Şirketinizin Websitesi" value="' . getenv("FIRMA_SITE_URL") . '" required>
+                        <input id="db_anasayfa" name="db_anasayfa" autocomplete="off" class="form-control" type="text" placeholder="Şirketinizin Websitesi" value="' . $ayarlar->firma_url . '" required>
                     </div>
                     <div class="form-group col">
                         <label for="db_telefon">Şirket Telefonu</label>
-                        <input id="db_telefon" name="db_telefon" autocomplete="off" class="form-control" type="text" placeholder="Şirket Telefonu" value="' . getenv("SIRKET_TELEFONU") . '" required>
+                        <input id="db_telefon" name="db_telefon" autocomplete="off" class="form-control" type="text" placeholder="Şirket Telefonu" value="' . $ayarlar->sirket_telefonu . '" required>
                     </div>
                     <div class="form-group col">
                         <label for="db_anasayfa">Tablolarda Sayfa Başına Gösterilecek Öğe Sayısı</label>
-                        <input id="db_tablo_oge" name="db_tablo_oge" autocomplete="off" class="form-control" type="text" placeholder="Sayfa Başına Öğe" value="' . getenv("TABLO_OGE") . '" required>
+                        <input id="db_tablo_oge" name="db_tablo_oge" autocomplete="off" class="form-control" type="text" placeholder="Sayfa Başına Öğe" value="' .  $ayarlar->tablo_oge . '" required>
                     </div>
                     <h4>Barkod Ayarları</h4>
                     <hr>
                     <div class="form-group col">
                         <label for="db_barkod_en">En</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_en" name="db_barkod_en" autocomplete="off" class="form-control" type="number" placeholder="En" value="' . getenv("BARKOD_EN") . '" required>
+                            <input id="db_barkod_en" name="db_barkod_en" autocomplete="off" class="form-control" type="number" placeholder="En" value="' . $ayarlar->barkod_en . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">mm</div>
                             </div>
@@ -69,7 +70,7 @@ echo '<section class="content">
                     <div class="form-group col">
                         <label for="db_barkod_boy">Boy</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_boy" name="db_barkod_boy" autocomplete="off" class="form-control" type="number" placeholder="Boy" value="' . getenv("BARKOD_BOY") . '" required>
+                            <input id="db_barkod_boy" name="db_barkod_boy" autocomplete="off" class="form-control" type="number" placeholder="Boy" value="' . $ayarlar->barkod_boy . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">mm</div>
                             </div>
@@ -78,7 +79,7 @@ echo '<section class="content">
                     <div class="form-group col">
                         <label for="db_barkod_boyutu">Barkod Boyutu</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_boyutu" name="db_barkod_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Barkod Boyutu" value="' . getenv("BARKOD_BOYUTU") . '" required>
+                            <input id="db_barkod_boyutu" name="db_barkod_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Barkod Boyutu" value="' . $ayarlar->barkod_boyutu . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">mm</div>
                             </div>
@@ -87,7 +88,7 @@ echo '<section class="content">
                     <div class="form-group col">
                         <label for="db_barkod_numarasi_boyutu">Barkod Numarası Boyutu</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_numarasi_boyutu" name="db_barkod_numarasi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Barkod Numarası Boyutu" value="' . getenv("BARKOD_NUMARASI_BOYUTU") . '" required>
+                            <input id="db_barkod_numarasi_boyutu" name="db_barkod_numarasi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Barkod Numarası Boyutu" value="' . $ayarlar->barkod_numarasi_boyutu . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">pt</div>
                             </div>
@@ -96,7 +97,7 @@ echo '<section class="content">
                     <div class="form-group col">
                         <label for="db_barkod_musteri_adi_boyutu">Müşteri Adı Boyutu</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_musteri_adi_boyutu" name="db_barkod_musteri_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . getenv("BARKOD_MUSTERI_ADI_BOYUTU") . '" required>
+                            <input id="db_barkod_musteri_adi_boyutu" name="db_barkod_musteri_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . $ayarlar->barkod_musteri_adi_boyutu  . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">pt</div>
                             </div>
@@ -105,7 +106,7 @@ echo '<section class="content">
                     <div class="form-group col">
                         <label for="db_barkod_sirket_adi_boyutu">Şirket Adı <span id="baslik_parantez"></span>ve Tarih Boyutu</label>
                         <div class="input-group mb-2">
-                            <input id="db_barkod_sirket_adi_boyutu" name="db_barkod_sirket_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . getenv("BARKOD_SIRKET_ADI_BOYUTU") . '" required>
+                            <input id="db_barkod_sirket_adi_boyutu" name="db_barkod_sirket_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . $ayarlar->barkod_sirket_adi_boyutu  . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">pt</div>
                             </div>

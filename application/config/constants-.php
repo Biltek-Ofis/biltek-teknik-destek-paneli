@@ -97,11 +97,11 @@ defined('DB_PASSWORD')         or define('DB_PASSWORD', 'sifre');
 
 // Veritabani son
 
-defined('SITE_BASLIGI')        or define('SITE_BASLIGI', getenv('SITE_BASLIGI'));
-defined('FIRMA_URL')           or define('FIRMA_URL', getenv('FIRMA_SITE_URL'));
+defined('TEKNIK_SERVIS_URL')   or define('TEKNIK_SERVIS_URL', "http://localhost/");
 defined('A4_GENISLIK')         or define('A4_GENISLIK', 270);
 defined('A4_YUKSEKLIK')        or define('A4_YUKSEKLIK', 397);
 
+defined('AUTH_TOKEN')        or define('AUTH_TOKEN', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBVVRIX1RPS0VOIjoiY2Y2ZDk2NmI4MDFkNDU4OGI1YjI3MWU5YjBjOWUxNGIifQ.xMY1pDovkGeQ0JXvt30v2-hXlPjtD5g1yGHYZIWidmg");
 
 defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 

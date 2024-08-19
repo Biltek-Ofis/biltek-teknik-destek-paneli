@@ -5,6 +5,7 @@ class App extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Ayarlar_Model");
         $this->load->model("Giris_Model");
         $this->load->model("Kullanicilar_Model");
         $this->load->model("Cihazlar_Model");
@@ -16,7 +17,7 @@ class App extends CI_Controller
     public function token($token)
     {
         if (isset($token)) {
-            if ($token == getenv("AUTH_TOKEN")) {
+            if ($token == AUTH_TOKEN) {
                 return true;
             } else {
                 return false;
