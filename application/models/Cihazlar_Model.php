@@ -18,6 +18,10 @@ class Cihazlar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "cihazturleri";
     }
+    public function cihazDurumlariTabloAdi()
+    {
+        return DB_ON_EK_STR . "cihazdurumlari";
+    }
     public function silinenCihazlarTabloAdi()
     {
         return DB_ON_EK_STR . "silinencihazlar";
@@ -162,6 +166,150 @@ class Cihazlar_Model extends CI_Model
             "sifre" => $this->input->post("sifre"),
         );
         return $veri;
+    }
+    public function cihazDurumuEkle($veri)
+    {
+        $siralamaMax = $this->db->reset_query()->select_max('siralama')->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result();
+        $siralama = 1;
+        if(isset($siralamaMax[0]->siralama)){
+            $siralama = $siralamaMax[0]->siralama + 1;
+        }
+        return $this->db->reset_query()->insert($this->cihazDurumlariTabloAdi(), array_merge($veri, array("siralama"=>$siralama)));
+    }
+    public function cihazDurumuYukariTasi($id)
+    {
+        $tbl = $this->db->reset_query()->where("id", $id)->get($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+        if($tbl->num_rows() > 0){
+            $res = $tbl->result_array()[0];
+            $cihazDurumlari = $this->db->reset_query()->where('id !=', $res["id"])->order_by("siralama", "ASC")->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result_array();
+            if($res["siralama"] > 1){
+                //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+                $cihazDurumlariCounter = 0;
+                for ($x = 0; $x < count($cihazDurumlari); $x++) {
+                    $cihazDurumlariCounter++;
+					if($cihazDurumlariCounter == $res["siralama"] - 1){
+						
+						$duzenle = $this->db->reset_query()->where("siralama", $cihazDurumlariCounter)->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), array(
+							"durum"=> $res["durum"],
+							"renk"=> $res["renk"],
+							"kilitle"=> $res["kilitle"],
+							"varsayilan"=> $res["varsayilan"]
+						));
+						if($duzenle){
+							///
+						}else{
+                            return False;
+						}
+						$cihazDurumlariCounter++;
+					}
+					$id = $cihazDurumlari[$x]["id"];
+					unset($cihazDurumlari[$x]["id"]);
+					unset($cihazDurumlari[$x]["siralama"]);
+					$duzenle = $this->db->reset_query()->where(array("siralama"=>$cihazDurumlariCounter))->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), $cihazDurumlari[$x]);
+					if($duzenle){
+						continue;
+					}else{
+                        return False;
+					}
+                }
+                return True;
+            }else{
+                return False;
+            }
+		}else{
+            return False;
+		}
+        //return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), $veri);
+    }
+    public function cihazDurumuAltaTasi($id)
+    {
+        $tbl = $this->db->reset_query()->where("id", $id)->get($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+        if($tbl->num_rows() > 0){
+            $res = $tbl->result_array()[0];
+            $cihazDurumlari = $this->db->reset_query()->where('id !=', $res["id"])->order_by("siralama", "ASC")->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result_array();
+            if($res["siralama"] <= count($cihazDurumlari)){
+                //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
+                $cihazDurumlariCounter = 0;
+                for ($x = 0; $x < count($cihazDurumlari); $x++) {
+                    $cihazDurumlariCounter++;
+                    $id = $cihazDurumlari[$x]["id"];
+                    unset($cihazDurumlari[$x]["id"]);
+                    unset($cihazDurumlari[$x]["siralama"]);
+                    $duzenle = $this->db->reset_query()->where(array("siralama"=>$cihazDurumlariCounter))->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), $cihazDurumlari[$x]);
+                    if($duzenle){
+                        
+                    }else{
+                        return False;
+                    }
+					if($cihazDurumlariCounter == $res["siralama"]){
+						$cihazDurumlariCounter++;
+						$duzenle = $this->db->reset_query()->where("siralama", $cihazDurumlariCounter)->update($this->Cihazlar_Model->cihazDurumlariTabloAdi(), array(
+							"durum"=> $res["durum"],
+							"renk"=> $res["renk"],
+							"kilitle"=> $res["kilitle"],
+							"varsayilan"=> $res["varsayilan"]
+						));
+						if($duzenle){
+							continue;
+						}else{
+                            return False;
+						}
+					}
+                }
+                return True;
+            }else{
+                return False;
+            }
+		}else{
+            return False;
+		}
+    }
+    public function cihazDurumuVarsayilanYap($id)
+    {
+        $this->db->reset_query()->update($this->cihazDurumlariTabloAdi(), array("varsayilan"=>0));
+        return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), array("varsayilan"=>1));
+    }
+    public function cihazDurumuDuzenle($id, $veri)
+    {
+        return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), $veri);
+    }
+    public function cihazDurumuSil($id)
+    {
+        return $this->db->reset_query()->where("id", $id)->delete($this->cihazDurumlariTabloAdi());
+    }
+    public function cihazDurumuPost()
+    {
+        $veri = array(
+            "durum" => $this->input->post("durum"),
+            "kilitle" => $this->input->post("kilitle"),
+            "renk" => $this->input->post("renk"),
+        );
+        return $veri;
+    }
+    public function cihazDurumlari()
+    {
+        return $this->db->reset_query()->order_by("siralama", "ASC")->get($this->cihazDurumlariTabloAdi())->result();
+    }
+    public function cihazDurumuBul($id)
+    {
+        return $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
+    }
+    public function cihazDurumuKilitle($id)
+    {
+        $cDurum= $this->cihazDurumuBul($id);
+        $kilitle = False;
+        if($cDurum->num_rows() > 0){
+          $kilitle = $cDurum->result()[0]->kilitle == 0 ? False : True;
+        }
+        return $kilitle;
+    }
+    public function cihazDurumuIsım($id)
+    {
+        $cDurum= $this->cihazDurumuBul($id);
+        if($cDurum->num_rows() > 0){
+          return $cDurum->result()[0]->durum;
+        }
+        return "Belirtilmemiş";
     }
     public function tahsilatSekli($tur_id)
     {

@@ -30,6 +30,8 @@ $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 $cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 
+$cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
+
 echo '<script>
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
@@ -106,8 +108,21 @@ echo '<script>
       });
     });
   }
+    function cihazKilitle(guncelDurum){
+      guncelDurum = parseInt(guncelDurum);
+      switch (guncelDurum) {';
+      foreach($cDurumlari as $cDurumu){
+        echo '
+        case '.$cDurumu->id.':
+          return '.($cDurumu->kilitle == 0 ? "false": "true").';';
+      }
+      echo '
+        default:
+          return false;
+      }
+    }
   function butonDurumu(guncel_durum){
-    if(guncel_durum < ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' || yonetici){      
+    if(!cihazKilitle(guncel_durum) || yonetici){      
       if(!duzenleme_modu){
         if(!$("#duzenleBtn").hasClass("goster")){
           $("#duzenleBtn").addClass("goster");
@@ -780,8 +795,10 @@ function donusturOnclick($oge)
 {
   return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
 }
+
 /*
 foreach ($cihazlar as $cihaz) {
+  $cDurumCh = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
   $yapilanİslemler = "";
   $toplam_fiyat = 0;
   $kdv = 0;
@@ -824,8 +841,8 @@ foreach ($cihazlar as $cihaz) {
   $yeniler = array(
     "",
     "",
-    $this->Islemler_Model->cihazDurumuClass($cihaz->guncel_durum),
-    (($cihaz->guncel_durum == count($this->Islemler_Model->cihazDurumu) - 1) && !$this->Kullanicilar_Model->yonetici()) ? "display:none;" : "",
+    $cDurumCh->num_rows() > 0 ? $cDurumCh->result()[0]->renk : "bg-white",
+    ($this->Cihazlar_Model->cihazDurumuKilitle($cihaz->guncel_durum) && !$this->Kullanicilar_Model->yonetici()) ? "display:none;" : "",
     $cihaz->servis_no,
     $cihaz->takip_numarasi,
     $cihaz->id,
@@ -850,7 +867,7 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->bildirim_tarihi,
     $cihaz->cikis_tarihi,
-    $this->Islemler_Model->cihazDurumu($cihaz->guncel_durum),
+    $this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum),
     $cihaz->guncel_durum,
     $cihaz->tahsilat_sekli,
     $this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu),
@@ -858,7 +875,7 @@ foreach ($cihazlar as $cihaz) {
     $yapilanİslemler,
     donusturOnclick($cihaz->musteri_adi),
     donusturOnclick($cihaz->adres),
-    donusturOnclick($this->Islemler_Model->cihazDurumu($cihaz->guncel_durum)),
+    donusturOnclick($this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum)),
     donusturOnclick($cihaz->cihaz_turu),
     donusturOnclick($cihaz->cihaz),
     donusturOnclick($cihaz->cihaz_modeli),
@@ -973,14 +990,14 @@ echo '
   function cihazDurumu(id) {
     id = parseInt(id);
     switch (id) {';
-for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
-  echo '
-      case ' . $i . ':
-        return "' . $this->Islemler_Model->cihazDurumu[$i] . '";';
-}
-echo '
+    foreach($cDurumlari as $cDurumu){
+      echo '
+      case '.$cDurumu->id.':
+        return "'.$cDurumu->durum.'";';
+    }
+    echo '
       default:
-        return "' . $this->Islemler_Model->cihazDurumu[0] . '";
+        return "'.$this->Cihazlar_Model->cihazDurumuIsım(0).'";
     }
   }';
       echo '
@@ -1002,14 +1019,14 @@ echo '
   function cihazDurumuClass(id) {
     id = parseInt(id);
     switch (id) {';
-for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuClass); $i++) {
-  echo '
-      case ' . $i . ':
-        return "' . $this->Islemler_Model->cihazDurumuClass[$i] . '";';
-}
+    
+    foreach($cDurumlari as $cDurumu){
+      echo 'case '.$cDurumu->id.':
+        return "'.$cDurumu->renk.'";';
+    }
 echo '
       default:
-        return "' . $this->Islemler_Model->cihazDurumuClass[0] . '";
+        return "bg-white";
     }
   }';
 
@@ -1041,7 +1058,7 @@ function donustur(str, value, yeni) {
     return str.
     replaceAll("{yeni}", yeni ? \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\' : \'\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
-      .replaceAll("{display_kilit}", value.guncel_durum == ' . (count($this->Islemler_Model->cihazDurumu) - 1) . ' ? "display:none;" : "")
+      .replaceAll("{display_kilit}",  cihazKilitle(value.guncel_durum) ? "display:none;" : "")
       .replaceAll("{servis_no}", value.servis_no)
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
@@ -1236,7 +1253,7 @@ echo '
 ';
 echo '$(document).ready(function() {
 
-        $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {}, function(data) {
+        $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {}, function(data) {
           $.each(JSON.parse(data), function(index, value) {
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             let tabloOrnek = \'' . $tabloOrnek . '\';
@@ -1270,15 +1287,17 @@ echo '$(document).ready(function() {
         }
       });
     });
-    var tabloDiv = "#cihaz_tablosu";
+    var tabloDiv = "#cihaz_tablosu";';
+  
+    echo '
     var cihazDurumuSiralama = [ 
       ';
-for ($i = 0; $i < count($this->Islemler_Model->cihazDurumu); $i++) {
-  echo '"' . $this->Islemler_Model->cihazDurumu[$i] . '"';
-  if ($i < count($this->Islemler_Model->cihazDurumu) - 1) {
-    echo ',';
-  }
-}
+      for($i = 0; $i < count($cDurumlari); $i++){
+        echo '"' . $cDurumlari[$i]->durum . '"';
+        if ($i < count($cDurumlari) - 1) {
+          echo ',';
+        }
+      }
 echo '
     ];
     $.fn.dataTable.ext.type.detect.unshift( function ( data ) {
@@ -1302,10 +1321,10 @@ echo '
           var cihazDurumuSiralamaNo;
           name = spaniSil(name);
           ';
-for ($i = 0; $i < count($this->Islemler_Model->cihazDurumuSiralama); $i++) {
+for ($i = 0; $i < count($cDurumlari); $i++) {
 
-  echo ($i > 0 ? "else " : "") . 'if (name == "' . $this->Islemler_Model->cihazDurumu[$i] . '") {
-              cihazDurumuSiralamaNo = ' . $this->Islemler_Model->cihazDurumuSiralama[$i] . ';
+  echo ($i > 0 ? "else " : "") . 'if (name == "' . $cDurumlari[$i]->durum . '") {
+              cihazDurumuSiralamaNo = ' . $cDurumlari[$i]->siralama . ';
             }';
 }
 echo '

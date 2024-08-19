@@ -70,7 +70,18 @@ if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
                             </p>
                         </a>
                     </li>
-                    
+                    <li class="nav-item">
+                        <a href="' . base_url("yonetim/cihaz_durumlari") . '" class="nav-link';
+    if ($aktifSayfa == "yonetim/cihaz_durumlari") {
+        echo " active";
+    }
+    echo '">
+                            <i class="nav-icon fas fa-laptop"></i>
+                            <p>
+                                Cihaz Durumları
+                            </p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="' . base_url("yonetim/tahsilat_sekilleri") . '" class="nav-link';
     if ($aktifSayfa == "yonetim/tahsilat_sekilleri") {
