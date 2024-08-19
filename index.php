@@ -286,8 +286,9 @@ define('VIEWPATH', $view_folder . DIRECTORY_SEPARATOR);
  *
  * And away we go...
  */
+/*
 require_once BASEPATH . 'dotenv/autoloader.php';
 
 $dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
+$dotenv->load();*/
 require_once BASEPATH . 'core/CodeIgniter.php';

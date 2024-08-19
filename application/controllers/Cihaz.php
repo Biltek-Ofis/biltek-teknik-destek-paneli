@@ -7,6 +7,7 @@ class Cihaz extends Varsayilancontroller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Ayarlar_Model");
     }
     public function index($id)
     {

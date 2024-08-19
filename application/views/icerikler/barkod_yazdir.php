@@ -10,10 +10,11 @@ echo '<title>Barkod ' . ($test ? "0" : $cihaz->id) . '</title>';
 $this->load->view("inc/styles");
 $this->load->view("inc/scripts");
 
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<script src="' . base_url("dist/js/JsBarcode.all.min.js") . '"></script>';
-$style = "width: ".getenv("BARKOD_EN")."mm;
-            height: ".getenv("BARKOD_BOY")."mm;
-            size: ".getenv("BARKOD_EN")."mm ".getenv("BARKOD_BOY")."mm;
+$style = "width: ".$ayarlar->barkod_en."mm;
+            height: ".$ayarlar->barkod_boy."mm;
+            size: ".$ayarlar->barkod_en."mm ".$ayarlar->barkod_boy."mm;
             font-weight: 1000 !important;
             word-break: break-word;
             page-break-before: always;
@@ -30,18 +31,18 @@ $tableStyle = "
                 margin:0 !important;
             }
             table tr .icerik{
-                font-size:".getenv("BARKOD_NUMARASI_BOYUTU")."pt !important;
+                font-size:".$ayarlar->barkod_numarasi_boyutu."pt !important;
                 max-height: 4mm !important;
                 display:inline;
             }
             table tr:nth-child(2) .icerik{
-                max-height: " . getenv("BARKOD_BOYUTU") . "mm !important;
+                max-height: " . $ayarlar->barkod_boyutu . "mm !important;
             }
             table tr:first-child .icerik{
-                font-size:".getenv("BARKOD_SIRKET_ADI_BOYUTU")."pt !important;
+                font-size:".$ayarlar->barkod_sirket_adi_boyutu."pt !important;
             }
             table tr:last-child .icerik{
-                font-size:".getenv("BARKOD_MUSTERI_ADI_BOYUTU")."pt !important;
+                font-size:".$ayarlar->barkod_musteri_adi_boyutu."pt !important;
             }
             table tbody tr:last-child{
                 page-break-after: auto;
@@ -79,7 +80,6 @@ echo '
     });
     </script>
 </head>';
-
 echo '<body onafterprint="self.close()">
     <script>
     $(document).ready(function(){
@@ -90,7 +90,7 @@ echo '<body onafterprint="self.close()">
             fontSize: 18,
             fontOptions: "bold"
         });
-        $("#barkod").css({"height":"' . getenv("BARKOD_BOYUTU") . 'mm"});
+        $("#barkod").css({"height":"' . $ayarlar->barkod_boyutu . 'mm"});
     });
     </script>
     <table class="table table-borderless">
@@ -112,7 +112,7 @@ echo '<body onafterprint="self.close()">
         </thead>
         <tbody class="p-1">
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="5"><div class="icerik">' . SITE_BASLIGI . '</div></td>
+            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="5"><div class="icerik">' . $ayarlar->site_basligi . '</div></td>
             <td class="p-0 pl-1 pr-1 m-0 text-right" colspan="7"><div class="icerik">' . ($test ? "01.01.2020" : substr($cihaz->tarih, 0, -5)) . '</div></td>
         </tr>
         <tr>

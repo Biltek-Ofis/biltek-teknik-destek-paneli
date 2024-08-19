@@ -5,6 +5,7 @@ class Giris extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Ayarlar_Model");
         $this->load->model("Giris_Model");
     }
     public function index(){

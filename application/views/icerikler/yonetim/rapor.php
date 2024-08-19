@@ -6,6 +6,7 @@ echo '<style>
     display: none;
 }
 </style>';
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -136,7 +137,7 @@ echo '<div class="content-wrapper">
             function baslik(){
                 var bugun = new Date();
                 bugun.setDate(bugun.getDate() + 20);
-                return "' . SITE_BASLIGI . ' Teknik Servis Raporu - " + bugun.getFullYear() + "/"
+                return "' . $ayarlar->site_basligi . ' Teknik Servis Raporu - " + bugun.getFullYear() + "/"
                 + ("0" + bugun.getMonth()).slice(-2) + "/"
                 + ("0" + bugun.getDate()).slice(-2) + " " + ("0" + (bugun.getHours())).slice(-2) + ":" + ("0" + (bugun.getMinutes())).slice(-2);
             }

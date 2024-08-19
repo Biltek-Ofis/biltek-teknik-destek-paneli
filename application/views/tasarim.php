@@ -4,8 +4,8 @@ echo '<!DOCTYPE html>
 
 <head>';
 $this->load->view("inc/meta");
-
-echo '<title>' . $baslik . '' . (SITE_BASLIGI != NULL ? " - " . SITE_BASLIGI : "") . '</title>';
+$ayarlar = $this->Ayarlar_Model->getir();
+echo '<title>' . $baslik . '' . (isset($ayarlar->site_basligi) ? " - " . $ayarlar->site_basligi : "") . '</title>';
 
 if ($ek_css != "") {
   $this->load->view($ek_css);
