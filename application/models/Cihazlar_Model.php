@@ -386,6 +386,8 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazlarTumuJQ($sorumlu = "", $spesifik = array())
     {
+        $limit = $this->input->post('limit');
+        $offset = $this->input->post('offset');
         $where = array();
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
@@ -395,6 +397,9 @@ class Cihazlar_Model extends CI_Model
 
         if(count($spesifik)>0){
             $result = $result->where_in("id", $spesifik);
+        }
+        if(isset($limit) && isset($offset)){
+            $result = $result->limit($limit, $offset);
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
@@ -419,10 +424,17 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazlarTekPersonelTumuJQ($sorumlu_personel)
     {
+        $limit = $this->input->post('limit');
+        $offset = $this->input->post('offset');
         $where = array(
             "sorumlu" => $sorumlu_personel,
         );
-        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
+        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
+        if(isset($limit) && isset($offset)){
+            $result = $result->limit($limit, $offset);
+        }
+        $result = $result->get($this->cihazlarTabloAdi())->result();
+        
         return $this->cihazVerileriniDonustur($result);
     }
     public $telefon_numarasi_bos = "+90 (___) ___-____";

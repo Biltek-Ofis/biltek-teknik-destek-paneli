@@ -1251,19 +1251,11 @@ echo '
               $("#percentageText").html(durum + "%");
             }
 ';
-echo '$(document).ready(function() {
+$ayarlar = $this->Ayarlar_Model->getir();
+echo '
 
-        $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {}, function(data) {
-          $.each(JSON.parse(data), function(index, value) {
-            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-            let tabloOrnek = \'' . $tabloOrnek . '\';
-            const tablo = donustur(tabloOrnek, value, false);
-            cihazlarTablosu.row.add($(tablo));
-          });
-          cihazlarTablosu.draw();
-          $("#yukleniyorDaire").hide();
-          $("#cihazTablosu").show();
-        });
+  $(document).ready(function() {
+
     $(document).on("show.bs.modal", ".modal", function() {
       const zIndex = 1040 + 10 * $(".modal:visible").length;
       $(this).css("z-index", zIndex);
@@ -1367,6 +1359,26 @@ echo '
       null,
       null
     ],') . ');
+    
+    function cihazlariYukle(offset){
+        $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {limit: '.$ayarlar->tablo_oge.', offset: offset}, function(data) {
+            var jData = JSON.parse(data);
+            $.each(jData, function(index, value) {
+              //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+              let tabloOrnek = \'' . $tabloOrnek . '\';
+              const tablo = donustur(tabloOrnek, value, false);
+              cihazlarTablosu.row.add($(tablo));
+            });
+            if(jData.length > 0){
+              cihazlariYukle(offset + '.$ayarlar->tablo_oge.');
+            }else{
+              cihazlarTablosu.draw();
+              $("#yukleniyorDaire").hide();
+              $("#cihazTablosu").show();;
+            }
+          });
+    }
+    cihazlariYukle(0);
     function classlariGuncelle(className, cnt){
       $("."+className).each(function () {
         $(this).html(cnt);
