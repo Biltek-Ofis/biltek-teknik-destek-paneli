@@ -1307,7 +1307,7 @@ echo '
               while ( cihazDurumuSiralama[i] ) {
                   if ( isNaN(data) ) {
                       if ( data.search( cihazDurumuSiralama[i] ) > -1 )   {
-                          return "priority";
+                          return "status-tr";
                       }
                   }
                   i++;
@@ -1317,8 +1317,8 @@ echo '
       return null;
     });
     $.extend( $.fn.dataTable.ext.type.order, {
-      "priority-pre": function ( name ) {
-          var cihazDurumuSiralamaNo;
+      "status-tr-pre": function ( name ) {
+          var cihazDurumuSiralamaNo = 0;
           name = spaniSil(name);
           ';
 for ($i = 0; $i < count($cDurumlari); $i++) {
@@ -1330,10 +1330,10 @@ for ($i = 0; $i < count($cDurumlari); $i++) {
 echo '
           return cihazDurumuSiralamaNo;
       },
-      "priority-asc": function ( a, b ) {
+      "status-tr-asc": function ( a, b ) {
               return a - b;
       },
-      "priority-desc": function ( a, b ) {
+      "status-tr-desc": function ( a, b ) {
               return b - a;
       },
       "date-tr-pre": function ( name ) {
@@ -1363,7 +1363,7 @@ echo '
       null,
       null,
       { "sType": "date-tr" },
-      null,
+      { "sType": "status-tr" },
       null,
       null
     ],') . ');
