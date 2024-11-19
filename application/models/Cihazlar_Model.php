@@ -502,6 +502,10 @@ class Cihazlar_Model extends CI_Model
     public function cihazEkle($veri)
     {
         $this->veriGuncellendiEkle();
+        $varsayilanDurum = $this->db->reset_query()->where("varsayilan", 1)->get($this->cihazDurumlariTabloAdi())->result();
+        if(count($varsayilanDurum) > 0){
+            $veri["guncel_durum"] = $varsayilanDurum[0]->id;
+        }
         return $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
     }
     public function ozelIDTabloAdi()
