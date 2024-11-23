@@ -29,7 +29,8 @@ $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
 $cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
-
+$kaydiKopyalaOnClick = 'kaydiKopyala(\\\'{musteri_kod_onclick}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{sorumlu_val_onclick}\\\')';
+$kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
 $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 
 echo '<script>
@@ -238,6 +239,26 @@ echo '<script>
 
     cihazBilgileriniGetir();
   }
+  function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, sorumlu){
+
+      $(\'#yeniCihazForm\')[0].reset();
+      if(musteri_kod != "Yok" && musteri_kod != ""){
+        $("#yeniCihazForm #musteri_kod").val(musteri_kod);
+      }
+        
+      $("#yeniCihazForm #musteri_adi").val(musteri_adi);
+      $("#yeniCihazForm #adres").val(adres);
+      $("#yeniCihazForm #musteriyi_kaydet").prop("checked", false);
+      $("#yeniCihazForm #telefon_numarasi").val(telefon_numarasi);
+      $("#yeniCihazForm #cihaz_turu").val(cihaz_turu);
+      $("#yeniCihazForm #cihaz").val(cihaz);
+      $("#yeniCihazForm #cihaz_modeli").val(cihaz_modeli);
+      $("#yeniCihazForm #seri_no").val(seri_no);
+      $("#yeniCihazForm #cihaz_sifresi").val(cihaz_sifresi);
+      $("#yeniCihazForm #sorumlu").val(sorumlu);
+
+      $("#yeniCihazEkleModal").modal("show");
+  }
 </script>';
 $this->load->view("inc/tarayici_uyari");
 $this->load->view("inc/yukleniyor", array("yukleniyor_mesaj" => "Cihazlar getiriliyor..."));
@@ -274,7 +295,9 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
   <td><span class="{id}Sorumlu">{sorumlu}</span></td>
   <td class="text-center">
     <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
-  </td>
+   ' . ($sorumlu_belirtildimi ? "" : '<button class="btn btn-info text-white mt-1" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>') . '
+    </td>
+ 
 </tr>';
 $ilkOgeGenislik = "40%";
 $ikinciOgeGenislik = "60%";
@@ -732,6 +755,7 @@ $eskiler = array(
   "{id}",
   "{musteri_adi}",
   "{musteri_kod}",
+  "{musteri_kod_onclick}",
   "{adres}",
   "{telefon_numarasi}",
   "{cihaz_turu}",
@@ -761,6 +785,8 @@ $eskiler = array(
   "{adres_onclick}",
   "{guncel_durum_onclick}",
   "{cihaz_turu_onclick}",
+  "{cihaz_turu_val}",
+  "{cihaz_turu_val_onclick}",
   "{cihaz_onclick}",
   "{cihaz_modeli_onclick}",
   "{teslim_alinanlar_onclick}",
@@ -770,6 +796,8 @@ $eskiler = array(
   "{ariza_aciklamasi_onclick}",
   "{servis_turu_onclick}",
   "{sorumlu_onclick}",
+  "{sorumlu_val}",
+  "{sorumlu_val_onclick}",
   "{yapilan_islem_aciklamasi_onclick}",
   "{tahsilat_sekli_onclick}",
   "{fatura_durumu_onclick}",
@@ -848,6 +876,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->id,
     $cihaz->musteri_adi,
     isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
+    isset($cihaz->musteri_kod) ? donusturOnclick($cihaz->musteri_kod) : "Yok",
     $cihaz->adres,
     $cihaz->telefon_numarasi,
     $cihaz->cihaz_turu,
@@ -877,6 +906,8 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($cihaz->adres),
     donusturOnclick($this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum)),
     donusturOnclick($cihaz->cihaz_turu),
+    $cihaz->cihaz_turu_val,
+    donusturOnclick($cihaz->cihaz_turu_val),
     donusturOnclick($cihaz->cihaz),
     donusturOnclick($cihaz->cihaz_modeli),
     donusturOnclick($cihaz->teslim_alinanlar),
@@ -886,6 +917,8 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($cihaz->ariza_aciklamasi),
     donusturOnclick($this->Islemler_Model->servisTuru($cihaz->servis_turu)),
     donusturOnclick($cihaz->sorumlu),
+    $cihaz->sorumlu_val,
+    donusturOnclick($cihaz->sorumlu_val),
     donusturOnclick($cihaz->yapilan_islem_aciklamasi),
     donusturOnclick($cihaz->tahsilat_sekli),
     donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
@@ -1063,6 +1096,7 @@ function donustur(str, value, yeni) {
       .replaceAll("{id}", value.id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
+      .replaceAll("{musteri_kod_onclick}", value.musteri_kod ? donusturOnclick(value.musteri_kod) : "Yok")
       .replaceAll("{adres}", value.adres)
       .replaceAll("{telefon_numarasi}", value.telefon_numarasi)
       .replaceAll("{cihaz_turu}", value.cihaz_turu)
@@ -1092,6 +1126,8 @@ function donustur(str, value, yeni) {
       .replaceAll("{adres_onclick}", donusturOnclick(value.adres))
       .replaceAll("{guncel_durum_onclick}", donusturOnclick(cihazDurumu(value.guncel_durum)))
       .replaceAll("{cihaz_turu_onclick}", donusturOnclick(value.cihaz_turu))
+      .replaceAll("{cihaz_turu_val}", value.cihaz_turu_val)
+      .replaceAll("{cihaz_turu_val_onclick}", donusturOnclick(value.cihaz_turu_val))
       .replaceAll("{cihaz_onclick}", donusturOnclick(value.cihaz))
       .replaceAll("{cihaz_modeli_onclick}", donusturOnclick(value.cihaz_modeli))
       .replaceAll("{teslim_alinanlar_onclick}", donusturOnclick(value.teslim_alinanlar))
@@ -1101,13 +1137,14 @@ function donustur(str, value, yeni) {
       .replaceAll("{ariza_aciklamasi_onclick}", donusturOnclick(value.ariza_aciklamasi))
       .replaceAll("{servis_turu_onclick}", donusturOnclick(servisTuru(value.servis_turu)))
       .replaceAll("{sorumlu_onclick}", donusturOnclick(value.sorumlu))
+      .replaceAll("{sorumlu_val}", value.sorumlu_val)
+      .replaceAll("{sorumlu_val_onclick}", donusturOnclick(value.sorumlu_val))
       .replaceAll("{yapilan_islem_aciklamasi_onclick}", donusturOnclick(value.yapilan_islem_aciklamasi))
       .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(value.tahsilat_sekli))
       .replaceAll("{fatura_durumu_onclick}", donusturOnclick(faturaDurumu(value.fatura_durumu)))
       .replaceAll("{fis_no_onclick}", donusturOnclick(value.fis_no))
       .replaceAll("{takip_no}", value.takip_numarasi)
-      .replaceAll("{seri_no_onclick}", donusturOnclick(value.seri_no))
-      ;
+      .replaceAll("{seri_no_onclick}", donusturOnclick(value.seri_no));
   }';
 echo 'function tarihiFormatla(tarih12){
   return (tarih12 < 10) ? "0" + tarih12 : tarih12;
