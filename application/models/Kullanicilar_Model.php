@@ -108,7 +108,8 @@ class Kullanicilar_Model extends CI_Model
         $veri = array(
             "kullanici_adi" => $this->input->post("kullanici_adi"),
             "ad_soyad" => $this->input->post("ad_soyad"),
-            "sifre" => $this->input->post("sifre")
+            "sifre" => $this->input->post("sifre"),
+            "teknikservis" => $this->input->post("teknikservis"),
         );
         if ($yonetici_dahil) {
             $veri["yonetici"] = $this->input->post("yonetici");
