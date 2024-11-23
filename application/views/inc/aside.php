@@ -1,5 +1,6 @@
 <?php
 $ayarlar = $this->Ayarlar_Model->getir();
+$kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
 echo '<style>
     .break-sec-w {
         width: 100%;
@@ -18,7 +19,7 @@ echo '<style>
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
             <h5 class="info w-100 text-center">
-                <a href="' . base_url("kullanici") . '" class="d-block">' . $this->Kullanicilar_Model->kullaniciBilgileri()["ad_soyad"] . '<br>(' . $this->Kullanicilar_Model->kullaniciBilgileri()["kullanici_adi"] . ')</a>
+                <a href="' . base_url("kullanici") . '" class="d-block">' . $kullanicibilgileri123["ad_soyad"] . '<br>(' . $kullanicibilgileri123["kullanici_adi"] . ')</a>
             </h5>
         </div>
         <!--<div class="form-inline">
@@ -33,7 +34,7 @@ echo '<style>
         </div>-->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
-if ($this->Kullanicilar_Model->kullaniciBilgileri()["yonetici"] == 1) {
+if ($kullanicibilgileri123["yonetici"] == 1) {
     echo '<li class="nav-header">Yönetim</li>
                     <li class="nav-item">
                         <a href="' . base_url("yonetim/yoneticiler") . '" class="nav-link';
@@ -146,7 +147,9 @@ echo '">
                             Anasayfa
                         </p>
                     </a>
-                </li>
+                </li>';
+ if($kullanicibilgileri123["teknikservis"] == 1){
+                echo '
                 <li class="nav-item">
                     <a href="' . base_url("cihazlarim") . '" class="nav-link';
 if ($aktifSayfa == "cihazlarim") {
@@ -158,7 +161,9 @@ echo '">
                             Cihazlarım
                         </p>
                     </a>
-                </li>
+                </li>';
+}
+                echo '
                 <!--<li class="nav-item';
 /*if ($aktifSayfa == "cihazlar") {
                                             echo " menu-is-opening menu-open";
