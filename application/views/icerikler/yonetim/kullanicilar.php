@@ -62,6 +62,9 @@ echo '</div>
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_personel", array("kullaniciTuru" => $kullaniciTuru));
 echo '</div>
+                                    <div class="row">';
+$this->load->view("ogeler/kullanici_teknik_servis");
+echo '</div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -78,6 +81,7 @@ echo '</div>
                                 <th>Hesap Kodu</th>
                                 <th>Ad Soyad</th>
                                 <th>Kullanıcı Adı</th>
+                                <th>Teknik Servis Elemanı</th>
                                 <th>İşlemler</th>
                             </tr>
                         </thead>
@@ -94,6 +98,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
     echo '</td>
                                     <td>
                                         ' . $kullanici->kullanici_adi . '
+                                    </td>
+                                    <td>
+                                        ' . ( $kullanici->teknikservis == 1 ? "Evet" : "Hayır" ) . '
                                     </td>
                                     <td class="align-middle text-center">
 
@@ -145,6 +152,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));
+        echo '</div>
+                                                        <div class="row">';
+        $this->load->view("ogeler/kullanici_teknik_servis", array("value" => $kullanici->teknikservis, "id" => $kullanici->id));
         echo '</div>
                                                     </form>
                                                 </div>
