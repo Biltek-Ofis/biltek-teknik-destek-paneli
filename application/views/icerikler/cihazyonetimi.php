@@ -21,6 +21,7 @@ echo '<script>
     function cihazTurleriSifre(par, value){
         var sifreGerekli = true;
         switch(value){';
+$cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
 foreach ($cihazTurleri as $cihazTuruJQ) {
     echo '
             case "' . $cihazTuruJQ->id . '":
