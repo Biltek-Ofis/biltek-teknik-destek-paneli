@@ -17,12 +17,13 @@ echo '<script>
 $this->load->view("inc/scripts");
 echo '</head>
 
-<body class="sidebar-mini layout-fixed sidebar-collapse"> <!--sidebar-collapse-->
+<body class="layout-top-nav"> <!--sidebar-collapse-->
   <div class="wrapper">';
-$this->load->view("inc/navbar");
+$bilgiler =  array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri());
+$this->load->view("inc/navbar", $bilgiler);
 
 
-$this->load->view("inc/aside", array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri()));
+//$this->load->view("inc/aside", $bilgiler);
 
 
 $this->load->view("icerikler/" . $icerik, $icerik_array);
