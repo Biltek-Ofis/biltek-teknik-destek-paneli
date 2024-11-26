@@ -263,7 +263,7 @@ echo '<script>
   }
 </script>';
 $this->load->view("inc/tarayici_uyari");
-$this->load->view("inc/yukleniyor", array("yukleniyor_mesaj" => "Cihazlar getiriliyor..."));
+$this->load->view("inc/yukleniyor", array("yukleniyor_mesaj" => "Yükleniyor..."));
 echo '<div class="progress-bar">
   <progress value="75" min="0" max="100" style="visibility:hidden;height:0;width:0;">75%</progress>
 </div>';
