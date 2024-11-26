@@ -1325,9 +1325,10 @@ echo '$(document).ready(function() {
             const tablo = donustur(tabloOrnek, value, false);
             cihazlarTablosu.row.add($(tablo));
           });
-          cihazlarTablosu.draw();
           $("#yukleniyorDaire").hide();
           $("#cihazTablosu").show();
+          cihazlarTablosu.draw();
+          cihazlarTablosu.columns.adjust();
         });
     $(document).on("show.bs.modal", ".modal", function() {
       const zIndex = 1040 + 10 * $(".modal:visible").length;
