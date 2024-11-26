@@ -432,6 +432,7 @@ class Cihazlar_Model extends CI_Model
         $veri = array(
             "musteri_kod" => (strlen($musteri_kod) > 0) ? $musteri_kod : null,
             "musteri_adi" => $this->input->post("musteri_adi"),
+            "teslim_eden" => $this->input->post("teslim_eden"),
             "adres" => $this->input->post("adres"),
             "cihaz_turu" => $this->input->post("cihaz_turu"),
             "cihaz" => $this->input->post("cihaz"),

@@ -13,8 +13,18 @@ echo '<script src="' . base_url("plugins/jquery/jquery.min.js") . '"></script>
 		});
 	});
 	function formuYazdir(id) {
+		$("#teslimAlanModal").modal("show");
+		$("#teslimAlanYazdir").attr("onclick", "formuYazdirOnay(" + id + ")")
+	}
+	function formuYazdirOnay(id){
+		$("#teslimAlanModal").modal("hide");
+		var url = "' . base_url("cihaz/teknik_servis_formu") . '/" + id;
+		var alan = $("#teslim_alan_form").val();
+		if(alan.length > 0){
+			url = url + "?alan=" + alan;
+		}
 		teknikServisFormuPencere = window.open(
-			\'' . base_url("cihaz/teknik_servis_formu") . '/\' + id,
+			url,
 			"teknikServisFormuPencere" + id,
 			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
 		);

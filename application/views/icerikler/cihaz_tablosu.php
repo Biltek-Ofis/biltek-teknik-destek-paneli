@@ -27,7 +27,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 $kaydiKopyalaOnClick = 'kaydiKopyala(\\\'{musteri_kod_onclick}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{sorumlu_val_onclick}\\\')';
 $kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
@@ -193,7 +193,7 @@ echo '<script>
 
     $("#cihaziSilModal").modal("show");
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = id;
     butonDurumu(guncel_durum_sayi);
@@ -203,6 +203,8 @@ echo '<script>
     $("#TakipNo").html(takip_no);
     $("#MusteriKod").html(musteri_kod);
     $("#MusteriAdi2").html(musteri_adi);
+    $("#TeslimEden2").html(teslim_eden);
+    $("#TeslimAlan2").html(teslim_alan);
     $("#MusteriAdres").html(adres);
     $("#MusteriGSM2").html(telefon_numarasi);
     $("#Tarih").html(tarih);
@@ -352,6 +354,14 @@ $(document).ready(function(){
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Adı:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriAdi2"></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Eden:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TeslimEden2"></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alan:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="TeslimAlan2"></li>
               </ul>
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Adresi:</span></li>
@@ -505,6 +515,14 @@ $(document).ready(function(){
                         <tr>
                             <th class="align-middle">Müşteri Adı: </th>
                             <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Teslim Eden: </th>
+                            <td class="align-middle">'.$this->load->view("ogeler/teslim_eden", array("sifirla" => true), true).'</td>
+                        </tr>
+                        <tr>
+                            <th class="align-middle">Teslim Alan: </th>
+                            <td id="TeslimAlan" class="align-middle"></td>
                         </tr>
                         <tr>
                             <th class="align-middle">Adresi: </th>
@@ -782,6 +800,8 @@ $eskiler = array(
   "{fis_no}",
   "{yapilan_islemler}",
   "{musteri_adi_onclick}",
+  "{teslim_eden_onclick}",
+  "{teslim_alan_onclick}",
   "{adres_onclick}",
   "{guncel_durum_onclick}",
   "{cihaz_turu_onclick}",
@@ -903,6 +923,8 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->fis_no,
     $yapilanİslemler,
     donusturOnclick($cihaz->musteri_adi),
+    donusturOnclick($cihaz->teslim_eden),
+    donusturOnclick($cihaz->teslim_alan),
     donusturOnclick($cihaz->adres),
     donusturOnclick($this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum)),
     donusturOnclick($cihaz->cihaz_turu),
@@ -1123,6 +1145,8 @@ function donustur(str, value, yeni) {
       .replaceAll("{fis_no}", value.fis_no)
       .replaceAll("{yapilan_islemler}", \'' . $yapilanIslemlerSatiriBos . $toplam2 . $kdv2 . $genel_toplam2 . '\')
       .replaceAll("{musteri_adi_onclick}", donusturOnclick(value.musteri_adi))
+      .replaceAll("{teslim_eden_onclick}", donusturOnclick(value.teslim_eden))
+      .replaceAll("{teslim_alan_onclick}", donusturOnclick(value.teslim_alan))
       .replaceAll("{adres_onclick}", donusturOnclick(value.adres))
       .replaceAll("{guncel_durum_onclick}", donusturOnclick(cihazDurumu(value.guncel_durum)))
       .replaceAll("{cihaz_turu_onclick}", donusturOnclick(value.cihaz_turu))
@@ -1212,6 +1236,8 @@ echo '
             $("#TakipNo").html(value.takip_numarasi);
             $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
             $("#MusteriAdi2").html(value.musteri_adi);
+            $("#TeslimEden2").html(value.teslim_eden);
+            $("#TeslimAlan2").html(value.teslim_alan);
             $("#MusteriAdres").html(value.adres);
             $("#MusteriGSM2").html(value.telefon_numarasi);
             $("#GirisTarihi").html(value.tarih);
@@ -1242,6 +1268,8 @@ echo '
             $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
             $("#dt-duzenle input#musteri_kod").val(value.musteri_kod);
             $("#dt-duzenle input#musteri_adi").val(value.musteri_adi);
+            $("#dt-duzenle #TeslimAlan").html(value.teslim_alan);
+            $("#dt-duzenle input#teslim_eden").val(value.teslim_eden);
             $("#dt-duzenle input#adres").val(value.adres);
             if(value.telefon_numarasi.length>0){
               $("#dt-duzenle input#telefon_numarasi").val(value.telefon_numarasi);
@@ -1527,6 +1555,44 @@ echo '
 </script>';
 echo $cihazDetayOrnek;
 echo $cihazSilModalOrnek;
+echo '
+<script>
+$(document).ready(function(){
+    $("#teslimAlanModal").on("hidden.bs.modal", function (e) {
+        $("#teslim_alan_form").val("");
+    });
+});
+</script>
+<div class="modal fade" id="teslimAlanModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="teslimAlanModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teslimAlanModalLabel">Teslim Alan Müşteri</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+        <h6 class="col">Belirtmek istemiyorsanız boş bırakabilirsiniz.</h6>
+      </div>';
+      echo '<div class="form-group';
+if (isset($sifirla)) {
+    echo " p-0 m-0";
+}
+echo ' col-12">
+    <input id="teslim_alan_form" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="text" placeholder="Teslim Alan Müşteri" value="">
+
+</div>';
+      echo '
+      </div>
+      <div class="modal-footer">
+        <button id="teslimAlanYazdir" type="button" class="btn btn-success">Yazdır</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+      </div>
+    </div>
+  </div>
+</div>';
 echo '
 <div class="modal fade" id="cihazSilindiModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="cihazSilindiModalLabel" aria-hidden="true">
   <div class="modal-dialog">

@@ -10,6 +10,12 @@ echo '<title>TEKNİK SERVİS FORMU ' . $cihaz->id . '</title>';
 $this->load->view("inc/styles");
 $this->load->view("inc/scripts");
 $this->load->view("inc/style_yazdir_tablo");
+$alan_musteri = "";
+if(isset($_GET["alan"])){
+    $alan_musteri = $_GET["alan"];
+}
+$cihaz->teslim_alan = $alan_musteri;
+
 echo '<style>
         @page {
             margin: 0;
@@ -42,10 +48,23 @@ echo '<style>
     $(document).ready(function() {
         window.print();
     });
+    ';
+function donusturOnclick($oge)
+{
+  return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
+}
+    echo '
+    function tsFormuYazdir(){
+        $.post(\'' . base_url("cihazyonetimi/teslimAlanDuzenle/".$cihaz->id) .'\', {alan: \''.donusturOnclick($cihaz->teslim_alan).'\'}, function(data) {
+            self.close();
+        }).fail(function(response) {
+            self.close();
+        });
+    }
     </script>
 </head>';
 
-echo '<body onafterprint="self.close()">
+echo '<body onafterprint="tsFormuYazdir()">
     <table class="table table-bordered table-sm w-100">
         <tbody>
             <tr>
@@ -272,17 +291,17 @@ echo '</td>
 
             </tr>
             <tr>
-                <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
                 <td colspan="7" class="text-center font-weight-bold">TESLİM EDEN</td>
+                <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
                 <td colspan="6" class="text-center font-weight-bold">TEKNİK SORUMLU</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
-                <td colspan="4" class="text-center"></td>
+                <td colspan="4" class="text-center">' . $cihaz->teslim_eden . '</td>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
-                <td colspan="4" class="text-center"></td>
+                <td colspan="4" class="text-center">'. $cihaz->teslim_alan . '</td>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
-                <td colspan="3" class="text-center">';
+                <td colspan="3" class="text-center">'. $cihaz->sorumlu . '';
 
 /* echo $cihaz->sorumlu;*/
 

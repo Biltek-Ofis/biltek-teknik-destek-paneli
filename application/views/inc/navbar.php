@@ -11,7 +11,7 @@ function toggleDropdown(e) {
       const shouldOpen = e.type !== "click" && _d.is(":hover")
       _m.toggleClass("show", shouldOpen)
       _d.toggleClass("show", shouldOpen)
-      $("[data-toggle="dropdown"]", _d).attr("aria-expanded", shouldOpen)
+      $("[data-toggle=\'dropdown\']", _d).attr("aria-expanded", shouldOpen)
     },
     e.type === "mouseleave" ? 300 : 0
   )

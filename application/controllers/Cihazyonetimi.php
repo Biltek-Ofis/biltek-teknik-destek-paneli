@@ -112,6 +112,16 @@ class Cihazyonetimi extends Varsayilancontroller
 			}
 		}
 	}
+	public function teslimAlanDuzenle($id){
+		if ($this->Giris_Model->kullaniciGiris()) {
+			
+			$alan = $this->input->post('alan');
+			$this->Cihazlar_Model->cihazDuzenle($id, array("teslim_alan" => $alan));
+			echo json_encode(array("mesaj" => "", "sonuc" => 1));
+		} else {
+			
+		}
+	}
 	public function cihazSil($id, $tur)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {

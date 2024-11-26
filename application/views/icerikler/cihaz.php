@@ -65,6 +65,13 @@ echo '<script>
 $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi, "musteri_kod_value" => $cihaz->musteri_kod));
 echo '</td>
                                         </tr>
+                                        
+                                        <tr>
+                                            <th class="align-middle">Teslim Eden: </th>
+                                            <td class="align-middle">';
+$this->load->view("ogeler/teslim_eden", array("sifirla" => true, "teslim_eden_value" => $cihaz->teslim_eden));
+echo '</td>
+                                        </tr>
                                         <tr>
                                             <th class="align-middle">Adresi: </th>
                                             <td class="align-middle">';
