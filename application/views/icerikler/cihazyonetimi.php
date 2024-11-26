@@ -184,6 +184,9 @@ echo '</div>
 $this->load->view("ogeler/musteri_adi");
 echo '</div>
                     <div class="row">';
+$this->load->view("ogeler/teslim_eden");
+echo '</div>
+                    <div class="row">';
 $this->load->view("ogeler/adres");
 echo '</div>
                     <div class="row">';
