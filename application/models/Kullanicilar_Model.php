@@ -19,7 +19,7 @@ class Kullanicilar_Model extends CI_Model
         return DB_ON_EK_STR."kullanicilar";
     }
 
-    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0)
+    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0)
     {
         return array(
             "id" => $id,
@@ -28,6 +28,7 @@ class Kullanicilar_Model extends CI_Model
             "sifre" => $sifre,
             "yonetici" => $yonetici,
             "teknikservis" => $teknikservis,
+            "urunduzenleme" => $urunduzenleme
         );
     }
 
@@ -37,7 +38,7 @@ class Kullanicilar_Model extends CI_Model
             $kullaniciTablo = $this->db->reset_query()->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
-                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis);
+                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis, $kullanici->urunduzenleme);
             } else {
                 return $this->kullaniciTablosu();
             }
@@ -111,6 +112,7 @@ class Kullanicilar_Model extends CI_Model
             "ad_soyad" => $this->input->post("ad_soyad"),
             "sifre" => $this->input->post("sifre"),
             "teknikservis" => $this->input->post("teknikservis"),
+            "urunduzenleme" => $this->input->post("urunduzenleme"),
         );
         if ($yonetici_dahil) {
             $veri["yonetici"] = $this->input->post("yonetici");
