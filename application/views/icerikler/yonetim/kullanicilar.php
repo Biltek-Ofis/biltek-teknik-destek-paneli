@@ -65,6 +65,9 @@ echo '</div>
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_teknik_servis");
 echo '</div>
+                                    <div class="row">';
+$this->load->view("ogeler/kullanici_urun_duzenleme");
+echo '</div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -82,6 +85,7 @@ echo '</div>
                                 <th>Ad Soyad</th>
                                 <th>Kullanıcı Adı</th>
                                 <th>Teknik Servis Elemanı</th>
+                                <th>Ürün Düzenleme</th>
                                 <th>İşlemler</th>
                             </tr>
                         </thead>
@@ -101,6 +105,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                     </td>
                                     <td>
                                         ' . ( $kullanici->teknikservis == 1 ? "Evet" : "Hayır" ) . '
+                                    </td>
+                                    <td>
+                                        ' . ( ($kullanici->urunduzenleme == 1 || $kullanici->yonetici) ? "Evet" : "Hayır" ) . '
                                     </td>
                                     <td class="align-middle text-center">
 
@@ -155,6 +162,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_teknik_servis", array("value" => $kullanici->teknikservis, "id" => $kullanici->id));
+        echo '</div>
+                                                        <div class="row">';
+        $this->load->view("ogeler/kullanici_urun_duzenleme", array("value" => $kullanici->urunduzenleme, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
         echo '</div>
                                                     </form>
                                                 </div>

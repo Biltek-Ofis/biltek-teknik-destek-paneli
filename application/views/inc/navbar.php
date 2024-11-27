@@ -131,7 +131,16 @@ echo '">
                 </ul>
             </li>';
     }
-    echo '
+if ($kullanicibilgileri123["yonetici"] == 1 || $kullanicibilgileri123["urunduzenleme"] == 1) {
+    echo '<li class="nav-item d-none d-sm-inline-block';
+if ($aktifSayfa == "urunler/anasayfa" || $aktifSayfa == "urunler/duzenle") {
+    echo " active";
+}
+echo '">
+      <a href="' . base_url("urunler") . '" class="nav-link">Ürünler</a>
+    </li>';
+}
+echo '
   </ul>
   <ul class="navbar-nav ml-auto">
     <!--<li class="nav-item">
