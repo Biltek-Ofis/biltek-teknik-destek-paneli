@@ -37,7 +37,8 @@ class Urunler_Model extends CI_Model
             "stokkodu" => $this->input->post("stokkodu"),
             "alis" => $this->input->post("alis"),
             "satis" => $this->input->post("satis"),
-            "indirimli" => $this->input->post("indirimli")
+            "indirimli" => $this->input->post("indirimli"),
+            "kg" => $this->input->post("kg")
         );
         $aciklama = $this->input->post("aciklama");
         if(isset($aciklama)){

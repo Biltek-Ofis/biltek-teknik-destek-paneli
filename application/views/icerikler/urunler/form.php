@@ -27,5 +27,8 @@ $this->load->view("ogeler/urun/satis", array("satis_value"=> isset($urun_id) ? $
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/urun/indirimli", array("indirimli_value"=> isset($urun_id) ? $urun->indirimli : ""));
+echo '</div>
+                    <div class="row">';
+$this->load->view("ogeler/urun/kg", array("kg_value"=> isset($urun_id) ? $urun->kg : ""));
 echo '</div>';
 ?>
