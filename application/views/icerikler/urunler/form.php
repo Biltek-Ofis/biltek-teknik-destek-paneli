@@ -5,14 +5,10 @@ if(isset($urun_id)){
 }
 echo '<div class="row">';
 $this->load->view("ogeler/urun/isim", array("isim_value"=> isset($urun_id) ? $urun->isim : ""));
-echo '</div>';
-if(isset($urun_id)){
-    echo '
+echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/urun/aciklama", array("aciklama_value"=> $urun->aciklama));
-echo '</div>';
-}
-echo '
+$this->load->view("ogeler/urun/aciklama", array("aciklama_value"=> isset($urun_id) ? $urun->aciklama : ""));
+echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/urun/barkod", array("barkod_value"=> isset($urun_id) ? $urun->barkod : ""));
 echo '</div>
