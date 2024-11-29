@@ -10,10 +10,16 @@ echo '</div>
 $this->load->view("ogeler/urun/aciklama", array("aciklama_value"=> isset($urun_id) ? $urun->aciklama : ""));
 echo '</div>
                     <div class="row">';
+$this->load->view("ogeler/urun/baglanti", array("baglanti_value"=> isset($urun_id) ? $urun->baglanti : ""));
+echo '</div>
+                    <div class="row">';
 $this->load->view("ogeler/urun/barkod", array("barkod_value"=> isset($urun_id) ? $urun->barkod : ""));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/urun/stokkodu", array("stokkodu_value"=> isset($urun_id) ? $urun->stokkodu : ""));
+echo '</div>
+                    <div class="row">';
+$this->load->view("ogeler/urun/stokadeti", array("stokadeti_value"=> isset($urun_id) ? $urun->stokadeti : "0"));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/urun/alis", array("alis_value"=> isset($urun_id) ? $urun->alis : ""));
