@@ -68,9 +68,9 @@ echo '<div id="container w-100 m-0 p-0">
             echo '<table id="urun_tablosu" class="table table-bordered mt-2">
             <thead>
                 <tr>
-                    <th scope="col">Stok Adeti</th>
-                    <th scope="col">Stok Kodu</th>
                     <th scope="col">Barkod</th>
+                    <th scope="col">Stok Kodu</th>
+                    <th scope="col">Stok Adeti</th>
                     <th scope="col">Bağlantı</th>
                     <th scope="col">Ürün Adı</th>
                     <th scope="col">Alış Fiyatı</th>
@@ -83,9 +83,9 @@ echo '<div id="container w-100 m-0 p-0">
             foreach($urunler as $urun){
                 
                 echo '<tr>
-                    <th>'.$urun->stokadeti.'</th>
-                    <th>'.$urun->stokkodu.'</th>
                     <th>'.$urun->barkod.'</th>
+                    <th>'.$urun->stokkodu.'</th>
+                    <th>'.$urun->stokadeti.'</th>
                     <th><a href="'.$urun->baglanti.'" target="_blank">Tıklayın</a></th>
                     <th>'.$urun->isim.'</th>
                     <td>'.$urun->alis.'</td>
