@@ -33,8 +33,10 @@ class Urunler_Model extends CI_Model
     public function urunPost(){
         $veri = array(
             "isim" => $this->input->post("isim"),
+            "baglanti" => $this->input->post("baglanti"),
             "barkod" => $this->input->post("barkod"),
             "stokkodu" => $this->input->post("stokkodu"),
+            "stokadeti" => $this->input->post("stokadeti"),
             "alis" => $this->input->post("alis"),
             "satis" => $this->input->post("satis"),
             "indirimli" => $this->input->post("indirimli"),
