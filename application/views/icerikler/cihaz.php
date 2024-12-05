@@ -124,7 +124,7 @@ echo '</td>
                                         <tr>
                                             <th class="align-middle">Cihaz Şifresi:</th>
                                             <td class="align-middle">';
-$this->load->view("ogeler/cihaz_sifresi", array("sifirla" => true, "cihaz_sifresi_value" => $cihaz->cihaz_sifresi));
+$this->load->view("ogeler/cihaz_sifresi", array("formID" => "cihazDuzenleForm", "sifirla" => true, "cihaz_sifresi_value" => $cihaz->cihaz_sifresi, "cihaz_deseni_value" => $cihaz->cihaz_deseni));
 echo '</td>
                                         </tr>
                                         <tr>
