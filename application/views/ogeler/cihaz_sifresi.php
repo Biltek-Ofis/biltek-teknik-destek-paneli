@@ -4,12 +4,24 @@ if (isset($sifirla)) {
     echo " p-0 m-0";
 }
 echo ' col">
-    <button id="'.$formID.'DesenGirBtn" type="button" class="btn btn-info" onclick="desenGir'.$formID.'()">Desen Gir</button>
-    <input id="cihaz_sifresi" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="text" name="cihaz_sifresi" placeholder="Cihaz Sifresi * (Şifre yoksa belirtin)" value="';
+   <select id="sifre_turu" class="form-control" name="sifre_turu" aria-label="Şifre Türü" required>
+    <option value="">Şifre Türü Belirtin *</option>
+    <option value="Pin"'.((isset($cihaz_sifresi_value) && strlen($cihaz_sifresi_value) > 0)? " selected" : "").'>Pin</option>
+    <option value="Desen"'.((isset($cihaz_deseni_value) && strlen($cihaz_deseni_value) > 0)? " selected" : "").'>Desen</option>
+    <option value="Yok"'.((isset($cihaz_sifresi_value) && strlen($cihaz_sifresi_value) == 0 && isset($cihaz_deseni_value) && strlen($cihaz_deseni_value) == 0) ? " selected" : "").'>Şifre Yok</option>
+    </select>
+</div>';
+
+echo '<div class="form-group';
+if (isset($sifirla)) {
+    echo " p-0 m-0";
+}
+echo ' col">
+    <input id="cihaz_sifresi" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="hidden" name="cihaz_sifresi" placeholder="Cihaz Sifresi *" value="';
 if (isset($cihaz_sifresi_value)) {
     echo $cihaz_sifresi_value;
 }
-echo '" required>
+echo '">
     <input id="cihaz_deseni" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="hidden" name="cihaz_deseni" value="';
 if (isset($cihaz_deseni_value)) {
     echo $cihaz_deseni_value;
@@ -21,46 +33,46 @@ echo '">
         width: 200px;
         height: 200px;
     }
-        svg.patternlock g.lock-lines line {
-    stroke-width: 1.5;
-    stroke: black;
-    opacity: 0.5;
-}
+    svg.patternlock g.lock-lines line {
+        stroke-width: 1.5;
+        stroke: black;
+        opacity: 0.5;
+    }
     </style>
 
-
-    
     <script>
+    $(document).ready(function(){
+        $("#'.$formID.' #sifre_turu").on("change", function() {
+            console.log( this.value );
+            if(this.value.toString() == "Pin"){
+                $("#'.$formID.' #cihaz_sifresi").attr("type", "text");
+                $("#'.$formID.' #cihaz_sifresi").attr("required", "required");
+                $("#'.$formID.'Desen").hide();
+                $("#'.$formID.' #cihaz_deseni").val("");
+                $("#'.$formID.' #cihaz_sifresi").val("");
+                '.$formID.'DesenP.clear();
+            }else if(this.value.toString() == "Desen"){
+                $("#'.$formID.' #cihaz_sifresi").attr("type", "hidden");
+                $("#'.$formID.'Desen").show();
+                $("#'.$formID.' #cihaz_sifresi").val("");
+                inputlariDuzenle'.$formID.'('.$formID.'DesenP.getPattern());
+            }else if(this.value.toString() == "Yok"){
+                $("#'.$formID.' #cihaz_sifresi").attr("type", "hidden");
+                $("#'.$formID.' #cihaz_sifresi").removeAttr("required");
+                $("#'.$formID.'Desen").hide();
+                $("#'.$formID.' #cihaz_deseni").val("");
+                $("#'.$formID.' #cihaz_sifresi").val("Yok");
+                
+                '.$formID.'DesenP.clear();
+            }
+        });
+    });
     function inputlariDuzenle'.$formID.'(pattern){
         if(pattern.toString() != "NaN"){
             $("#'.$formID.' #cihaz_deseni").val(pattern);
         }else{
             $("#'.$formID.' #cihaz_deseni").val(""); 
         }
-    }
-    function desenGir'.$formID.'(){
-        var sifreVal = $("#'.$formID.' #cihaz_sifresi").val();
-        if(sifreVal.length == 0){
-            $("#'.$formID.' #cihaz_sifresi").val(" ");
-        }
-        $("#'.$formID.' #cihaz_sifresi").attr("type", "hidden");
-        $("#'.$formID.'Desen").show();
-        $("#'.$formID.'DesenGirBtn").text("Şifre Gir");
-        $("#'.$formID.'DesenGirBtn").attr("onclick", "sifreGir'.$formID.'()");
-        if('.$formID.'DesenP.getPattern().toString() != "NaN"){
-            inputlariDuzenle'.$formID.'('.$formID.'DesenP.getPattern());
-        }
-    }
-    function sifreGir'.$formID.'(){
-        var sifreVal = $("#'.$formID.' #cihaz_sifresi").val();
-        if(sifreVal == " "){
-            $("#'.$formID.' #cihaz_sifresi").val("");
-        }
-        $("#'.$formID.' #cihaz_sifresi").attr("type", "text");
-        $("#'.$formID.'Desen").hide();
-        $("#'.$formID.'DesenGirBtn").text("Desen Gir");
-        $("#'.$formID.'DesenGirBtn").attr("onclick", "desenGir'.$formID.'()");
-        $("#'.$formID.' #cihaz_deseni").val("");
     }
     </script>
     <svg class="patternlock success" id="'.$formID.'Desen" style="display:none;" xmlns="http://www.w3.org/2000/svg">';
