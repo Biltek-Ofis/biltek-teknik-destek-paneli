@@ -217,6 +217,9 @@ echo '<script>
     $("#CihazModeli").html(cihaz_modeli);
     $("#SeriNo").html(seri_no);
     $("#TeslimAlinanlar").html(teslim_alinanlar);
+
+    var sifreVar = false;
+
     if(cihaz_deseni.length > 0){
       dtBodyDesenP.setPattern(cihaz_deseni);
       $("#CihazDeseni").show();
@@ -1295,7 +1298,6 @@ echo '
               $("#CihazDeseni").show();
               $("#CihazSifresi").hide();
               $("#CihazSifresi").html("");
-              
             }else{
               $("#CihazSifresi").html(value.cihaz_sifresi);
               $("#CihazSifresi").show();
@@ -1338,22 +1340,27 @@ echo '
             $("#dt_duzenle input#cihaz_modeli").val(value.cihaz_modeli);
             $("#dt_duzenle input#seri_no").val(value.seri_no);
             $("#dt_duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
+
+            var sifreVar = false;
             if(value.cihaz_deseni.length > 0){
-              desenGirdt_duzenle();
-              $("#dt_duzenle input#cihaz_sifresi").val(" ");
+              $("#dt_duzenle select#sifre_turu").val("Desen").change();
 
               dt_duzenleDesenP.setPattern(value.cihaz_deseni);
               $("#dt_duzenle input#cihaz_deseni").val(value.cihaz_deseni);
 
-              $("#dt_duzenleDesen").show();
+              sifreVar = true;
             }else{
-              sifreGirdt_duzenle();
-              $("#dt_duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
-
-              dt_duzenleDesenP.clear();
               $("#dt_duzenle input#cihaz_deseni").val("");
-
-              $("#dt_duzenleDesen").hide();
+            }
+            if(value.cihaz_sifresi.length > 0 && value.cihaz_sifresi != "Yok"){
+              $("#dt_duzenle select#sifre_turu").val("Pin").change();
+              $("#dt_duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
+              sifreVar = true;
+            }else{
+              $("#dt_duzenle input#cihaz_sifresi").val("");
+            }
+            if(!sifreVar){
+              $("#dt_duzenle select#sifre_turu").val("Yok").change();
             }
             $("#dt_duzenle select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
             $("#dt_duzenle textarea#hasar_tespiti").val(value.hasar_tespiti);
