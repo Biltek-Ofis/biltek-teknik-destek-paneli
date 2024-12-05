@@ -2,6 +2,7 @@
 echo '<script src="' . base_url("plugins/jquery/jquery.min.js") . '"></script>
 <script src="' . base_url("plugins/bootstrap/js/bootstrap.bundle.min.js") . '"></script>
 <script src="' . base_url("dist/js/panel.min.js") . '"></script>
+<script src="' . base_url("dist/js/patternlock/patternlock.js") . '" charset="utf-8"></script>
 <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
 	$(document).ready(function(){

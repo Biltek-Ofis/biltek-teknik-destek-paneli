@@ -88,11 +88,11 @@ echo '
             cihazTurleriSifre($(this).val());
             $("#yeniCihazEkleBtn").prop("disabled", false);
         });
-        $("#dt-duzenle #cihaz_turu").on("change", function() {
+        $("#dt_duzenle #cihaz_turu").on("change", function() {
             cihazTurleriSifre($(this).val());
         });
         cihazTurleriSifre("#yeniCihazForm", $("#yeniCihazForm #cihaz_turu").val());
-        cihazTurleriSifre("#dt-duzenle", $("#dt-duzenle #cihaz_turu").val());
+        cihazTurleriSifre("#dt_duzenle", $("#dt_duzenle #cihaz_turu").val());
 
         function faturaDurumuInputlar(par, val_fd){
             if(val_fd == '.(count($this->Islemler_Model->faturaDurumu) - 1).'){
@@ -112,8 +112,8 @@ echo '
             faturaDurumuInputlar("#yeniCihazForm", $(this).val())
             $("#yeniCihazEkleBtn").prop("disabled", false);
         });
-        $("#dt-duzenle #fatura_durumu").on("change", function() {
-            faturaDurumuInputlar("#dt-duzenle", $(this).val())
+        $("#dt_duzenle #fatura_durumu").on("change", function() {
+            faturaDurumuInputlar("#dt_duzenle", $(this).val())
         });
         //#yeniCihazForm #tarih_girisi, #yeniCihazForm #cihaz_turu, #yeniCihazForm #fatura_durumu
         $("#yeniCihazForm #sorumlu, #yeniCihazForm #cihazdaki_hasar, #yeniCihazForm #servis_turu, #yeniCihazForm #yedek_durumu").on("change", function() {
@@ -218,7 +218,7 @@ echo '</div>
 $this->load->view("ogeler/seri_no");
 echo '</div>
 <div class="row">';
-$this->load->view("ogeler/cihaz_sifresi");
+$this->load->view("ogeler/cihaz_sifresi", array("formID" => "yeniCihazForm"));
 echo '</div>
 <div class="row">';
 $this->load->view("ogeler/ariza_aciklamasi");

@@ -27,7 +27,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 $kaydiKopyalaOnClick = 'kaydiKopyala(\\\'{musteri_kod_onclick}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{sorumlu_val_onclick}\\\')';
 $kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
@@ -38,7 +38,7 @@ echo '<script>
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
   function detaylariGoster(){
-    $("#dt-duzenle").hide();
+    $("#dt_duzenle").hide();
     $("#kaydetBtn").hide();
     $("#iptalBtn").hide();
     $("#dt-goster").show();
@@ -61,7 +61,7 @@ echo '<script>
     $("#barkoduYazdirBtn").hide();
     $("#formuYazdirBtn").hide();
     $("#silBtn").hide();
-    $("#dt-duzenle").show();
+    $("#dt_duzenle").show();
     $("#kaydetBtn").show();
     $("#iptalBtn").show();
     $("#detaylar_body").scrollTop(0);
@@ -99,7 +99,7 @@ echo '<script>
   function detaylariKaydet(){
     $("#kaydediliyorModal").modal("show");
     $("#kaydetBtn").prop("disabled", true);
-    formKaydet("#dt-DuzenleForm", function(){
+    formKaydet("#dt_duzenleForm", function(){
       formKaydet("#dt-YapilanIslemlerForm", function(){
         $("#kaydetBtn").prop("disabled", false);
         $("#kaydediliyorModal").modal("hide");
@@ -193,7 +193,7 @@ echo '<script>
 
     $("#cihaziSilModal").modal("show");
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = id;
     butonDurumu(guncel_durum_sayi);
@@ -217,7 +217,17 @@ echo '<script>
     $("#CihazModeli").html(cihaz_modeli);
     $("#SeriNo").html(seri_no);
     $("#TeslimAlinanlar").html(teslim_alinanlar);
-    $("#CihazSifresi").html(cihaz_sifresi);
+    if(cihaz_deseni.length > 0){
+      dtBodyDesenP.setPattern(cihaz_deseni);
+      $("#CihazDeseni").show();
+      $("#CihazSifresi").hide();
+      $("#CihazSifresi").html("");
+    }else{
+      $("#CihazSifresi").html(cihaz_sifresi);
+      $("#CihazSifresi").show();
+      $("#CihazDeseni").hide();
+      dtBodyDesenP.clear();
+    }
 
     $("#CihazdakiHasar").html(cihazdaki_hasar);
     $("#HasarTespiti").html(hasar_tespiti);
@@ -416,6 +426,34 @@ $(document).ready(function(){
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Şifresi:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="CihazSifresi"></li>
+                <li id="CihazDeseni" class="list-group-item" style="width:' . $ikinciOgeGenislik . ';">
+                  <svg id="dtBodyDesen" class="patternlock success" xmlns="http://www.w3.org/2000/svg">
+                    <g class="lock-actives"></g>
+                    <g class="lock-lines"></g>
+                    <g class="lock-dots">
+                      <circle cx="20" cy="20" r="5"></circle>
+                      <circle cx="80" cy="20" r="5"></circle>
+                      <circle cx="140" cy="20" r="5"></circle>
+          
+                      <circle cx="20" cy="70" r="5"></circle>
+                      <circle cx="80" cy="70" r="5"></circle>
+                      <circle cx="140" cy="70" r="5"></circle>
+          
+                      <circle cx="20" cy="120" r="5"></circle>
+                      <circle cx="80" cy="120" r="5"></circle>
+                      <circle cx="140" cy="120" r="5"></circle>
+                    </g>
+                  </svg>
+                  <script>
+                  var dtBodyDesenE = document.getElementById("dtBodyDesen");
+                  var dtBodyDesenP = new PatternLock(dtBodyDesenE, {
+                      onPattern: function() {
+                          
+                      },
+                      interactable: false,
+                  });
+                  </script>
+                </li>
               </ul>
             </div>
             <div class="col-12">
@@ -493,7 +531,7 @@ $(document).ready(function(){
             </div>
           </div>
           
-          <div id="dt-duzenle" class="col-12" style="display:none;">
+          <div id="dt_duzenle" class="col-12" style="display:none;">
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
                   <a class="nav-link active" id="genel-bilgiler-tab" data-toggle="pill" href="#genel-bilgiler" role="tab" aria-controls="genel-bilgiler" aria-selected="false">Genel Bilgiler</a>
@@ -507,7 +545,7 @@ $(document).ready(function(){
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="genel-bilgiler" role="tabpanel" aria-labelledby="genel-bilgiler-tab">
-                <form id="dt-DuzenleForm" autocomplete="off" method="post" action="">
+                <form id="dt_duzenleForm" autocomplete="off" method="post" action="">
                   <div class="table-responsive">
                     <table class="table table-flush">
                       <thead></thead>
@@ -554,7 +592,7 @@ $(document).ready(function(){
                         </tr>
                         <tr>
                             <th class="align-middle">Cihaz Şifresi:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_sifresi", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_sifresi", array("formID" => "dt_duzenle", "sifirla" => true), true).'</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
@@ -811,6 +849,7 @@ $eskiler = array(
   "{cihaz_modeli_onclick}",
   "{teslim_alinanlar_onclick}",
   "{cihaz_sifresi_onclick}",
+  "{cihaz_deseni_onclick}",
   "{cihazdaki_hasar_onclick}",
   "{hasar_tespiti_onclick}",
   "{ariza_aciklamasi_onclick}",
@@ -934,6 +973,7 @@ foreach ($cihazlar as $cihaz) {
     donusturOnclick($cihaz->cihaz_modeli),
     donusturOnclick($cihaz->teslim_alinanlar),
     donusturOnclick($cihaz->cihaz_sifresi),
+    donusturOnclick($cihaz->cihaz_deseni),
     donusturOnclick($this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar)),
     donusturOnclick($cihaz->hasar_tespiti),
     donusturOnclick($cihaz->ariza_aciklamasi),
@@ -957,7 +997,7 @@ echo '
 echo '</div>';
 echo '<script>
     $(document).ready(function(){
-        $("#dt-duzenle #telefon_numarasi, #yeniCihazForm #telefon_numarasi").inputmask("+99 (999) 999-9999");
+        $("#dt_duzenle #telefon_numarasi, #yeniCihazForm #telefon_numarasi").inputmask("+99 (999) 999-9999");
     });
     </script>';
 echo '<script type="text/javascript">
@@ -1156,6 +1196,7 @@ function donustur(str, value, yeni) {
       .replaceAll("{cihaz_modeli_onclick}", donusturOnclick(value.cihaz_modeli))
       .replaceAll("{teslim_alinanlar_onclick}", donusturOnclick(value.teslim_alinanlar))
       .replaceAll("{cihaz_sifresi_onclick}", donusturOnclick(value.cihaz_sifresi))
+      .replaceAll("{cihaz_deseni_onclick}", donusturOnclick(value.cihaz_deseni))
       .replaceAll("{cihazdaki_hasar_onclick}", donusturOnclick(cihazdakiHasar(value.cihazdaki_hasar)))
       .replaceAll("{hasar_tespiti_onclick}", donusturOnclick(value.hasar_tespiti))
       .replaceAll("{ariza_aciklamasi_onclick}", donusturOnclick(value.ariza_aciklamasi))
@@ -1194,10 +1235,10 @@ echo 'function cihazBilgileriniGetir(){
             ';
             for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
               echo '
-            $("#dt-duzenle input#yapilanIslem'.$i.'").val("").change();
-            $("#dt-duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
-            $("#dt-duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
-            $("#dt-duzenle input#yapilanIslemKdv'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslem'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslemKdv'.$i.'").val("").change();
             ';
             }
 echo '
@@ -1218,10 +1259,10 @@ echo '
                   .replaceAll("{kdv_orani}", islem.kdv);
                 // Duzenleme
                 var dz_islemSayisi = i + 1;
-                $("#dt-duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
-                $("#dt-duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
-                $("#dt-duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
-                $("#dt-duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(islem.kdv).change();
+                $("#dt_duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
+                $("#dt_duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
+                $("#dt_duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
+                $("#dt_duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(islem.kdv).change();
               });
             } else {
               var yapilanIslemler = islemlerSatiriBos;
@@ -1249,7 +1290,18 @@ echo '
             $("#CihazModeli").html(value.cihaz_modeli);
             $("#SeriNo").html(value.seri_no);
             $("#TeslimAlinanlar").html(value.teslim_alinanlar);
-            $("#CihazSifresi").html(value.cihaz_sifresi);
+            if(value.cihaz_deseni.length > 0){
+              dtBodyDesenP.setPattern(value.cihaz_deseni);
+              $("#CihazDeseni").show();
+              $("#CihazSifresi").hide();
+              $("#CihazSifresi").html("");
+              
+            }else{
+              $("#CihazSifresi").html(value.cihaz_sifresi);
+              $("#CihazSifresi").show();
+              $("#CihazDeseni").hide();
+              dtBodyDesenP.clear();
+            }
             $("#CihazdakiHasar").html(cihazdakiHasar(value.cihazdaki_hasar));
             $("#HasarTespiti").html(value.hasar_tespiti);
             $("#ArizaAciklamasi").html(value.ariza_aciklamasi);
@@ -1263,43 +1315,60 @@ echo '
             medyalariYukle(value.id);
             
             // Düzenleme
-            $("#dt-DuzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
+            $("#dt_duzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
             $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
             $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
-            $("#dt-duzenle input#musteri_kod").val(value.musteri_kod);
-            $("#dt-duzenle input#musteri_adi").val(value.musteri_adi);
-            $("#dt-duzenle #TeslimAlan").html(value.teslim_alan);
-            $("#dt-duzenle input#teslim_eden").val(value.teslim_eden);
-            $("#dt-duzenle input#adres").val(value.adres);
+            $("#dt_duzenle input#musteri_kod").val(value.musteri_kod);
+            $("#dt_duzenle input#musteri_adi").val(value.musteri_adi);
+            $("#dt_duzenle #TeslimAlan").html(value.teslim_alan);
+            $("#dt_duzenle input#teslim_eden").val(value.teslim_eden);
+            $("#dt_duzenle input#adres").val(value.adres);
             if(value.telefon_numarasi.length>0){
-              $("#dt-duzenle input#telefon_numarasi").val(value.telefon_numarasi);
+              $("#dt_duzenle input#telefon_numarasi").val(value.telefon_numarasi);
             }else{
-              $("#dt-duzenle input#telefon_numarasi").val("+90");
+              $("#dt_duzenle input#telefon_numarasi").val("+90");
             }
-            $("#dt-duzenle select#cihaz_turu").val(value.cihaz_turu_val).change();
+            $("#dt_duzenle select#cihaz_turu").val(value.cihaz_turu_val).change();
             if(yonetici){
-              $("#dt-duzenle select#sorumlu").val(value.sorumlu_val).change();
+              $("#dt_duzenle select#sorumlu").val(value.sorumlu_val).change();
             }else{
-              $("#dt-duzenle #dz-sorumlu-personel").html(value.sorumlu);
+              $("#dt_duzenle #dz-sorumlu-personel").html(value.sorumlu);
             }
-            $("#dt-duzenle input#cihaz").val(value.cihaz);
-            $("#dt-duzenle input#cihaz_modeli").val(value.cihaz_modeli);
-            $("#dt-duzenle input#seri_no").val(value.seri_no);
-            $("#dt-duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
-            $("#dt-duzenle select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
-            $("#dt-duzenle textarea#hasar_tespiti").val(value.hasar_tespiti);
-            $("#dt-duzenle textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
-            $("#dt-duzenle textarea#teslim_alinanlar").val(value.teslim_alinanlar);
-            $("#dt-duzenle select#servis_turu").val(value.servis_turu).change();
-            $("#dt-duzenle select#yedek_durumu").val(value.yedek_durumu).change();
-            $("#dt-duzenle input#dz-tarih").val(tarihDonusturInput(value.tarih));
-            $("#dt-duzenle input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
-            $("#dt-duzenle input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
-            $("#dt-duzenle select#guncel_durum").val(value.guncel_durum).change();
-            $("#dt-duzenle select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
-            $("#dt-duzenle select#fatura_durumu").val(value.fatura_durumu).change();
-            $("#dt-duzenle input#fis_no").val(value.fis_no);
-            $("#dt-duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
+            $("#dt_duzenle input#cihaz").val(value.cihaz);
+            $("#dt_duzenle input#cihaz_modeli").val(value.cihaz_modeli);
+            $("#dt_duzenle input#seri_no").val(value.seri_no);
+            $("#dt_duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
+            if(value.cihaz_deseni.length > 0){
+              desenGirdt_duzenle();
+              $("#dt_duzenle input#cihaz_sifresi").val(" ");
+
+              dt_duzenleDesenP.setPattern(value.cihaz_deseni);
+              $("#dt_duzenle input#cihaz_deseni").val(value.cihaz_deseni);
+
+              $("#dt_duzenleDesen").show();
+            }else{
+              sifreGirdt_duzenle();
+              $("#dt_duzenle input#cihaz_sifresi").val(value.cihaz_sifresi);
+
+              dt_duzenleDesenP.clear();
+              $("#dt_duzenle input#cihaz_deseni").val("");
+
+              $("#dt_duzenleDesen").hide();
+            }
+            $("#dt_duzenle select#cihazdaki_hasar").val(value.cihazdaki_hasar).change();
+            $("#dt_duzenle textarea#hasar_tespiti").val(value.hasar_tespiti);
+            $("#dt_duzenle textarea#ariza_aciklamasi").val(value.ariza_aciklamasi);
+            $("#dt_duzenle textarea#teslim_alinanlar").val(value.teslim_alinanlar);
+            $("#dt_duzenle select#servis_turu").val(value.servis_turu).change();
+            $("#dt_duzenle select#yedek_durumu").val(value.yedek_durumu).change();
+            $("#dt_duzenle input#dz-tarih").val(tarihDonusturInput(value.tarih));
+            $("#dt_duzenle input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
+            $("#dt_duzenle input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
+            $("#dt_duzenle select#guncel_durum").val(value.guncel_durum).change();
+            $("#dt_duzenle select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();
+            $("#dt_duzenle select#fatura_durumu").val(value.fatura_durumu).change();
+            $("#dt_duzenle input#fis_no").val(value.fis_no);
+            $("#dt_duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
             $("#duzenleBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
           }
