@@ -140,6 +140,27 @@ echo '">
       <a href="' . base_url("urunler") . '" class="nav-link">Ürünler</a>
     </li>';
 }
+echo '<li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">İşlemler</a>
+                <ul class="dropdown-menu">
+                    <script>
+                    
+	function bosFormYazdir(){
+		var url = "' . base_url("cihaz/teknik_servis_formu/yazdir") . '/";
+
+		bosTeknikServisFormuPencere = window.open(
+			url,
+			"bosTeknikServisFormuPencere",
+			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
+		);
+		$(bosTeknikServisFormuPencere).ready(function() {
+			//bosTeknikServisFormuPencere.print();
+		});
+	}
+                    </script>
+                    <li class="dropdown-item"><a href="#" class="d-block w-100" onclick="bosFormYazdir();">Boş Form Yazdır</a></li>
+                </ul>
+            </li>';
 echo '
   </ul>
   <ul class="navbar-nav ml-auto">
