@@ -1,4 +1,11 @@
 <?php
+echo '
+<script>
+';
+$this->load->view("inc/ortak_cihaz_script.php");
+echo '
+</script>
+';
 echo '<div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">

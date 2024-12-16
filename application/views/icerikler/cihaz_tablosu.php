@@ -330,6 +330,15 @@ for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
 $cihazDetayOrnek = '
 <script>
 $(document).ready(function(){
+
+  $("#dt_duzenle #cihaz_turu").on("change", function() {
+    cihazTurleriSifre($(this).val());
+  });
+  cihazTurleriSifre("#dt_duzenle", $("#dt_duzenle #cihaz_turu").val());
+
+  $("#dt_duzenle #fatura_durumu").on("change", function() {
+    faturaDurumuInputlar("#dt_duzenle", $(this).val())
+  });
   $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").on("hide.bs.modal", function(e) {
     history.replaceState("", document.title, window.location.pathname);
   });
