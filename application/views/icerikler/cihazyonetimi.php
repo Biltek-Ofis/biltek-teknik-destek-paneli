@@ -18,24 +18,9 @@ echo '<script>
             $("#tarih").removeAttr("required");
         }
     }
-    function cihazTurleriSifre(par, value){
-        var sifreGerekli = true;
-        switch(value){';
-$cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
-foreach ($cihazTurleri as $cihazTuruJQ) {
-    echo '
-            case "' . $cihazTuruJQ->id . '":
-                sifreGerekli = ' . ($cihazTuruJQ->sifre == 1 ? "true" : "false") . ';
-                break;';
-}
-echo '
-            default:
-                sifreGerekli = false;
-                break;';
-echo '
-        }
-        $(par+" #cihaz_sifresi").prop("required", sifreGerekli);
-    }
+        ';
+$this->load->view("inc/ortak_cihaz_script.php");
+echo '        
     $(document).ready(function() {
         $("#yeniCihazGirisiBtn").show();
         $("#yeniCihazForm").submit(function(e){
@@ -88,32 +73,10 @@ echo '
             cihazTurleriSifre($(this).val());
             $("#yeniCihazEkleBtn").prop("disabled", false);
         });
-        $("#dt_duzenle #cihaz_turu").on("change", function() {
-            cihazTurleriSifre($(this).val());
-        });
         cihazTurleriSifre("#yeniCihazForm", $("#yeniCihazForm #cihaz_turu").val());
-        cihazTurleriSifre("#dt_duzenle", $("#dt_duzenle #cihaz_turu").val());
-
-        function faturaDurumuInputlar(par, val_fd){
-            if(val_fd == '.(count($this->Islemler_Model->faturaDurumu) - 1).'){
-                $(par+" #fatura_durumu_td").prop("colspan", "1");
-                $(par+" #fis_no_td").prop("colspan", "1");
-                $(par+" #fis_no_td").show();
-                $(par+" #fis_no").prop("required", "required");
-            }else{
-                $(par+" #fatura_durumu_td").prop("colspan", "2");
-                $(par+" #fis_no_td").prop("colspan", "0");
-                $(par+" #fis_no_td").hide();
-                $(par+" #fis_no").val("");
-                $(par+" #fis_no").removeAttr("required");
-            }
-        }
         $("#yeniCihazForm #fatura_durumu").on("change", function() {
             faturaDurumuInputlar("#yeniCihazForm", $(this).val())
             $("#yeniCihazEkleBtn").prop("disabled", false);
-        });
-        $("#dt_duzenle #fatura_durumu").on("change", function() {
-            faturaDurumuInputlar("#dt_duzenle", $(this).val())
         });
         //#yeniCihazForm #tarih_girisi, #yeniCihazForm #cihaz_turu, #yeniCihazForm #fatura_durumu
         $("#yeniCihazForm #sorumlu, #yeniCihazForm #cihazdaki_hasar, #yeniCihazForm #servis_turu, #yeniCihazForm #yedek_durumu").on("change", function() {
@@ -121,7 +84,6 @@ echo '
         });
     });
 </script>
-<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
