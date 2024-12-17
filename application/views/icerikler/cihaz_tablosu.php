@@ -44,6 +44,7 @@ echo '<script>
     $("#dt-goster").show();
     $("#serviskabulBtn").show();
     $("#barkoduYazdirBtn").show();
+    $("#kargoBilgisiBtn").show();
     $("#formuYazdirBtn").show();
     if($("#silBtn").hasClass("goster")){
       $("#silBtn").show();
@@ -59,6 +60,7 @@ echo '<script>
     $("#duzenleBtn").hide();
     $("#serviskabulBtn").hide();
     $("#barkoduYazdirBtn").hide();
+    $("#kargoBilgisiBtn").hide();
     $("#formuYazdirBtn").hide();
     $("#silBtn").hide();
     $("#dt_duzenle").show();
@@ -244,6 +246,7 @@ echo '<script>
     $("#faturaDurumu").html(fatura_durumu);
     $("#fisNo").html(fis_no);
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
+    $("#kargoBilgisiBtn").attr("onclick", "kargoBilgisiYazdir(" + id + ")");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
     $("#silBtn").attr("onclick", "silModaliGoster(\'" + id + "\',\'" + servis_no + "\',\'" + musteri_adi + "\')");
@@ -751,6 +754,7 @@ $(document).ready(function(){
       <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet()" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="iptalBtn" href="#" onclick="detaylariGoster()" style="display:none;" class="btn btn-danger">İptal</a>
+      <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-white">Kargo Bilgisi Yazdır</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
       <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
