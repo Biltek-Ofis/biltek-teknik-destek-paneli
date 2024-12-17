@@ -9,7 +9,7 @@ echo '<script>
         }
     }
     $(document).ready(function(){
-        $("#db_telefon").inputmask("(999) 999 99 99");
+        $("#db_telefon").inputmask("+99 (999) 999-9999");
         parantezEkle($("#db_baslik").val());
         $("#db_baslik").keyup(function(){
             parantezEkle($("#db_baslik").val());
@@ -49,11 +49,19 @@ echo '<section class="content">
                         <input id="db_anasayfa" name="db_anasayfa" autocomplete="off" class="form-control" type="text" placeholder="Şirketinizin Websitesi" value="' . $ayarlar->firma_url . '" required>
                     </div>
                     <div class="form-group col">
+                        <label for="db_unvan">Şirket Ünvanı</label>
+                        <input id="db_unvan" name="db_unvan" autocomplete="off" class="form-control" type="text" placeholder="Şirket Ünvanı" value="' . $ayarlar->sirket_unvani . '" required>
+                    </div>
+                    <div class="form-group col">
+                        <label for="db_adres">Şirket Adresi</label>
+                        <input id="db_adres" name="db_adres" autocomplete="off" class="form-control" type="text" placeholder="Şirket Adresi" value="' . $ayarlar->adres . '" required>
+                    </div>
+                    <div class="form-group col">
                         <label for="db_telefon">Şirket Telefonu</label>
                         <input id="db_telefon" name="db_telefon" autocomplete="off" class="form-control" type="text" placeholder="Şirket Telefonu" value="' . $ayarlar->sirket_telefonu . '" required>
                     </div>
                     <div class="form-group col">
-                        <label for="db_anasayfa">Tablolarda Sayfa Başına Gösterilecek Öğe Sayısı</label>
+                        <label for="db_tablo_oge">Tablolarda Sayfa Başına Gösterilecek Öğe Sayısı</label>
                         <input id="db_tablo_oge" name="db_tablo_oge" autocomplete="off" class="form-control" type="text" placeholder="Sayfa Başına Öğe" value="' .  $ayarlar->tablo_oge . '" required>
                     </div>
                     <h4>Barkod Ayarları</h4>

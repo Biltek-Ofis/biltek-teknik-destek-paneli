@@ -33,6 +33,16 @@ echo '<script src="' . base_url("plugins/jquery/jquery.min.js") . '"></script>
 			//teknikServisFormuPencere.print();
 		});
 	}
+	function kargoBilgisiYazdir(id){
+		kargoBilgisiPencere = window.open(
+			\'' . base_url("cihaz/kargo_bilgisi") . '/\' + id,
+			"kargoBilgisiPencere" + id,
+			\'status=1,width=\' + screen.availWidth + \',height=\' + screen.availHeight
+		);
+		$(kargoBilgisiPencere).ready(function() {
+			//kargoBilgisiPencere.print();
+		});
+	}
 	function barkoduYazdir(id) {
 		barkodPencere = window.open(
 			\'' . base_url("cihaz/barkod") . '/\' + id,

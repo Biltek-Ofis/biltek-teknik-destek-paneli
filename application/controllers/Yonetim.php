@@ -211,6 +211,17 @@ class Yonetim extends Varsayilancontroller
 			if(isset($FIRMA_URL)){
 				$veri["firma_url"] = $FIRMA_URL;
 			}
+			
+			$SIRKET_UNVANI = $this->input->post("db_unvan");
+			if(isset($SIRKET_UNVANI)){
+				$veri["sirket_unvani"] = $SIRKET_UNVANI;
+			}
+
+			$ADRES = $this->input->post("db_adres");
+			if(isset($ADRES)){
+				$veri["adres"] = $ADRES;
+			}
+
 			$SIRKET_TELEFONU = $this->input->post("db_telefon");
 			if(isset($SIRKET_TELEFONU)){
 				$veri["sirket_telefonu"] = $SIRKET_TELEFONU;

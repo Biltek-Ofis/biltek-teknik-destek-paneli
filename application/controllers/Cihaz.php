@@ -151,6 +151,18 @@ class Cihaz extends Varsayilancontroller
             }
         }
     }
+    public function kargo_bilgisi($id)
+    {
+        $cihaz = $this->Cihazlar_Model->cihazBul($id);
+        if ($cihaz->num_rows() > 0) {
+            $cihaz_bilg = $cihaz->result();
+            $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
+            $ayarlar = $this->Ayarlar_Model->getir();
+            $this->load->view("icerikler/kargo_bilgisi_yazdir", array("cihaz" => $veriler, "ayarlar"=>$ayarlar));
+        } else {
+            redirect(base_url());
+        }
+    }
     public function barkod($id)
     {
         if($id == "test"){
