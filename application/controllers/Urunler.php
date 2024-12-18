@@ -114,5 +114,13 @@ class Urunler extends CI_Controller
 			$this->Kullanicilar_Model->girisUyari("cikis", "Bu işlemi yapabilmek için giriş yapmalısınız.");  
 		}
 	}
+    public function komisyon()
+	{
+        $file_url = base_url("assets/Satış Komisyon Oranları.xlsx");
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary"); 
+        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
+        readfile($file_url); 
+    }
 }
 ?>
