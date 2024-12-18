@@ -131,15 +131,13 @@ echo '">
                 </ul>
             </li>';
     }
-if ($kullanicibilgileri123["yonetici"] == 1 || $kullanicibilgileri123["urunduzenleme"] == 1) {
-    echo '<li class="nav-item d-none d-sm-inline-block';
-if ($aktifSayfa == "urunler/anasayfa" || $aktifSayfa == "urunler/duzenle") {
-    echo " active";
-}
-echo '">
-      <a href="' . base_url("urunler") . '" class="nav-link">Ürünler</a>
-    </li>';
-}
+
+echo '<!-- <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Ürünler</a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item"><a href="' . base_url("urunler") . '" class="d-block w-100">Ürün Listesi</a></li>
+                </ul>
+            </li>-->';
 echo '<li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">İşlemler</a>
                 <ul class="dropdown-menu">
@@ -158,6 +156,7 @@ echo '<li class="nav-item dropdown">
 		});
 	}
                     </script>
+                    <li class="dropdown-item"><a href="' . base_url("urunler/komisyon") . '" target="_blank" class="d-block w-100">Komisyon Oranlarını İndir</a></li>
                     <li class="dropdown-item"><a href="#" class="d-block w-100" onclick="bosFormYazdir();">Boş Form Yazdır</a></li>
                 </ul>
             </li>';
