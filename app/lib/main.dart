@@ -1,8 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'models/kullanici.dart';
+import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris_sayfasi.dart';
+import 'utils/my_notifier.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
@@ -16,13 +20,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Biltek Teknik Servis',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (_) => MyNotifier(),
+      child: Consumer<MyNotifier>(
+        builder: (context, MyNotifier myNotifier, child) {
+          return MaterialApp(
+            title: 'Biltek Teknik Servis',
+            theme: ThemeModel.light,
+            darkTheme: ThemeModel.dark,
+            themeMode: myNotifier.isDark == null
+                ? ThemeMode.system
+                : (myNotifier.isDark! ? ThemeMode.dark : ThemeMode.light),
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.unknown
+              },
+            ),
+            home: const MainPage(),
+          );
+        },
       ),
-      home: const MainPage(),
     );
   }
 }

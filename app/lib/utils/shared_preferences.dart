@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreference {
+  static const darkThemeString = "darkTheme";
   static const authString = "auth";
 
   static Future<Set<String>> getKeys() async {
