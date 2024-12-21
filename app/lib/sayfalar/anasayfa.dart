@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teknikservis/sayfalar/ayarlar.dart';
 
 import '../models/kullanici.dart';
-import '../utils/shared_preferences.dart';
-import 'giris_sayfasi.dart';
+import '../widgets/scaffold.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key, required this.kullanici});
@@ -18,35 +16,14 @@ class _AnasayfaState extends State<Anasayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.kullanici.adSoyad),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              NavigatorState navigatorState = Navigator.of(context);
-              await SharedPreference.remove(SharedPreference.authString);
-              navigatorState.push(
-                MaterialPageRoute(
-                  builder: (context) => AyarlarSayfasi(),
-                ),
-              );
-            },
-            icon: Icon(Icons.settings),
-          ),
-          IconButton(
-            onPressed: () async {
-              NavigatorState navigatorState = Navigator.of(context);
-              await SharedPreference.remove(SharedPreference.authString);
-              navigatorState.pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => GirisSayfasi(),
-                ),
-                (route) => false,
-              );
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
+      drawer: biltekDrawer(
+        context,
+        kullanici: widget.kullanici,
+        seciliSayfa: "Anasayfa",
+      ),
+      appBar: biltekAppBar(
+        context,
+        title: widget.kullanici.adSoyad,
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
