@@ -19,7 +19,7 @@ class Kullanicilar_Model extends CI_Model
         return DB_ON_EK_STR."kullanicilar";
     }
 
-    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0)
+    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $auth = "")
     {
         return array(
             "id" => $id,
@@ -28,7 +28,8 @@ class Kullanicilar_Model extends CI_Model
             "sifre" => $sifre,
             "yonetici" => $yonetici,
             "teknikservis" => $teknikservis,
-            "urunduzenleme" => $urunduzenleme
+            "urunduzenleme" => $urunduzenleme,
+            "auth" => $auth,
         );
     }
 
@@ -38,7 +39,7 @@ class Kullanicilar_Model extends CI_Model
             $kullaniciTablo = $this->db->reset_query()->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
-                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis, $kullanici->urunduzenleme);
+                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis, $kullanici->urunduzenleme, $kullanici->auth);
             } else {
                 return $this->kullaniciTablosu();
             }
