@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teknikservis/sayfalar/ayarlar.dart';
 
 import '../models/kullanici.dart';
 import '../utils/shared_preferences.dart';
@@ -19,6 +20,33 @@ class _AnasayfaState extends State<Anasayfa> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.kullanici.adSoyad),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              NavigatorState navigatorState = Navigator.of(context);
+              await SharedPreference.remove(SharedPreference.authString);
+              navigatorState.push(
+                MaterialPageRoute(
+                  builder: (context) => AyarlarSayfasi(),
+                ),
+              );
+            },
+            icon: Icon(Icons.settings),
+          ),
+          IconButton(
+            onPressed: () async {
+              NavigatorState navigatorState = Navigator.of(context);
+              await SharedPreference.remove(SharedPreference.authString);
+              navigatorState.pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => GirisSayfasi(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -33,19 +61,6 @@ class _AnasayfaState extends State<Anasayfa> {
             Text("Teknik Servis: ${widget.kullanici.teknikservis}"),
             Text("Yönetici: ${widget.kullanici.yonetici}"),
             Text("Auth: ${widget.kullanici.auth}"),
-            TextButton(
-              onPressed: () async {
-                NavigatorState navigatorState = Navigator.of(context);
-                await SharedPreference.remove(SharedPreference.authString);
-                navigatorState.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => GirisSayfasi(),
-                  ),
-                  (route) => false,
-                );
-              },
-              child: Text("Çıkış Yap"),
-            ),
           ],
         ),
       ),
