@@ -1,16 +1,30 @@
 # teknikservis
 
-A new Flutter project.
+Teknik servis uygulamasi
 
-## Getting Started
+- .env dosyası oluştur ve şu değerleri tanımla
 
-This project is a starting point for a Flutter application.
+```
+TOKEN=token_buraya
+API_URL=http://localhost/app/
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```
+flutter run --dart-define-from-file=.env
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Build 
+
+-Android
+
+```
+flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\teknikservis"
+```
+
+- Windows
+
+```
+flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\teknikservis"
+```

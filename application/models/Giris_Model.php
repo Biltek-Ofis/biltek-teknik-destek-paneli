@@ -32,6 +32,17 @@ class Giris_Model extends CI_Model
         } else {
             return false;
         }
+    }public function girisDurumuAuth($auth)
+    {
+        //Şifreleme $this->Islemler_Model->sifrele($sifre);
+        //Varsayılan şifre (123456) $2y$10$b0wKhP9Nq5JhjJGH8cS61e20BwaepxxovalwslAZUbX3F3gBQcycm
+        $this->load->model("Kullanicilar_Model");
+        $query = $this->db->reset_query()->limit(1)->where('auth', $auth)->get($this->Kullanicilar_Model->kullanicilarTabloAdi());
+        if ($query->num_rows() > 0) {
+            return $query->result_array()[0];
+        } else {
+            return array();
+        }
     }
     public function kullaniciOturumAc($kullanici_adi)
     {
