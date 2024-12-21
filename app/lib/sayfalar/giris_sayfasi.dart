@@ -29,7 +29,6 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
