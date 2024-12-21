@@ -57,32 +57,31 @@ class MainPage extends StatelessWidget {
       body: FutureBuilder<String?>(
         future: SharedPreference.getString(SharedPreference.authString),
         builder: (context, AsyncSnapshot<String?> snapshot) {
-          debugPrint("1");
-          if (snapshot.connectionState == ConnectionState.done) {
-            debugPrint("2");
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
             if (snapshot.hasData && snapshot.data != null) {
-              debugPrint("3");
               return FutureBuilder<KullaniciModel?>(
                 future: BiltekPost.kullaniciGetir(snapshot.data!),
                 builder: (context, AsyncSnapshot<KullaniciModel?> snapshot) {
-                  debugPrint("4");
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    debugPrint("5");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
                     if (snapshot.hasData && snapshot.data != null) {
-                      debugPrint("6");
                       return Anasayfa(kullanici: snapshot.data!);
+                    } else {
+                      return GirisSayfasi();
                     }
                   }
-                  return GirisSayfasi();
                 },
               );
             } else {
               return GirisSayfasi();
             }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
           }
         },
       ),
