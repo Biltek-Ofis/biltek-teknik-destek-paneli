@@ -9,6 +9,9 @@
             "request": "launch",
             "type": "dart",
             "program": "app/lib/main.dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env",
+            ],
         },
         {
             "name": "teknikservis (profile mode)",
@@ -16,6 +19,9 @@
             "type": "dart",
             "flutterMode": "profile",
             "program": "app/lib/main.dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env",
+            ],
         },
         {
             "name": "teknikservis (release mode)",
@@ -23,6 +29,9 @@
             "type": "dart",
             "flutterMode": "release",
             "program": "app/lib/main.dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env",
+            ],
         }
     ]
 }
