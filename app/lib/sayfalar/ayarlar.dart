@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:teknikservis/widgets/selector.dart';
 
 import '../utils/my_notifier.dart';
+import '../widgets/selector.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({super.key});

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:teknikservis/utils/assets.dart';
-import 'package:teknikservis/utils/buttons.dart';
 
 import '../ayarlar.dart';
 import '../models/giris.dart';
 import '../models/kullanici.dart';
+import '../utils/assets.dart';
+import '../utils/buttons.dart';
 import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';

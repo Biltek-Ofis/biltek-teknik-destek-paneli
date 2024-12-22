@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:teknikservis/utils/islemler.dart';
-import 'package:teknikservis/utils/post.dart';
 
 import '../models/cihaz.dart';
+import '../utils/islemler.dart';
+import '../utils/post.dart';
 
 class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
@@ -25,10 +25,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   Timer? timer;
 
-  TableBorder tableBorder = TableBorder.symmetric(
-    inside: BorderSide(
-      color: Colors.yellow.withAlpha(100),
-    ),
+  TableBorder tableBorder = TableBorder.all(
+    color: Colors.yellow.withAlpha(100),
   );
 
   @override
