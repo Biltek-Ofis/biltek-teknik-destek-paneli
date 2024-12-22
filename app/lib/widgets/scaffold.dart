@@ -26,33 +26,38 @@ Drawer biltekDrawer(
         ListTile(
           title: const Text("Anasayfa"),
           selected: seciliSayfa == "Anasayfa",
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => Anasayfa(
-                  kullanici: kullanici,
-                ),
-              ),
-              (route) => false,
-            );
-          },
+          onTap: seciliSayfa != "Anasayfa"
+              ? () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => Anasayfa(
+                        kullanici: kullanici,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                }
+              : null,
         ),
-        ListTile(
-          title: const Text("Cihazlarım"),
-          selected: seciliSayfa == "Cihazlarım",
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => CihazlarimSayfasi(
-                  kullanici: kullanici,
-                ),
-              ),
-              (route) => false,
-            );
-          },
-        ),
+        if (kullanici.teknikservis)
+          ListTile(
+            title: const Text("Cihazlarım"),
+            selected: seciliSayfa == "Cihazlarım",
+            onTap: seciliSayfa != "Cihazlarım"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CihazlarimSayfasi(
+                          kullanici: kullanici,
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
+          ),
       ],
     ),
   );
