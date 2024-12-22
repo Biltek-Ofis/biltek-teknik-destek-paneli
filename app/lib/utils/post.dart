@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:teknikservis/models/cihaz.dart';
 
 import '../ayarlar.dart';
 import '../models/kullanici.dart';
@@ -22,8 +23,6 @@ class BiltekPost {
     ///request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
-    debugPrint(url.toString());
 
     return response;
   }
@@ -47,6 +46,49 @@ class BiltekPost {
       }
     } else {
       return null;
+    }
+  }
+
+  static Future<List<Cihaz>> cihazlariGetir({
+    int? sorumlu,
+    List<dynamic> specific = const [],
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    Map<String, String> postMap = {
+      "sira": offset.toString(),
+      "limit": limit.toString(),
+    };
+    if (sorumlu != null) {
+      postMap.addAll({
+        "sorumlu": sorumlu.toString(),
+      });
+    }
+    if (specific.isNotEmpty) {
+      postMap.addAll({
+        "specific": jsonEncode(specific),
+      });
+    }
+    var response = await BiltekPost.post(
+      Ayarlar.cihazlarTumu,
+      postMap,
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        List<dynamic> cihazlar = jsonDecode(resp) as List<dynamic>;
+        return cihazlar
+            .map((cihaz) => Cihaz.fromJson(cihaz as Map<String, dynamic>))
+            .toList();
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        throw Exception(
+            "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+      }
+    } else {
+      throw Exception(
+          "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
     }
   }
 }

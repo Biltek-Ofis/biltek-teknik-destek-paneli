@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/kullanici.dart';
 import '../widgets/scaffold.dart';
+import 'cihazlar.dart';
 
 class CihazlarimSayfasi extends StatefulWidget {
   const CihazlarimSayfasi({super.key, required this.kullanici});
@@ -25,8 +26,8 @@ class _CihazlarimSayfasiState extends State<CihazlarimSayfasi> {
         context,
         title: widget.kullanici.adSoyad,
       ),
-      body: Center(
-        child: Text("Cihazlarım"),
+      body: CihazlarSayfasi(
+        sorumlu: widget.kullanici.id,
       ),
     );
   }
