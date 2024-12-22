@@ -28,7 +28,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
       width: MediaQuery.of(context).size.width,
       child: cihazlar.isEmpty
           ? Center(
@@ -42,74 +45,103 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                 itemCount: cihazlar.length,
                 itemBuilder: (context, index) {
                   Cihaz cihaz = cihazlar[index];
-                  Color renk = Renkler.getir(cihaz.guncelDurumRenk);
-                  Color? renkTemp = renk == Colors.white ? Colors.black : null;
-                  return ListTile(
-                    tileColor: renk,
-                    textColor: renkTemp,
-                    title: RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "Servis No: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: cihaz.servisNo.toString(),
-                            style: TextStyle(
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "\nMüşteri Adı: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: cihaz.musteriAdi,
-                            style: TextStyle(
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "\nCihaz Tür: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: cihaz.cihazTuru,
-                            style: TextStyle(
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "\nCihaz: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: renkTemp,
-                            ),
-                          ),
-                          TextSpan(
-                            text:
-                                "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
-                            style: TextStyle(
-                              color: renkTemp,
-                            ),
-                          ),
-                        ],
-                      ),
+                  Color? renkTemp = Renkler.yazi(cihaz.guncelDurumRenk);
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Renkler.arka(cihaz.guncelDurumRenk),
+                      border: Border.all(color: Colors.black, width: 1),
                     ),
-                    /*Text(
-                          "Servis No: ${}\n${cihaz.musteriAdi}"),*/
-                    subtitle: Text(cihaz.tarih),
-                    trailing: Text(cihaz.guncelDurumText.toString()),
+                    child: ListTile(
+                      textColor: renkTemp,
+                      title: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "Servis No: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: cihaz.servisNo.toString(),
+                              style: TextStyle(
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "\nMüşteri Adı: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: cihaz.musteriAdi,
+                              style: TextStyle(
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "\nCihaz Tür: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: cihaz.cihazTuru,
+                              style: TextStyle(
+                                color: renkTemp,
+                              ),
+                            ),
+                            if (widget.sorumlu == null)
+                              TextSpan(
+                                text: "\nSorumlu: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: renkTemp,
+                                ),
+                              ),
+                            if (widget.sorumlu == null)
+                              TextSpan(
+                                text: cihaz.sorumlu,
+                                style: TextStyle(
+                                  color: renkTemp,
+                                ),
+                              ),
+                            TextSpan(
+                              text: "\nCihaz: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
+                              style: TextStyle(
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "\nGiriş Tarihi: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: renkTemp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: cihaz.tarih,
+                              style: TextStyle(
+                                color: renkTemp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      subtitle: Text(cihaz.guncelDurumText.toString()),
+                    ),
                   );
                 },
               ),
