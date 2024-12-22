@@ -19,7 +19,9 @@ class GirisSayfasi extends StatefulWidget {
 
 class _GirisSayfasiState extends State<GirisSayfasi> {
   TextEditingController kullaniciAdiController = TextEditingController();
+  FocusNode kullaniciAdiFocus = FocusNode();
   TextEditingController sifreController = TextEditingController();
+  FocusNode sifreFocus = FocusNode();
   bool sifreyiGoster = false;
 
   String hataMesaji = "";
@@ -49,6 +51,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               ),
               TextField(
                 controller: kullaniciAdiController,
+                focusNode: kullaniciAdiFocus,
+                onSubmitted: (val) {
+                  FocusScope.of(context).requestFocus(sifreFocus);
+                },
                 onChanged: (value) {
                   setState(() {
                     kullaniciAdiError = null;
@@ -65,6 +71,11 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               ),
               TextField(
                 controller: sifreController,
+                focusNode: sifreFocus,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (val) async {
+                  await _girisYap();
+                },
                 onChanged: (value) {
                   setState(() {
                     sifreError = null;
@@ -97,11 +108,6 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    setState(() {
-                      kullaniciAdiError = null;
-                      sifreError = null;
-                      hataMesaji = "";
-                    });
                     await _girisYap();
                   },
                   style: ButtonStyle(
@@ -138,6 +144,11 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   }
 
   Future<void> _girisYap() async {
+    setState(() {
+      kullaniciAdiError = null;
+      sifreError = null;
+      hataMesaji = "";
+    });
     NavigatorState navigatorState = Navigator.of(context);
     String kullaniciAdi = kullaniciAdiController.text;
     String sifre = sifreController.text;
