@@ -70,10 +70,13 @@ class App extends CI_Controller
                         if ($durum) {
                             $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
                             $auth = random_string('alnum', 50);
-                            $this->Kullanicilar_Model->duzenle(
-                                $kullaniciBilgileri->id,
+                            ///2024-12-22 10:46:21.00000
+                            $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
+                            $this->Kullanicilar_Model->authEkle(
                                 array(
+                                    "kullanici_id" => $kullaniciBilgileri->id,
                                     "auth" => $auth,
+                                    "bitis" => date($this->Kullanicilar_Model->format, $bitis),
                                 )
                             );
                             if (isset($kullaniciBilgileri)) {
@@ -104,12 +107,14 @@ class App extends CI_Controller
             "durum" => FALSE,
             "kullanici" => array(),
         );
-        if(isset($token)){
-            if(isset($auth)){
-                $girisDurumu = $this->Giris_Model->girisDurumuAuth($auth);
-                if(count($girisDurumu) > 0){
-                    $sonuc["durum"] = TRUE;
-                    $sonuc["kullanici"] = $girisDurumu;
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($auth)) {
+                    $girisDurumu = $this->Kullanicilar_Model->girisDurumuAuth($auth);
+                    if (count($girisDurumu) > 0) {
+                        $sonuc["durum"] = TRUE;
+                        $sonuc["kullanici"] = $girisDurumu;
+                    }
                 }
             }
         }
