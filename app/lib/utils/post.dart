@@ -79,22 +79,44 @@ class BiltekPost {
       Ayarlar.cihazlarTumu,
       postMap,
     );
-    var resp = await response.stream.bytesToString();
-    debugPrint(resp);
     if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
       try {
         List<dynamic> cihazlar = jsonDecode(resp) as List<dynamic>;
         return cihazlar
             .map((cihaz) => Cihaz.fromJson(cihaz as Map<String, dynamic>))
             .toList();
-      } on Exception catch (e) {
-        debugPrint(e.toString());
+      } on Exception {
         throw Exception(
             "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
       }
     } else {
       throw Exception(
           "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+    }
+  }
+
+  static Future<Cihaz?> cihazGetir({
+    required int id,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.tekCihaz,
+      {"id": id.toString()},
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Cihaz cihaz = Cihaz.fromJson(jsonDecode(resp) as Map<String, dynamic>);
+        return cihaz;
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        return null;
+      }
+    } else {
+      debugPrint(
+          "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+      return null;
     }
   }
 }

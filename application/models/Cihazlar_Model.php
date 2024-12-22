@@ -506,6 +506,22 @@ class Cihazlar_Model extends CI_Model
         //return  $this->db->last_query();
         return $this->cihazVerileriniDonustur($result, TRUE);
     }
+    public function tekCihazApp($id)
+    {
+        $where = array(
+            "id" => $id,
+        );
+
+        $result = $this->db->reset_query()->where($where)->limit(1);
+
+        $result = $result->get($this->cihazlarTabloAdi());
+        if($result->num_rows() > 0){
+            $result = $result->result();
+            return $this->cihazVerileriniDonustur($result, TRUE)[0];
+        }else{
+            return null;
+        }
+    }
 
     public function sonCihazJQ($sorumlu = "")
     {

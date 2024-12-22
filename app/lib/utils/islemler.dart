@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Renkler {
-  static Color? arka(String renkClass) {
+class Islemler {
+  static Color? arkaRenk(String renkClass) {
     int alpha = (255 * 0.3).floor();
     switch (renkClass) {
       case "bg-white":
@@ -26,7 +26,7 @@ class Renkler {
     }
   }
 
-  static Color? yazi(String renkClass) {
+  static Color? yaziRengi(String renkClass) {
     switch (renkClass) {
       case "bg-dark":
         return Colors.white;
@@ -47,6 +47,32 @@ class Renkler {
 
       default:
         return Color.fromARGB(255, 31, 45, 61);
+    }
+  }
+
+  static String servisTuru(int id) {
+    switch (id) {
+      case 1:
+        return "GARANTİ KAPSAMINDA BAKIM/ONARIM";
+      case 2:
+        return "ANLAŞMALI BAKIM/ONARIM";
+      case 3:
+        return "ÜCRETLİ BAKIM/ONARIM";
+      case 4:
+        return "ÜCRETLİ ARIZA TESPİTİ";
+      default:
+        return "Belirtilmemiş";
+    }
+  }
+
+  static String faturaDurumu(int durum) {
+    switch (durum) {
+      case 1:
+        return "Fatura Kesilmedi";
+      case 2:
+        return "Fatura Kesildi";
+      default:
+        return "Belirtilmedi";
     }
   }
 }

@@ -135,14 +135,11 @@ class App extends CI_Controller
                     echo json_encode($this->hataMesaji(1));
                 }
             } else {
-                echo json_encode($this->hataMesaji(2));
+                echo json_encode($this->hataMesaji(1));
             }
         } else {
             echo json_encode($this->hataMesaji(1));
         }
-    }
-    public function test(){
-        echo json_encode($this->Cihazlar_Model->cihazlarTumuApp("", array(), 100));
     }
     public function cihazlarTumu()
     {
@@ -152,23 +149,23 @@ class App extends CI_Controller
         $specific = $this->input->post("specific");
         $sira = $this->input->post("sira");
         $limit = $this->input->post("limit");
-        if(isset($sorumlu)){
+        if (isset($sorumlu)) {
             $sorumlu = intval($sorumlu);
-        }else{
+        } else {
             $sorumlu = 0;
         }
-        if(!isset($arama)){
+        if (!isset($arama)) {
             $arama = "";
         }
-        if(isset($specific)){
+        if (isset($specific)) {
             $specific = json_decode($specific);
-        }else{
+        } else {
             $specific = array();
         }
-        if(!isset($sira)){
+        if (!isset($sira)) {
             $sira = 0;
         }
-        if(!isset($limit)){
+        if (!isset($limit)) {
             $limit = 50;
         }
         $token = $this->tokenPost();
@@ -179,7 +176,33 @@ class App extends CI_Controller
                 echo json_encode($this->hataMesaji(1));
             }
         } else {
-            echo json_encode($this->hataMesaji(2));
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function tekCihaz()
+    {
+        $this->headerlar();
+        $id = $this->input->post("id");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($id)) {
+                    $cihaz = $this->Cihazlar_Model->tekCihazApp($id);
+                    if($cihaz != null){
+                        $cihaz->cihazDurumuID = "0";
+                        $cihaz->siralama = "0";
+                        echo json_encode($cihaz);
+                    }else{
+                        echo json_encode($this->hataMesaji(99));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(99));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
         }
     }
     public function headerlar()
