@@ -26,11 +26,38 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   String arama = "";
 
-  List<Cihaz> cihazlar = [];
+  List<Cihaz>? cihazlar;
+
+  ScrollController scrollController = ScrollController();
+  int suankiIndex = 0;
 
   bool aramaEtkin = false;
+
+  bool yukariKaydir = false;
+
   @override
   void initState() {
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels > 50) {
+        setState(() {
+          yukariKaydir = true;
+        });
+      } else {
+        setState(() {
+          yukariKaydir = false;
+        });
+      }
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        debugPrint("Max scroll");
+        setState(() {
+          suankiIndex += 1;
+        });
+        await _cihazlariYenile(
+          sifirla: false,
+        );
+      }
+    });
     Future.delayed(Duration.zero, () async {
       await _cihazlariYenile();
     });
@@ -49,82 +76,108 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
             ),
       appBar: aramaEtkin
           ? AppBar(
-              flexibleSpace: Builder(builder: (context) {
-                WidgetStateProperty<Color?>? color =
-                    WidgetStateProperty.resolveWith<Color?>(
-                  (Set<WidgetState> states) {
-                    return Colors.transparent; // Use the component's default.
-                  },
-                );
-
-                FocusScope.of(context).requestFocus(searchbarFocus);
-                return SearchBar(
-                  focusNode: searchbarFocus,
-                  padding: const WidgetStatePropertyAll<EdgeInsets>(
-                      EdgeInsets.symmetric(horizontal: 16.0)),
-                  backgroundColor: color,
-                  shadowColor: color,
-                  overlayColor: color,
-                  surfaceTintColor: color,
-                  hintText: "Cihaz Ara...",
-                  hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+              flexibleSpace: Builder(
+                builder: (context) {
+                  WidgetStateProperty<Color?>? color =
+                      WidgetStateProperty.resolveWith<Color?>(
                     (Set<WidgetState> states) {
-                      return TextStyle(
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.color
-                              ?.withAlpha(100));
+                      return Colors.transparent; // Use the component's default.
                     },
-                  ),
-                  onTap: () {
-                    ////controller.openView();
-                  },
-                  onChanged: (value) async {
-                    setState(() {
-                      arama = value;
-                    });
-                    await _cihazlariYenile();
-                  },
-                  leading: IconButton(
-                    onPressed: () {
+                  );
+
+                  FocusScope.of(context).requestFocus(searchbarFocus);
+                  return SearchBar(
+                    focusNode: searchbarFocus,
+                    padding: const WidgetStatePropertyAll<EdgeInsets>(
+                        EdgeInsets.symmetric(horizontal: 16.0)),
+                    backgroundColor: color,
+                    shadowColor: color,
+                    overlayColor: color,
+                    surfaceTintColor: color,
+                    hintText: "Cihaz Ara...",
+                    hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+                      (Set<WidgetState> states) {
+                        return TextStyle(
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.color
+                                ?.withAlpha(100));
+                      },
+                    ),
+                    onTap: () {
+                      ////controller.openView();
+                    },
+                    onChanged: (value) async {
                       setState(() {
-                        aramaEtkin = false;
+                        arama = value;
                       });
+                      await _cihazlariYenile();
                     },
-                    icon: Icon(Icons.arrow_back),
-                  ),
-                  trailing: <Widget>[],
-                );
-              }),
-            )
-          : biltekAppBar(context, title: widget.kullanici.adSoyad, actions: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    aramaEtkin = true;
-                  });
+                    leading: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          aramaEtkin = false;
+                        });
+                      },
+                      icon: Icon(Icons.arrow_back),
+                    ),
+                    trailing: <Widget>[],
+                  );
                 },
-                icon: Icon(Icons.search),
               ),
-            ]),
+            )
+          : biltekAppBar(
+              context,
+              title: widget.kullanici.adSoyad,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      aramaEtkin = true;
+                    });
+                  },
+                  icon: Icon(Icons.search),
+                ),
+              ],
+            ),
+      floatingActionButton: yukariKaydir
+          ? FloatingActionButton(
+              onPressed: () {
+                scrollController.animateTo(
+                  0,
+                  duration: Duration(seconds: 1),
+                  curve: Curves.bounceIn,
+                );
+              },
+              child: Icon(
+                Icons.arrow_upward,
+                color: Colors.white,
+              ),
+            )
+          : null,
       body: Container(
         decoration: BoxDecoration(
           color: Colors.white,
         ),
         width: MediaQuery.of(context).size.width,
-        child: cihazlar.isEmpty
+        child: cihazlar == null
             ? Center(
                 child: CircularProgressIndicator(),
               )
             : RefreshIndicator(
                 onRefresh: () async {
+                  setState(() {
+                    arama = "";
+                  });
                   await _cihazlariYenile();
                 },
                 child: ListView.builder(
-                  itemCount: cihazlar.length,
+                  itemCount: cihazlar!.length,
+                  controller: scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    Cihaz cihaz = cihazlar[index];
+                    Cihaz cihaz = cihazlar![index];
                     Color? renkTemp = Renkler.yazi(cihaz.guncelDurumRenk);
                     return Container(
                       decoration: BoxDecoration(
@@ -230,47 +283,35 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     );
   }
 
-  Future<void> _cihazlariYenile() async {
+  Future<void> _cihazlariYenile({
+    bool sifirla = true,
+  }) async {
+    if (sifirla) {
+      setState(() {
+        suankiIndex = 0;
+      });
+    }
     List<Cihaz> cihazlarTemp = await BiltekPost.cihazlariGetir(
       sorumlu: widget.sorumlu,
       arama: arama.isNotEmpty ? arama : null,
+      offset: suankiIndex * 50,
     );
     if (mounted) {
       setState(() {
-        cihazlar = cihazlarTemp;
+        if (sifirla) {
+          cihazlar = cihazlarTemp;
+        } else {
+          cihazlar ??= [];
+          cihazlar?.addAll(cihazlarTemp);
+        }
       });
     } else {
-      cihazlar = cihazlarTemp;
+      if (sifirla) {
+        cihazlar = cihazlarTemp;
+      } else {
+        cihazlar ??= [];
+        cihazlar?.addAll(cihazlarTemp);
+      }
     }
-  }
-}
-
-class MySearchDelegate extends SearchDelegate {
-  CihazlarSayfasi cihazlarSayfasi;
-  MySearchDelegate(this.cihazlarSayfasi);
-
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    return [];
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, null);
-      },
-      icon: Icon(Icons.arrow_back),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return SizedBox();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return SizedBox();
   }
 }
