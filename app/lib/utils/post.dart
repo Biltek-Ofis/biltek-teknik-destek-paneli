@@ -51,6 +51,7 @@ class BiltekPost {
 
   static Future<List<Cihaz>> cihazlariGetir({
     int? sorumlu,
+    String? arama,
     List<dynamic> specific = const [],
     int offset = 0,
     int limit = 50,
@@ -62,6 +63,11 @@ class BiltekPost {
     if (sorumlu != null) {
       postMap.addAll({
         "sorumlu": sorumlu.toString(),
+      });
+    }
+    if (arama != null) {
+      postMap.addAll({
+        "arama": arama,
       });
     }
     if (specific.isNotEmpty) {
