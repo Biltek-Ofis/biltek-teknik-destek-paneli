@@ -267,6 +267,14 @@ class Cihazlar_Model extends CI_Model
         }
         return "Belirtilmemiş";
     }
+    public function cihazDurumuRenk($id)
+    {
+        $cDurum= $this->cihazDurumuBul($id);
+        if($cDurum->num_rows() > 0){
+          return $cDurum->result()[0]->renk;
+        }
+        return "Belirtilmemiş";
+    }
     public function tahsilatSekli($tur_id)
     {
         $query = $this->db->reset_query()->where("id", $tur_id)->get($this->tahsilatSekilleriTabloAdi());
@@ -299,7 +307,7 @@ class Cihazlar_Model extends CI_Model
         );
         return $veri;
     }
-    public function cihazVerileriniDonustur($result)
+    public function cihazVerileriniDonustur($result, $nullariDuzelt = FALSE)
     {
         $this->load->model("Islemler_Model");
         for ($i = 0; $i < count($result); $i++) {
@@ -314,6 +322,76 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->sorumlu_val = $result[$i]->sorumlu;
             $result[$i]->sorumlu = isset($sorumlu_per) ? $sorumlu_per->ad_soyad : "Atanmamış";
             $result[$i]->islemler = $this->islemleriGetir($result[$i]->id);
+            $result[$i]->guncel_durum_text = $this->cihazDurumuIsım($result[$i]->guncel_durum);
+            $result[$i]->guncel_durum_renk = $this->cihazDurumuRenk($result[$i]->guncel_durum);
+            if($nullariDuzelt){
+                if($result[$i]->musteri_kod == null){
+                    $result[$i]->musteri_kod = "0";
+                }
+                if($result[$i]->cihaz_sifresi == null){
+                    $result[$i]->cihaz_sifresi = "";
+                }
+                if($result[$i]->ariza_aciklamasi == null){
+                    $result[$i]->ariza_aciklamasi = "";
+                }
+                if($result[$i]->teslim_alinanlar == null){
+                    $result[$i]->teslim_alinanlar = "";
+                }
+                if($result[$i]->yapilan_islem_aciklamasi == null){
+                    $result[$i]->yapilan_islem_aciklamasi = "";
+                }
+                if($result[$i]->bildirim_tarihi == null){
+                    $result[$i]->bildirim_tarihi = "";
+                }
+                if($result[$i]->cikis_tarihi == null){
+                    $result[$i]->cikis_tarihi = "";
+                }
+                if($result[$i]->i_stok_kod_1 == null){
+                    $result[$i]->i_stok_kod_1 = "";
+                }
+                if($result[$i]->i_ad_1 == null){
+                    $result[$i]->i_ad_1 = "";
+                }
+                if($result[$i]->i_ad_1 == null){
+                    $result[$i]->i_ad_1 = "";
+                }
+                if($result[$i]->i_stok_kod_2 == null){
+                    $result[$i]->i_stok_kod_2 = "";
+                }
+                if($result[$i]->i_ad_2 == null){
+                    $result[$i]->i_ad_2 = "";
+                }
+                if($result[$i]->i_stok_kod_3 == null){
+                    $result[$i]->i_stok_kod_3 = "";
+                }
+                if($result[$i]->i_ad_3 == null){
+                    $result[$i]->i_ad_3 = "";
+                }
+                if($result[$i]->i_stok_kod_4 == null){
+                    $result[$i]->i_stok_kod_4 = "";
+                }
+                if($result[$i]->i_ad_4 == null){
+                    $result[$i]->i_ad_4 = "";
+                }
+                if($result[$i]->i_stok_kod_5 == null){
+                    $result[$i]->i_stok_kod_5 = "";
+                }
+                if($result[$i]->i_ad_5 == null){
+                    $result[$i]->i_ad_5 = "";
+                }
+                if($result[$i]->i_stok_kod_6 == null){
+                    $result[$i]->i_stok_kod_6 = "";
+                }
+                if($result[$i]->i_ad_6 == null){
+                    $result[$i]->i_ad_6 = "";
+                }
+                if($result[$i]->i_ad_5 == null){
+                    $result[$i]->i_ad_5 = "";
+                }
+                if($result[$i]->i_ad_5 == null){
+                    $result[$i]->i_ad_5 = "";
+                }
+            }
         }
         return $result;
     }
@@ -398,6 +476,26 @@ class Cihazlar_Model extends CI_Model
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
+    }
+    public function cihazlarTumuApp($sorumlu = "", $spesifik = array(), $sira = 0, $limit = 50)
+    {
+        // $spesifik =  Görünen cihaz idleri.
+        $where = array();
+        if ($sorumlu != "") {
+            $where[$this->cihazlarTabloAdi().".sorumlu"] = $sorumlu;
+        }
+        $where_in = NULL;
+        $result = $this->db->reset_query()->select($this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi().".id as cihazDurumuID, ".$this->cihazDurumlariTabloAdi().".siralama as siralama");
+        $result = $result->where($where);
+
+        if(count($spesifik)>0){
+            $result = $result->where_in($this->cihazlarTabloAdi().".id", $spesifik);
+        }
+        $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi().".guncel_durum = ".$this->cihazDurumlariTabloAdi().".id")->order_by($this->cihazDurumlariTabloAdi().".siralama ASC, ".$this->cihazlarTabloAdi().".tarih DESC");
+        $result = $result->limit($limit)->offset($sira);
+        $result = $result->get($this->cihazlarTabloAdi())->result();
+        //return  $this->db->last_query();
+        return $this->cihazVerileriniDonustur($result, TRUE);
     }
     
     public function sonCihazJQ($sorumlu = "")

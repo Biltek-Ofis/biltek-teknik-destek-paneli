@@ -111,6 +111,7 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 if (isset($auth)) {
                     $girisDurumu = $this->Kullanicilar_Model->girisDurumuAuth($auth);
+                    $girisDurumu["auth"] = $auth;
                     if (count($girisDurumu) > 0) {
                         $sonuc["durum"] = TRUE;
                         $sonuc["kullanici"] = $girisDurumu;
@@ -137,23 +138,41 @@ class App extends CI_Controller
                 echo json_encode($this->hataMesaji(2));
             }
         } else {
-            echo json_encode($this->hataMesaji(2));
+            echo json_encode($this->hataMesaji(1));
         }
+    }
+    public function test(){
+        echo json_encode($this->Cihazlar_Model->cihazlarTumuApp("", array(), 100));
     }
     public function cihazlarTumu()
     {
         $this->headerlar();
         $sorumlu = $this->input->post("sorumlu");
+        $specific = $this->input->post("specific");
+        $sira = $this->input->post("sira");
+        $limit = $this->input->post("limit");
+        if(isset($sorumlu)){
+            $sorumlu = intval($sorumlu);
+        }else{
+            $sorumlu = 0;
+        }
+        if(isset($specific)){
+            $specific = json_decode($specific);
+        }else{
+            $specific = array();
+        }
+        if(!isset($sira)){
+            $sira = 0;
+        }
+        if(!isset($limit)){
+            $limit = 50;
+        }
         $token = $this->tokenPost();
-        if (isset($sorumlu)) {
-            if (isset($token)) {
-                if ($this->token($token)) {
-                    echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ($sorumlu == 0 ? "" : $sorumlu));
-                } else {
-                    echo json_encode($this->hataMesaji(1));
-                }
+        if (isset($token)) {
+            if ($this->token($token)) {
+                echo json_encode($this->Cihazlar_Model->cihazlarTumuApp($sorumlu == 0 ? "" : $sorumlu, $specific, $sira, $limit));
             } else {
-                echo json_encode($this->hataMesaji(2));
+                echo json_encode($this->hataMesaji(1));
             }
         } else {
             echo json_encode($this->hataMesaji(2));
