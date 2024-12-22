@@ -80,30 +80,46 @@ AppBar biltekAppBar(
     ),
     title: Text(title),
     actions: [
-      IconButton(
-        onPressed: () async {
+      PopupMenuButton<String>(
+        onSelected: (value) async {
           NavigatorState navigatorState = Navigator.of(context);
-          await SharedPreference.remove(SharedPreference.authString);
-          navigatorState.push(
-            MaterialPageRoute(
-              builder: (context) => AyarlarSayfasi(),
-            ),
-          );
+          switch (value) {
+            case "Ayarlar":
+              navigatorState.push(
+                MaterialPageRoute(
+                  builder: (context) => AyarlarSayfasi(),
+                ),
+              );
+              break;
+            case "Çıkış Yap":
+              await SharedPreference.remove(SharedPreference.authString);
+              navigatorState.pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => GirisSayfasi(),
+                ),
+                (route) => false,
+              );
+              break;
+          }
         },
-        icon: Icon(Icons.settings),
-      ),
-      IconButton(
-        onPressed: () async {
-          NavigatorState navigatorState = Navigator.of(context);
-          await SharedPreference.remove(SharedPreference.authString);
-          navigatorState.pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => GirisSayfasi(),
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem<String>(
+              value: "Ayarlar",
+              child: ListTile(
+                leading: Icon(Icons.settings),
+                title: Text("Ayarlar"),
+              ),
             ),
-            (route) => false,
-          );
+            PopupMenuItem<String>(
+              value: "Çıkış Yap",
+              child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Çıkış Yap"),
+              ),
+            ),
+          ];
         },
-        icon: Icon(Icons.logout),
       ),
     ],
   );
