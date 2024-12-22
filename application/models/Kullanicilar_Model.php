@@ -18,6 +18,9 @@ class Kullanicilar_Model extends CI_Model
     public function kullanicilarTabloAdi() {
         return DB_ON_EK_STR."kullanicilar";
     }
+    public function kullaniciAuthTabloAdi() {
+        return DB_ON_EK_STR."kullanici_auth";
+    }
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $auth = "")
     {
@@ -76,6 +79,15 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
+    public function tekKullanici_array($id)
+    {
+        $sonuc = $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi());
+        if ($sonuc->num_rows() > 0) {
+            return $sonuc->result_array()[0];
+        } else {
+            return null;
+        }
+    }
     public function tekKullaniciIsım($isim)
     {
         $sonuc = $this->db->reset_query()->where(array("ad_soyad" => $isim))->get($this->kullanicilarTabloAdi());
@@ -94,6 +106,9 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
+    
+    public $format = "Y-m-d H:i:s";
+    public $bitisZamani = (7 * 24 * 60 * 60);
     public function ekle($veri)
     {
         return $this->db->reset_query()->insert($this->kullanicilarTabloAdi(), $veri);
@@ -105,6 +120,30 @@ class Kullanicilar_Model extends CI_Model
     public function sil($id)
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->kullanicilarTabloAdi());
+    }
+    public function authEkle($veri)
+    {
+        return $this->db->reset_query()->insert($this->kullaniciAuthTabloAdi(), $veri);
+    }
+    public function authSil($auth)
+    {
+        return $this->db->reset_query()->where("auth", $auth)->delete($this->kullaniciAuthTabloAdi());
+    }
+    public function girisDurumuAuth($auth)
+    {
+        $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
+        if ($query->num_rows() > 0) {
+            $guncel = date($this->format, time());
+            $sonuc = $query->result()[0];
+            if(strcmp($guncel, $sonuc->bitis) < 0){
+                return $this->tekKullanici_array($sonuc->kullanici_id);
+            }else{
+                $this->authSil($auth);
+                return array();
+            }
+        } else {
+            return array();
+        }
     }
     public function kullaniciPost($yonetici_dahil = false)
     {
