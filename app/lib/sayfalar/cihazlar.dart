@@ -22,7 +22,13 @@ class CihazlarSayfasi extends StatefulWidget {
 }
 
 class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
+  FocusNode searchbarFocus = FocusNode();
+
+  String arama = "";
+
   List<Cihaz> cihazlar = [];
+
+  bool aramaEtkin = false;
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -34,15 +40,74 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: biltekDrawer(
-        context,
-        kullanici: widget.kullanici,
-        seciliSayfa: widget.seciliSayfa,
-      ),
-      appBar: biltekAppBar(
-        context,
-        title: widget.kullanici.adSoyad,
-      ),
+      drawer: aramaEtkin
+          ? null
+          : biltekDrawer(
+              context,
+              kullanici: widget.kullanici,
+              seciliSayfa: widget.seciliSayfa,
+            ),
+      appBar: aramaEtkin
+          ? AppBar(
+              flexibleSpace: Builder(builder: (context) {
+                WidgetStateProperty<Color?>? color =
+                    WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                    return Colors.transparent; // Use the component's default.
+                  },
+                );
+
+                FocusScope.of(context).requestFocus(searchbarFocus);
+                return SearchBar(
+                  focusNode: searchbarFocus,
+                  padding: const WidgetStatePropertyAll<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: 16.0)),
+                  backgroundColor: color,
+                  shadowColor: color,
+                  overlayColor: color,
+                  surfaceTintColor: color,
+                  hintText: "Cihaz Ara...",
+                  hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+                    (Set<WidgetState> states) {
+                      return TextStyle(
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.color
+                              ?.withAlpha(100));
+                    },
+                  ),
+                  onTap: () {
+                    ////controller.openView();
+                  },
+                  onChanged: (value) async {
+                    setState(() {
+                      arama = value;
+                    });
+                    await _cihazlariYenile();
+                  },
+                  leading: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        aramaEtkin = false;
+                      });
+                    },
+                    icon: Icon(Icons.arrow_back),
+                  ),
+                  trailing: <Widget>[],
+                );
+              }),
+            )
+          : biltekAppBar(context, title: widget.kullanici.adSoyad, actions: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    aramaEtkin = true;
+                  });
+                },
+                icon: Icon(Icons.search),
+              ),
+            ]),
       body: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -168,6 +233,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   Future<void> _cihazlariYenile() async {
     List<Cihaz> cihazlarTemp = await BiltekPost.cihazlariGetir(
       sorumlu: widget.sorumlu,
+      arama: arama.isNotEmpty ? arama : null,
     );
     if (mounted) {
       setState(() {
@@ -176,5 +242,35 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     } else {
       cihazlar = cihazlarTemp;
     }
+  }
+}
+
+class MySearchDelegate extends SearchDelegate {
+  CihazlarSayfasi cihazlarSayfasi;
+  MySearchDelegate(this.cihazlarSayfasi);
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, null);
+      },
+      icon: Icon(Icons.arrow_back),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return SizedBox();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return SizedBox();
   }
 }

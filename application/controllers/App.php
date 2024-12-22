@@ -148,6 +148,7 @@ class App extends CI_Controller
     {
         $this->headerlar();
         $sorumlu = $this->input->post("sorumlu");
+        $arama = $this->input->post("arama");
         $specific = $this->input->post("specific");
         $sira = $this->input->post("sira");
         $limit = $this->input->post("limit");
@@ -155,6 +156,9 @@ class App extends CI_Controller
             $sorumlu = intval($sorumlu);
         }else{
             $sorumlu = 0;
+        }
+        if(!isset($arama)){
+            $arama = "";
         }
         if(isset($specific)){
             $specific = json_decode($specific);
@@ -170,7 +174,7 @@ class App extends CI_Controller
         $token = $this->tokenPost();
         if (isset($token)) {
             if ($this->token($token)) {
-                echo json_encode($this->Cihazlar_Model->cihazlarTumuApp($sorumlu == 0 ? "" : $sorumlu, $specific, $sira, $limit));
+                echo json_encode($this->Cihazlar_Model->cihazlarTumuApp($sorumlu == 0 ? "" : $sorumlu, $specific, $sira, $limit, $arama));
             } else {
                 echo json_encode($this->hataMesaji(1));
             }

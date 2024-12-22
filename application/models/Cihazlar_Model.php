@@ -30,7 +30,7 @@ class Cihazlar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "medyalar";
     }
-    
+
     public function tahsilatSekilleriTabloAdi()
     {
         return DB_ON_EK_STR . "tahsilatsekilleri";
@@ -43,14 +43,14 @@ class Cihazlar_Model extends CI_Model
     {
         $this->load->model("Firma_Model");
         $cihazlar = $this->db->reset_query()->order_by("tarih", "DESC")->group_by("musteri_adi")->get($this->cihazlarTabloAdi())->result();
-        foreach($cihazlar as $cihaz){
+        foreach ($cihazlar as $cihaz) {
             $this->db->reset_query()->insert($this->Firma_Model->musteriTablosu(), array(
                 "musteri_adi" => $cihaz->musteri_adi,
                 "adres" => $cihaz->adres,
                 "telefon_numarasi" => $cihaz->telefon_numarasi
             ));
             $son_eklenen = $this->db->insert_id();
-            $this->db->reset_query()->where("musteri_adi", $cihaz->musteri_adi)->update($this->cihazlarTabloAdi(),array(
+            $this->db->reset_query()->where("musteri_adi", $cihaz->musteri_adi)->update($this->cihazlarTabloAdi(), array(
                 "musteri_kod" => $son_eklenen
             ));
         }
@@ -59,8 +59,8 @@ class Cihazlar_Model extends CI_Model
     public function yapilanIslemleriAktar()
     {
         $cihazlar = $this->db->reset_query()->order_by("id", "ASC")->get($this->cihazlarTabloAdi())->result();
-        foreach($cihazlar as $cihaz){
-            if(isset($cihaz->i_ad_1)){
+        foreach ($cihazlar as $cihaz) {
+            if (isset($cihaz->i_ad_1)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 1,
@@ -70,7 +70,7 @@ class Cihazlar_Model extends CI_Model
                     "kdv" => $cihaz->i_kdv_1
                 ));
             }
-            if(isset($cihaz->i_ad_2)){
+            if (isset($cihaz->i_ad_2)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 2,
@@ -80,7 +80,7 @@ class Cihazlar_Model extends CI_Model
                     "kdv" => $cihaz->i_kdv_2
                 ));
             }
-            if(isset($cihaz->i_ad_3)){
+            if (isset($cihaz->i_ad_3)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 3,
@@ -90,7 +90,7 @@ class Cihazlar_Model extends CI_Model
                     "kdv" => $cihaz->i_kdv_3
                 ));
             }
-            if(isset($cihaz->i_ad_4)){
+            if (isset($cihaz->i_ad_4)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 4,
@@ -100,7 +100,7 @@ class Cihazlar_Model extends CI_Model
                     "kdv" => $cihaz->i_kdv_4
                 ));
             }
-            if(isset($cihaz->i_ad_5)){
+            if (isset($cihaz->i_ad_5)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 5,
@@ -110,7 +110,7 @@ class Cihazlar_Model extends CI_Model
                     "kdv" => $cihaz->i_kdv_5
                 ));
             }
-            if(isset($cihaz->i_ad_6)){
+            if (isset($cihaz->i_ad_6)) {
                 $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
                     "cihaz_id" => $cihaz->id,
                     "islem_sayisi" => 6,
@@ -171,59 +171,59 @@ class Cihazlar_Model extends CI_Model
     {
         $siralamaMax = $this->db->reset_query()->select_max('siralama')->get($this->Cihazlar_Model->cihazDurumlariTabloAdi())->result();
         $siralama = 1;
-        if(isset($siralamaMax[0]->siralama)){
+        if (isset($siralamaMax[0]->siralama)) {
             $siralama = $siralamaMax[0]->siralama + 1;
         }
-        return $this->db->reset_query()->insert($this->cihazDurumlariTabloAdi(), array_merge($veri, array("siralama"=>$siralama)));
+        return $this->db->reset_query()->insert($this->cihazDurumlariTabloAdi(), array_merge($veri, array("siralama" => $siralama)));
     }
     public function cihazDurumuYukariTasi($id)
     {
         $tbl = $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
-        if($tbl->num_rows() > 0){
+        if ($tbl->num_rows() > 0) {
             $res = $tbl->result()[0];
-            if($res->siralama > 1){
+            if ($res->siralama > 1) {
                 //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
                 $oncekiDurum = $this->db->reset_query()->where('siralama', $res->siralama - 1)->get($this->cihazDurumlariTabloAdi())->result()[0];
-                $duzenle1 = $this->db->reset_query()->where("id", $oncekiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $oncekiDurum->siralama + 1));
-                if(!$duzenle1){
+                $duzenle1 = $this->db->reset_query()->where("id", $oncekiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama" => $oncekiDurum->siralama + 1));
+                if (!$duzenle1) {
                     return False;
                 }
-                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $res->siralama - 1));
+                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama" => $res->siralama - 1));
                 return $duzenle2;
-            }else{
+            } else {
                 return False;
             }
-		}else{
+        } else {
             return False;
-		}
+        }
         //return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), $veri);
     }
     public function cihazDurumuAltaTasi($id)
     {
         $tbl = $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
-        if($tbl->num_rows() > 0){
+        if ($tbl->num_rows() > 0) {
             $res = $tbl->result()[0];
             $cihazDurumlari = $this->db->reset_query()->where('id !=', $res->id)->order_by("siralama", "ASC")->get($this->cihazDurumlariTabloAdi())->result();
-            if($res->siralama <= count($cihazDurumlari)){
+            if ($res->siralama <= count($cihazDurumlari)) {
                 //$bosalt = $this->db->reset_query()->empty_table($this->Cihazlar_Model->cihazDurumlariTabloAdi());
                 $sonrakiDurum = $this->db->reset_query()->where('siralama', $res->siralama + 1)->get($this->cihazDurumlariTabloAdi())->result()[0];
-                $duzenle1 = $this->db->reset_query()->where("id", $sonrakiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $sonrakiDurum->siralama - 1));
-                if(!$duzenle1){
+                $duzenle1 = $this->db->reset_query()->where("id", $sonrakiDurum->id)->update($this->cihazDurumlariTabloAdi(), array("siralama" => $sonrakiDurum->siralama - 1));
+                if (!$duzenle1) {
                     return False;
                 }
-                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama"=> $res->siralama + 1));
+                $duzenle2 = $this->db->reset_query()->where("id", $res->id)->update($this->cihazDurumlariTabloAdi(), array("siralama" => $res->siralama + 1));
                 return $duzenle2;
-            }else{
+            } else {
                 return False;
             }
-		}else{
+        } else {
             return False;
-		}
+        }
     }
     public function cihazDurumuVarsayilanYap($id)
     {
-        $this->db->reset_query()->update($this->cihazDurumlariTabloAdi(), array("varsayilan"=>0));
-        return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), array("varsayilan"=>1));
+        $this->db->reset_query()->update($this->cihazDurumlariTabloAdi(), array("varsayilan" => 0));
+        return $this->db->reset_query()->where("id", $id)->update($this->cihazDurumlariTabloAdi(), array("varsayilan" => 1));
     }
     public function cihazDurumuDuzenle($id, $veri)
     {
@@ -252,26 +252,26 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazDurumuKilitle($id)
     {
-        $cDurum= $this->cihazDurumuBul($id);
+        $cDurum = $this->cihazDurumuBul($id);
         $kilitle = False;
-        if($cDurum->num_rows() > 0){
-          $kilitle = $cDurum->result()[0]->kilitle == 0 ? False : True;
+        if ($cDurum->num_rows() > 0) {
+            $kilitle = $cDurum->result()[0]->kilitle == 0 ? False : True;
         }
         return $kilitle;
     }
     public function cihazDurumuIsım($id)
     {
-        $cDurum= $this->cihazDurumuBul($id);
-        if($cDurum->num_rows() > 0){
-          return $cDurum->result()[0]->durum;
+        $cDurum = $this->cihazDurumuBul($id);
+        if ($cDurum->num_rows() > 0) {
+            return $cDurum->result()[0]->durum;
         }
         return "Belirtilmemiş";
     }
     public function cihazDurumuRenk($id)
     {
-        $cDurum= $this->cihazDurumuBul($id);
-        if($cDurum->num_rows() > 0){
-          return $cDurum->result()[0]->renk;
+        $cDurum = $this->cihazDurumuBul($id);
+        if ($cDurum->num_rows() > 0) {
+            return $cDurum->result()[0]->renk;
         }
         return "Belirtilmemiş";
     }
@@ -324,71 +324,71 @@ class Cihazlar_Model extends CI_Model
             $result[$i]->islemler = $this->islemleriGetir($result[$i]->id);
             $result[$i]->guncel_durum_text = $this->cihazDurumuIsım($result[$i]->guncel_durum);
             $result[$i]->guncel_durum_renk = $this->cihazDurumuRenk($result[$i]->guncel_durum);
-            if($nullariDuzelt){
-                if($result[$i]->musteri_kod == null){
+            if ($nullariDuzelt) {
+                if ($result[$i]->musteri_kod == null) {
                     $result[$i]->musteri_kod = "0";
                 }
-                if($result[$i]->cihaz_sifresi == null){
+                if ($result[$i]->cihaz_sifresi == null) {
                     $result[$i]->cihaz_sifresi = "";
                 }
-                if($result[$i]->ariza_aciklamasi == null){
+                if ($result[$i]->ariza_aciklamasi == null) {
                     $result[$i]->ariza_aciklamasi = "";
                 }
-                if($result[$i]->teslim_alinanlar == null){
+                if ($result[$i]->teslim_alinanlar == null) {
                     $result[$i]->teslim_alinanlar = "";
                 }
-                if($result[$i]->yapilan_islem_aciklamasi == null){
+                if ($result[$i]->yapilan_islem_aciklamasi == null) {
                     $result[$i]->yapilan_islem_aciklamasi = "";
                 }
-                if($result[$i]->bildirim_tarihi == null){
+                if ($result[$i]->bildirim_tarihi == null) {
                     $result[$i]->bildirim_tarihi = "";
                 }
-                if($result[$i]->cikis_tarihi == null){
+                if ($result[$i]->cikis_tarihi == null) {
                     $result[$i]->cikis_tarihi = "";
                 }
-                if($result[$i]->i_stok_kod_1 == null){
+                if ($result[$i]->i_stok_kod_1 == null) {
                     $result[$i]->i_stok_kod_1 = "";
                 }
-                if($result[$i]->i_ad_1 == null){
+                if ($result[$i]->i_ad_1 == null) {
                     $result[$i]->i_ad_1 = "";
                 }
-                if($result[$i]->i_ad_1 == null){
+                if ($result[$i]->i_ad_1 == null) {
                     $result[$i]->i_ad_1 = "";
                 }
-                if($result[$i]->i_stok_kod_2 == null){
+                if ($result[$i]->i_stok_kod_2 == null) {
                     $result[$i]->i_stok_kod_2 = "";
                 }
-                if($result[$i]->i_ad_2 == null){
+                if ($result[$i]->i_ad_2 == null) {
                     $result[$i]->i_ad_2 = "";
                 }
-                if($result[$i]->i_stok_kod_3 == null){
+                if ($result[$i]->i_stok_kod_3 == null) {
                     $result[$i]->i_stok_kod_3 = "";
                 }
-                if($result[$i]->i_ad_3 == null){
+                if ($result[$i]->i_ad_3 == null) {
                     $result[$i]->i_ad_3 = "";
                 }
-                if($result[$i]->i_stok_kod_4 == null){
+                if ($result[$i]->i_stok_kod_4 == null) {
                     $result[$i]->i_stok_kod_4 = "";
                 }
-                if($result[$i]->i_ad_4 == null){
+                if ($result[$i]->i_ad_4 == null) {
                     $result[$i]->i_ad_4 = "";
                 }
-                if($result[$i]->i_stok_kod_5 == null){
+                if ($result[$i]->i_stok_kod_5 == null) {
                     $result[$i]->i_stok_kod_5 = "";
                 }
-                if($result[$i]->i_ad_5 == null){
+                if ($result[$i]->i_ad_5 == null) {
                     $result[$i]->i_ad_5 = "";
                 }
-                if($result[$i]->i_stok_kod_6 == null){
+                if ($result[$i]->i_stok_kod_6 == null) {
                     $result[$i]->i_stok_kod_6 = "";
                 }
-                if($result[$i]->i_ad_6 == null){
+                if ($result[$i]->i_ad_6 == null) {
                     $result[$i]->i_ad_6 = "";
                 }
-                if($result[$i]->i_ad_5 == null){
+                if ($result[$i]->i_ad_5 == null) {
                     $result[$i]->i_ad_5 = "";
                 }
-                if($result[$i]->i_ad_5 == null){
+                if ($result[$i]->i_ad_5 == null) {
                     $result[$i]->i_ad_5 = "";
                 }
             }
@@ -398,7 +398,7 @@ class Cihazlar_Model extends CI_Model
     public function cihazlar($limit = 0)
     {
         $result = $this->db->reset_query()->order_by("id", "DESC");
-        if($limit > 0){
+        if ($limit > 0) {
             $result = $result->limit($limit);
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
@@ -422,7 +422,7 @@ class Cihazlar_Model extends CI_Model
             "sorumlu" => $tur,
         );
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
-        if($limit > 0){
+        if ($limit > 0) {
             $result = $result->limit($limit);
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
@@ -468,36 +468,45 @@ class Cihazlar_Model extends CI_Model
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
         }
-        $where_in = NULL;
+
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
 
-        if(count($spesifik)>0){
+        if (count($spesifik) > 0) {
             $result = $result->where_in("id", $spesifik);
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTumuApp($sorumlu = "", $spesifik = array(), $sira = 0, $limit = 50)
+    public function cihazlarTumuApp($sorumlu = "", $spesifik = array(), $sira = 0, $limit = 50, $arama = "")
     {
         // $spesifik =  Görünen cihaz idleri.
         $where = array();
         if ($sorumlu != "") {
-            $where[$this->cihazlarTabloAdi().".sorumlu"] = $sorumlu;
+            $where[$this->cihazlarTabloAdi() . ".sorumlu"] = $sorumlu;
         }
-        $where_in = NULL;
-        $result = $this->db->reset_query()->select($this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi().".id as cihazDurumuID, ".$this->cihazDurumlariTabloAdi().".siralama as siralama");
+
+        $result = $this->db->reset_query()->select($this->cihazlarTabloAdi() . ".*, " . $this->cihazDurumlariTabloAdi() . ".id as cihazDurumuID, " . $this->cihazDurumlariTabloAdi() . ".siralama as siralama");
         $result = $result->where($where);
 
-        if(count($spesifik)>0){
-            $result = $result->where_in($this->cihazlarTabloAdi().".id", $spesifik);
+        if (count($spesifik) > 0) {
+            $result = $result->where_in($this->cihazlarTabloAdi() . ".id", $spesifik);
         }
-        $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi().".guncel_durum = ".$this->cihazDurumlariTabloAdi().".id")->order_by($this->cihazDurumlariTabloAdi().".siralama ASC, ".$this->cihazlarTabloAdi().".tarih DESC");
+
+        if (strlen($arama) > 0) {
+            $result = $result->group_start();
+            $result = $result->like("servis_no", $arama);
+            $result = $result->or_like("musteri_adi", $arama);
+            $result = $result->or_like("cihaz", $arama);
+            $result = $result->or_like("cihaz_modeli", $arama);
+            $result = $result->group_end();
+        }
+        $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id")->order_by($this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC");
         $result = $result->limit($limit)->offset($sira);
         $result = $result->get($this->cihazlarTabloAdi())->result();
         //return  $this->db->last_query();
         return $this->cihazVerileriniDonustur($result, TRUE);
     }
-    
+
     public function sonCihazJQ($sorumlu = "")
     {
         $where = array();
@@ -546,13 +555,13 @@ class Cihazlar_Model extends CI_Model
             "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
         $tel_no = $this->input->post("telefon_numarasi");
-        if(isset($tel_no)){
-            if($tel_no == $this->telefon_numarasi_bos){
+        if (isset($tel_no)) {
+            if ($tel_no == $this->telefon_numarasi_bos) {
                 $tel_no = "";
             }
             $veri["telefon_numarasi"] = $tel_no;
         }
-        if($yeni){
+        if ($yeni) {
             $veri["takip_numarasi"] = time();
         }
         $sorumlu = $this->input->post("sorumlu");
@@ -584,13 +593,13 @@ class Cihazlar_Model extends CI_Model
             "islem_sayisi" => $veri["islem_sayisi"]
         );
         $islem_bul = $this->db->reset_query()->where($konum)->get($this->islemlerTabloAdi());
-        if($islem_bul->num_rows() > 0){
+        if ($islem_bul->num_rows() > 0) {
             return $this->db->reset_query()->where($konum)->update($this->islemlerTabloAdi(), $veri);
-        }else{
+        } else {
             return $this->db->reset_query()->insert($this->islemlerTabloAdi(), $veri);
         }
     }
-    
+
     public function islemSil($id, $islem_sayisi)
     {
         $this->veriGuncellendiEkle();
@@ -603,7 +612,7 @@ class Cihazlar_Model extends CI_Model
     {
         $this->veriGuncellendiEkle();
         $varsayilanDurum = $this->db->reset_query()->where("varsayilan", 1)->get($this->cihazDurumlariTabloAdi())->result();
-        if(count($varsayilanDurum) > 0){
+        if (count($varsayilanDurum) > 0) {
             $veri["guncel_durum"] = $varsayilanDurum[0]->id;
         }
         return $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
@@ -713,25 +722,28 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("cihaz_id", $id)->get($this->medyalarTabloAdi())->result();
     }
-    public function veriGuncellendiGetir(){
+    public function veriGuncellendiGetir()
+    {
         return $this->db->reset_query()->get($this->guncellemeTabloAdi());
     }
-    public function veriGuncellendi(){
+    public function veriGuncellendi()
+    {
         $query = $this->veriGuncellendiGetir();
-        if($query->num_rows() > 0){
+        if ($query->num_rows() > 0) {
             return $this->veriGuncellendiGetir()->first_row();
-        }else{
-            return array("id"=>0,"guncelleme_tarihi"=>strtotime("10 September 2023"));
+        } else {
+            return array("id" => 0, "guncelleme_tarihi" => strtotime("10 September 2023"));
         }
     }
-    public function veriGuncellendiEkle(){
+    public function veriGuncellendiEkle()
+    {
         $query = $this->veriGuncellendiGetir();
         if ($query->num_rows() > 0) {
             $son_guncellenen = $query->first_row();
-            $this->db->reset_query()->where("id", $son_guncellenen->id)->update($this->guncellemeTabloAdi(),array(
+            $this->db->reset_query()->where("id", $son_guncellenen->id)->update($this->guncellemeTabloAdi(), array(
                 "guncelleme_tarihi" => time()
             ));
-        }else{
+        } else {
             $this->db->reset_query()->insert($this->guncellemeTabloAdi(), array(
                 "guncelleme_tarihi" => time()
             ));

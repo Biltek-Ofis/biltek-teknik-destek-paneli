@@ -66,6 +66,7 @@ Drawer biltekDrawer(
 AppBar biltekAppBar(
   BuildContext context, {
   String title = "",
+  List<Widget> actions = const [],
 }) {
   return AppBar(
     leading: Builder(
@@ -80,6 +81,7 @@ AppBar biltekAppBar(
     ),
     title: Text(title),
     actions: [
+      ...actions,
       PopupMenuButton<String>(
         onSelected: (value) async {
           NavigatorState navigatorState = Navigator.of(context);
