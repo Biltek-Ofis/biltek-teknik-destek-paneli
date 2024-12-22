@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:teknikservis/utils/assets.dart';
+import 'package:teknikservis/utils/buttons.dart';
 
 import '../ayarlar.dart';
 import '../models/giris.dart';
@@ -106,31 +107,11 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: ElevatedButton(
+                child: DefaultButton(
                   onPressed: () async {
                     await _girisYap();
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.pressed)) {
-                          return Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withAlpha(1);
-                        }
-                        return Theme.of(context)
-                            .colorScheme
-                            .primary; // Use the component's default.
-                      },
-                    ),
-                  ),
-                  child: Text(
-                    "Giriş Yap",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  text: "Giriş Yap",
                 ),
               ),
               SizedBox(
