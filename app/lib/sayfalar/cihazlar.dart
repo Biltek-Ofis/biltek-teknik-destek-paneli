@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:teknikservis/sayfalar/detaylar.dart';
 
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
+import '../utils/buttons.dart';
 import '../utils/post.dart';
-import '../utils/renkler.dart';
+import '../utils/islemler.dart';
 import '../widgets/scaffold.dart';
 
 class CihazlarSayfasi extends StatefulWidget {
@@ -62,6 +64,12 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       await _cihazlariYenile();
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -178,10 +186,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   physics: AlwaysScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     Cihaz cihaz = cihazlar![index];
-                    Color? renkTemp = Renkler.yazi(cihaz.guncelDurumRenk);
+                    Color? renkTemp = Islemler.yaziRengi(cihaz.guncelDurumRenk);
                     return Container(
                       decoration: BoxDecoration(
-                        color: Renkler.arka(cihaz.guncelDurumRenk),
+                        color: Islemler.arkaRenk(cihaz.guncelDurumRenk),
                         border: Border.all(color: Colors.black, width: 1),
                       ),
                       child: ListTile(
@@ -190,7 +198,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           text: TextSpan(
                             children: <TextSpan>[
                               TextSpan(
-                                text: "Servis No: ",
+                                text: "\nServis No: ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: renkTemp,
@@ -274,6 +282,16 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           ),
                         ),
                         subtitle: Text(cihaz.guncelDurumText.toString()),
+                        trailing: DefaultButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => DetaylarSayfasi(
+                                id: cihaz.id,
+                              ),
+                            ));
+                          },
+                          text: "Detaylar",
+                        ),
                       ),
                     );
                   },

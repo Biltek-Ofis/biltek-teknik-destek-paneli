@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Cihaz {
   final int id;
   final int servisNo;
@@ -22,8 +20,8 @@ class Cihaz {
   final String hasarTespiti;
   final String cihazdakiHasar;
   final String arizaAciklamasi;
-  final String servisTuru;
-  final String yedekDurumu;
+  final int servisTuru;
+  final int yedekDurumu;
   final String teslimAlinanlar;
   final String yapilanIslemAciklamasi;
   final String teslimEdildi;
@@ -34,7 +32,7 @@ class Cihaz {
   final String guncelDurumText;
   final String guncelDurumRenk;
   final String tahsilatSekli;
-  final String faturaDurumu;
+  final int faturaDurumu;
   final String fisNo;
   final String iStokKod1;
   final String iAd1;
@@ -71,7 +69,7 @@ class Cihaz {
   final int cihazTuruVal;
   final int tahsilatSekliVal;
   final int sorumluVal;
-  final List<dynamic> islemler;
+  final List<YapilanIslem> islemler;
 
   const Cihaz({
     required this.id,
@@ -146,7 +144,6 @@ class Cihaz {
     required this.sorumluVal,
     required this.islemler,
   });
-
   factory Cihaz.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -244,8 +241,8 @@ class Cihaz {
           hasarTespiti: hasarTespiti,
           cihazdakiHasar: cihazdakiHasar,
           arizaAciklamasi: arizaAciklamasi,
-          servisTuru: servisTuru,
-          yedekDurumu: yedekDurumu,
+          servisTuru: int.tryParse(servisTuru) ?? 99,
+          yedekDurumu: int.tryParse(yedekDurumu) ?? -1,
           teslimAlinanlar: teslimAlinanlar,
           yapilanIslemAciklamasi: yapilanIslemAciklamasi,
           teslimEdildi: teslimEdildi,
@@ -256,7 +253,7 @@ class Cihaz {
           guncelDurumText: guncelDurumText,
           guncelDurumRenk: guncelDurumRenk,
           tahsilatSekli: tahsilatSekli,
-          faturaDurumu: faturaDurumu,
+          faturaDurumu: int.tryParse(faturaDurumu) ?? 0,
           fisNo: fisNo,
           iStokKod1: iStokKod1,
           iAd1: iAd1,
@@ -293,10 +290,55 @@ class Cihaz {
           cihazTuruVal: int.tryParse(cihazTuruVal) ?? -1,
           tahsilatSekliVal: int.tryParse(tahsilatSekliVal) ?? -1,
           sorumluVal: int.tryParse(sorumluVal) ?? -1,
-          islemler: islemler,
+          islemler: islemler
+              .map((islem) =>
+                  YapilanIslem.fromJson(islem as Map<String, dynamic>))
+              .toList(),
         ),
-      _ => throw FormatException(
-          "Cihaz yüklenirken hata oluştu. ${jsonEncode(json)}"),
+      _ => throw FormatException("Cihaz yüklenirken hata oluştu."),
+    };
+  }
+}
+
+class YapilanIslem {
+  final int id;
+  final int cihazID;
+  final int islemSayisi;
+  final String ad;
+  final double birimFiyati;
+  final int miktar;
+  final double kdv;
+
+  const YapilanIslem({
+    required this.id,
+    required this.cihazID,
+    required this.islemSayisi,
+    required this.ad,
+    required this.birimFiyati,
+    required this.miktar,
+    required this.kdv,
+  });
+  factory YapilanIslem.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        "id": String id,
+        "cihaz_id": String cihazID,
+        "islem_sayisi": String islemSayisi,
+        "ad": String ad,
+        "birim_fiyat": String birimFiyati,
+        "miktar": String miktar,
+        "kdv": String kdv,
+      } =>
+        YapilanIslem(
+          id: int.tryParse(id) ?? 0,
+          cihazID: int.tryParse(cihazID) ?? 0,
+          islemSayisi: int.tryParse(islemSayisi) ?? 0,
+          ad: ad,
+          birimFiyati: double.tryParse(birimFiyati) ?? 0.00,
+          miktar: int.tryParse(miktar) ?? 0,
+          kdv: double.tryParse(kdv) ?? 0.00,
+        ),
+      _ => throw FormatException("Yapılan işlem yüklenirken hata oluştu."),
     };
   }
 }

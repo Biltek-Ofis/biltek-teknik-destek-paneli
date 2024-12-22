@@ -12,6 +12,7 @@ class Ayarlar {
   static String get girisYap => "${url}girisyap/";
   static String get kullaniciGetir => "${url}kullaniciGetir/";
   static String get cihazlarTumu => "${url}cihazlarTumu/";
+  static String get tekCihaz => "${url}tekCihaz/";
 
   static String get token => const String.fromEnvironment('TOKEN');
 }
