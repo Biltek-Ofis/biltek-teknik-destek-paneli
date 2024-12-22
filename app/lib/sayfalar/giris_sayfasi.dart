@@ -187,17 +187,14 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                 hataMesaji = "Kullanıcı adı veya şifre yanlış";
               });
             }
-          } on Exception catch (e) {
-            debugPrint(e.toString());
-            debugPrint(resp.toString());
+          } on Exception {
             try {
               HataDurumu hataDurumu =
                   HataDurumu.fromJson(jsonDecode(resp) as Map<String, dynamic>);
               setState(() {
                 hataMesaji = hataDurumu.mesaj;
               });
-            } on Exception catch (e) {
-              debugPrint(e.toString());
+            } on Exception {
               setState(() {
                 hataMesaji =
                     "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
@@ -207,7 +204,6 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         } else {
           // If the server did not return a 201 CREATED response,
           // then throw an exception.
-          debugPrint("Bir hata oluştu. Response Code: ${response.statusCode}");
           setState(() {
             hataMesaji = "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
           });
