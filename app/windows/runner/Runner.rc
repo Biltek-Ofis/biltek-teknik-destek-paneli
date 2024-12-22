@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "tr.com.biltekbilgisayar" "\0"
-            VALUE "FileDescription", "teknikservis" "\0"
+            VALUE "FileDescription", "Biltek Teknik Servis" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "teknikservis" "\0"
+            VALUE "InternalName", "biltekteknikservis" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 tr.com.biltekbilgisayar. All rights reserved." "\0"
-            VALUE "OriginalFilename", "teknikservis.exe" "\0"
-            VALUE "ProductName", "teknikservis" "\0"
+            VALUE "OriginalFilename", "biltekteknikservis.exe" "\0"
+            VALUE "ProductName", "Biltek Teknik Servis" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

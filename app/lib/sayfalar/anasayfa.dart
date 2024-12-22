@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teknikservis/sayfalar/cihazlar.dart';
 
 import '../models/kullanici.dart';
+import 'cihazlar.dart';
 
 class Anasayfa extends StatelessWidget {
   const Anasayfa({

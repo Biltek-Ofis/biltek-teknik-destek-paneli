@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:teknikservis/sayfalar/detaylar.dart';
 
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
@@ -7,6 +6,7 @@ import '../utils/buttons.dart';
 import '../utils/post.dart';
 import '../utils/islemler.dart';
 import '../widgets/scaffold.dart';
+import 'detaylar.dart';
 
 class CihazlarSayfasi extends StatefulWidget {
   const CihazlarSayfasi({

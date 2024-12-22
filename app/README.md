@@ -1,4 +1,4 @@
-# teknikservis
+# biltekteknikservis
 
 Teknik servis uygulamasi
 
@@ -20,11 +20,11 @@ flutter run --dart-define-from-file=.env
 -Android
 
 ```
-flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\teknikservis"
+flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
 ```
 
 - Windows
 
 ```
-flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\teknikservis"
+flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
 ```

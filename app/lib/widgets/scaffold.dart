@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:teknikservis/sayfalar/anasayfa.dart';
-import 'package:teknikservis/sayfalar/cihazlarim.dart';
 
 import '../models/kullanici.dart';
+import '../sayfalar/anasayfa.dart';
 import '../sayfalar/ayarlar.dart';
+import '../sayfalar/cihazlarim.dart';
 import '../sayfalar/giris_sayfasi.dart';
 import '../utils/assets.dart';
 import '../utils/shared_preferences.dart';
