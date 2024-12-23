@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:biltekteknikservis/sayfalar/cihazlarim.dart';
+import 'package:biltekteknikservis/utils/islemler.dart';
 import 'package:flutter/material.dart';
 
 import '../ayarlar.dart';
@@ -147,6 +148,16 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
           "kullaniciAdi": kullaniciAdi,
           "sifre": sifre,
         };
+        String? cihazID = await Islemler.getId();
+        if (cihazID == null) {
+          setState(() {
+            hataMesaji = "Uygulama şuanda bu platforda desteklenmiyor.";
+          });
+          return;
+        }
+
+        postData["cihazID"] = cihazID;
+
         String? fcmToken =
             await SharedPreference.getString(SharedPreference.fcmTokenString);
         if (fcmToken != null) {

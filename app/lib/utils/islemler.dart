@@ -1,4 +1,7 @@
+import 'package:android_id/android_id.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_io/io.dart';
 
 class Islemler {
   static Color? arkaRenk(String renkClass) {
@@ -74,5 +77,17 @@ class Islemler {
       default:
         return "Belirtilmedi";
     }
+  }
+
+  static Future<String?> getId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isWindows) {
+      WindowsDeviceInfo windowsDeviceInfo = await deviceInfo.windowsInfo;
+      return windowsDeviceInfo.deviceId;
+    } else if (Platform.isAndroid) {
+      //var androidDeviceInfo = await deviceInfo.androidInfo;
+      return AndroidId().getId();
+    }
+    return null;
   }
 }
