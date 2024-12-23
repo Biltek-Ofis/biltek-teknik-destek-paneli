@@ -36,3 +36,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 /wordpress/
 application/controllers/Info.php
+
+assets/*.json
