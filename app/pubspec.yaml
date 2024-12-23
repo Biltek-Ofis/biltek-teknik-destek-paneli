@@ -42,6 +42,9 @@ dependencies:
   universal_io: ^2.2.2
   device_info_plus: ^11.2.0
   android_id: ^0.4.0
+  firebase_in_app_messaging: ^0.8.0+11
+  overlay_support: ^2.1.0
+  flutter_ringtone_player: ^4.0.0+3
 
 dev_dependencies:
   flutter_test:
