@@ -100,37 +100,43 @@ class App extends CI_Controller
         $kullaniciAdi = $this->input->post("kullaniciAdi");
         $sifre = $this->input->post("sifre");
         $fcmToken = $this->input->post("fcmToken");
+        $cihazID = $this->input->post("cihazID");
         $token = $this->tokenPost();
         if (isset($kullaniciAdi)) {
             if (isset($sifre)) {
-                if (isset($token)) {
-                    if ($this->token($token)) {
-                        $durum = $this->Giris_Model->girisDurumu($kullaniciAdi, $sifre);
-                        $sonuc = array(
-                            "auth" => "",
-                            "durum" => FALSE,
-                        );
-                        if ($durum) {
-                            $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
-                            $auth = random_string('alnum', 50);
-                            ///2024-12-22 10:46:21.00000
-                            $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
-                            $veri = array(
-                                "kullanici_id" => $kullaniciBilgileri->id,
-                                "auth" => $auth,
-                                "bitis" => date($this->Kullanicilar_Model->format, $bitis),
+                if (isset($cihazID)) {
+                    if (isset($token)) {
+                        if ($this->token($token)) {
+                            $durum = $this->Giris_Model->girisDurumu($kullaniciAdi, $sifre);
+                            $sonuc = array(
+                                "auth" => "",
+                                "durum" => FALSE,
                             );
-                            if (isset($fcmToken)) {
-                                $this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
-                                $veri["fcmToken"] = $fcmToken;
+                            if ($durum) {
+                                $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
+                                $auth = random_string('alnum', 50);
+                                ///2024-12-22 10:46:21.00000
+                                $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
+                                $veri = array(
+                                    "kullanici_id" => $kullaniciBilgileri->id,
+                                    "auth" => $auth,
+                                    "bitis" => date($this->Kullanicilar_Model->format, $bitis),
+                                    "cihazID" => $cihazID,
+                                );
+                                if (isset($fcmToken)) {
+                                    $this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
+                                    $veri["fcmToken"] = $fcmToken;
+                                }
+                                $this->Kullanicilar_Model->authEkle($veri);
+                                if (isset($kullaniciBilgileri)) {
+                                    $sonuc["durum"] = TRUE;
+                                    $sonuc["auth"] = $auth;
+                                }
                             }
-                            $this->Kullanicilar_Model->authEkle($veri);
-                            if (isset($kullaniciBilgileri)) {
-                                $sonuc["durum"] = TRUE;
-                                $sonuc["auth"] = $auth;
-                            }
+                            echo json_encode($sonuc);
+                        } else {
+                            echo json_encode($this->hataMesaji(1));
                         }
-                        echo json_encode($sonuc);
                     } else {
                         echo json_encode($this->hataMesaji(1));
                     }

@@ -122,7 +122,12 @@ class Kullanicilar_Model extends CI_Model
     }
     public function authEkle($veri)
     {
-        return $this->db->reset_query()->insert($this->kullaniciAuthTabloAdi(), $veri);
+        $query = $this->db->reset_query()->where(array("cihazID" => $veri["cihazID"]))->get($this->kullaniciAuthTabloAdi());
+        if($query->num_rows() > 0) {
+            return $this->db->reset_query()->where("cihazID", $veri["cihazID"])->update($this->kullaniciAuthTabloAdi(), $veri);
+        }else{
+             return $this->db->reset_query()->insert($this->kullaniciAuthTabloAdi(), $veri);
+        }
     }
     public function authSil($auth)
     {
