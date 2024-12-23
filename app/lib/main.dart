@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
+import 'sayfalar/cihazlarim.dart';
 import 'sayfalar/giris_sayfasi.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
@@ -72,7 +73,13 @@ class MainPage extends StatelessWidget {
                     );
                   } else {
                     if (snapshot.hasData && snapshot.data != null) {
-                      return Anasayfa(kullanici: snapshot.data!);
+                      return snapshot.data!.teknikservis
+                          ? CihazlarimSayfasi(
+                              kullanici: snapshot.data!,
+                            )
+                          : Anasayfa(
+                              kullanici: snapshot.data!,
+                            );
                     } else {
                       return GirisSayfasi();
                     }

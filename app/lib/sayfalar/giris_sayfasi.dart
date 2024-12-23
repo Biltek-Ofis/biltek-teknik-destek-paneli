@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:biltekteknikservis/sayfalar/cihazlarim.dart';
 import 'package:flutter/material.dart';
 
 import '../ayarlar.dart';
@@ -162,9 +163,13 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               if (kullaniciModel != null) {
                 navigatorState.pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => Anasayfa(
-                      kullanici: kullaniciModel,
-                    ),
+                    builder: (context) => kullaniciModel.teknikservis
+                        ? CihazlarimSayfasi(
+                            kullanici: kullaniciModel,
+                          )
+                        : Anasayfa(
+                            kullanici: kullaniciModel,
+                          ),
                   ),
                   (Route<dynamic> route) => false,
                 );
