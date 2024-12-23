@@ -631,7 +631,13 @@ class Cihazlar_Model extends CI_Model
         if (count($varsayilanDurum) > 0) {
             $veri["guncel_durum"] = $varsayilanDurum[0]->id;
         }
-        return $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
+        $cihazEkle =  $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
+
+        $cihaz_id = $this->db->insert_id();
+        if(isset($veri["sorumlu"])){
+            $this->Kullanicilar_Model->bildirimGonder($veri["sorumlu"], $cihaz_id);
+        }
+        return $cihazEkle;
     }
     public function ozelIDTabloAdi()
     {

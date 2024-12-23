@@ -1,4 +1,7 @@
 <?php
+
+require FCPATH . 'composer/google-api/vendor/autoload.php';
+use Kedniko\FCM\FCM;
 class Kullanicilar_Model extends CI_Model
 {
     public function __construct()
@@ -15,11 +18,13 @@ class Kullanicilar_Model extends CI_Model
             window.location.replace("' . base_url($konum) . '");
         }</script>';
     }
-    public function kullanicilarTabloAdi() {
-        return DB_ON_EK_STR."kullanicilar";
+    public function kullanicilarTabloAdi()
+    {
+        return DB_ON_EK_STR . "kullanicilar";
     }
-    public function kullaniciAuthTabloAdi() {
-        return DB_ON_EK_STR."kullanici_auth";
+    public function kullaniciAuthTabloAdi()
+    {
+        return DB_ON_EK_STR . "kullanici_auth";
     }
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0)
@@ -55,16 +60,17 @@ class Kullanicilar_Model extends CI_Model
     }
     public function kullaniciGetir($id = "")
     {
-        return $this->db->reset_query()->where(array("id"=> $id))->get($this->kullanicilarTabloAdi())->result();
+        return $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
     }
-    public function kullanicilar($where = array()){
+    public function kullanicilar($where = array())
+    {
         $kullanici_adi_var = False;
-        foreach($where as $key => $value){
+        foreach ($where as $key => $value) {
             if (substr($key, 0, 13) == "kullanici_adi") {
                 $kullanici_adi_var = True;
             }
         }
-        if(!$kullanici_adi_var){
+        if (!$kullanici_adi_var) {
             $where["kullanici_adi !="] = "OZAY";
         }
         return $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi())->result();
@@ -105,7 +111,7 @@ class Kullanicilar_Model extends CI_Model
             return null;
         }
     }
-    
+
     public $format = "Y-m-d H:i:s";
     public $bitisZamani = (7 * 24 * 60 * 60);
     public function ekle($veri)
@@ -123,22 +129,53 @@ class Kullanicilar_Model extends CI_Model
     public function authEkle($veri)
     {
         $query = $this->db->reset_query()->where(array("cihazID" => $veri["cihazID"]))->get($this->kullaniciAuthTabloAdi());
-        if($query->num_rows() > 0) {
+        if ($query->num_rows() > 0) {
             return $this->db->reset_query()->where("cihazID", $veri["cihazID"])->update($this->kullaniciAuthTabloAdi(), $veri);
-        }else{
-             return $this->db->reset_query()->insert($this->kullaniciAuthTabloAdi(), $veri);
+        } else {
+            return $this->db->reset_query()->insert($this->kullaniciAuthTabloAdi(), $veri);
         }
     }
     public function authSil($auth)
     {
         return $this->db->reset_query()->where("auth", $auth)->delete($this->kullaniciAuthTabloAdi());
     }
-    public function authDuzenle($auth, $veri){
+    public function authDuzenle($auth, $veri)
+    {
         return $this->db->reset_query()->where("auth", $auth)->update($this->kullaniciAuthTabloAdi(), $veri);
     }
-    
-    public function fcmTokenSifirla($fcmToken){
-        return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken"=> ""));
+
+    public function fcmTokenSifirla($fcmToken)
+    {
+        return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
+    }
+    public function bildirimGonder($id, $cihaz_id)
+    {
+        $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
+        $cihaz = $this->Cihazlar_Model->cihazBul($cihaz_id);
+        if ($query->num_rows() > 0 && $cihaz->num_rows() > 0) {
+            $cihaz = $cihaz->result()[0];
+            $query = $query->result();
+            $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
+            $bearerToken = FCM::getBearerToken($authKeyContent);
+            foreach ($query as $row) {
+                if (strlen($row->fcmToken) > 0) {
+                    $body = [
+                        'message' => [
+                            'token' => $row->fcmToken,
+                            'notification' => [
+                                'title' => 'Yeni cihaz girişi yapıldı.',
+                                'body' => $cihaz->musteri_adi . " - " . $cihaz->cihaz . "" . (strlen($cihaz->cihaz_modeli) > 0 ? " " . $cihaz->cihaz_modeli : "") . " - " . $cihaz->ariza_aciklamasi,
+                            ],
+                        ],
+                    ];
+                    try {
+                        FCM::send($bearerToken, FCM_APP_ID, $body);
+                    } catch (Exception $e) {
+
+                    }
+                }
+            }
+        }
     }
     public function girisDurumuAuth($auth)
     {
@@ -146,9 +183,9 @@ class Kullanicilar_Model extends CI_Model
         if ($query->num_rows() > 0) {
             $guncel = date($this->format, time());
             $sonuc = $query->result()[0];
-            if(strcmp($guncel, $sonuc->bitis) < 0){
+            if (strcmp($guncel, $sonuc->bitis) < 0) {
                 return $this->tekKullanici_array($sonuc->kullanici_id);
-            }else{
+            } else {
                 $this->authSil($auth);
                 return array();
             }
@@ -178,24 +215,29 @@ class Kullanicilar_Model extends CI_Model
         $query = $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi());
         return !($query->num_rows() > 0);
     }
-    public function musteriBilgileri(){
+    public function musteriBilgileri()
+    {
         $this->load->model("Firma_Model");
         return $this->db->reset_query()->get($this->Firma_Model->musteriTablosu())->result();
     }
-    public function musteriPost($veri){
+    public function musteriPost($veri)
+    {
         return array(
             "musteri_adi" => $this->input->post("musteri_adi"),
             "adres" => $this->input->post("adres"),
             "telefon_numarasi" => $this->input->post("telefon_numarasi")
         );
     }
-    public function musteriEkle($veri){
+    public function musteriEkle($veri)
+    {
         return $this->db->reset_query()->insert($this->Firma_Model->musteriTablosu(), $veri);
     }
-    public function musteriDuzenle($id, $veri){
+    public function musteriDuzenle($id, $veri)
+    {
         return $this->db->reset_query()->where("id", $id)->update($this->Firma_Model->musteriTablosu(), $veri);
     }
-    public function musteriSil($id){
+    public function musteriSil($id)
+    {
         return $this->db->reset_query()->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
     }
 }
