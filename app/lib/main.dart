@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
+import 'firebase_options.dart';
 import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
@@ -11,7 +14,14 @@ import 'utils/my_notifier.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isAndroid) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   runApp(const MyApp());
 }
 

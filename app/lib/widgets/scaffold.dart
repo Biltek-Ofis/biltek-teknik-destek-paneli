@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/utils/post.dart';
 import 'package:flutter/material.dart';
 
 import '../models/kullanici.dart';
@@ -95,6 +96,9 @@ AppBar biltekAppBar(
               break;
             case "Çıkış Yap":
               await SharedPreference.remove(SharedPreference.authString);
+              String? fcmToken = await SharedPreference.getString(
+                  SharedPreference.fcmTokenString);
+              await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
               navigatorState.pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => GirisSayfasi(),

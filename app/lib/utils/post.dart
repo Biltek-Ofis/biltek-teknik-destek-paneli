@@ -6,6 +6,7 @@ import 'package:biltekteknikservis/models/cihaz.dart';
 
 import '../ayarlar.dart';
 import '../models/kullanici.dart';
+import 'shared_preferences.dart';
 
 class BiltekPost {
   static Future<http.StreamedResponse> post(
@@ -117,6 +118,45 @@ class BiltekPost {
       debugPrint(
           "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
       return null;
+    }
+  }
+
+  static Future<void> fcmToken({
+    required String auth,
+    required String fcmToken,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.fcmToken,
+      {
+        "auth": auth,
+        "fcmToken": fcmToken,
+      },
+    );
+    await response.stream.bytesToString();
+  }
+
+  static Future<void> fcmTokenSifirla({
+    required String? fcmToken,
+  }) async {
+    if (fcmToken != null) {
+      var response = await BiltekPost.post(
+        Ayarlar.fcmTokenSifirla,
+        {
+          "fcmToken": fcmToken,
+        },
+      );
+      await response.stream.bytesToString();
+    }
+  }
+
+  static Future<void> fcmTokenGuncelle(String auth, String? fcmToken) async {
+    if (fcmToken != null) {
+      await SharedPreference.setString(
+          SharedPreference.fcmTokenString, fcmToken);
+      await BiltekPost.fcmToken(
+        auth: auth,
+        fcmToken: fcmToken,
+      );
     }
   }
 }

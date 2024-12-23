@@ -35,3 +35,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .env
 
 /wordpress/
+application/controllers/Info.php
