@@ -143,12 +143,18 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     }
     if (kullaniciAdi.isNotEmpty) {
       if (sifre.isNotEmpty) {
+        Map<String, String> postData = {
+          "kullaniciAdi": kullaniciAdi,
+          "sifre": sifre,
+        };
+        String? fcmToken =
+            await SharedPreference.getString(SharedPreference.fcmTokenString);
+        if (fcmToken != null) {
+          postData["fcmToken"];
+        }
         var response = await BiltekPost.post(
           Ayarlar.girisYap,
-          {
-            "kullaniciAdi": kullaniciAdi,
-            "sifre": sifre,
-          },
+          postData,
         );
         if (response.statusCode == 201) {
           var resp = await response.stream.bytesToString();

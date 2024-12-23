@@ -128,6 +128,13 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("auth", $auth)->delete($this->kullaniciAuthTabloAdi());
     }
+    public function authDuzenle($auth, $veri){
+        return $this->db->reset_query()->where("auth", $auth)->update($this->kullaniciAuthTabloAdi(), $veri);
+    }
+    
+    public function fcmTokenSifirla($fcmToken){
+        return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken"=> ""));
+    }
     public function girisDurumuAuth($auth)
     {
         $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());

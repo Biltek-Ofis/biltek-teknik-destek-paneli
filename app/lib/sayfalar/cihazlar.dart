@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_io/io.dart';
 
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
@@ -37,8 +41,25 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   bool yukariKaydir = false;
 
+  StreamSubscription<String>? fcmStream;
+
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      if (Platform.isAndroid) {
+        await FirebaseMessaging.instance.requestPermission(provisional: true);
+        fcmStream =
+            FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
+          BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
+        });
+        fcmStream?.onError((err) {
+          debugPrint("Failed to get fcm token");
+        });
+        String? token = await FirebaseMessaging.instance.getToken();
+
+        BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
+      }
+    });
     scrollController.addListener(() async {
       if (scrollController.position.pixels > 50) {
         setState(() {
@@ -69,6 +90,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   @override
   void dispose() {
     scrollController.dispose();
+    fcmStream?.cancel();
     super.dispose();
   }
 
