@@ -308,6 +308,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => DetaylarSayfasi(
+                                kullanici: widget.kullanici,
                                 id: cihaz.id,
                               ),
                             ));

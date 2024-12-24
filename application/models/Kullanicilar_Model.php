@@ -143,6 +143,21 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("auth", $auth)->update($this->kullaniciAuthTabloAdi(), $veri);
     }
+    public function gecerliAuth($auth){
+        $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
+        if ($query->num_rows() > 0) {
+            $sonuc = $query->result()[0];
+            if ($this->gecerliAuthTarih($sonuc->bitis)) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+    public function gecerliAuthTarih($bitis)
+    {
+        $guncel = date($this->format, time());
+        return strcmp($guncel, $bitis) < 0;
+    }
 
     public function fcmTokenSifirla($fcmToken)
     {
@@ -181,13 +196,11 @@ class Kullanicilar_Model extends CI_Model
     {
         $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
         if ($query->num_rows() > 0) {
-            $guncel = date($this->format, time());
             $sonuc = $query->result()[0];
-            if (strcmp($guncel, $sonuc->bitis) < 0) {
+            if ($this->gecerliAuthTarih($sonuc->bitis)) {
                 return $this->tekKullanici_array($sonuc->kullanici_id);
             } else {
                 $this->authSil($auth);
-                return array();
             }
         } else {
             return array();

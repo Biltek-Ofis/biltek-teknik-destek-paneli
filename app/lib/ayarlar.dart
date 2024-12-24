@@ -19,6 +19,13 @@ class Ayarlar {
   static String get cihazlarTumu => "${appUrl}cihazlarTumu/";
   static String get tekCihaz => "${appUrl}tekCihaz/";
 
+  static String teknikservisformu({
+    required String auth,
+    required int cihazID,
+  }) {
+    return "${url}cihaz/teknik_servis_formu/$cihazID?auth=$auth&inApp=1";
+  }
+
   static String get token => const String.fromEnvironment('TOKEN');
 
   static FirebaseAyarlari get firebase => FirebaseAyarlari();

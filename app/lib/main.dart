@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,24 @@ import 'utils/my_notifier.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
+WebViewEnvironment? webViewEnvironment;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) {
+    final availableVersion = await WebViewEnvironment.getAvailableVersion();
+    assert(availableVersion != null,
+        'Failed to find an installed WebView2 Runtime or non-stable Microsoft Edge installation.');
+
+    webViewEnvironment = await WebViewEnvironment.create(
+        settings:
+            WebViewEnvironmentSettings(userDataFolder: 'YOUR_CUSTOM_PATH'));
+  }
+
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+  }
+
   if (Platform.isAndroid) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,

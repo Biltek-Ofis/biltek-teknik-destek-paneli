@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/ayarlar.dart';
+import 'package:biltekteknikservis/models/kullanici.dart';
+import 'package:biltekteknikservis/sayfalar/webview.dart';
 import 'package:flutter/material.dart';
 
 import '../models/cihaz.dart';
@@ -9,9 +12,11 @@ import '../utils/post.dart';
 class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
     super.key,
+    required this.kullanici,
     required this.id,
   });
 
+  final KullaniciModel kullanici;
   final int id;
 
   @override
@@ -53,6 +58,25 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       child: Scaffold(
         appBar: AppBar(
           title: cihaz != null ? Text("${cihaz!.servisNo} Detayları") : null,
+          actions: [
+            IconButton(
+              onPressed: () async {
+                String url = Ayarlar.teknikservisformu(
+                  auth: widget.kullanici.auth,
+                  cihazID: widget.id,
+                );
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => WebviewPage(
+                      url: url,
+                    ),
+                  ),
+                );
+              },
+              icon: Icon(Icons.print),
+            ),
+          ],
           bottom: TabBar(
             tabs: [
               Tab(
