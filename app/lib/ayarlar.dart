@@ -18,6 +18,8 @@ class Ayarlar {
   static String get kullaniciGetir => "${appUrl}kullaniciGetir/";
   static String get cihazlarTumu => "${appUrl}cihazlarTumu/";
   static String get tekCihaz => "${appUrl}tekCihaz/";
+  static String get version => "${appUrl}version/";
+  static String get download => "${appUrl}download/";
 
   static String teknikservisformu({
     required String auth,

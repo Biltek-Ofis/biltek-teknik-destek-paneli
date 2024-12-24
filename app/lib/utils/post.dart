@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:biltekteknikservis/models/cihaz.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ayarlar.dart';
 import '../models/kullanici.dart';
@@ -26,6 +27,21 @@ class BiltekPost {
     http.StreamedResponse response = await request.send();
 
     return response;
+  }
+
+  static Future<bool> guncellemeGerekli() async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.version, {});
+      if (response.statusCode == 201) {
+        var resp = await response.stream.bytesToString();
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        return packageInfo.version != resp;
+      } else {
+        return false;
+      }
+    } on Exception {
+      return false;
+    }
   }
 
   static Future<KullaniciModel?> kullaniciGetir(String auth) async {
