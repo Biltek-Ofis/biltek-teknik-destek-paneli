@@ -7,7 +7,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
-import 'firebase_options.dart';
+import 'firebase_ayarlari.dart';
 import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
