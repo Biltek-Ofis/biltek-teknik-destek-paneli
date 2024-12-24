@@ -9,13 +9,15 @@ class Ayarlar {
     }
   }
 
-  static String get fcmToken => "${url}fcmToken/";
-  static String get fcmTokenSifirla => "${url}fcmTokenSifirla/";
+  static String get appUrl => "${url}app/";
 
-  static String get girisYap => "${url}girisyap/";
-  static String get kullaniciGetir => "${url}kullaniciGetir/";
-  static String get cihazlarTumu => "${url}cihazlarTumu/";
-  static String get tekCihaz => "${url}tekCihaz/";
+  static String get fcmToken => "${appUrl}fcmToken/";
+  static String get fcmTokenSifirla => "${appUrl}fcmTokenSifirla/";
+
+  static String get girisYap => "${appUrl}girisyap/";
+  static String get kullaniciGetir => "${appUrl}kullaniciGetir/";
+  static String get cihazlarTumu => "${appUrl}cihazlarTumu/";
+  static String get tekCihaz => "${appUrl}tekCihaz/";
 
   static String get token => const String.fromEnvironment('TOKEN');
 

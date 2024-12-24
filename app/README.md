@@ -6,7 +6,7 @@ Teknik servis uygulamasi
 
 ```
 TOKEN=token_buraya
-API_URL=http://localhost/app/
+API_URL=http://localhost/
 FIREBASE_PROJECT_ID=
 FIREBASE_AUTH_DOMAIN=
 FIREBASE_STORAGE_BUCKET=
