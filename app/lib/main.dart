@@ -134,28 +134,31 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       body: FutureBuilder<String?>(
         future: SharedPreference.getString(SharedPreference.authString),
-        builder: (context, AsyncSnapshot<String?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, AsyncSnapshot<String?> authSnapshot) {
+          if (authSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            if (snapshot.hasData && snapshot.data != null) {
+            if (authSnapshot.hasData && authSnapshot.data != null) {
               return FutureBuilder<KullaniciModel?>(
-                future: BiltekPost.kullaniciGetir(snapshot.data!),
-                builder: (context, AsyncSnapshot<KullaniciModel?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                future: BiltekPost.kullaniciGetir(authSnapshot.data!),
+                builder: (context,
+                    AsyncSnapshot<KullaniciModel?> kullaniciSnapshot) {
+                  if (kullaniciSnapshot.connectionState ==
+                      ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return snapshot.data!.teknikservis
+                    if (kullaniciSnapshot.hasData &&
+                        kullaniciSnapshot.data != null) {
+                      return kullaniciSnapshot.data!.teknikservis
                           ? CihazlarimSayfasi(
-                              kullanici: snapshot.data!,
+                              kullanici: kullaniciSnapshot.data!,
                             )
                           : Anasayfa(
-                              kullanici: snapshot.data!,
+                              kullanici: kullaniciSnapshot.data!,
                             );
                     } else {
                       return GirisSayfasi();

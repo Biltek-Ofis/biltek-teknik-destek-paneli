@@ -258,6 +258,10 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function version(){
+        $this->headerlar();
+        echo $this->Islemler_Model->app_version();
+    }
     public function headerlar()
     {
         if (isset($_SERVER['HTTP_ORIGIN'])) {

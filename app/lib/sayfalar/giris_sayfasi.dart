@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:biltekteknikservis/sayfalar/cihazlarim.dart';
+import 'package:biltekteknikservis/utils/alerts.dart';
 import 'package:biltekteknikservis/utils/islemler.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,20 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   String hataMesaji = "";
   String? kullaniciAdiError;
   String? sifreError;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      if (mounted) {
+        Alerts alerts = Alerts.of(context);
+        bool guncelleme = await BiltekPost.guncellemeGerekli();
+        if (guncelleme) {
+          alerts.guncelleme();
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
