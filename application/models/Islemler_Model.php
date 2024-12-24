@@ -326,4 +326,9 @@ class Islemler_Model extends CI_Model
             show_404();
         }
     }
+    public function app_version(){
+        $this->load->model("Ayarlar_Model");
+        $ayarlar = $this->Ayarlar_Model->getir();
+        return $ayarlar->app_version;
+    }
 }
