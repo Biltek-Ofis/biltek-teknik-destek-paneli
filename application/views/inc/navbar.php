@@ -43,6 +43,10 @@ nav-item.active {
     color: rgba(0, 0, 0, .9);     
 }
 </style>';
+$detect = new Mobile_Detect();
+if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
+  echo '<div class="w-100 bg-success p-2 text-center"><a href="'.base_url("app/download").'" target="_blank" style="color: blue !important;">Mobil Uygulamayı İndir</a></div>';
+}
 echo '<nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <ul class="navbar-nav">
     <!-- <li class="nav-item">
