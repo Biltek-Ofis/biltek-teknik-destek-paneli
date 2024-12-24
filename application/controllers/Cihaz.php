@@ -138,17 +138,30 @@ class Cihaz extends Varsayilancontroller
     }
     public function teknik_servis_formu($id)
     {
-        if($id == "yazdir"){
-            $this->load->view("icerikler/teknik_servis_formu_yazdir");
-        }else{
-            $cihaz = $this->Cihazlar_Model->cihazBul($id);
-            if ($cihaz->num_rows() > 0) {
-                $cihaz_bilg = $cihaz->result();
-                $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
-                $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $veriler));
-            } else {
-                redirect(base_url());
+        $auth = $_GET["auth"];
+        $gecerli = FALSE;
+        if(isset($auth)){
+            $gecerli = $this->Kullanicilar_Model->gecerliAuth($auth);
+        }
+        if ($this->Giris_Model->kullaniciGiris() || $gecerli) {
+            if($id == "yazdir"){
+                $this->load->view("icerikler/teknik_servis_formu_yazdir");
+            }else{
+                $cihaz = $this->Cihazlar_Model->cihazBul($id);
+                if ($cihaz->num_rows() > 0) {
+                    $cihaz_bilg = $cihaz->result();
+                    $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
+                    if(isset($auth)){
+                        $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $veriler, "auth"=>$auth));
+                    }else{
+                        $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $veriler));
+                    }
+                } else {
+                    redirect(base_url());
+                }
             }
+        } else {
+            redirect(base_url());
         }
     }
     public function kargo_bilgisi($id)
