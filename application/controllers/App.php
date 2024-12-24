@@ -333,6 +333,6 @@ class App extends CI_Controller
     {
         $appName = "biltekteknikservis";
         $version = $this->Islemler_Model->app_version();
-        $this->Islemler_Model->asset_indir($appName . ".apk", $appName . ".v" . $version . ".apk");
+        $this->Islemler_Model->asset_indir("app-release.apk", "biltekteknikservis.v" . $version . ".apk");
     }
 }
