@@ -307,4 +307,23 @@ class Islemler_Model extends CI_Model
     public function rastgele_yazi(){
         return strtolower(random_string('alpha', 16));
     }
+
+    public function asset_indir($dosya_adi, $yeni_ad = ""){
+
+        $orjinal_dosya = FCPATH . "assets/" . $dosya_adi;
+
+        if(file_exists($orjinal_dosya)){
+            if(strlen($yeni_ad) == 0){
+                $yeni_ad = $dosya_adi;
+            }
+            
+            header('Content-Type: application/octet-stream');
+            header("Content-Transfer-Encoding: Binary"); 
+            header("Content-disposition: attachment; filename=\"" . $yeni_ad . "\""); 
+            
+            readfile($orjinal_dosya); 
+        }else{
+            show_404();
+        }
+    }
 }
