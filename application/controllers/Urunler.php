@@ -116,11 +116,7 @@ class Urunler extends CI_Controller
 	}
     public function komisyon()
 	{
-        $file_url = base_url("assets/Satış Komisyon Oranları.xlsx");
-        header('Content-Type: application/octet-stream');
-        header("Content-Transfer-Encoding: Binary"); 
-        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
-        readfile($file_url); 
+        $this->Islemler_Model->asset_indir("Komisyon.xlsx", "Satış Komisyon Oranları.xlsx");
     }
 }
 ?>
