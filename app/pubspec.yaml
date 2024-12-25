@@ -48,6 +48,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   url_launcher: ^6.3.1
   package_info_plus: ^8.1.2
+  simple_barcode_scanner: ^0.2.5
 
 dev_dependencies:
   flutter_test:

@@ -506,10 +506,10 @@ class Cihazlar_Model extends CI_Model
         //return  $this->db->last_query();
         return $this->cihazVerileriniDonustur($result, TRUE);
     }
-    public function tekCihazApp($id)
+    public function tekCihazApp($servis_no)
     {
         $where = array(
-            "id" => $id,
+            "servis_no" => $servis_no,
         );
 
         $result = $this->db->reset_query()->where($where)->limit(1);

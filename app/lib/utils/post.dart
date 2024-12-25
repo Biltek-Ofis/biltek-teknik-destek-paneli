@@ -114,11 +114,11 @@ class BiltekPost {
   }
 
   static Future<Cihaz?> cihazGetir({
-    required int id,
+    required int servisNo,
   }) async {
     var response = await BiltekPost.post(
       Ayarlar.tekCihaz,
-      {"id": id.toString()},
+      {"servis_no": servisNo.toString()},
     );
     var resp = await response.stream.bytesToString();
     debugPrint(resp);

@@ -13,11 +13,11 @@ class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
     super.key,
     required this.kullanici,
-    required this.id,
+    required this.servisNo,
   });
 
   final KullaniciModel kullanici;
-  final int id;
+  final int servisNo;
 
   @override
   State<DetaylarSayfasi> createState() => _DetaylarSayfasiState();
@@ -63,7 +63,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
               onPressed: () async {
                 String url = Ayarlar.teknikservisformu(
                   auth: widget.kullanici.auth,
-                  cihazID: widget.id,
+                  cihazID: cihaz!.id,
                 );
 
                 Navigator.of(context).push(
@@ -653,7 +653,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   Future<void> _cihaziYenile() async {
     Cihaz? cihazTemp = await BiltekPost.cihazGetir(
-      id: widget.id,
+      servisNo: widget.servisNo,
     );
     if (mounted) {
       setState(() {
