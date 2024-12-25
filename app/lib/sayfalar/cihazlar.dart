@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:universal_io/io.dart';
 
 import '../models/cihaz.dart';
@@ -169,6 +170,35 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   },
                   icon: Icon(Icons.search),
                 ),
+                IconButton(
+                  onPressed: () async {
+                    NavigatorState navigatorState = Navigator.of(context);
+                    String? res = await SimpleBarcodeScanner.scanBarcode(
+                      context,
+                      barcodeAppBar: const BarcodeAppBar(
+                        appBarTitle: 'Barkod Tara',
+                        centerTitle: false,
+                        enableBackButton: true,
+                        backButtonIcon: Icon(Icons.arrow_back_ios),
+                      ),
+                      cancelButtonText: "İptal",
+                      isShowFlashIcon: true,
+                      delayMillis: 2000,
+                      cameraFace: CameraFace.back,
+                    );
+                    if (res != null) {
+                      navigatorState.push(
+                        MaterialPageRoute(
+                          builder: (context) => DetaylarSayfasi(
+                            kullanici: widget.kullanici,
+                            servisNo: int.parse(res),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  icon: Icon(Icons.photo_camera),
+                ),
               ],
             ),
       floatingActionButton: yukariKaydir
@@ -309,7 +339,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => DetaylarSayfasi(
                                 kullanici: widget.kullanici,
-                                id: cihaz.id,
+                                servisNo: cihaz.servisNo,
                               ),
                             ));
                           },
