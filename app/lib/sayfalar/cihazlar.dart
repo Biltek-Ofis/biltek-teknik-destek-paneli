@@ -187,11 +187,16 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                       cameraFace: CameraFace.back,
                     );
                     if (res != null) {
+                      int servisNo = int.parse(res);
+                      await BiltekPost.bilgisayardaAc(
+                        kullaniciID: widget.kullanici.id,
+                        servisNo: servisNo,
+                      );
                       navigatorState.push(
                         MaterialPageRoute(
                           builder: (context) => DetaylarSayfasi(
                             kullanici: widget.kullanici,
-                            servisNo: int.parse(res),
+                            servisNo: servisNo,
                           ),
                         ),
                       );

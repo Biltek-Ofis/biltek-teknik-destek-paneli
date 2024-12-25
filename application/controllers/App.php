@@ -258,7 +258,8 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function version(){
+    public function version()
+    {
         $this->headerlar();
         echo $this->Islemler_Model->app_version();
     }
@@ -275,6 +276,23 @@ class App extends CI_Controller
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
             header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
         header($this->HTTPStatus(201)["error"]);
+    }
+
+    public function bilgisayardaAc()
+    {
+        $this->headerlar();
+        $servis_no = $this->input->post("servis_no");
+        $kullanici_id = $this->input->post("kullanici_id");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($servis_no)) {
+                    if (isset($kullanici_id)) {
+                        $this->Cihazlar_Model->bilgisayardaAc($servis_no, $kullanici_id);
+                    }
+                }
+            }
+        }
     }
     function HTTPStatus($num)
     {

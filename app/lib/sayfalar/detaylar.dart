@@ -59,23 +59,34 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         appBar: AppBar(
           title: cihaz != null ? Text("${cihaz!.servisNo} Detayları") : null,
           actions: [
-            IconButton(
-              onPressed: () async {
-                String url = Ayarlar.teknikservisformu(
-                  auth: widget.kullanici.auth,
-                  cihazID: cihaz!.id,
-                );
+            if (cihaz != null)
+              IconButton(
+                onPressed: () async {
+                  await BiltekPost.bilgisayardaAc(
+                    kullaniciID: widget.kullanici.id,
+                    servisNo: cihaz!.servisNo,
+                  );
+                },
+                icon: Icon(Icons.computer),
+              ),
+            if (cihaz != null)
+              IconButton(
+                onPressed: () async {
+                  String url = Ayarlar.teknikservisformu(
+                    auth: widget.kullanici.auth,
+                    cihazID: cihaz!.id,
+                  );
 
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => WebviewPage(
-                      url: url,
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => WebviewPage(
+                        url: url,
+                      ),
                     ),
-                  ),
-                );
-              },
-              icon: Icon(Icons.print),
-            ),
+                  );
+                },
+                icon: Icon(Icons.print),
+              ),
           ],
           bottom: TabBar(
             tabs: [
@@ -226,7 +237,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           ],
                         ),
                       )
-                    : Center(),
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
               ),
               SizedBox(
                 child: cihaz != null
@@ -307,7 +320,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           ],
                         ),
                       )
-                    : Center(),
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
               ),
               SizedBox(
                 child: cihaz != null
@@ -642,7 +657,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           ],
                         ),
                       )
-                    : Center(),
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
               ),
             ],
           ),

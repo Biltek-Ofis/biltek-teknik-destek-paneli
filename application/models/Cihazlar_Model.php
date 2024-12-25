@@ -18,6 +18,10 @@ class Cihazlar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "cihazturleri";
     }
+    public function cihazAcTabloAdi()
+    {
+        return DB_ON_EK_STR . "cihaz_ac";
+    }
     public function cihazDurumlariTabloAdi()
     {
         return DB_ON_EK_STR . "cihazdurumlari";
@@ -522,7 +526,34 @@ class Cihazlar_Model extends CI_Model
             return null;
         }
     }
-
+    public function bilgisayardaAcGetir($kullanici_id){
+        $kontrol = $this->db->reset_query()->where("kullanici_id", $kullanici_id)->get($this->cihazAcTabloAdi());
+        if($kontrol->num_rows() > 0){
+            $sonuc = $kontrol->result();
+            $this->bilgisayardaAcSifirla($kullanici_id);
+            return $this->tekCihazApp($sonuc[0]->servis_no);
+        }else{
+            return array();
+        }
+    }
+    public function bilgisayardaAc($servis_no, $kullanici_id)
+    {
+        $kontrol = $this->db->reset_query()->where("kullanici_id", $kullanici_id)->get($this->cihazAcTabloAdi());
+        if($kontrol->num_rows() > 0){
+            $this->db->reset_query()->where("kullanici_id", $kullanici_id)->update($this->cihazAcTabloAdi(), array(
+                "servis_no" => $servis_no,
+            ));
+        }else{
+            $this->db->reset_query()->insert($this->cihazAcTabloAdi(), array(
+                "kullanici_id" => $kullanici_id,
+                "servis_no" => $servis_no,
+            ));
+        }
+    }
+    public function bilgisayardaAcSifirla($kullanici_id)
+    {
+        $this->db->reset_query()->where("kullanici_id", $kullanici_id)->delete($this->cihazAcTabloAdi());
+    }
     public function sonCihazJQ($sorumlu = "")
     {
         $where = array();
