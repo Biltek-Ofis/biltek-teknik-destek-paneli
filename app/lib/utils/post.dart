@@ -175,4 +175,22 @@ class BiltekPost {
       );
     }
   }
+
+  static Future<void> bilgisayardaAc({
+    required int kullaniciID,
+    required int servisNo,
+  }) async {
+    try {
+      var response = await BiltekPost.post(
+        Ayarlar.bilgisayardaAc,
+        {
+          "kullanici_id": kullaniciID.toString(),
+          "servis_no": servisNo.toString(),
+        },
+      );
+      await response.stream.bytesToString();
+    } on Exception {
+      debugPrint("Bilgisayarda ac çalışmadı");
+    }
+  }
 }

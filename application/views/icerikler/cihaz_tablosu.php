@@ -22,6 +22,7 @@ echo '<style>
   }
 </style>
 ';
+$this->Cihazlar_Model->bilgisayardaAcSifirla($this->Kullanicilar_Model->kullaniciBilgileri()["id"]);
 $this->load->view("inc/style_tablo");
 
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
@@ -333,7 +334,22 @@ for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
 $cihazDetayOrnek = '
 <script>
 $(document).ready(function(){
-
+  setInterval(() => {
+      $.get(\'' . base_url("cihazyonetimi/bilgisayardaAcGetir") . '/' . $this->Kullanicilar_Model->kullaniciBilgileri()["id"] . '\', {})
+      .done(function(data) {
+        try {
+          var value = JSON.parse(data);
+          if(value.id){
+            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").removeClass("fade");
+            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+            $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").addClass("fade");
+            detayModaliGoster(value.id, value.servis_no, value.takip_no, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }, 2000);
   $("#dt_duzenle #cihaz_turu").on("change", function() {
     cihazTurleriSifre($(this).val());
   });

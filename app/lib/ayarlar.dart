@@ -20,6 +20,7 @@ class Ayarlar {
   static String get tekCihaz => "${appUrl}tekCihaz/";
   static String get version => "${appUrl}version/";
   static String get download => "${appUrl}download/";
+  static String get bilgisayardaAc => "${appUrl}bilgisayardaAc/";
 
   static String teknikservisformu({
     required String auth,
