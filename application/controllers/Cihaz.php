@@ -138,7 +138,12 @@ class Cihaz extends Varsayilancontroller
     }
     public function teknik_servis_formu($id)
     {
-        $auth = $_GET["auth"];
+        $auth = "";
+        if(isset( $_GET["auth"])){
+            $auth = $_GET["auth"];
+        }else{
+            unset($auth);
+        }
         $gecerli = FALSE;
         if(isset($auth)){
             $gecerli = $this->Kullanicilar_Model->gecerliAuth($auth);
