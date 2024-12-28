@@ -24,6 +24,19 @@ Drawer biltekDrawer(
           ),
           child: Image.asset(BiltekAssets.logo),
         ),
+        SizedBox(
+          height: 5,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: Text(kullanici.adSoyad),
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
         ListTile(
           title: const Text("Anasayfa"),
           selected: seciliSayfa == "Anasayfa",
@@ -66,7 +79,7 @@ Drawer biltekDrawer(
 
 AppBar biltekAppBar(
   BuildContext context, {
-  String title = "",
+  String? title,
   List<Widget> actions = const [],
 }) {
   return AppBar(
@@ -80,7 +93,7 @@ AppBar biltekAppBar(
         );
       },
     ),
-    title: Text(title),
+    title: title != null ? Text(title) : null,
     actions: [
       ...actions,
       PopupMenuButton<String>(
