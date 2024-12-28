@@ -36,3 +36,13 @@ flutter build apk --dart-define-from-file=.env --release --obfuscate --split-deb
 ```
 flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
 ```
+
+- Google Play
+
+```
+java -jar pepk.jar --keystore=keystore.jks --alias=biltek --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem 
+```
+
+```
+flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
+```

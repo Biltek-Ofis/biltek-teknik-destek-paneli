@@ -11,3 +11,7 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+encryption_public_key.pem
+pepk.jar
+google-services.json
+output.zip
