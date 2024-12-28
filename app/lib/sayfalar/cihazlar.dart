@@ -160,7 +160,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
             )
           : biltekAppBar(
               context,
-              title: widget.kullanici.adSoyad,
               actions: [
                 IconButton(
                   onPressed: () {
