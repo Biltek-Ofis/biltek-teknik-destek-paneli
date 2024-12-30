@@ -23,69 +23,57 @@ WebViewEnvironment? webViewEnvironment;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) {
-    final availableVersion = await WebViewEnvironment.getAvailableVersion();
-    assert(availableVersion != null,
-        'Failed to find an installed WebView2 Runtime or non-stable Microsoft Edge installation.');
 
-    webViewEnvironment = await WebViewEnvironment.create(
-        settings:
-            WebViewEnvironmentSettings(userDataFolder: 'YOUR_CUSTOM_PATH'));
-  }
+  await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
 
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  if (Platform.isAndroid) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    FirebaseMessaging.onMessage.listen(
-      (message) {
-        if (Platform.isAndroid) {
-          FlutterRingtonePlayer().playNotification();
-        }
-        showOverlayNotification(
-          (context) {
-            return Card(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              child: SafeArea(
-                child: ListTile(
-                  leading: SizedBox.fromSize(
-                    size: Size(message.notification?.title != null ? 40 : 20,
-                        message.notification?.title != null ? 40 : 20),
-                    child: ClipOval(
-                      child: Container(
-                        color: Colors.black,
-                      ),
+  FirebaseMessaging.onMessage.listen(
+    (message) {
+      if (Platform.isAndroid) {
+        FlutterRingtonePlayer().playNotification();
+      }
+      showOverlayNotification(
+        (context) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            child: SafeArea(
+              child: ListTile(
+                leading: SizedBox.fromSize(
+                  size: Size(message.notification?.title != null ? 40 : 20,
+                      message.notification?.title != null ? 40 : 20),
+                  child: ClipOval(
+                    child: Container(
+                      color: Colors.black,
                     ),
                   ),
-                  title: Text(message.notification?.title != null
-                      ? message.notification!.title!
-                      : (message.notification?.body != null
-                          ? message.notification!.body!
-                          : "")),
-                  subtitle: message.notification?.title != null
-                      ? (message.notification?.body != null
-                          ? Text(message.notification!.body!)
-                          : null)
-                      : null,
-                  trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      OverlaySupportEntry.of(context)?.dismiss();
-                    },
-                  ),
+                ),
+                title: Text(message.notification?.title != null
+                    ? message.notification!.title!
+                    : (message.notification?.body != null
+                        ? message.notification!.body!
+                        : "")),
+                subtitle: message.notification?.title != null
+                    ? (message.notification?.body != null
+                        ? Text(message.notification!.body!)
+                        : null)
+                    : null,
+                trailing: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    OverlaySupportEntry.of(context)?.dismiss();
+                  },
                 ),
               ),
-            );
-          },
-          duration: Duration(milliseconds: 4000),
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+        duration: Duration(milliseconds: 4000),
+      );
+    },
+  );
 
   runApp(const MyApp());
 }

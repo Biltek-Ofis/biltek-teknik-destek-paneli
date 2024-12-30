@@ -1,11 +1,13 @@
 import 'package:android_id/android_id.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 
 class Islemler {
-  static Color? arkaRenk(String renkClass) {
-    int alpha = (255 * 0.3).floor();
+  static Color? arkaRenk(
+    String renkClass, {
+    int? alpha,
+  }) {
+    alpha ??= (255 * 0.3).floor();
     switch (renkClass) {
       case "bg-white":
         return Colors.white;
@@ -23,6 +25,8 @@ class Islemler {
         return Color.fromARGB(alpha, 232, 62, 140);
       case "bg-warning":
         return Color.fromARGB(alpha, 255, 193, 7);
+      case "bg-info":
+        return Color.fromARGB(alpha, 23, 162, 184);
 
       default:
         return Colors.white;
@@ -80,11 +84,8 @@ class Islemler {
   }
 
   static Future<String?> getId() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isWindows) {
-      WindowsDeviceInfo windowsDeviceInfo = await deviceInfo.windowsInfo;
-      return windowsDeviceInfo.deviceId;
-    } else if (Platform.isAndroid) {
+    ///DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
       //var androidDeviceInfo = await deviceInfo.androidInfo;
       return AndroidId().getId();
     }

@@ -46,9 +46,4 @@ class FirebaseAyarlari {
       const String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
   String get androidAppID =>
       const String.fromEnvironment('FIREBASE_ANDROID_APP_ID');
-
-  String get windowsApiKey =>
-      const String.fromEnvironment('FIREBASE_WINDOWS_API_KEY');
-  String get windowsAppID =>
-      const String.fromEnvironment('FIREBASE_WINDOWS_APP_ID');
 }
