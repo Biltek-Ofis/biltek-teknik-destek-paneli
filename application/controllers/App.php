@@ -236,18 +236,21 @@ class App extends CI_Controller
     {
         $this->headerlar();
         $servis_no = $this->input->post("servis_no");
+        if(!isset($servis_no)) {
+            $servis_no = "";
+        }
+        $takip_no = $this->input->post("takip_no");
+        if(!isset($takip_no)) {
+            $takip_no = "";
+        }
         $token = $this->tokenPost();
         if (isset($token)) {
             if ($this->token($token)) {
-                if (isset($servis_no)) {
-                    $cihaz = $this->Cihazlar_Model->tekCihazApp($servis_no);
-                    if ($cihaz != null) {
-                        $cihaz->cihazDurumuID = "0";
-                        $cihaz->siralama = "0";
-                        echo json_encode($cihaz);
-                    } else {
-                        echo json_encode($this->hataMesaji(99));
-                    }
+                $cihaz = $this->Cihazlar_Model->tekCihazApp($servis_no, $takip_no);
+                if ($cihaz != null) {
+                    $cihaz->cihazDurumuID = "0";
+                    $cihaz->siralama = "0";
+                    echo json_encode($cihaz);
                 } else {
                     echo json_encode($this->hataMesaji(99));
                 }

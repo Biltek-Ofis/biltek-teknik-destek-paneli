@@ -510,11 +510,25 @@ class Cihazlar_Model extends CI_Model
         //return  $this->db->last_query();
         return $this->cihazVerileriniDonustur($result, TRUE);
     }
-    public function tekCihazApp($servis_no)
+    public function tekCihazApp($servis_no = "", $takip_no = "")
     {
-        $where = array(
-            "servis_no" => $servis_no,
-        );
+        $where = array();
+
+        $sorunlu = 0;
+        if(strlen($servis_no) > 0){
+            $where["servis_no"] = $servis_no;
+        }else{
+            $sorunlu++;
+        }
+        if(strlen($takip_no) > 0){
+            $where["takip_numarasi "] = $takip_no;
+        }else{
+            $sorunlu++;
+        }
+
+        if($sorunlu >= 2){
+            return null;
+        }
 
         $result = $this->db->reset_query()->where($where)->limit(1);
 
