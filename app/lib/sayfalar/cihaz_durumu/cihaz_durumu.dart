@@ -45,28 +45,8 @@ class CihazDurumu extends StatelessWidget {
                     subtitle: Text(cihaz.takipNumarasi.toString()),
                   ),
                   ListTile(
-                    title: Text("Müşteri Bilgileri"),
-                    subtitle: Text(cihaz.musteriAdi),
-                  ),
-                  ListTile(
-                    title: Text("Cihaz Türü"),
-                    subtitle: Text(cihaz.cihazTuru),
-                  ),
-                  ListTile(
-                    title: Text("Markası"),
-                    subtitle: Text(cihaz.cihaz),
-                  ),
-                  ListTile(
-                    title: Text("Modeli"),
-                    subtitle: Text(cihaz.cihazModeli),
-                  ),
-                  ListTile(
-                    title: Text("Seri No"),
-                    subtitle: Text(cihaz.seriNo),
-                  ),
-                  ListTile(
-                    title: Text("Teslim Alınanlar"),
-                    subtitle: Text(cihaz.teslimAlinanlar),
+                    title: Text("Güncel Durum"),
+                    subtitle: Text(cihaz.guncelDurumText),
                   ),
                   ListTile(
                     title: Text("Arıza Açıklaması"),
@@ -79,8 +59,33 @@ class CihazDurumu extends StatelessWidget {
                     subtitle: Text(Islemler.servisTuru(cihaz.servisTuru)),
                   ),
                   ListTile(
-                    title: Text("Güncel Durum"),
-                    subtitle: Text(cihaz.guncelDurumText),
+                    title: Text("Müşteri Bilgileri"),
+                    subtitle: Text(cihaz.musteriAdi),
+                  ),
+                  ListTile(
+                    title: Text("Teslim Eden"),
+                    subtitle: Text(cihaz.teslimEden),
+                  ),
+                  ListTile(
+                    title: Text("Teslim Alan"),
+                    subtitle: Text(cihaz.teslimAlan),
+                  ),
+                  ListTile(
+                    title: Text("Cihaz Türü"),
+                    subtitle: Text(cihaz.cihazTuru),
+                  ),
+                  ListTile(
+                    title: Text("Cihaz Marka / Model"),
+                    subtitle: Text(
+                        "${cihaz.cihaz}${(cihaz.cihazModeli.trim().isNotEmpty ? " - ${cihaz.cihazModeli}" : "")}"),
+                  ),
+                  ListTile(
+                    title: Text("Seri No"),
+                    subtitle: Text(cihaz.seriNo),
+                  ),
+                  ListTile(
+                    title: Text("Teslim Alınanlar"),
+                    subtitle: Text(cihaz.teslimAlinanlar),
                   ),
                 ],
               ),
