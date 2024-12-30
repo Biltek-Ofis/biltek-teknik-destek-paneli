@@ -114,11 +114,22 @@ class BiltekPost {
   }
 
   static Future<Cihaz?> cihazGetir({
-    required int servisNo,
+    int? servisNo,
+    int? takipNo,
   }) async {
+    if (servisNo == null && takipNo == null) {
+      return null;
+    }
+    Map<String, String> postData = {};
+    if (servisNo != null) {
+      postData.addAll({"servis_no": servisNo.toString()});
+    }
+    if (takipNo != null) {
+      postData.addAll({"takip_no": takipNo.toString()});
+    }
     var response = await BiltekPost.post(
       Ayarlar.tekCihaz,
-      {"servis_no": servisNo.toString()},
+      postData,
     );
     var resp = await response.stream.bytesToString();
     debugPrint(resp);

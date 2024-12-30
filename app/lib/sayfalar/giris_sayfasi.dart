@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:biltekteknikservis/sayfalar/cihaz_durumu/cihaz_durumu_giris.dart';
 import 'package:biltekteknikservis/sayfalar/cihazlarim.dart';
 import 'package:biltekteknikservis/utils/alerts.dart';
 import 'package:biltekteknikservis/utils/islemler.dart';
@@ -37,6 +38,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     super.initState();
     Future.delayed(Duration.zero, () async {
       if (mounted) {
+        FocusScope.of(context).requestFocus(kullaniciAdiFocus);
         Alerts alerts = Alerts.of(context);
         bool guncelleme = await BiltekPost.guncellemeGerekli();
         if (guncelleme) {
@@ -129,6 +131,27 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                     await _girisYap();
                   },
                   text: "Giriş Yap",
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: DefaultButton(
+                  background: Islemler.arkaRenk(
+                    "bg-info",
+                    alpha: 255,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CihazDurumuGiris(),
+                      ),
+                    );
+                  },
+                  text: "Cihaz Durumunu Görüntüle",
                 ),
               ),
               SizedBox(
