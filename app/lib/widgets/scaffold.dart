@@ -19,9 +19,6 @@ Drawer biltekDrawer(
       padding: EdgeInsets.zero,
       children: [
         DrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
           child: Image.asset(BiltekAssets.logo),
         ),
         SizedBox(
