@@ -45,7 +45,9 @@ nav-item.active {
 </style>';
 $detect = new Mobile_Detect();
 if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
-  echo '<div class="w-100 bg-success p-2 text-center"><a href="'.base_url("app/download").'" target="_blank" style="color: blue !important;">Mobil Uygulamayı İndir</a></div>';
+  echo '<div class="w-100 bg-success text-center">
+    <a href="'.base_url("app/android").'" target="_blank" style="color: blue !important;"><img style="width:calc(100% / 3)" src="'.base_url("dist/img/app/google-play.png").'"/></a>
+  </div>';
 }
 echo '<nav class="navbar navbar-expand-lg navbar-light bg-light">
   
