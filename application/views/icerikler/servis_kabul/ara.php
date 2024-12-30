@@ -39,7 +39,7 @@ if (strlen($takip_numarasi) > 0) {
   Lütfen servis numaranızı kontrol edip tekrar deneyin.
   <div class="w-100 m-0 p-0">
     <div class="row m-0 p-0 d-flex justify-content-end">
-      <a href="javascript:history.go(-1);" class="btn btn-danger me-2 mb-2">
+      <a href="'.base_url("cihazdurumu").'" class="btn btn-danger me-2 mb-2">
         Geri
       </a>
     </div>
@@ -159,6 +159,13 @@ if (strlen($takip_numarasi) > 0) {
             <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
             <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TeslimAlinanlar">' . $cihaz->teslim_alinanlar . '</li>
           </ul>
+        </div>
+      </div>
+      <div class="w-100 m-0 mt-1 p-0">
+        <div class="row m-0 p-0 d-flex justify-content-end">
+          <a href="'.base_url("cihazdurumu").'" class="btn btn-danger me-2 mb-2">
+            Geri
+          </a>
         </div>
       </div>
       </div>
