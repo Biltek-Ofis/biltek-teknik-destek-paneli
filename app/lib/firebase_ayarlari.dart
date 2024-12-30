@@ -38,7 +38,10 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -56,15 +59,6 @@ class DefaultFirebaseOptions {
     appId: Ayarlar.firebase.androidAppID,
     messagingSenderId: Ayarlar.firebase.messagingSenderId,
     projectId: Ayarlar.firebase.projectID,
-    storageBucket: Ayarlar.firebase.storageBucket,
-  );
-
-  static final FirebaseOptions windows = FirebaseOptions(
-    apiKey: Ayarlar.firebase.windowsApiKey,
-    appId: Ayarlar.firebase.windowsAppID,
-    messagingSenderId: Ayarlar.firebase.messagingSenderId,
-    projectId: Ayarlar.firebase.projectID,
-    authDomain: Ayarlar.firebase.authDomain,
     storageBucket: Ayarlar.firebase.storageBucket,
   );
 }

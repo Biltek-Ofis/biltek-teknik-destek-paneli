@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:universal_io/io.dart';
 
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
@@ -47,19 +46,17 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      if (Platform.isAndroid) {
-        await FirebaseMessaging.instance.requestPermission(provisional: true);
-        fcmStream =
-            FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
-          BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
-        });
-        fcmStream?.onError((err) {
-          debugPrint("Failed to get fcm token");
-        });
-        String? token = await FirebaseMessaging.instance.getToken();
+      await FirebaseMessaging.instance.requestPermission(provisional: true);
+      fcmStream =
+          FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
+        BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
+      });
+      fcmStream?.onError((err) {
+        debugPrint("Failed to get fcm token");
+      });
+      String? token = await FirebaseMessaging.instance.getToken();
 
-        BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
-      }
+      BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels > 50) {
