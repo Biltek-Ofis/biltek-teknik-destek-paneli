@@ -349,16 +349,15 @@ class App extends CI_Controller
     }
     public function download()
     {
-        $appName = "biltekteknikservis";
-        $version = $this->Islemler_Model->app_version();
-        $this->Islemler_Model->asset_indir("app-release.apk", "biltekteknikservis.v" . $version . ".apk");
-        /*
+       
         $detect = new Mobile_Detect();
         if ($detect->isTablet() || $detect->isAndroidOS()) {
-            header("Location: market://details?id=tr.com.biltekbilgisayar.teknikservis");
+            header("Location: ".base_url("app/android"));
         }else{
-            header("Location: https://play.google.com/store/apps/details?id=tr.com.biltekbilgisayar.teknikservis&hl=tr");
-        }
-        */
+            echo "Sisteminize uygun uygulama bulunamadı.";
+        }    
+    }
+    public function android(){
+        header("Location: https://play.google.com/store/apps/details?id=tr.com.biltekbilgisayar.teknikservis");
     }
 }

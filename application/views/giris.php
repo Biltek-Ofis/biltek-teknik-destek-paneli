@@ -65,6 +65,12 @@ echo '
                     </div>
                 </form>
                 ';
+                $detect = new Mobile_Detect();
+if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
+  echo '<div class="w-100 mt-2 text-center">
+    <a href="'.base_url("app/android").'" target="_blank" style="color: blue !important;"><img style="width:calc(100% / 2)" src="'.base_url("dist/img/app/google-play.png").'"/></a>
+  </div>';
+}
                 //<p class="mb-1">
                 //    <a href="forgot-password.html">Şifremi Unuttum</a>
                 //</p>
