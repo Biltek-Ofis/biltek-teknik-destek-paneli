@@ -120,28 +120,8 @@ if (strlen($takip_numarasi) > 0) {
             <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TakipNo">' . $cihaz->takip_numarasi . '</li>
           </ul>
           <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Bilgileri:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'ServisNo2">' . $cihaz->musteri_adi . '</li>
-          </ul>
-          <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazTuru2">' . $cihaz->cihaz_turu . '</li>
-          </ul>
-          <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Markası:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazMarka">' . $cihaz->cihaz . '</li>
-          </ul>
-          <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Modeli:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazModeli">' . $cihaz->cihaz_modeli . '</li>
-          </ul>
-          <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'SeriNo">' . $cihaz->seri_no . '</li>
-          </ul>
-          <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
-            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TeslimAlinanlar">' . $cihaz->teslim_alinanlar . '</li>
+              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
+              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'GuncelDurum2">'.$cihaz->guncel_durum_text.'</li>
           </ul>
           <ul class="list-group list-group-horizontal">
             <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold"><span class="font-weight-bold">Arıza Açıklaması:</span></span></li>
@@ -152,8 +132,32 @@ if (strlen($takip_numarasi) > 0) {
             <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'ServisTuru">' . $this->Islemler_Model->servisTuru($cihaz->servis_turu) . '</li>
           </ul>
           <ul class="list-group list-group-horizontal">
-              <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Güncel Durum:</span></li>
-              <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'GuncelDurum2">'.$cihaz->guncel_durum_text.'</li>
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Müşteri Bilgileri:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'MusteriAdi2">' . $cihaz->musteri_adi . '</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Eden:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TeslimEden">' . $cihaz->teslim_eden . '</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alan:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TeslimAlan">' . $cihaz->teslim_alan . '</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Türü:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazTuru2">' . $cihaz->cihaz_turu . '</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Cihaz Marka / Model:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'CihazMarka">' . $cihaz->cihaz . ''.(strlen(trim($cihaz->cihaz_modeli)) > 0 ? " - ".$cihaz->cihaz_modeli : "").'</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Seri No:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'SeriNo">' . $cihaz->seri_no . '</li>
+          </ul>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Teslim Alınanlar:</span></li>
+            <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="' . $cihaz->id . 'TeslimAlinanlar">' . $cihaz->teslim_alinanlar . '</li>
           </ul>
         </div>
       </div>
