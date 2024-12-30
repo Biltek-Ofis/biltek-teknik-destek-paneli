@@ -40,7 +40,7 @@ $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz, "barc
 $("#barcode1").css({"height":"3cm"})', "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'));
 echo '<div class="col-2"></div>';
 $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
-	text: "' . base_url("serviskabul") . '/' . $cihaz->takip_numarasi . '",
+	text: "' . base_url("cihazdurumu") . '/' . $cihaz->takip_numarasi . '",
 	width: 80,
 	height: 80,
 	colorDark : "#000000",
