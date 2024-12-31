@@ -18,6 +18,9 @@ import 'cihazlarim.dart';
 import 'detaylar.dart';
 import 'giris_sayfasi.dart';
 
+typedef AramaDurumu = Function(bool durum);
+typedef AramaText = Function(String value);
+
 class CihazlarSayfasi extends StatefulWidget {
   const CihazlarSayfasi({
     super.key,
@@ -151,6 +154,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   );
                 },
                 kullanici: widget.kullanici,
+                cihazlariYenile: () async {
+                  await _cihazlariYenile();
+                },
               ),
         floatingActionButton: yukariKaydir
             ? FloatingActionButton(
@@ -292,6 +298,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                 builder: (context) => DetaylarSayfasi(
                                   kullanici: widget.kullanici,
                                   servisNo: cihaz.servisNo,
+                                  cihazlariYenile: () async {
+                                    await _cihazlariYenile();
+                                  },
                                 ),
                               ));
                             },
@@ -340,13 +349,11 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   }
 }
 
-typedef AramaDurumu = Function(bool durum);
-typedef AramaText = Function(String value);
-
 AppBar cihazlarAppBar(
   BuildContext context, {
   required AramaDurumu aramaDurumu,
   required KullaniciModel kullanici,
+  required VoidCallback cihazlariYenile,
 }) {
   return AppBar(
     leading: Builder(
@@ -393,6 +400,9 @@ AppBar cihazlarAppBar(
                 builder: (context) => DetaylarSayfasi(
                   kullanici: kullanici,
                   servisNo: servisNo,
+                  cihazlariYenile: () {
+                    cihazlariYenile.call();
+                  },
                 ),
               ),
             );
