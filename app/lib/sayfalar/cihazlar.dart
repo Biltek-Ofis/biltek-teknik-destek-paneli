@@ -2,15 +2,21 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
+import '../utils/assets.dart';
 import '../utils/buttons.dart';
 import '../utils/post.dart';
 import '../utils/islemler.dart';
-import '../widgets/scaffold.dart';
+import '../utils/shared_preferences.dart';
+import 'anasayfa.dart';
+import 'ayarlar.dart';
+import 'cihazlarim.dart';
 import 'detaylar.dart';
+import 'giris_sayfasi.dart';
 
 class CihazlarSayfasi extends StatefulWidget {
   const CihazlarSayfasi({
@@ -94,263 +100,209 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: aramaEtkin
-          ? null
-          : biltekDrawer(
-              context,
-              kullanici: widget.kullanici,
-              seciliSayfa: widget.seciliSayfa,
-            ),
-      appBar: aramaEtkin
-          ? AppBar(
-              flexibleSpace: Builder(
-                builder: (context) {
-                  WidgetStateProperty<Color?>? color =
-                      WidgetStateProperty.resolveWith<Color?>(
-                    (Set<WidgetState> states) {
-                      return Colors.transparent; // Use the component's default.
-                    },
-                  );
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+        bool kapat = true;
+        if (aramaEtkin) {
+          setState(() {
+            aramaEtkin = false;
+          });
+          kapat = false;
+        }
 
-                  FocusScope.of(context).requestFocus(searchbarFocus);
-                  return SearchBar(
-                    focusNode: searchbarFocus,
-                    padding: const WidgetStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.symmetric(horizontal: 16.0)),
-                    backgroundColor: color,
-                    shadowColor: color,
-                    overlayColor: color,
-                    surfaceTintColor: color,
-                    hintText: "Cihaz Ara...",
-                    hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
-                      (Set<WidgetState> states) {
-                        return TextStyle(
-                            color: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.color
-                                ?.withAlpha(100));
-                      },
-                    ),
-                    onTap: () {
-                      ////controller.openView();
-                    },
-                    onChanged: (value) async {
-                      setState(() {
-                        arama = value;
-                      });
-                      await _cihazlariYenile();
-                    },
-                    leading: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          aramaEtkin = false;
-                        });
-                      },
-                      icon: Icon(Icons.arrow_back),
-                    ),
-                    trailing: <Widget>[],
-                  );
-                },
+        if (kapat) {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          //Navigator.of(context).pop(result);
+        }
+      },
+      child: Scaffold(
+        drawer: aramaEtkin
+            ? null
+            : biltekDrawer(
+                context,
+                kullanici: widget.kullanici,
+                seciliSayfa: widget.seciliSayfa,
               ),
-            )
-          : biltekAppBar(
-              context,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      aramaEtkin = true;
-                    });
-                  },
-                  icon: Icon(Icons.search),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    NavigatorState navigatorState = Navigator.of(context);
-                    String? res = await SimpleBarcodeScanner.scanBarcode(
-                      context,
-                      barcodeAppBar: const BarcodeAppBar(
-                        appBarTitle: 'Barkod Tara',
-                        centerTitle: false,
-                        enableBackButton: true,
-                        backButtonIcon: Icon(Icons.arrow_back_ios),
-                      ),
-                      cancelButtonText: "İptal",
-                      isShowFlashIcon: true,
-                      delayMillis: 2000,
-                      cameraFace: CameraFace.back,
-                    );
-                    if (res != null) {
-                      int servisNo = int.parse(res);
-                      await BiltekPost.bilgisayardaAc(
-                        kullaniciID: widget.kullanici.id,
-                        servisNo: servisNo,
-                      );
-                      navigatorState.push(
-                        MaterialPageRoute(
-                          builder: (context) => DetaylarSayfasi(
-                            kullanici: widget.kullanici,
-                            servisNo: servisNo,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  icon: Icon(Icons.photo_camera),
-                ),
-              ],
-            ),
-      floatingActionButton: yukariKaydir
-          ? FloatingActionButton(
-              onPressed: () {
-                scrollController.animateTo(
-                  0,
-                  duration: Duration(seconds: 1),
-                  curve: Curves.bounceIn,
-                );
-              },
-              child: Icon(
-                Icons.arrow_upward,
-                color: Colors.white,
-              ),
-            )
-          : null,
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        width: MediaQuery.of(context).size.width,
-        child: cihazlar == null
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : RefreshIndicator(
-                onRefresh: () async {
+        appBar: aramaEtkin
+            ? aramaAppBar(
+                searchbarFocus: searchbarFocus,
+                aramaText: (value) async {
                   setState(() {
-                    arama = "";
+                    arama = value;
                   });
                   await _cihazlariYenile();
                 },
-                child: ListView.builder(
-                  itemCount: cihazlar!.length,
-                  controller: scrollController,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    Cihaz cihaz = cihazlar![index];
-                    Color? renkTemp = Islemler.yaziRengi(cihaz.guncelDurumRenk);
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Islemler.arkaRenk(cihaz.guncelDurumRenk),
-                        border: Border.all(color: Colors.black, width: 1),
-                      ),
-                      child: ListTile(
-                        textColor: renkTemp,
-                        title: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "\nServis No: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: cihaz.servisNo.toString(),
-                                style: TextStyle(
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "\nMüşteri Adı: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: cihaz.musteriAdi,
-                                style: TextStyle(
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "\nCihaz Tür: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: cihaz.cihazTuru,
-                                style: TextStyle(
-                                  color: renkTemp,
-                                ),
-                              ),
-                              if (widget.sorumlu == null)
+                aramaDurumu: (durum) {
+                  setState(() {
+                    aramaEtkin = durum;
+                  });
+                })
+            : cihazlarAppBar(
+                context,
+                aramaDurumu: (durum) {
+                  setState(
+                    () {
+                      aramaEtkin = durum;
+                    },
+                  );
+                },
+                kullanici: widget.kullanici,
+              ),
+        floatingActionButton: yukariKaydir
+            ? FloatingActionButton(
+                onPressed: () {
+                  scrollController.animateTo(
+                    0,
+                    duration: Duration(seconds: 1),
+                    curve: Curves.bounceIn,
+                  );
+                },
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: Colors.white,
+                ),
+              )
+            : null,
+        body: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          width: MediaQuery.of(context).size.width,
+          child: cihazlar == null
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {
+                      arama = "";
+                    });
+                    await _cihazlariYenile();
+                  },
+                  child: ListView.builder(
+                    itemCount: cihazlar!.length,
+                    controller: scrollController,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      Cihaz cihaz = cihazlar![index];
+                      Color? renkTemp =
+                          Islemler.yaziRengi(cihaz.guncelDurumRenk);
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Islemler.arkaRenk(cihaz.guncelDurumRenk),
+                          border: Border.all(color: Colors.black, width: 1),
+                        ),
+                        child: ListTile(
+                          textColor: renkTemp,
+                          title: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
                                 TextSpan(
-                                  text: "\nSorumlu: ",
+                                  text: "\nServis No: ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: renkTemp,
                                   ),
                                 ),
-                              if (widget.sorumlu == null)
                                 TextSpan(
-                                  text: cihaz.sorumlu,
+                                  text: cihaz.servisNo.toString(),
                                   style: TextStyle(
                                     color: renkTemp,
                                   ),
                                 ),
-                              TextSpan(
-                                text: "\nCihaz: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: "\nMüşteri Adı: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text:
-                                    "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
-                                style: TextStyle(
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: cihaz.musteriAdi,
+                                  style: TextStyle(
+                                    color: renkTemp,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: "\nGiriş Tarihi: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: "\nCihaz Tür: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: cihaz.tarih,
-                                style: TextStyle(
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: cihaz.cihazTuru,
+                                  style: TextStyle(
+                                    color: renkTemp,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                if (widget.sorumlu == null)
+                                  TextSpan(
+                                    text: "\nSorumlu: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: renkTemp,
+                                    ),
+                                  ),
+                                if (widget.sorumlu == null)
+                                  TextSpan(
+                                    text: cihaz.sorumlu,
+                                    style: TextStyle(
+                                      color: renkTemp,
+                                    ),
+                                  ),
+                                TextSpan(
+                                  text: "\nCihaz: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
+                                  style: TextStyle(
+                                    color: renkTemp,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "\nGiriş Tarihi: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: cihaz.tarih,
+                                  style: TextStyle(
+                                    color: renkTemp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          subtitle: Text(cihaz.guncelDurumText.toString()),
+                          trailing: DefaultButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DetaylarSayfasi(
+                                  kullanici: widget.kullanici,
+                                  servisNo: cihaz.servisNo,
+                                ),
+                              ));
+                            },
+                            text: "Detaylar",
                           ),
                         ),
-                        subtitle: Text(cihaz.guncelDurumText.toString()),
-                        trailing: DefaultButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => DetaylarSayfasi(
-                                kullanici: widget.kullanici,
-                                servisNo: cihaz.servisNo,
-                              ),
-                            ));
-                          },
-                          text: "Detaylar",
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -386,4 +338,233 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       }
     }
   }
+}
+
+typedef AramaDurumu = Function(bool durum);
+typedef AramaText = Function(String value);
+
+AppBar cihazlarAppBar(
+  BuildContext context, {
+  required AramaDurumu aramaDurumu,
+  required KullaniciModel kullanici,
+}) {
+  return AppBar(
+    leading: Builder(
+      builder: (context) {
+        return IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        );
+      },
+    ),
+    actions: [
+      IconButton(
+        onPressed: () {
+          aramaDurumu.call(true);
+        },
+        icon: Icon(Icons.search),
+      ),
+      IconButton(
+        onPressed: () async {
+          NavigatorState navigatorState = Navigator.of(context);
+          String? res = await SimpleBarcodeScanner.scanBarcode(
+            context,
+            barcodeAppBar: const BarcodeAppBar(
+              appBarTitle: 'Barkod Tara',
+              centerTitle: false,
+              enableBackButton: true,
+              backButtonIcon: Icon(Icons.arrow_back_ios),
+            ),
+            cancelButtonText: "İptal",
+            isShowFlashIcon: true,
+            delayMillis: 2000,
+            cameraFace: CameraFace.back,
+          );
+          if (res != null && res.isNotEmpty) {
+            int servisNo = int.parse(res);
+            await BiltekPost.bilgisayardaAc(
+              kullaniciID: kullanici.id,
+              servisNo: servisNo,
+            );
+            navigatorState.push(
+              MaterialPageRoute(
+                builder: (context) => DetaylarSayfasi(
+                  kullanici: kullanici,
+                  servisNo: servisNo,
+                ),
+              ),
+            );
+          }
+        },
+        icon: Icon(Icons.photo_camera),
+      ),
+      PopupMenuButton<String>(
+        onSelected: (value) async {
+          NavigatorState navigatorState = Navigator.of(context);
+          switch (value) {
+            case "Ayarlar":
+              navigatorState.push(
+                MaterialPageRoute(
+                  builder: (context) => AyarlarSayfasi(),
+                ),
+              );
+              break;
+            case "Çıkış Yap":
+              await SharedPreference.remove(SharedPreference.authString);
+              String? fcmToken = await SharedPreference.getString(
+                  SharedPreference.fcmTokenString);
+              await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+              navigatorState.pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => GirisSayfasi(),
+                ),
+                (route) => false,
+              );
+              break;
+          }
+        },
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem<String>(
+              value: "Ayarlar",
+              child: ListTile(
+                leading: Icon(Icons.settings),
+                title: Text("Ayarlar"),
+              ),
+            ),
+            PopupMenuItem<String>(
+              value: "Çıkış Yap",
+              child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Çıkış Yap"),
+              ),
+            ),
+          ];
+        },
+      ),
+    ],
+  );
+}
+
+AppBar aramaAppBar({
+  required FocusNode searchbarFocus,
+  required AramaText aramaText,
+  required AramaDurumu aramaDurumu,
+}) {
+  return AppBar(
+    flexibleSpace: SafeArea(
+      child: Builder(
+        builder: (context) {
+          WidgetStateProperty<Color?>? color =
+              WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              return Colors.transparent; // Use the component's default.
+            },
+          );
+
+          FocusScope.of(context).requestFocus(searchbarFocus);
+          return SearchBar(
+            focusNode: searchbarFocus,
+            padding: const WidgetStatePropertyAll<EdgeInsets>(
+                EdgeInsets.symmetric(horizontal: 16.0)),
+            backgroundColor: color,
+            shadowColor: color,
+            overlayColor: color,
+            surfaceTintColor: color,
+            hintText: "Cihaz Ara...",
+            hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+              (Set<WidgetState> states) {
+                return TextStyle(
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.color
+                        ?.withAlpha(100));
+              },
+            ),
+            onTap: () {
+              ////controller.openView();
+            },
+            onChanged: (value) {
+              aramaText.call(value);
+            },
+            leading: IconButton(
+              onPressed: () {
+                aramaDurumu.call(false);
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
+            trailing: <Widget>[],
+          );
+        },
+      ),
+    ),
+  );
+}
+
+Drawer biltekDrawer(
+  BuildContext context, {
+  required KullaniciModel kullanici,
+  String seciliSayfa = "",
+}) {
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        DrawerHeader(
+          child: Image.asset(BiltekAssets.logo),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: Text(kullanici.adSoyad),
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        ListTile(
+          title: const Text("Anasayfa"),
+          selected: seciliSayfa == "Anasayfa",
+          onTap: seciliSayfa != "Anasayfa"
+              ? () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => Anasayfa(
+                        kullanici: kullanici,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                }
+              : null,
+        ),
+        if (kullanici.teknikservis)
+          ListTile(
+            title: const Text("Cihazlarım"),
+            selected: seciliSayfa == "Cihazlarım",
+            onTap: seciliSayfa != "Cihazlarım"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CihazlarimSayfasi(
+                          kullanici: kullanici,
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
+          ),
+      ],
+    ),
+  );
 }

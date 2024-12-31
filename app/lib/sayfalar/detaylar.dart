@@ -91,13 +91,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: "Genel Bilgiler",
+                text: "Genel",
               ),
               Tab(
-                text: "Teknik Servis Bilgileri",
+                text: "Servis",
               ),
               Tab(
-                text: "Yapılan İşlemler",
+                text: "İşlemler",
               ),
             ],
           ),
