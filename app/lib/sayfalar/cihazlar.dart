@@ -398,7 +398,7 @@ AppBar cihazlarAppBar(
             );
           }
         },
-        icon: Icon(Icons.photo_camera),
+        icon: Icon(Icons.qr_code),
       ),
       PopupMenuButton<String>(
         onSelected: (value) async {
