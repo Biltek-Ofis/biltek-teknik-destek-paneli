@@ -477,6 +477,7 @@ AppBar aramaAppBar({
           FocusScope.of(context).requestFocus(searchbarFocus);
           return SearchBar(
             focusNode: searchbarFocus,
+            textInputAction: TextInputAction.search,
             padding: const WidgetStatePropertyAll<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 16.0)),
             backgroundColor: color,
