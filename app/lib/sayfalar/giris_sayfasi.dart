@@ -72,6 +72,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               TextField(
                 controller: kullaniciAdiController,
                 focusNode: kullaniciAdiFocus,
+                textInputAction: TextInputAction.next,
                 onSubmitted: (val) {
                   FocusScope.of(context).requestFocus(sifreFocus);
                 },
