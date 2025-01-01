@@ -4,6 +4,7 @@ import 'package:biltekteknikservis/sayfalar/cihaz_durumu/cihaz_durumu_giris.dart
 import 'package:biltekteknikservis/sayfalar/cihazlarim.dart';
 import 'package:biltekteknikservis/utils/alerts.dart';
 import 'package:biltekteknikservis/utils/islemler.dart';
+import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 
 import '../ayarlar.dart';
@@ -69,57 +70,36 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               SizedBox(
                 height: 10,
               ),
-              TextField(
+              BiltekTextField(
                 controller: kullaniciAdiController,
-                focusNode: kullaniciAdiFocus,
-                textInputAction: TextInputAction.next,
-                onSubmitted: (val) {
-                  FocusScope.of(context).requestFocus(sifreFocus);
-                },
+                currentFocus: kullaniciAdiFocus,
+                nextFocus: sifreFocus,
+                label: "Kullanıcı Adı",
+                errorText: kullaniciAdiError,
                 onChanged: (value) {
                   setState(() {
                     kullaniciAdiError = null;
                     hataMesaji = "";
                   });
                 },
-                decoration: InputDecoration(
-                  label: Text("Kullanıcı Adı"),
-                  errorText: kullaniciAdiError,
-                ),
               ),
               SizedBox(
                 height: 10,
               ),
-              TextField(
+              BiltekSifre(
                 controller: sifreController,
-                focusNode: sifreFocus,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (val) async {
-                  await _girisYap();
-                },
+                currentFocus: sifreFocus,
+                label: "Şifre",
+                errorText: sifreError,
                 onChanged: (value) {
                   setState(() {
                     sifreError = null;
                     hataMesaji = "";
                   });
                 },
-                decoration: InputDecoration(
-                  label: Text("Şifre"),
-                  errorText: sifreError,
-                  suffix: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        sifreyiGoster = !sifreyiGoster;
-                      });
-                    },
-                    icon: Icon(
-                      sifreyiGoster ? Icons.visibility_off : Icons.visibility,
-                    ),
-                  ),
-                ),
-                obscureText: !sifreyiGoster,
-                enableSuggestions: sifreyiGoster,
-                autocorrect: sifreyiGoster,
+                onSubmitted: (val) async {
+                  await _girisYap();
+                },
               ),
               SizedBox(
                 height: 10,
