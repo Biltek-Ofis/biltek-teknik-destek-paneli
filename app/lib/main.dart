@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,8 @@ import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
 WebViewEnvironment? webViewEnvironment;
+
+bool cihazEkleme = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +108,12 @@ class MyApp extends StatelessWidget {
                   PointerDeviceKind.unknown
                 },
               ),
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: Locale("tr"),
               home: const MainPage(),
             ),
           );

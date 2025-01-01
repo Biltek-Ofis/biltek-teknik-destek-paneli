@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
+import '../main.dart';
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
 import '../utils/assets.dart';
@@ -17,6 +18,7 @@ import 'ayarlar.dart';
 import 'cihazlarim.dart';
 import 'detaylar.dart';
 import 'giris_sayfasi.dart';
+import 'yeni_cihaz.dart';
 
 typedef AramaDurumu = Function(bool durum);
 typedef AramaText = Function(String value);
@@ -410,6 +412,20 @@ AppBar cihazlarAppBar(
         },
         icon: Icon(Icons.qr_code),
       ),
+      if (cihazEkleme)
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => YeniCihazSayfasi(
+                  cihazlariYenile: cihazlariYenile,
+                ),
+              ),
+            );
+          },
+          icon: Icon(Icons.add),
+        ),
       PopupMenuButton<String>(
         onSelected: (value) async {
           NavigatorState navigatorState = Navigator.of(context);

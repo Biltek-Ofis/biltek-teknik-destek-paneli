@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BiltekTextField extends StatelessWidget {
   const BiltekTextField({
@@ -6,6 +7,7 @@ class BiltekTextField extends StatelessWidget {
     this.controller,
     this.currentFocus,
     this.nextFocus,
+    this.textInputAction,
     this.label,
     this.errorText,
     this.onChanged,
@@ -14,11 +16,13 @@ class BiltekTextField extends StatelessWidget {
     this.enableSuggestions = true,
     this.autocorrect = true,
     this.suffix,
+    this.inputFormatters,
   });
 
   final TextEditingController? controller;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
+  final TextInputAction? textInputAction;
   final String? label;
   final String? errorText;
   final Function(String)? onChanged;
@@ -27,14 +31,15 @@ class BiltekTextField extends StatelessWidget {
   final bool enableSuggestions;
   final bool autocorrect;
   final Widget? suffix;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       focusNode: currentFocus,
-      textInputAction:
-          nextFocus != null ? TextInputAction.next : TextInputAction.done,
+      textInputAction: textInputAction ??
+          (nextFocus != null ? TextInputAction.next : TextInputAction.done),
       decoration: InputDecoration(
         labelText: label,
         errorText: errorText,
@@ -50,6 +55,7 @@ class BiltekTextField extends StatelessWidget {
       obscureText: obscureText,
       enableSuggestions: enableSuggestions,
       autocorrect: autocorrect,
+      inputFormatters: inputFormatters,
     );
   }
 }
@@ -60,6 +66,7 @@ class BiltekSifre extends StatefulWidget {
     this.controller,
     this.currentFocus,
     this.nextFocus,
+    this.textInputAction,
     this.label,
     this.errorText,
     this.onChanged,
@@ -68,6 +75,7 @@ class BiltekSifre extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
+  final TextInputAction? textInputAction;
   final String? label;
   final String? errorText;
   final Function(String)? onChanged;
@@ -86,6 +94,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
       controller: widget.controller,
       currentFocus: widget.currentFocus,
       nextFocus: widget.nextFocus,
+      textInputAction: widget.textInputAction,
       label: widget.label,
       errorText: widget.errorText,
       onChanged: widget.onChanged,
@@ -103,6 +112,80 @@ class _BiltekSifreState extends State<BiltekSifre> {
       obscureText: !sifreyiGoster,
       enableSuggestions: sifreyiGoster,
       autocorrect: sifreyiGoster,
+    );
+  }
+}
+
+class BiltekCheckbox extends StatelessWidget {
+  const BiltekCheckbox({
+    super.key,
+    required this.label,
+    this.value,
+    this.onChanged,
+  });
+  final String label;
+  final bool? value;
+  final Function(bool?)? onChanged;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.all(0),
+      leading: Checkbox(
+        value: value,
+        onChanged: (value) {
+          onChanged?.call(value);
+        },
+      ),
+      title: Text(label),
+      onTap: () {
+        onChanged?.call(
+          value != null ? !value! : false,
+        );
+      },
+    );
+  }
+}
+
+class BiltekSelect<T> extends StatelessWidget {
+  const BiltekSelect({
+    super.key,
+    this.value,
+    this.items,
+    this.onChanged,
+    this.errorText,
+  });
+  final T? value;
+  final List<DropdownMenuItem<T>>? items;
+  final Function(T?)? onChanged;
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: DropdownButtonFormField<T>(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.error,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+          )),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.error,
+            ),
+          ),
+          errorText: errorText,
+        ),
+        isExpanded: true,
+        value: value,
+        items: items,
+        onChanged: onChanged,
+      ),
     );
   }
 }
