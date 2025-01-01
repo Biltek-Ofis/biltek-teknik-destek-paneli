@@ -1,4 +1,5 @@
 import 'package:biltekteknikservis/ayarlar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,6 +13,9 @@ class Alerts {
   }
 
   void guncelleme() {
+    if (kDebugMode) {
+      return;
+    }
     showDialog(
       context: context,
       barrierDismissible: false,
