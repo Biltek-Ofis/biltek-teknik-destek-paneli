@@ -1,4 +1,5 @@
 import 'package:biltekteknikservis/sayfalar/cihaz_durumu/cihaz_durumu.dart';
+import 'package:biltekteknikservis/utils/alerts.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/cihaz.dart';
@@ -92,25 +93,7 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
       cihazDurumuError = null;
     });
     NavigatorState navigatorState = Navigator.of(context);
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    yukleniyor(context);
     Cihaz? cihazTemp = await BiltekPost.cihazGetir(
       takipNo: int.tryParse(takipNoController.text),
     );

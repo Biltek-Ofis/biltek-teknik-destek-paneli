@@ -152,6 +152,8 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       hataMesaji = "";
     });
     NavigatorState navigatorState = Navigator.of(context);
+    yukleniyor(context);
+    bool kapatildi = false;
     String kullaniciAdi = kullaniciAdiController.text;
     String sifre = sifreController.text;
     if (kullaniciAdi.isEmpty && sifre.isEmpty) {
@@ -197,6 +199,8 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               KullaniciModel? kullaniciModel =
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
+                kapatildi = true;
+                navigatorState.pop();
                 navigatorState.pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => kullaniciModel.teknikservis
@@ -250,6 +254,9 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       setState(() {
         kullaniciAdiError = "Kullanıcı Adı boş olamaz!";
       });
+    }
+    if (!kapatildi) {
+      navigatorState.pop();
     }
   }
 }
