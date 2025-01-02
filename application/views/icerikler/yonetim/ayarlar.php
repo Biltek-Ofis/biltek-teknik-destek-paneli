@@ -120,6 +120,13 @@ echo '<section class="content">
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col">
+                        <div class="font-weight-bold">Kış Animasyonu</div>
+                        <select id="kis_modu" class="form-control" name="kis_modu" aria-label="Kış Modu">
+                            <option value="1"'.($ayarlar->kis_modu == 1 ? " selected" : "").'>Etkin</option>
+                            <option value="0"'.($ayarlar->kis_modu == 0 ? " selected" : "").'>Devredışı</option>
+                        </select>
+                    </div>
                     <div id="container w-100 m-0 p-0">
                         <div class="row m-0 p-0 d-flex justify-content-end">
                             <a href:"javascript:void();" onclick="barkoduYazdir(\'test\')" class="btn btn-primary mt-2 mr-2">Önizleme (Ayarları kaydettikten sonra)</a>

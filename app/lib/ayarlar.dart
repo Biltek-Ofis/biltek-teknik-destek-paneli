@@ -11,6 +11,8 @@ class Ayarlar {
 
   static String get appUrl => "${url}app/";
 
+  static String get ayarlar => "${appUrl}ayarlar/";
+
   static String get fcmToken => "${appUrl}fcmToken/";
   static String get fcmTokenSifirla => "${appUrl}fcmTokenSifirla/";
 
