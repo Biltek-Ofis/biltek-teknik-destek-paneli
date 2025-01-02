@@ -62,7 +62,7 @@ if ($aktifSayfa == "cihazyonetimi" || $aktifSayfa == "anasayfa") {
     echo " active";
 }
 echo '">
-        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="'.base_url().'">Anasayfa</a>
       </li>';
 if($kullanicibilgileri123["teknikservis"] == 1){
     echo '<li class="nav-item d-none d-sm-inline-block';
