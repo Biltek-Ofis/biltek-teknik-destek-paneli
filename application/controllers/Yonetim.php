@@ -254,6 +254,10 @@ class Yonetim extends Varsayilancontroller
 			if(isset($BARKOD_SIRKET_ADI_BOYUTU)){
 				$veri["barkod_sirket_adi_boyutu"] = $BARKOD_SIRKET_ADI_BOYUTU;
 			}
+			$KIS_MODU = $this->input->post("kis_modu");
+			if(isset($KIS_MODU)){
+				$veri["kis_modu"] = $KIS_MODU;
+			}
 
 			if(count($veri) > 0){
 				$duzenle = $this->Ayarlar_Model->duzenle($veri);

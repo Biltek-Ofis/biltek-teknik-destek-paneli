@@ -53,6 +53,23 @@ class App extends CI_Controller
     {
         return $this->input->post("token");
     }
+    public function ayarlar()
+    {
+        $this->headerlar();
+        $auth = $this->input->post("auth");
+        $fcmToken = $this->input->post("fcmToken");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ayarlar = $this->Ayarlar_Model->getir();
+                echo json_encode($ayarlar);
+            } else {
+                echo json_encode(array());
+            }
+        } else {
+            echo json_encode(array());
+        }
+    }
     public function fcmToken()
     {
         $this->headerlar();
@@ -236,11 +253,11 @@ class App extends CI_Controller
     {
         $this->headerlar();
         $servis_no = $this->input->post("servis_no");
-        if(!isset($servis_no)) {
+        if (!isset($servis_no)) {
             $servis_no = "";
         }
         $takip_no = $this->input->post("takip_no");
-        if(!isset($takip_no)) {
+        if (!isset($takip_no)) {
             $takip_no = "";
         }
         $token = $this->tokenPost();
@@ -352,15 +369,16 @@ class App extends CI_Controller
     }
     public function download()
     {
-       
+
         $detect = new Mobile_Detect();
         if ($detect->isTablet() || $detect->isAndroidOS()) {
-            header("Location: ".base_url("app/android"));
-        }else{
+            header("Location: " . base_url("app/android"));
+        } else {
             echo "Sisteminize uygun uygulama bulunamadı.";
-        }    
+        }
     }
-    public function android(){
+    public function android()
+    {
         header("Location: https://play.google.com/store/apps/details?id=tr.com.biltekbilgisayar.teknikservis");
     }
 }

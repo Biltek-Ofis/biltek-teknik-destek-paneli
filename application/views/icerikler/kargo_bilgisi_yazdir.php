@@ -4,12 +4,8 @@ echo '<!DOCTYPE html>
 
 <head>';
 $this->load->view("inc/meta");
-$bilgileri_goster = FALSE;
-if(isset($cihaz)){
-    $bilgileri_goster = TRUE;
-}
 
-echo '<title>TEKNİK SERVİS FORMU' . ($bilgileri_goster ? " ".$cihaz->id : ""). '</title>';
+echo '<title>KARGO BİLGİLERİ ' .$cihaz->id. '</title>';
 
 $this->load->view("inc/styles");
 $this->load->view("inc/scripts");
@@ -52,7 +48,7 @@ echo '<style>
     });
     </script>
 </head>';
-    echo '<body onafterprint="kargoYazdirildi()">';
+    echo '<body onafterprint="kargoYazdirildi()" class="kis_modu_yok">';
     
 echo ' <table class="table table-bordered table-sm w-100">
         <tbody>
