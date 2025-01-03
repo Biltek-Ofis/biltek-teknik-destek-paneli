@@ -1,10 +1,19 @@
 <?php
+
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '
 <style>
 :root {
   --transparan: 0.3;
   --transparan-kirmizi: 0.4;
-  --yazi-rengi: #1f2d3d;
+  ';
+  if($ayarlar->kis_modu == 1){
+    echo '--yazi-rengi: #ffffff;';
+  }else{
+    echo '--yazi-rengi: #1f2d3d;';
+  }
+  
+  echo '
 }
 
 .bg-warning {
