@@ -101,6 +101,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                 ),
             ],
             bottom: TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
               tabs: [
                 Tab(
                   text: "Genel",
