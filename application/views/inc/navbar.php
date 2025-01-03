@@ -169,22 +169,24 @@ echo '<li class="nav-item dropdown">
                     <li class="dropdown-item"><a href="#" class="d-block w-100" onclick="bosFormYazdir();">Boş Form Yazdır</a></li>
                 </ul>
             </li>';
+$ayarlar = $this->Ayarlar_Model->getir();
+
 echo '
     </ul>
   </div>
     <ul class="navbar-nav ml-auto">
     
     <li class="nav-item">
-      <a href="' . base_url("kullanici") . '" class="nav-link" style="color:black;">' . $kullanicibilgileri123["ad_soyad"] . '</a>
+      <a href="' . base_url("kullanici") . '" class="nav-link" style="'.($ayarlar->kis_modu == 1 ? "color:white;" : "color:black;").'">' . $kullanicibilgileri123["ad_soyad"] . '</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt"></i>
+        <i class="fas fa-expand-arrows-alt" style="'.($ayarlar->kis_modu == 1 ? "color:white;" : "color:black;").'"></i>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="' . base_url("cikis") . '" role="button">
-        <i class="fas fa-right-from-bracket"></i>
+        <i class="fas fa-right-from-bracket" style="'.($ayarlar->kis_modu == 1 ? "color:white;" : "color:black;").'"></i>
       </a>
     </li>
   </ul>

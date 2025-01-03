@@ -9,20 +9,28 @@ if($ayarlar->kis_modu == 1){
 	echo '
 <style>
     :root {
-        --kis_arkaplani: rgba(108, 117, 125, 0.5);
+        --kis_arkaplani:linear-gradient(#123, #111);;
     }
     .login-box .card {
-        background-color: rgba(108, 117, 125, 0.6) !important;
+        background: rgba(170, 166, 166, 0.6) !important;
     }
     body{
         scrollbar-color: var(--kis_arkaplani) !important;
     }
     body,
     .modal-content{
-        background-color: var(--kis_arkaplani) !important;
+        background: var(--kis_arkaplani) !important;
+        color: #fff !important;
     }
-    .modal-dialog, .dropdown-menu, .login-box{
-        background-color: #ffffff !important;
+        
+    .bg-light, .login-box .card{
+        color: black !important;
+    }
+    .dropdown-menu, .login-box{
+        background: var(--kis_arkaplani) !important;
+    }
+    .navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath stroke=\'rgba%28255, 255, 255, 1%29\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' d=\'M4 7h22M4 15h22M4 23h22\'/%3E%3C/svg%3E");
     }
     .wrapper, 
     .navbar, 
@@ -38,33 +46,52 @@ if($ayarlar->kis_modu == 1){
     .pagination, 
     .dataTables_paginate, 
     .paginate_button, 
-    .paginate_button a{
-        background-color: transparent !important;
+    .paginate_button a,
+    .nav-item{
+        background: transparent !important;
     }
-    .paginate_button a, .breadcrumb-item.active{
-        color: black !important;
+    .paginate_button a, .breadcrumb-item.active, .nav-tabs .nav-link.active{
+        color: #fff !important;
     }
     input[type="search"], select{
-        border-color: #ffffff;
+        border-color: #fff !important;
     }
     input:not([type="submit"]),
     textarea,
-    select{
+    select,
+    label,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    .navbar .collapse .nav-link, .dropdown-item a{
+        color: #fff !important;
+    }
+    .navbar .collapse .nav-item.active .nav-link,
+    .dropdown-item.active a{
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    .navbar .dropdown-item:hover:not(.active),
+    .navbar .dropdown-item:hover:not(.active) a,
+    .navbar .dropdown-item:not(.active) a:hover,
+    select option{
         color: black !important;
     }
     ::placeholder {
-        color: black !important;
-        opacity: 0.5 !important;
+        color: #fff !important;
+        opacity: 0.59 !important;
     }
 
     ::-ms-input-placeholder { 
-        color: black !important;
+        color: #fff !important;
         opacity: 0.5 !important;
     }
 
     
     .kis_modu_yok{
-        background-color: #ffffff !important;
+        background: #ffffff !important;
+        color: black !important;
     }
 </style>';
 }
