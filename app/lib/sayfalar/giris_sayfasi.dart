@@ -61,86 +61,88 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             width: MediaQuery.of(context).size.width > 400
                 ? 400
                 : MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(BiltekAssets.logo),
-                Text(
-                  hataMesaji,
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                BiltekTextField(
-                  controller: kullaniciAdiController,
-                  currentFocus: kullaniciAdiFocus,
-                  nextFocus: sifreFocus,
-                  label: "Kullanıcı Adı",
-                  errorText: kullaniciAdiError,
-                  onChanged: (value) {
-                    setState(() {
-                      kullaniciAdiError = null;
-                      hataMesaji = "";
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                BiltekSifre(
-                  controller: sifreController,
-                  currentFocus: sifreFocus,
-                  label: "Şifre",
-                  errorText: sifreError,
-                  onChanged: (value) {
-                    setState(() {
-                      sifreError = null;
-                      hataMesaji = "";
-                    });
-                  },
-                  onSubmitted: (val) async {
-                    await _girisYap();
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: DefaultButton(
-                    onPressed: () async {
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.asset(BiltekAssets.logo),
+                  Text(
+                    hataMesaji,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BiltekTextField(
+                    controller: kullaniciAdiController,
+                    currentFocus: kullaniciAdiFocus,
+                    nextFocus: sifreFocus,
+                    label: "Kullanıcı Adı",
+                    errorText: kullaniciAdiError,
+                    onChanged: (value) {
+                      setState(() {
+                        kullaniciAdiError = null;
+                        hataMesaji = "";
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BiltekSifre(
+                    controller: sifreController,
+                    currentFocus: sifreFocus,
+                    label: "Şifre",
+                    errorText: sifreError,
+                    onChanged: (value) {
+                      setState(() {
+                        sifreError = null;
+                        hataMesaji = "";
+                      });
+                    },
+                    onSubmitted: (val) async {
                       await _girisYap();
                     },
-                    text: "Giriş Yap",
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: DefaultButton(
-                    background: Islemler.arkaRenk(
-                      "bg-info",
-                      alpha: 255,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: DefaultButton(
+                      onPressed: () async {
+                        await _girisYap();
+                      },
+                      text: "Giriş Yap",
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CihazDurumuGiris(),
-                        ),
-                      );
-                    },
-                    text: "Cihaz Durumunu Görüntüle",
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: DefaultButton(
+                      background: Islemler.arkaRenk(
+                        "bg-info",
+                        alpha: 255,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CihazDurumuGiris(),
+                          ),
+                        );
+                      },
+                      text: "Cihaz Durumunu Görüntüle",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
