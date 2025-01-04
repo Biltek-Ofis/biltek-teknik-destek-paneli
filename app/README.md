@@ -6,7 +6,8 @@ Teknik servis uygulamasi
 
 ```
 TOKEN=token_buraya
-API_URL=http://localhost/
+API_URL=Full sürüm url
+DEBUG_API_URL=Debug url (Testler için)
 FIREBASE_PROJECT_ID=
 FIREBASE_AUTH_DOMAIN=
 FIREBASE_STORAGE_BUCKET=

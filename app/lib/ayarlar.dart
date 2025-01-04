@@ -1,5 +1,13 @@
+import 'package:flutter/foundation.dart';
+
 class Ayarlar {
-  static String get _url => const String.fromEnvironment('API_URL');
+  static String get _url {
+    if (kDebugMode) {
+      return const String.fromEnvironment('DEBUG_API_URL');
+    } else {
+      return const String.fromEnvironment('API_URL');
+    }
+  }
 
   static String get url {
     if (_url.endsWith("/")) {
