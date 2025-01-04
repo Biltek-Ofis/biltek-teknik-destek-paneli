@@ -354,7 +354,7 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                                   ? Colors.transparent
                                   : _isSelectedDay(day)
                                       ? (widget.selectedColor ?? Colors.blue)
-                                          .withOpacity(0.1)
+                                          .withAlpha(((255 / 100) * 10).floor())
                                       : Colors.transparent,
                               shape: BoxShape.circle,
                             ),
