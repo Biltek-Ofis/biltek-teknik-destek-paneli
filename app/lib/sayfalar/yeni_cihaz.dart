@@ -5,7 +5,6 @@ import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:biltekteknikservis/widgets/takvim/dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:intl/intl.dart';
 
@@ -54,7 +53,9 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
     tarihGuncelle(DateTime.now().toLocal());
     gsmController.text = "+90";
     Future.delayed(Duration.zero, () {
-      FocusScope.of(context).requestFocus(musteriAdiFocus);
+      if (mounted) {
+        FocusScope.of(context).requestFocus(musteriAdiFocus);
+      }
     });
   }
 

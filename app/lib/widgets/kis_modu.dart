@@ -38,7 +38,7 @@ class SnowPainter extends CustomPainter {
     if (hasSpinningEffect) {
       paint = Paint()
         ..shader = LinearGradient(
-          colors: [snowColor, snowColor.withOpacity(0.6)],
+          colors: [snowColor, snowColor.withAlpha(((255 / 100) * 60).floor())],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           tileMode: TileMode.mirror,
