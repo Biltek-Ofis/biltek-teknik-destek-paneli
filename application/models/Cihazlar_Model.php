@@ -315,6 +315,9 @@ class Cihazlar_Model extends CI_Model
     {
         $this->load->model("Islemler_Model");
         for ($i = 0; $i < count($result); $i++) {
+            if(property_exists($result[$i], "cID")){
+                $result[$i]->id = $result[$i]->cID;
+            }
             $result[$i]->tarih = $this->Islemler_Model->tarihDonustur($result[$i]->tarih);
             $result[$i]->bildirim_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->bildirim_tarihi);
             $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
@@ -466,17 +469,39 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTumuJQ($sorumlu = "", $spesifik = array())
+    public function cihazlarTumuJQ($sorumlu = "", $limit = "", $offset = "", $spesifik = array(), $arama = "")
     {
         $where = array();
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
         }
 
-        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC');
+        $result = $this->db->reset_query();
+
+        if(strlen($limit) > 0 && strlen($offset) > 0){
+            $result = $result->select($this->cihazDurumlariTabloAdi() . ".id as cdID, ".$this->cihazlarTabloAdi().".id as cID, ".$this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi() .".*");
+        }
+
+        $result = $result->where($where);
 
         if (count($spesifik) > 0) {
             $result = $result->where_in("id", $spesifik);
+        }
+        if (strlen($arama) > 0) {
+            $result = $result->group_start();
+            $result = $result->like("servis_no", $arama);
+            $result = $result->or_like("musteri_adi", $arama);
+            $result = $result->or_like("cihaz", $arama);
+            $result = $result->or_like("cihaz_modeli", $arama);
+            $result = $result->group_end();
+        }
+        if(strlen($limit) > 0 && strlen($offset) > 0){
+            
+            $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id")->order_by($this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC");
+
+            $result = $result->limit($limit, $offset);
+        }else{
+            $result = $result->order_by('id', 'DESC');
         }
         $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
@@ -585,13 +610,33 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTekPersonelTumuJQ($sorumlu_personel)
+    public function cihazlarTekPersonelTumuJQ($sorumlu_personel, $limit = "", $offset = "", $arama = "")
     {
         $where = array(
             "sorumlu" => $sorumlu_personel,
         );
-        $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
-        return $this->cihazVerileriniDonustur($result);
+        $result = $this->db->reset_query();
+        
+        if(strlen($limit) > 0 && strlen($offset) > 0){
+            $result = $result->select($this->cihazDurumlariTabloAdi() . ".id as cdID, ".$this->cihazlarTabloAdi().".id as cID, ".$this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi() .".*");
+        }
+        $result = $result->where($where);
+        if (strlen($arama) > 0) {
+            $result = $result->group_start();
+            $result = $result->like("servis_no", $arama);
+            $result = $result->or_like("musteri_adi", $arama);
+            $result = $result->or_like("cihaz", $arama);
+            $result = $result->or_like("cihaz_modeli", $arama);
+            $result = $result->group_end();
+        }
+        if(strlen($limit) > 0 && strlen($offset) > 0){
+            $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id")->order_by($this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC");
+            $result = $result->limit($limit, $offset);
+        }else{
+            $result = $result->order_by('id', 'DESC');
+        }
+        $result = $result->get($this->cihazlarTabloAdi())->result();
+        return $this->cihazVerileriniDonustur($result );
     }
     public $telefon_numarasi_bos = "+90 (___) ___-____";
     public function cihazPost($yeni = TRUE)
