@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
@@ -13,8 +13,11 @@ namespace BiltekBarkodOkuyucu
         public Form1()
         {
             InitializeComponent();
-        }
-        CancellationTokenSource source = new CancellationTokenSource();
+			Icon = Properties.Resources.app_icon;
+		}
+		int port = 9201;
+
+		CancellationTokenSource source = new CancellationTokenSource();
         
         private void btnBaslat_Click(object sender, EventArgs e)
         {
@@ -40,7 +43,7 @@ namespace BiltekBarkodOkuyucu
         }
          async Task RunServer()
         {
-            TcpListener Listener = new TcpListener(IPAddress.Any, 9201); // Set your listener
+            TcpListener Listener = new TcpListener(IPAddress.Any, port); // Set your listener
             Listener.Start(); // Start your listener
             CancellationToken token = source.Token;
             token.Register(Listener.Stop);
@@ -72,5 +75,32 @@ namespace BiltekBarkodOkuyucu
                 }
             }
         }
-    }
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			string ip = GetLocalIPAddress();
+			if (string.IsNullOrEmpty(ip))
+			{
+				lblIP.Text = "Bilgisayar Herhangi bir internete bağlı değil.";
+			}
+			else
+			{
+				lblIP.Text = "IP: "+ip;
+				lblPort.Text = "Port: "+ port.ToString();
+			}
+		}
+		public static string GetLocalIPAddress()
+		{
+			var host = Dns.GetHostEntry(Dns.GetHostName());
+			foreach (var ip in host.AddressList)
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					return ip.ToString();
+				}
+			}
+			return null;
+
+		}
+	}
 }
