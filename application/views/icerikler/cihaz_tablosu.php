@@ -344,6 +344,52 @@ for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
   $yapilanIslemInputlari .= "\n".$this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
 }
 
+echo '<script>
+$(document).ready(function(){
+';
+if(isset( $_GET["servisNo"])){
+
+  $cihazGoster = $_GET["servisNo"];
+  $gosterilenCihaz = $this->Cihazlar_Model->tekCihazApp($cihazGoster);
+  if($gosterilenCihaz != null){
+
+    echo 'detayModaliGoster(
+      "'.donusturOnclick($gosterilenCihaz->id).'", 
+      "'.donusturOnclick($gosterilenCihaz->servis_no).'", 
+      "'.donusturOnclick($gosterilenCihaz->takip_numarasi).'", 
+      "'.donusturOnclick($gosterilenCihaz->musteri_kod).'", 
+      "'.donusturOnclick($gosterilenCihaz->musteri_adi).'", 
+      "'.donusturOnclick($gosterilenCihaz->teslim_eden).'",
+      "'.donusturOnclick($gosterilenCihaz->teslim_alan).'",
+      "'.donusturOnclick($gosterilenCihaz->adres).'",
+      "'.donusturOnclick($gosterilenCihaz->telefon_numarasi).'",
+      "'.donusturOnclick($gosterilenCihaz->tarih).'",
+      "'.donusturOnclick($gosterilenCihaz->bildirim_tarihi).'",
+      "'.donusturOnclick($gosterilenCihaz->cikis_tarihi).'",
+      cihazDurumu("'.donusturOnclick($gosterilenCihaz->guncel_durum).'"),
+      "'.donusturOnclick($gosterilenCihaz->guncel_durum).'",
+      "'.donusturOnclick($gosterilenCihaz->cihaz_turu).'",
+      "'.donusturOnclick($gosterilenCihaz->cihaz).'",
+      "'.donusturOnclick($gosterilenCihaz->cihaz_modeli).'",
+      "'.donusturOnclick($gosterilenCihaz->seri_no).'",
+      "'.donusturOnclick($gosterilenCihaz->teslim_alinanlar).'",
+      "'.donusturOnclick($gosterilenCihaz->cihaz_sifresi).'",
+      "'.donusturOnclick($gosterilenCihaz->cihaz_deseni).'",
+      "'.donusturOnclick($gosterilenCihaz->cihazdaki_hasar).'",
+      "'.donusturOnclick($gosterilenCihaz->hasar_tespiti).'",
+      "'.donusturOnclick($gosterilenCihaz->ariza_aciklamasi).'",
+      servisTuru("'.donusturOnclick($gosterilenCihaz->servis_turu).'"),
+      evetHayir("'.donusturOnclick($gosterilenCihaz->yedek_durumu).'"),
+      "'.donusturOnclick($gosterilenCihaz->sorumlu).'",
+      "'.donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi).'",
+      "'.donusturOnclick($gosterilenCihaz->tahsilat_sekli).'",
+      faturaDurumu("'.donusturOnclick($gosterilenCihaz->fatura_durumu).'"), 
+      "'.donusturOnclick($gosterilenCihaz->fis_no).'");';
+  }
+}
+echo '
+});
+</script>';
 $cihazDetayOrnek = '
 <script>
 $(document).ready(function(){
@@ -356,7 +402,7 @@ $(document).ready(function(){
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").removeClass("fade");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").addClass("fade");
-            detayModaliGoster(value.id, value.servis_no, value.takip_no, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
+            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
           }
         } catch (error) {
           console.error(error);
