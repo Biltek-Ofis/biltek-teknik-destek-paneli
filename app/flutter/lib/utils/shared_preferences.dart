@@ -4,6 +4,8 @@ class SharedPreference {
   static const darkThemeString = "darkTheme";
   static const authString = "auth";
   static const fcmTokenString = "fcmToken";
+  static const barkodIP = "barkodIP";
+  static const barkodPort = "barkodPort";
 
   static Future<Set<String>> getKeys() async {
     try {

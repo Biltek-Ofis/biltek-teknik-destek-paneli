@@ -78,6 +78,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       kullaniciID: widget.kullanici.id,
                       servisNo: cihaz!.servisNo,
                     );
+                    await Islemler.barkodOkuyucuAc(cihaz!.servisNo.toString());
                   },
                   icon: Icon(Icons.computer),
                 ),

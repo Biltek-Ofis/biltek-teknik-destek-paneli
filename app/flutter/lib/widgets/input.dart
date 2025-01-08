@@ -17,6 +17,7 @@ class BiltekTextField extends StatelessWidget {
     this.autocorrect = true,
     this.suffix,
     this.inputFormatters,
+    this.keyboardType,
   });
 
   final TextEditingController? controller;
@@ -32,6 +33,7 @@ class BiltekTextField extends StatelessWidget {
   final bool autocorrect;
   final Widget? suffix;
   final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class BiltekTextField extends StatelessWidget {
       focusNode: currentFocus,
       textInputAction: textInputAction ??
           (nextFocus != null ? TextInputAction.next : TextInputAction.done),
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
         errorText: errorText,
@@ -71,6 +74,7 @@ class BiltekSifre extends StatefulWidget {
     this.errorText,
     this.onChanged,
     this.onSubmitted,
+    this.keyboardType,
   });
   final TextEditingController? controller;
   final FocusNode? currentFocus;
@@ -80,6 +84,7 @@ class BiltekSifre extends StatefulWidget {
   final String? errorText;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
+  final TextInputType? keyboardType;
 
   @override
   State<BiltekSifre> createState() => _BiltekSifreState();
@@ -112,6 +117,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
       obscureText: !sifreyiGoster,
       enableSuggestions: sifreyiGoster,
       autocorrect: sifreyiGoster,
+      keyboardType: widget.keyboardType,
     );
   }
 }
