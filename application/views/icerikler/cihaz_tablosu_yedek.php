@@ -285,19 +285,6 @@ echo '<div class="progress-bar">
   <progress value="75" min="0" max="100" style="visibility:hidden;height:0;width:0;">75%</progress>
 </div>';
 echo '<div id="cihazTablosu" class="table-responsive" style="display:none;">';
-
-echo '<div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="row">
-          <div class="col-sm-12 col-md-6"></div>
-          <div class="col-sm-12 col-md-6">
-            <div class="dataTables_filter">
-              <label>Ara:
-                <input id="cihaz_tablosu_ara" type="search" class="form-control form-control-sm" placeholder="">
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>';
 echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
 <thead>
     <tr>
@@ -1428,72 +1415,25 @@ echo '
       }); 
   }
 }';
-$ayarlar = $this->Ayarlar_Model->getir();
 echo '
             function yukleniyorGuncelle(durum){
               $("#percentagePath").attr("stroke-dasharray", durum + ", 100");
               $("#percentageText").html(durum + "%");
             }
-    var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]", "true", ' "aoColumns": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      { "sType": "date-tr" },
-      { "sType": "status-tr" },
-      null,
-      null
-    ],') . ');
-              function cihazlariGetir(offset, arama){
-                $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
-                    limit: '.$ayarlar->tablo_oge.',
-                    offset: offset,
-                    arama: arama
-                }, function(data) {
-                  cihazlarTablosu.clear().draw();
-                  $.each(JSON.parse(data), function(index, value) {
-                    //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-                    let tabloOrnek = \'' . $tabloOrnek . '\';
-                    const tablo = donustur(tabloOrnek, value, false);
-                    cihazlarTablosu.row.add($(tablo));
-                  });
-                  $("#yukleniyorDaire").hide();
-                  $("#cihazTablosu").show();
-                  cihazlarTablosu.draw();
-                  cihazlarTablosu.columns.adjust();
-                });
-              }
 ';
-
 echo '$(document).ready(function() {
-            cihazlariGetir(0, "");
-            $("#cihaz_tablosu_ara").on("keyup", function(e) {
-                var k = e.keyCode;
-                if (k == 20 /* Caps lock */
-                    || k == 16 /* Shift */
-                    || k == 9 /* Tab */
-                    || k == 27 /* Escape Key */
-                    || k == 17 /* Control Key */
-                    || k == 91 /* Windows Command Key */
-                    || k == 19 /* Pause Break */
-                    || k == 18 /* Alt Key */
-                    || k == 93 /* Right Click Point Key */
-                    || ( k >= 35 && k <= 40 ) /* Home, End, Arrow Keys */
-                    || k == 45 /* Insert Key */
-                    || ( k >= 33 && k <= 34 ) /*Page Down, Page Up */
-                    || (k >= 112 && k <= 123) /* F1 - F12 */
-                    || (k >= 144 && k <= 145 )) { /* Num Lock, Scroll Lock */
-                        return;
-                }
-                        
-                var araVal = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(0, araVal);
-            });
-        $("#cihaz_tablosu_ara").keyup(function(){
-        
-            
+
+        $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {}, function(data) {
+          $.each(JSON.parse(data), function(index, value) {
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            let tabloOrnek = \'' . $tabloOrnek . '\';
+            const tablo = donustur(tabloOrnek, value, false);
+            cihazlarTablosu.row.add($(tablo));
+          });
+          $("#yukleniyorDaire").hide();
+          $("#cihazTablosu").show();
+          cihazlarTablosu.draw();
+          cihazlarTablosu.columns.adjust();
         });
     $(document).on("show.bs.modal", ".modal", function() {
       const zIndex = 1040 + 10 * $(".modal:visible").length;
@@ -1518,7 +1458,7 @@ echo '$(document).ready(function() {
         }
       });
     });
-    ';
+    var tabloDiv = "#cihaz_tablosu";';
   
     echo '
     var cihazDurumuSiralama = [ 
@@ -1587,6 +1527,17 @@ echo '
         return b - a;
       }
     });
+    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]", "true", ' "aoColumns": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "sType": "date-tr" },
+      { "sType": "status-tr" },
+      null,
+      null
+    ],') . ');
     function classlariGuncelle(className, cnt){
       $("."+className).each(function () {
         $(this).html(cnt);

@@ -223,7 +223,7 @@ class Islemler_Model extends CI_Model
             "paging": ' . $paging . ',
             "lengthChange": false,
             "pageLength": ' . $ayarlar->tablo_oge. ',
-            "searching": true,
+            "searching": false,
             "ordering": true,
             order: ' . $siralama . ',
             "info": true,
