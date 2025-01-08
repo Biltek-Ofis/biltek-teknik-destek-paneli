@@ -15,7 +15,7 @@ import '../utils/post.dart';
 import '../utils/islemler.dart';
 import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';
-import 'ayarlar.dart';
+import 'ayarlar/ayarlar.dart';
 import 'cihazlarim.dart';
 import 'detaylar.dart';
 import 'giris_sayfasi.dart';
@@ -394,24 +394,84 @@ AppBar cihazlarAppBar(
             delayMillis: 2000,
             cameraFace: CameraFace.back,
           );
-          if (res != null && res.isNotEmpty) {
-            int servisNo = int.parse(res);
+          if (res != null &&
+              res.isNotEmpty &&
+              res != "-1" &&
+              res.startsWith("20")) {
+            try {
+              int servisNo = int.parse(res);
+              await BiltekPost.bilgisayardaAc(
+                kullaniciID: kullanici.id,
+                servisNo: servisNo,
+              );
+              navigatorState.push(
+                MaterialPageRoute(
+                  builder: (context) => DetaylarSayfasi(
+                    kullanici: kullanici,
+                    servisNo: servisNo,
+                    cihazlariYenile: () {
+                      cihazlariYenile.call();
+                    },
+                  ),
+                ),
+              );
+              await Islemler.barkodOkuyucuAc(servisNo.toString());
+            } on Exception catch (e) {
+              debugPrint(e.toString());
+              if (context.mounted) {
+                barkodGecersiz(context);
+              }
+            }
+          } else if (res != null &&
+              res.isNotEmpty &&
+              res != "-1" &&
+              res.split(":").length == 2) {
+            var splt = res.split(":");
+            try {
+              await SharedPreference.setString(
+                  SharedPreference.barkodIP, splt[0]);
+              await SharedPreference.setInt(
+                  SharedPreference.barkodPort, int.parse(splt[1]));
+              if (context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Eşleştirme"),
+                      content: Text(
+                          "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Tamam"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              await Islemler.barkodOkuyucuAc("eslesti");
+            } on Exception catch (e) {
+              debugPrint(e.toString());
+              if (context.mounted) {
+                barkodGecersiz(context);
+              }
+            }
+          } else {
+            if (context.mounted) {
+              barkodGecersiz(context);
+            }
+          }
+          /*if (kDebugMode) {
+            int servisNo2 = 2025000007;
             await BiltekPost.bilgisayardaAc(
               kullaniciID: kullanici.id,
-              servisNo: servisNo,
+              servisNo: servisNo2,
             );
-            navigatorState.push(
-              MaterialPageRoute(
-                builder: (context) => DetaylarSayfasi(
-                  kullanici: kullanici,
-                  servisNo: servisNo,
-                  cihazlariYenile: () {
-                    cihazlariYenile.call();
-                  },
-                ),
-              ),
-            );
-          }
+            await Islemler.barkodOkuyucuAc(servisNo2.toString());
+          }*/
         },
         icon: Icon(Icons.qr_code),
       ),
@@ -474,6 +534,26 @@ AppBar cihazlarAppBar(
         },
       ),
     ],
+  );
+}
+
+void barkodGecersiz(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Hata"),
+        content: Text("Barkod geçersiz. Lütfen tekrar deneyin"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Tamam"),
+          ),
+        ],
+      );
+    },
   );
 }
 

@@ -165,6 +165,7 @@ echo '<li class="nav-item dropdown">
 		});
 	}
                     </script>
+                    <li class="dropdown-item"><a href="https://github.com/ozayakcan/biltek-teknik-destek-paneli/releases" target="_blank" class="d-block w-100">Barkod Okuyucu Programı İndir</a></li>
                     <li class="dropdown-item"><a href="' . base_url("urunler/komisyon") . '" target="_blank" class="d-block w-100">Komisyon Oranlarını İndir</a></li>
                     <li class="dropdown-item"><a href="#" class="d-block w-100" onclick="bosFormYazdir();">Boş Form Yazdır</a></li>
                 </ul>
