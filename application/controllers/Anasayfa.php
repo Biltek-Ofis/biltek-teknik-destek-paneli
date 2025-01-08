@@ -14,7 +14,16 @@ class Anasayfa extends Varsayilancontroller{
             //$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Anasayfa", "test_icerik"));
             $this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Anasayfa", "cihazyonetimi", [], "inc/datatables"));
         }else{
-			$this->load->view('giris', array("girisHatasi"=> ""));
+            $ekServisNo = "";
+            if(isset( $_GET["servisNo"])){
+                $cihazGoster = $_GET["servisNo"];
+                $ekServisNo = "?servisNo=".$cihazGoster;
+            }
+			$this->load->view('giris', array(
+                    "girisHatasi"=> "",
+                    "ekServisNo"=> $ekServisNo,
+                )
+            );
 		}
     }
     public function test(){

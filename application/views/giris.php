@@ -29,7 +29,7 @@ $girisHatasi;
 echo '</div>';
 $this->load->view("inc/tarayici_uyari");
 echo '
-                <form action="' . base_url("giris") . '" method="post">
+                <form action="' . base_url("giris/".$ekServisNo) . '" method="post">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
                             <div class="input-group-text">
