@@ -10,7 +10,7 @@ echo '
 	$(document).ready(function(){';
 $ayarlar = $this->Ayarlar_Model->getir();
 if($ayarlar->kis_modu == 1){
-	echo 'karYagdir("#e6caca","#e6caca","#e6caca","#e6caca","#e6caca", 100);';
+	echo 'karYagdir("#e6caca", 100);';
 }
 	echo '
 		$.ajaxSetup({

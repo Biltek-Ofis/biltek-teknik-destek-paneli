@@ -1,11 +1,11 @@
-function karYagdir(karRengi1, karRengi2, karRengi3, karRengi4, karRengi5, karSayisi) {
+function karYagdir(karRengi, karSayisi) {
 	var biltekKarAnim = document.getElementById("biltek--kis-anim");
 	if (!biltekKarAnim && !document.body.classList.contains("kis_modu_yok")) {
 		let embRand2 = function (min, max) {
 				return Math.floor(Math.random() * (max - min + 1)) + min;
 			},
 			embRandColor2 = function () {
-				var items = [
+				/*var items = [
 					"radial-gradient(circle at top left," +
 						karRengi1 +
 						"," +
@@ -14,6 +14,9 @@ function karYagdir(karRengi1, karRengi2, karRengi3, karRengi4, karRengi5, karSay
 					karRengi3,
 					karRengi4,
 					karRengi5,
+				];*/
+				var items = [
+					karRengi,
 				];
 				var item = items[Math.floor(Math.random() * items.length)];
 				return item;
@@ -21,10 +24,22 @@ function karYagdir(karRengi1, karRengi2, karRengi3, karRengi4, karRengi5, karSay
 		var embRand = embRand2,
 			embRandColor = embRandColor2;
 		var embCSS =
-			".biltek-kis-anim{position: absolute;width: 10px;height: 10px;background: white;border-radius: 50%;margin-top:-10px}";
+			".biltek-kis-anim{position: absolute;width: 10px;height: 10px;";
+		//embCSS += "background: white;";
+		embCSS +="border-radius: 50%;margin-top:-10px}";
 		var embHTML = "";
+		var karlar = [
+			"❅",
+			"❅",
+			"❆",
+			"❅",
+			"❆",
+			"❅",
+			"❆",
+		];
 		for (i = 1; i < karSayisi; i++) {
-			embHTML += '<i class="biltek-kis-anim"></i>';
+			var kar = karlar[Math.floor(Math.random()*karlar.length)];
+			embHTML += '<i class="biltek-kis-anim">'+kar+'</i>';
 			var rndX = embRand2(0, 1e6) * 1e-4,
 				rndO = embRand2(-1e5, 1e5) * 1e-4,
 				rndT = (embRand2(3, 8) * 10).toFixed(2),
@@ -32,11 +47,14 @@ function karYagdir(karRengi1, karRengi2, karRengi3, karRengi4, karRengi5, karSay
 			embCSS +=
 				".biltek-kis-anim:nth-child(" +
 				i +
-				"){background:" +
+				"){";
+			/*embCSS += "background:" +
 				embRandColor2() +
-				";opacity:" +
+				";";
+			embCSS += "opacity:" +
 				(embRand2(1, 1e4) * 1e-4).toFixed(2) +
-				";transform:translate(" +
+				";"*/
+			embCSS += "transform:translate(" +
 				rndX.toFixed(2) +
 				"vw,-10px) scale(" +
 				rndS +
