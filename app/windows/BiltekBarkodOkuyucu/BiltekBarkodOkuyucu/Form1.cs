@@ -23,8 +23,7 @@ namespace BiltekBarkodOkuyucu
 		int port = 9200;
 
 		CancellationTokenSource source = new CancellationTokenSource();
-        
-        private void btnBaslat_Click(object sender, EventArgs e)
+		private void btnBaslat_Click(object sender, EventArgs e)
         {
 			Baslat();
         }
@@ -32,34 +31,17 @@ namespace BiltekBarkodOkuyucu
 		{
 			try
 			{
-				btnBaslat.Enabled = false;
-				if (btnBaslat.Text == "Başlat")
+				Task.Run(async () =>
 				{
-					Task.Run(async () =>
-					{
-						Invoke(new Action(() =>
-						{
-							btnBaslat.Text = "Durdur";
-							lblDesc.Text = "Barkod Okuma Bekleniyor";
-							btnBaslat.Enabled = true;
-						}));
-						await RunServer();
-					});
-				}
-				else
-				{
-					source.Cancel();
-				}
+					await RunServer();
+				});
 			}
 			catch (Exception ex)
 			{
-				source.Cancel();
 				lblIP.Text = "";
 				lblPort.Text = "";
-				btnBaslat.Text = "Baslat";
 				lblDesc.Text = "Bilgisayar Herhangi bir internete bağlı değil.";
-				btnBaslat.Enabled = true;
-				Console.WriteLine("2: " + ex.Message);
+				Console.WriteLine(ex.Message);
 			}
 		}
 		async Task RunServer()
@@ -75,7 +57,7 @@ namespace BiltekBarkodOkuyucu
 					Listener.Start();
 					
 					source = new CancellationTokenSource();
-					while (!source.Token.IsCancellationRequested)
+					while (true)
 					{
 						TcpClient Client = await Listener.AcceptTcpClientAsync();
 						try
@@ -138,8 +120,6 @@ namespace BiltekBarkodOkuyucu
 
 					Invoke(new Action(() =>
 					{
-						btnBaslat.Text = "Baslat";
-						btnBaslat.Enabled = true;
 						lblDesc.Text = "Barkod Okuma Etkin Değil";
 					}));
 					if (Listener.Active)
@@ -151,8 +131,6 @@ namespace BiltekBarkodOkuyucu
 					source.Cancel();
 					Invoke(new Action(() =>
 					{
-						btnBaslat.Text = "Baslat";
-						btnBaslat.Enabled = true;
 						lblDesc.Text = "Barkod Okuma Etkin Değil";
 					}));
 					if (Listener.Active)
@@ -187,19 +165,33 @@ namespace BiltekBarkodOkuyucu
 				lblPort.Text = "Port: "+ port.ToString();
 				QrYenile(ip, port);
 			}
-			BaslangicaEkle();
+			if (Properties.Settings.Default.ilkAcilis)
+			{
+				BaslangicDurumu(true);
+				Properties.Settings.Default.ilkAcilis = false;
+				Properties.Settings.Default.Save();
+			}
+
+			RegistryKey rk = Registry.CurrentUser.OpenSubKey(reg, true);
+			string baslangicDurumu = (string)rk.GetValue(Text, null);
+			checkBox1.Checked = !string.IsNullOrEmpty(baslangicDurumu);
 			Baslat();
 		}
-
-		private void BaslangicaEkle()
+		string reg = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+		private void BaslangicDurumu(bool durum)
 		{
-			RegistryKey rk = Registry.CurrentUser.OpenSubKey
-				("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-			//if (chkStartUp.Checked)
-				rk.SetValue(Name, Application.ExecutablePath);
-			/*else
-				rk.DeleteValue(Name, false);*/
+			try
+			{
+				RegistryKey rk = Registry.CurrentUser.OpenSubKey(reg, true);
+				if (durum)
+					rk.SetValue(Text, Application.ExecutablePath);
+				else
+					rk.DeleteValue(Text, false);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+			}
 		}
 
 		public static string GetLocalIPAddress()
@@ -281,6 +273,11 @@ namespace BiltekBarkodOkuyucu
 			pictureBox1.Image = qrCodeBitmap;
 			btnQrYenile.Visible = true; 
 			btnQrYenile.Enabled = true;
+		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		{
+			BaslangicDurumu(checkBox1.Checked);
 		}
 	}
 }
