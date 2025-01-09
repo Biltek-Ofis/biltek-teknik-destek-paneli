@@ -73,6 +73,7 @@ namespace BiltekBarkodOkuyucu
 					if (Listener.Active)
 						Listener.Stop();
 					Listener.Start();
+					
 					source = new CancellationTokenSource();
 					while (!source.Token.IsCancellationRequested)
 					{
@@ -184,22 +185,7 @@ namespace BiltekBarkodOkuyucu
 			{
 				lblIP.Text = "IP: "+ip;
 				lblPort.Text = "Port: "+ port.ToString();
-				string text = ip + ":" + port.ToString();
-				QrCodeEncodingOptions options = new QrCodeEncodingOptions()
-				{
-					DisableECI = true,
-					CharacterSet = "UTF-8",
-					Width = 100,
-					Height = 100
-				};
-
-				BarcodeWriter writer = new BarcodeWriter()
-				{
-					Format = BarcodeFormat.QR_CODE,
-					Options = options
-				};
-				Bitmap qrCodeBitmap = writer.Write(text);
-				pictureBox1.Image = qrCodeBitmap;
+				QrYenile(ip, port);
 			}
 			BaslangicaEkle();
 			Baslat();
@@ -262,6 +248,39 @@ namespace BiltekBarkodOkuyucu
 		{
 			forceClose = true;
 			Close();
+		}
+
+		private void btnQrYenile_Click(object sender, EventArgs e)
+		{
+			string ip = GetLocalIPAddress();
+			if (!string.IsNullOrEmpty(ip))
+				QrYenile(ip, port);
+			else
+				MessageBox.Show("Local IP Adresiniz bulunamadi. Lütfen bir ağa bağlandığınıza emin olun.");
+		}
+
+
+		private void QrYenile(string ip, int port)
+		{
+			btnQrYenile.Enabled = false;
+			string text = ip + ":" + port.ToString();
+			QrCodeEncodingOptions options = new QrCodeEncodingOptions()
+			{
+				DisableECI = true,
+				CharacterSet = "UTF-8",
+				Width = 100,
+				Height = 100
+			};
+
+			BarcodeWriter writer = new BarcodeWriter()
+			{
+				Format = BarcodeFormat.QR_CODE,
+				Options = options
+			};
+			Bitmap qrCodeBitmap = writer.Write(text);
+			pictureBox1.Image = qrCodeBitmap;
+			btnQrYenile.Visible = true; 
+			btnQrYenile.Enabled = true;
 		}
 	}
 }

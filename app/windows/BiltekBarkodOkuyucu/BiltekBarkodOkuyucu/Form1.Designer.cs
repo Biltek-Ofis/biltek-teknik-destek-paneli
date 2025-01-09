@@ -38,6 +38,7 @@ namespace BiltekBarkodOkuyucu
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gösterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kapatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnQrYenile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -100,28 +101,40 @@ namespace BiltekBarkodOkuyucu
             this.gösterToolStripMenuItem,
             this.kapatToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 48);
             // 
             // gösterToolStripMenuItem
             // 
             this.gösterToolStripMenuItem.Name = "gösterToolStripMenuItem";
-            this.gösterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gösterToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.gösterToolStripMenuItem.Text = "Göster/Gizle";
             this.gösterToolStripMenuItem.Click += new System.EventHandler(this.gosterToolStripMenuItem_Click);
             // 
             // kapatToolStripMenuItem
             // 
             this.kapatToolStripMenuItem.Name = "kapatToolStripMenuItem";
-            this.kapatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.kapatToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.kapatToolStripMenuItem.Text = "Kapat";
             this.kapatToolStripMenuItem.Click += new System.EventHandler(this.kapatToolStripMenuItem_Click);
+            // 
+            // btnQrYenile
+            // 
+            this.btnQrYenile.Location = new System.Drawing.Point(258, 146);
+            this.btnQrYenile.Name = "btnQrYenile";
+            this.btnQrYenile.Size = new System.Drawing.Size(100, 23);
+            this.btnQrYenile.TabIndex = 5;
+            this.btnQrYenile.Text = "QR Kodu Yenile";
+            this.btnQrYenile.UseVisualStyleBackColor = true;
+            this.btnQrYenile.Visible = false;
+            this.btnQrYenile.Click += new System.EventHandler(this.btnQrYenile_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(370, 165);
+            this.ClientSize = new System.Drawing.Size(370, 181);
+            this.Controls.Add(this.btnQrYenile);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.lblPort);
@@ -150,6 +163,7 @@ namespace BiltekBarkodOkuyucu
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem gösterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem kapatToolStripMenuItem;
+		private System.Windows.Forms.Button btnQrYenile;
 	}
 }
 
