@@ -29,7 +29,6 @@ namespace BiltekBarkodOkuyucu
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.btnBaslat = new System.Windows.Forms.Button();
             this.lblIP = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
             this.lblDesc = new System.Windows.Forms.Label();
@@ -39,20 +38,10 @@ namespace BiltekBarkodOkuyucu
             this.gösterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kapatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnQrYenile = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnBaslat
-            // 
-            this.btnBaslat.Location = new System.Drawing.Point(140, 146);
-            this.btnBaslat.Name = "btnBaslat";
-            this.btnBaslat.Size = new System.Drawing.Size(75, 23);
-            this.btnBaslat.TabIndex = 0;
-            this.btnBaslat.Text = "Başlat";
-            this.btnBaslat.UseVisualStyleBackColor = true;
-            this.btnBaslat.Visible = false;
-            this.btnBaslat.Click += new System.EventHandler(this.btnBaslat_Click);
             // 
             // lblIP
             // 
@@ -128,18 +117,29 @@ namespace BiltekBarkodOkuyucu
             this.btnQrYenile.Visible = false;
             this.btnQrYenile.Click += new System.EventHandler(this.btnQrYenile_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(4, 150);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(154, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Bilgisayar açıldığında başlat";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(370, 181);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnQrYenile);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.lblPort);
             this.Controls.Add(this.lblIP);
-            this.Controls.Add(this.btnBaslat);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Biltek Barkod Okuyucu";
@@ -153,8 +153,6 @@ namespace BiltekBarkodOkuyucu
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnBaslat;
 		private System.Windows.Forms.Label lblIP;
 		private System.Windows.Forms.Label lblPort;
 		private System.Windows.Forms.Label lblDesc;
@@ -164,6 +162,7 @@ namespace BiltekBarkodOkuyucu
 		private System.Windows.Forms.ToolStripMenuItem gösterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem kapatToolStripMenuItem;
 		private System.Windows.Forms.Button btnQrYenile;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
 
