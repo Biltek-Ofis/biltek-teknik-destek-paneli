@@ -28,6 +28,9 @@ echo '" role="alert">';
 $girisHatasi;
 echo '</div>';
 $this->load->view("inc/tarayici_uyari");
+if(!isset($ekServisNo)){
+    $ekServisNo = "";
+}
 echo '
                 <form action="' . base_url("giris/".$ekServisNo) . '" method="post">
                     <div class="input-group mb-3">
