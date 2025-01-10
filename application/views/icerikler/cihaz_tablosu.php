@@ -168,6 +168,7 @@ echo '<script>
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
+          cihazlariGetir(cihazlarOffset, cihazlarArama);
           $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
@@ -1492,12 +1493,15 @@ echo '
       null,
       null
     ],') . ');
-              function cihazlariGetir(offset, arama){
+              var cihazlarOffset = 0;
+              var cihazlarArama = "";
+              function cihazlariGetir(offset, arama){                
                 $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
                     limit: '.$ayarlar->tablo_oge.',
                     offset: offset,
                     arama: arama
                 }, function(data) {
+                  cihazlarOffset = offset;
                   cihazlarTablosu.clear().draw();
                   $.each(JSON.parse(data), function(index, value) {
                     //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
@@ -1534,8 +1538,8 @@ echo '$(document).ready(function() {
                         return;
                 }
                         
-                var araVal = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(0, araVal);
+                cihazlarArama = $("#cihaz_tablosu_ara").val();
+                cihazlariGetir(0, cihazlarArama);
             });
         $("#cihaz_tablosu_ara").keyup(function(){
         
@@ -1646,12 +1650,13 @@ echo '
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
+            cihazlariGetir(cihazlarOffset, cihazlarArama);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
               $("#cihaziSilModal").modal("hide");
               $("#cihazSilindiModal").modal("show");
             }
-            cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
           }
         });
       });
