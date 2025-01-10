@@ -1495,8 +1495,13 @@ echo '
     ],') . ');
               var cihazlarOffset = 0;
               var cihazlarArama = "";
-              function cihazlariGetir(offset, arama){                
-                $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
+              var cihazlariGetirPost;
+              function cihazlariGetir(offset, arama){     
+                if (cihazlariGetirPost !== undefined)
+                {
+                  cihazlariGetirPost.abort();
+                }
+                cihazlariGetirPost = $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
                     limit: '.$ayarlar->tablo_oge.',
                     offset: offset,
                     arama: arama
