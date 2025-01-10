@@ -67,7 +67,7 @@ class Cihazyonetimi extends Varsayilancontroller
 				$arama = "";
 			}
 			if(isset($spesifik)){
-				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("", $limit, $offset, $spesifik, $arama));
+				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("", $limit, $offset, $spesifik, $arama, TRUE));
 			}else{
 				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("", $limit, $offset, array(), $arama));
 			}
