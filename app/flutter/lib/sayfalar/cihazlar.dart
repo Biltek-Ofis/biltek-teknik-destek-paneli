@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,8 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   StreamSubscription<String>? fcmStream;
 
+  BarkodOkuyucu? barkodOkuyucu;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -69,6 +72,8 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       String? token = await FirebaseMessaging.instance.getToken();
 
       BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
+
+      await pcYenile();
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels > 50) {
@@ -159,6 +164,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                 kullanici: widget.kullanici,
                 cihazlariYenile: () async {
                   await _cihazlariYenile();
+                },
+                barkodOkuyucu: barkodOkuyucu,
+                pcYenile: () async {
+                  await pcYenile();
                 },
               ),
         floatingActionButton: yukariKaydir
@@ -352,6 +361,17 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       }
     }
   }
+
+  Future<void> pcYenile() async {
+    BarkodOkuyucu? barkodOkuyucuTemp = await BarkodOkuyucu.getir();
+    if (mounted) {
+      setState(() {
+        barkodOkuyucu = barkodOkuyucuTemp;
+      });
+    } else {
+      barkodOkuyucu = barkodOkuyucuTemp;
+    }
+  }
 }
 
 AppBar cihazlarAppBar(
@@ -359,6 +379,8 @@ AppBar cihazlarAppBar(
   required AramaDurumu aramaDurumu,
   required KullaniciModel kullanici,
   required VoidCallback cihazlariYenile,
+  required BarkodOkuyucu? barkodOkuyucu,
+  required VoidCallback pcYenile,
 }) {
   return AppBar(
     leading: Builder(
@@ -415,7 +437,8 @@ AppBar cihazlarAppBar(
                   ),
                 ),
               );
-              await Islemler.barkodOkuyucuAc(servisNo.toString());
+              BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+              await barkodOkuyucu?.servisNo(servisNo);
             } on Exception catch (e) {
               debugPrint(e.toString());
               if (context.mounted) {
@@ -432,6 +455,7 @@ AppBar cihazlarAppBar(
                   SharedPreference.barkodIP, splt[0]);
               await SharedPreference.setInt(
                   SharedPreference.barkodPort, int.parse(splt[1]));
+              pcYenile.call();
               if (context.mounted) {
                 showDialog(
                   context: context,
@@ -452,7 +476,8 @@ AppBar cihazlarAppBar(
                   },
                 );
               }
-              await Islemler.barkodOkuyucuAc("eslesti");
+              BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+              await barkodOkuyucu?.eslestir();
             } on Exception catch (e) {
               debugPrint(e.toString());
               if (context.mounted) {
@@ -496,9 +521,14 @@ AppBar cihazlarAppBar(
             case "Ayarlar":
               navigatorState.push(
                 MaterialPageRoute(
-                  builder: (context) => AyarlarSayfasi(),
+                  builder: (context) => AyarlarSayfasi(
+                    pcYenile: pcYenile,
+                  ),
                 ),
               );
+              break;
+            case "Bilgisayarı Kapat":
+              await barkodOkuyucu?.pcKapa();
               break;
             case "Çıkış Yap":
               await SharedPreference.remove(SharedPreference.authString);
@@ -523,6 +553,14 @@ AppBar cihazlarAppBar(
                 title: Text("Ayarlar"),
               ),
             ),
+            if (barkodOkuyucu != null)
+              PopupMenuItem<String>(
+                value: "Bilgisayarı Kapat",
+                child: ListTile(
+                  leading: Icon(Icons.desktop_windows),
+                  title: Text("Bilgisayarı Kapat"),
+                ),
+              ),
             PopupMenuItem<String>(
               value: "Çıkış Yap",
               child: ListTile(

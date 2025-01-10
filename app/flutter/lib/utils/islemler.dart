@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:android_id/android_id.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
-
-import 'shared_preferences.dart';
 
 class Islemler {
   static Color? arkaRenk(
@@ -94,30 +90,5 @@ class Islemler {
       return AndroidId().getId();
     }
     return null;
-  }
-
-  static Future<void> barkodOkuyucuAc(String mesaj) async {
-    Socket? socket;
-    try {
-      String? ip = await SharedPreference.getString(SharedPreference.barkodIP);
-      int? port = await SharedPreference.getInt(SharedPreference.barkodPort);
-      if (ip != null && port != null) {
-        socket = await Socket.connect(ip, port);
-        debugPrint('connected');
-
-        socket.listen((List<int> event) {
-          debugPrint(utf8.decode(event));
-        });
-
-        socket.write(mesaj);
-
-        await Future.delayed(Duration(seconds: 5));
-
-        socket.close();
-      }
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      socket?.close();
-    }
   }
 }

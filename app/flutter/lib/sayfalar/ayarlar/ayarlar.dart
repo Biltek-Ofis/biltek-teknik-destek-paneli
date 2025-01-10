@@ -3,38 +3,29 @@ import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/barkod_okuyucu.dart';
 import '../../utils/my_notifier.dart';
-import '../../utils/shared_preferences.dart';
 import '../../widgets/selector.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
-  const AyarlarSayfasi({super.key});
+  const AyarlarSayfasi({
+    super.key,
+    required this.pcYenile,
+  });
 
+  final VoidCallback pcYenile;
   @override
   State<AyarlarSayfasi> createState() => _AyarlarSayfasiState();
 }
 
 class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
-  String? ip;
-  int? port;
+  BarkodOkuyucu? barkodOkuyucu;
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
-      String? ipTemp =
-          await SharedPreference.getString(SharedPreference.barkodIP);
-      int? portTemp =
-          await SharedPreference.getInt(SharedPreference.barkodPort);
-      if (mounted) {
-        setState(() {
-          ip = ipTemp;
-          port = portTemp;
-        });
-      } else {
-        ip = ipTemp;
-        port = portTemp;
-      }
+      await barkodOkuyucuYenile();
     });
   }
 
@@ -53,8 +44,8 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                 children: [
                   ListTile(
                     title: Text("Barkod Okuyucu Ayarları"),
-                    subtitle: (ip != null && port != null)
-                        ? (ip!.isNotEmpty ? Text("$ip:$port") : null)
+                    subtitle: barkodOkuyucu != null
+                        ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
                         : null,
                     subtitleTextStyle: TextStyle(
                         color: Theme.of(context)
@@ -71,16 +62,9 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                                 durum,
                                 elle,
                                 kaydedildi: () async {
-                                  String? ipTemp =
-                                      await SharedPreference.getString(
-                                          SharedPreference.barkodIP);
-                                  int? portTemp = await SharedPreference.getInt(
-                                      SharedPreference.barkodPort);
-                                  setState(() {
-                                    ip = ipTemp;
-                                    port = portTemp;
-                                  });
+                                  await barkodOkuyucuYenile();
                                 },
+                                pcYenile: widget.pcYenile,
                               );
                             },
                           ),
@@ -132,9 +116,11 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
     bool durum,
     bool elle, {
     VoidCallback? kaydedildi,
+    VoidCallback? pcYenile,
   }) {
     if (durum) {
       kaydedildi?.call();
+      pcYenile?.call();
       if (context.mounted) {
         showDialog(
           context: context,
@@ -178,6 +164,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                             durum,
                             elle,
                             kaydedildi: kaydedildi,
+                            pcYenile: pcYenile,
                           );
                         },
                       ),
@@ -190,6 +177,17 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
           );
         },
       );
+    }
+  }
+
+  Future<void> barkodOkuyucuYenile() async {
+    BarkodOkuyucu? barkodOkuyucuTemp = await BarkodOkuyucu.getir();
+    if (mounted) {
+      setState(() {
+        barkodOkuyucu = barkodOkuyucuTemp;
+      });
+    } else {
+      barkodOkuyucu = barkodOkuyucuTemp;
     }
   }
 }

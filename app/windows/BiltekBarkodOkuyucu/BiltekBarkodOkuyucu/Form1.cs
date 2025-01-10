@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using System.Drawing;
 using ZXing.QrCode;
 using ZXing;
+using System.Linq;
 
 namespace BiltekBarkodOkuyucu
 {
@@ -55,75 +56,14 @@ namespace BiltekBarkodOkuyucu
 					if (Listener.Active)
 						Listener.Stop();
 					Listener.Start();
-					
+					TcpClient client;
 					source = new CancellationTokenSource();
 					while (true)
 					{
-						TcpClient Client = await Listener.AcceptTcpClientAsync();
-						try
-						{
-							var Stream = Client.GetStream();
-							if (Stream.CanRead)
-							{
-								byte[] Buffer = new byte[Client.ReceiveBufferSize]; 
-
-								StringBuilder SB = new StringBuilder();
-								do
-								{
-									int BytesReaded = Stream.Read(Buffer, 0, Buffer.Length);
-									SB.AppendFormat("{0}", Encoding.ASCII.GetString(Buffer, 0, BytesReaded));
-									if (source.Token.IsCancellationRequested)
-									{
-										Client.Close();
-										break;
-									}
-								} while (Stream.DataAvailable);
-
-								if (SB != null)
-								{
-									try
-									{
-										bool status = int.TryParse(""+SB, out int servisNo);
-										if (status)
-										{
-											System.Diagnostics.Process.Start("https://teknikservis.biltekbilgisayar.com.tr/?servisNo=" + SB);
-										}
-										else
-										{
-											if(""+SB == "eslesti")
-											{
-												pictureBox1.Image = Properties.Resources._checked;
-											}
-										}
-									}
-									catch (Exception ex)
-									{
-										Console.WriteLine(ex.ToString());
-									}
-								}
-							}
-							else
-							{
-								if (source.Token.IsCancellationRequested)
-								{
-									Client.Close();
-									break;
-								}
-							}
-						}
-						catch (Exception Ex)
-						{
-							Console.WriteLine(Ex.ToString());
-						}
-						Client.Close();
+						client = await Listener.AcceptTcpClientAsync();
+						ThreadPool.QueueUserWorkItem(ThreadProc, client);
+						
 					}
-
-					Invoke(new Action(() =>
-					{
-						lblDesc.Text = "Barkod Okuma Etkin Değil";
-					}));
-					if (Listener.Active)
-						Listener.Stop();
 				}
 				catch (Exception Ex)
 				{
@@ -150,6 +90,106 @@ namespace BiltekBarkodOkuyucu
 			}
 			
         }
+
+		private void ThreadProc(object state)
+		{
+			var Client = (TcpClient)state;
+			while (Client.Connected)
+			{
+				try
+				{
+					var Stream = Client.GetStream();
+					if (Stream.CanRead)
+					{
+						byte[] Buffer = new byte[Client.ReceiveBufferSize];
+
+						StringBuilder SB = new StringBuilder();
+						do
+						{
+							int BytesReaded = Stream.Read(Buffer, 0, Buffer.Length);
+							SB.AppendFormat("{0}", Encoding.ASCII.GetString(Buffer, 0, BytesReaded));
+							if (source.Token.IsCancellationRequested)
+							{
+								Client.Close();
+								break;
+							}
+						} while (Stream.DataAvailable);
+
+						if (SB != null)
+						{
+							try
+							{
+								string gelen = "" + SB;
+								if (string.IsNullOrEmpty(gelen))
+									continue;
+								Console.WriteLine("Gelen Mesaj: " + gelen);
+								if (gelen.ToLower() == "eslesti")
+								{
+									pictureBox1.Image = Properties.Resources._checked;
+								}
+								else
+								{
+									try
+									{
+										var bolum = gelen.Split(new[] { ':' }, 2);
+										if (bolum.Length == 2)
+										{
+											Console.WriteLine("Bölüm 1: " + bolum[0]);
+											Console.WriteLine("Bölüm 2: " + bolum[1]);
+											switch (bolum[0].ToLower())
+											{
+												case "servisno":
+													bool status = int.TryParse(bolum[1], out int servisNo);
+													if (status)
+													{
+														Console.WriteLine("Servis No açılıyor");
+														System.Diagnostics.Process.Start("https://teknikservis.biltekbilgisayar.com.tr/?servisNo=" + servisNo);
+													}
+													else
+													{
+														throw new Exception("Servis No Hatalı");
+													}
+													break;
+												case "cmd":
+													System.Diagnostics.Process process = new System.Diagnostics.Process();
+													System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
+													info.FileName = "cmd.exe";
+													info.Arguments = "/C " + bolum[1];
+
+													process.StartInfo = info;
+													process.Start();
+													
+													break;
+												default:
+													throw new Exception("Önceden Tanımlanmamış");
+											}
+										}
+										else
+										{
+											Console.WriteLine("Mesaj İşlenmedi.");
+										}
+									}
+									catch (Exception ex)
+									{
+										Console.WriteLine("Mesaj İşleme Hatası: " + ex.ToString());
+									}
+								}
+							}
+							catch (Exception ex)
+							{
+								Console.WriteLine(ex.ToString());
+							}
+						}
+					}
+				}
+				catch (Exception Ex)
+				{
+					Console.WriteLine(Ex.ToString());
+				}
+			}
+			
+		    Client.Close();
+		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
