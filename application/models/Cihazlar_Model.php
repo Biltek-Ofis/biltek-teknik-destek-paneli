@@ -469,8 +469,11 @@ class Cihazlar_Model extends CI_Model
         $result = $this->db->reset_query()->where($where)->order_by('id', 'DESC')->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
-    public function cihazlarTumuJQ($sorumlu = "", $limit = "", $offset = "", $spesifik = array(), $arama = "")
+    public function cihazlarTumuJQ($sorumlu = "", $limit = "", $offset = "", $spesifik = array(), $arama = "", $dondurme = FALSE)
     {
+        if(count($spesifik) == 0 && $dondurme){
+            throw new Exception("Specifik boşsa değer döndürülemez");
+        }
         $where = array();
         if ($sorumlu != "") {
             $where["sorumlu"] = $sorumlu;
