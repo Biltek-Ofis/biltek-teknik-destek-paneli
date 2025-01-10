@@ -16,7 +16,9 @@ if($ayarlar->kis_modu == 1){
 		$.ajaxSetup({
 			error: function(xhr, status, error) {
 				//alert("An AJAX error occured: " + status + "\nError: " + error + "\nError detail: " + xhr.responseText);
-				console.log("An AJAX error occured: " + status + "\nError: " + error + "\nError detail: " + xhr.responseText);
+				if(error != "abort"){				
+					console.log("An AJAX error occured: " + status + "\nError: " + error + "\nError detail: " + xhr.responseText);
+				}
 			} 
 		});
 	});
