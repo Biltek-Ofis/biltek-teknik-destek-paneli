@@ -1519,7 +1519,7 @@ echo '
 
 echo '$(document).ready(function() {
             cihazlariGetir(0, "");
-            $("#cihaz_tablosu_ara").on("keyup", function(e) {
+            $("#cihaz_tablosu_ara").on("keydown", function(e) {
                 var k = e.keyCode;
                 if (k == 20 /* Caps lock */
                     || k == 16 /* Shift */
