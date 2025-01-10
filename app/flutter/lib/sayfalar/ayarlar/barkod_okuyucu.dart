@@ -1,9 +1,10 @@
 import 'package:biltekteknikservis/utils/buttons.dart';
-import 'package:biltekteknikservis/utils/islemler.dart';
 import 'package:biltekteknikservis/utils/shared_preferences.dart';
 import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+
+import '../../utils/barkod_okuyucu.dart';
 
 typedef OnBOKaydet = Function(bool durum, bool elle);
 
@@ -25,6 +26,8 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
   final TextEditingController portController = TextEditingController();
   FocusNode portFocus = FocusNode();
 
+  BarkodOkuyucu? barkodOkuyucu;
+
   @override
   void initState() {
     super.initState();
@@ -32,15 +35,12 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
       if (mounted) {
         FocusScope.of(context).requestFocus(ipFocus);
       }
-      String? ip = await SharedPreference.getString(SharedPreference.barkodIP);
-      int? port = await SharedPreference.getInt(SharedPreference.barkodPort);
-      if (ip != null) {
-        ipController.text = ip;
-      }
-      if (port == null) {
-        portController.text = "9200";
+      BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+      if (barkodOkuyucu != null) {
+        ipController.text = barkodOkuyucu.ip;
+        portController.text = barkodOkuyucu.port.toString();
       } else {
-        portController.text = port.toString();
+        portController.text = BarkodOkuyucu.varsayilanPort.toString();
       }
     });
   }
@@ -139,7 +139,7 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
 
       navigatorState.pop();
       widget.onBOKaydet?.call(true, elle);
-      await Islemler.barkodOkuyucuAc("eslesti");
+      await barkodOkuyucu?.eslestir();
     } on Exception catch (e) {
       debugPrint(e.toString());
       navigatorState.pop();
