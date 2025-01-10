@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:biltekteknikservis/ayarlar.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/sayfalar/webview.dart';
+import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
 
@@ -78,9 +79,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       kullaniciID: widget.kullanici.id,
                       servisNo: cihaz!.servisNo,
                     );
-                    await Islemler.barkodOkuyucuAc(cihaz!.servisNo.toString());
+                    BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+                    await barkodOkuyucu?.servisNo(cihaz!.servisNo);
                   },
-                  icon: Icon(Icons.computer),
+                  icon: Icon(Icons.desktop_windows),
                 ),
               if (cihaz != null)
                 IconButton(
