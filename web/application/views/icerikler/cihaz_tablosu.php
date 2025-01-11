@@ -168,7 +168,7 @@ echo '<script>
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-          cihazlariGetir(cihazlarSayfa, cihazlarArama);
+          cihazlariGetir(cihazlarSayfa, cihazlarArama, false);
           $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
@@ -1500,7 +1500,7 @@ echo '
               var cihazlariGetirPost;
               var sayfalariGuncellePost;
               function sayfaButonuGetir(sayfa, aktif, devredisi, tiklanabilir, text, arama){
-                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\')"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
+                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', true)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
               }
               function sayfalariGuncelle(sayfa, arama){
                 if (sayfalariGuncellePost !== undefined)
@@ -1535,7 +1535,7 @@ echo '
                           }
                         }else if(toplamSayfa - sayfa >= 4 && sayfa >= 4){
                           console.log(3);
-                          butonlar += \'<li class="paginate_button page-item"><a href="javascript:void(0)"\' + ( sayfa == 1 ? "" : \' onclick="cihazlariGetir(1, \\\'\'+donusturOnclick(arama)+\'\\\')"\' ) + \' class="page-link">1</a></li>\';
+                          butonlar += sayfaButonuGetir(1, false, false, sayfa != 1, 1, arama);
                           butonlar += sayfaButonuGetir(0, false, true, false, "…", arama);
                           for (let i = sayfa - 1; i <= sayfa + 1; i++) {
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
@@ -1556,7 +1556,7 @@ echo '
                       
                 });
               }
-              function cihazlariGetir(sayfa, arama){     
+              function cihazlariGetir(sayfa, arama, kaydir){     
                 if (cihazlariGetirPost !== undefined)
                 {
                   cihazlariGetirPost.abort();
@@ -1582,13 +1582,16 @@ echo '
                   cihazlarTablosu.draw();
                   cihazlarTablosu.columns.adjust();
                   $(".datatable_processing").hide();
+                  if(kaydir){
+                    $("html, body").scrollTop($(document).height()-$(window).height());
+                  }
                 }).fail(function(xhr, status, error) {
                   $(".datatable_processing").hide();
                 });
               }
 ';
 echo '$(document).ready(function() {
-            cihazlariGetir(1, "");
+            cihazlariGetir(1, "", false);
             $("#cihaz_tablosu_wrapper > .row:nth-child(2)").append(\'<div class="datatable_processing"></div>\');
             $(".datatable_processing").html(\'<div class="flex-wrapper" style="margin: auto;"><div class="yukleniyorDaire"></div></div>\');
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
@@ -1619,7 +1622,7 @@ echo '$(document).ready(function() {
                 }
                         
                 cihazlarArama = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(1, cihazlarArama);
+                cihazlariGetir(1, cihazlarArama, false);
             });
         $("#cihaz_tablosu_ara").keyup(function(){
         
@@ -1730,7 +1733,7 @@ echo '
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
-            cihazlariGetir(cihazlarSayfa, cihazlarArama);
+            cihazlariGetir(cihazlarSayfa, cihazlarArama, false);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
               $("#cihaziSilModal").modal("hide");
