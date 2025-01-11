@@ -637,8 +637,7 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazlarTekPersonelTumuJQ($sorumlu_personel)
     {
-        $result = $this->cihazlarTumuJQ($sorumlu_personel);
-        return $this->cihazVerileriniDonustur($result );
+        return $this->cihazlarTumuJQ($sorumlu_personel);
     }
     public $telefon_numarasi_bos = "+90 (___) ___-____";
     public function cihazPost($yeni = TRUE)
