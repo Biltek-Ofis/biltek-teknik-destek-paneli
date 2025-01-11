@@ -8,7 +8,7 @@
             "name": "teknikservis",
             "request": "launch",
             "type": "dart",
-            "program": "app/flutter/lib/main.dart",
+            "program": "flutter/lib/main.dart",
             "toolArgs": [
                 "--dart-define-from-file=.env",
             ],
@@ -18,7 +18,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "app/flutter/lib/main.dart",
+            "program": "flutter/lib/main.dart",
             "toolArgs": [
                 "--dart-define-from-file=.env",
             ],
@@ -28,7 +28,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "app/flutter/lib/main.dart",
+            "program": "flutter/lib/main.dart",
             "toolArgs": [
                 "--dart-define-from-file=.env",
             ],
