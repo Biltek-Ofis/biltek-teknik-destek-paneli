@@ -53,26 +53,18 @@ class Cihazyonetimi extends Varsayilancontroller
 	public function cihazlarTumuJQ()
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
-			$spesifik = $this->input->post('spesifik');
-			$limit = $this->input->post("limit");
-        	$offset = $this->input->post("offset");
-			if(!isset($limit)){
-				$limit = "";
-			}
-			if(!isset($offset)){
-				$offset = "";
-			}
-        	$arama = $this->input->post("arama");
-			if(!isset($arama)){
-				$arama = "";
-			}
-			if(isset($spesifik)){
-				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("", $limit, $offset, $spesifik, $arama, TRUE));
-			}else{
-				echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ("", $limit, $offset, array(), $arama));
-			}
+			echo json_encode($this->Cihazlar_Model->cihazlarTumuJQ());
 		}
 	}
+	
+    public function cihazlarTumuSayi()
+    {
+        if ($this->Giris_Model->kullaniciGiris()) {
+            echo $this->Cihazlar_Model->cihazlarTumuTablo()->num_rows();
+        }else{
+            echo 1;
+        }
+    }
 	public function sonCihazJQ()
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {

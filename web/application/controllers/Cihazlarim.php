@@ -34,19 +34,16 @@ class Cihazlarim extends Varsayilancontroller
     public function cihazlarTumuJQ()
     {
         if ($this->Giris_Model->kullaniciGiris()) {
-            $limit = $this->input->post("limit");
-        	$offset = $this->input->post("offset");
-			if(!isset($limit)){
-				$limit = "";
-			}
-			if(!isset($offset)){
-				$offset = "";
-			}
-        	$arama = $this->input->post("arama");
-			if(!isset($arama)){
-				$arama = "";
-			}
-            echo json_encode($this->Cihazlar_Model->cihazlarTekPersonelTumuJQ($this->kullaniciID, $limit, $offset, $arama));
+            echo json_encode($this->Cihazlar_Model->cihazlarTekPersonelTumuJQ($this->kullaniciID));
+        }
+    }
+    
+    public function cihazlarTumuSayi()
+    {
+        if ($this->Giris_Model->kullaniciGiris()) {
+            echo $this->Cihazlar_Model->cihazlarTumuTablo($this->kullaniciID)->num_rows();
+        }else{
+            echo 1;
         }
     }
     public function cihazSil($id, $tur)
