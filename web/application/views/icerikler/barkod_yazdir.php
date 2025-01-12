@@ -112,7 +112,7 @@ echo '<body onafterprint="self.close()" class="kis_modu_yok">
         </thead>
         <tbody class="p-1">
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="5"><div class="icerik">' . $ayarlar->site_basligi . '</div></td>
+            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="5"><div class="icerik">' . $ayarlar->barkod_ad . '</div></td>
             <td class="p-0 pl-1 pr-1 m-0 text-right" colspan="7"><div class="icerik">' . ($test ? "01.01.2020" : substr($cihaz->tarih, 0, -5)) . '</div></td>
         </tr>
         <tr>
