@@ -10,9 +10,9 @@ echo '<script>
     }
     $(document).ready(function(){
         $("#db_telefon").inputmask("+99 (999) 999-9999");
-        parantezEkle($("#db_baslik").val());
-        $("#db_baslik").keyup(function(){
-            parantezEkle($("#db_baslik").val());
+        parantezEkle($("#db_barkod_ad").val());
+        $("#db_barkod_ad").keyup(function(){
+            parantezEkle($("#db_barkod_ad").val());
         });
     });
     </script>';
@@ -41,7 +41,7 @@ echo '<section class="content">
                     <h4>Genel Ayarlar</h4>
                     <hr>
                     <div class="form-group col">
-                        <label for="db_baslik">Şirket Adı (Kısa)</label>
+                        <label for="db_baslik">Site Başlığı</label>
                         <input id="db_baslik" name="db_baslik" autocomplete="off" class="form-control" type="text" placeholder="Site Başlığı" value="' . $ayarlar->site_basligi . '" required>
                     </div>
                     <div class="form-group col">
@@ -66,6 +66,22 @@ echo '<section class="content">
                     </div>
                     <h4>Barkod Ayarları</h4>
                     <hr>
+                    <div class="form-group col">
+                        <label for="db_barkod_ad">Barkodda Görünecek Şirket Adı</label>
+                        <div class="input-group mb-2">
+                            <input id="db_barkod_ad" name="db_barkod_ad" autocomplete="off" class="form-control" type="text" placeholder="Ad" value="' . $ayarlar->barkod_ad . '" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group col">
+                        <label for="db_barkod_sirket_adi_boyutu">Şirket Adı <span id="baslik_parantez"></span>ve Tarih Boyutu</label>
+                        <div class="input-group mb-2">
+                            <input id="db_barkod_sirket_adi_boyutu" name="db_barkod_sirket_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . $ayarlar->barkod_sirket_adi_boyutu  . '" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">pt</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group col">
                         <label for="db_barkod_en">En</label>
                         <div class="input-group mb-2">
@@ -106,15 +122,6 @@ echo '<section class="content">
                         <label for="db_barkod_musteri_adi_boyutu">Müşteri Adı Boyutu</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_musteri_adi_boyutu" name="db_barkod_musteri_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . $ayarlar->barkod_musteri_adi_boyutu  . '" required>
-                            <div class="input-group-append">
-                                <div class="input-group-text">pt</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col">
-                        <label for="db_barkod_sirket_adi_boyutu">Şirket Adı <span id="baslik_parantez"></span>ve Tarih Boyutu</label>
-                        <div class="input-group mb-2">
-                            <input id="db_barkod_sirket_adi_boyutu" name="db_barkod_sirket_adi_boyutu" autocomplete="off" class="form-control" type="number" placeholder="Müşteri Adı Boyutu" value="' . $ayarlar->barkod_sirket_adi_boyutu  . '" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">pt</div>
                             </div>

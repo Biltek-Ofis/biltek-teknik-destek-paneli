@@ -230,6 +230,10 @@ class Yonetim extends Varsayilancontroller
 			if(isset($TABLO_OGE)){
 				$veri["tablo_oge"] = $TABLO_OGE;
 			}
+			$BARKOD_AD = $this->input->post("db_barkod_ad");
+			if(isset($BARKOD_AD)){
+				$veri["barkod_ad"] = $BARKOD_AD;
+			}
 			$BARKOD_EN = $this->input->post("db_barkod_en");
 			if(isset($BARKOD_EN)){
 				$veri["barkod_en"] = $BARKOD_EN;
