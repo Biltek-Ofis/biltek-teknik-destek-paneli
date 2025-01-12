@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Giriş</title>';
+    <title>' . (isset($ayarlar->site_basligi) ?  $ayarlar->site_basligi : "") . '</title>';
 $this->load->view("inc/meta");
 $this->load->view("inc/styles");
 echo '<link rel="stylesheet" href="' . base_url("plugins/icheck-bootstrap/icheck-bootstrap.min.css") . '">';
