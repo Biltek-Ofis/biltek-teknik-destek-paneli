@@ -1,13 +1,14 @@
 <?php
 
 $ayarlar = $this->Ayarlar_Model->getir();
+$kis_modu = $this->Ayarlar_Model->kis_modu();
 echo '
 <style>
 :root {
   --transparan: 0.3;
   --transparan-kirmizi: 0.4;
   ';
-  if($ayarlar->kis_modu == 1){
+  if($kis_modu){
     echo '--yazi-rengi: #ffffff;';
   }else{
     echo '--yazi-rengi: #1f2d3d;';
