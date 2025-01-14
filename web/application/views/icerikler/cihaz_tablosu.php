@@ -168,7 +168,7 @@ echo '<script>
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-          cihazlariGetir(cihazlarSayfa, cihazlarArama, false);
+          cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
           $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
@@ -1498,8 +1498,10 @@ echo '
               var cihazlarArama = "";
               var cihazlariGetirPost;
               var sayfalariGuncellePost;
+              var cihazlarOrderIsim = "";
+              var cihazlarOrderDurum = "";
               function sayfaButonuGetir(sayfa, aktif, devredisi, tiklanabilir, text, arama){
-                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', true)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
+                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', true, cihazlarOrderIsim, cihazlarOrderDurum)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
               }
               function sayfalariGuncelle(sayfa, arama){
                 if (sayfalariGuncellePost !== undefined)
@@ -1555,17 +1557,21 @@ echo '
                       
                 });
               }
-              function cihazlariGetir(sayfa, arama, kaydir){     
+              function cihazlariGetir(sayfa, arama, kaydir, orderIsim, orderDurum){     
                 if (cihazlariGetirPost !== undefined)
                 {
                   cihazlariGetirPost.abort();
                 }
                 $(".datatable_processing").css("height", $("#cihaz_tablosu_wrapper > .row:nth-child(2) > div:first-child").height());
                 $(".datatable_processing").show();
+                cihazlarOrderIsim = orderIsim;
+                cihazlarOrderDurum = orderDurum;
                 cihazlariGetirPost = $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
                     limit: '.$ayarlar->tablo_oge.',
                     sayfa: sayfa,
-                    arama: arama
+                    arama: arama,
+                    orderIsim: orderIsim, 
+                    orderDurum: orderDurum
                 }).done(function(data) {
                   sayfalariGuncelle(sayfa, arama);
                   cihazlarSayfa = sayfa;
@@ -1588,9 +1594,34 @@ echo '
                   $(".datatable_processing").hide();
                 });
               }
+              function siralamaGuncelle(div, sira){
+              
+                var orderIsim = div.text();
+                if(orderIsim == "Detaylar"){
+                  return;
+                }
+                var desc = div.hasClass("sorting_asc");
+
+                $(".sorting").each(function() {
+                  //$(this).removeClass("sorting_asc"); // yukari
+                  //$(this).removeClass("sorting_desc");
+                });
+                if(desc){
+                  //div.addClass("sorting_desc");
+                  orderDurum = "DESC";
+                }else{
+                  //div.addClass("sorting_asc");
+                  orderDurum = "ASC";
+                }
+                var od = [ sira, orderDurum.toLowerCase()];
+                console.log(cihazlarTablosu.order());
+                cihazlarTablosu.order(od).draw();
+                console.log(cihazlarTablosu.order());
+                cihazlariGetir(cihazlarSayfa, cihazlarArama, false, orderIsim, orderDurum);
+              }
 ';
 echo '$(document).ready(function() {
-            cihazlariGetir(1, "", false);
+            cihazlariGetir(1, "", false, cihazlarOrderIsim, cihazlarOrderDurum);
             $("#cihaz_tablosu_wrapper > .row:nth-child(2)").append(\'<div class="datatable_processing"></div>\');
             $(".datatable_processing").html(\'<div class="flex-wrapper" style="margin: auto;"><div class="yukleniyorDaire"></div></div>\');
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
@@ -1621,8 +1652,17 @@ echo '$(document).ready(function() {
                 }
                         
                 cihazlarArama = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(1, cihazlarArama, false);
+                cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
             });
+            var orderSira = 0;
+        $(".sorting").each(function() {
+            var el = $(this);
+            var sira = orderSira;
+            $(this).off("click").on("click", function(){
+              siralamaGuncelle(el, sira);
+            });
+            orderSira++;
+        });
         $("#cihaz_tablosu_ara").keyup(function(){
         
             
@@ -1732,7 +1772,7 @@ echo '
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
-            cihazlariGetir(cihazlarSayfa, cihazlarArama, false);
+            cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
               $("#cihaziSilModal").modal("hide");
