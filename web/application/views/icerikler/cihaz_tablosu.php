@@ -199,7 +199,10 @@ echo '<script>
   }
   function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
-    suankiCihaz = id;
+    suankiCihaz = parseInt(id);
+    
+    cihazBilgileriniGetir();
+
     butonDurumu(guncel_durum_sayi);
     $("#duzenleBtn").prop("disabled", true);
     $("#silBtn").prop("disabled", true);
@@ -253,11 +256,7 @@ echo '<script>
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
     $("#silBtn").attr("onclick", "silModaliGoster(\'" + id + "\',\'" + servis_no + "\',\'" + musteri_adi + "\')");
 
-
-
     $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("show");
-
-    cihazBilgileriniGetir();
   }
   function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, sorumlu){
 
