@@ -472,10 +472,17 @@ class Cihazlar_Model extends CI_Model
     public function cihazlarTumuJQ($sorumlu = "")
     {
         $result = $this->cihazlarTumuTablo($sorumlu)->result();
+        
+        //throw new Exception($this->cihazlarTumuSelect($sorumlu)->get_compiled_select());
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTumuTablo($sorumlu = "")
-    {   $spesifik = $this->input->post('spesifik');
+    {   
+        
+        return $this->cihazlarTumuSelect($sorumlu)->get($this->cihazlarTabloAdi());
+    }
+    public function cihazlarTumuSelect($sorumlu = ""){
+        $spesifik = $this->input->post('spesifik');
         $dondurme = FALSE;
         if(!isset($spesifik)){
             $spesifik = array();
@@ -521,15 +528,72 @@ class Cihazlar_Model extends CI_Model
             $result = $result->or_like("cihaz_modeli", $arama);
             $result = $result->group_end();
         }
+
+        $orderIsim = $this->input->post("orderIsim");
+        if(!isset($orderIsim)){
+            $orderIsim = "";
+        }
+
+        $orderDurum = $this->input->post("orderDurum");
+        if(!isset($orderDurum)){
+            $orderDurum = "";
+        }
+        if(strlen($orderIsim) > 0){
+            switch ($orderIsim) {
+                case 'Servis No':
+                    $orderIsim = "servis_no";
+                    break;
+                case 'Müşteri Adı':
+                    $orderIsim = "musteri_adi";
+                    break;
+                case 'GSM':
+                    $orderIsim = "telefon_numarasi";
+                    break;
+                case 'Tür':
+                    $orderIsim = "cihaz_turu";
+                    break;
+                case 'Cihaz':
+                    $orderIsim = "cihaz";
+                    break;
+                case 'Giriş Tarihi':
+                    $orderIsim = "tarih";
+                    break;
+                case 'Güncel Durum':
+                    $orderIsim = "guncel_durum";
+                    break;
+                case 'Sorumlu Personel':
+                    $orderIsim = "sorumlu";
+                    break;
+                
+                default:
+                    $orderIsim = "";
+                    $orderDurum = "";
+            }
+        }
+        $orderText = 'id DESC';
+        
         if(strlen($limit) > 0 && strlen($sayfa) > 0){
             
-            $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id")->order_by($this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC");
-
+            $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id");
+            if(strlen($orderIsim) > 0 && strlen($orderDurum)){
+                if($orderIsim == "cihaz"){
+                    $orderText = $this->cihazlarTabloAdi() . ".".$orderIsim." ".$orderDurum.", ". $this->cihazlarTabloAdi() . ".cihaz_modeli ".$orderDurum;
+                }else if($orderIsim == "guncel_durum"){
+                    $orderText = $this->cihazDurumlariTabloAdi() . ".siralama ".$orderDurum;
+                }else{
+                    $orderText = $this->cihazlarTabloAdi() . ".".$orderIsim." ".$orderDurum;
+                }
+            }
+            else{
+                $orderText = $this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC";
+            }
+            
+            $result = $result->order_by($orderText);
             $result = $result->limit($limit, ($sayfa - 1) * $limit);
         }else{
-            $result = $result->order_by('id', 'DESC');
+            $result = $result->order_by("id", "DESC");
         }
-        return $result->get($this->cihazlarTabloAdi());
+        return $result;
     }
     public function cihazlarTumuApp($sorumlu = "", $spesifik = array(), $sira = 0, $limit = 50, $arama = "")
     {
