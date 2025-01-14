@@ -5,7 +5,8 @@ echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sourc
 <link rel="stylesheet" href="' . base_url("dist/css/style.css") . '">';
 
 $ayarlar = $this->Ayarlar_Model->getir();
-if($ayarlar->kis_modu == 1){
+$kis_modu = $this->Ayarlar_Model->kis_modu();
+if($kis_modu){
 	echo '
 <style>
     :root {

@@ -9,7 +9,8 @@ echo '
 <script>
 	$(document).ready(function(){';
 $ayarlar = $this->Ayarlar_Model->getir();
-if($ayarlar->kis_modu == 1){
+$kis_modu = $this->Ayarlar_Model->kis_modu();
+if($kis_modu){
 	echo 'karYagdir("#e6caca", 100);';
 }
 	echo '

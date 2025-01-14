@@ -50,4 +50,16 @@ class Kullanici extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
+	public function tema($tema = "oto")
+	{
+		if ($this->Giris_Model->kullaniciGiris()) {
+			$kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+			$this->Kullanicilar_Model->duzenle($kullanici["id"], array(
+				"tema"=> $tema,
+			));
+			redirect(base_url());
+		} else {
+			$this->Kullanicilar_Model->girisUyari("cikis");
+		}
+	}
 }
