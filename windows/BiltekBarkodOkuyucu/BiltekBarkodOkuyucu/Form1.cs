@@ -190,8 +190,7 @@ namespace BiltekBarkodOkuyucu
 			
 		    Client.Close();
 		}
-
-		private void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
 		{
 			string ip = GetLocalIPAddress();
 			if (string.IsNullOrEmpty(ip))
@@ -217,7 +216,12 @@ namespace BiltekBarkodOkuyucu
 			checkBox1.Checked = !string.IsNullOrEmpty(baslangicDurumu);
 			Baslat();
 		}
-		string reg = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+			if (!Properties.Settings.Default.ilkAcilis)
+				Hide();
+        }
+        string reg = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 		private void BaslangicDurumu(bool durum)
 		{
 			try
