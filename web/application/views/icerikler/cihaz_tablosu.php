@@ -1501,7 +1501,7 @@ echo '
               var cihazlarOrderIsim = "";
               var cihazlarOrderDurum = "";
               function sayfaButonuGetir(sayfa, aktif, devredisi, tiklanabilir, text, arama){
-                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', true, cihazlarOrderIsim, cihazlarOrderDurum)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
+                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', kaydirmaDurumu, cihazlarOrderIsim, cihazlarOrderDurum)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
               }
               function sayfalariGuncelle(sayfa, arama){
                 if (sayfalariGuncellePost !== undefined)
@@ -1517,7 +1517,11 @@ echo '
   
                         $("#cihaz_tablosu_wrapper > .row:nth-child(3) > div:first-child").html(\'<div class="dataTables_info">\'+toplamCihaz+\' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor</div>\');
                         
-                        $("#cihaz_tablosu_wrapper > .row:nth-child(3) > div:last-child").html(\'<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination"></ul></div>\');
+                        var peginationDiv = function(ekDiv){
+                          return \'<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
+                        }
+                        $("#cihaz_tablosu_wrapper > .row:nth-child(1) > div:last-child").html(peginationDiv(" ust"));
+                        $("#cihaz_tablosu_wrapper > .row:nth-child(3) > div:last-child").html(peginationDiv(""));
                       
                         var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
                         if(sayfa <= 4 && toplamSayfa > 7){
@@ -1550,7 +1554,14 @@ echo '
                           }
                         }
                         butonlar += sayfaButonuGetir(sayfa + 1, false, sayfa == toplamSayfa, sayfa != toplamSayfa, "Sonraki", arama);
-                        $(".dataTables_paginate .pagination").html(butonlar);
+                        $(".dataTables_paginate .pagination").each(function(){
+                          var div = $(this);
+                          if(div.hasClass("ust")){
+                            $(this).html(butonlar.replaceAll("kaydirmaDurumu", "false"));
+                          }else{
+                            $(this).html(butonlar.replaceAll("kaydirmaDurumu", "true"));
+                          }
+                        });
                       }else{
                         $("#cihaz_tablosu_wrapper .row:nth-child(3) > div:first-child").html(\'<div class="dataTables_info">Kayıt Yok</div>\');
                       }
@@ -1627,7 +1638,7 @@ echo '$(document).ready(function() {
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
             $(".datatable_processing").css("position", "absolute");
             $(".datatable_processing").css("display", "flex");
-            $(".datatable_processing").css("top", "0");
+            $(".datatable_processing").css("top", $(".dataTables_paginate .pagination").height());
             $(".datatable_processing").css("left", "0");
             $(".datatable_processing").css("width", "100%");
             $(".datatable_processing").hide();
