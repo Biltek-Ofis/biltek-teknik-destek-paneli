@@ -1,17 +1,18 @@
 <?php
 
 $ayarlar = $this->Ayarlar_Model->getir();
-$kis_modu = $this->Ayarlar_Model->kis_modu();
+$tema = $this->Ayarlar_Model->kullaniciTema();
 echo '
 <style>
 :root {
   --transparan: 0.3;
   --transparan-kirmizi: 0.4;
   ';
-  if($kis_modu){
-    echo '--yazi-rengi: #ffffff;';
-  }else{
+  if($tema->id == 0){
     echo '--yazi-rengi: #1f2d3d;';
+  }else{
+    
+    echo '--yazi-rengi: '.$tema->yazi_rengi.'';
   }
   
   echo '

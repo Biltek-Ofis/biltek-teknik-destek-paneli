@@ -48,7 +48,7 @@ echo '<style>
     });
     </script>
 </head>';
-    echo '<body onafterprint="kargoYazdirildi()" class="kis_modu_yok">';
+    echo '<body onafterprint="kargoYazdirildi()" class="ozel_tema_yok">';
     
 echo ' <table class="table table-bordered table-sm w-100">
         <tbody>

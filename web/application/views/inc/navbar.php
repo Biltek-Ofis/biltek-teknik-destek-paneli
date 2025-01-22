@@ -1,7 +1,8 @@
 <?php
 $ayarlar = $this->Ayarlar_Model->getir();
-$kis_modu = $this->Ayarlar_Model->kis_modu();
 
+$tema = $this->Ayarlar_Model->kullaniciTema();
+$asilTema = $this->Ayarlar_Model->kullaniciAsilTema();
 $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
 echo '<script>
 $(document).ready(function(){
@@ -177,21 +178,21 @@ echo '<li class="nav-item dropdown">
     <ul class="navbar-nav ml-auto">
     
     <li class="nav-item">
-      <a href="' . base_url("kullanici") . '" class="nav-link" style="'.($kis_modu ? "color:white;" : "color:black;").'">' . $kullanicibilgileri123["ad_soyad"] . '</a>
+      <a href="' . base_url("kullanici") . '" class="nav-link" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'">' . $kullanicibilgileri123["ad_soyad"] . '</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" role="button" style="'.($kis_modu ? "color:white;" : "color:black;").'" data-toggle="modal" data-target="#temaSecModal">
+      <a class="nav-link" href="#" role="button" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'" data-toggle="modal" data-target="#temaSecModal">
         <i class="fas fa-themeisle"></i> Tema
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt" style="'.($kis_modu ? "color:white;" : "color:black;").'"></i>
+        <i class="fas fa-expand-arrows-alt" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'"></i>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="' . base_url("cikis") . '" role="button">
-        <i class="fas fa-right-from-bracket" style="'.($kis_modu ? "color:white;" : "color:black;").'"></i>
+        <i class="fas fa-right-from-bracket" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'"></i>
       </a>
     </li>
   </ul>
@@ -213,35 +214,29 @@ echo '<div class="modal fade" id="temaSecModal" data-backdrop="static" data-keyb
             </style>
                <div class="row">
                 <div class="col-4">
-                  <a href="'.base_url("kullanici/tema/oto").'" style="'.($kis_modu ? "color:white;" : "color:black;").'">
+                  <a href="'.base_url("kullanici/tema/0").'" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'">
                     <div class="col-2 siteTema">
-                      <img src="'.base_url("dist/img/temalar/".($this->Ayarlar_Model->kis_modu_duz() ? "kis.gif" : "varsayilan.png")).'" width="200" heigh="100"/>
+                      <img src="'.base_url("dist/img/temalar/".$this->Ayarlar_Model->siteTema()->onizleme_resmi).'" width="200" heigh="100"/>
                     </div>
                     <div class="col-10 text-center">
-                      <input type="radio"'.($kullanicibilgileri123["tema"] == "oto" ? " checked" : "").'/> Otomatik (Sitenin Güncel Teması)
+                      <input type="radio"'.($asilTema->id == 0 || $asilTema->id == "0" ? " checked" : "").'/> Otomatik (Sitenin Güncel Teması)
                     </div> 
                   </a>
-                </div>
-                <div class="col-4">
-                  <a href="'.base_url("kullanici/tema/varsayilan").'" style="'.($kis_modu ? "color:white;" : "color:black;").'">
+                </div>';
+                $temalar = $this->Ayarlar_Model->temalar();
+                foreach($temalar as $gosterimTema){
+                  echo '<div class="col-4 siteTema">
+                  <a href="'.base_url("kullanici/tema/".$gosterimTema->id).'" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'">
                     <div class="col-2 siteTema">
-                      <img src="'.base_url("dist/img/temalar/varsayilan.png").'" width="200" heigh="100"/>
+                      <img src="'.base_url("dist/img/temalar/".$gosterimTema->onizleme_resmi).'" width="200" heigh="100"/>
                     </div>
                     <div class="col-10 text-center">
-                      <input type="radio"'.($kullanicibilgileri123["tema"] == "varsayilan" ? " checked" : "").'/> Varsayılan
+                      <input type="radio"'.($tema->id == $gosterimTema->id ? " checked" : "").'/> '.$gosterimTema->isim.'
                     </div> 
                   </a>
-                </div>
-                <div class="col-4 siteTema">
-                  <a href="'.base_url("kullanici/tema/kis").'" style="'.($kis_modu ? "color:white;" : "color:black;").'">
-                    <div class="col-2 siteTema">
-                      <img src="'.base_url("dist/img/temalar/kis.gif").'" width="200" heigh="100"/>
-                    </div>
-                    <div class="col-10 text-center">
-                      <input type="radio"'.($kullanicibilgileri123["tema"] == "kis" ? " checked" : "").'/> Kış Teması
-                    </div> 
-                  </a>
-                </div>
+                </div>';
+                }
+                echo '
                </div>
             </div>
 <div class="modal-footer">
