@@ -9,8 +9,8 @@ echo '
 <script>
 	$(document).ready(function(){';
 $ayarlar = $this->Ayarlar_Model->getir();
-$kis_modu = $this->Ayarlar_Model->kis_modu();
-if($kis_modu){
+$kar_yagisi = $this->Ayarlar_Model->kar_yagisi();
+if($kar_yagisi){
 	echo 'karYagdir("#e6caca", 100);';
 }
 	echo '

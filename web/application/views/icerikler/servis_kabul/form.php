@@ -28,7 +28,7 @@ echo 'body{
 echo '</style>';
 echo '</head>';
 
-echo '<body onafterprint="self.close()" class="kis_modu_yok">
+echo '<body onafterprint="self.close()" class="ozel_tema_yok">
     <div class="dondur">
         <div class="row">
             ';

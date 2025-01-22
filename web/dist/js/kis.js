@@ -1,6 +1,6 @@
 function karYagdir(karRengi, karSayisi) {
 	var biltekKarAnim = document.getElementById("biltek--kis-anim");
-	if (!biltekKarAnim && !document.body.classList.contains("kis_modu_yok")) {
+	if (!biltekKarAnim && !document.body.classList.contains("ozel_tema_yok")) {
 		let embRand2 = function (min, max) {
 				return Math.floor(Math.random() * (max - min + 1)) + min;
 			},

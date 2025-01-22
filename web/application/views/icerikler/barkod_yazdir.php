@@ -80,7 +80,7 @@ echo '
     });
     </script>
 </head>';
-echo '<body onafterprint="self.close()" class="kis_modu_yok">
+echo '<body onafterprint="self.close()" class="ozel_tema_yok">
     <script>
     $(document).ready(function(){
         JsBarcode("#barkod", "' . ($test ? "0000000000" : $cihaz->servis_no) . '", {

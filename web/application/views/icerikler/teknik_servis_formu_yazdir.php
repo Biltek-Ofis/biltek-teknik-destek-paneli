@@ -75,7 +75,7 @@ if($bilgileri_goster){
     </script>
 </head>';
 
-echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosFormuYazdir()').'" class="kis_modu_yok">
+echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosFormuYazdir()').'" class="ozel_tema_yok">
     <table class="table table-bordered table-sm w-100">
         <tbody>
             <tr>
