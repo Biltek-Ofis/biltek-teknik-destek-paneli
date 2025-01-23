@@ -42,12 +42,7 @@ $tableStyle = "
                 font-size:".$ayarlar->barkod_sirket_adi_boyutu."pt !important;
             }
             table tr:last-child .icerik{
-                display: block;
                 font-size:".$ayarlar->barkod_musteri_adi_boyutu."pt !important;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                width: calc(".$ayarlar->barkod_en."mm + 10mm);
             }
             table tbody tr:last-child{
                 page-break-after: auto;
@@ -75,6 +70,10 @@ echo '
                 ' . $style . '
             }
             ' . $tableStyle . '
+            
+            .gizli{
+                color: #fff !important;
+            }
         }
     </style>
     <script>
@@ -98,7 +97,7 @@ echo '<body onafterprint="self.close()" class="ozel_tema_yok">
         $("#barkod").css({"height":"' . $ayarlar->barkod_boyutu . 'mm"});
     });
     </script>
-    <table class="table table-borderless">
+    <table class="table table-borderless m-auto">
         <thead>
             <tr>
                 <td></td>
@@ -114,21 +113,22 @@ echo '<body onafterprint="self.close()" class="ozel_tema_yok">
                 <td></td>
                 <td></td>
             </tr>
-        </thead>
+        </thead>';
+        $yaziBoyut = "19px;";
+        echo '
         <tbody class="p-1">
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="5"><div class="icerik">' . $ayarlar->barkod_ad . '</div></td>
-            <td class="p-0 pl-1 pr-1 m-0 text-right" colspan="7"><div class="icerik">' . ($test ? "01.01.2020" : substr($cihaz->tarih, 0, -5)) . '</div></td>
+            <td class="p-0 pl-1 pr-1 m-0 text-center gizli" colspan="12" style="color:#fff !important; font-size:5px; opacity:0;">A</td>
         </tr>
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="12"><div class="icerik"><svg style="width:100%;" id="barkod"></svg></div></td>
+            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12" style="font-size:'.$yaziBoyut.' !important;">YAZI 1</td>
         </tr>
-            <tr>
-                <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="12"><div class="icerik">';
-        $musteri_adi = $test ? "Müşteri Adı" : $cihaz->musteri_adi;
-        echo $musteri_adi;
-        echo ' </div></td>
-            </tr>
+        <tr>
+            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12"> </td>
+        </tr>
+        <tr>
+            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12" style="font-size:'.$yaziBoyut.' !important;">YAZI 2</td>
+        </tr>
         </tbody>
     </table>
 </body>
