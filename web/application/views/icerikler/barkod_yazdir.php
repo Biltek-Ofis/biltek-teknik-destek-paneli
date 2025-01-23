@@ -42,12 +42,7 @@ $tableStyle = "
                 font-size:".$ayarlar->barkod_sirket_adi_boyutu."pt !important;
             }
             table tr:last-child .icerik{
-                display: block;
                 font-size:".$ayarlar->barkod_musteri_adi_boyutu."pt !important;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                width: calc(".$ayarlar->barkod_en."mm + 10mm);
             }
             table tbody tr:last-child{
                 page-break-after: auto;
@@ -125,9 +120,14 @@ echo '<body onafterprint="self.close()" class="ozel_tema_yok">
         </tr>
             <tr>
                 <td class="p-0 pl-1 pr-1 m-0 text-left" colspan="12"><div class="icerik">';
-        $musteri_adi = $test ? "Müşteri Adı" : $cihaz->musteri_adi;
-        echo $musteri_adi;
-        echo ' </div></td>
+$musteri_adi = $test ? "Müşteri Adı" : $cihaz->musteri_adi;
+if (strlen($musteri_adi) > 40) {
+    // echo rtrim(explode(";;", wordwrap($musteri_adi, 35, ";;"))[0]) . '...';
+    echo rtrim(str_split($musteri_adi, 40)[0]) . '...';
+} else {
+    echo $musteri_adi;
+}
+echo '</div></td>
             </tr>
         </tbody>
     </table>
