@@ -1,45 +1,62 @@
 <?php
-echo '<!DOCTYPE html>
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<!DOCTYPE html>
 <html lang="en">
 
-<head>';
-$this->load->view("inc/meta");
-
-echo '<title>SERVİS KABUL FORMU ' . $cihaz->id . '</title>';
-
-$this->load->view("inc/styles");
-$this->load->view("inc/scripts");
-echo '<script src="' . base_url("dist/js/JsBarcode.all.min.js") . '"></script>';
-echo '<script src="' . base_url("dist/js/qrcode.min.js") . '"></script>';
-$this->load->view("inc/style_yazdir");
-$this->load->view("inc/style_yazdir_tablo");
-echo '<style>';
-echo 'body{
-        font-size:13pt !important;
-    }
-    @media print {
-        body{
-            font-size:13pt !important;
+<head>
+    <?php
+    $this->load->view("inc/meta");
+    ?>
+    <title>SERVİS KABUL FORMU <?= $cihaz->id; ?></title>
+    <?php
+    $this->load->view("inc/styles");
+    $this->load->view("inc/scripts");
+    ?>
+    <script src="<?= base_url("dist/js/JsBarcode.all.min.js"); ?>"></script>
+    <script src="<?= base_url("dist/js/qrcode.min.js"); ?>"></script>
+    <?php
+    $this->load->view("inc/style_yazdir");
+    $this->load->view("inc/style_yazdir_tablo");
+    ?>
+    <style>
+        body {
+            font-size: 13pt !important;
         }
-        @page {
-            font-size:13pt !important;
-        }
-    }';
-echo '</style>';
-echo '</head>';
 
-echo '<body onafterprint="self.close()" class="ozel_tema_yok">
+        @media print {
+            body {
+                font-size: 13pt !important;
+            }
+
+            @page {
+                font-size: 13pt !important;
+            }
+        }
+    </style>
+</head>
+
+<body onafterprint="self.close()" class="ozel_tema_yok">
     <div class="dondur">
         <div class="row">
-            ';
-$this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz, "barcode_script" => 'JsBarcode("#barcode1", "' . $cihaz->servis_no . '", {
+            <?php
+
+            $this->load->view("icerikler/servis_kabul/tablo", array(
+                "cihaz" => $cihaz,
+                "barcode_script" => 'JsBarcode("#barcode1", "' . $cihaz->servis_no . '", {
     width: 2,
     height: 40,
     displayValue: false
 });
-$("#barcode1").css({"height":"3cm"})', "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'));
-echo '<div class="col-2"></div>';
-$this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
+$("#barcode1").css({"height":"3cm"})',
+                "barcode_div" => '<svg style="max-width:20%;" id="barcode1"></svg>'
+            ));
+            ?>
+            <div class="col-2"></div>
+            <?php
+            $this->load->view("icerikler/servis_kabul/tablo", array(
+                "cihaz" => $cihaz,
+                "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
 	text: "' . base_url("cihazdurumu") . '/' . $cihaz->takip_numarasi . '",
 	width: 80,
 	height: 80,
@@ -47,16 +64,23 @@ $this->load->view("icerikler/servis_kabul/tablo", array("cihaz" => $cihaz,  "bar
 	colorLight : "#ffffff",
 	correctLevel : QRCode.CorrectLevel.H
 });
-$("#barcode2 > img").css({"margin":"auto", "width":"3cm", "height":"3cm"});', "barcode_div" => '<span style="max-width:20%;" id="barcode2"></span>'));
-echo '</div>
+$("#barcode2 > img").css({"margin":"auto", "width":"3cm", "height":"3cm"});',
+                "barcode_div" => '<span style="max-width:20%;" id="barcode2"></span>'
+            ));
+            ?>
+        </div>
     </div>
     <div class="dondur">
-        <div class="row">';
-$this->load->view("icerikler/servis_kabul/aciklama");
-echo '<div class="col-2"></div>';
-$this->load->view("icerikler/servis_kabul/aciklama");
-echo '</div>
-</div>
+        <div class="row">
+            <?php
+            $this->load->view("icerikler/servis_kabul/aciklama");
+            ?>
+            <div class="col-2"></div>
+            <?php
+            $this->load->view("icerikler/servis_kabul/aciklama");
+            ?>
+        </div>
+    </div>
 </body>
 
-</html>';
+</html>
