@@ -182,7 +182,7 @@ echo '<li class="nav-item dropdown">
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" role="button" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "").'" data-toggle="modal" data-target="#temaSecModal">
-        <i class="fas fa-themeisle"></i> Tema
+        <i class="fa-brands fa-themeisle"></i> Tema
       </a>
     </li>
     <li class="nav-item">
