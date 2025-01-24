@@ -244,8 +244,10 @@ if (count($cihaz->islemler) > 0) {
                 <td colspan="4">' . $islem->ad  . '</td>
                 <td colspan="1" class="text-center">' . $islem->miktar . '</td>
                 <td colspan="1" class="text-center">' .  $islem->birim_fiyat . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_suan . '</td>
-                <td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan . ' (' . $islem->kdv . '%)' : "") . '</td>
+                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_suan . '</td>';
+        echo '<td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan : "") . '</td>';
+        //echo '<td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan . ' (' . $islem->kdv . '%)' : "") . '</td>';
+        echo '
             </tr>';
         $toplam = $toplam + $toplam_islem_fiyati_suan;
         $kdv = $kdv + $kdv_suan;
