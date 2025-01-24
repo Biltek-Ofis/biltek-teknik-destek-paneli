@@ -149,7 +149,9 @@ class Cihazlar_Model extends CI_Model
     }
     public function cihazTurleri()
     {
-        return $this->db->reset_query()->get($this->cihazTurleriTabloAdi())->result();
+        return $this->db->reset_query()->where(array(
+            "goster"=> 1,
+        ))->order_by("siralama DESC, isim ASC")->get($this->cihazTurleriTabloAdi())->result();
     }
     public function cihazTuruEkle($veri)
     {
