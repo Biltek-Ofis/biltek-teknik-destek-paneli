@@ -6,8 +6,10 @@ import 'package:biltekteknikservis/sayfalar/webview.dart';
 import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/cihaz.dart';
+import '../utils/buttons.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
 
@@ -37,6 +39,11 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   TableBorder tableBorder = TableBorder.all(
     color: Colors.yellow.withAlpha(100),
   );
+
+  double kdvsizToplam = 0;
+  double kdvToplam = 0;
+
+  List<TableRow> fiyatlar = [];
 
   @override
   void initState() {
@@ -83,6 +90,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                     await barkodOkuyucu?.servisNo(cihaz!.servisNo);
                   },
                   icon: Icon(Icons.desktop_windows),
+                ),
+              if (cihaz != null)
+                IconButton(
+                  onPressed: () async {
+                    await _fiyatBilgisiPaylas();
+                  },
+                  icon: Icon(Icons.share),
                 ),
               if (cihaz != null)
                 IconButton(
@@ -461,54 +475,6 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                   builder: (context) {
                                     EdgeInsetsGeometry padding =
                                         EdgeInsets.all(1);
-                                    List<TableRow> rows = [];
-                                    double kdvsizToplam = 0;
-                                    double kdvToplam = 0;
-                                    for (int i = 0;
-                                        i < cihaz!.islemler.length;
-                                        i++) {
-                                      YapilanIslem islem = cihaz!.islemler[i];
-                                      if (islem.ad.isNotEmpty) {
-                                        double kdvsiz =
-                                            islem.miktar * islem.birimFiyati;
-                                        double kdv = (kdvsiz / 100) * islem.kdv;
-                                        double kdvli = kdvsiz + kdv;
-                                        kdvsizToplam += kdvsiz;
-                                        kdvToplam += kdv;
-                                        rows.add(TableRow(
-                                          children: [
-                                            Container(
-                                              padding: padding,
-                                              child: Text(islem.ad),
-                                            ),
-                                            Container(
-                                              padding: padding,
-                                              child:
-                                                  Text(islem.miktar.toString()),
-                                            ),
-                                            Container(
-                                              padding: padding,
-                                              child: Text(
-                                                  "${islem.birimFiyati} TL"),
-                                            ),
-                                            Container(
-                                              padding: padding,
-                                              child: Text(
-                                                  "${islem.kdv} ($kdv TL)"),
-                                            ),
-                                            Container(
-                                              padding: padding,
-                                              child: Text("$kdvsiz TL"),
-                                            ),
-                                            Container(
-                                              padding: padding,
-                                              child: Text("$kdvli TL"),
-                                            ),
-                                          ],
-                                        ));
-                                      }
-                                    }
-
                                     double genelToplam =
                                         kdvsizToplam + kdvToplam;
                                     return Column(
@@ -580,10 +546,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                                 ),
                                               ],
                                             ),
-                                            ...rows
+                                            ...fiyatlar
                                           ],
                                         ),
-                                        if (rows.isEmpty)
+                                        if (fiyatlar.isEmpty)
                                           Container(
                                             padding: EdgeInsets.only(top: 5),
                                             width: MediaQuery.of(context)
@@ -642,6 +608,17 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                                 ],
                                               )
                                             ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          child: DefaultButton(
+                                            onPressed: () async {
+                                              await _fiyatBilgisiPaylas();
+                                            },
+                                            text: "Fiyat Bilgisi Paylaş",
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                           ),
                                         )
                                       ],
@@ -710,11 +687,94 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     if (mounted) {
       setState(() {
         cihaz = cihazTemp;
-        yukleniyor = false;
       });
     } else {
       cihaz = cihazTemp;
+    }
+    EdgeInsetsGeometry padding = EdgeInsets.all(1);
+    List<TableRow> fiyatlarTemp = [];
+    double kdvsizToplamTemp = 0;
+    double kdvToplamTemp = 0;
+    for (int i = 0; i < cihaz!.islemler.length; i++) {
+      YapilanIslem islem = cihaz!.islemler[i];
+      if (islem.ad.isNotEmpty) {
+        double kdvsiz = islem.miktar * islem.birimFiyati;
+        double kdv = (kdvsiz / 100) * islem.kdv;
+        double kdvli = kdvsiz + kdv;
+        kdvsizToplamTemp += kdvsiz;
+        kdvToplamTemp += kdv;
+        fiyatlarTemp.add(TableRow(
+          children: [
+            Container(
+              padding: padding,
+              child: Text(islem.ad),
+            ),
+            Container(
+              padding: padding,
+              child: Text(islem.miktar.toString()),
+            ),
+            Container(
+              padding: padding,
+              child: Text("${islem.birimFiyati} TL"),
+            ),
+            Container(
+              padding: padding,
+              child: Text("${islem.kdv} ($kdv TL)"),
+            ),
+            Container(
+              padding: padding,
+              child: Text("$kdvsiz TL"),
+            ),
+            Container(
+              padding: padding,
+              child: Text("$kdvli TL"),
+            ),
+          ],
+        ));
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        kdvsizToplam = kdvsizToplamTemp;
+        kdvToplam = kdvToplamTemp;
+        fiyatlar = fiyatlarTemp;
+        yukleniyor = false;
+      });
+    } else {
+      kdvsizToplam = kdvsizToplamTemp;
+      kdvToplam = kdvToplamTemp;
+      fiyatlar = fiyatlarTemp;
       yukleniyor = false;
+    }
+  }
+
+  Future<void> _fiyatBilgisiPaylas() async {
+    if (kdvsizToplam > 0) {
+      double yeniKDV = kdvToplam > 0 ? kdvToplam : (kdvsizToplam / 100) * 20;
+      double genelToplam = kdvsizToplam + yeniKDV;
+      ShareResult shareResult = await Share.share(
+          "Fiyat $kdvsizToplam TL, fatura istiyorsanız + $yeniKDV TL KDV, Toplam $genelToplam TL yapıyor.");
+      if (shareResult.status == ShareResultStatus.success) {
+        debugPrint("Paylaşıldı");
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Fiyat Bilgisi Girilmemiş"),
+              content: Text("Fiyat bilgisi girilmediği için paylaşamazsınız."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Kapat"),
+                ),
+              ],
+            );
+          });
     }
   }
 }
