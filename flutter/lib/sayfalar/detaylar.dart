@@ -771,7 +771,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       double yeniKDV = kdvToplam > 0 ? kdvToplam : (kdvsizToplam / 100) * 20;
       double genelToplam = kdvsizToplam + yeniKDV;
       ShareResult shareResult = await Share.share(
-          "Fiyat $kdvsizToplam TL, fatura istiyorsanız + $yeniKDV TL KDV, Toplam $genelToplam TL yapıyor.");
+          "Fiyat ${_fiyatDuzelt(kdvsizToplam)} TL. Fatura istiyorsanız + ${_fiyatDuzelt(yeniKDV)} TL KDV. Toplam ${_fiyatDuzelt(genelToplam)} TL");
       if (shareResult.status == ShareResultStatus.success) {
         debugPrint("Paylaşıldı");
       }
@@ -793,5 +793,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             );
           });
     }
+  }
+
+  String _fiyatDuzelt(double n) {
+    return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
   }
 }
