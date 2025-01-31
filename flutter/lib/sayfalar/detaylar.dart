@@ -82,25 +82,6 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
               if (cihaz != null)
                 IconButton(
                   onPressed: () async {
-                    await BiltekPost.bilgisayardaAc(
-                      kullaniciID: widget.kullanici.id,
-                      servisNo: cihaz!.servisNo,
-                    );
-                    BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-                    await barkodOkuyucu?.servisNo(cihaz!.servisNo);
-                  },
-                  icon: Icon(Icons.desktop_windows),
-                ),
-              if (cihaz != null)
-                IconButton(
-                  onPressed: () async {
-                    await _fiyatBilgisiPaylas();
-                  },
-                  icon: Icon(Icons.share),
-                ),
-              if (cihaz != null)
-                IconButton(
-                  onPressed: () async {
                     String url = Ayarlar.teknikservisformu(
                       auth: widget.kullanici.auth,
                       cihazID: cihaz!.id,
@@ -116,6 +97,42 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                   },
                   icon: Icon(Icons.print),
                 ),
+              PopupMenuButton<String>(
+                onSelected: (value) async {
+                  switch (value) {
+                    case "bilgisayardaAc":
+                      await BiltekPost.bilgisayardaAc(
+                        kullaniciID: widget.kullanici.id,
+                        servisNo: cihaz!.servisNo,
+                      );
+                      BarkodOkuyucu? barkodOkuyucu =
+                          await BarkodOkuyucu.getir();
+                      await barkodOkuyucu?.servisNo(cihaz!.servisNo);
+                      break;
+                    case "fiyatPaylas":
+                      await _fiyatBilgisiPaylas();
+                      break;
+                  }
+                },
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: "bilgisayardaAc",
+                      child: ListTile(
+                        leading: Icon(Icons.desktop_windows),
+                        title: Text("Bilgisayarda Aç"),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: "fiyatPaylas",
+                      child: ListTile(
+                        leading: Icon(Icons.share),
+                        title: Text("Fiyat Bilgisi Paylaş"),
+                      ),
+                    ),
+                  ];
+                },
+              ),
             ],
             bottom: TabBar(
               labelColor: Colors.white,
