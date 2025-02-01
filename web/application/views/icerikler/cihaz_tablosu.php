@@ -1,6 +1,8 @@
 <?php $this->load->view("inc/datatables_scripts");
 echo '<script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
-<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>';
+<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
+<script src="'. base_url("dist/js/qrcode.min.js").'"></script>';
+
 echo '<style>
   .modal.modal-fullscreen .modal-dialog {
     width: 100vw;
@@ -197,6 +199,17 @@ echo '<script>
 
     $("#cihaziSilModal").modal("show");
   }
+  function QRYenile(servis_no){
+    $("#ServisNoQR").html("");
+    new QRCode(document.getElementById("ServisNoQR"), {
+      text: "servisNo:"+servis_no,
+      width: 80,
+      height: 80,
+      colorDark : "#000000",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
+    });
+  }
   function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
@@ -206,6 +219,7 @@ echo '<script>
     butonDurumu(guncel_durum_sayi);
     $("#duzenleBtn").prop("disabled", true);
     $("#silBtn").prop("disabled", true);
+    QRYenile(servis_no);
     $("#ServisNo2, #ServisNo3").html(servis_no);
     $("#TakipNo").html(takip_no);
     $("#MusteriKod").html(musteri_kod);
@@ -471,6 +485,12 @@ $(document).ready(function(){
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriGSM2"></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">QR:</span></li>
+                <li class="list-group-item text-center" style="width:' . $ikinciOgeGenislik . ';">
+                  <span style="max-width:20%;" id="ServisNoQR"></span>
+                </li>
               </ul>
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">Giriş Tarihi:</span></li>
@@ -1365,6 +1385,7 @@ echo '
             var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
             yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
             $("#yapilanIslem").html(yapilanIslemler);
+            QRYenile(value.servis_no);
             $("#ServisNo2").html(value.servis_no);
             $("#TakipNo").html(value.takip_numarasi);
             $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");

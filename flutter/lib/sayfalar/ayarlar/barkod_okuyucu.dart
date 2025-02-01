@@ -71,9 +71,15 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
                 if (res != null && res.isNotEmpty && res != "-1") {
                   var spl = res.split(":");
                   if (spl.length == 2) {
-                    ipController.text = spl[0];
-                    portController.text = spl[1];
-                    await kaydet(false);
+                    if ('.'.allMatches(spl[0]).length == 3) {
+                      ipController.text = spl[0];
+                      portController.text = spl[1];
+
+                      await kaydet(false);
+                    } else {
+                      navigatorState.pop();
+                      widget.onBOKaydet?.call(false, false);
+                    }
                   } else {
                     navigatorState.pop();
                     widget.onBOKaydet?.call(false, false);
