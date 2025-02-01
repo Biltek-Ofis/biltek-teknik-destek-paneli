@@ -402,7 +402,7 @@ AppBar cihazlarAppBar(
       ),
       IconButton(
         onPressed: () async {
-          NavigatorState navigatorState = Navigator.of(context);
+          ServisNo servisNoCls = ServisNo.of(context);
           String? res = await SimpleBarcodeScanner.scanBarcode(
             context,
             barcodeAppBar: const BarcodeAppBar(
@@ -422,27 +422,15 @@ AppBar cihazlarAppBar(
               res.startsWith("20")) {
             try {
               int servisNo = int.parse(res);
-              await BiltekPost.bilgisayardaAc(
-                kullaniciID: kullanici.id,
+              await servisNoCls.ac(
                 servisNo: servisNo,
+                kullanici: kullanici,
+                cihazlariYenile: cihazlariYenile,
               );
-              navigatorState.push(
-                MaterialPageRoute(
-                  builder: (context) => DetaylarSayfasi(
-                    kullanici: kullanici,
-                    servisNo: servisNo,
-                    cihazlariYenile: () {
-                      cihazlariYenile.call();
-                    },
-                  ),
-                ),
-              );
-              BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-              await barkodOkuyucu?.servisNo(servisNo);
             } on Exception catch (e) {
               debugPrint(e.toString());
               if (context.mounted) {
-                barkodGecersiz(context);
+                barkodGecersiz(context, text: "1 $res");
               }
             }
           } else if (res != null &&
@@ -450,43 +438,69 @@ AppBar cihazlarAppBar(
               res != "-1" &&
               res.split(":").length == 2) {
             var splt = res.split(":");
-            try {
-              await SharedPreference.setString(
-                  SharedPreference.barkodIP, splt[0]);
-              await SharedPreference.setInt(
-                  SharedPreference.barkodPort, int.parse(splt[1]));
-              pcYenile.call();
-              if (context.mounted) {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Eşleştirme"),
-                      content: Text(
-                          "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("Tamam"),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-              BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-              await barkodOkuyucu?.eslestir();
-            } on Exception catch (e) {
-              debugPrint(e.toString());
-              if (context.mounted) {
-                barkodGecersiz(context);
-              }
+            switch (splt[0]) {
+              case "servisNo":
+                try {
+                  int servisNo = int.parse(splt[1]);
+                  await servisNoCls.ac(
+                    servisNo: servisNo,
+                    kullanici: kullanici,
+                    cihazlariYenile: cihazlariYenile,
+                    bilgisayardaAc: false,
+                  );
+                } on Exception catch (e) {
+                  debugPrint(e.toString());
+                  if (context.mounted) {
+                    barkodGecersiz(context, text: "2 $res");
+                  }
+                }
+                break;
+              default:
+                if ('.'.allMatches(splt[0]).length == 3) {
+                  try {
+                    await SharedPreference.setString(
+                        SharedPreference.barkodIP, splt[0]);
+                    await SharedPreference.setInt(
+                        SharedPreference.barkodPort, int.parse(splt[1]));
+                    pcYenile.call();
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Eşleştirme"),
+                            content: Text(
+                                "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Tamam"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+                    await barkodOkuyucu?.eslestir();
+                  } on Exception catch (e) {
+                    debugPrint(e.toString());
+                    if (context.mounted) {
+                      barkodGecersiz(context, text: "3 $res");
+                    }
+                  }
+                } else {
+                  if (context.mounted) {
+                    barkodGecersiz(context, text: "4 $res");
+                  }
+                }
+                break;
             }
           } else {
             if (context.mounted) {
-              barkodGecersiz(context);
+              barkodGecersiz(context, text: "$res");
             }
           }
           /*if (kDebugMode) {
@@ -575,19 +589,62 @@ AppBar cihazlarAppBar(
   );
 }
 
-void barkodGecersiz(BuildContext context) {
+class ServisNo {
+  BuildContext context;
+  ServisNo._(this.context);
+
+  factory ServisNo.of(BuildContext context) {
+    return ServisNo._(context);
+  }
+
+  Future<void> ac({
+    required int servisNo,
+    required KullaniciModel kullanici,
+    required VoidCallback cihazlariYenile,
+    bool bilgisayardaAc = true,
+  }) async {
+    NavigatorState navigatorState = Navigator.of(context);
+
+    if (bilgisayardaAc) {
+      await BiltekPost.bilgisayardaAc(
+        kullaniciID: kullanici.id,
+        servisNo: servisNo,
+      );
+    }
+    navigatorState.push(
+      MaterialPageRoute(
+        builder: (context) => DetaylarSayfasi(
+          kullanici: kullanici,
+          servisNo: servisNo,
+          cihazlariYenile: () {
+            cihazlariYenile.call();
+          },
+        ),
+      ),
+    );
+    if (bilgisayardaAc) {
+      BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+      await barkodOkuyucu?.servisNo(servisNo);
+    }
+  }
+}
+
+void barkodGecersiz(
+  BuildContext context, {
+  String text = "",
+}) {
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text("Hata"),
-        content: Text("Barkod geçersiz. Lütfen tekrar deneyin"),
+        title: Text("QR/Barkod Geçersiz"),
+        content: Text("Taranan QR/Barkod geçersiz. $text"),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text("Tamam"),
+            child: Text("Kapat"),
           ),
         ],
       );
