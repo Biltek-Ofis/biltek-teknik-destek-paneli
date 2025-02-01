@@ -430,7 +430,7 @@ AppBar cihazlarAppBar(
             } on Exception catch (e) {
               debugPrint(e.toString());
               if (context.mounted) {
-                barkodGecersiz(context, text: "1 $res");
+                barkodGecersiz(context);
               }
             }
           } else if (res != null &&
@@ -451,7 +451,7 @@ AppBar cihazlarAppBar(
                 } on Exception catch (e) {
                   debugPrint(e.toString());
                   if (context.mounted) {
-                    barkodGecersiz(context, text: "2 $res");
+                    barkodGecersiz(context);
                   }
                 }
                 break;
@@ -488,19 +488,19 @@ AppBar cihazlarAppBar(
                   } on Exception catch (e) {
                     debugPrint(e.toString());
                     if (context.mounted) {
-                      barkodGecersiz(context, text: "3 $res");
+                      barkodGecersiz(context);
                     }
                   }
                 } else {
                   if (context.mounted) {
-                    barkodGecersiz(context, text: "4 $res");
+                    barkodGecersiz(context);
                   }
                 }
                 break;
             }
           } else {
             if (context.mounted) {
-              barkodGecersiz(context, text: "$res");
+              barkodGecersiz(context);
             }
           }
           /*if (kDebugMode) {
@@ -629,16 +629,13 @@ class ServisNo {
   }
 }
 
-void barkodGecersiz(
-  BuildContext context, {
-  String text = "",
-}) {
+void barkodGecersiz(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         title: Text("QR/Barkod Geçersiz"),
-        content: Text("Taranan QR/Barkod geçersiz. $text"),
+        content: Text("Taranan QR/Barkod geçersiz."),
         actions: [
           TextButton(
             onPressed: () {
