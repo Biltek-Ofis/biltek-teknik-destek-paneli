@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../models/cihaz.dart';
+import '../utils/assets.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
 
@@ -117,6 +118,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       case "ara":
                         await _ara();
                         break;
+                      case "mesajGonder":
+                        await _whatsapp();
+                        break;
                       case "kisilereEkle":
                         await _kisilereEkle();
                         break;
@@ -143,6 +147,17 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                         child: ListTile(
                           leading: Icon(Icons.phone),
                           title: Text("Ara"),
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: "mesajGonder",
+                        child: ListTile(
+                          leading: Image.asset(
+                            BiltekAssets.whatsapp,
+                            width: 24,
+                            height: 24,
+                          ),
+                          title: Text("Mesaj Gönder"),
                         ),
                       ),
                       PopupMenuItem<String>(
@@ -282,6 +297,19 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                               await _kisilereEkle();
                                             },
                                             icon: Icon(Icons.contact_page),
+                                          ),
+                                          SizedBox(
+                                            width: 1,
+                                          ),
+                                          IconButton(
+                                            onPressed: () async {
+                                              await _whatsapp();
+                                            },
+                                            icon: Image.asset(
+                                              BiltekAssets.whatsapp,
+                                              width: 24,
+                                              height: 24,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -856,23 +884,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     if (telefonGecerli(telefon)) {
       launchUrlString("tel://$telefon");
     } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Geçersiz Telefon"),
-            content: Text("Telefon numarası geçersiz"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Kapat"),
-              ),
-            ],
-          );
-        },
-      );
+      _gecersizTelefonDialog();
     }
   }
 
@@ -889,24 +901,38 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         ),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Geçersiz Telefon"),
-            content: Text("Telefon numarası geçersiz"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Kapat"),
-              ),
-            ],
-          );
-        },
-      );
+      _gecersizTelefonDialog();
     }
+  }
+
+  Future<void> _whatsapp() async {
+    String telefon = telefonNumarasi();
+
+    if (telefonGecerli(telefon)) {
+      launchUrlString("https://wa.me/$telefon");
+    } else {
+      _gecersizTelefonDialog();
+    }
+  }
+
+  void _gecersizTelefonDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Geçersiz Telefon"),
+          content: Text("Telefon numarası geçersiz"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Kapat"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   String telefonNumarasi() {
