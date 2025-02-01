@@ -512,15 +512,17 @@ class Cihazlar_Model extends CI_Model
         }
 
         $result = $this->db->reset_query();
-
+        $this->load->model("Kullanicilar_Model");
         if(strlen($limit) > 0 && strlen($sayfa) > 0){
-            $result = $result->select($this->cihazDurumlariTabloAdi() . ".id as cdID, ".$this->cihazlarTabloAdi().".id as cID, ".$this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi() .".*");
+            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, ".$this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, ".$this->cihazDurumlariTabloAdi() . ".id as cdID, ".$this->cihazlarTabloAdi().".id as cID, ".$this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi() .".*");
+        }else{
+            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, ".$this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, ".$this->cihazlarTabloAdi().".*");
         }
 
         $result = $result->where($where);
 
         if (count($spesifik) > 0) {
-            $result = $result->where_in("id", $spesifik);
+            $result = $result->where_in($this->cihazlarTabloAdi().".id", $spesifik);
         }
         if (strlen($arama) > 0) {
             $result = $result->group_start();
@@ -528,6 +530,7 @@ class Cihazlar_Model extends CI_Model
             $result = $result->or_like("musteri_adi", $arama);
             $result = $result->or_like("cihaz", $arama);
             $result = $result->or_like("cihaz_modeli", $arama);
+            $result = $result->or_like($this->Kullanicilar_Model->kullanicilarTabloAdi().".ad_soyad", $arama);
             $result = $result->group_end();
         }
 
@@ -572,8 +575,9 @@ class Cihazlar_Model extends CI_Model
                     $orderDurum = "";
             }
         }
-        $orderText = 'id DESC';
+        $orderText = $this->cihazlarTabloAdi().".id DESC";
         
+        $result = $result->join($this->Kullanicilar_Model->kullanicilarTabloAdi(), $this->cihazlarTabloAdi() . ".sorumlu = " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id");
         if(strlen($limit) > 0 && strlen($sayfa) > 0){
             
             $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id");
@@ -593,7 +597,7 @@ class Cihazlar_Model extends CI_Model
             $result = $result->order_by($orderText);
             $result = $result->limit($limit, ($sayfa - 1) * $limit);
         }else{
-            $result = $result->order_by("id", "DESC");
+            $result = $result->order_by($this->cihazlarTabloAdi().".id", "DESC");
         }
         return $result;
     }
