@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../models/cihaz.dart';
-import '../utils/buttons.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
 
@@ -619,25 +618,27 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    "$genelToplam TL",
-                                                  )
+                                                  Row(children: [
+                                                    Text(
+                                                      "$genelToplam TL",
+                                                    ),
+                                                    SizedBox(
+                                                      width: 2,
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () async {
+                                                        await _fiyatBilgisiPaylas();
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.share,
+                                                      ),
+                                                    ),
+                                                  ])
                                                 ],
                                               )
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                          child: DefaultButton(
-                                            onPressed: () async {
-                                              await _fiyatBilgisiPaylas();
-                                            },
-                                            text: "Fiyat Bilgisi Paylaş",
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                          ),
-                                        )
                                       ],
                                     );
                                   },
