@@ -1385,7 +1385,7 @@ echo '
             var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
             yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
             $("#yapilanIslem").html(yapilanIslemler);
-            QRYenile(value.servis_no);
+            //QRYenile(value.servis_no);
             $("#ServisNo2").html(value.servis_no);
             $("#TakipNo").html(value.takip_numarasi);
             $("#MusteriKod").html(value.musteri_kod ? value.musteri_kod : "Yok");
