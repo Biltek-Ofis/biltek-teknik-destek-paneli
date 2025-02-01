@@ -6,7 +6,9 @@ import 'package:biltekteknikservis/sayfalar/webview.dart';
 import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../models/cihaz.dart';
 import '../utils/islemler.dart';
@@ -96,42 +98,63 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                   },
                   icon: Icon(Icons.print),
                 ),
-              PopupMenuButton<String>(
-                onSelected: (value) async {
-                  switch (value) {
-                    case "bilgisayardaAc":
-                      await BiltekPost.bilgisayardaAc(
-                        kullaniciID: widget.kullanici.id,
-                        servisNo: cihaz!.servisNo,
-                      );
-                      BarkodOkuyucu? barkodOkuyucu =
-                          await BarkodOkuyucu.getir();
-                      await barkodOkuyucu?.servisNo(cihaz!.servisNo);
-                      break;
-                    case "fiyatPaylas":
-                      await _fiyatBilgisiPaylas();
-                      break;
-                  }
-                },
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem<String>(
-                      value: "bilgisayardaAc",
-                      child: ListTile(
-                        leading: Icon(Icons.desktop_windows),
-                        title: Text("Bilgisayarda Aç"),
+              if (cihaz != null)
+                PopupMenuButton<String>(
+                  onSelected: (value) async {
+                    switch (value) {
+                      case "bilgisayardaAc":
+                        await BiltekPost.bilgisayardaAc(
+                          kullaniciID: widget.kullanici.id,
+                          servisNo: cihaz!.servisNo,
+                        );
+                        BarkodOkuyucu? barkodOkuyucu =
+                            await BarkodOkuyucu.getir();
+                        await barkodOkuyucu?.servisNo(cihaz!.servisNo);
+                        break;
+                      case "fiyatPaylas":
+                        await _fiyatBilgisiPaylas();
+                        break;
+                      case "ara":
+                        await _ara();
+                        break;
+                      case "kisilereEkle":
+                        await _kisilereEkle();
+                        break;
+                    }
+                  },
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: "bilgisayardaAc",
+                        child: ListTile(
+                          leading: Icon(Icons.desktop_windows),
+                          title: Text("Bilgisayarda Aç"),
+                        ),
                       ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: "fiyatPaylas",
-                      child: ListTile(
-                        leading: Icon(Icons.share),
-                        title: Text("Fiyat Bilgisi Paylaş"),
+                      PopupMenuItem<String>(
+                        value: "fiyatPaylas",
+                        child: ListTile(
+                          leading: Icon(Icons.share),
+                          title: Text("Fiyat Bilgisi Paylaş"),
+                        ),
                       ),
-                    ),
-                  ];
-                },
-              ),
+                      PopupMenuItem<String>(
+                        value: "ara",
+                        child: ListTile(
+                          leading: Icon(Icons.phone),
+                          title: Text("Ara"),
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: "kisilereEkle",
+                        child: ListTile(
+                          leading: Icon(Icons.contact_page),
+                          title: Text("Rehbere Ekle"),
+                        ),
+                      ),
+                    ];
+                  },
+                ),
             ],
             bottom: TabBar(
               labelColor: Colors.white,
@@ -235,7 +258,34 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(cihaz!.telefonNumarasi)
+                                    Column(children: [
+                                      Text(cihaz!.telefonNumarasi),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () async {
+                                              await _ara();
+                                            },
+                                            icon: Icon(Icons.phone),
+                                          ),
+                                          SizedBox(
+                                            width: 1,
+                                          ),
+                                          IconButton(
+                                            onPressed: () async {
+                                              await _kisilereEkle();
+                                            },
+                                            icon: Icon(Icons.contact_page),
+                                          ),
+                                        ],
+                                      ),
+                                    ])
                                   ],
                                 ),
                                 TableRow(
@@ -798,5 +848,82 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   String _fiyatDuzelt(double n) {
     return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
+  }
+
+  Future<void> _ara() async {
+    String telefon = telefonNumarasi();
+
+    if (telefonGecerli(telefon)) {
+      launchUrlString("tel://$telefon");
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Geçersiz Telefon"),
+            content: Text("Telefon numarası geçersiz"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Kapat"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> _kisilereEkle() async {
+    String telefon = telefonNumarasi();
+
+    if (telefonGecerli(telefon)) {
+      await FlutterContacts.openExternalInsert(
+        Contact(
+          displayName: cihaz!.musteriAdi.trim(),
+          phones: [
+            Phone(telefon),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Geçersiz Telefon"),
+            content: Text("Telefon numarası geçersiz"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Kapat"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  String telefonNumarasi() {
+    if (cihaz != null) {
+      String telefon = cihaz!.telefonNumarasi;
+      telefon = telefon
+          .replaceAll("_", "")
+          .replaceAll("-", "")
+          .replaceAll(" ", "")
+          .replaceAll("(", "")
+          .replaceAll(")", "");
+      return telefon;
+    }
+    return "";
+  }
+
+  bool telefonGecerli(String telefon) {
+    return telefon.isNotEmpty && telefon != "+90" && telefon != "+9";
   }
 }
