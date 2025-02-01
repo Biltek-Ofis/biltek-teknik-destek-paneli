@@ -55,7 +55,7 @@ echo '<script>
     if($("#duzenleBtn").hasClass("goster")){
       $("#duzenleBtn").show();
     }
-    $("#detaylar_body").scrollTop(0);
+    //$("#detaylar_body").scrollTop(0);
     duzenleme_modu = false;
   }
   function duzenleyiGoster(){
