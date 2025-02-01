@@ -1665,7 +1665,7 @@ echo '$(document).ready(function() {
             $(".datatable_processing").css("width", "100%");
             $(".datatable_processing").hide();
 
-            $("#cihaz_tablosu_ara").on("keydown", function(e) {
+            $("#cihaz_tablosu_ara").on("keyup", function(e) {
                 var k = e.keyCode;
                 if (k == 20 /* Caps lock */
                     || k == 16 /* Shift */
