@@ -113,7 +113,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
         }
@@ -121,8 +121,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         if (aramaEtkin) {
           setState(() {
             aramaEtkin = false;
+            arama = "";
           });
           kapat = false;
+          await _cihazlariYenile();
         }
 
         if (kapat) {
