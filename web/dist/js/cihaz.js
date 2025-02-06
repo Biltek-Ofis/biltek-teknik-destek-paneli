@@ -163,7 +163,10 @@ function ilerlemeDurumu(event) {
 }
 
 function tamamlamaDurumu(event, tamamlama_func) {
-	var response = JSON.parse(event.target.responseText);
+	var dt = event.target.responseText.split("}");
+	var nDt = dt[0] + "}";
+	console.log(dt[0]);
+	var response = JSON.parse(nDt);
 	_("durum").innerHTML = response.mesaj;
 	_("progressBar").value = 0;
 	document.getElementById("progressDiv").style.display = "none";
