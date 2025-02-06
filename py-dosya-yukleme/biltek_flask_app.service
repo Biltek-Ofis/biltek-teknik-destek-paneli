@@ -1,0 +1,16 @@
+y[Unit]
+Description=Biltek Upload Flask Application
+After=network.target
+
+[Service]
+User=biltek
+Group=biltek
+WorkingDirectory=/opt/biltek
+ExecStart=/opt/biltek/.venv/bin/gunicorn -c /opt/biltek/gunicorn_config.py app:app
+ExecStop=/opt/biltek/.venv/bin/pkill gunicorn
+Restart=always
+Environment=FLASK_APP=/opt/biltek/app.py
+Environment=FLASK_ENV=production
+
+[Install]
+WantedBy=multi-user.target
