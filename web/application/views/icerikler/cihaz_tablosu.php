@@ -69,6 +69,11 @@ echo '<script>
     $("#dt_duzenle").show();
     $("#kaydetBtn").show();
     $("#iptalBtn").show();
+    
+    $("#dt-UploadForm")[0].reset();
+    $("#dt-UploadForm #durum").html("");
+    $("#dt-UploadForm #yukleme_durumu").html("");
+    
     $("#detaylar_body").scrollTop(0);
     duzenleme_modu = true;
   }
