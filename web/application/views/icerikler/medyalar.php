@@ -15,18 +15,22 @@ echo '<style>
 
 $medyalar = $this->Cihazlar_Model->medyalar($id);
 foreach ($medyalar as $medya) {
+    $konum = $medya->konum;
+    if($medya->yerel == 1){
+        $konum = base_url($medya->konum);
+    }
     echo '<div id="medyaGoster'.$medya->id.'" class="col-12 medyaGoster">';
     if ($medya->tur == "video") {
-        echo '<div class="medya col-12 mb-2" data-image="' . base_url($medya->konum) . '">
+        echo '<div class="medya col-12 mb-2" data-image="' . $konum . '">
                 <video controls>
-                    <source src="' . base_url($medya->konum) . '" type="video/mp4">
+                    <source src="' . $konum . '" type="video/mp4">
                     Tarayıcınız video oynatmayı desteklemiyor.
                 </video>
             </div>';
     } else {
 
-        echo '<div class="medya col-12 mb-2" data-image="' . base_url($medya->konum) . '">
-                <a href="' . base_url($medya->konum) . '" target="_blank"><img src="' . base_url($medya->konum) . '" /></a>
+        echo '<div class="medya col-12 mb-2" data-image="' . $konum . '">
+                <a href="' . $konum . '" target="_blank"><img src="' . $konum . '" /></a>
             </div>';
     }
     if (isset($silButonu) && $silButonu) {
