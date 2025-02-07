@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:biltekteknikservis/models/medya.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'shared_preferences.dart';
 class BiltekPost {
   static Future<http.StreamedResponse> postMultiPart(
     String url,
-    List<http.MultipartFile> files,
+    Map<String, Uint8List> files,
     Map<String, String> data,
   ) async {
     data.addAll({
@@ -29,8 +30,11 @@ class BiltekPost {
       String key = data.keys.elementAt(i);
       request.fields[key] = data[key]!;
     }
-    for (var i = 0; i < files.length; i++) {
-      request.files.add(files.elementAt(i));
+    for (var i = 0; i < files.keys.length; i++) {
+      String key = files.keys.elementAt(i);
+      request.files.add(
+        http.MultipartFile.fromBytes(key, files[key]!, filename: "upload.png"),
+      );
     }
 
     ///request.headers.addAll(headers);
@@ -286,11 +290,11 @@ class BiltekPost {
 
   static Future<bool> medyaYukle({
     required int id,
-    required http.MultipartFile medya,
+    required Uint8List medya,
   }) async {
     var response = await BiltekPost.postMultiPart(
-      Ayarlar.tekCihaz,
-      [medya],
+      Ayarlar.medyaYukle,
+      {"yuklenecekDosya": medya},
       {
         "id": id.toString(),
       },
@@ -299,7 +303,8 @@ class BiltekPost {
     debugPrint(resp);
     if (response.statusCode == 201) {
       try {
-        Map<String, dynamic> map = jsonDecode(resp) as Map<String, dynamic>;
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
         if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
           return true;
         }
