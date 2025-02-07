@@ -82,19 +82,20 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : (medyalar.where((m) => m.tur == "resim").isNotEmpty
+            : (medyalar.isNotEmpty
                 ? PhotoViewGallery.builder(
-                    itemCount: medyalar.where((m) => m.tur == "resim").length,
+                    itemCount: medyalar.length,
                     builder: (context, index) {
                       return PhotoViewGalleryPageOptions(
-                          imageProvider: NetworkImage(
-                            medyalar[index].yerel
-                                ? "${Ayarlar.url}${medyalar[index].konum}"
-                                : medyalar[index].konum,
-                          ),
-                          minScale: PhotoViewComputedScale.contained * 1,
-                          maxScale: PhotoViewComputedScale.contained * 4,
-                          onTapDown: (context, details, value) {});
+                        imageProvider: NetworkImage(
+                          medyalar[index].yerel
+                              ? "${Ayarlar.url}${medyalar[index].konum}"
+                              : medyalar[index].konum,
+                        ),
+                        minScale: PhotoViewComputedScale.contained * 1,
+                        maxScale: PhotoViewComputedScale.contained * 4,
+                        onTapDown: (context, details, value) {},
+                      );
                     },
                     scrollDirection: Axis.horizontal,
                     pageController: pageController,
@@ -123,11 +124,11 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
         await BiltekPost.medyalariGetir(id: widget.id);
     if (mounted) {
       setState(() {
-        medyalar = medyalarTemp;
+        medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
         yukleniyor = false;
       });
     } else {
-      medyalar = medyalarTemp;
+      medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
       yukleniyor = false;
     }
   }
