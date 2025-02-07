@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:biltekteknikservis/models/medya.dart';
 import 'package:biltekteknikservis/utils/post.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../ayarlar.dart';
 
@@ -22,6 +23,7 @@ class DetaylarGaleri extends StatefulWidget {
 }
 
 class _DetaylarGaleriState extends State<DetaylarGaleri> {
+  PageController pageController = PageController();
   List<MedyaModel> medyalar = [];
 
   bool yukleniyor = true;
@@ -33,9 +35,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     Future.delayed(Duration.zero, () async {
       await _medyalariYenile();
     });
-    timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+    /*timer = Timer.periodic(Duration(seconds: 5), (timer) async {
       await _medyalariYenile();
-    });
+    });*/
     super.initState();
   }
 
@@ -72,29 +74,26 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: medyalar.where((m) => m.tur == "resim").isNotEmpty
-            ? CarouselSlider(
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  autoPlay: false,
-                ),
-                items: medyalar
-                    .where((m) => m.tur == "resim")
-                    .map(
-                      (item) => SizedBox(
-                        child: Center(
-                          child: Image.network(
-                            item.yerel
-                                ? "${Ayarlar.url}${item.konum}"
-                                : item.konum,
-                            fit: BoxFit.fitWidth,
-                            height: MediaQuery.of(context).size.height,
-                          ),
-                        ),
+            ? PhotoViewGallery.builder(
+                itemCount: medyalar.where((m) => m.tur == "resim").length,
+                builder: (context, index) {
+                  return PhotoViewGalleryPageOptions(
+                      imageProvider: NetworkImage(
+                        medyalar[index].yerel
+                            ? "${Ayarlar.url}${medyalar[index].konum}"
+                            : medyalar[index].konum,
                       ),
-                    )
-                    .toList(),
+                      minScale: PhotoViewComputedScale.contained * 1,
+                      maxScale: PhotoViewComputedScale.contained * 4,
+                      onTapDown: (context, details, value) {});
+                },
+                scrollDirection: Axis.horizontal,
+                pageController: pageController,
+                onPageChanged: (index) {},
+                scrollPhysics: const BouncingScrollPhysics(),
+                backgroundDecoration: BoxDecoration(
+                  color: Theme.of(context).canvasColor,
+                ),
               )
             : Center(
                 child: Text("Henüz resim yüklenmemiş"),
