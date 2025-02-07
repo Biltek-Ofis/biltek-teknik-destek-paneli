@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:biltekteknikservis/models/medya.dart';
-import 'package:biltekteknikservis/utils/post.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../ayarlar.dart';
+import '../../models/medya.dart';
+import '../../utils/post.dart';
 import 'resim_duzenle.dart';
 
 class DetaylarGaleri extends StatefulWidget {
@@ -307,8 +307,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
         await _medyalariYenile();
       } else {
         if (context.mounted) {
+          BuildContext context1 = context;
           showDialog(
-            context: context,
+            context: context1,
             builder: (context) {
               return AlertDialog(
                 title: Text("Başarısız"),

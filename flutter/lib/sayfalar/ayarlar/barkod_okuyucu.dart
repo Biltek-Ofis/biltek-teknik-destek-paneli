@@ -1,10 +1,10 @@
-import 'package:biltekteknikservis/utils/buttons.dart';
-import 'package:biltekteknikservis/utils/shared_preferences.dart';
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../utils/barkod_okuyucu.dart';
+import '../../utils/buttons.dart';
+import '../../utils/shared_preferences.dart';
+import '../../widgets/input.dart';
 
 typedef OnBOKaydet = Function(bool durum, bool elle);
 

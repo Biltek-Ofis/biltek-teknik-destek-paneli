@@ -1,20 +1,19 @@
 import 'dart:async';
 
-import 'package:biltekteknikservis/ayarlar.dart';
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/sayfalar/detaylar/galery.dart';
-import 'package:biltekteknikservis/sayfalar/webview.dart';
-import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
-import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../ayarlar.dart';
 import '../../models/cihaz.dart';
+import '../../models/kullanici.dart';
 import '../../utils/assets.dart';
+import '../../utils/barkod_okuyucu.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
+import '../webview.dart';
+import 'galery.dart';
 
 class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
@@ -208,277 +207,276 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           ),
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
-            child: KisModu(
-              child: TabBarView(
-                children: [
-                  SizedBox(
-                    child: cihaz != null
-                        ? SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            child: Table(
-                              border: tableBorder,
-                              children: [
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Servis No:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+            child: TabBarView(
+              children: [
+                SizedBox(
+                  child: cihaz != null
+                      ? SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Table(
+                            border: tableBorder,
+                            children: [
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Servis No:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.servisNo.toString())
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Takip No:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.servisNo.toString())
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Takip No:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.takipNumarasi.toString())
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Müşteri Adı:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.takipNumarasi.toString())
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Müşteri Adı:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.musteriAdi)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Teslim Eden:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.musteriAdi)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Teslim Eden:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.teslimEden)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Teslim Alan:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.teslimEden)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Teslim Alan:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.teslimAlan)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Adresi:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.teslimAlan)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Adresi:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.adres)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "GSM:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.adres)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "GSM:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Column(children: [
-                                      Text(cihaz!.telefonNumarasi),
-                                      SizedBox(
-                                        height: 2,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () async {
-                                              await _ara();
-                                            },
-                                            icon: Icon(Icons.phone),
+                                  ),
+                                  Column(children: [
+                                    Text(cihaz!.telefonNumarasi),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () async {
+                                            await _ara();
+                                          },
+                                          icon: Icon(Icons.phone),
+                                        ),
+                                        SizedBox(
+                                          width: 1,
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            await _kisilereEkle();
+                                          },
+                                          icon: Icon(Icons.contact_page),
+                                        ),
+                                        SizedBox(
+                                          width: 1,
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            await _whatsapp();
+                                          },
+                                          icon: Image.asset(
+                                            BiltekAssets.whatsapp,
+                                            width: 24,
+                                            height: 24,
                                           ),
-                                          SizedBox(
-                                            width: 1,
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                              await _kisilereEkle();
-                                            },
-                                            icon: Icon(Icons.contact_page),
-                                          ),
-                                          SizedBox(
-                                            width: 1,
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                              await _whatsapp();
-                                            },
-                                            icon: Image.asset(
-                                              BiltekAssets.whatsapp,
-                                              width: 24,
-                                              height: 24,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ])
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Giriş Tarihi:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(cihaz!.tarih)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Çıkış Tarihi:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ])
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Giriş Tarihi:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.cikisTarihi)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Bildirim Tarihi:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.tarih)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Çıkış Tarihi:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.bildirimTarihi)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Güncel Durum:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.cikisTarihi)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Bildirim Tarihi:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.guncelDurumText)
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(),
+                                  ),
+                                  Text(cihaz!.bildirimTarihi)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Güncel Durum:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(cihaz!.guncelDurumText)
+                                ],
+                              ),
+                            ],
                           ),
-                  ),
-                  SizedBox(
-                    child: cihaz != null
-                        ? SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            child: Table(
-                              border: tableBorder,
-                              children: [
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Cihaz Türü:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
+                SizedBox(
+                  child: cihaz != null
+                      ? SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Table(
+                            border: tableBorder,
+                            children: [
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Cihaz Türü:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.cihazTuru)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Markası:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.cihazTuru)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Markası:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.cihaz)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Modeli:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.cihaz)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Modeli:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.cihazModeli)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Seri No:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.cihazModeli)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Seri No:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.seriNo)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Teslim Alınanlar:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.seriNo)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Teslim Alınanlar:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(cihaz!.teslimAlan)
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Text(
-                                      "Cihaz Şifresi:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Text(cihaz!.teslimAlan)
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    "Cihaz Şifresi:",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    cihaz!.cihazSifresi != "Yok" &&
-                                            cihaz!.cihazSifresi.isNotEmpty
-                                        ? Text(cihaz!.cihazSifresi)
-                                        : Text("")
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(),
+                                  ),
+                                  cihaz!.cihazSifresi != "Yok" &&
+                                          cihaz!.cihazSifresi.isNotEmpty
+                                      ? Text(cihaz!.cihazSifresi)
+                                      : Text("")
+                                ],
+                              ),
+                            ],
                           ),
-                  ),
-                  SizedBox(
-                    child: cihaz != null
-                        ? SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            child: Column(
-                              children: [
-                                Table(
-                                  border: tableBorder,
-                                  children: [
-                                    /*TableRow(
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
+                SizedBox(
+                  child: cihaz != null
+                      ? SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Table(
+                                border: tableBorder,
+                                children: [
+                                  /*TableRow(
                                       children: [
                                         Text(
                                           "Teslim Alınmadan Önce Belirlenen Hasar Türü:",
@@ -489,305 +487,293 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                         Text(cihaz!.cihazdakiHasar)
                                       ],
                                     ),*/
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Teslim Alınmadan Önce Yapılan Hasar Tespiti:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Teslim Alınmadan Önce Yapılan Hasar Tespiti:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.hasarTespiti)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Arıza Açıklaması:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.arizaAciklamasi)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Servis Türü:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(Islemler.servisTuru(
+                                          cihaz!.servisTuru))
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Yedek Alınacak mı?:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.yedekDurumu == 1
+                                          ? "Evet"
+                                          : (cihaz!.yedekDurumu == 0
+                                              ? "Hayır"
+                                              : "Belirtilmemiş"))
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Güncel Durum:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.guncelDurumText)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Bildirim Tarihi:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.bildirimTarihi)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Sorumlu Personel:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.sorumlu)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Yapılan İşlem Açıklaması:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(cihaz!.yapilanIslemAciklamasi)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Builder(
+                                builder: (context) {
+                                  EdgeInsetsGeometry padding =
+                                      EdgeInsets.all(1);
+                                  double genelToplam = kdvsizToplam + kdvToplam;
+                                  return Column(
+                                    children: [
+                                      Table(
+                                        border: tableBorder,
+                                        children: [
+                                          TableRow(
+                                            children: [
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "Malzeme/İşçilik",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "Miktar",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "Birim Fiyatı",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "KDV",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "Tutar (KDV'siz)",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: padding,
+                                                child: Text(
+                                                  "Toplam",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          ...fiyatlar
+                                        ],
+                                      ),
+                                      if (fiyatlar.isEmpty)
+                                        Container(
+                                          padding: EdgeInsets.only(top: 5),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Text(
+                                            "Şuanda yapılmış bir işlem yok.",
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                        Text(cihaz!.hasarTespiti)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Arıza Açıklaması:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.arizaAciklamasi)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Servis Türü:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(Islemler.servisTuru(
-                                            cihaz!.servisTuru))
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Yedek Alınacak mı?:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.yedekDurumu == 1
-                                            ? "Evet"
-                                            : (cihaz!.yedekDurumu == 0
-                                                ? "Hayır"
-                                                : "Belirtilmemiş"))
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Güncel Durum:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.guncelDurumText)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Bildirim Tarihi:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.bildirimTarihi)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Sorumlu Personel:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.sorumlu)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Yapılan İşlem Açıklaması:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.yapilanIslemAciklamasi)
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Builder(
-                                  builder: (context) {
-                                    EdgeInsetsGeometry padding =
-                                        EdgeInsets.all(1);
-                                    double genelToplam =
-                                        kdvsizToplam + kdvToplam;
-                                    return Column(
-                                      children: [
-                                        Table(
+                                      Container(
+                                        padding: EdgeInsets.only(top: 10),
+                                        child: Table(
                                           border: tableBorder,
                                           children: [
                                             TableRow(
                                               children: [
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "Malzeme/İşçilik",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                                Text(
+                                                  "Toplam:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "Miktar",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "Birim Fiyatı",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "KDV",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "Tutar (KDV'siz)",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: padding,
-                                                  child: Text(
-                                                    "Toplam",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
+                                                Text(
+                                                  "$kdvsizToplam TL",
+                                                )
                                               ],
                                             ),
-                                            ...fiyatlar
+                                            TableRow(
+                                              children: [
+                                                Text(
+                                                  "KDV:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "$kdvToplam TL",
+                                                )
+                                              ],
+                                            ),
+                                            TableRow(
+                                              children: [
+                                                Text(
+                                                  "Genel Toplam:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Row(children: [
+                                                  Text(
+                                                    "$genelToplam TL",
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2,
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () async {
+                                                      await _fiyatBilgisiPaylas();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.share,
+                                                    ),
+                                                  ),
+                                                ])
+                                              ],
+                                            )
                                           ],
                                         ),
-                                        if (fiyatlar.isEmpty)
-                                          Container(
-                                            padding: EdgeInsets.only(top: 5),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Text(
-                                              "Şuanda yapılmış bir işlem yok.",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: Table(
-                                            border: tableBorder,
-                                            children: [
-                                              TableRow(
-                                                children: [
-                                                  Text(
-                                                    "Toplam:",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "$kdvsizToplam TL",
-                                                  )
-                                                ],
-                                              ),
-                                              TableRow(
-                                                children: [
-                                                  Text(
-                                                    "KDV:",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "$kdvToplam TL",
-                                                  )
-                                                ],
-                                              ),
-                                              TableRow(
-                                                children: [
-                                                  Text(
-                                                    "Genel Toplam:",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Row(children: [
-                                                    Text(
-                                                      "$genelToplam TL",
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2,
-                                                    ),
-                                                    IconButton(
-                                                      onPressed: () async {
-                                                        await _fiyatBilgisiPaylas();
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.share,
-                                                      ),
-                                                    ),
-                                                  ])
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                              Table(
+                                border: tableBorder,
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Tahsilat Şekli:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                                Table(
-                                  border: tableBorder,
-                                  children: [
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Tahsilat Şekli:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      ),
+                                      Text(cihaz!.tahsilatSekli)
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Fatura Durumu:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(cihaz!.tahsilatSekli)
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Fatura Durumu:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      ),
+                                      Text(Islemler.faturaDurumu(
+                                          cihaz!.faturaDurumu))
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Text(
+                                        "Fiş No:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(Islemler.faturaDurumu(
-                                            cihaz!.faturaDurumu))
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Text(
-                                          "Fiş No:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(cihaz!.fisNo)
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(),
+                                      ),
+                                      Text(cihaz!.fisNo)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                  ),
-                ],
-              ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
+              ],
             ),
           ),
         ),
