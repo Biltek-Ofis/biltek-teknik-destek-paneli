@@ -53,16 +53,15 @@ function islemHesapla(i) {
 	var yapilanIslemKdv = $("#yapilanIslemKdv" + i).val() ?? 0;
 	var tutar = yapilanIslemMiktar * yapilanIslemFiyat;
 	var kdv = (tutar / 100) * yapilanIslemKdv;
-	var toplamKdvli = tutar+kdv;
+	var toplamKdvli = tutar + kdv;
 	$("#yapilanIslemTutar" + i).html(
 		tutar > 0 ? parseFloat(tutar).toFixed(2) + " TL" : ""
 	);
 	$("#yapilanIslemTopKdv" + i).html(
 		kdv > 0 ? parseFloat(kdv).toFixed(2) + " TL (" + yapilanIslemKdv + "%)" : ""
 	);
-	var toplamKdvli = 
-	$("#yapilanIslemToplam" + i).html(
-		kdv > 0 && tutar > 0? (parseFloat(toplamKdvli).toFixed(2)) + " TL" : ""
+	var toplamKdvli = $("#yapilanIslemToplam" + i).html(
+		kdv > 0 && tutar > 0 ? parseFloat(toplamKdvli).toFixed(2) + " TL" : ""
 	);
 	tutarHesapla();
 }
@@ -135,17 +134,58 @@ function _(abc) {
 	return document.getElementById(abc);
 }
 
+function Validate(oInput) {
+	var _validFileExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp"]; 
+	if (oInput.type == "file") {
+		var sFileName = oInput.value;
+		if (sFileName.length > 0) {
+			var blnValid = false;
+			for (var j = 0; j < _validFileExtensions.length; j++) {
+				var sCurExtension = _validFileExtensions[j];
+				if (
+					sFileName
+						.substr(
+							sFileName.length - sCurExtension.length,
+							sCurExtension.length
+						)
+						.toLowerCase() == sCurExtension.toLowerCase()
+				) {
+					blnValid = true;
+					break;
+				}
+			}
+
+			if (!blnValid) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
 function dosyaYukle(id, tamamlama_func) {
-	var dosya = _("yuklenecekDosya").files[0];
-	var formdata = new FormData();
-	formdata.append("yuklenecekDosya", dosya);
-	var ajax = new XMLHttpRequest();
-	ajax.upload.addEventListener("progress", ilerlemeDurumu, false);
-	ajax.addEventListener("load", function(event){tamamlamaDurumu(event,tamamlama_func);}, false);
-	ajax.addEventListener("error", hataDurumu, false);
-	ajax.addEventListener("abort", iptalDurumu, false);
-	ajax.open("POST", base_url + "/cihaz/medyaYukle/" + id);
-	ajax.send(formdata);
+	var inpt = _("yuklenecekDosya")
+	if(Validate(inpt)){
+		_("durum").innerHTML = "";
+		var dosya = inpt.files[0];
+		var formdata = new FormData();
+		formdata.append("yuklenecekDosya", dosya);
+		var ajax = new XMLHttpRequest();
+		ajax.upload.addEventListener("progress", ilerlemeDurumu, false);
+		ajax.addEventListener(
+			"load",
+			function (event) {
+				tamamlamaDurumu(event, tamamlama_func);
+			},
+			false
+		);
+		ajax.addEventListener("error", hataDurumu, false);
+		ajax.addEventListener("abort", iptalDurumu, false);
+		ajax.open("POST", base_url + "/cihaz/medyaYukle/" + id);
+		ajax.send(formdata);
+	} else {
+		_("durum").innerHTML = "Hata: Lütfen geçerli bir resim seçin.";
+	}
 }
 
 function ilerlemeDurumu(event) {
@@ -187,39 +227,39 @@ function iptalDurumu(event) {
 	_("durum").innerHTML = "Yükleme İptal Edildi";
 }
 
-function medyaSil(cihaz_id, id){
-    $.post(base_url+"/cihaz/medyaSil/"+cihaz_id+"/"+id+"/post", {})
-    .done(function(msg){
-      try{
-        data = $.parseJSON( msg );
-        if(data["sonuc"]==1){
-			if($("#list-medyalar").length > 0){
-				$("#list-medyalar #medyaGoster"+id).remove();
-				if($('#list-medyalar .medyaGoster').length==0){
-					$("#list-medyalar #medyaYok").show();
+function medyaSil(cihaz_id, id) {
+	$.post(base_url + "/cihaz/medyaSil/" + cihaz_id + "/" + id + "/post", {})
+		.done(function (msg) {
+			try {
+				data = $.parseJSON(msg);
+				if (data["sonuc"] == 1) {
+					if ($("#list-medyalar").length > 0) {
+						$("#list-medyalar #medyaGoster" + id).remove();
+						if ($("#list-medyalar .medyaGoster").length == 0) {
+							$("#list-medyalar #medyaYok").show();
+						}
+					}
+					if ($("#dt-medyalar").length > 0) {
+						$("#dt-medyalar #medyaGoster" + id).remove();
+						if ($("#dt-medyalar .medyaGoster").length == 0) {
+							$("#dt-medyalar #medyaYok").show();
+						}
+					}
+					if ($("#medyaSilModal").length > 0) {
+						$("#medyaSilModal").modal("hide");
+					}
+					console.log("Medya Silindi");
+				} else {
+					alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
+					console.log("Medya Silinemedi: " + data["sonuc"]);
 				}
+			} catch (error) {
+				alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
+				console.log("Medya Silinemedi: " + error);
 			}
-			if($("#dt-medyalar").length > 0){
-				$("#dt-medyalar #medyaGoster"+id).remove();
-				if($('#dt-medyalar .medyaGoster').length==0){
-					$("#dt-medyalar #medyaYok").show();
-				}
-			}
-			if($("#medyaSilModal").length > 0){
-				$("#medyaSilModal").modal("hide");
-			}
-			console.log("Medya Silindi");
-        }else{
+		})
+		.fail(function (xhr, status, error) {
 			alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
-			console.log("Medya Silinemedi: "+data["sonuc"]);
-        }
-      }catch(error){
-		alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
-		console.log("Medya Silinemedi: "+error);
-      }
-    })
-    .fail(function(xhr, status, error) {
-		alert("Medya Silinemedi! Lütfen daha sonra tekrar deneyin");
-		console.log("Medya Silinemedi: "+error);
-    });
+			console.log("Medya Silinemedi: " + error);
+		});
 }
