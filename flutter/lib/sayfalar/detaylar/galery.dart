@@ -44,6 +44,7 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
   @override
   void dispose() {
     timer?.cancel();
+    pageController.dispose();
     super.dispose();
   }
 
