@@ -10,6 +10,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import '../main.dart';
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
+import '../sayfalar/detaylar/detaylar.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
 import '../utils/post.dart';
@@ -18,7 +19,6 @@ import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
 import 'cihazlarim.dart';
-import 'detaylar.dart';
 import 'giris_sayfasi.dart';
 import 'yeni_cihaz.dart';
 

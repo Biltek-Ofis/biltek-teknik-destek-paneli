@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:biltekteknikservis/ayarlar.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
+import 'package:biltekteknikservis/sayfalar/detaylar/galery.dart';
 import 'package:biltekteknikservis/sayfalar/webview.dart';
 import 'package:biltekteknikservis/utils/barkod_okuyucu.dart';
 import 'package:biltekteknikservis/widgets/kis_modu.dart';
@@ -10,10 +11,10 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../models/cihaz.dart';
-import '../utils/assets.dart';
-import '../utils/islemler.dart';
-import '../utils/post.dart';
+import '../../models/cihaz.dart';
+import '../../utils/assets.dart';
+import '../../utils/islemler.dart';
+import '../../utils/post.dart';
 
 class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
@@ -78,6 +79,24 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
+          floatingActionButton: cihaz != null
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => DetaylarGaleri(
+                          id: cihaz!.id,
+                          servisNo: cihaz!.servisNo,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.browse_gallery,
+                    color: Colors.white,
+                  ),
+                )
+              : null,
           appBar: AppBar(
             title: cihaz != null ? Text("${cihaz!.servisNo} Detayları") : null,
             actions: [

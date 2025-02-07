@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:biltekteknikservis/models/medya.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:biltekteknikservis/models/cihaz.dart';
@@ -11,6 +12,34 @@ import '../models/kullanici.dart';
 import 'shared_preferences.dart';
 
 class BiltekPost {
+  static Future<http.StreamedResponse> postMultiPart(
+    String url,
+    List<http.MultipartFile> files,
+    Map<String, String> data,
+  ) async {
+    data.addAll({
+      "token": Ayarlar.token,
+    });
+
+    /*var headers = <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    };*/
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    for (var i = 0; i < data.keys.length; i++) {
+      String key = data.keys.elementAt(i);
+      request.fields[key] = data[key]!;
+    }
+    for (var i = 0; i < files.length; i++) {
+      request.files.add(files.elementAt(i));
+    }
+
+    ///request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    return response;
+  }
+
   static Future<http.StreamedResponse> post(
       String url, Map<String, String> data) async {
     data.addAll({
@@ -224,5 +253,60 @@ class BiltekPost {
     } on Exception {
       debugPrint("Bilgisayarda ac çalışmadı");
     }
+  }
+
+  static Future<List<MedyaModel>> medyalariGetir({
+    required int id,
+  }) async {
+    Map<String, String> postData = {};
+    postData.addAll({"id": id.toString()});
+    var response = await BiltekPost.post(
+      Ayarlar.medyalar,
+      postData,
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        var map = jsonDecode(resp) as List<dynamic>;
+        List<MedyaModel> medyaList = map
+            .map((m) => MedyaModel.fromJson(m as Map<String, dynamic>))
+            .toList();
+        return medyaList;
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        return [];
+      }
+    } else {
+      debugPrint(
+          "Medyalar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+      return [];
+    }
+  }
+
+  static Future<bool> medyaYukle({
+    required int id,
+    required http.MultipartFile medya,
+  }) async {
+    var response = await BiltekPost.postMultiPart(
+      Ayarlar.tekCihaz,
+      [medya],
+      {
+        "id": id.toString(),
+      },
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map = jsonDecode(resp) as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
   }
 }
