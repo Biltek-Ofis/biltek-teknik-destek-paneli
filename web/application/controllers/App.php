@@ -322,6 +322,28 @@ class App extends CI_Controller
         } else {
             echo json_encode($this->hataMesaji(1));
         }
+    }public function medyaSil()
+    {
+        $this->headerlar();
+        $cihaz_id = $this->input->post("id");
+        
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if(isset($cihaz_id)){
+                    $sil = $this->Cihazlar_Model->medyaSil($cihaz_id);
+                    if($sil){                   
+                        echo json_encode(array("sonuc"=> 1)); 
+                    } else {
+                        echo json_encode($this->hataMesaji(99));
+                    }
+                }
+            } else {
+                echo json_encode($this->hataMesaji(4));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
     }
     public function version()
     {

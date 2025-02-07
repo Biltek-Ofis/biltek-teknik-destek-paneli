@@ -33,7 +33,7 @@ class Ayarlar {
   static String get bilgisayardaAc => "${appUrl}bilgisayardaAc/";
   static String get medyalar => "${appUrl}medyalar/";
   static String get medyaYukle => "${appUrl}medyaYukle/";
-  static String get medyaPostAdi => "yuklenecekDosya";
+  static String get medyaSil => "${appUrl}medyaSil/";
 
   static String teknikservisformu({
     required String auth,
