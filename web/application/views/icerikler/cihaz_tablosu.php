@@ -491,7 +491,7 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">GSM:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="MusteriGSM2"></li>
               </ul>
-              <ul class="list-group list-group-horizontal">
+              <ul class="list-group list-group-horizontal" style="display:none;">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="font-weight-bold">QR:</span></li>
                 <li class="list-group-item text-center" style="width:' . $ikinciOgeGenislik . ';">
                   <span style="max-width:20%;" id="ServisNoQR"></span>
