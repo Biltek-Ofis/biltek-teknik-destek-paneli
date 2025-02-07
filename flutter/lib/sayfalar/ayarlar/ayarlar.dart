@@ -1,11 +1,10 @@
-import 'package:biltekteknikservis/sayfalar/ayarlar/barkod_okuyucu.dart';
-import 'package:biltekteknikservis/widgets/kis_modu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/my_notifier.dart';
 import '../../widgets/selector.dart';
+import 'barkod_okuyucu.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({
@@ -39,72 +38,70 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
         builder: (context, MyNotifier myNotifier, child) {
           return SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: KisModu(
-              child: ListView(
-                children: [
-                  ListTile(
-                    title: Text("Barkod Okuyucu Ayarları"),
-                    subtitle: barkodOkuyucu != null
-                        ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
-                        : null,
-                    subtitleTextStyle: TextStyle(
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.color
-                            ?.withAlpha(200)),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => BarkodOkuyucuAyarlari(
-                            onBOKaydet: (durum, elle) {
-                              barkodOkuyucuAyarlariDurumu(
-                                durum,
-                                elle,
-                                kaydedildi: () async {
-                                  await barkodOkuyucuYenile();
-                                },
-                                pcYenile: widget.pcYenile,
-                              );
-                            },
-                          ),
+            child: ListView(
+              children: [
+                ListTile(
+                  title: Text("Barkod Okuyucu Ayarları"),
+                  subtitle: barkodOkuyucu != null
+                      ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
+                      : null,
+                  subtitleTextStyle: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.color
+                          ?.withAlpha(200)),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BarkodOkuyucuAyarlari(
+                          onBOKaydet: (durum, elle) {
+                            barkodOkuyucuAyarlariDurumu(
+                              durum,
+                              elle,
+                              kaydedildi: () async {
+                                await barkodOkuyucuYenile();
+                              },
+                              pcYenile: widget.pcYenile,
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text("Tema"),
+                  subtitleTextStyle: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.color
+                          ?.withAlpha(200)),
+                  subtitle: Container(
+                    padding: EdgeInsets.only(left: 5),
+                    child: myNotifier.isDark == null
+                        ? Text("Sistem Varsayılanı")
+                        : (myNotifier.isDark == true
+                            ? Text("Karanlık")
+                            : Text("Aydınlık")),
                   ),
-                  ListTile(
-                    title: Text("Tema"),
-                    subtitleTextStyle: TextStyle(
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.color
-                            ?.withAlpha(200)),
-                    subtitle: Container(
-                      padding: EdgeInsets.only(left: 5),
-                      child: myNotifier.isDark == null
-                          ? Text("Sistem Varsayılanı")
-                          : (myNotifier.isDark == true
-                              ? Text("Karanlık")
-                              : Text("Aydınlık")),
-                    ),
-                    onTap: () {
-                      showSelector<bool?>(
-                        context,
-                        items: [
-                          SelectorItem(text: "Sistem Varsayılanı", value: null),
-                          SelectorItem(text: "Aydınlık", value: false),
-                          SelectorItem(text: "Karanlık", value: true),
-                        ],
-                        currentValue: myNotifier.isDark,
-                        onSelect: (value) {
-                          myNotifier.isDark = value;
-                        },
-                      );
-                    },
-                  )
-                ],
-              ),
+                  onTap: () {
+                    showSelector<bool?>(
+                      context,
+                      items: [
+                        SelectorItem(text: "Sistem Varsayılanı", value: null),
+                        SelectorItem(text: "Aydınlık", value: false),
+                        SelectorItem(text: "Karanlık", value: true),
+                      ],
+                      currentValue: myNotifier.isDark,
+                      onSelect: (value) {
+                        myNotifier.isDark = value;
+                      },
+                    );
+                  },
+                )
+              ],
             ),
           );
         },

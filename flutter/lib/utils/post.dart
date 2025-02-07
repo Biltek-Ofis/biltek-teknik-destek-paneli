@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:biltekteknikservis/models/medya.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:biltekteknikservis/models/cihaz.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ayarlar.dart';
-import '../models/ayarlar.dart';
+import '../models/cihaz.dart';
 import '../models/kullanici.dart';
+import '../models/medya.dart';
 import 'shared_preferences.dart';
 
 class BiltekPost {
@@ -58,26 +57,6 @@ class BiltekPost {
     http.StreamedResponse response = await request.send();
 
     return response;
-  }
-
-  static Future<AyarlarModel> ayarlar() async {
-    try {
-      var response = await BiltekPost.post(
-        Ayarlar.ayarlar,
-        {},
-      );
-      if (response.statusCode == 201) {
-        var resp = await response.stream.bytesToString();
-        AyarlarModel ayarlarModel =
-            AyarlarModel.fromJson(jsonDecode(resp) as Map<String, dynamic>);
-        return ayarlarModel;
-      } else {
-        return AyarlarModel.empty();
-      }
-    } on Exception catch (e) {
-      debugPrint("Ayarlar getirilemedi ${e.toString()}");
-      return AyarlarModel.empty();
-    }
   }
 
   static Future<bool> guncellemeGerekli() async {
