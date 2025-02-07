@@ -906,6 +906,7 @@ class Cihazlar_Model extends CI_Model
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/bmp")
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/tiff")
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/webp")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "application/octet-stream")
                 ) {
                     $tur = ($_FILES["yuklenecekDosya"]["type"] == "video/mp4") ? "video" : "resim";
                     $yukleVeri = array(
@@ -940,7 +941,7 @@ class Cihazlar_Model extends CI_Model
                         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                         curl_close($ch);
                         try{
-                            $sonuc = json_decode($response);
+                            $sonuc = json_decode($response, FALSE);
                             if($sonuc != null){
                                 if(property_exists($sonuc, "basarili")) 
                                 {
