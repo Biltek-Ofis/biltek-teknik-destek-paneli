@@ -264,9 +264,14 @@ class Cihaz extends Varsayilancontroller
                             curl_close($ch);
                             try{
                                 $sonuc = json_decode($response);
-                                if($sonuc->basarili){
-                                    $yukleVeri["konum"] = $sonuc->dosya;
-                                    $basariyla_yuklendi = TRUE;
+                                if($sonuc != null){
+                                    if(property_exists($sonuc, "basarili")) 
+                                    {
+                                        if($sonuc->basarili){
+                                            $yukleVeri["konum"] = $sonuc->dosya;
+                                            $basariyla_yuklendi = TRUE;
+                                        }
+                                    }
                                 }
                             }catch(Exception $e){
                                 $basariyla_yuklendi = FALSE;
