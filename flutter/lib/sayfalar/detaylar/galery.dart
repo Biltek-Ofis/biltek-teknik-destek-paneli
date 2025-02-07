@@ -29,6 +29,7 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
   final ImagePicker picker = ImagePicker();
   PageController pageController = PageController();
   List<MedyaModel> medyalar = [];
+  int suankiResimIndex = 0;
 
   bool yukleniyor = true;
 
@@ -74,6 +75,15 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
               Icons.add,
             ),
           ),
+          if (medyalar.isNotEmpty)
+            IconButton(
+              onPressed: () {
+                _medyaSilDialog();
+              },
+              icon: Icon(
+                Icons.delete,
+              ),
+            ),
         ],
       ),
       body: SizedBox(
@@ -99,7 +109,11 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                     },
                     scrollDirection: Axis.horizontal,
                     pageController: pageController,
-                    onPageChanged: (index) {},
+                    onPageChanged: (index) {
+                      setState(() {
+                        suankiResimIndex = index;
+                      });
+                    },
                     scrollPhysics: const BouncingScrollPhysics(),
                     backgroundDecoration: BoxDecoration(
                       color: Theme.of(context).canvasColor,
@@ -125,10 +139,12 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     if (mounted) {
       setState(() {
         medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
+        suankiResimIndex = 0;
         yukleniyor = false;
       });
     } else {
       medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
+      suankiResimIndex = 0;
       yukleniyor = false;
     }
   }
@@ -183,9 +199,31 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     //await _medyalariYenile();
   }
 
+  void _yukleniyorDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Yükleniyor"),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _resimDuzenle(XFile resim) async {
     NavigatorState navigatorState = Navigator.of(context);
-
     Uint8List bytes = await resim.readAsBytes();
     navigatorState.push(
       MaterialPageRoute(
@@ -193,26 +231,17 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
           resim: bytes,
           onEditComplete: (bytes) async {
             NavigatorState navigatorState = Navigator.of(context);
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Yükleniyor"),
-                  content: CircularProgressIndicator(),
-                );
-              },
-            );
+            _yukleniyorDialog();
 
             bool resimYuklendi = await BiltekPost.medyaYukle(
               id: widget.id,
               medya: bytes,
             );
+            navigatorState.pop();
             if (resimYuklendi) {
-              navigatorState.pop();
               navigatorState.pop();
               await _medyalariYenile();
             } else {
-              navigatorState.pop();
               if (context.mounted) {
                 showDialog(
                   context: context,
@@ -238,5 +267,66 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
         ),
       ),
     );
+  }
+
+  void _medyaSilDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Medya Sil"),
+          content: Text("Bu medyayı silmek istediğinize emin misiniz?"),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await _medyaSil();
+              },
+              child: Text("Evet"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Hayır"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _medyaSil() async {
+    if (medyalar.isNotEmpty) {
+      NavigatorState navigatorState = Navigator.of(context);
+      _yukleniyorDialog();
+      bool silindi =
+          await BiltekPost.medyaSil(id: medyalar[suankiResimIndex].id);
+      navigatorState.pop();
+      if (silindi) {
+        await _medyalariYenile();
+      } else {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Başarısız"),
+                content:
+                    Text("Medya silinemedi lütfen daha sonra tekrar deneyin."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Kapat"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    }
   }
 }

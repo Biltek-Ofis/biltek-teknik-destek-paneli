@@ -313,4 +313,29 @@ class BiltekPost {
     }
     return false;
   }
+
+  static Future<bool> medyaSil({
+    required int id,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.medyaSil,
+      {
+        "id": id.toString(),
+      },
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
 }
