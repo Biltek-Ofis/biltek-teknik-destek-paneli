@@ -15,7 +15,7 @@ import 'shared_preferences.dart';
 class BiltekPost {
   static Future<http.StreamedResponse> postMultiPart(
     String url,
-    Map<String, Uint8List> files,
+    List<http.MultipartFile> files,
     Map<String, String> data,
   ) async {
     data.addAll({
@@ -30,11 +30,8 @@ class BiltekPost {
       String key = data.keys.elementAt(i);
       request.fields[key] = data[key]!;
     }
-    for (var i = 0; i < files.keys.length; i++) {
-      String key = files.keys.elementAt(i);
-      request.files.add(
-        http.MultipartFile.fromBytes(key, files[key]!, filename: "upload.png"),
-      );
+    for (var i = 0; i < files.length; i++) {
+      request.files.add(files[i]);
     }
 
     ///request.headers.addAll(headers);
@@ -291,13 +288,18 @@ class BiltekPost {
   }) async {
     var response = await BiltekPost.postMultiPart(
       Ayarlar.medyaYukle,
-      {"yuklenecekDosya": medya},
+      [
+        http.MultipartFile.fromBytes(
+          "yuklenecekDosya",
+          medya,
+          filename: "upload.png",
+        ),
+      ],
       {
         "id": id.toString(),
       },
     );
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =
