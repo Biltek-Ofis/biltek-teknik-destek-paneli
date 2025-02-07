@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:biltekteknikservis/models/medya.dart';
 import 'package:biltekteknikservis/utils/post.dart';
@@ -145,8 +146,12 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                 TextButton(
                   onPressed: () async {
                     Navigator.pop(context);
-                    final resim =
-                        await picker.pickImage(source: ImageSource.camera);
+                    final resim = await picker.pickImage(
+                      source: ImageSource.camera,
+                      preferredCameraDevice: CameraDevice.rear,
+                      maxWidth: 1000,
+                      maxHeight: 1000,
+                    );
                     if (resim != null) {
                       _resimDuzenle(resim);
                     }
@@ -156,8 +161,11 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                 TextButton(
                   onPressed: () async {
                     Navigator.pop(context);
-                    final resim =
-                        await picker.pickImage(source: ImageSource.gallery);
+                    final resim = await picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1000,
+                      maxHeight: 1000,
+                    );
                     if (resim != null) {
                       _resimDuzenle(resim);
                     }
@@ -174,20 +182,36 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     //await _medyalariYenile();
   }
 
-  void _resimDuzenle(XFile resim) {
-    Navigator.of(context).push(
+  Future<void> _resimDuzenle(XFile resim) async {
+    NavigatorState navigatorState = Navigator.of(context);
+
+    Uint8List bytes = await resim.readAsBytes();
+    navigatorState.push(
       MaterialPageRoute(
         builder: (context) => ResimDuzenle(
-          resim: resim,
+          resim: bytes,
           onEditComplete: (bytes) async {
+            NavigatorState navigatorState = Navigator.of(context);
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Yükleniyor"),
+                  content: CircularProgressIndicator(),
+                );
+              },
+            );
+
             bool resimYuklendi = await BiltekPost.medyaYukle(
               id: widget.id,
               medya: bytes,
             );
-            debugPrint("RESIM YUKLEME DURUMU $resimYuklendi");
             if (resimYuklendi) {
+              navigatorState.pop();
+              navigatorState.pop();
               await _medyalariYenile();
             } else {
+              navigatorState.pop();
               if (context.mounted) {
                 showDialog(
                   context: context,
