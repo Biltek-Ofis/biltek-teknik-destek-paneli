@@ -91,7 +91,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                     );
                   },
                   child: Icon(
-                    Icons.browse_gallery,
+                    Icons.image,
                     color: Colors.white,
                   ),
                 )
