@@ -293,11 +293,7 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 if(strlen($id)){
                     $medyalar = $this->Cihazlar_Model->medyalar($id);
-                    if ($medyalar != null) {
-                        echo json_encode($medyalar);
-                    } else {
-                        echo json_encode($this->hataMesaji(99));
-                    }
+                    echo json_encode($medyalar);
                 } else {
                     echo json_encode($this->hataMesaji(1));
                 }
