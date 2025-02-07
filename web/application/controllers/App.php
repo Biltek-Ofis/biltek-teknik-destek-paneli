@@ -42,6 +42,9 @@ class App extends CI_Controller
             case 3:
                 $sonuc["mesaj"] = "Şifre boş olamaz!";
                 break;
+            case 4:
+                $sonuc["mesaj"] = "Cihaz id gecersiz!";
+                break;
             default:
                 $sonuc["kod"] = 99;
                 $sonuc["mesaj"] = "Bir hata oluştu";
@@ -273,6 +276,52 @@ class App extends CI_Controller
                 }
             } else {
                 echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function medyalar()
+    {
+        $this->headerlar();
+        $id = $this->input->post("id");
+        if (!isset($id)) {
+            $id = "";
+        }
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if(strlen($id)){
+                    $medyalar = $this->Cihazlar_Model->medyalar($id);
+                    if ($medyalar != null) {
+                        echo json_encode($medyalar);
+                    } else {
+                        echo json_encode($this->hataMesaji(99));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function medyaYukle()
+    {
+        $this->headerlar();
+        $cihaz_id = $this->input->post("id");
+        
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if(isset($cihaz_id)){
+                    $yukle = $this->Cihazlar_Model->medyaYukle($cihaz_id);
+                    echo json_encode($yukle);
+                }
+            } else {
+                echo json_encode($this->hataMesaji(4));
             }
         } else {
             echo json_encode($this->hataMesaji(1));

@@ -886,7 +886,92 @@ class Cihazlar_Model extends CI_Model
     {
         return "cihazDetay";
     }
-    public function medyaYukle($veri)
+    public function medyaYukle($id){
+        if (!isset($_FILES["yuklenecekDosya"])) {
+            echo json_encode(array("mesaj" => "Hata: Lütfen bir resim seçin", "sonuc" => 0));
+        } else {
+            if ($_FILES["yuklenecekDosya"]["error"] !== UPLOAD_ERR_OK) {
+                echo json_encode(array("mesaj" => "Dosya yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0));
+            } else {
+                $gecici_dosya_adi = $_FILES["yuklenecekDosya"]["tmp_name"];
+                $orjinal_dosya_adi = $_FILES["yuklenecekDosya"]["name"];
+                $basariyla_yuklendi = FALSE;
+                $uzanti = pathinfo($_FILES['yuklenecekDosya']['name'], PATHINFO_EXTENSION);
+                $uzanti = strtolower($uzanti);
+                if (($_FILES["yuklenecekDosya"]["type"] == "image/pjpeg")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/jpeg")
+                    //|| ($_FILES["yuklenecekDosya"]["type"] == "video/mp4")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/png")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/gif")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/bmp")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/tiff")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/webp")
+                ) {
+                    $tur = ($_FILES["yuklenecekDosya"]["type"] == "video/mp4") ? "video" : "resim";
+                    $yukleVeri = array(
+                        "cihaz_id" => $id,
+                        "tur" => $tur,
+                        "yerel"=> 1,
+                    );
+                    if(DOSYA_YUKLEME_URL == "/"){
+                        /*$boyut = $_FILES["yuklenecekDosya"]["size"];
+                        $boyut_mb = number_format(($boyut / 1048576), 2);*/
+                        $dosyaKonumu = "yuklemeler/";
+                        $tasinacakKonum = "$dosyaKonumu" . $id . "_" . rand(1000, 9999) . "_" . $_FILES["yuklenecekDosya"]["name"];
+                        if (move_uploaded_file($gecici_dosya_adi, $tasinacakKonum)) {
+                            $yukleVeri["konum"] = $tasinacakKonum;
+                            $basariyla_yuklendi = TRUE;
+                        }
+                    } else {
+                        $yukleVeri["yerel"] = 0;
+                        $cfile = new CURLFile($gecici_dosya_adi, mime_content_type($gecici_dosya_adi), $orjinal_dosya_adi);
+                        $post_data = [
+                            "file" => $cfile,
+                            "id"=> $id
+                        ];
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, DOSYA_YUKLEME_URL);
+                        curl_setopt($ch, CURLOPT_POST, true);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                        // Flask sunucusundan gelen yanıtı al
+                        $response = curl_exec($ch);
+                        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        curl_close($ch);
+                        try{
+                            $sonuc = json_decode($response);
+                            if($sonuc != null){
+                                if(property_exists($sonuc, "basarili")) 
+                                {
+                                    if($sonuc->basarili){
+                                        $yukleVeri["konum"] = $sonuc->dosya;
+                                        $basariyla_yuklendi = TRUE;
+                                    }
+                                }
+                            }
+                        }catch(Exception $e){
+                            $basariyla_yuklendi = FALSE;
+                        }
+                    }
+                    
+                    if($basariyla_yuklendi){
+                        $ekle = $this->medyaKaydet($yukleVeri);
+                        if ($ekle) {
+                            return array("mesaj" => "$orjinal_dosya_adi dosyasının yüklemesi tamamlandı.", "sonuc" => 1);
+                        } else {
+                            return array("mesaj" => "Resim yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
+                        }
+                    }else{
+                        return array("mesaj" => "Resim yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
+                    }
+                } else {
+                    return array("mesaj" => "Geçerli bir resim dosyası seçin.", "sonuc" => 0);
+                }
+            }  
+        }
+    }
+    public function medyaKaydet($veri)
     {
         $this->veriGuncellendiEkle();
         return $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
