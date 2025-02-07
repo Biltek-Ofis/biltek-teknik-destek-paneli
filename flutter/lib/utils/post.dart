@@ -107,7 +107,6 @@ class BiltekPost {
     );
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
-      debugPrint(resp);
       KullaniciGetirModel kullaniciGetir = KullaniciGetirModel.fromJson(
           jsonDecode(resp) as Map<String, dynamic>);
       if (kullaniciGetir.durum) {
@@ -186,7 +185,6 @@ class BiltekPost {
       postData,
     );
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
     if (response.statusCode == 201) {
       try {
         Cihaz cihaz = Cihaz.fromJson(jsonDecode(resp) as Map<String, dynamic>);
@@ -269,7 +267,6 @@ class BiltekPost {
       postData,
     );
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
     if (response.statusCode == 201) {
       try {
         var map = jsonDecode(resp) as List<dynamic>;
