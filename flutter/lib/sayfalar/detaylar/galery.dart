@@ -35,6 +35,8 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
 
   Timer? timer;
 
+  bool firstInitialization = true;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -146,6 +148,18 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
       medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
       suankiResimIndex = 0;
       yukleniyor = false;
+    }
+    if (medyalar.isNotEmpty && !firstInitialization) {
+      pageController.jumpToPage(0);
+    }
+    if (firstInitialization) {
+      if (mounted) {
+        setState(() {
+          firstInitialization = false;
+        });
+      } else {
+        firstInitialization = false;
+      }
     }
   }
 
