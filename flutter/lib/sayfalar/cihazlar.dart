@@ -51,6 +51,8 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   bool aramaEtkin = false;
 
+  AramaAppBar? aramaAppBar;
+
   bool yukariKaydir = false;
 
   StreamSubscription<String>? fcmStream;
@@ -110,6 +112,18 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   @override
   Widget build(BuildContext context) {
+    aramaAppBar = AramaAppBar(
+      searchbarFocus: searchbarFocus,
+      aramaText: (value) async {
+        setState(() {
+          arama = value;
+        });
+        await _cihazlariYenile();
+      },
+      aramaDurumu: (durum) {
+        _aramaDurumuDuzenle(durum);
+      },
+    );
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
@@ -118,10 +132,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         }
         bool kapat = true;
         if (aramaEtkin) {
-          setState(() {
-            aramaEtkin = false;
-            arama = "";
-          });
+          _aramaDurumuDuzenle(false);
           kapat = false;
           await _cihazlariYenile();
         }
@@ -140,27 +151,13 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                 seciliSayfa: widget.seciliSayfa,
               ),
         appBar: aramaEtkin
-            ? aramaAppBar(
-                searchbarFocus: searchbarFocus,
-                aramaText: (value) async {
-                  setState(() {
-                    arama = value;
-                  });
-                  await _cihazlariYenile();
-                },
-                aramaDurumu: (durum) {
-                  setState(() {
-                    aramaEtkin = durum;
-                  });
-                })
+            ? AppBar(
+                flexibleSpace: aramaAppBar,
+              )
             : cihazlarAppBar(
                 context,
                 aramaDurumu: (durum) {
-                  setState(
-                    () {
-                      aramaEtkin = durum;
-                    },
-                  );
+                  _aramaDurumuDuzenle(durum);
                 },
                 kullanici: widget.kullanici,
                 cihazlariYenile: () async {
@@ -369,6 +366,24 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       });
     } else {
       barkodOkuyucu = barkodOkuyucuTemp;
+    }
+  }
+
+  void _aramaDurumuDuzenle(bool durum) async {
+    setState(() {
+      aramaEtkin = durum;
+    });
+    if (durum) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (mounted) {
+          FocusScope.of(context).requestFocus(aramaAppBar?.searchbarFocus);
+        }
+      });
+    } else {
+      setState(() {
+        arama = "";
+      });
+      await _cihazlariYenile();
     }
   }
 }
@@ -648,13 +663,26 @@ void barkodGecersiz(BuildContext context) {
   );
 }
 
-AppBar aramaAppBar({
-  required FocusNode searchbarFocus,
-  required AramaText aramaText,
-  required AramaDurumu aramaDurumu,
-}) {
-  return AppBar(
-    flexibleSpace: SafeArea(
+class AramaAppBar extends StatefulWidget {
+  const AramaAppBar({
+    super.key,
+    required this.searchbarFocus,
+    required this.aramaText,
+    required this.aramaDurumu,
+  });
+
+  final FocusNode searchbarFocus;
+  final AramaText aramaText;
+  final AramaDurumu aramaDurumu;
+
+  @override
+  State<AramaAppBar> createState() => _AramaAppBarState();
+}
+
+class _AramaAppBarState extends State<AramaAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
       child: Builder(
         builder: (context) {
           WidgetStateProperty<Color?>? color =
@@ -663,10 +691,9 @@ AppBar aramaAppBar({
               return Colors.transparent; // Use the component's default.
             },
           );
-
-          FocusScope.of(context).requestFocus(searchbarFocus);
+          Color textColor = Colors.white;
           return SearchBar(
-            focusNode: searchbarFocus,
+            focusNode: widget.searchbarFocus,
             textInputAction: TextInputAction.search,
             padding: const WidgetStatePropertyAll<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 16.0)),
@@ -678,31 +705,36 @@ AppBar aramaAppBar({
             hintStyle: WidgetStateProperty.resolveWith<TextStyle?>(
               (Set<WidgetState> states) {
                 return TextStyle(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.color
-                        ?.withAlpha(100));
+                  color: textColor.withAlpha(150),
+                );
+              },
+            ),
+            textStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+              (Set<WidgetState> states) {
+                return TextStyle(
+                  color: textColor,
+                );
               },
             ),
             onTap: () {
               ////controller.openView();
             },
             onChanged: (value) {
-              aramaText.call(value);
+              widget.aramaText.call(value);
             },
             leading: IconButton(
               onPressed: () {
-                aramaDurumu.call(false);
+                widget.aramaDurumu.call(false);
               },
+              color: Colors.white,
               icon: Icon(Icons.arrow_back),
             ),
             trailing: <Widget>[],
           );
         },
       ),
-    ),
-  );
+    );
+  }
 }
 
 Drawer biltekDrawer(
