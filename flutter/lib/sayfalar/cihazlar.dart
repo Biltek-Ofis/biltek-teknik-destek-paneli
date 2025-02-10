@@ -581,14 +581,14 @@ AppBar cihazlarAppBar(
                 title: Text("Ayarlar"),
               ),
             ),
-            if (barkodOkuyucu != null)
+            /*if (barkodOkuyucu != null)
               PopupMenuItem<String>(
                 value: "Bilgisayarı Kapat",
                 child: ListTile(
                   leading: Icon(Icons.desktop_windows),
                   title: Text("Bilgisayarı Kapat"),
                 ),
-              ),
+              ),*/
             PopupMenuItem<String>(
               value: "Çıkış Yap",
               child: ListTile(
