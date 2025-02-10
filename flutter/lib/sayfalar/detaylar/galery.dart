@@ -150,7 +150,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
       suankiResimIndex = 0;
       yukleniyor = false;
     }
-    if (medyalar.isNotEmpty && !firstInitialization) {
+    if (medyalar.isNotEmpty &&
+        !firstInitialization &&
+        pageController.positions.isNotEmpty) {
       pageController.jumpToPage(0);
     }
     if (firstInitialization) {
