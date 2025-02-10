@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-import '../main.dart';
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
 import '../sayfalar/detaylar/detaylar.dart';
@@ -31,7 +30,7 @@ class CihazlarSayfasi extends StatefulWidget {
     required this.seciliSayfa,
     this.sorumlu,
   });
-  final KullaniciModel kullanici;
+  final KullaniciAuthModel kullanici;
   final String seciliSayfa;
   final int? sorumlu;
 
@@ -182,7 +181,23 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   color: Colors.white,
                 ),
               )
-            : null,
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => YeniCihazSayfasi(
+                        cihazlariYenile: () async {
+                          await _cihazlariYenile();
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                )),
         body: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -391,7 +406,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 AppBar cihazlarAppBar(
   BuildContext context, {
   required AramaDurumu aramaDurumu,
-  required KullaniciModel kullanici,
+  required KullaniciAuthModel kullanici,
   required VoidCallback cihazlariYenile,
   required BarkodOkuyucu? barkodOkuyucu,
   required VoidCallback pcYenile,
@@ -528,20 +543,6 @@ AppBar cihazlarAppBar(
         },
         icon: Icon(Icons.qr_code),
       ),
-      if (cihazEkleme)
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => YeniCihazSayfasi(
-                  cihazlariYenile: cihazlariYenile,
-                ),
-              ),
-            );
-          },
-          icon: Icon(Icons.add),
-        ),
       PopupMenuButton<String>(
         onSelected: (value) async {
           NavigatorState navigatorState = Navigator.of(context);
@@ -613,7 +614,7 @@ class ServisNo {
 
   Future<void> ac({
     required int servisNo,
-    required KullaniciModel kullanici,
+    required KullaniciAuthModel kullanici,
     required VoidCallback cihazlariYenile,
     bool bilgisayardaAc = true,
   }) async {
@@ -739,7 +740,7 @@ class _AramaAppBarState extends State<AramaAppBar> {
 
 Drawer biltekDrawer(
   BuildContext context, {
-  required KullaniciModel kullanici,
+  required KullaniciAuthModel kullanici,
   String seciliSayfa = "",
 }) {
   return Drawer(

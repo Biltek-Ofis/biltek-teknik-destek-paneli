@@ -1,6 +1,6 @@
 class KullaniciGetirModel {
   final bool durum;
-  final KullaniciModel kullanici;
+  final KullaniciAuthModel kullanici;
 
   const KullaniciGetirModel({required this.durum, required this.kullanici});
 
@@ -12,12 +12,58 @@ class KullaniciGetirModel {
       } =>
         KullaniciGetirModel(
           durum: durum,
-          kullanici: KullaniciModel.fromJson(kullanici),
+          kullanici: KullaniciAuthModel.fromJson(kullanici),
         ),
       _ => KullaniciGetirModel(
           durum: false,
-          kullanici: KullaniciModel.fromJson({}),
+          kullanici: KullaniciAuthModel.fromJson({}),
         )
+    };
+  }
+}
+
+class KullaniciAuthModel extends KullaniciModel {
+  final String auth;
+
+  const KullaniciAuthModel({
+    required super.id,
+    required super.kullaniciAdi,
+    required super.adSoyad,
+    required super.urunduzenleme,
+    required super.teknikservis,
+    required super.yonetici,
+    required this.auth,
+  });
+
+  factory KullaniciAuthModel.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'id': String id,
+        'kullanici_adi': String kullaniciAdi,
+        'ad_soyad': String adSoyad,
+        'urunduzenleme': String urunduzenleme,
+        'teknikservis': String teknikservis,
+        'yonetici': String yonetici,
+        'auth': String auth,
+      } =>
+        KullaniciAuthModel(
+          id: int.tryParse(id) ?? 0,
+          kullaniciAdi: kullaniciAdi,
+          adSoyad: adSoyad,
+          urunduzenleme: urunduzenleme == "1",
+          teknikservis: teknikservis == "1",
+          yonetici: yonetici == "1",
+          auth: auth,
+        ),
+      _ => KullaniciAuthModel(
+          id: 0,
+          kullaniciAdi: "",
+          adSoyad: "",
+          urunduzenleme: false,
+          teknikservis: false,
+          yonetici: false,
+          auth: "",
+        ),
     };
   }
 }
@@ -29,7 +75,6 @@ class KullaniciModel {
   final bool urunduzenleme;
   final bool teknikservis;
   final bool yonetici;
-  final String auth;
 
   const KullaniciModel({
     required this.id,
@@ -38,7 +83,6 @@ class KullaniciModel {
     required this.urunduzenleme,
     required this.teknikservis,
     required this.yonetici,
-    required this.auth,
   });
 
   factory KullaniciModel.fromJson(Map<String, dynamic> json) {
@@ -50,7 +94,6 @@ class KullaniciModel {
         'urunduzenleme': String urunduzenleme,
         'teknikservis': String teknikservis,
         'yonetici': String yonetici,
-        'auth': String auth,
       } =>
         KullaniciModel(
           id: int.tryParse(id) ?? 0,
@@ -59,7 +102,6 @@ class KullaniciModel {
           urunduzenleme: urunduzenleme == "1",
           teknikservis: teknikservis == "1",
           yonetici: yonetici == "1",
-          auth: auth,
         ),
       _ => KullaniciModel(
           id: 0,
@@ -68,7 +110,6 @@ class KullaniciModel {
           urunduzenleme: false,
           teknikservis: false,
           yonetici: false,
-          auth: "",
         ),
     };
   }

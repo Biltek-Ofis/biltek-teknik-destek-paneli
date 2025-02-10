@@ -198,7 +198,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             if (girisDurumu.durum && girisDurumu.auth.isNotEmpty) {
               await SharedPreference.setString(
                   SharedPreference.authString, girisDurumu.auth);
-              KullaniciModel? kullaniciModel =
+              KullaniciAuthModel? kullaniciModel =
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
                 kapatildi = true;

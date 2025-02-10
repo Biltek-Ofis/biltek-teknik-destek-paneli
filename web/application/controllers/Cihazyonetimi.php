@@ -74,44 +74,13 @@ class Cihazyonetimi extends Varsayilancontroller
 	public function cihazEkle($tur)
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
-			$veri = $this->Cihazlar_Model->cihazPost();
-			$servis_no = $this->Cihazlar_Model->insertTrigger();
-			if ($servis_no != 0) {
-				$veri["servis_no"] = $servis_no;
-				$ekle = $this->Cihazlar_Model->cihazEkle($veri);
-				if ($ekle) {
-					$id = $this->db->insert_id();
-					$musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
-					if(((int)$musteriyi_kaydet) == 1){
-						if($veri["musteri_kod"] == NULL){
-							$this->db->reset_query()->insert(
-								$this->Firma_Model->musteriTablosu(),
-								array(
-									"musteri_adi" => $veri["musteri_adi"],
-									"adres" => $veri["adres"],
-									"telefon_numarasi" => $veri["telefon_numarasi"]
-								)
-							);
-						}
-					}
-					if($tur == "POST" || $tur == "post"){
-						echo json_encode(array("mesaj" => "", "sonuc" => 1));
-					}else{
-						redirect(base_url("") . "#" . $this->Cihazlar_Model->cihazDetayModalAdi() . $id);
-					}
-				} else {
-					if($tur == "POST" || $tur == "post"){
-						echo json_encode(array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
-					}else{
-						$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] );
-					}
-				}
-			} else {
-				if($tur == "POST" || $tur == "post"){
-					echo json_encode(array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0));
-				}else{
-					$this->Kullanicilar_Model->girisUyari("", "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"] . $servis_no);
-				}
+			$ekle = $this->Cihazlar_Model->cihazEkle($tur);
+			if(isset($ekle["yonlendir"])){
+				redirect($ekle["yonlendir"]);
+			}else if($tur == "POST" || $tur == "post"){
+				echo json_encode($ekle);
+			}else{
+				$this->Kullanicilar_Model->girisUyari("", $ekle["mesaj"] );
 			}
 		} else {
 			if($tur == "POST" || $tur == "post"){

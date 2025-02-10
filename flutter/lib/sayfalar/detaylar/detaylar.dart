@@ -23,7 +23,7 @@ class DetaylarSayfasi extends StatefulWidget {
     required this.cihazlariYenile,
   });
 
-  final KullaniciModel kullanici;
+  final KullaniciAuthModel kullanici;
   final int servisNo;
   final VoidCallback cihazlariYenile;
 

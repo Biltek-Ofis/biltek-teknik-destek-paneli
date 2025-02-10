@@ -9,7 +9,7 @@ class CihazlarimSayfasi extends StatelessWidget {
     required this.kullanici,
   });
 
-  final KullaniciModel kullanici;
+  final KullaniciAuthModel kullanici;
   @override
   Widget build(BuildContext context) {
     return CihazlarSayfasi(

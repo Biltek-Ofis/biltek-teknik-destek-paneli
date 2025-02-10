@@ -57,21 +57,6 @@ class Islemler {
     }
   }
 
-  static String servisTuru(int id) {
-    switch (id) {
-      case 1:
-        return "GARANTİ KAPSAMINDA BAKIM/ONARIM";
-      case 2:
-        return "ANLAŞMALI BAKIM/ONARIM";
-      case 3:
-        return "ÜCRETLİ BAKIM/ONARIM";
-      case 4:
-        return "ÜCRETLİ ARIZA TESPİTİ";
-      default:
-        return "Belirtilmemiş";
-    }
-  }
-
   static String faturaDurumu(int durum) {
     switch (durum) {
       case 1:
@@ -90,5 +75,44 @@ class Islemler {
       return AndroidId().getId();
     }
     return null;
+  }
+
+  static String _listGetir(List<String> list, int index) {
+    if (index < list.length) {
+      return list[index];
+    } else {
+      return list[0];
+    }
+  }
+
+  static final List<String> cihazdakiHasarlar = [
+    "Belirtilmemiş",
+    "Çizik",
+    "Kırık",
+    "Çatlak",
+    "Diğer"
+  ];
+  static String cihazdakiHasar(int index) {
+    return _listGetir(cihazdakiHasarlar, index);
+  }
+
+  static final List<String> servisTurleri = [
+    "Belirtilmemiş",
+    "GARANTİ KAPSAMINDA BAKIM/ONARIM",
+    "ANLAŞMALI BAKIM/ONARIM",
+    "ÜCRETLİ BAKIM/ONARIM",
+    "ÜCRETLİ ARIZA TESPİTİ",
+  ];
+  static String servisTuru(int index) {
+    return _listGetir(servisTurleri, index);
+  }
+
+  static final List<String> evetHayirlar = [
+    "Belirtilmemiş",
+    "Evet",
+    "Hayır",
+  ];
+  static String evetHayir(int index) {
+    return _listGetir(evetHayirlar, index);
   }
 }

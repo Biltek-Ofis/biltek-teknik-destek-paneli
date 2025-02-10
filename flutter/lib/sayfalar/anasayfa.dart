@@ -11,7 +11,7 @@ class Anasayfa extends StatefulWidget {
     required this.kullanici,
   });
 
-  final KullaniciModel kullanici;
+  final KullaniciAuthModel kullanici;
 
   @override
   State<Anasayfa> createState() => _AnasayfaState();
