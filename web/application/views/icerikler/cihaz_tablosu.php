@@ -37,6 +37,12 @@ $kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
 $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 
 echo '<script>
+  function basariliModalGoster(){
+    $("#statusSuccessModal").modal("show");
+    setTimeout(function(){
+      $("#statusSuccessModal").modal("hide");
+    }, 1000);
+  }
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
@@ -115,7 +121,7 @@ echo '<script>
         $("#kaydediliyorModal").modal("hide");
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
-        $("#statusSuccessModal").modal("show");
+        basariliModalGoster();
       });
     });
   }
@@ -179,7 +185,7 @@ echo '<script>
           $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
-          $("#statusSuccessModal").modal("show");
+          basariliModalGoster();
         }else{
           $("#hata-mesaji").html(data["mesaj"]);
           $("#statusErrorsModal").modal("show");
