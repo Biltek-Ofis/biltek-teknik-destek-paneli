@@ -9,6 +9,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../ayarlar.dart';
 import '../../models/medya.dart';
 import '../../utils/post.dart';
+import '../../utils/resim_secici.dart';
 import 'resim_duzenle.dart';
 
 class DetaylarGaleri extends StatefulWidget {
@@ -164,51 +165,11 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
   }
 
   Future<void> _medyaYukle() async {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 100,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    final resim = await picker.pickImage(
-                      source: ImageSource.camera,
-                      preferredCameraDevice: CameraDevice.rear,
-                      maxWidth: 1000,
-                      maxHeight: 1000,
-                    );
-                    if (resim != null) {
-                      _resimDuzenle(resim);
-                    }
-                  },
-                  child: Text("Kamera"),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    final resim = await picker.pickImage(
-                      source: ImageSource.gallery,
-                      maxWidth: 1000,
-                      maxHeight: 1000,
-                    );
-                    if (resim != null) {
-                      _resimDuzenle(resim);
-                    }
-                  },
-                  child: Text("Galeri"),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    ResimSecici.of(context).sec(resimSecildi: (resim) {
+      if (resim != null) {
+        _resimDuzenle(resim);
+      }
+    });
 
     //await _medyalariYenile();
   }
