@@ -483,7 +483,6 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                       BiltekTextField(
                         controller: hasarTespitiController,
                         currentFocus: hasarTespitiFocus,
-                        // TODO: NEXTFOCUS
                         label: "Teslim alınırken yapılan hasar tespiti",
                         keyboardType: TextInputType.multiline,
                         onChanged: (value) {
