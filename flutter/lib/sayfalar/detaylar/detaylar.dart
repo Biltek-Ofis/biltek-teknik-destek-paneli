@@ -796,6 +796,29 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     List<TableRow> fiyatlarTemp = [];
     double kdvsizToplamTemp = 0;
     double kdvToplamTemp = 0;
+    if (cihaz == null) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Cihaz Bulunamadı"),
+              content: Text("Cihaz bulunamadı. Silinmiş olabilir."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Geri"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+      return;
+    }
     for (int i = 0; i < cihaz!.islemler.length; i++) {
       YapilanIslem islem = cihaz!.islemler[i];
       if (islem.ad.isNotEmpty) {
