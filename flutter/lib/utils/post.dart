@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ayarlar.dart';
 import '../models/cihaz.dart';
+import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../models/kullanici.dart';
 import '../models/medya.dart';
 import 'shared_preferences.dart';
@@ -74,7 +75,7 @@ class BiltekPost {
     }
   }
 
-  static Future<KullaniciModel?> kullaniciGetir(String auth) async {
+  static Future<KullaniciAuthModel?> kullaniciGetir(String auth) async {
     var response = await BiltekPost.post(
       Ayarlar.kullaniciGetir,
       {
@@ -304,6 +305,51 @@ class BiltekPost {
     );
     var resp = await response.stream.bytesToString();
     debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<CihazDuzenlemeModel> cihazDuzenlemeGetir() async {
+    var response = await BiltekPost.post(
+      Ayarlar.cihazDuzenleme,
+      {},
+    );
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        var map = jsonDecode(resp) as Map<String, dynamic>;
+
+        return CihazDuzenlemeModel.fromJson(map);
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        return CihazDuzenlemeModel.bos();
+      }
+    } else {
+      debugPrint(
+          "Cihaz Duzenleme yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+      return CihazDuzenlemeModel.bos();
+    }
+  }
+
+  static Future<bool> cihazEkle({
+    required Map<String, String> postData,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.cihazEkle,
+      postData,
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint("Cihaz Ekle: ${resp.replaceAll("\n", " ")}");
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =

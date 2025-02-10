@@ -785,20 +785,49 @@ class Cihazlar_Model extends CI_Model
             "islem_sayisi" => $islem_sayisi
         ))->delete($this->islemlerTabloAdi());
     }
-    public function cihazEkle($veri)
+    public function cihazEkle($tur)
     {
-        $this->veriGuncellendiEkle();
-        $varsayilanDurum = $this->db->reset_query()->where("varsayilan", 1)->get($this->cihazDurumlariTabloAdi())->result();
-        if (count($varsayilanDurum) > 0) {
-            $veri["guncel_durum"] = $varsayilanDurum[0]->id;
-        }
-        $cihazEkle =  $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
+        $veri = $this->cihazPost();
+        $servis_no = $this->insertTrigger();
+        if ($servis_no != 0) {
+            $veri["servis_no"] = $servis_no;
+            $this->veriGuncellendiEkle();
+            $varsayilanDurum = $this->db->reset_query()->where("varsayilan", 1)->get($this->cihazDurumlariTabloAdi())->result();
+            if (count($varsayilanDurum) > 0) {
+                $veri["guncel_durum"] = $varsayilanDurum[0]->id;
+            }
+            $ekle =  $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
 
-        $cihaz_id = $this->db->insert_id();
-        if(isset($veri["sorumlu"])){
-            $this->Kullanicilar_Model->bildirimGonder($veri["sorumlu"], $cihaz_id);
+            $cihaz_id = $this->db->insert_id();
+            if(isset($veri["sorumlu"])){
+                $this->Kullanicilar_Model->bildirimGonder($veri["sorumlu"], $cihaz_id);
+            }
+            if ($ekle) {
+                $id = $this->db->insert_id();
+                $musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
+                if(((int)$musteriyi_kaydet) == 1){
+                    if($veri["musteri_kod"] == NULL){
+                        $this->db->reset_query()->insert(
+                            $this->Firma_Model->musteriTablosu(),
+                            array(
+                                "musteri_adi" => $veri["musteri_adi"],
+                                "adres" => $veri["adres"],
+                                "telefon_numarasi" => $veri["telefon_numarasi"]
+                            )
+                        );
+                    }
+                }
+                if($tur == "POST" || $tur == "post"){
+                    return array("mesaj" => "", "sonuc" => 1);
+                }else{
+                    return array("mesaj" => "", "sonuc" => 1, "yonlendir"=> base_url("") . "#" . $this->cihazDetayModalAdi() . $id);
+                }
+            } else {
+                return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0);
+            }
+        } else {
+            return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0);
         }
-        return $cihazEkle;
     }
     public function ozelIDTabloAdi()
     {

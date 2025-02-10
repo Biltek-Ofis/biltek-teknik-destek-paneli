@@ -18,6 +18,7 @@ class BiltekTextField extends StatelessWidget {
     this.suffix,
     this.inputFormatters,
     this.keyboardType,
+    this.style,
   });
 
   final TextEditingController? controller;
@@ -34,6 +35,7 @@ class BiltekTextField extends StatelessWidget {
   final Widget? suffix;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class BiltekTextField extends StatelessWidget {
       enableSuggestions: enableSuggestions,
       autocorrect: autocorrect,
       inputFormatters: inputFormatters,
+      style: style,
     );
   }
 }
@@ -75,6 +78,7 @@ class BiltekSifre extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     this.keyboardType,
+    this.style,
   });
   final TextEditingController? controller;
   final FocusNode? currentFocus;
@@ -85,6 +89,7 @@ class BiltekSifre extends StatefulWidget {
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
   final TextInputType? keyboardType;
+  final TextStyle? style;
 
   @override
   State<BiltekSifre> createState() => _BiltekSifreState();
@@ -118,6 +123,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
       enableSuggestions: sifreyiGoster,
       autocorrect: sifreyiGoster,
       keyboardType: widget.keyboardType,
+      style: widget.style,
     );
   }
 }
@@ -159,30 +165,38 @@ class BiltekSelect<T> extends StatelessWidget {
     this.items,
     this.onChanged,
     this.errorText,
+    this.width,
   });
   final T? value;
   final List<DropdownMenuItem<T>>? items;
   final Function(T?)? onChanged;
   final String? errorText;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: width ?? MediaQuery.of(context).size.width,
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
+              color: errorText != null
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
+            color: errorText != null
+                ? Theme.of(context).colorScheme.error
+                : Theme.of(context).colorScheme.primary,
           )),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
+              color: errorText != null
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           errorText: errorText,

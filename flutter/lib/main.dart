@@ -22,8 +22,6 @@ import 'utils/shared_preferences.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
-bool cihazEkleme = false;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -138,10 +136,10 @@ class MainPage extends StatelessWidget {
             );
           } else {
             if (authSnapshot.hasData && authSnapshot.data != null) {
-              return FutureBuilder<KullaniciModel?>(
+              return FutureBuilder<KullaniciAuthModel?>(
                 future: BiltekPost.kullaniciGetir(authSnapshot.data!),
                 builder: (context,
-                    AsyncSnapshot<KullaniciModel?> kullaniciSnapshot) {
+                    AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot) {
                   if (kullaniciSnapshot.connectionState ==
                       ConnectionState.waiting) {
                     return Center(

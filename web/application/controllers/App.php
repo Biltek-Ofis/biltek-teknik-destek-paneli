@@ -322,7 +322,8 @@ class App extends CI_Controller
         } else {
             echo json_encode($this->hataMesaji(1));
         }
-    }public function medyaSil()
+    }
+    public function medyaSil()
     {
         $this->headerlar();
         $cihaz_id = $this->input->post("id");
@@ -340,6 +341,32 @@ class App extends CI_Controller
                 }
             } else {
                 echo json_encode($this->hataMesaji(4));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function cihazEkle(){
+       
+                $ekle = $this->Cihazlar_Model->cihazEkle("POST");
+                echo json_encode($ekle);
+        
+    }
+    public function cihazDuzenleme()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
+                $sorumlular = $this->Kullanicilar_Model->kullanicilar(array("teknikservis"=> 1));
+                
+                echo json_encode(array(
+                    "cihazTurleri"=>$cihazTurleri,
+                    "sorumlular" => $sorumlular,
+                ));
+            } else {
+                echo json_encode($this->hataMesaji(1));
             }
         } else {
             echo json_encode($this->hataMesaji(1));
