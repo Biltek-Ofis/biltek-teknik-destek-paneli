@@ -161,14 +161,14 @@ echo '</div>
 $this->load->view("ogeler/cihaz_turleri");
 echo '</div>';
 
-if ($this->Kullanicilar_Model->yonetici()) {
+//if ($this->Kullanicilar_Model->yonetici()) {
 
     echo '<div class="row">';
     $this->load->view("ogeler/sorumlu_select");
     echo '</div>';
-} else {
-    $this->load->view("ogeler/sorumlu_text");
-}
+//} else {
+//    $this->load->view("ogeler/sorumlu_text");
+//}
 
 echo '<div class="row">';
 $this->load->view("ogeler/cihaz_markasi");
