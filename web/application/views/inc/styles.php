@@ -13,6 +13,17 @@ if(strlen($tema->arkaplan) > 0){
         --tema_arkaplani:'.$tema->arkaplan.';
     }';
 }
+echo '
+    svg.patternlock g.lock-lines line {
+        stroke-width: 1.5;
+        stroke: '.(strlen($tema->yazi_rengi) > 0 ? "".$tema->yazi_rengi : "black").' !important;
+        opacity: 0.5;
+    }
+    svg.patternlock g.lock-actives circle,
+    svg.patternlock g.lock-dots circle {
+        fill: '.(strlen($tema->yazi_rengi) > 0 ? "".$tema->yazi_rengi : "black").' !important;
+    }
+        ';
 if(strlen($tema->giris_arkaplani) > 0){
     echo '.login-box .card {
         background: '.$tema->giris_arkaplani.'!important;

@@ -33,11 +33,6 @@ echo '">
         width: 200px;
         height: 200px;
     }
-    svg.patternlock g.lock-lines line {
-        stroke-width: 1.5;
-        stroke: black;
-        opacity: 0.5;
-    }
     </style>
 
     <script>
