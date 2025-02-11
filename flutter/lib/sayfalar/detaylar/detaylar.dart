@@ -10,6 +10,7 @@ import '../../models/cihaz.dart';
 import '../../models/kullanici.dart';
 import '../../utils/assets.dart';
 import '../../utils/barkod_okuyucu.dart';
+import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../webview.dart';
@@ -454,10 +455,27 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  cihaz!.cihazSifresi != "Yok" &&
-                                          cihaz!.cihazSifresi.isNotEmpty
-                                      ? Text(cihaz!.cihazSifresi)
-                                      : Text("")
+                                  cihaz!.cihazDeseni.isNotEmpty
+                                      ? SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 200,
+                                          child: Desen(
+                                            initDesen: cihaz!
+                                                .cihazDeseni.characters
+                                                .map((e) => int.parse(e) - 1)
+                                                .toList(),
+                                            duzenlenebilir: false,
+                                            pointRadius: 8,
+                                            showInput: true,
+                                            dimension: 3,
+                                            relativePadding: 0.7,
+                                            selectThreshold: 25,
+                                            fillPoints: true,
+                                            onInputComplete: (list) {},
+                                          ),
+                                        )
+                                      : Text(cihaz!.cihazSifresi),
                                 ],
                               ),
                             ],
