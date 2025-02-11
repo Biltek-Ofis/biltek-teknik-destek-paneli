@@ -105,8 +105,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           appBar: AppBar(
             title: cihaz != null ? Text("${cihaz!.servisNo}") : null,
             actions: [
-              if (cihaz != null)
-                // TODO: Cihaz durumu kilitliye göre göster ya da gizle.
+              if (cihaz != null &&
+                  cihazDuzenleme.cihazDurumlari.indexWhere(
+                          (e) => e.id == cihaz!.guncelDurum && e.kilitle) <
+                      0)
                 IconButton(
                   onPressed: () async {
                     Navigator.of(context).push(
