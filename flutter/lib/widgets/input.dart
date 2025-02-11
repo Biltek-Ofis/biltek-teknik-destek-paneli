@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+
+import '../utils/islemler.dart';
+import 'takvim/dialog.dart';
 
 class BiltekTextField extends StatelessWidget {
   const BiltekTextField({
@@ -210,6 +214,42 @@ class BiltekSelect<T> extends StatelessWidget {
         items: items,
         onChanged: onChanged,
       ),
+    );
+  }
+}
+
+class BiltekTarih extends StatelessWidget {
+  const BiltekTarih({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.onConfirm,
+    this.onChanged,
+  });
+  final String label;
+  final TextEditingController controller;
+  final Function(DateTime?)? onConfirm;
+  final ValueChanged<String>? onChanged;
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+      ),
+      readOnly: true,
+      onTap: () {
+        showTakvim(
+          context,
+          initialDate: controller.text.isEmpty
+              ? DateTime.now()
+              : DateFormat(Islemler.tarihFormat).parse(controller.text),
+          onConfirm: (date) {
+            onConfirm?.call(date!);
+          },
+        );
+      },
+      onChanged: onChanged,
     );
   }
 }

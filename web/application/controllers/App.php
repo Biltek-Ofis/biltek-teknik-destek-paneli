@@ -370,6 +370,56 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 if (isset($id)) {
                     $veri = $this->Cihazlar_Model->cihazPost(FALSE);
+                    $guncel_durum = $this->input->post("guncel_durum");
+                    $guncel_durum_suanki = $this->input->post("guncel_durum_suanki");
+                    $tahsilat_sekli = $this->input->post("tahsilat_sekli");
+                    $fatura_durumu = $this->input->post("fatura_durumu");
+                    $fis_no = $this->input->post("fis_no");
+                    $veri["yapilan_islem_aciklamasi"] = $this->input->post("yapilan_islem_aciklamasi");
+                    $veri["guncel_durum"] = $guncel_durum;
+                    $veri["tahsilat_sekli"] = $tahsilat_sekli;
+                    $veri["fatura_durumu"] = $fatura_durumu;
+                    $veri["fis_no"] = $fis_no;
+                    $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
+                    $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
+                    $cikis_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("cikis_tarihi"));
+                    if (strlen($tarih) > 0) {
+                        $veri["tarih"] = $tarih;
+                    }
+                    if ($guncel_durum_suanki != $guncel_durum) {
+                        $veri["bildirim_tarihi"] = $this->Islemler_Model->tarihDonusturSQL($this->Islemler_Model->tarih());
+                    } else {
+                        $veri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
+                    }
+                    $veri["cikis_tarihi"] = strlen($cikis_tarihi) > 0 ? $cikis_tarihi : NULL;
+
+                    for ($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++) {
+                        $islem = $this->input->post("islem" . $i);
+                        $miktar = $this->input->post("miktar" . $i);
+                        $birim_fiyati = $this->input->post("birim_fiyati" . $i);
+                        $kdv = $this->input->post("kdv_" . $i);
+                        if(isset($islem) && !empty($islem)){
+                            $yapilanIslemVeri = $this->Cihazlar_Model->yapilanIslemArray(
+                                $id, 
+                                $i, 
+                                $islem, 
+                                $birim_fiyati, 
+                                $miktar, 
+                                $kdv
+                            );
+                            $duzenle = $this->Cihazlar_Model->islemDuzenle($id, $yapilanIslemVeri);
+                            if (!$duzenle) {
+                                echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));
+                                return;
+                            }
+                        }else{
+                            $sil =$this->Cihazlar_Model->islemSil($id, $i);
+                            if (!$sil) {
+                                echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));
+                                return;
+                            }
+                        }
+                    }
                     $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                     if ($duzenle) {
                         echo json_encode(array("mesaj" => "", "sonuc" => 1));
@@ -394,10 +444,13 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
                 $sorumlular = $this->Kullanicilar_Model->kullanicilar(array("teknikservis"=> 1));
-                
+                $cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
+                $tahsilatSekilleri = $this->Cihazlar_Model->tahsilatSekilleri();
                 echo json_encode(array(
                     "cihazTurleri"=>$cihazTurleri,
                     "sorumlular" => $sorumlular,
+                    "cihazDurumlari" => $cihazDurumlari,
+                    "tahsilatSekilleri" => $tahsilatSekilleri,
                 ));
             } else {
                 echo json_encode($this->hataMesaji(1));
