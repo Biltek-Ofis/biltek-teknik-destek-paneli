@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../utils/alerts.dart';
@@ -23,8 +22,6 @@ class YeniCihazSayfasi extends StatefulWidget {
   State<YeniCihazSayfasi> createState() => _YeniCihazSayfasiState();
 }
 
-String tarihFormat = "dd.MM.yyyy HH:mm";
-
 class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
   bool girildi = false;
 
@@ -45,10 +42,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
   FocusNode adresFocus = FocusNode();
 
   TextEditingController gsmController = TextEditingController();
-  MaskTextInputFormatter gsmFormatter = MaskTextInputFormatter(
-    mask: "+90 (###) ###-####",
-    filter: {"#": RegExp(r'[0-9]')},
-  );
+
   FocusNode gsmFocus = FocusNode();
 
   int? cihazTuru;
@@ -107,7 +101,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
       if (mounted) {
         FocusScope.of(context).requestFocus(musteriAdiFocus);
       }
-      await cihazTurleriniGetir();
+      await _cihazDuzenlemeGetir();
       setState(() {
         sayfaYukleniyor = false;
       });
@@ -200,381 +194,394 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text("Gerekli alanlar * ile belirtilmiştir."),
-                      BiltekSelect(
-                        value: tarihGirisi,
-                        items: [
-                          DropdownMenuItem(
-                            value: "oto",
-                            child: Text("Otomatik (Güncel Tarih)"),
-                          ),
-                          DropdownMenuItem(
-                            value: "el",
-                            child: Text("El ile Giriş"),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            tarihGirisi = value!;
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      if (tarihGirisi == "el")
-                        TextField(
-                          controller: tarihController,
-                          decoration: InputDecoration(
-                            labelText: "Tarih",
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            showTakvim(
-                              context,
-                              initialDate: DateFormat(tarihFormat)
-                                  .parse(tarihController.text),
-                              onConfirm: (date) {
-                                tarihGuncelle(date!);
+              : Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Text("Gerekli alanlar * ile belirtilmiştir."),
+                            BiltekSelect(
+                              value: tarihGirisi,
+                              items: [
+                                DropdownMenuItem(
+                                  value: "oto",
+                                  child: Text("Otomatik (Güncel Tarih)"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "el",
+                                  child: Text("El ile Giriş"),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  tarihGirisi = value!;
+                                  girildi = true;
+                                });
                               },
-                            );
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              girildi = true;
-                            });
-                          },
-                        ),
-                      BiltekTextField(
-                        controller: musteriAdiController,
-                        currentFocus: musteriAdiFocus,
-                        nextFocus: teslimEdenFocus,
-                        label: "Müşteri Adı *",
-                        errorText: musteriAdiHata,
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                            musteriAdiHata = null;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: teslimEdenController,
-                        currentFocus: teslimEdenFocus,
-                        nextFocus: adresFocus,
-                        label: "Teslim Eden Kişi",
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: adresController,
-                        currentFocus: adresFocus,
-                        nextFocus: gsmFocus,
-                        label: "Adresi",
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekCheckbox(
-                        label: "Müşteri bilgilerini kaydet",
-                        value: musteriyiKaydet,
-                        onChanged: (value) {
-                          setState(() {
-                            musteriyiKaydet = value ?? true;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: gsmController,
-                        currentFocus: gsmFocus,
-                        label: "GSM",
-                        keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                        inputFormatters: [gsmFormatter],
-                      ),
-                      BiltekSelect<int?>(
-                        value: cihazTuru,
-                        items: [
-                          DropdownMenuItem(
-                            value: null,
-                            child: Text("Cihaz Türü Seçin *"),
-                          ),
-                          ...cihazDuzenleme.cihazTurleri.map(
-                            (e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.isim),
                             ),
-                          )
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            cihazTuru = value;
-                            cihazTuruHata = null;
-                            girildi = true;
-                          });
-                        },
-                        errorText: cihazTuruHata,
-                      ),
-                      BiltekSelect<int?>(
-                        value: sorumlu,
-                        items: [
-                          DropdownMenuItem(
-                            value: null,
-                            child: Text("Sorumlu Personel Seçin *"),
-                          ),
-                          ...cihazDuzenleme.sorumlular.map(
-                            (e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.adSoyad),
-                            ),
-                          )
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            sorumlu = value;
-                            sorumluHata = null;
-                            girildi = true;
-                          });
-                        },
-                        errorText: sorumluHata,
-                      ),
-                      BiltekTextField(
-                        controller: cihazController,
-                        currentFocus: cihazFocus,
-                        nextFocus: cihazModeliFocus,
-                        label: "Marka *",
-                        errorText: cihazHata,
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                            cihazHata = null;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: cihazModeliController,
-                        currentFocus: cihazModeliFocus,
-                        nextFocus: seriNoFocus,
-                        label: "Model",
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: seriNoController,
-                        currentFocus: seriNoFocus,
-                        label: "Seri No",
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      Row(
-                        children: [
-                          BiltekSelect<String?>(
-                            width: sifreTuru != null && sifreTuru != "Yok"
-                                ? (MediaQuery.of(context).size.width / 2) - 10
-                                : null,
-                            value: sifreTuru,
-                            items: [
-                              DropdownMenuItem(
-                                value: null,
-                                child: Text("Şifre Türü Belirtin *"),
-                              ),
-                              DropdownMenuItem(
-                                value: "Pin",
-                                child: Text("Pin"),
-                              ),
-                              DropdownMenuItem(
-                                value: "Desen",
-                                child: Text("Desen"),
-                              ),
-                              DropdownMenuItem(
-                                value: "Yok",
-                                child: Text("Yok"),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                sifreTuru = value;
-                                sifreTuruHata = null;
-                                girildi = true;
-                                gecerliDesen = "";
-                                gecerliDesenList = gecerliDesenListTemp = [];
-                                sifreTuruPinController.text = "";
-                              });
-                              if (value == "Desen") {
-                                _desenSec();
-                              } else if (value == "Yok") {
-                                sifreTuruPinController.text = "Yok";
-                              }
-                            },
-                            errorText: sifreTuruHata,
-                          ),
-                          if (sifreTuru == "Pin" || sifreTuru == "Desen")
-                            SizedBox(
-                              width: 10,
-                            ),
-                          if (sifreTuru == "Pin")
-                            Expanded(
-                              child: BiltekTextField(
-                                controller: sifreTuruPinController,
-                                nextFocus: null,
-                                label: "Cihaz Şifresi *",
+                            if (tarihGirisi == "el")
+                              TextField(
+                                controller: tarihController,
+                                decoration: InputDecoration(
+                                  labelText: "Tarih",
+                                ),
+                                readOnly: true,
+                                onTap: () {
+                                  showTakvim(
+                                    context,
+                                    initialDate:
+                                        DateFormat(Islemler.tarihFormat)
+                                            .parse(tarihController.text),
+                                    onConfirm: (date) {
+                                      tarihGuncelle(date!);
+                                    },
+                                  );
+                                },
                                 onChanged: (value) {
                                   setState(() {
-                                    sifreTuruPinHata = null;
                                     girildi = true;
                                   });
                                 },
-                                errorText: sifreTuruPinHata,
                               ),
-                            ),
-                          if (sifreTuru == "Desen")
-                            DefaultButton(
-                              width: MediaQuery.of(context).size.width / 2,
-                              background: Islemler.arkaRenk("bg-primary"),
-                              onPressed: () async {
-                                _desenSec();
+                            BiltekTextField(
+                              controller: musteriAdiController,
+                              currentFocus: musteriAdiFocus,
+                              nextFocus: teslimEdenFocus,
+                              label: "Müşteri Adı *",
+                              errorText: musteriAdiHata,
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                  musteriAdiHata = null;
+                                });
                               },
-                              text: "Düzenle",
                             ),
-                        ],
-                      ),
-                      BiltekTextField(
-                        controller: arizaAciklamasiController,
-                        currentFocus: arizaAciklamasiFocus,
-                        nextFocus: teslimAlinanlarFocus,
-                        label: "Belirtilen arıza açıklaması *",
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (value) {
-                          setState(() {
-                            arizaAciklamasiHata = null;
-                            girildi = true;
-                          });
-                        },
-                        errorText: arizaAciklamasiHata,
-                      ),
-                      BiltekTextField(
-                        controller: teslimAlinanlarController,
-                        currentFocus: teslimAlinanlarFocus,
-                        nextFocus: hasarTespitiFocus,
-                        label: "Teslim Alınanlar",
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekTextField(
-                        controller: hasarTespitiController,
-                        currentFocus: hasarTespitiFocus,
-                        label: "Teslim alınırken yapılan hasar tespiti",
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (value) {
-                          setState(() {
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekSelect<int>(
-                        value: cihazdakiHasar,
-                        items: [
-                          for (int i = 0;
-                              i < Islemler.cihazdakiHasarlar.length;
-                              i++)
-                            DropdownMenuItem<int>(
-                              value: i,
-                              child: Text(
-                                i == 0
-                                    ? "Hasar Türü Belirtin"
-                                    : Islemler.cihazdakiHasarlar[i],
-                              ),
-                            ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            cihazdakiHasar = value!;
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekSelect<int>(
-                        value: servisTuru,
-                        items: [
-                          for (int i = 0;
-                              i < Islemler.servisTurleri.length;
-                              i++)
-                            DropdownMenuItem<int>(
-                              value: i,
-                              child: Text(
-                                i == 0
-                                    ? "Servis Türü Seçin"
-                                    : Islemler.servisTurleri[i],
-                              ),
-                            ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            servisTuru = value!;
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      BiltekSelect<int>(
-                        value: yedekDurumu,
-                        items: [
-                          for (int i = 0; i < Islemler.evetHayirlar.length; i++)
-                            DropdownMenuItem<int>(
-                              value: i,
-                              child: Text(
-                                i == 0
-                                    ? "Yedek alınacak mı?"
-                                    : Islemler.evetHayirlar[i],
-                              ),
-                            ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            yedekDurumu = value!;
-                            girildi = true;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(),
-                            DefaultButton(
-                              width: MediaQuery.of(context).size.width / 2,
-                              background: Islemler.arkaRenk("bg-primary"),
-                              onPressed: () async {
-                                await _cihazEkle();
+                            BiltekTextField(
+                              controller: teslimEdenController,
+                              currentFocus: teslimEdenFocus,
+                              nextFocus: adresFocus,
+                              label: "Teslim Eden Kişi",
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
                               },
-                              text: "Ekle",
+                            ),
+                            BiltekTextField(
+                              controller: adresController,
+                              currentFocus: adresFocus,
+                              nextFocus: gsmFocus,
+                              label: "Adresi",
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekCheckbox(
+                              label: "Müşteri bilgilerini kaydet",
+                              value: musteriyiKaydet,
+                              onChanged: (value) {
+                                setState(() {
+                                  musteriyiKaydet = value ?? true;
+                                });
+                              },
+                            ),
+                            BiltekTextField(
+                              controller: gsmController,
+                              currentFocus: gsmFocus,
+                              label: "GSM",
+                              keyboardType: TextInputType.phone,
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                              inputFormatters: [Islemler.gsmFormatter],
+                            ),
+                            BiltekSelect<int?>(
+                              value: cihazTuru,
+                              items: [
+                                DropdownMenuItem(
+                                  value: null,
+                                  child: Text("Cihaz Türü Seçin *"),
+                                ),
+                                ...cihazDuzenleme.cihazTurleri.map(
+                                  (e) => DropdownMenuItem(
+                                    value: e.id,
+                                    child: Text(e.isim),
+                                  ),
+                                )
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  cihazTuru = value;
+                                  cihazTuruHata = null;
+                                  girildi = true;
+                                });
+                              },
+                              errorText: cihazTuruHata,
+                            ),
+                            BiltekSelect<int?>(
+                              value: sorumlu,
+                              items: [
+                                DropdownMenuItem(
+                                  value: null,
+                                  child: Text("Sorumlu Personel Seçin *"),
+                                ),
+                                ...cihazDuzenleme.sorumlular.map(
+                                  (e) => DropdownMenuItem(
+                                    value: e.id,
+                                    child: Text(e.adSoyad),
+                                  ),
+                                )
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  sorumlu = value;
+                                  sorumluHata = null;
+                                  girildi = true;
+                                });
+                              },
+                              errorText: sorumluHata,
+                            ),
+                            BiltekTextField(
+                              controller: cihazController,
+                              currentFocus: cihazFocus,
+                              nextFocus: cihazModeliFocus,
+                              label: "Marka *",
+                              errorText: cihazHata,
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                  cihazHata = null;
+                                });
+                              },
+                            ),
+                            BiltekTextField(
+                              controller: cihazModeliController,
+                              currentFocus: cihazModeliFocus,
+                              nextFocus: seriNoFocus,
+                              label: "Model",
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekTextField(
+                              controller: seriNoController,
+                              currentFocus: seriNoFocus,
+                              label: "Seri No",
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            Row(
+                              children: [
+                                BiltekSelect<String?>(
+                                  width: sifreTuru != null && sifreTuru != "Yok"
+                                      ? (MediaQuery.of(context).size.width /
+                                              2) -
+                                          10
+                                      : null,
+                                  value: sifreTuru,
+                                  items: [
+                                    DropdownMenuItem(
+                                      value: null,
+                                      child: Text("Şifre Türü Belirtin *"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "Pin",
+                                      child: Text("Pin"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "Desen",
+                                      child: Text("Desen"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "Yok",
+                                      child: Text("Yok"),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      sifreTuru = value;
+                                      sifreTuruHata = null;
+                                      girildi = true;
+                                      gecerliDesen = "";
+                                      gecerliDesenList =
+                                          gecerliDesenListTemp = [];
+                                      sifreTuruPinController.text = "";
+                                    });
+                                    if (value == "Desen") {
+                                      _desenSec();
+                                    } else if (value == "Yok") {
+                                      sifreTuruPinController.text = "Yok";
+                                    }
+                                  },
+                                  errorText: sifreTuruHata,
+                                ),
+                                if (sifreTuru == "Pin" || sifreTuru == "Desen")
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                if (sifreTuru == "Pin")
+                                  Expanded(
+                                    child: BiltekTextField(
+                                      controller: sifreTuruPinController,
+                                      nextFocus: null,
+                                      label: "Cihaz Şifresi *",
+                                      onChanged: (value) {
+                                        setState(() {
+                                          sifreTuruPinHata = null;
+                                          girildi = true;
+                                        });
+                                      },
+                                      errorText: sifreTuruPinHata,
+                                    ),
+                                  ),
+                                if (sifreTuru == "Desen")
+                                  DefaultButton(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    background: Islemler.arkaRenk("bg-primary"),
+                                    onPressed: () async {
+                                      _desenSec();
+                                    },
+                                    text: "Düzenle",
+                                  ),
+                              ],
+                            ),
+                            BiltekTextField(
+                              controller: arizaAciklamasiController,
+                              currentFocus: arizaAciklamasiFocus,
+                              nextFocus: teslimAlinanlarFocus,
+                              label: "Belirtilen arıza açıklaması *",
+                              keyboardType: TextInputType.multiline,
+                              onChanged: (value) {
+                                setState(() {
+                                  arizaAciklamasiHata = null;
+                                  girildi = true;
+                                });
+                              },
+                              errorText: arizaAciklamasiHata,
+                            ),
+                            BiltekTextField(
+                              controller: teslimAlinanlarController,
+                              currentFocus: teslimAlinanlarFocus,
+                              nextFocus: hasarTespitiFocus,
+                              label: "Teslim Alınanlar",
+                              keyboardType: TextInputType.multiline,
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekTextField(
+                              controller: hasarTespitiController,
+                              currentFocus: hasarTespitiFocus,
+                              label: "Teslim alınırken yapılan hasar tespiti",
+                              keyboardType: TextInputType.multiline,
+                              onChanged: (value) {
+                                setState(() {
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekSelect<int>(
+                              value: cihazdakiHasar,
+                              items: [
+                                for (int i = 0;
+                                    i < Islemler.cihazdakiHasarlar.length;
+                                    i++)
+                                  DropdownMenuItem<int>(
+                                    value: i,
+                                    child: Text(
+                                      i == 0
+                                          ? "Hasar Türü Belirtin"
+                                          : Islemler.cihazdakiHasarlar[i],
+                                    ),
+                                  ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  cihazdakiHasar = value!;
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekSelect<int>(
+                              value: servisTuru,
+                              items: [
+                                for (int i = 0;
+                                    i < Islemler.servisTurleri.length;
+                                    i++)
+                                  DropdownMenuItem<int>(
+                                    value: i,
+                                    child: Text(
+                                      i == 0
+                                          ? "Servis Türü Seçin"
+                                          : Islemler.servisTurleri[i],
+                                    ),
+                                  ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  servisTuru = value!;
+                                  girildi = true;
+                                });
+                              },
+                            ),
+                            BiltekSelect<int>(
+                              value: yedekDurumu,
+                              items: [
+                                for (int i = 0;
+                                    i < Islemler.evetHayirlar.length;
+                                    i++)
+                                  DropdownMenuItem<int>(
+                                    value: i,
+                                    child: Text(
+                                      i == 0
+                                          ? "Yedek alınacak mı?"
+                                          : Islemler.evetHayirlar[i],
+                                    ),
+                                  ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  yedekDurumu = value!;
+                                  girildi = true;
+                                });
+                              },
                             ),
                           ],
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(),
+                          DefaultButton(
+                            width: MediaQuery.of(context).size.width / 2,
+                            background: Islemler.arkaRenk("bg-primary"),
+                            onPressed: () async {
+                              await _cihazEkle();
+                            },
+                            text: "Ekle",
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
         ),
       ),
@@ -586,7 +593,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
   }
 
   void tarihGuncelle(DateTime tarih) {
-    tarihController.text = DateFormat(tarihFormat).format(tarih);
+    tarihController.text = DateFormat(Islemler.tarihFormat).format(tarih);
   }
 
   Future<void> _cihazEkle() async {
@@ -685,10 +692,34 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
           "telefon_numarasi": gsm,
         });
       }
-      await BiltekPost.cihazEkle(postData: postData);
-      widget.cihazlariYenile.call();
-      navigatorState.pop();
-      navigatorState.pop();
+
+      bool sonuc = await BiltekPost.cihazEkle(postData: postData);
+      if (sonuc) {
+        widget.cihazlariYenile.call();
+        navigatorState.pop();
+        navigatorState.pop();
+      } else {
+        navigatorState.pop();
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Hata"),
+                content: Text("Cihaz eklenirken bir hata oluştu"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Tamam"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
     } else {
       if (!desenHata) {
         navigatorState.pop();
@@ -696,7 +727,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
     }
   }
 
-  Future<void> cihazTurleriniGetir() async {
+  Future<void> _cihazDuzenlemeGetir() async {
     CihazDuzenlemeModel cihazDuzenlemeTemp =
         await BiltekPost.cihazDuzenlemeGetir();
     setState(() {
