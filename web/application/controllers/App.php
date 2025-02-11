@@ -10,6 +10,7 @@ class App extends CI_Controller
         $this->load->model("Kullanicilar_Model");
         $this->load->model("Cihazlar_Model");
         $this->load->model("Islemler_Model");
+        $this->load->model("Firma_Model");
     }
     public function index()
     {
@@ -347,10 +348,18 @@ class App extends CI_Controller
         }
     }
     public function cihazEkle(){
-       
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
                 $ekle = $this->Cihazlar_Model->cihazEkle("POST");
                 echo json_encode($ekle);
-        
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
     }
     public function cihazDuzenleme()
     {
