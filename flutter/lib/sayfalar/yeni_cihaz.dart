@@ -641,6 +641,11 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
       desenHata = true;
       hataVar = true;
     }
+
+    if (sifreTuru == "Yok") {
+      cihazSifresi = "Yok";
+      gecerliDesen = "";
+    }
     if (arizaAciklamasi.isEmpty) {
       setState(() {
         arizaAciklamasiHata = "Lütfen bir arıza açıklaması girin";
