@@ -202,6 +202,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                           children: [
                             Text("Gerekli alanlar * ile belirtilmiştir."),
                             BiltekSelect(
+                              title: "Giriş Tarihi",
                               value: tarihGirisi,
                               items: [
                                 DropdownMenuItem(
@@ -301,6 +302,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               inputFormatters: [Islemler.gsmFormatter],
                             ),
                             BiltekSelect<int?>(
+                              title: "Cihaz Türü",
                               value: cihazTuru,
                               items: [
                                 DropdownMenuItem(
@@ -324,6 +326,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               errorText: cihazTuruHata,
                             ),
                             BiltekSelect<int?>(
+                              title: "Sorumlu Personel",
                               value: sorumlu,
                               items: [
                                 DropdownMenuItem(
@@ -383,6 +386,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                             Row(
                               children: [
                                 BiltekSelect<String?>(
+                                  title: "Şifre Türü",
                                   width: sifreTuru != null && sifreTuru != "Yok"
                                       ? (MediaQuery.of(context).size.width /
                                               2) -
@@ -494,6 +498,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               },
                             ),
                             BiltekSelect<int>(
+                              title: "Hasar Türü",
                               value: cihazdakiHasar,
                               items: [
                                 for (int i = 0;
@@ -503,7 +508,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                     value: i,
                                     child: Text(
                                       i == 0
-                                          ? "Hasar Türü Belirtin"
+                                          ? "Belirtilmedi"
                                           : Islemler.cihazdakiHasarlar[i],
                                     ),
                                   ),
@@ -516,6 +521,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               },
                             ),
                             BiltekSelect<int>(
+                              title: "Servis Türü",
                               value: servisTuru,
                               items: [
                                 for (int i = 0;
@@ -525,7 +531,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                     value: i,
                                     child: Text(
                                       i == 0
-                                          ? "Servis Türü Seçin"
+                                          ? "Belirtilmedi"
                                           : Islemler.servisTurleri[i],
                                     ),
                                   ),
@@ -538,6 +544,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               },
                             ),
                             BiltekSelect<int>(
+                              title: "Yedek alınacak mı?",
                               value: yedekDurumu,
                               items: [
                                 for (int i = 0;
@@ -547,7 +554,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                     value: i,
                                     child: Text(
                                       i == 0
-                                          ? "Yedek alınacak mı?"
+                                          ? "Belirtilmedi"
                                           : Islemler.evetHayirlar[i],
                                     ),
                                   ),

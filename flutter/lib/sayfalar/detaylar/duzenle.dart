@@ -281,12 +281,12 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       inputFormatters: [Islemler.gsmFormatter],
                                     ),
                                     BiltekSelect<int?>(
+                                      title: "Cihaz Türü",
                                       value: cihazTuru,
                                       items: [
                                         DropdownMenuItem(
                                           value: null,
-                                          child: Text(
-                                              "Cihaz Türü Belirtilmemiş *"),
+                                          child: Text("Cihaz Türü Seçin *"),
                                         ),
                                         ...cihazDuzenleme.cihazTurleri.map(
                                           (e) => DropdownMenuItem(
@@ -305,12 +305,13 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       errorText: cihazTuruHata,
                                     ),
                                     BiltekSelect<int?>(
+                                      title: "Sorumlu Personel",
                                       value: sorumlu,
                                       items: [
                                         DropdownMenuItem(
                                           value: null,
-                                          child: Text(
-                                              "Sorumlu Personel Belirtilmemiş"),
+                                          child:
+                                              Text("Sorumlu Personel Seçin *"),
                                         ),
                                         ...cihazDuzenleme.sorumlular.map(
                                           (e) => DropdownMenuItem(
@@ -365,6 +366,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                     Row(
                                       children: [
                                         BiltekSelect<String?>(
+                                          title: "Şifre Türü",
                                           width: sifreTuru != null &&
                                                   sifreTuru != "Yok"
                                               ? (MediaQuery.of(context)
@@ -377,8 +379,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                           items: [
                                             DropdownMenuItem(
                                               value: null,
-                                              child:
-                                                  Text("Şifre Türü Belirtin *"),
+                                              child: Text("Belirtilmemiş *"),
                                             ),
                                             DropdownMenuItem(
                                               value: "Pin",
@@ -449,6 +450,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       ],
                                     ),
                                     BiltekSelect<int>(
+                                      title: "Hasar Türü",
                                       value: cihazdakiHasar,
                                       items: [
                                         for (int i = 0;
@@ -460,7 +462,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                             value: i,
                                             child: Text(
                                               i == 0
-                                                  ? "Hasar Türü Belirtilmemiş"
+                                                  ? "Belirtilmemiş"
                                                   : Islemler
                                                       .cihazdakiHasarlar[i],
                                             ),
@@ -512,6 +514,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       },
                                     ),
                                     BiltekSelect<int>(
+                                      title: "Servis Türü",
                                       value: servisTuru,
                                       items: [
                                         for (int i = 0;
@@ -521,7 +524,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                             value: i,
                                             child: Text(
                                               i == 0
-                                                  ? "Servis Türü Belirtilmemiş"
+                                                  ? "Belirtilmemiş"
                                                   : Islemler.servisTurleri[i],
                                             ),
                                           ),
@@ -534,6 +537,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       },
                                     ),
                                     BiltekSelect<int>(
+                                      title: "Yedek alınacak mı?",
                                       value: yedekDurumu,
                                       items: [
                                         for (int i = 0;
@@ -543,7 +547,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                             value: i,
                                             child: Text(
                                               i == 0
-                                                  ? "Yedek Durumu Belirtilmemiş"
+                                                  ? "Belirtilmemiş"
                                                   : Islemler.evetHayirlar[i],
                                             ),
                                           ),
