@@ -361,6 +361,31 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function cihazDuzenle(){
+        $this->headerlar();
+        $id = $this->input->post("id");
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($id)) {
+                    $veri = $this->Cihazlar_Model->cihazPost(FALSE);
+                    $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
+                    if ($duzenle) {
+                        echo json_encode(array("mesaj" => "", "sonuc" => 1));
+                    } else {
+                        echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>".$this->db->error()["message"], "sonuc" => 0));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
     public function cihazDuzenleme()
     {
         $this->headerlar();
