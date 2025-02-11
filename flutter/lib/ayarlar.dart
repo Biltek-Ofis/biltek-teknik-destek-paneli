@@ -35,6 +35,7 @@ class Ayarlar {
   static String get medyaYukle => "${appUrl}medyaYukle/";
   static String get medyaSil => "${appUrl}medyaSil/";
   static String get cihazEkle => "${appUrl}cihazEkle/";
+  static String get cihazDuzenle => "${appUrl}cihazDuzenle/";
   static String get cihazDuzenleme => "${appUrl}cihazDuzenleme/";
 
   static String teknikservisformu({

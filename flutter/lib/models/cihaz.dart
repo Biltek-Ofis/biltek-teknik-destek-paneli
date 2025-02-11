@@ -18,7 +18,7 @@ class Cihaz {
   final String cihazDeseniActives;
   final String cihazDeseniLines;
   final String hasarTespiti;
-  final String cihazdakiHasar;
+  final int cihazdakiHasar;
   final String arizaAciklamasi;
   final int servisTuru;
   final int yedekDurumu;
@@ -239,7 +239,7 @@ class Cihaz {
           cihazDeseniActives: cihazDeseniActives,
           cihazDeseniLines: cihazDeseniLines,
           hasarTespiti: hasarTespiti,
-          cihazdakiHasar: cihazdakiHasar,
+          cihazdakiHasar: int.parse(cihazdakiHasar),
           arizaAciklamasi: arizaAciklamasi,
           servisTuru: int.tryParse(servisTuru) ?? 99,
           yedekDurumu: int.tryParse(yedekDurumu) ?? -1,

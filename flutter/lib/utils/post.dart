@@ -349,7 +349,28 @@ class BiltekPost {
       postData,
     );
     var resp = await response.stream.bytesToString();
-    debugPrint("Cihaz Ekle: ${resp.replaceAll("\n", " ")}");
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<bool> cihazDuzenle({
+    required Map<String, String> postData,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.cihazDuzenle,
+      postData,
+    );
+    var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =

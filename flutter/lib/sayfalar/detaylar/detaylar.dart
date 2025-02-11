@@ -14,6 +14,7 @@ import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../webview.dart';
+import 'duzenle.dart';
 import 'galery.dart';
 
 class DetaylarSayfasi extends StatefulWidget {
@@ -98,8 +99,22 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                 )
               : null,
           appBar: AppBar(
-            title: cihaz != null ? Text("${cihaz!.servisNo} Detayları") : null,
+            title: cihaz != null ? Text("${cihaz!.servisNo}") : null,
             actions: [
+              if (cihaz != null)
+                IconButton(
+                  onPressed: () async {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => DetayDuzenle(
+                          cihaz: cihaz!,
+                          cihazlariYenile: () {},
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.edit),
+                ),
               if (cihaz != null)
                 IconButton(
                   onPressed: () async {
@@ -461,10 +476,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                               MediaQuery.of(context).size.width,
                                           height: 200,
                                           child: Desen(
-                                            initDesen: cihaz!
-                                                .cihazDeseni.characters
-                                                .map((e) => int.parse(e) - 1)
-                                                .toList(),
+                                            initDesen:
+                                                Islemler.desenDonusturFlutter(
+                                                    cihaz!.cihazDeseni),
                                             duzenlenebilir: false,
                                             pointRadius: 8,
                                             showInput: true,
@@ -984,12 +998,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   String telefonNumarasi() {
     if (cihaz != null) {
       String telefon = cihaz!.telefonNumarasi;
-      telefon = telefon
-          .replaceAll("_", "")
-          .replaceAll("-", "")
-          .replaceAll(" ", "")
-          .replaceAll("(", "")
-          .replaceAll(")", "");
+      telefon = Islemler.telNo(telefon);
       return telefon;
     }
     return "";
