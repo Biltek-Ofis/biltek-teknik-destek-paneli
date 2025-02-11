@@ -807,13 +807,16 @@ class Cihazlar_Model extends CI_Model
                 $musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
                 if(((int)$musteriyi_kaydet) == 1){
                     if($veri["musteri_kod"] == NULL){
+                        $musteri_bilgileri =  array(
+                            "musteri_adi" => $veri["musteri_adi"],
+                            "adres" => $veri["adres"],
+                        );
+                        if(isset($veri["telefon_numarasi"])){
+                            $musteri_bilgileri["telefon_numarasi"] = $veri["telefon_numarasi"];
+                        }
                         $this->db->reset_query()->insert(
                             $this->Firma_Model->musteriTablosu(),
-                            array(
-                                "musteri_adi" => $veri["musteri_adi"],
-                                "adres" => $veri["adres"],
-                                "telefon_numarasi" => $veri["telefon_numarasi"]
-                            )
+                            $musteri_bilgileri,
                         );
                     }
                 }
