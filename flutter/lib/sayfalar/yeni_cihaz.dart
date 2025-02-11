@@ -773,14 +773,11 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                 setState(() {
                   gecerliDesenList = gecerliDesenListTemp;
                 });
-                String gecerliDesenTemp = "";
-                for (var desen in gecerliDesenList) {
-                  gecerliDesenTemp += (desen + 1).toString();
-                }
+                String gecerliDesenTemp =
+                    Islemler.desenDonusturSQL(gecerliDesenList);
                 setState(() {
                   gecerliDesen = gecerliDesenTemp;
                 });
-                debugPrint("Desen: $gecerliDesen");
                 Navigator.pop(context);
               },
               child: Text("Onayla"),

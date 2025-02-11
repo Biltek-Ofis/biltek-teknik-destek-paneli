@@ -1,5 +1,6 @@
 import 'package:android_id/android_id.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
 
 class Islemler {
@@ -114,5 +115,32 @@ class Islemler {
   ];
   static String evetHayir(int index) {
     return _listGetir(evetHayirlar, index);
+  }
+
+  static String tarihFormat = "dd.MM.yyyy HH:mm";
+  static MaskTextInputFormatter gsmFormatter = MaskTextInputFormatter(
+    mask: "+90 (###) ###-####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
+  static String telNo(String telefon) {
+    return telefon
+        .replaceAll("_", "")
+        .replaceAll("-", "")
+        .replaceAll(" ", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "");
+  }
+
+  static List<int> desenDonusturFlutter(String desen) {
+    return desen.characters.map((e) => int.parse(e) - 1).toList();
+  }
+
+  static String desenDonusturSQL(List<int> desen) {
+    String desenTemp = "";
+    for (var desen in desen) {
+      desenTemp += (desen + 1).toString();
+    }
+    return desenTemp;
   }
 }
