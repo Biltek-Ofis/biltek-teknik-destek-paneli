@@ -58,17 +58,6 @@ class Islemler {
     }
   }
 
-  static String faturaDurumu(int durum) {
-    switch (durum) {
-      case 1:
-        return "Fatura Kesilmedi";
-      case 2:
-        return "Fatura Kesildi";
-      default:
-        return "Belirtilmedi";
-    }
-  }
-
   static Future<String?> getId() async {
     ///DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
@@ -117,6 +106,16 @@ class Islemler {
     return _listGetir(evetHayirlar, index);
   }
 
+  static final List<String> faturaDurumlari = [
+    "Belirtilmedi",
+    "Fatura Kesilmedi",
+    "Fatura Kesildi",
+  ];
+
+  static String faturaDurumu(int index) {
+    return _listGetir(faturaDurumlari, index);
+  }
+
   static String tarihFormat = "dd.MM.yyyy HH:mm";
   static MaskTextInputFormatter gsmFormatter = MaskTextInputFormatter(
     mask: "+90 (###) ###-####",
@@ -143,4 +142,6 @@ class Islemler {
     }
     return desenTemp;
   }
+
+  static const int maxIslemSayisi = 10;
 }
