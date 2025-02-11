@@ -161,12 +161,14 @@ class BiltekCheckbox extends StatelessWidget {
 class BiltekSelect<T> extends StatelessWidget {
   const BiltekSelect({
     super.key,
+    required this.title,
     this.value,
     this.items,
     this.onChanged,
     this.errorText,
     this.width,
   });
+  final String? title;
   final T? value;
   final List<DropdownMenuItem<T>>? items;
   final Function(T?)? onChanged;
@@ -175,10 +177,12 @@ class BiltekSelect<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.only(top: 15),
       width: width ?? MediaQuery.of(context).size.width,
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
+          labelText: title,
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: errorText != null
