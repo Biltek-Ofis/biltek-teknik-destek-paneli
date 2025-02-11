@@ -586,7 +586,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                               width: MediaQuery.of(context).size.width / 3,
                               background: Islemler.arkaRenk("bg-primary"),
                               onPressed: () async {
-                                await _kaydet();
+                                await _kaydetGenel();
                               },
                               text: "Kaydet",
                             ),
@@ -728,7 +728,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
     );
   }
 
-  Future<void> _kaydet() async {
+  Future<void> _kaydetGenel() async {
     yukleniyor(context);
     NavigatorState navigatorState = Navigator.of(context);
     String musteriAdi = musteriAdiController.text;
