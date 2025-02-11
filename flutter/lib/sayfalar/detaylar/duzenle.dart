@@ -819,7 +819,10 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
         });
       }
 
-      bool sonuc = await BiltekPost.cihazDuzenle(postData: postData);
+      bool sonuc = await BiltekPost.cihazDuzenle(
+        id: widget.cihaz.id,
+        postData: postData,
+      );
       if (sonuc) {
         widget.cihazlariYenile.call();
         navigatorState.pop();
@@ -832,7 +835,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
             builder: (context) {
               return AlertDialog(
                 title: Text("Hata"),
-                content: Text("Cihaz eklenirken bir hata oluştu"),
+                content: Text("Cihaz kaydedilirken bir hata oluştu"),
                 actions: [
                   TextButton(
                     onPressed: () {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:share_plus/share_plus.dart';
@@ -49,9 +50,12 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   List<TableRow> fiyatlar = [];
 
+  CihazDuzenlemeModel cihazDuzenleme = CihazDuzenlemeModel.bos();
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      await _cihazDuzenlemeGetir();
       await _cihaziYenile();
     });
     timer = Timer.periodic(Duration(seconds: 5), (timer) async {
@@ -102,13 +106,16 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             title: cihaz != null ? Text("${cihaz!.servisNo}") : null,
             actions: [
               if (cihaz != null)
+                // TODO: Cihaz durumu kilitliye göre göster ya da gizle.
                 IconButton(
                   onPressed: () async {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => DetayDuzenle(
                           cihaz: cihaz!,
-                          cihazlariYenile: () {},
+                          cihazlariYenile: () async {
+                            await _cihaziYenile();
+                          },
                         ),
                       ),
                     );
@@ -1006,5 +1013,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   bool telefonGecerli(String telefon) {
     return telefon.isNotEmpty && telefon != "+90" && telefon != "+9";
+  }
+
+  Future<void> _cihazDuzenlemeGetir() async {
+    CihazDuzenlemeModel cihazDuzenlemeTemp =
+        await BiltekPost.cihazDuzenlemeGetir();
+    setState(() {
+      cihazDuzenleme = cihazDuzenlemeTemp;
+    });
   }
 }

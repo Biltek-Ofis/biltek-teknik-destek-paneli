@@ -364,8 +364,12 @@ class BiltekPost {
   }
 
   static Future<bool> cihazDuzenle({
+    required int id,
     required Map<String, String> postData,
   }) async {
+    postData.addAll({
+      "id": id.toString(),
+    });
     var response = await BiltekPost.post(
       Ayarlar.cihazDuzenle,
       postData,
