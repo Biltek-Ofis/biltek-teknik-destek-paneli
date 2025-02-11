@@ -21,6 +21,7 @@ class Desen extends StatefulWidget {
     super.key,
     this.hata = "",
     this.initDesen = const [],
+    this.duzenlenebilir = true,
     this.dimension = 3,
     this.relativePadding = 0.7,
     this.selectedColor,
@@ -34,6 +35,7 @@ class Desen extends StatefulWidget {
 
   final String hata;
   final List<int> initDesen;
+  final bool duzenlenebilir;
 
   final int dimension;
 
@@ -73,6 +75,9 @@ class DesenState extends State<Desen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanStart: (details) {
+        if (!widget.duzenlenebilir) {
+          return;
+        }
         setState(() {
           used = [];
           currentPoint = null;
@@ -80,6 +85,9 @@ class DesenState extends State<Desen> {
         widget.onInputComplete(used);
       },
       onPanEnd: (DragEndDetails details) {
+        if (!widget.duzenlenebilir) {
+          return;
+        }
         if (used.isNotEmpty) {
           widget.onInputComplete(used);
         }
@@ -89,6 +97,9 @@ class DesenState extends State<Desen> {
         });
       },
       onPanUpdate: (DragUpdateDetails details) {
+        if (!widget.duzenlenebilir) {
+          return;
+        }
         RenderBox referenceBox = context.findRenderObject() as RenderBox;
         Offset localPosition =
             referenceBox.globalToLocal(details.globalPosition);
