@@ -104,6 +104,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
       await _cihazDuzenlemeGetir();
       setState(() {
         sayfaYukleniyor = false;
+        girildi = false;
       });
     });
   }
@@ -158,7 +159,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                       navigatorState.pop(true);
                     },
                     child: Text(
-                      "Sil ve Çık",
+                      "İptal Et ve Çık",
                       style: TextStyle(
                         color: Colors.red,
                       ),
