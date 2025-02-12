@@ -164,12 +164,11 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
     }
-    public function bildirimGonder($id, $cihaz_id)
-    {
+    public function bildirimGonder($id, $baslik = "", $icerik = ""){
         $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
-        $cihaz = $this->Cihazlar_Model->cihazBul($cihaz_id);
-        if ($query->num_rows() > 0 && $cihaz->num_rows() > 0) {
-            $cihaz = $cihaz->result()[0];
+        
+        if ($query->num_rows() > 0) {
+            
             $query = $query->result();
             $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
             $bearerToken = FCM::getBearerToken($authKeyContent);
@@ -179,8 +178,8 @@ class Kullanicilar_Model extends CI_Model
                         'message' => [
                             'token' => $row->fcmToken,
                             'notification' => [
-                                'title' => 'Yeni cihaz girişi yapıldı.',
-                                'body' => $cihaz->musteri_adi . " - " . $cihaz->cihaz . "" . (strlen($cihaz->cihaz_modeli) > 0 ? " " . $cihaz->cihaz_modeli : "") . " - " . $cihaz->ariza_aciklamasi,
+                                'title' => $baslik,
+                                'body' => $icerik,
                             ],
                         ],
                     ];
@@ -191,6 +190,14 @@ class Kullanicilar_Model extends CI_Model
                     }
                 }
             }
+        }
+    }
+    public function bildirimGonderCihaz($id, $cihaz_id)
+    {
+        $cihaz = $this->Cihazlar_Model->cihazBul($cihaz_id);
+        if($cihaz->num_rows() > 0){
+            $cihaz = $cihaz->result()[0];
+            $this->bildirimGonder($id, 'Yeni cihaz girişi yapıldı.', $cihaz->musteri_adi . " - " . $cihaz->cihaz . "" . (strlen($cihaz->cihaz_modeli) > 0 ? " " . $cihaz->cihaz_modeli : "") . " - " . $cihaz->ariza_aciklamasi);
         }
     }
     public function girisDurumuAuth($auth)
