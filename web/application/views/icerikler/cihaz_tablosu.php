@@ -37,12 +37,6 @@ $kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
 $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 
 echo '<script>
-  function basariliModalGoster(){
-    $("#statusSuccessModal").modal("show");
-    setTimeout(function(){
-      $("#statusSuccessModal").modal("hide");
-    }, 1000);
-  }
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
@@ -1984,54 +1978,6 @@ echo '
     </div>
   </div>
 </div>';
-echo '
-<div class="modal fade" id="statusErrorsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusErrorsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-body text-center p-lg-4">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
-          <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" /> 
-          <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
-          <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" /> 
-        </svg>
-        
-        <h4 class="text-danger mt-3">Başarısız</h4> 
-        <p id="hata-mesaji" class="mt-3"></p>
-        <button type="button" class="btn btn-sm mt-3 btn-danger"  data-dismiss="modal">TAMAM</button> 
-      </div>
-    </div>
-  </div>
-</div>';
 
-echo '
-<div class="modal fade" id="statusSuccessModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusSuccessModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-body text-center p-lg-4">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
-          <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
-          <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
-        </svg> 
-        <h4 class="text-success mt-3">Başarılı</h4> 
-        <p id="basarili-mesaji" class="mt-3"></p>
-        <button type="button" class="btn btn-sm mt-3 btn-success"  data-dismiss="modal">TAMAM</button> 
-      </div>
-    </div>
-  </div>
-</div>';
-
-echo '
-<div class="modal" id="kaydediliyorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="kaydediliyorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-body text-center p-lg-4">
-        <div class="spinner-border text-primary" role="status">
-          <span class="sr-only">İşlem gerçekleştiriliyor...</span>
-        </div>
-        <p>İşlem gerçekleştiriliyor...</p>
-      </div>
-    </div>
-  </div>
-</div>';
 
 $this->load->view("inc/modal_medyasil");

@@ -172,7 +172,15 @@ echo '<li class="nav-item dropdown">
                     <li class="dropdown-item"><a href="' . base_url("urunler/komisyon") . '" target="_blank" class="d-block w-100">Komisyon Oranlarını İndir</a></li>
                     <li class="dropdown-item"><a href="#" class="d-block w-100" onclick="bosFormYazdir();">Boş Form Yazdır</a></li>
                 </ul>
-            </li>
+            </li>';
+            if ($kullanicibilgileri123["yonetici"] == 1) {
+                echo ' 
+                <li class="nav-item d-none d-sm-inline-block">
+                  <a href="#" class="nav-link" data-toggle="modal" data-target="#duyuruGonderModal">Duyuru Gönder</a>
+                </li>';
+            }
+           
+    echo '
     </ul>
   </div>
     <ul class="navbar-nav ml-auto">
@@ -246,4 +254,127 @@ echo '<button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat
 </div>
 </div>
 </div>';
+echo '
+<script>
+function basariliModalGoster(){
+  $("#statusSuccessModal").modal("show");
+  setTimeout(function(){
+    $("#statusSuccessModal").modal("hide");
+  }, 1000);
+}
+$(document).ready(function() {
+    $("#duyuru_gonder_form").submit(function(e){
+      $("#kaydediliyorModal").modal("show");
+      var formData = $("#duyuru_gonder_form").serialize();
+      $.post("' . base_url("kullanici/duyuruGonder") . '", formData)
+      .done(function(msg){
+          $("#kaydediliyorModal").modal("hide");
+          try{
+              data = $.parseJSON( msg );
+              if(data["sonuc"]==1){
+                  $(\'#duyuru_gonder_form\')[0].reset();
+                  $("#basarili-mesaji").html("Duyuru gönderildi.");
+                  $("#statusSuccessModal").modal("show");
+              }else{
+                  $("#hata-mesaji").html(data["mesaj"]);
+                  $("#statusErrorsModal").modal("show");
+              }
+          }catch(error){
+              $("#hata-mesaji").html(error);
+              $("#statusErrorsModal").modal("show");
+          }
+      })
+      .fail(function(xhr, status, error) {
+          $("#kaydediliyorModal").modal("hide");
+          $("#hata-mesaji").html(error);
+          $("#statusErrorsModal").modal("show");
+      });
+      return false;
+  });
+});
+</script>';
+if ($kullanicibilgileri123["yonetici"] == 1) {
+  echo '
+  <div class="modal fade" id="duyuruGonderModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="duyuruGonderModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="duyuruGonderModalTitle">Duyuru Gönder</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <p>Bu kısım mobil uygulamayı kullanan personellere duyuru göndermek içindir.</p>
+                <form id="duyuru_gonder_form" autocomplete="off" method="post">
+                  <div class="form-group col">
+                      <label for="duyuru_baslik">Konu:</label>
+                      <input id="duyuru_baslik" name="duyuru_baslik" autocomplete="off" class="form-control" type="text"
+                          placeholder="Konu" required>
+                  </div>
+                  <div class="form-group col">
+                      <label for="duyuru_mesaj">Mesaj:</label>
+                      <textarea id="duyuru_mesaj" name="duyuru_mesaj" autocomplete="off" class="form-control" type="text"
+                          placeholder="Mesaj:" required></textarea>
+                  </div>
+                </form>
+              </div>
+  <div class="modal-footer">
+  ';
+  echo '<button type="submit" class="btn btn-success" form="duyuru_gonder_form">Gönder</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+  </div>
+  </div>
+  </div>
+  </div>';
+}
 
+echo '
+<div class="modal fade" id="statusSuccessModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center p-lg-4">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+          <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+          <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
+        </svg> 
+        <h4 class="text-success mt-3">Başarılı</h4> 
+        <p id="basarili-mesaji" class="mt-3"></p>
+        <button type="button" class="btn btn-sm mt-3 btn-success"  data-dismiss="modal">TAMAM</button> 
+      </div>
+    </div>
+  </div>
+</div>';
+
+echo '
+<div class="modal fade" id="statusErrorsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="statusErrorsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center p-lg-4">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+          <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" /> 
+          <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+          <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" /> 
+        </svg>
+        
+        <h4 class="text-danger mt-3">Başarısız</h4> 
+        <p id="hata-mesaji" class="mt-3"></p>
+        <button type="button" class="btn btn-sm mt-3 btn-danger"  data-dismiss="modal">TAMAM</button> 
+      </div>
+    </div>
+  </div>
+</div>';
+
+echo '
+<div class="modal" id="kaydediliyorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="kaydediliyorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center p-lg-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">İşlem gerçekleştiriliyor...</span>
+        </div>
+        <p>İşlem gerçekleştiriliyor...</p>
+      </div>
+    </div>
+  </div>
+</div>';

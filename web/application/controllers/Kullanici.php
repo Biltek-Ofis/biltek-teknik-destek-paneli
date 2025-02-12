@@ -62,4 +62,28 @@ class Kullanici extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
+	public function duyuruGonder(){
+		if ($this->Giris_Model->kullaniciGiris()) {
+			$gecerliKullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+			if($gecerliKullanici["yonetici"] == 1){
+				try{
+					$duyuru_baslik = $this->input->post("duyuru_baslik");
+					$duyuru_mesaj = $this->input->post("duyuru_mesaj");
+
+					$kullanicilar = $this->Kullanicilar_Model->kullanicilar();
+
+					foreach($kullanicilar as $kullanici){
+						$this->Kullanicilar_Model->bildirimGonder($kullanici->id, $duyuru_baslik, $duyuru_mesaj);
+					}
+					echo json_encode(array("mesaj"=> "Başarılı", "sonuc"=>1));
+				}catch(Exception $e){
+					echo json_encode(array("mesaj"=> $e, "sonuc"=>0));
+				}
+			}else{
+				echo json_encode(array("mesaj"=> "Bu işlemi sadece yöneticiler gerçekleştirebilir.", "sonuc"=>0));
+			}
+		}else{
+			echo json_encode(array("mesaj"=> "Lütfen önce kullanıcı girişi yapın", "sonuc"=>0));
+		}
+	}
 }

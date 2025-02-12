@@ -800,7 +800,7 @@ class Cihazlar_Model extends CI_Model
 
             $cihaz_id = $this->db->insert_id();
             if(isset($veri["sorumlu"])){
-                $this->Kullanicilar_Model->bildirimGonder($veri["sorumlu"], $cihaz_id);
+                $this->Kullanicilar_Model->bildirimGonderCihaz($veri["sorumlu"], $cihaz_id);
             }
             if ($ekle) {
                 $id = $this->db->insert_id();
