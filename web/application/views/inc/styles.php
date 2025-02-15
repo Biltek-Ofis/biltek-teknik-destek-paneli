@@ -114,8 +114,10 @@ if(strlen($tema->yazi_rengi) > 0){
     .navbar .collapse .nav-item.active .nav-link,
     .dropdown-item.active a{
         color: rgba('.$kirmizi.', '.$yesil.', '.$mavi.', 0.7) !important;
+    }
+    .musteri_adi_liste .dropdown-item:not(:hover){
+        color: '.$tema->yazi_rengi.' !important;
     }';
-    
 }
 if(strlen($tema->beyaz_arkaplan_yazi) > 0){
    echo '.navbar .dropdown-item:hover:not(.active),

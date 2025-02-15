@@ -49,7 +49,7 @@ echo '<div class="content-wrapper">
                             <div class="modal-body">
                                 <form id="musteriEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/musteriEkle/") . '">
                                 <div class="row">';
-                                    $this->load->view("ogeler/musteri_adi");
+                                    $this->load->view("ogeler/musteri_adi", array("musteri_adi_form" => "#musteriEkleForm", "musteri_adi_sayi" => "3", "musteri_adi_oto" => FALSE));
                                 echo '</div>
                                 <div class="row">';
                                     $this->load->view("ogeler/adres");
@@ -130,7 +130,7 @@ foreach ($this->Kullanicilar_Model->musteriBilgileri() as $musteri) {
                                                 <div class="modal-body">
                                                     <form id="musteriDuzenleForm' . $musteri->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/musteriDuzenle/" . $musteri->id) . '">
                                                     <div class="row">';
-                                                        $this->load->view("ogeler/musteri_adi", array("musteri_adi_value" => $musteri->musteri_adi, "musteri_kod_value" => $musteri->id));
+                                                        $this->load->view("ogeler/musteri_adi", array("musteri_adi_value" => $musteri->musteri_adi, "musteri_kod_value" => $musteri->id, "musteri_adi_form" => "#musteriDuzenleForm" . $musteri->id, "musteri_adi_sayi" => "4_". $musteri->id, "musteri_adi_oto" => FALSE));
     echo '</div>
                                                     <div class="row">';
                                                         $this->load->view("ogeler/adres", array("adres_value" => $musteri->adres));
