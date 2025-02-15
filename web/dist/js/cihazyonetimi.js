@@ -1,32 +1,43 @@
-var musteri_bilgileri_onaylandi = false;
-var musteri_listesi_hover = false;
+var musteri_bilgileri_onaylandi = {};
+var musteri_listesi_hover = {};
 $(document).ready(function () {
-	var musteri_adi_input = $("#musteri_adi");
-	$("#musteri_adi_liste").hover(
-		function () {
-			musteri_listesi_hover = true;
-		},
-		function () {
-			musteri_listesi_hover = false;
+	var musteri_adi_inputs = $('.musteri_adi');
+	musteri_adi_inputs.each(function() {
+        
+		var oto = $(this).attr("data-oto");
+		if(oto == "true"){
+			var id = $(this).attr('id');
+			var sayi = id.replaceAll("musteri_adi", "");
+			var mainform = $(this).attr("data-mainform");
+			musteri_bilgileri_onaylandi[sayi] = false;
+			musteri_listesi_hover[sayi] = false;
+			$(this).focusout(function () {
+				if (!musteri_listesi_hover[sayi]) {
+					$(mainform + " #musteri_adi_liste").hide();
+				}
+			});
+			$(this).focus(function () {
+				if (!musteri_bilgileri_onaylandi[sayi]) {
+					musteriVerileriniGetirAd($(this), sayi, mainform);
+				}
+			});
+			$(this).keyup(function () {
+				$(mainform + " #musteri_kod").val("");
+				$(mainform + " #musteri_kod_text").html("Yok");
+				musteriVerileriniGetirAd($(this), sayi, mainform);
+			});
+			$(mainform + " #musteri_adi_liste").hover(
+				function () {
+					musteri_listesi_hover[sayi] = true;
+				},
+				function () {
+					musteri_listesi_hover[sayi] = false;
+				}
+			);
 		}
-	);
-	musteri_adi_input.focusout(function () {
-		if (!musteri_listesi_hover) {
-			$("#musteri_adi_liste").hide();
-		}
-	});
-	musteri_adi_input.focus(function () {
-		if (!musteri_bilgileri_onaylandi) {
-			musteriVerileriniGetirAd(musteri_adi_input);
-		}
-	});
-	musteri_adi_input.keyup(function () {
-		$("#musteri_kod").val("");
-		$("#musteri_kod_text").html("Yok");
-		musteriVerileriniGetirAd(musteri_adi_input);
 	});
 });
-function musteriVerileriniGetirAd(musteri_adi_input) {
+function musteriVerileriniGetirAd(musteri_adi_input, sayi, mainform) {
 	var musteri_adi_input_st = musteri_adi_input.val();
 	if (musteri_adi_input_st.length > 1) {
 		$.post(
@@ -35,7 +46,7 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 			function (data) {
 				var jsonData = JSON.parse(data);
 				if (Object.keys(jsonData).length > 0) {
-					$("#musteri_adi_liste").html("");
+					$(mainform + " #musteri_adi_liste").html("");
 					$.each(JSON.parse(data), function (index, value) {
 						var oge = $(
 							'<li class="active"><a class="dropdown-item" href="javascript:void(0);" id="musteri_adi_liste_oge_' +
@@ -46,26 +57,26 @@ function musteriVerileriniGetirAd(musteri_adi_input) {
 								(value.adres ? " / " + value.adres : "") +
 								"</a></li>"
 						);
-						$("#musteri_adi_liste").append(oge);
-						$("#musteri_adi_liste_oge_" + index).on("click", function () {
-							cihazGirisiVerileri(value);
+						$(mainform + " #musteri_adi_liste").append(oge);
+						$(mainform + " #musteri_adi_liste_oge_" + index).on("click", function () {
+							cihazGirisiVerileri(value, sayi, mainform);
 						});
 					});
-					$("#musteri_adi_liste").show();
+					$(mainform + " #musteri_adi_liste").show();
 				} else {
-					$("#musteri_adi_liste").html("");
-					$("#musteri_adi_liste").hide();
+					$(mainform + " #musteri_adi_liste").html("");
+					$(mainform + " #musteri_adi_liste").hide();
 				}
 			}
 		);
 	}
 }
-function cihazGirisiVerileri(value) {
-	$("#musteri_adi").val(value.musteri_adi ? value.musteri_adi : "");
-	$("#adres").val(value.adres ? value.adres : "");
-	$("#telefon_numarasi").val(value.telefon_numarasi ? value.telefon_numarasi : "");
-	$("#musteri_kod").val(value.id ? value.id : "");
-	$("#musteri_kod_text").html(value.id ? value.id : "");
-	musteri_bilgileri_onaylandi = true;
-	$("#musteri_adi_liste").hide();
+function cihazGirisiVerileri(value, sayi, mainform) {
+	$("#musteri_adi" + sayi).val(value.musteri_adi ? value.musteri_adi : "");
+	$(mainform + " #adres").val(value.adres ? value.adres : "");
+	$(mainform + " #telefon_numarasi").val(value.telefon_numarasi ? value.telefon_numarasi : "");
+	$(mainform + " #musteri_kod").val(value.id ? value.id : "");
+	$(mainform + " #musteri_kod_text").html(value.id ? value.id : "");
+	musteri_bilgileri_onaylandi[sayi] = true;
+	$(mainform + " #musteri_adi_liste").hide();
 }

@@ -668,7 +668,7 @@ $(document).ready(function(){
                       <tbody>
                         <tr>
                             <th class="align-middle">Müşteri Adı: </th>
-                            <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_form" => "#dt_duzenleForm", "musteri_adi_sayi" => "2"), true).'</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim Eden: </th>

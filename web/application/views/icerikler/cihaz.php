@@ -62,7 +62,7 @@ echo '<script>
                                         <tr>
                                             <th class="align-middle">Müşteri Adı: </th>
                                             <td class="align-middle">';
-$this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi, "musteri_kod_value" => $cihaz->musteri_kod));
+$this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_value" => $cihaz->musteri_adi, "musteri_kod_value" => $cihaz->musteri_kod, "musteri_adi_form" => "#cihazDuzenleForm", "musteri_adi_sayi" => "99"));
 echo '</td>
                                         </tr>
                                         

@@ -143,7 +143,7 @@ echo '</div>
 $this->load->view("ogeler/tarih");
 echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/musteri_adi");
+$this->load->view("ogeler/musteri_adi", array("musteri_adi_form" => "#yeniCihazForm", "musteri_adi_sayi" => "1"));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/teslim_eden");
