@@ -1436,7 +1436,7 @@ echo '
             $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
             $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
             $("#dt_duzenle input#musteri_kod").val(value.musteri_kod);
-            $("#dt_duzenle input#musteri_adi").val(value.musteri_adi);
+            $("#dt_duzenle input#musteri_adi2").val(value.musteri_adi);
             $("#dt_duzenle #TeslimAlan").html(value.teslim_alan);
             $("#dt_duzenle input#teslim_eden").val(value.teslim_eden);
             $("#dt_duzenle input#adres").val(value.adres);
