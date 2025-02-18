@@ -41,7 +41,9 @@ echo '<script>
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
   function detaylariGoster(){
+
     $("#dt_duzenle").hide();
+    $("#dt_duzenle #musteri_adi_liste").html("");
     $("#kaydetBtn").hide();
     $("#iptalBtn").hide();
     $("#dt-goster").show();
