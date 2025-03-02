@@ -62,6 +62,7 @@ echo '<script>
   }
   function duzenleyiGoster(){
     $("#dt-goster").hide();
+    $("#dt_duzenle #musteri_adi_liste").html("");
     $("#duzenleBtn").hide();
     $("#serviskabulBtn").hide();
     $("#barkoduYazdirBtn").hide();
@@ -109,6 +110,7 @@ echo '<script>
     });
   }
   function detaylariKaydet(){
+    $("#dt_duzenle #musteri_adi_liste").html("");
     $("#kaydediliyorModal").modal("show");
     $("#kaydetBtn").prop("disabled", true);
     formKaydet("#dt_duzenleForm", function(){
@@ -365,9 +367,46 @@ $yapilanIslemInputlari = "";
 for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
   $yapilanIslemInputlari .= "\n".$this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
 }
-
+$tema = $this->Ayarlar_Model->kullaniciTema();
 echo '<script>
 $(document).ready(function(){
+
+  $("#cihaz_tablosu_wrapper > .row:nth-child(1)").attr("id", "cihazlar_pegination1");
+  $("#cihaz_tablosu_wrapper > .row:nth-child(2)").attr("id", "cihazlar_main");
+  $("#cihaz_tablosu_wrapper > .row:nth-child(3)").attr("id", "cihazlar_pegination2");
+
+  
+  window.addEventListener("scroll", function () {
+     
+        const targetDiv = document.getElementById("cihazlar_main");
+        const rect = targetDiv.getBoundingClientRect();
+        console.log($(window).scrollTop());
+        console.log(rect.top);
+        if (rect.top <= 0) {
+          $("#cihazlar_pegination1").css({
+            position: "fixed",
+            left: "0",
+            right: "0",
+            width: "100%",
+            bottom: "0px",
+            background: \''.(strlen($tema->arkaplan) > 0 ? $tema->arkaplan : "#fff").'\',
+            padding: "1rem",
+            zIndex : "2",
+            borderTop: "1px solid '.(strlen($tema->yazi_rengi) > 0 ? $tema->yazi_rengi : "black").'"
+          });
+          $("#cihazlar_pegination2").css({
+            height: document.getElementById("cihazlar_pegination1").offsetHeight
+          });
+        } else {
+          $("#cihazlar_pegination1").attr("style", "");
+          $("#cihazlar_pegination2").css({
+            height: "0"
+          });  
+        }
+
+        isFixed = true; // Tekrar tetiklenmesini önler
+      
+  });
 ';
 if(isset( $_GET["servisNo"])){
 
@@ -1544,14 +1583,17 @@ echo '
                       if(toplamCihaz >0){
                         var toplamSayfa = Math.ceil(toplamCihaz / '.$ayarlar->tablo_oge.');
   
-                        $("#cihaz_tablosu_wrapper > .row:nth-child(3) > div:first-child").html(\'<div class="dataTables_info">\'+toplamCihaz+\' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor</div>\');
+                        const sonuc_bilgisi = \'<div class="dataTables_info">\'+toplamCihaz+\' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor</div>\';
+                        $("#cihazlar_pegination1 > div:first-child").html(sonuc_bilgisi);
+                        //$("#cihazlar_pegination2 > div:first-child").html(sonuc_bilgisi);
                         
                         var peginationDiv = function(ekDiv){
                           return \'<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
                         }
-                        $("#cihaz_tablosu_wrapper > .row:nth-child(1) > div:last-child").html(peginationDiv(" ust"));
-                        $("#cihaz_tablosu_wrapper > .row:nth-child(3) > div:last-child").html(peginationDiv(""));
+                        $("#cihazlar_pegination1 > div:last-child").html(peginationDiv(" ust"));
+                        //$("#cihazlar_pegination2 > div:last-child").html(peginationDiv(""));
                       
+                        
                         var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
                         if(sayfa <= 4 && toplamSayfa > 7){
                           console.log(1);
@@ -1592,9 +1634,9 @@ echo '
                           }
                         });
                       }else{
-                        $("#cihaz_tablosu_wrapper .row:nth-child(3) > div:first-child").html(\'<div class="dataTables_info">Kayıt Yok</div>\');
+                        //$("#cihazlar_pegination2 > div:first-child").html(\'<div class="dataTables_info">Kayıt Yok</div>\');
                       }
-                      
+                      $("#cihazlar_pegination2").html("");
                 });
               }
               function cihazlariGetir(sayfa, arama, kaydir, orderIsim, orderDurum){     
@@ -1602,7 +1644,7 @@ echo '
                 {
                   cihazlariGetirPost.abort();
                 }
-                $(".datatable_processing").css("height", $("#cihaz_tablosu_wrapper > .row:nth-child(2) > div:first-child").height());
+                $(".datatable_processing").css("height", $("#cihazlar_main > div:first-child").height());
                 $(".datatable_processing").show();
                 cihazlarOrderIsim = orderIsim;
                 cihazlarOrderDurum = orderDurum;
@@ -1662,7 +1704,7 @@ echo '
 ';
 echo '$(document).ready(function() {
             cihazlariGetir(1, "", false, cihazlarOrderIsim, cihazlarOrderDurum);
-            $("#cihaz_tablosu_wrapper > .row:nth-child(2)").append(\'<div class="datatable_processing"></div>\');
+            $("#cihazlar_main").append(\'<div class="datatable_processing"></div>\');
             $(".datatable_processing").html(\'<div class="flex-wrapper" style="margin: auto;"><div class="yukleniyorDaire"></div></div>\');
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
             $(".datatable_processing").css("position", "absolute");
