@@ -148,9 +148,6 @@ $ayarlar = $this->Ayarlar_Model->getir();
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col">
-                        <button class="btn btn-success">Varsayılan Site Teması</button>
-                    </div>
                     <div id="container w-100 m-0 p-0">
                         <div class="row m-0 p-0 d-flex justify-content-end">
                             <a href="javascript:void();" onclick="barkoduYazdir('test')"
