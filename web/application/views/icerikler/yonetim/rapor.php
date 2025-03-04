@@ -109,13 +109,29 @@ echo '<div class="content-wrapper">
                         }
                         var min = girisTarBas.val();
                         var max = girisTarBit.val();
+                        
                         var date = new Date( searchData[5] );
-                
+                        if(searchData[5].length > 0){
+                            var tarih = searchData[5].split(".");
+                            var gun = tarih[0];
+                            var ay = tarih[1];
+                            var yil = tarih[2].split(" ")[0];
+                            date = new Date(+yil, ay - 1, +gun); 
+                        }
+                        if(min !== null){
+                            min.setHours(0, 0, 0);
+                        }
+                        if(max !== null){
+                            max.setHours(23, 59, 59);
+                        }
+                        if(date !== null){
+                            date.setHours(12, 0, 0);
+                        }
                         if (
                             ( min === null && max === null ) ||
-                            ( min === null && date <= max ) ||
-                            ( min <= date   && max === null ) ||
-                            ( min <= date   && date <= max )
+                            ( min !== null && min <= date && max === null ) ||
+                            ( max !== null && min === null && date <= max ) ||
+                            ( min !== null && max !== null && min <= date   && date <= max )
                         ) {
                             return true;
                         }
