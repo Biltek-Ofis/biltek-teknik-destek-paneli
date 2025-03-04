@@ -208,7 +208,7 @@ class Islemler_Model extends CI_Model
             return $arr[$index];
         }
     }
-    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "", $initcomplete = "")
+    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "", $initcomplete = "", $arama = FALSE)
     {
         $this->load->model("Ayarlar_Model");
         $ayarlar = $this->Ayarlar_Model->getir();
@@ -223,7 +223,7 @@ class Islemler_Model extends CI_Model
             "paging": ' . $paging . ',
             "lengthChange": false,
             "pageLength": ' . $ayarlar->tablo_oge. ',
-            "searching": false,
+            "searching": '.($arama ? "true": "false").',
             "ordering": true,
             order: ' . $siralama . ',
             "info": true,

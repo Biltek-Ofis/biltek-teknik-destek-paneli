@@ -246,7 +246,7 @@ echo '<div class="content-wrapper">
                 tutarHtml();
                 kdvHtml();
                 genelToplamHtml();
-                cihazSayisiHtml();') . ');
+                cihazSayisiHtml();', TRUE) . ');
                 filtreStartsWith(yilInput, 0)
                 filtreText(musteriInput,1);
                 filtreText(cihazMarkaInput,2);
