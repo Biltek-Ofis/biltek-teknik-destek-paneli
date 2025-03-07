@@ -1,4 +1,6 @@
 <?php $this->load->view("inc/datatables_scripts");
+
+$tema = $this->Ayarlar_Model->kullaniciTema();
 echo '<script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
 <script src="'. base_url("dist/js/qrcode.min.js").'"></script>';
@@ -179,7 +181,7 @@ echo '<script>
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-          cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
+          cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec);
           $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
@@ -321,7 +323,7 @@ echo '<div class="dataTables_wrapper dt-bootstrap4 no-footer">
           </div>
         </div>
       </div>';
-echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
+echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-height: 700px;">
 <thead>
     <tr>
         <th scope="col">Servis No</th>
@@ -330,7 +332,26 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2">
         <th scope="col">Tür</th>
         <th scope="col">Cihaz</th>
         <th scope="col">Giriş Tarihi</th>
-        <th scope="col">Güncel Durum</th>
+        <th id="cihazDurumuColumn" class="no-sort" scope="col">
+          <div class="nav-item dropdown">
+                <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazDurumuColumn\'), 6);" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "color: black;").'">Güncel Durum</a>
+                <ul class="dropdown-menu cihazDurumlariDropdown">';
+                echo '
+                    <!--<li class="dropdown-item" style="background: gray;">
+                      <a href="javascript:void(0)" class="d-block w-100">SIRALA</a>
+                    </li>-->';
+                    echo '<li class="dropdown-item cihazDurumlariDropdownItemTumu active">
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \'\');cihazDurumuActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItemTumu\');">Tümü</a>
+                  </li>';
+                foreach($cDurumlari as $cDurumu54){
+                  echo '<li class="dropdown-item cihazDurumlariDropdownItem'.$cDurumu54->id.'">
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \''.$cDurumu54->id.'\');cihazDurumuActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItem'.$cDurumu54->id.'\');">'.$cDurumu54->durum.'</a>
+                  </li>';
+                }
+                echo '
+                    </ul>
+          </div>
+        </th>
         <th scope="col">Sorumlu Personel</th>
         <th scope="col">Detaylar</th>
     </tr>
@@ -367,7 +388,6 @@ $yapilanIslemInputlari = "";
 for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
   $yapilanIslemInputlari .= "\n".$this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
 }
-$tema = $this->Ayarlar_Model->kullaniciTema();
 echo '<script>
 $(document).ready(function(){
 
@@ -380,8 +400,6 @@ $(document).ready(function(){
      
         const targetDiv = document.getElementById("cihazlar_main");
         const rect = targetDiv.getBoundingClientRect();
-        console.log($(window).scrollTop());
-        console.log(rect.top);
         if (rect.top <= 0) {
           $("#cihazlar_pegination1").css({
             position: "fixed",
@@ -1561,23 +1579,32 @@ echo '
       { "sType": "status-tr" },
       null,
       null
-    ],') . ');
+    ],'
+    , "", FALSE, 
+      array(
+        '{
+          "targets": \'no-sort\',
+          "orderable": false,
+        }'
+      )) . ');
               var cihazlarSayfa = 0;
               var cihazlarArama = "";
               var cihazlariGetirPost;
               var sayfalariGuncellePost;
               var cihazlarOrderIsim = "";
               var cihazlarOrderDurum = "";
+              var cihazlarDurumSpec = "";
               function sayfaButonuGetir(sayfa, aktif, devredisi, tiklanabilir, text, arama){
-                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', kaydirmaDurumu, cihazlarOrderIsim, cihazlarOrderDurum)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
+                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', kaydirmaDurumu, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
               }
-              function sayfalariGuncelle(sayfa, arama){
+              function sayfalariGuncelle(sayfa, arama, durumSpec){
                 if (sayfalariGuncellePost !== undefined)
                 {
                   sayfalariGuncellePost.abort();
                 }
                 sayfalariGuncellePost = $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuSayi/") . '\', {
-                    arama: arama
+                    arama: arama,
+                    durumSpec: durumSpec,
                 }, function(data) {
                       var toplamCihaz = parseInt(data);
                       if(toplamCihaz >0){
@@ -1596,21 +1623,18 @@ echo '
                         
                         var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
                         if(sayfa <= 4 && toplamSayfa > 7){
-                          console.log(1);
                           for (let i = 1; i <= 5; i++) {
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
                           }
                           butonlar += sayfaButonuGetir(0, false, true, false, "…", arama);
                           butonlar += sayfaButonuGetir(toplamSayfa, sayfa == toplamSayfa, false, sayfa != toplamSayfa, toplamSayfa, arama);
                         }else if(toplamSayfa - sayfa < 4 && toplamSayfa > 7){
-                          console.log(2);
                           butonlar += sayfaButonuGetir(1, sayfa == 1, false, sayfa != 1, 1, arama);
                           butonlar += sayfaButonuGetir(0, false, true, false, "…", arama);
                           for (let i = toplamSayfa - 4; i <= toplamSayfa; i++) {
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
                           }
                         }else if(toplamSayfa - sayfa >= 4 && sayfa >= 4){
-                          console.log(3);
                           butonlar += sayfaButonuGetir(1, false, false, sayfa != 1, 1, arama);
                           butonlar += sayfaButonuGetir(0, false, true, false, "…", arama);
                           for (let i = sayfa - 1; i <= sayfa + 1; i++) {
@@ -1619,7 +1643,6 @@ echo '
                           butonlar += sayfaButonuGetir(0, false, true, false, "…", arama);
                           butonlar += sayfaButonuGetir(toplamSayfa, false, false, sayfa != toplamSayfa, toplamSayfa, arama);
                         }else{
-                          console.log(4);
                           for (let i = 1; i <= toplamSayfa; i++) {
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
                           }
@@ -1639,7 +1662,8 @@ echo '
                       $("#cihazlar_pegination2").html("");
                 });
               }
-              function cihazlariGetir(sayfa, arama, kaydir, orderIsim, orderDurum){     
+              
+              function cihazlariGetir(sayfa, arama, kaydir, orderIsim, orderDurum, durumSpec){     
                 if (cihazlariGetirPost !== undefined)
                 {
                   cihazlariGetirPost.abort();
@@ -1648,14 +1672,16 @@ echo '
                 $(".datatable_processing").show();
                 cihazlarOrderIsim = orderIsim;
                 cihazlarOrderDurum = orderDurum;
+                cihazlarDurumSpec = durumSpec;
                 cihazlariGetirPost = $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
                     limit: '.$ayarlar->tablo_oge.',
                     sayfa: sayfa,
                     arama: arama,
                     orderIsim: orderIsim, 
-                    orderDurum: orderDurum
+                    orderDurum: orderDurum,
+                    durumSpec: durumSpec,
                 }).done(function(data) {
-                  sayfalariGuncelle(sayfa, arama);
+                  sayfalariGuncelle(sayfa, arama, durumSpec);
                   cihazlarSayfa = sayfa;
                   cihazlarTablosu.clear().draw();
                   $.each(JSON.parse(data), function(index, value) {
@@ -1674,6 +1700,22 @@ echo '
                   }
                 }).fail(function(xhr, status, error) {
                   $(".datatable_processing").hide();
+                });
+              }
+              function cihazDurumuActive(parent, current){
+                $(parent).each(function( index ) {
+                  cihazDurumuActiveNext(this, current);
+                });
+              }
+              function cihazDurumuActiveNext(parent, current){
+                $(parent).children("li").each(function() { 
+                  if($(this).hasClass("active"))
+                  {
+                    $(this).removeClass("active"); 
+                  }
+                  if($(this).hasClass(current.replaceAll(".",""))){
+                    $(current).addClass("active");
+                  }
                 });
               }
               function siralamaGuncelle(div, sira){
@@ -1696,14 +1738,12 @@ echo '
                   orderDurum = "ASC";
                 }
                 var od = [ sira, orderDurum.toLowerCase()];
-                console.log(cihazlarTablosu.order());
                 cihazlarTablosu.order(od).draw();
-                console.log(cihazlarTablosu.order());
-                cihazlariGetir(cihazlarSayfa, cihazlarArama, false, orderIsim, orderDurum);
+                cihazlariGetir(cihazlarSayfa, cihazlarArama, false, orderIsim, orderDurum, cihazlarDurumSpec);
               }
 ';
 echo '$(document).ready(function() {
-            cihazlariGetir(1, "", false, cihazlarOrderIsim, cihazlarOrderDurum);
+            cihazlariGetir(1, "", false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec);
             $("#cihazlar_main").append(\'<div class="datatable_processing"></div>\');
             $(".datatable_processing").html(\'<div class="flex-wrapper" style="margin: auto;"><div class="yukleniyorDaire"></div></div>\');
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
@@ -1734,7 +1774,7 @@ echo '$(document).ready(function() {
                 }
                         
                 cihazlarArama = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
+                cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec);
             });
             var orderSira = 0;
         $(".sorting").each(function() {
@@ -1854,7 +1894,7 @@ echo '
             "#cihaz" + value.id
           ).length > 0;
           if (cihazVarmi) {
-            cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum);
+            cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
               $("#cihaziSilModal").modal("hide");
