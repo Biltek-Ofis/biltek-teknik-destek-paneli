@@ -208,7 +208,7 @@ class Islemler_Model extends CI_Model
             return $arr[$index];
         }
     }
-    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "", $initcomplete = "", $arama = FALSE)
+    public function datatablesAyarlari($siralama, $paging = "true", $digerAyarlar = "", $initcomplete = "", $arama = FALSE, $columnDefs = array())
     {
         $this->load->model("Ayarlar_Model");
         $ayarlar = $this->Ayarlar_Model->getir();
@@ -235,10 +235,18 @@ class Islemler_Model extends CI_Model
             "language": {
                 url: "' . base_url("plugins/datatables-i18n/tr.json") . '"
             },
-            columnDefs: [{
-              "defaultContent": "-",
-              "targets": "_all"
-            }]';
+            columnDefs: [
+                {
+                "defaultContent": "-",
+                "targets": "_all"
+                }
+                ';
+                foreach($columnDefs as $columnDef){
+                    $ayar .= ",";
+                    $ayar .= $columnDef;
+                }
+        $ayar .='
+            ]';
         $ayar .= '
     }';
         return $ayar;
