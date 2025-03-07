@@ -551,6 +551,14 @@ class Cihazlar_Model extends CI_Model
         if(strlen($durumSpec) > 0){
             $result = $result->where("guncel_durum", $durumSpec);
         }
+        $turSpec = $this->input->post("turSpec");
+        if(!isset($turSpec)){
+            $turSpec = "";
+        }
+        if(strlen($turSpec) > 0){
+            $result = $result->where("cihaz_turu", $turSpec);
+        }
+        
         if(strlen($orderIsim) > 0){
             switch ($orderIsim) {
                 case 'Servis No':
