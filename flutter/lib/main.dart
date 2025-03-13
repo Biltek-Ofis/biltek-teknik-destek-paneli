@@ -127,46 +127,53 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<String?>(
-        future: SharedPreference.getString(SharedPreference.authString),
-        builder: (context, AsyncSnapshot<String?> authSnapshot) {
-          if (authSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            if (authSnapshot.hasData && authSnapshot.data != null) {
-              return FutureBuilder<KullaniciAuthModel?>(
-                future: BiltekPost.kullaniciGetir(authSnapshot.data!),
-                builder: (context,
-                    AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot) {
-                  if (kullaniciSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    if (kullaniciSnapshot.hasData &&
-                        kullaniciSnapshot.data != null) {
-                      return kullaniciSnapshot.data!.teknikservis
-                          ? CihazlarimSayfasi(
-                              kullanici: kullaniciSnapshot.data!,
-                            )
-                          : Anasayfa(
-                              kullanici: kullaniciSnapshot.data!,
-                            );
-                    } else {
-                      return GirisSayfasi();
-                    }
-                  }
-                },
+      body: Consumer<MyNotifier>(
+          builder: (context, MyNotifier myNotifier, child) {
+        return FutureBuilder<String?>(
+          future: SharedPreference.getString(SharedPreference.authString),
+          builder: (context, AsyncSnapshot<String?> authSnapshot) {
+            if (authSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
               );
             } else {
-              return GirisSayfasi();
+              if (authSnapshot.hasData && authSnapshot.data != null) {
+                return FutureBuilder<KullaniciAuthModel?>(
+                  future: BiltekPost.kullaniciGetir(authSnapshot.data!),
+                  builder: (context,
+                      AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot) {
+                    if (kullaniciSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if (kullaniciSnapshot.hasData &&
+                          kullaniciSnapshot.data != null) {
+                        return kullaniciSnapshot.data!.teknikservis
+                            ? CihazlarimSayfasi(
+                                kullanici: kullaniciSnapshot.data!,
+                              )
+                            : Anasayfa(
+                                kullanici: kullaniciSnapshot.data!,
+                              );
+                      } else {
+                        return GirisSayfasi(
+                          kullaniciAdi: myNotifier.username,
+                        );
+                      }
+                    }
+                  },
+                );
+              } else {
+                return GirisSayfasi(
+                  kullaniciAdi: myNotifier.username,
+                );
+              }
             }
-          }
-        },
-      ),
+          },
+        );
+      }),
     );
   }
 }

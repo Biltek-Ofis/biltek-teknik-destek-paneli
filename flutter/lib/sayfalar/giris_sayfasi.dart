@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../ayarlar.dart';
 import '../models/giris.dart';
@@ -9,6 +10,7 @@ import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
 import '../utils/islemler.dart';
+import '../utils/my_notifier.dart';
 import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
 import '../widgets/input.dart';
@@ -17,7 +19,12 @@ import 'cihaz_durumu/cihaz_durumu_giris.dart';
 import 'cihazlarim.dart';
 
 class GirisSayfasi extends StatefulWidget {
-  const GirisSayfasi({super.key});
+  const GirisSayfasi({
+    super.key,
+    this.kullaniciAdi,
+  });
+
+  final String? kullaniciAdi;
 
   @override
   State<GirisSayfasi> createState() => _GirisSayfasiState();
@@ -37,9 +44,17 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(Duration.zero, () async {
+      if (widget.kullaniciAdi != null) {
+        kullaniciAdiController.text = widget.kullaniciAdi!;
+      }
       if (mounted) {
-        FocusScope.of(context).requestFocus(kullaniciAdiFocus);
+        if (widget.kullaniciAdi != null) {
+          FocusScope.of(context).requestFocus(sifreFocus);
+        } else {
+          FocusScope.of(context).requestFocus(kullaniciAdiFocus);
+        }
         Alerts alerts = Alerts.of(context);
         bool guncelleme = await BiltekPost.guncellemeGerekli();
         if (guncelleme) {
@@ -52,102 +67,105 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(10),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width > 400
-              ? 400
-              : MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(BiltekAssets.logo),
-                Text(
-                  hataMesaji,
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                BiltekTextField(
-                  controller: kullaniciAdiController,
-                  currentFocus: kullaniciAdiFocus,
-                  nextFocus: sifreFocus,
-                  label: "Kullanıcı Adı",
-                  errorText: kullaniciAdiError,
-                  onChanged: (value) {
-                    setState(() {
-                      kullaniciAdiError = null;
-                      hataMesaji = "";
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                BiltekSifre(
-                  controller: sifreController,
-                  currentFocus: sifreFocus,
-                  label: "Şifre",
-                  errorText: sifreError,
-                  onChanged: (value) {
-                    setState(() {
-                      sifreError = null;
-                      hataMesaji = "";
-                    });
-                  },
-                  onSubmitted: (val) async {
-                    await _girisYap();
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: DefaultButton(
-                    onPressed: () async {
-                      await _girisYap();
-                    },
-                    text: "Giriş Yap",
+      body: Consumer<MyNotifier>(
+          builder: (context, MyNotifier myNotifier, child) {
+        return Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(10),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width > 400
+                ? 400
+                : MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.asset(BiltekAssets.logo),
+                  Text(
+                    hataMesaji,
+                    style: TextStyle(color: Colors.red),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: DefaultButton(
-                    background: Islemler.arkaRenk(
-                      "bg-info",
-                      alpha: 255,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BiltekTextField(
+                    controller: kullaniciAdiController,
+                    currentFocus: kullaniciAdiFocus,
+                    nextFocus: sifreFocus,
+                    label: "Kullanıcı Adı",
+                    errorText: kullaniciAdiError,
+                    onChanged: (value) {
+                      setState(() {
+                        kullaniciAdiError = null;
+                        hataMesaji = "";
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BiltekSifre(
+                    controller: sifreController,
+                    currentFocus: sifreFocus,
+                    label: "Şifre",
+                    errorText: sifreError,
+                    onChanged: (value) {
+                      setState(() {
+                        sifreError = null;
+                        hataMesaji = "";
+                      });
+                    },
+                    onSubmitted: (val) async {
+                      await _girisYap(myNotifier);
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: DefaultButton(
+                      onPressed: () async {
+                        await _girisYap(myNotifier);
+                      },
+                      text: "Giriş Yap",
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CihazDurumuGiris(),
-                        ),
-                      );
-                    },
-                    text: "Cihaz Durumunu Görüntüle",
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: DefaultButton(
+                      background: Islemler.arkaRenk(
+                        "bg-info",
+                        alpha: 255,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CihazDurumuGiris(),
+                          ),
+                        );
+                      },
+                      text: "Cihaz Durumunu Görüntüle",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
-  Future<void> _girisYap() async {
+  Future<void> _girisYap(MyNotifier myNotifier) async {
     setState(() {
       kullaniciAdiError = null;
       sifreError = null;
@@ -202,6 +220,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
                 kapatildi = true;
+                myNotifier.username = kullaniciAdi;
+                /*await SharedPreference.remove(
+                  SharedPreference.usernameString,
+                );*/
                 navigatorState.pop();
                 navigatorState.pushAndRemoveUntil(
                   MaterialPageRoute(

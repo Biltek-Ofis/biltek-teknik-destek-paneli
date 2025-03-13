@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreference {
   static const darkThemeString = "darkTheme";
+  static const usernameString = "username";
   static const authString = "auth";
   static const fcmTokenString = "fcmToken";
   static const barkodIP = "barkodIP";
