@@ -145,7 +145,7 @@ class Kullanicilar_Model extends CI_Model
         return $this->db->reset_query()->where("auth", $auth)->update($this->kullaniciAuthTabloAdi(), $veri);
     }
     public function gecerliAuth($auth){
-        $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
+        $query = $this->db->reset_query()->where("auth", $auth)->get($this->kullaniciAuthTabloAdi());
         if ($query->num_rows() > 0) {
             $sonuc = $query->result()[0];
             if ($this->gecerliAuthTarih($sonuc->bitis)) {
@@ -156,8 +156,9 @@ class Kullanicilar_Model extends CI_Model
     }
     public function gecerliAuthTarih($bitis)
     {
-        $guncel = date($this->format, time());
-        return strcmp($guncel, $bitis) < 0;
+        $bitis = DateTime::createFromFormat($this->format, $bitis)->getTimestamp();
+        $guncel = time();
+        return $guncel < $bitis;
     }
 
     public function fcmTokenSifirla($fcmToken)
