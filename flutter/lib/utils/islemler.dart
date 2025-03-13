@@ -1,5 +1,6 @@
 import 'package:android_id/android_id.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
 
@@ -116,7 +117,7 @@ class Islemler {
     return _listGetir(faturaDurumlari, index);
   }
 
-  static String tarihFormat = "dd.MM.yyyy HH:mm";
+  static const String tarihFormat = "dd.MM.yyyy HH:mm";
   static MaskTextInputFormatter gsmFormatter = MaskTextInputFormatter(
     mask: "+90 (###) ###-####",
     filter: {"#": RegExp(r'[0-9]')},
@@ -144,4 +145,14 @@ class Islemler {
   }
 
   static const int maxIslemSayisi = 10;
+
+  static String lisansSQLTarih = "yyyy-MM-dd";
+  static String lisansNormalTarih = "dd/MM/yyyy";
+
+  static String tarihGoruntule(
+      String date, String orjinalFormat, String goruntulemeFormati) {
+    DateTime dateTime = DateFormat(orjinalFormat).parse(date).toLocal();
+
+    return DateFormat(goruntulemeFormati).format(dateTime);
+  }
 }

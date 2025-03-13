@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
+import '../ayarlar.dart';
 import '../models/cihaz.dart';
 import '../models/kullanici.dart';
 import '../sayfalar/detaylar/detaylar.dart';
@@ -18,6 +19,7 @@ import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
 import 'cihazlarim.dart';
 import 'giris_sayfasi.dart';
+import 'lisans/lisans.dart';
 import 'yeni_cihaz.dart';
 
 typedef AramaDurumu = Function(bool durum);
@@ -790,6 +792,24 @@ Drawer biltekDrawer(
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => CihazlarimSayfasi(
+                          kullanici: kullanici,
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
+          ),
+        if (kullanici.yonetici && Ayarlar.lisansEtkin)
+          ListTile(
+            title: const Text("Lisanslar"),
+            selected: seciliSayfa == "Lisanslar",
+            onTap: seciliSayfa != "Lisanslar"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => LisansSayfasi(
                           kullanici: kullanici,
                         ),
                       ),
