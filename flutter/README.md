@@ -8,6 +8,8 @@ Teknik servis uygulamasi
 TOKEN=token_buraya
 API_URL=Full sürüm url
 DEBUG_API_URL=Debug url (Testler için)
+LISANS_ETKIN=FALSE (LISANS SAYFASINI ETKİNLEŞTİRMEK İÇİN TRUE YAPIN)
+LISANS_URL=lisans sayfası url'si
 FIREBASE_PROJECT_ID=
 FIREBASE_AUTH_DOMAIN=
 FIREBASE_STORAGE_BUCKET=

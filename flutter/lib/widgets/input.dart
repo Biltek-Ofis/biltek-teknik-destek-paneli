@@ -223,30 +223,39 @@ class BiltekTarih extends StatelessWidget {
     super.key,
     required this.controller,
     required this.label,
+    this.errorText,
+    this.format = Islemler.tarihFormat,
     this.onConfirm,
     this.onChanged,
+    this.saatiGoster = true,
   });
   final String label;
+  final String? errorText;
+  final String format;
   final TextEditingController controller;
   final Function(DateTime?)? onConfirm;
   final ValueChanged<String>? onChanged;
+  final bool saatiGoster;
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        errorText: errorText,
       ),
       readOnly: true,
       onTap: () {
+        debugPrint(format);
         showTakvim(
           context,
           initialDate: controller.text.isEmpty
               ? DateTime.now()
-              : DateFormat(Islemler.tarihFormat).parse(controller.text),
+              : DateFormat(format).parse(controller.text),
           onConfirm: (date) {
             onConfirm?.call(date!);
           },
+          saatiGoster: saatiGoster,
         );
       },
       onChanged: onChanged,

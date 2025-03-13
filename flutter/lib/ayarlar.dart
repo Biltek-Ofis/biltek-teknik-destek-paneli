@@ -45,6 +45,28 @@ class Ayarlar {
     return "${url}cihaz/teknik_servis_formu/$cihazID?auth=$auth&inApp=1";
   }
 
+  static bool get lisansEtkin {
+    return const String.fromEnvironment('LISANS_ETKIN').toLowerCase() == "true";
+  }
+
+  static String get _urlLisans {
+    return const String.fromEnvironment('LISANS_URL');
+  }
+
+  static String get urlLisans {
+    if (_url.endsWith("/")) {
+      return _urlLisans;
+    } else {
+      return "$_urlLisans/";
+    }
+  }
+
+  static String get appUrlLisans => "${urlLisans}app/";
+  static String get lisanslarTumu => "${appUrlLisans}lisanslar/";
+  static String get lisansEkle => "${appUrlLisans}lisans_ekle/";
+  static String get lisansDuzenle => "${appUrlLisans}lisans_duzenle/";
+  static String get lisansSil => "${appUrlLisans}lisans_sil/";
+
   static String get token => const String.fromEnvironment('TOKEN');
 
   static FirebaseAyarlari get firebase => FirebaseAyarlari();
