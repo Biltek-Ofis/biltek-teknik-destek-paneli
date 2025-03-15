@@ -593,7 +593,7 @@ class Cihazlar_Model extends CI_Model
         }
         $orderText = $this->cihazlarTabloAdi().".id DESC";
         
-        $result = $result->join($this->Kullanicilar_Model->kullanicilarTabloAdi(), $this->cihazlarTabloAdi() . ".sorumlu = " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id");
+        $result = $result->join($this->Kullanicilar_Model->kullanicilarTabloAdi(), $this->cihazlarTabloAdi() . ".sorumlu = " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id", "left");
         if(strlen($limit) > 0 && strlen($sayfa) > 0){
             
             $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id");
