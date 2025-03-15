@@ -1625,13 +1625,12 @@ echo '
                     turSpec: turSpec,
                 }, function(data) {
                       var toplamCihaz = parseInt(data);
+
+                      var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
+
                       if(toplamCihaz >0){
                         var toplamSayfa = Math.ceil(toplamCihaz / '.$ayarlar->tablo_oge.');
   
-                        const sonuc_bilgisi = \'<div class="dataTables_info">\'+toplamCihaz+\' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor</div>\';
-                        $("#cihazlar_pegination1 > div:first-child").html(sonuc_bilgisi);
-                        //$("#cihazlar_pegination2 > div:first-child").html(sonuc_bilgisi);
-                        
                         var peginationDiv = function(ekDiv){
                           return \'<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
                         }
@@ -1639,7 +1638,6 @@ echo '
                         //$("#cihazlar_pegination2 > div:last-child").html(peginationDiv(""));
                       
                         
-                        var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
                         if(sayfa <= 4 && toplamSayfa > 7){
                           for (let i = 1; i <= 5; i++) {
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
@@ -1665,19 +1663,37 @@ echo '
                             butonlar += sayfaButonuGetir(i, sayfa == i, false, sayfa != i, i, arama);
                           }
                         }
-                        butonlar += sayfaButonuGetir(sayfa + 1, false, sayfa == toplamSayfa, sayfa != toplamSayfa, "Sonraki", arama);
-                        $(".dataTables_paginate .pagination").each(function(){
-                          var div = $(this);
-                          if(div.hasClass("ust")){
-                            $(this).html(butonlar.replaceAll("kaydirmaDurumu", "false"));
-                          }else{
-                            $(this).html(butonlar.replaceAll("kaydirmaDurumu", "true"));
-                          }
-                        });
                       }else{
                         //$("#cihazlar_pegination2 > div:first-child").html(\'<div class="dataTables_info">Kayıt Yok</div>\');
                       }
                       $("#cihazlar_pegination2").html("");
+                      
+                      var sonuc_bilgisi = \'<div class="dataTables_info">\';
+                      if (toplamCihaz > 0){
+                        sonuc_bilgisi += toplamCihaz + \' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor\';
+                        
+                        butonlar += sayfaButonuGetir(sayfa + 1, false, sayfa == toplamSayfa, sayfa != toplamSayfa, "Sonraki", arama);
+                        
+                      }else{
+                        //$("#cihazlar_pegination1 > div:last-child").html("");
+                        sonuc_bilgisi += \'Kayıt Yok\';
+                        butonlar += sayfaButonuGetir(1, true, false, false, 1, arama);
+                        butonlar += sayfaButonuGetir(sayfa + 1, false, sayfa == 1, sayfa != 1, "Sonraki", arama);
+                      }
+                      sonuc_bilgisi += \'</div>\';
+
+
+                      $("#cihazlar_pegination1 > div:first-child").html(sonuc_bilgisi);
+                      //$("#cihazlar_pegination2 > div:first-child").html(sonuc_bilgisi);
+
+                      $(".dataTables_paginate .pagination").each(function(){
+                        var div = $(this);
+                        if(div.hasClass("ust")){
+                          $(this).html(butonlar.replaceAll("kaydirmaDurumu", "false"));
+                        }else{
+                          $(this).html(butonlar.replaceAll("kaydirmaDurumu", "true"));
+                        }
+                      });
                 });
               }
               
