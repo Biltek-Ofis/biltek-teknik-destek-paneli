@@ -1926,12 +1926,12 @@ echo '
       if(!yeniCihazGirisiAcik){
         cihazBilgileriniGetir();
       }else{
-        console.log("Yeni cihaz girişi açık olduğu için cihaz bilgileri getirilmedi");
+        //console.log("Yeni cihaz girişi açık olduğu için cihaz bilgileri getirilmedi");
       }
       if(!yeniCihazGirisiAcik){
 
       }else{
-        console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
+        //console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
       }
       if(!yeniCihazGirisiAcik){
         $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
@@ -1951,7 +1951,7 @@ echo '
           });
         });
       }else{
-        console.log("Yeni cihaz girişi açık olduğu için silinen cihazlar getirilmedi");
+        //console.log("Yeni cihaz girişi açık olduğu için silinen cihazlar getirilmedi");
       }
       if(!yeniCihazGirisiAcik){
         $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
@@ -1964,7 +1964,7 @@ echo '
           });
         });
       }else{
-        console.log("Yeni cihaz girişi açık olduğu için son cihaz id getirilmedi");
+        //console.log("Yeni cihaz girişi açık olduğu için son cihaz id getirilmedi");
       }
       var gorunenCihazlarIDs = [];
       $("#cihazlar tr").each(function() {
@@ -2016,12 +2016,12 @@ echo '
             }
           });
         });
-        console.log(gorunenCihazlarIDs.length + " cihaz güncellendi");
+        //console.log(gorunenCihazlarIDs.length + " cihaz güncellendi");
       }else{
         if(gorunenCihazlarIDs.length == 0){
-          console.log("Güncellenecek cihaz yok");
+          //console.log("Güncellenecek cihaz yok");
         }else if(!yeniCihazGirisiAcik){
-          console.log("Yeni cihaz girişi açık olduğu için güncellenmedi");
+          //console.log("Yeni cihaz girişi açık olduğu için güncellenmedi");
         }
       }
       if(!yeniCihazGirisiAcik){
@@ -2041,7 +2041,7 @@ echo '
           });
         });
       }else{
-        console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
+        //console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
       }
     }
     var sonGuncelleme = '.time().';
