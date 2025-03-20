@@ -40,6 +40,12 @@ $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
 
 echo '<script>
+  if(yeniCihazGirisiAcik === null){
+    var yeniCihazGirisiAcik = false;
+  }
+  if(yeniCihazGirisiAcik === undefined){
+    yeniCihazGirisiAcik = false;
+  }
   var suankiCihaz = 0;
   var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
   var duzenleme_modu = false;
@@ -1923,49 +1929,32 @@ echo '
       });
     }
     function verileriGuncelle(){
-      if(!yeniCihazGirisiAcik){
-        cihazBilgileriniGetir();
-      }else{
-        //console.log("Yeni cihaz girişi açık olduğu için cihaz bilgileri getirilmedi");
-      }
-      if(!yeniCihazGirisiAcik){
-
-      }else{
-        //console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
-      }
-      if(!yeniCihazGirisiAcik){
-        $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
-          $.each(JSON.parse(data), function(index, value) {
-            const cihazVarmi = document.querySelectorAll(
-              "#cihaz" + value.id
-            ).length > 0;
-            if (cihazVarmi) {
-              cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
-              if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
-                $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
-                $("#cihaziSilModal").modal("hide");
-                $("#cihazSilindiModal").modal("show");
-              }
-              //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+      cihazBilgileriniGetir();
+      $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
+        $.each(JSON.parse(data), function(index, value) {
+          const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (cihazVarmi) {
+            cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+            if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
+              $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+              $("#cihaziSilModal").modal("hide");
+              $("#cihazSilindiModal").modal("show");
             }
-          });
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+          }
         });
-      }else{
-        //console.log("Yeni cihaz girişi açık olduğu için silinen cihazlar getirilmedi");
-      }
-      if(!yeniCihazGirisiAcik){
-        $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
-          sayac = 0;
-          $.each(JSON.parse(data), function(index, value) {
-            if (sayac == 0) {
-              sonCihazID = value.id;
-            }
-            sayac++;
-          });
+      });
+      $.get(\'' . base_url("cihazyonetimi" . "/sonCihazJQ/") . '\', {}, function(data) {
+        sayac = 0;
+        $.each(JSON.parse(data), function(index, value) {
+          if (sayac == 0) {
+            sonCihazID = value.id;
+          }
+          sayac++;
         });
-      }else{
-        //console.log("Yeni cihaz girişi açık olduğu için son cihaz id getirilmedi");
-      }
+      });
       var gorunenCihazlarIDs = [];
       $("#cihazlar tr").each(function() {
         var cID = $(this).data("cihazid");
@@ -1973,7 +1962,7 @@ echo '
           gorunenCihazlarIDs.push(cID);
         }
       });
-      if(gorunenCihazlarIDs.length > 0 && !yeniCihazGirisiAcik){
+      if(gorunenCihazlarIDs.length > 0){
         $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {spesifik:gorunenCihazlarIDs}, function(data) {
           $.each(JSON.parse(data), function(index, value) {
             const cihazVarmi = document.querySelectorAll(
@@ -2018,35 +2007,27 @@ echo '
         });
         //console.log(gorunenCihazlarIDs.length + " cihaz güncellendi");
       }else{
-        if(gorunenCihazlarIDs.length == 0){
-          //console.log("Güncellenecek cihaz yok");
-        }else if(!yeniCihazGirisiAcik){
-          //console.log("Yeni cihaz girişi açık olduğu için güncellenmedi");
-        }
+        //console.log("Güncellenecek cihaz yok");
       }
-      if(!yeniCihazGirisiAcik){
-        $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
-          $.each(JSON.parse(data), function(index, value) {
-              const cihazVarmi = document.querySelectorAll(
-              "#cihaz" + value.id
-            ).length > 0;
-            if (!cihazVarmi && cihazlarArama.length == 0 && cihazlarSayfa == 1) {
-              //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
-              let tabloOrnek = \'' . $tabloOrnek . '\';
-              
-              const tablo = donustur(tabloOrnek, value, true);
-              cihazlarTablosu.row.add($(tablo)).draw();
-              //$("#cihazlar").prepend(tablo);
-            }
-          });
+      $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
+        $.each(JSON.parse(data), function(index, value) {
+            const cihazVarmi = document.querySelectorAll(
+            "#cihaz" + value.id
+          ).length > 0;
+          if (!cihazVarmi && cihazlarArama.length == 0 && cihazlarSayfa == 1) {
+            //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
+            let tabloOrnek = \'' . $tabloOrnek . '\';
+            
+            const tablo = donustur(tabloOrnek, value, true);
+            cihazlarTablosu.row.add($(tablo)).draw();
+            //$("#cihazlar").prepend(tablo);
+          }
         });
-      }else{
-        //console.log("Yeni cihaz girişi açık olduğu için son cihaz getirilmedi");
-      }
+      });
     }
     var sonGuncelleme = '.time().';
     setInterval(() => {
-      if(!duzenleme_modu){
+      if(!duzenleme_modu && !yeniCihazGirisiAcik){
         verileriGuncelle();
         /*$.get(\'' . base_url("cihazyonetimi/veriGuncellendi") . '\', {}).done(function(data) {
           var guncellenenVeri = JSON.parse(data);
@@ -2055,6 +2036,9 @@ echo '
             verileriGuncelle();
           }
         });*/
+        //console.log("Veriler güncellendi");
+      }else{
+        //console.log("Yeni Cihaz Girişi Modalı açık olduğu için veriler güncellenmedi");
       }
     }, 5000);
     $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").on("hidden.bs.modal", function (e) {
