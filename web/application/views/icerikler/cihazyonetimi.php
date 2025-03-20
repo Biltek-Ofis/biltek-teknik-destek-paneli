@@ -1,6 +1,15 @@
 <?php
 
 echo '<script>
+    var yeniCihazGirisiAcik = false;
+    $(document).ready(function(){
+        $("#yeniCihazEkleModal").on("show.bs.modal", function(e) {
+            yeniCihazGirisiAcik = true;
+        });
+        $("#yeniCihazEkleModal").on("hidden.bs.modal", function(e) {
+            yeniCihazGirisiAcik = false;
+        });
+    });
     function createDateAsUTC(date) {
         return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
     }
@@ -59,10 +68,6 @@ echo '
         if (hash) {
             $(\'#\' + hash).click();
         }
-        /*$(\'#yeniCihazEkleModal\').on(\'show.bs.modal\', function(e) {
-            var tarih = createDateAsUTC(new Date());
-            $("#tarih").val(tarih.toJSON().slice(0, 19));
-        });*/
         tarih_girisi("#tarih_girisi");
         $("#yeniCihazForm #tarih_girisi").on("change", function(e) {
             tarih_girisi(this);
