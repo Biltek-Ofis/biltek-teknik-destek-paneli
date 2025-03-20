@@ -38,7 +38,6 @@ echo '">
     <script>
     $(document).ready(function(){
         $("#'.$formID.' #sifre_turu").on("change", function() {
-            console.log( this.value );
             if(this.value.toString() == "Pin"){
                 $("#'.$formID.' #cihaz_sifresi").attr("type", "text");
                 $("#'.$formID.' #cihaz_sifresi").attr("required", "required");
