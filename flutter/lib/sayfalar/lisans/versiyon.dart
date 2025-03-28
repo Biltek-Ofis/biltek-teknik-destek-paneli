@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../models/kullanici.dart';
-import '../../models/lisans/lisans.dart';
-import '../../utils/islemler.dart';
+import '../../models/lisans/versiyon.dart';
 import '../../utils/post.dart';
 import '../cihazlar.dart';
-import 'lisans_ekle_duzenle.dart';
+import 'versiyon_ekle_duzenle.dart';
 
-class LisansSayfasi extends StatefulWidget {
-  const LisansSayfasi({
+class VersiyonSayfasi extends StatefulWidget {
+  const VersiyonSayfasi({
     super.key,
     required this.kullanici,
   });
@@ -17,11 +16,11 @@ class LisansSayfasi extends StatefulWidget {
   final KullaniciAuthModel kullanici;
 
   @override
-  State<LisansSayfasi> createState() => _LisansSayfasiState();
+  State<VersiyonSayfasi> createState() => _VersiyonSayfasiState();
 }
 
-class _LisansSayfasiState extends State<LisansSayfasi> {
-  List<Lisans>? lisanslar;
+class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
+  List<Versiyon>? versiyonlar;
   ScrollController scrollController = ScrollController();
   bool yukariKaydir = false;
 
@@ -39,7 +38,7 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
       }
     });
     Future.delayed(Duration.zero, () async {
-      await _lisanslariYenile();
+      await _versiyonlariYenile();
     });
     super.initState();
   }
@@ -59,14 +58,14 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
         drawer: biltekDrawer(
           context,
           kullanici: widget.kullanici,
-          seciliSayfa: "Lisanslar",
+          seciliSayfa: "Versiyonlar",
         ),
         appBar: AppBar(
-          title: Text("Lisanslar"),
+          title: Text("Versiyonlar"),
           actions: [
             IconButton(
               onPressed: () async {
-                await _lisanslariYenile();
+                await _versiyonlariYenile();
               },
               icon: Icon(Icons.refresh),
             ),
@@ -91,9 +90,9 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LisansDuzenlemeSayfasi(
-                        lisanslariYenile: () async {
-                          await _lisanslariYenile();
+                      builder: (context) => VersiyonDuzenlemeSayfasi(
+                        versiyonlariYenile: () async {
+                          await _versiyonlariYenile();
                         },
                       ),
                     ),
@@ -106,65 +105,26 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
               ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: lisanslar == null
+          child: versiyonlar == null
               ? Center(
                   child: CircularProgressIndicator(),
                 )
               : RefreshIndicator(
                   onRefresh: () async {
-                    await _lisanslariYenile();
+                    await _versiyonlariYenile();
                   },
-                  child: lisanslar!.isEmpty
+                  child: versiyonlar!.isEmpty
                       ? Center(
-                          child: Text("Henüz Bir Lisans Eklenmemiş"),
+                          child: Text("Henüz Bir Versiyon Eklenmemiş"),
                         )
                       : ListView.builder(
-                          itemCount: lisanslar?.length,
+                          itemCount: versiyonlar?.length,
                           controller: scrollController,
                           physics: AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            Lisans lisans = lisanslar![index];
+                            Versiyon versiyon = versiyonlar![index];
                             return ListTile(
-                              title: Text(lisans.isim),
-                              subtitle: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(lisans.lisans),
-                                  Text(
-                                    "Versiyon: ${lisans.versiyon}",
-                                  ),
-                                  Text(
-                                    "Kayıt: ${Islemler.tarihGoruntule(lisans.kayit, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
-                                  ),
-                                  Text(
-                                    "Başlangıc: ${Islemler.tarihGoruntule(lisans.baslangic, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Bitis:",
-                                      ),
-                                      Text(
-                                        " ${lisans.suresiz ? lisans.durum["mesaj"] : Islemler.tarihGoruntule(lisans.bitis, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
-                                        style: lisans.suresiz
-                                            ? TextStyle(color: Colors.green)
-                                            : null,
-                                      )
-                                    ],
-                                  ),
-                                  if (!lisans.suresiz)
-                                    Text(
-                                      "(${lisans.durum["mesaj"]})",
-                                      style: TextStyle(
-                                        color: (lisans.durum["aktif"] as bool)
-                                            ? Colors.green
-                                            : Colors.red,
-                                      ),
-                                    ),
-                                ],
-                              ),
+                              title: Text(versiyon.versiyon),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -175,10 +135,10 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              LisansDuzenlemeSayfasi(
-                                            lisans: lisans,
-                                            lisanslariYenile: () async {
-                                              await _lisanslariYenile();
+                                              VersiyonDuzenlemeSayfasi(
+                                            versiyon: versiyon,
+                                            versiyonlariYenile: () async {
+                                              await _versiyonlariYenile();
                                             },
                                           ),
                                         ),
@@ -188,7 +148,10 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      _lisansSil(lisans.id, lisans.isim);
+                                      _versiyonSil(
+                                        versiyon.id,
+                                        versiyon.versiyon,
+                                      );
                                     },
                                     icon: Icon(Icons.delete),
                                   ),
@@ -223,44 +186,45 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
     );
   }
 
-  Future<void> _lisanslariYenile() async {
+  Future<void> _versiyonlariYenile() async {
     if (mounted) {
       setState(() {
-        lisanslar = null;
+        versiyonlar = null;
       });
     } else {
-      lisanslar = null;
+      versiyonlar = null;
     }
-    List<Lisans> lisanslarTemp = await BiltekPost.lisanslariGetir();
+    List<Versiyon> versiyonlarTemp = await BiltekPost.versiyonlariGetir();
 
     if (mounted) {
       setState(() {
-        lisanslar = lisanslarTemp;
+        versiyonlar = versiyonlarTemp;
       });
     } else {
-      lisanslar = lisanslarTemp;
+      versiyonlar = versiyonlarTemp;
     }
   }
 
-  void _lisansSil(int id, String isim) {
+  void _versiyonSil(int id, String versiyon) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Lisans Sil"),
-          content: Text("$isim adlı lisansı silmek istediğinize emin misiniz?"),
+          title: Text("Versiyon Sil"),
+          content: Text(
+              "$versiyon versiyonunu silmek istediğinize emin misiniz?  Bu versiyona atanmış lisanslar devredışı kalacak!"),
           actions: [
             TextButton(
               onPressed: () async {
                 NavigatorState navigatorState = Navigator.of(context);
                 navigatorState.pop();
                 setState(() {
-                  lisanslar = null;
+                  versiyonlar = null;
                 });
-                bool durum = await BiltekPost.lisansSil(id);
-                await _lisanslariYenile();
+                bool durum = await BiltekPost.versiyonSil(id);
+                await _versiyonlariYenile();
                 if (!durum && context.mounted) {
-                  _hataMesaji("Lisans silinirken bir hata oluştu.");
+                  _hataMesaji("Versiyon silinirken bir hata oluştu.");
                 }
               },
               child: Text(

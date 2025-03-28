@@ -22,6 +22,7 @@ import 'ayarlar/ayarlar.dart';
 import 'cihazlarim.dart';
 import 'giris_sayfasi.dart';
 import 'lisans/lisans.dart';
+import 'lisans/versiyon.dart';
 import 'yeni_cihaz.dart';
 
 typedef AramaDurumu = Function(bool durum);
@@ -754,6 +755,10 @@ Drawer biltekDrawer(
   required KullaniciAuthModel kullanici,
   String seciliSayfa = "",
 }) {
+  EdgeInsetsGeometry titlePadding =
+      EdgeInsets.symmetric(vertical: 0, horizontal: 8);
+  EdgeInsetsGeometry linkPadding =
+      EdgeInsets.symmetric(vertical: 0, horizontal: 6);
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -774,7 +779,16 @@ Drawer biltekDrawer(
         SizedBox(
           height: 5,
         ),
+        if (kullanici.yonetici && Ayarlar.lisansEtkin)
+          ListTile(
+            contentPadding: titlePadding,
+            title: const Text(
+              "Teknik Servis",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         ListTile(
+          contentPadding: linkPadding,
           title: const Text("Anasayfa"),
           selected: seciliSayfa == "Anasayfa",
           onTap: seciliSayfa != "Anasayfa"
@@ -793,6 +807,7 @@ Drawer biltekDrawer(
         ),
         if (kullanici.teknikservis)
           ListTile(
+            contentPadding: linkPadding,
             title: const Text("Cihazlarım"),
             selected: seciliSayfa == "Cihazlarım",
             onTap: seciliSayfa != "Cihazlarım"
@@ -811,7 +826,16 @@ Drawer biltekDrawer(
           ),
         if (kullanici.yonetici && Ayarlar.lisansEtkin)
           ListTile(
-            title: const Text("Lisanslar"),
+            contentPadding: titlePadding,
+            title: const Text(
+              "Lisanslar",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        if (kullanici.yonetici && Ayarlar.lisansEtkin)
+          ListTile(
+            contentPadding: linkPadding,
+            title: const Text("Lisansları Yönet"),
             selected: seciliSayfa == "Lisanslar",
             onTap: seciliSayfa != "Lisanslar"
                 ? () {
@@ -819,6 +843,25 @@ Drawer biltekDrawer(
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => LisansSayfasi(
+                          kullanici: kullanici,
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
+          ),
+        if (kullanici.yonetici && Ayarlar.lisansEtkin)
+          ListTile(
+            contentPadding: linkPadding,
+            title: const Text("Versiyonları Yönet"),
+            selected: seciliSayfa == "Versiyonlar",
+            onTap: seciliSayfa != "Versiyonlar"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => VersiyonSayfasi(
                           kullanici: kullanici,
                         ),
                       ),

@@ -3,7 +3,8 @@ import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../models/lisans.dart';
+import '../../models/lisans/lisans.dart';
+import '../../models/lisans/versiyon.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
@@ -29,6 +30,10 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
   TextEditingController isimController = TextEditingController();
   String? isimHata;
 
+  List<Versiyon>? versiyonlar;
+
+  int versiyon = 0;
+
   int sureDurumu = 0;
 
   TextEditingController baslangicController = TextEditingController();
@@ -41,11 +46,27 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
 
   @override
   void initState() {
-    if (widget.lisans != null) {
-      isimController.text = widget.lisans!.isim;
-      sureDurumu = widget.lisans!.suresiz ? 1 : 0;
-      aktifDurumu = widget.lisans!.aktif ? 1 : 0;
-    }
+    Future.delayed(Duration.zero, () async {
+      List<Versiyon> versiyonlarTemp = await BiltekPost.versiyonlariGetir();
+      if (mounted) {
+        setState(() {
+          versiyonlar = versiyonlarTemp;
+        });
+      } else {
+        versiyonlar = versiyonlarTemp;
+      }
+
+      if (widget.lisans != null) {
+        isimController.text = widget.lisans!.isim;
+        sureDurumu = widget.lisans!.suresiz ? 1 : 0;
+        int versiyonID = widget.lisans!.versiyonID;
+        if (versiyonID == 0 ||
+            versiyonlar!.where((v) => v.id == versiyonID).isNotEmpty) {
+          versiyon = widget.lisans!.versiyonID;
+        }
+        aktifDurumu = widget.lisans!.aktif ? 1 : 0;
+      }
+    });
     DateTime baslangicTarihi = widget.lisans != null
         ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.baslangic)
         : DateTime.now().toLocal();
@@ -75,7 +96,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Lisans Ekle"),
+          title:
+              Text(widget.lisans == null ? "Lisans Ekle" : "Lisansı Düzenle"),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -91,6 +113,30 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                     setState(() {
                       girildi = true;
                       isimHata = null;
+                    });
+                  },
+                ),
+                BiltekSelect<int>(
+                  title: "Versiyon",
+                  value: versiyon,
+                  items: [
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text("Tüm Versiyonlar"),
+                    ),
+                    if (versiyonlar != null)
+                      for (int versiyonIndex = 0;
+                          versiyonIndex < versiyonlar!.length;
+                          versiyonIndex++)
+                        DropdownMenuItem(
+                          value: versiyonlar![versiyonIndex].id,
+                          child: Text(versiyonlar![versiyonIndex].versiyon),
+                        ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      girildi = true;
+                      versiyon = value!;
                     });
                   },
                 ),
@@ -304,6 +350,7 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
           bitis = DateFormat(Islemler.lisansSQLTarih).format(bitisTarihi);
           Map<String, String> postData = {
             "isim": isim,
+            "versiyon_id": versiyon.toString(),
             "sure_durumu": sureDurumu.toString(),
             "baslangic": baslangic,
           };

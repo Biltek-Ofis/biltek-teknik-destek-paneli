@@ -66,6 +66,10 @@ class Ayarlar {
   static String get lisansEkle => "${appUrlLisans}lisans_ekle/";
   static String get lisansDuzenle => "${appUrlLisans}lisans_duzenle/";
   static String get lisansSil => "${appUrlLisans}lisans_sil/";
+  static String get versiyonlarTumu => "${appUrlLisans}versiyonlar/";
+  static String get versiyonEkle => "${appUrlLisans}versiyon_ekle/";
+  static String get versiyonDuzenle => "${appUrlLisans}versiyon_duzenle/";
+  static String get versiyonSil => "${appUrlLisans}versiyon_sil/";
 
   static String get token => const String.fromEnvironment('TOKEN');
 
