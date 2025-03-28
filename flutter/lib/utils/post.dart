@@ -9,7 +9,8 @@ import '../ayarlar.dart';
 import '../models/cihaz.dart';
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../models/kullanici.dart';
-import '../models/lisans.dart';
+import '../models/lisans/lisans.dart';
+import '../models/lisans/versiyon.dart';
 import '../models/medya.dart';
 import 'shared_preferences.dart';
 
@@ -476,6 +477,112 @@ class BiltekPost {
 
     var response = await BiltekPost.post(
       Ayarlar.lisansSil,
+      postMap,
+    );
+    if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
+      try {
+        debugPrint(resp);
+        Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
+        if (sonuc.containsKey("durum")) {
+          return sonuc["durum"] as bool;
+        } else {
+          return false;
+        }
+      } on Exception {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  static Future<List<Versiyon>> versiyonlariGetir() async {
+    Map<String, String> postMap = {};
+
+    var response = await BiltekPost.post(
+      Ayarlar.versiyonlarTumu,
+      postMap,
+    );
+    if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
+      try {
+        debugPrint(resp);
+        List<dynamic> versiyonlar = jsonDecode(resp) as List<dynamic>;
+        return versiyonlar
+            .map((cihaz) => Versiyon.fromJson(cihaz as Map<String, dynamic>))
+            .toList();
+      } on Exception {
+        throw Exception(
+            "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+      }
+    } else {
+      throw Exception(
+          "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+    }
+  }
+
+  static Future<bool> versiyonEkle({
+    required Map<String, String> postData,
+  }) async {
+    var response = await BiltekPost.post(
+      Ayarlar.versiyonEkle,
+      postData,
+    );
+    if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
+      try {
+        debugPrint(resp);
+        Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
+        if (sonuc.containsKey("durum")) {
+          return sonuc["durum"] as bool;
+        } else {
+          return false;
+        }
+      } on Exception {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> versiyonDuzenle({
+    required int id,
+    required Map<String, String> postData,
+  }) async {
+    postData.addAll({
+      "id": id.toString(),
+    });
+    var response = await BiltekPost.post(
+      Ayarlar.versiyonDuzenle,
+      postData,
+    );
+    if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
+      try {
+        debugPrint(resp);
+        Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
+        if (sonuc.containsKey("durum")) {
+          return sonuc["durum"] as bool;
+        } else {
+          return false;
+        }
+      } on Exception {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> versiyonSil(int id) async {
+    Map<String, String> postMap = {
+      "id": id.toString(),
+    };
+
+    var response = await BiltekPost.post(
+      Ayarlar.versiyonSil,
       postMap,
     );
     if (response.statusCode == 201) {
