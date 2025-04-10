@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
@@ -20,7 +22,6 @@ import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
 import 'cihazlarim.dart';
-import 'giris_sayfasi.dart';
 import 'lisans/lisans.dart';
 import 'lisans/versiyon.dart';
 import 'yeni_cihaz.dart';
@@ -62,6 +63,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   StreamSubscription<String>? fcmStream;
 
   BarkodOkuyucu? barkodOkuyucu;
+
+  StreamSubscription<bool>? keyboardSubscription;
+  bool klavyeAcik = false;
 
   @override
   void initState() {
@@ -105,10 +109,23 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       await _cihazlariYenile();
     });
     super.initState();
+    var keyboardVisibilityController = KeyboardVisibilityController();
+
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        klavyeAcik = visible;
+      });
+      debugPrint("Klavye Durumu: $visible");
+      if (!visible) {
+        _aramaDurumuDuzenle(false);
+      }
+    });
   }
 
   @override
   void dispose() {
+    keyboardSubscription?.cancel();
     scrollController.dispose();
     fcmStream?.cancel();
     super.dispose();
@@ -160,52 +177,60 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
               ? AppBar(
                   flexibleSpace: aramaAppBar,
                 )
-              : cihazlarAppBar(
+              : AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                      "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
+                ),
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: klavyeAcik
+              ? null
+              : biltekBottomNavigationBar(
                   context,
-                  aramaDurumu: (durum) {
-                    _aramaDurumuDuzenle(durum);
-                  },
                   kullanici: widget.kullanici,
+                  seciliSayfa: widget.seciliSayfa,
                   cihazlariYenile: () async {
                     await _cihazlariYenile();
                   },
-                  barkodOkuyucu: barkodOkuyucu,
                   pcYenile: () async {
                     await pcYenile();
                   },
-                  kullaniciAdi: myNotifier.username,
+                  aramaDurumu: (durum) {
+                    _aramaDurumuDuzenle(durum);
+                  },
                 ),
-          floatingActionButton: yukariKaydir
-              ? FloatingActionButton(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          extendBody: true,
+          floatingActionButton: klavyeAcik
+              ? null
+              : FloatingActionButton(
+                  shape: const CircleBorder(),
                   onPressed: () {
-                    scrollController.animateTo(
-                      0,
-                      duration: Duration(seconds: 1),
-                      curve: Curves.bounceIn,
-                    );
+                    if (yukariKaydir) {
+                      scrollController.animateTo(
+                        0,
+                        duration: Duration(seconds: 1),
+                        curve: Curves.bounceIn,
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => YeniCihazSayfasi(
+                            cihazlariYenile: () async {
+                              await _cihazlariYenile();
+                            },
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: Icon(
-                    Icons.arrow_upward,
+                    yukariKaydir ? Icons.arrow_upward : Icons.add,
                     color: Colors.white,
                   ),
-                )
-              : FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => YeniCihazSayfasi(
-                          cihazlariYenile: () async {
-                            await _cihazlariYenile();
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  )),
+                ),
           body: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -400,7 +425,11 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     if (durum) {
       Future.delayed(Duration(milliseconds: 100), () {
         if (mounted) {
-          FocusScope.of(context).requestFocus(aramaAppBar?.searchbarFocus);
+          FocusScopeNode focusScopeNode = FocusScope.of(context);
+          if (focusScopeNode.hasFocus) {
+            SystemChannels.textInput.invokeMethod("TextInput.show");
+          }
+          focusScopeNode.requestFocus(aramaAppBar?.searchbarFocus);
         }
       });
     } else {
@@ -410,210 +439,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       await _cihazlariYenile();
     }
   }
-}
-
-AppBar cihazlarAppBar(
-  BuildContext context, {
-  required AramaDurumu aramaDurumu,
-  required KullaniciAuthModel kullanici,
-  required VoidCallback cihazlariYenile,
-  required BarkodOkuyucu? barkodOkuyucu,
-  required VoidCallback pcYenile,
-  String? kullaniciAdi,
-}) {
-  return AppBar(
-    leading: Builder(
-      builder: (context) {
-        return IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        );
-      },
-    ),
-    actions: [
-      IconButton(
-        onPressed: () {
-          aramaDurumu.call(true);
-        },
-        icon: Icon(Icons.search),
-      ),
-      IconButton(
-        onPressed: () async {
-          ServisNo servisNoCls = ServisNo.of(context);
-          String? res = await SimpleBarcodeScanner.scanBarcode(
-            context,
-            barcodeAppBar: const BarcodeAppBar(
-              appBarTitle: 'Barkod Tara',
-              centerTitle: false,
-              enableBackButton: true,
-              backButtonIcon: Icon(Icons.arrow_back_ios),
-            ),
-            cancelButtonText: "İptal",
-            isShowFlashIcon: true,
-            delayMillis: 2000,
-            cameraFace: CameraFace.back,
-          );
-          if (res != null &&
-              res.isNotEmpty &&
-              res != "-1" &&
-              res.startsWith("20")) {
-            try {
-              int servisNo = int.parse(res);
-              await servisNoCls.ac(
-                servisNo: servisNo,
-                kullanici: kullanici,
-                cihazlariYenile: cihazlariYenile,
-              );
-            } on Exception catch (e) {
-              debugPrint(e.toString());
-              if (context.mounted) {
-                barkodGecersiz(context);
-              }
-            }
-          } else if (res != null &&
-              res.isNotEmpty &&
-              res != "-1" &&
-              res.split(":").length == 2) {
-            var splt = res.split(":");
-            switch (splt[0]) {
-              case "servisNo":
-                try {
-                  int servisNo = int.parse(splt[1]);
-                  await servisNoCls.ac(
-                    servisNo: servisNo,
-                    kullanici: kullanici,
-                    cihazlariYenile: cihazlariYenile,
-                    bilgisayardaAc: false,
-                  );
-                } on Exception catch (e) {
-                  debugPrint(e.toString());
-                  if (context.mounted) {
-                    barkodGecersiz(context);
-                  }
-                }
-                break;
-              default:
-                if ('.'.allMatches(splt[0]).length == 3) {
-                  try {
-                    await SharedPreference.setString(
-                        SharedPreference.barkodIP, splt[0]);
-                    await SharedPreference.setInt(
-                        SharedPreference.barkodPort, int.parse(splt[1]));
-                    pcYenile.call();
-                    if (context.mounted) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Eşleştirme"),
-                            content: Text(
-                                "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("Tamam"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                    BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-                    await barkodOkuyucu?.eslestir();
-                  } on Exception catch (e) {
-                    debugPrint(e.toString());
-                    if (context.mounted) {
-                      barkodGecersiz(context);
-                    }
-                  }
-                } else {
-                  if (context.mounted) {
-                    barkodGecersiz(context);
-                  }
-                }
-                break;
-            }
-          } else {
-            if (context.mounted) {
-              barkodGecersiz(context);
-            }
-          }
-          /*if (kDebugMode) {
-            int servisNo2 = 2025000007;
-            await BiltekPost.bilgisayardaAc(
-              kullaniciID: kullanici.id,
-              servisNo: servisNo2,
-            );
-            await Islemler.barkodOkuyucuAc(servisNo2.toString());
-          }*/
-        },
-        icon: Icon(Icons.qr_code),
-      ),
-      PopupMenuButton<String>(
-        onSelected: (value) async {
-          NavigatorState navigatorState = Navigator.of(context);
-          switch (value) {
-            case "Ayarlar":
-              navigatorState.push(
-                MaterialPageRoute(
-                  builder: (context) => AyarlarSayfasi(
-                    pcYenile: pcYenile,
-                  ),
-                ),
-              );
-              break;
-            case "Bilgisayarı Kapat":
-              await barkodOkuyucu?.pcKapa();
-              break;
-            case "Çıkış Yap":
-              await SharedPreference.remove(SharedPreference.authString);
-              String? fcmToken = await SharedPreference.getString(
-                  SharedPreference.fcmTokenString);
-              await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
-              navigatorState.pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => GirisSayfasi(
-                    kullaniciAdi: kullaniciAdi,
-                  ),
-                ),
-                (route) => false,
-              );
-              break;
-          }
-        },
-        itemBuilder: (context) {
-          return [
-            PopupMenuItem<String>(
-              value: "Ayarlar",
-              child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Ayarlar"),
-              ),
-            ),
-            /*if (barkodOkuyucu != null)
-              PopupMenuItem<String>(
-                value: "Bilgisayarı Kapat",
-                child: ListTile(
-                  leading: Icon(Icons.desktop_windows),
-                  title: Text("Bilgisayarı Kapat"),
-                ),
-              ),*/
-            PopupMenuItem<String>(
-              value: "Çıkış Yap",
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Çıkış Yap"),
-              ),
-            ),
-          ];
-        },
-      ),
-    ],
-  );
 }
 
 class ServisNo {
@@ -873,4 +698,252 @@ Drawer biltekDrawer(
       ],
     ),
   );
+}
+
+BottomAppBar biltekBottomNavigationBar(
+  BuildContext context, {
+  required KullaniciAuthModel kullanici,
+  required VoidCallback cihazlariYenile,
+  required VoidCallback pcYenile,
+  required AramaDurumu aramaDurumu,
+  String seciliSayfa = "",
+}) {
+  double iconSize = 20;
+  double textSize = 10;
+  return BottomAppBar(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    height: 50,
+    color: Theme.of(context).appBarTheme.backgroundColor,
+    shape: const CircularNotchedRectangle(),
+    notchMargin: 5,
+    child: Builder(
+      builder: (context) {
+        return Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                      size: iconSize,
+                    ),
+                    Text(
+                      "Menü",
+                      style: GoogleFonts.dynaPuff(
+                        color: Colors.white,
+                        fontSize: textSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.qr_code,
+                      color: Colors.white,
+                      size: iconSize,
+                    ),
+                    Text(
+                      "Barkod Tara",
+                      style: GoogleFonts.dynaPuff(
+                        color: Colors.white,
+                        fontSize: textSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                await barkodTara(
+                  context,
+                  kullanici: kullanici,
+                  cihazlariYenile: cihazlariYenile,
+                  pcYenile: pcYenile,
+                );
+              },
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: iconSize,
+                    ),
+                    Text(
+                      "Cihaz Ara",
+                      style: GoogleFonts.dynaPuff(
+                        color: Colors.white,
+                        fontSize: textSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                aramaDurumu.call(true);
+              },
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                      size: iconSize,
+                    ),
+                    Text(
+                      "Ayarlar",
+                      style: GoogleFonts.dynaPuff(
+                        color: Colors.white,
+                        fontSize: textSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AyarlarSayfasi(pcYenile: pcYenile),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
+Future<void> barkodTara(
+  BuildContext context, {
+  required KullaniciAuthModel kullanici,
+  required VoidCallback cihazlariYenile,
+  required VoidCallback pcYenile,
+}) async {
+  ServisNo servisNoCls = ServisNo.of(context);
+  String? res = await SimpleBarcodeScanner.scanBarcode(
+    context,
+    barcodeAppBar: const BarcodeAppBar(
+      appBarTitle: 'Barkod Tara',
+      centerTitle: false,
+      enableBackButton: true,
+      backButtonIcon: Icon(Icons.arrow_back_ios),
+    ),
+    cancelButtonText: "İptal",
+    isShowFlashIcon: true,
+    delayMillis: 2000,
+    cameraFace: CameraFace.back,
+  );
+  if (res != null && res.isNotEmpty && res != "-1" && res.startsWith("20")) {
+    try {
+      int servisNo = int.parse(res);
+      await servisNoCls.ac(
+        servisNo: servisNo,
+        kullanici: kullanici,
+        cihazlariYenile: cihazlariYenile,
+      );
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      if (context.mounted) {
+        barkodGecersiz(context);
+      }
+    }
+  } else if (res != null &&
+      res.isNotEmpty &&
+      res != "-1" &&
+      res.split(":").length == 2) {
+    var splt = res.split(":");
+    switch (splt[0]) {
+      case "servisNo":
+        try {
+          int servisNo = int.parse(splt[1]);
+          await servisNoCls.ac(
+            servisNo: servisNo,
+            kullanici: kullanici,
+            cihazlariYenile: cihazlariYenile,
+            bilgisayardaAc: false,
+          );
+        } on Exception catch (e) {
+          debugPrint(e.toString());
+          if (context.mounted) {
+            barkodGecersiz(context);
+          }
+        }
+        break;
+      default:
+        if ('.'.allMatches(splt[0]).length == 3) {
+          try {
+            await SharedPreference.setString(
+                SharedPreference.barkodIP, splt[0]);
+            await SharedPreference.setInt(
+                SharedPreference.barkodPort, int.parse(splt[1]));
+            pcYenile.call();
+            if (context.mounted) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Eşleştirme"),
+                    content: Text(
+                        "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Tamam"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+            BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
+            await barkodOkuyucu?.eslestir();
+          } on Exception catch (e) {
+            debugPrint(e.toString());
+            if (context.mounted) {
+              barkodGecersiz(context);
+            }
+          }
+        } else {
+          if (context.mounted) {
+            barkodGecersiz(context);
+          }
+        }
+        break;
+    }
+  } else {
+    if (context.mounted) {
+      barkodGecersiz(context);
+    }
+  }
+  /*if (kDebugMode) {
+            int servisNo2 = 2025000007;
+            await BiltekPost.bilgisayardaAc(
+              kullaniciID: kullanici.id,
+              servisNo: servisNo2,
+            );
+            await Islemler.barkodOkuyucuAc(servisNo2.toString());
+          }*/
 }

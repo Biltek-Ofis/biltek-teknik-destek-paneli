@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/my_notifier.dart';
+import '../../utils/post.dart';
+import '../../utils/shared_preferences.dart';
 import '../../widgets/selector.dart';
+import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
@@ -98,6 +101,27 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       onSelect: (value) {
                         myNotifier.isDark = value;
                       },
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                  ),
+                  title: Text("Çıkış Yap"),
+                  onTap: () async {
+                    NavigatorState navigatorState = Navigator.of(context);
+                    await SharedPreference.remove(SharedPreference.authString);
+                    String? fcmToken = await SharedPreference.getString(
+                        SharedPreference.fcmTokenString);
+                    await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+                    navigatorState.pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => GirisSayfasi(
+                          kullaniciAdi: myNotifier.username,
+                        ),
+                      ),
+                      (route) => false,
                     );
                   },
                 )
