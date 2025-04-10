@@ -121,7 +121,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       });
       debugPrint("Klavye Durumu: $visible");
       if (!visible) {
-        _aramaDurumuDuzenle(false);
+        _aramaDurumuDuzenle(false, klavyeYoluyla: true);
       }
     });
   }
@@ -155,7 +155,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           return;
         }
         bool kapat = true;
-        if (aramaEtkin) {
+        if (aramaEtkin || arama.isNotEmpty) {
           _aramaDurumuDuzenle(false);
           kapat = false;
           await _cihazlariYenile();
@@ -183,8 +183,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   )
                 : AppBar(
                     automaticallyImplyLeading: false,
-                    title: Text(
-                        "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
+                    title: Text(arama.isNotEmpty
+                        ? "\"$arama\" Arama Sonuçları"
+                        : "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
                   ),
             resizeToAvoidBottomInset: false,
             bottomNavigationBar: klavyeAcik
@@ -467,7 +468,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     }
   }
 
-  void _aramaDurumuDuzenle(bool durum) async {
+  void _aramaDurumuDuzenle(
+    bool durum, {
+    bool klavyeYoluyla = false,
+  }) async {
     setState(() {
       aramaEtkin = durum;
     });
@@ -482,10 +486,13 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         }
       });
     } else {
-      setState(() {
-        arama = "";
-      });
-      await _cihazlariYenile();
+      if (klavyeYoluyla) {
+      } else {
+        setState(() {
+          arama = "";
+        });
+        await _cihazlariYenile();
+      }
     }
   }
 }
