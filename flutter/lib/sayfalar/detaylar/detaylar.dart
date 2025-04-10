@@ -10,7 +10,6 @@ import '../../ayarlar.dart';
 import '../../models/cihaz.dart';
 import '../../models/kullanici.dart';
 import '../../utils/assets.dart';
-import '../../utils/barkod_okuyucu.dart';
 import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
@@ -90,11 +89,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           appBar: AppBar(
             title: cihaz != null ? Text("${cihaz!.servisNo}") : null,
             actions: [
-              if (cihaz != null &&
-                  cihazDuzenleme.cihazDurumlari.indexWhere(
-                          (e) => e.id == cihaz!.guncelDurum && e.kilitle) <
-                      0)
-                if (cihaz != null)
+              /*if (cihaz != null)
                   IconButton(
                     onPressed: () async {
                       String url = Ayarlar.teknikservisformu(
@@ -111,8 +106,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       );
                     },
                     icon: Icon(Icons.print),
-                  ),
-              if (cihaz != null)
+                  ),*/
+              /*if (cihaz != null)
                 PopupMenuButton<String>(
                   onSelected: (value) async {
                     switch (value) {
@@ -182,25 +177,72 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       ),
                     ];
                   },
-                ),
+                ),*/
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            shape: const CircleBorder(),
-            onPressed: () async {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => DetayDuzenle(
-                    cihaz: cihaz!,
-                    cihazlariYenile: () async {
-                      await _cihaziYenile();
-                    },
+          floatingActionButton: Builder(builder: (context) {
+            bool duzenle = cihaz != null &&
+                cihazDuzenleme.cihazDurumlari.indexWhere(
+                        (e) => e.id == cihaz!.guncelDurum && e.kilitle) <
+                    0;
+            return Stack(
+              children: [
+                Positioned(
+                  right: 0,
+                  bottom: duzenle ? 60 : 0,
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: FloatingActionButton(
+                      heroTag: "Print",
+                      shape: const CircleBorder(),
+                      onPressed: () async {
+                        String url = Ayarlar.teknikservisformu(
+                          auth: widget.kullanici.auth,
+                          cihazID: cihaz!.id,
+                        );
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => WebviewPage(
+                              url: url,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.print),
+                    ),
                   ),
                 ),
-              );
-            },
-            child: Icon(Icons.edit),
-          ),
+                if (duzenle)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: FloatingActionButton(
+                        heroTag: "Edit",
+                        shape: const CircleBorder(),
+                        onPressed: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => DetayDuzenle(
+                                cihaz: cihaz!,
+                                cihazlariYenile: () async {
+                                  await _cihaziYenile();
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        child: Icon(Icons.edit),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          }),
           bottomNavigationBar: BiltekBottomNavigationBar(
             items: [
               BottomNavigationBarItem(
