@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -15,10 +16,12 @@ import 'resim_duzenle.dart';
 class DetaylarGaleri extends StatefulWidget {
   const DetaylarGaleri({
     super.key,
+    required this.duzenle,
     required this.id,
     required this.servisNo,
   });
 
+  final bool duzenle;
   final int id;
   final int servisNo;
 
@@ -61,34 +64,61 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.servisNo} Galeri"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await _medyalariYenile();
-            },
-            icon: Icon(
-              Icons.refresh,
-            ),
-          ),
-          IconButton(
-            onPressed: () async {
-              await _medyaYukle();
-            },
-            icon: Icon(
-              Icons.add,
-            ),
-          ),
-          if (medyalar.isNotEmpty)
-            IconButton(
-              onPressed: () {
-                _medyaSilDialog();
-              },
-              icon: Icon(
-                Icons.delete,
-              ),
-            ),
-        ],
       ),
+      bottomNavigationBar: BiltekBottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add,
+              ),
+              label: "Ekle",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              label: "Resimleri Yenile",
+            ),
+            if (medyalar.isNotEmpty)
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.delete,
+                ),
+                label: "Sil",
+              ),
+          ],
+          currentIndex: 0,
+          selectedItemColor: Theme.of(context).appBarTheme.iconTheme?.color,
+          onTap: (index) async {
+            switch (index) {
+              case 0:
+                if (widget.duzenle && medyalar.isNotEmpty) {
+                  await _medyaYukle();
+                } else {
+                  islemYapilamazDialog(
+                    title: "Eklenemez",
+                    content:
+                        "Cihaz düzenleme tamamlandığı için resim eklenemez!",
+                  );
+                }
+                break;
+              case 1:
+                await _medyalariYenile();
+                break;
+              case 2:
+                if (widget.duzenle) {
+                  _medyaSilDialog();
+                } else {
+                  islemYapilamazDialog(
+                    title: "Silinemez",
+                    content:
+                        "Cihaz düzenleme tamamlandığı için resimler silinemez!",
+                  );
+                }
+                break;
+            }
+            if (widget.duzenle) {}
+          }),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: yukleniyor
@@ -126,6 +156,30 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                     child: Text("Henüz resim yüklenmemiş"),
                   )),
       ),
+    );
+  }
+
+  void islemYapilamazDialog({
+    required String title,
+    required String content,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Tamam"),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -181,15 +181,11 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             ],
           ),
           floatingActionButton: Builder(builder: (context) {
-            bool duzenle = cihaz != null &&
-                cihazDuzenleme.cihazDurumlari.indexWhere(
-                        (e) => e.id == cihaz!.guncelDurum && e.kilitle) <
-                    0;
             return Stack(
               children: [
                 Positioned(
                   right: 0,
-                  bottom: duzenle ? 60 : 0,
+                  bottom: duzenlenebilir() ? 60 : 0,
                   child: SizedBox(
                     width: 50,
                     height: 50,
@@ -214,7 +210,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                     ),
                   ),
                 ),
-                if (duzenle)
+                if (duzenlenebilir())
                   Positioned(
                     right: 0,
                     bottom: 0,
@@ -269,6 +265,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => DetaylarGaleri(
+                      duzenle: duzenlenebilir(),
                       id: cihaz!.id,
                       servisNo: cihaz!.servisNo,
                     ),
@@ -497,6 +494,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     setState(() {
       cihazDuzenleme = cihazDuzenlemeTemp;
     });
+  }
+
+  bool duzenlenebilir() {
+    return cihaz != null &&
+        cihazDuzenleme.cihazDurumlari
+                .indexWhere((e) => e.id == cihaz!.guncelDurum && e.kilitle) <
+            0;
   }
 
   Widget _genel() {
