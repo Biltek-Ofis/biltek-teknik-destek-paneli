@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
@@ -66,6 +66,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   StreamSubscription<bool>? keyboardSubscription;
   bool klavyeAcik = false;
+
+  int bottomNavigationSelectedIndex = 0;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -164,214 +167,260 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         }
       },
       child: Consumer<MyNotifier>(
-          builder: (context, MyNotifier myNotifier, child) {
-        return Scaffold(
-          drawer: aramaEtkin
-              ? null
-              : biltekDrawer(
-                  context,
-                  kullanici: widget.kullanici,
-                  seciliSayfa: widget.seciliSayfa,
-                ),
-          appBar: aramaEtkin
-              ? AppBar(
-                  flexibleSpace: aramaAppBar,
-                )
-              : AppBar(
-                  automaticallyImplyLeading: false,
-                  title: Text(
-                      "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
-                ),
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar: klavyeAcik
-              ? null
-              : biltekBottomNavigationBar(
-                  context,
-                  kullanici: widget.kullanici,
-                  seciliSayfa: widget.seciliSayfa,
-                  cihazlariYenile: () async {
-                    await _cihazlariYenile();
-                  },
-                  pcYenile: () async {
-                    await pcYenile();
-                  },
-                  aramaDurumu: (durum) {
-                    _aramaDurumuDuzenle(durum);
-                  },
-                ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          extendBody: true,
-          floatingActionButton: klavyeAcik
-              ? null
-              : FloatingActionButton(
-                  shape: const CircleBorder(),
-                  onPressed: () {
-                    if (yukariKaydir) {
-                      scrollController.animateTo(
-                        0,
-                        duration: Duration(seconds: 1),
-                        curve: Curves.bounceIn,
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => YeniCihazSayfasi(
+        builder: (context, MyNotifier myNotifier, child) {
+          return Scaffold(
+            key: scaffoldKey,
+            drawer: aramaEtkin
+                ? null
+                : biltekDrawer(
+                    context,
+                    kullanici: widget.kullanici,
+                    seciliSayfa: widget.seciliSayfa,
+                  ),
+            appBar: aramaEtkin
+                ? AppBar(
+                    flexibleSpace: aramaAppBar,
+                  )
+                : AppBar(
+                    automaticallyImplyLeading: false,
+                    title: Text(
+                        "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
+                  ),
+            resizeToAvoidBottomInset: false,
+            bottomNavigationBar: klavyeAcik
+                ? null
+                : BiltekBottomNavigationBar(
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.menu),
+                        label: "Menü",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.qr_code),
+                        label: "Barkod Tara",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.search),
+                        label: "Cihaz Ara",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings),
+                        label: "Ayarlar",
+                      ),
+                    ],
+                    currentIndex: bottomNavigationSelectedIndex,
+                    selectedItemColor:
+                        Theme.of(context).appBarTheme.iconTheme?.color,
+                    onTap: (index) async {
+                      debugPrint("Index: $index");
+                      switch (index) {
+                        case 0:
+                          debugPrint("Index burasi $aramaEtkin");
+                          scaffoldKey.currentState?.openDrawer();
+                          break;
+                        case 1:
+                          await barkodTara(
+                            context,
+                            kullanici: widget.kullanici,
                             cihazlariYenile: () async {
                               await _cihazlariYenile();
                             },
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Icon(
-                    yukariKaydir ? Icons.arrow_upward : Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-          body: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            width: MediaQuery.of(context).size.width,
-            child: cihazlar == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : RefreshIndicator(
-                    onRefresh: () async {
-                      setState(() {
-                        arama = "";
-                      });
-                      await _cihazlariYenile();
+                            pcYenile: () async {
+                              await pcYenile();
+                            },
+                          );
+                          break;
+                        case 2:
+                          _aramaDurumuDuzenle(true);
+                          break;
+                        case 3:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AyarlarSayfasi(pcYenile: pcYenile),
+                            ),
+                          );
+                          break;
+                      }
                     },
-                    child: ListView.builder(
-                      itemCount: cihazlar!.length,
-                      controller: scrollController,
-                      physics: AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        Cihaz cihaz = cihazlar![index];
-                        Color? renkTemp =
-                            Islemler.yaziRengi(cihaz.guncelDurumRenk);
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Islemler.arkaRenk(cihaz.guncelDurumRenk),
-                            border: Border.all(color: Colors.black, width: 1),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            extendBody: true,
+            floatingActionButton: klavyeAcik
+                ? null
+                : FloatingActionButton(
+                    shape: const CircleBorder(),
+                    onPressed: () {
+                      if (yukariKaydir) {
+                        scrollController.animateTo(
+                          0,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.bounceIn,
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YeniCihazSayfasi(
+                              cihazlariYenile: () async {
+                                await _cihazlariYenile();
+                              },
+                            ),
                           ),
-                          child: ListTile(
-                            textColor: renkTemp,
-                            title: RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: "\nServis No: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: cihaz.servisNo.toString(),
-                                    style: TextStyle(
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "\nMüşteri Adı: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: cihaz.musteriAdi,
-                                    style: TextStyle(
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "\nCihaz Tür: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: cihaz.cihazTuru,
-                                    style: TextStyle(
-                                      color: renkTemp,
-                                    ),
-                                  ),
-                                  if (widget.sorumlu == null)
+                        );
+                      }
+                    },
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor,
+                    child: Icon(
+                      yukariKaydir ? Icons.arrow_upward : Icons.add,
+                      color: Theme.of(context).appBarTheme.iconTheme?.color ??
+                          Colors.white,
+                    ),
+                  ),
+            body: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: cihazlar == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        setState(() {
+                          arama = "";
+                        });
+                        await _cihazlariYenile();
+                      },
+                      child: ListView.builder(
+                        itemCount: cihazlar!.length,
+                        controller: scrollController,
+                        physics: AlwaysScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          Cihaz cihaz = cihazlar![index];
+                          Color? renkTemp =
+                              Islemler.yaziRengi(cihaz.guncelDurumRenk);
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Islemler.arkaRenk(cihaz.guncelDurumRenk),
+                              border: Border.all(color: Colors.black, width: 1),
+                            ),
+                            child: ListTile(
+                              textColor: renkTemp,
+                              title: RichText(
+                                text: TextSpan(
+                                  children: <TextSpan>[
                                     TextSpan(
-                                      text: "\nSorumlu: ",
+                                      text: "\nServis No: ",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: renkTemp,
                                       ),
                                     ),
-                                  if (widget.sorumlu == null)
                                     TextSpan(
-                                      text: cihaz.sorumlu,
+                                      text: cihaz.servisNo.toString(),
                                       style: TextStyle(
                                         color: renkTemp,
                                       ),
                                     ),
-                                  TextSpan(
-                                    text: "\nCihaz: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: renkTemp,
+                                    TextSpan(
+                                      text: "\nMüşteri Adı: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: renkTemp,
+                                      ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
-                                    style: TextStyle(
-                                      color: renkTemp,
+                                    TextSpan(
+                                      text: cihaz.musteriAdi,
+                                      style: TextStyle(
+                                        color: renkTemp,
+                                      ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text: "\nGiriş Tarihi: ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: renkTemp,
+                                    TextSpan(
+                                      text: "\nCihaz Tür: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: renkTemp,
+                                      ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text: cihaz.tarih,
-                                    style: TextStyle(
-                                      color: renkTemp,
+                                    TextSpan(
+                                      text: cihaz.cihazTuru,
+                                      style: TextStyle(
+                                        color: renkTemp,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    if (widget.sorumlu == null)
+                                      TextSpan(
+                                        text: "\nSorumlu: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renkTemp,
+                                        ),
+                                      ),
+                                    if (widget.sorumlu == null)
+                                      TextSpan(
+                                        text: cihaz.sorumlu,
+                                        style: TextStyle(
+                                          color: renkTemp,
+                                        ),
+                                      ),
+                                    TextSpan(
+                                      text: "\nCihaz: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: renkTemp,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
+                                      style: TextStyle(
+                                        color: renkTemp,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "\nGiriş Tarihi: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: renkTemp,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: cihaz.tarih,
+                                      style: TextStyle(
+                                        color: renkTemp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Text(cihaz.guncelDurumText.toString()),
+                              trailing: DefaultButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => DetaylarSayfasi(
+                                      kullanici: widget.kullanici,
+                                      servisNo: cihaz.servisNo,
+                                      cihazlariYenile: () async {
+                                        await _cihazlariYenile();
+                                      },
+                                    ),
+                                  ));
+                                },
+                                text: "Detaylar",
                               ),
                             ),
-                            subtitle: Text(cihaz.guncelDurumText.toString()),
-                            trailing: DefaultButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => DetaylarSayfasi(
-                                    kullanici: widget.kullanici,
-                                    servisNo: cihaz.servisNo,
-                                    cihazlariYenile: () async {
-                                      await _cihazlariYenile();
-                                    },
-                                  ),
-                                ));
-                              },
-                              text: "Detaylar",
-                            ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-          ),
-        );
-      }),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -696,140 +745,6 @@ Drawer biltekDrawer(
                 : null,
           ),
       ],
-    ),
-  );
-}
-
-BottomAppBar biltekBottomNavigationBar(
-  BuildContext context, {
-  required KullaniciAuthModel kullanici,
-  required VoidCallback cihazlariYenile,
-  required VoidCallback pcYenile,
-  required AramaDurumu aramaDurumu,
-  String seciliSayfa = "",
-}) {
-  double iconSize = 20;
-  double textSize = 10;
-  return BottomAppBar(
-    padding: const EdgeInsets.symmetric(horizontal: 10),
-    height: 50,
-    color: Theme.of(context).appBarTheme.backgroundColor,
-    shape: const CircularNotchedRectangle(),
-    notchMargin: 5,
-    child: Builder(
-      builder: (context) {
-        return Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                      size: iconSize,
-                    ),
-                    Text(
-                      "Menü",
-                      style: GoogleFonts.dynaPuff(
-                        color: Colors.white,
-                        fontSize: textSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-            InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.qr_code,
-                      color: Colors.white,
-                      size: iconSize,
-                    ),
-                    Text(
-                      "Barkod Tara",
-                      style: GoogleFonts.dynaPuff(
-                        color: Colors.white,
-                        fontSize: textSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () async {
-                await barkodTara(
-                  context,
-                  kullanici: kullanici,
-                  cihazlariYenile: cihazlariYenile,
-                  pcYenile: pcYenile,
-                );
-              },
-            ),
-            InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: iconSize,
-                    ),
-                    Text(
-                      "Cihaz Ara",
-                      style: GoogleFonts.dynaPuff(
-                        color: Colors.white,
-                        fontSize: textSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {
-                aramaDurumu.call(true);
-              },
-            ),
-            InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                      size: iconSize,
-                    ),
-                    Text(
-                      "Ayarlar",
-                      style: GoogleFonts.dynaPuff(
-                        color: Colors.white,
-                        fontSize: textSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AyarlarSayfasi(pcYenile: pcYenile),
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
     ),
   );
 }
