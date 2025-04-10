@@ -94,39 +94,24 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                   cihazDuzenleme.cihazDurumlari.indexWhere(
                           (e) => e.id == cihaz!.guncelDurum && e.kilitle) <
                       0)
-                IconButton(
-                  onPressed: () async {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => DetayDuzenle(
-                          cihaz: cihaz!,
-                          cihazlariYenile: () async {
-                            await _cihaziYenile();
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.edit),
-                ),
-              if (cihaz != null)
-                IconButton(
-                  onPressed: () async {
-                    String url = Ayarlar.teknikservisformu(
-                      auth: widget.kullanici.auth,
-                      cihazID: cihaz!.id,
-                    );
+                if (cihaz != null)
+                  IconButton(
+                    onPressed: () async {
+                      String url = Ayarlar.teknikservisformu(
+                        auth: widget.kullanici.auth,
+                        cihazID: cihaz!.id,
+                      );
 
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => WebviewPage(
-                          url: url,
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => WebviewPage(
+                            url: url,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.print),
-                ),
+                      );
+                    },
+                    icon: Icon(Icons.print),
+                  ),
               if (cihaz != null)
                 PopupMenuButton<String>(
                   onSelected: (value) async {
@@ -199,6 +184,22 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                   },
                 ),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            shape: const CircleBorder(),
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DetayDuzenle(
+                    cihaz: cihaz!,
+                    cihazlariYenile: () async {
+                      await _cihaziYenile();
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Icon(Icons.edit),
           ),
           bottomNavigationBar: BiltekBottomNavigationBar(
             items: [
