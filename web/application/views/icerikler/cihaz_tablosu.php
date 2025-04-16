@@ -40,6 +40,7 @@ $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
 
 echo '<script>
+  var bildirim_tarihi_degisti = false;
   if(yeniCihazGirisiAcik === null){
     var yeniCihazGirisiAcik = false;
   }
@@ -89,12 +90,20 @@ echo '<script>
     $("#detaylar_body").scrollTop(0);
     duzenleme_modu = true;
   }
-  function formKaydet(formDiv, onComplete){
+  function formKaydet(formDiv, onComplete, bildirim_tarihi){
     var formAction = $(formDiv).attr("action");
     var formData = $(formDiv).serialize();
+    if(bildirim_tarihi && !bildirim_tarihi_degisti){
+      let params = new URLSearchParams(formData);
+      params.delete("bildirim_tarihi");
+      formData = params.toString();
+    }
     $.post(formAction, formData)
     .done(function(msg){
       try{
+        if(bildirim_tarihi){
+          bildirim_tarih_durumu_duzenle(false);
+        }
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
           onComplete();
@@ -129,8 +138,8 @@ echo '<script>
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
         basariliModalGoster();
-      });
-    });
+      }, true);
+    }, false);
   }
     function cihazKilitle(guncelDurum){
       guncelDurum = parseInt(guncelDurum);
@@ -411,8 +420,13 @@ for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
   $yapilanIslemInputlari .= "\n".$this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
 }
 echo '<script>
+function bildirim_tarih_durumu_duzenle(durum){
+  bildirim_tarihi_degisti = durum;
+}
 $(document).ready(function(){
-
+  $("#dt_duzenle input#bildirim_tarihi").change(function(){
+    bildirim_tarih_durumu_duzenle(true);
+  });
   $("#cihaz_tablosu_wrapper > .row:nth-child(1)").attr("id", "cihazlar_pegination1");
   $("#cihaz_tablosu_wrapper > .row:nth-child(2)").attr("id", "cihazlar_main");
   $("#cihaz_tablosu_wrapper > .row:nth-child(3)").attr("id", "cihazlar_pegination2");
@@ -1566,6 +1580,7 @@ echo '
             $("#dt_duzenle select#yedek_durumu").val(value.yedek_durumu).change();
             $("#dt_duzenle input#dz-tarih").val(tarihDonusturInput(value.tarih));
             $("#dt_duzenle input#bildirim_tarihi").val(tarihDonusturInput(value.bildirim_tarihi));
+            bildirim_tarih_durumu_duzenle(false);
             $("#dt_duzenle input#cikis_tarihi").val(tarihDonusturInput(value.cikis_tarihi));
             $("#dt_duzenle select#guncel_durum").val(value.guncel_durum).change();
             $("#dt_duzenle select#tahsilat_sekli").val(value.tahsilat_sekli_val).change();

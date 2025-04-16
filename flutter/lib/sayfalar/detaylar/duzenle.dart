@@ -91,6 +91,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
 
   TextEditingController tarihController = TextEditingController();
   TextEditingController bildirimTarihiController = TextEditingController();
+  bool bildirimTarihiDuzenlendi = false;
   TextEditingController cikisTarihiController = TextEditingController();
 
   int guncelDurum = 0;
@@ -169,6 +170,13 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
       // Yapılan İşlemler
       tarihController.text = widget.cihaz.tarih;
       bildirimTarihiController.text = widget.cihaz.bildirimTarihi;
+      if (mounted) {
+        setState(() {
+          bildirimTarihiDuzenlendi = false;
+        });
+      } else {
+        bildirimTarihiDuzenlendi = false;
+      }
       cikisTarihiController.text = widget.cihaz.cikisTarihi;
       guncelDurum = widget.cihaz.guncelDurum;
       tahsilatSekli = widget.cihaz.tahsilatSekliVal;
@@ -658,6 +666,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       onChanged: (value) {
                                         setState(() {
                                           girildi = true;
+                                          bildirimTarihiDuzenlendi = true;
                                         });
                                       },
                                     ),
@@ -1260,6 +1269,13 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
   void bildirimTarihiGuncelle(DateTime tarih) {
     bildirimTarihiController.text =
         DateFormat(Islemler.tarihFormat).format(tarih);
+    if (mounted) {
+      setState(() {
+        bildirimTarihiDuzenlendi = true;
+      });
+    } else {
+      bildirimTarihiDuzenlendi = true;
+    }
   }
 
   void cikisTarihiGuncelle(DateTime tarih) {
@@ -1382,7 +1398,6 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
         "servis_turu": servisTuru.toString(),
         "yedek_durumu": yedekDurumu.toString(),
         "tarih": tarihController.text,
-        "bildirim_tarihi": bildirimTarihiController.text,
         "cikis_tarihi": cikisTarihiController.text,
         "guncel_durum": guncelDurum.toString(),
         "tahsilat_sekli": tahsilatSekli.toString(),
@@ -1390,7 +1405,11 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
         "fis_no": fisNoController.text,
         "yapilan_islem_aciklamasi": yapilanIslemAciklamasiController.text,
       };
-
+      if (bildirimTarihiDuzenlendi) {
+        postData.addAll({
+          "bildirim_tarihi": bildirimTarihiController.text,
+        });
+      }
       if (gsm.isNotEmpty && gsm != "+90") {
         postData.addAll({
           "telefon_numarasi": gsm,
