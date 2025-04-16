@@ -381,15 +381,16 @@ class App extends CI_Controller
                     $veri["fatura_durumu"] = $fatura_durumu;
                     $veri["fis_no"] = $fis_no;
                     $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
-                    $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
+                    $bildirim_tarihi = $this->input->post("bildirim_tarihi");
+                    if (isset($bildirim_tarihi)) {
+                        $bildirim_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("bildirim_tarihi"));
+                        $veri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
+                    } else {
+                        $veri["bildirim_tarihi"] = $this->Islemler_Model->tarihDonusturSQL($this->Islemler_Model->tarih());
+                    }
                     $cikis_tarihi = $this->Islemler_Model->tarihDonusturSQL($this->input->post("cikis_tarihi"));
                     if (strlen($tarih) > 0) {
                         $veri["tarih"] = $tarih;
-                    }
-                    if ($guncel_durum_suanki != $guncel_durum) {
-                        $veri["bildirim_tarihi"] = $this->Islemler_Model->tarihDonusturSQL($this->Islemler_Model->tarih());
-                    } else {
-                        $veri["bildirim_tarihi"] = strlen($bildirim_tarihi) > 0 ? $bildirim_tarihi : NULL;
                     }
                     $veri["cikis_tarihi"] = strlen($cikis_tarihi) > 0 ? $cikis_tarihi : NULL;
 
