@@ -134,6 +134,7 @@ echo '<script>
     formKaydet("#dt_duzenleForm", function(){
       formKaydet("#dt-YapilanIslemlerForm", function(){
         $("#kaydetBtn").prop("disabled", false);
+        cihazBilgileriniGetir();
         $("#kaydediliyorModal").modal("hide");
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
