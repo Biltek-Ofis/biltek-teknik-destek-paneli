@@ -183,9 +183,19 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                   )
                 : AppBar(
                     automaticallyImplyLeading: false,
-                    title: Text(arama.isNotEmpty
-                        ? "\"$arama\" Arama Sonuçları"
-                        : "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}"),
+                    title: Text(
+                      arama.isNotEmpty
+                          ? "\"$arama\" Arama Sonuçları"
+                          : "Biltek Teknik Servis${(widget.seciliSayfa != "Anasayfa" ? " - ${widget.seciliSayfa}" : "")}",
+                    ),
+                    actions: [
+                      IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          _aramaDurumuDuzenle(true);
+                        },
+                      ),
+                    ],
                   ),
             resizeToAvoidBottomInset: false,
             bottomNavigationBar: klavyeAcik
