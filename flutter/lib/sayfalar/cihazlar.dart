@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_barcode_scanner/screens/shared.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../ayarlar.dart';
@@ -773,104 +775,124 @@ Future<void> barkodTara(
   required VoidCallback pcYenile,
 }) async {
   ServisNo servisNoCls = ServisNo.of(context);
-  String? res = await SimpleBarcodeScanner.scanBarcode(
+
+  Navigator.push<String>(
     context,
-    barcodeAppBar: const BarcodeAppBar(
-      appBarTitle: 'Barkod Tara',
-      centerTitle: false,
-      enableBackButton: true,
-      backButtonIcon: Icon(Icons.arrow_back_ios),
-    ),
-    cancelButtonText: "İptal",
-    isShowFlashIcon: true,
-    delayMillis: 2000,
-    cameraFace: CameraFace.back,
-  );
-  if (res != null && res.isNotEmpty && res != "-1" && res.startsWith("20")) {
-    try {
-      int servisNo = int.parse(res);
-      await servisNoCls.ac(
-        servisNo: servisNo,
-        kullanici: kullanici,
-        cihazlariYenile: cihazlariYenile,
-      );
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      if (context.mounted) {
-        barkodGecersiz(context);
-      }
-    }
-  } else if (res != null &&
-      res.isNotEmpty &&
-      res != "-1" &&
-      res.split(":").length == 2) {
-    var splt = res.split(":");
-    switch (splt[0]) {
-      case "servisNo":
-        try {
-          int servisNo = int.parse(splt[1]);
-          await servisNoCls.ac(
-            servisNo: servisNo,
-            kullanici: kullanici,
-            cihazlariYenile: cihazlariYenile,
-            bilgisayardaAc: false,
+    MaterialPageRoute(
+      builder: (context) => BarcodeScanner(
+        lineColor: "#ff6666",
+        cancelButtonText: "İptal",
+        isShowFlashIcon: true,
+        scanType: ScanType.barcode,
+        cameraFace: CameraFace.back,
+        barcodeAppBar: const BarcodeAppBar(
+          appBarTitle: 'Barkod Tara',
+          centerTitle: false,
+          enableBackButton: true,
+          backButtonIcon: Icon(Icons.arrow_back_ios),
+        ),
+        delayMillis: 2000,
+        scanFormat: ScanFormat.ALL_FORMATS,
+        onScanned: (res) async {
+          NavigatorState navigatorState = Navigator.of(context);
+          await FlutterRingtonePlayer().play(
+            fromAsset: BiltekAssets.barkod,
+            looping: false,
+            asAlarm: false,
+            volume: 0.01,
           );
-        } on Exception catch (e) {
-          debugPrint(e.toString());
-          if (context.mounted) {
-            barkodGecersiz(context);
-          }
-        }
-        break;
-      default:
-        if ('.'.allMatches(splt[0]).length == 3) {
-          try {
-            await SharedPreference.setString(
-                SharedPreference.barkodIP, splt[0]);
-            await SharedPreference.setInt(
-                SharedPreference.barkodPort, int.parse(splt[1]));
-            pcYenile.call();
-            if (context.mounted) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Eşleştirme"),
-                    content: Text(
-                        "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("Tamam"),
-                      ),
-                    ],
+          Future.delayed(
+            Duration(
+              seconds: 1,
+            ),
+            () async {
+              navigatorState.pop();
+              debugPrint("Sonuc: $res");
+              if (res.isNotEmpty && res != "-1" && res.startsWith("20")) {
+                try {
+                  int servisNo = int.parse(res);
+                  await servisNoCls.ac(
+                    servisNo: servisNo,
+                    kullanici: kullanici,
+                    cihazlariYenile: cihazlariYenile,
                   );
-                },
-              );
-            }
-            BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-            await barkodOkuyucu?.eslestir();
-          } on Exception catch (e) {
-            debugPrint(e.toString());
-            if (context.mounted) {
-              barkodGecersiz(context);
-            }
-          }
-        } else {
-          if (context.mounted) {
-            barkodGecersiz(context);
-          }
-        }
-        break;
-    }
-  } else {
-    if (context.mounted) {
-      barkodGecersiz(context);
-    }
-  }
-  /*if (kDebugMode) {
+                } on Exception catch (e) {
+                  debugPrint(e.toString());
+                  if (context.mounted) {
+                    barkodGecersiz(context);
+                  }
+                }
+              } else if (res.isNotEmpty &&
+                  res != "-1" &&
+                  res.split(":").length == 2) {
+                var splt = res.split(":");
+                switch (splt[0]) {
+                  case "servisNo":
+                    try {
+                      int servisNo = int.parse(splt[1]);
+                      await servisNoCls.ac(
+                        servisNo: servisNo,
+                        kullanici: kullanici,
+                        cihazlariYenile: cihazlariYenile,
+                        bilgisayardaAc: false,
+                      );
+                    } on Exception catch (e) {
+                      debugPrint(e.toString());
+                      if (context.mounted) {
+                        barkodGecersiz(context);
+                      }
+                    }
+                    break;
+                  default:
+                    if ('.'.allMatches(splt[0]).length == 3) {
+                      try {
+                        await SharedPreference.setString(
+                            SharedPreference.barkodIP, splt[0]);
+                        await SharedPreference.setInt(
+                            SharedPreference.barkodPort, int.parse(splt[1]));
+                        pcYenile.call();
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Eşleştirme"),
+                                content: Text(
+                                    "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Tamam"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                        BarkodOkuyucu? barkodOkuyucu =
+                            await BarkodOkuyucu.getir();
+                        await barkodOkuyucu?.eslestir();
+                      } on Exception catch (e) {
+                        debugPrint(e.toString());
+                        if (context.mounted) {
+                          barkodGecersiz(context);
+                        }
+                      }
+                    } else {
+                      if (context.mounted) {
+                        barkodGecersiz(context);
+                      }
+                    }
+                    break;
+                }
+              } else {
+                if (context.mounted) {
+                  barkodGecersiz(context);
+                }
+              }
+              /*if (kDebugMode) {
             int servisNo2 = 2025000007;
             await BiltekPost.bilgisayardaAc(
               kullaniciID: kullanici.id,
@@ -878,4 +900,10 @@ Future<void> barkodTara(
             );
             await Islemler.barkodOkuyucuAc(servisNo2.toString());
           }*/
+            },
+          );
+        },
+      ),
+    ),
+  );
 }
