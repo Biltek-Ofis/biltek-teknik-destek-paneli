@@ -43,7 +43,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
             width: MediaQuery.of(context).size.width,
             child: ListView(
               children: [
-                ListTile(
+                /*ListTile(
                   title: Text("Barkod Okuyucu Ayarları"),
                   subtitle: barkodOkuyucu != null
                       ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
@@ -72,7 +72,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       ),
                     );
                   },
-                ),
+                ),*/
                 ListTile(
                   title: Text("Tema"),
                   subtitleTextStyle: TextStyle(
