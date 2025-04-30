@@ -799,7 +799,7 @@ Future<void> barkodTara(
             fromAsset: BiltekAssets.barkod,
             looping: false,
             asAlarm: false,
-            volume: 0.01,
+            volume: 0.5,
           );
           Future.delayed(
             Duration(
