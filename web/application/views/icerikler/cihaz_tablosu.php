@@ -40,6 +40,8 @@ $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
 
 echo '<script>
+  var ayrilma_durumu_tetikle = true;
+  var ayrilma_durumu_etkin = false;
   var bildirim_tarihi_degisti = false;
   if(yeniCihazGirisiAcik === null){
     var yeniCihazGirisiAcik = false;
@@ -303,6 +305,8 @@ echo '<script>
   function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, sorumlu){
 
       $(\'#yeniCihazForm\')[0].reset();
+      
+      ayrilma_durumu_tetikle = false;
       if(musteri_kod != "Yok" && musteri_kod != ""){
         $("#yeniCihazForm #musteri_kod").val(musteri_kod);
       }
@@ -318,6 +322,7 @@ echo '<script>
       $("#yeniCihazForm #cihaz_sifresi").val(cihaz_sifresi);
       $("#yeniCihazForm #sorumlu").val(sorumlu);
 
+      ayrilma_durumu_tetikle = true;
       $("#yeniCihazEkleModal").modal("show");
   }
 </script>';
@@ -424,7 +429,53 @@ echo '<script>
 function bildirim_tarih_durumu_duzenle(durum){
   bildirim_tarihi_degisti = durum;
 }
+const ayrilmaMesaji = "Değişiklikler kaydedilmedi. Emin misiniz?";
+function ayrilmayiEngeliIptal(){
+  ayrilma_durumu_etkin = false;
+  window.onbeforeunload = null;
+}
+function detayModaliKapat(){
+  if(ayrilma_durumu_etkin){
+    if (confirm(ayrilmaMesaji)) {
+      $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+      ayrilmayiEngeliIptal();
+    }
+  }else{
+    $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
+    ayrilmayiEngeliIptal();
+  }
+}
+function detayModaliIptal(){
+  if(ayrilma_durumu_etkin){
+    if (confirm(ayrilmaMesaji)) {
+      detaylariGoster();
+      ayrilmayiEngeliIptal();
+    }
+  }else{
+    detaylariGoster();
+    ayrilmayiEngeliIptal();
+  }
+}
+function ayrilmaOnay() {
+    return ayrilmaMesaji;
+}
 $(document).ready(function(){
+  $("input").each(function(){
+    $(this).on("keyup change", function(){
+      if(ayrilma_durumu_tetikle){
+        window.onbeforeunload = ayrilmaOnay;
+        ayrilma_durumu_etkin = true;
+      }
+    });
+  });
+  $("select").each(function(){
+    $(this).on("change", function(){
+      if(ayrilma_durumu_tetikle){
+        window.onbeforeunload = ayrilmaOnay;
+        ayrilma_durumu_etkin = true;
+      }
+    });
+  });
   $("#dt_duzenle input#bildirim_tarihi").change(function(){
     bildirim_tarih_durumu_duzenle(true);
   });
@@ -535,6 +586,7 @@ $(document).ready(function(){
   });
   $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").on("hide.bs.modal", function(e) {
     history.replaceState("", document.title, window.location.pathname);
+    ayrilma_durumu_etkin = false;
   });
 });
 </script>
@@ -543,7 +595,7 @@ $(document).ready(function(){
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Label">Cihaz Detayları <span id="ServisNo3"></span></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" onclick="detayModaliKapat();">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -950,13 +1002,13 @@ $(document).ready(function(){
       <div class="modal-footer">
       <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet()" style="display:none;" class="btn btn-success">Kaydet</a>
-      <a id="iptalBtn" href="#" onclick="detaylariGoster()" style="display:none;" class="btn btn-danger">İptal</a>
+      <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
       <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-white">Kargo Bilgisi Yazdır</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
       <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
       <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a id="silBtn" href="#" style="{display_kilit}" class="btn btn-danger text-white">Sil</a>') . '
-      <a id="kapatBtn" href="#" class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+      <a id="kapatBtn" href="#" class="btn btn-secondary" onclick="detayModaliKapat();">Kapat</a>
       </div>
     </div>
   </div>
@@ -1448,10 +1500,12 @@ echo 'function cihazBilgileriniGetir(){
             ';
             for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
               echo '
+            ayrilma_durumu_tetikle = false;
             $("#dt_duzenle input#yapilanIslem'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemKdv'.$i.'").val("").change();
+            ayrilma_durumu_tetikle = true;
             ';
             }
 echo '
@@ -1472,10 +1526,12 @@ echo '
                   .replaceAll("{kdv_orani}", islem.kdv);
                 // Duzenleme
                 var dz_islemSayisi = i + 1;
+                ayrilma_durumu_tetikle = false;
                 $("#dt_duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
                 $("#dt_duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
                 $("#dt_duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
                 $("#dt_duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(islem.kdv).change();
+                ayrilma_durumu_tetikle = true;            
               });
             } else {
               var yapilanIslemler = islemlerSatiriBos;
@@ -1531,6 +1587,8 @@ echo '
             $("#dt_duzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
             $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
             $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
+            
+            ayrilma_durumu_tetikle = false;
             $("#dt_duzenle input#musteri_kod").val(value.musteri_kod);
             $("#dt_duzenle input#musteri_adi2").val(value.musteri_adi);
             $("#dt_duzenle #TeslimAlan").html(value.teslim_alan);
@@ -1590,6 +1648,7 @@ echo '
             $("#dt_duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
             $("#duzenleBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
+            ayrilma_durumu_tetikle = true;
           }
         });
       }).fail(function(xhr, status, error) {
@@ -1848,6 +1907,7 @@ echo '$(document).ready(function() {
             
         });
     $(document).on("show.bs.modal", ".modal", function() {
+      ayrilmayiEngeliIptal();
       const zIndex = 1040 + 10 * $(".modal:visible").length;
       $(this).css("z-index", zIndex);
       setTimeout(() => $(".modal-backdrop").not(".modal-stack").css("z-index", zIndex - 1).addClass("modal-stack"));
@@ -2075,7 +2135,9 @@ echo '
 <script>
 $(document).ready(function(){
     $("#teslimAlanModal").on("hidden.bs.modal", function (e) {
+        ayrilma_durumu_tetikle = false;
         $("#teslim_alan_form").val("");
+        ayrilma_durumu_tetikle = true;
     });
 });
 </script>
