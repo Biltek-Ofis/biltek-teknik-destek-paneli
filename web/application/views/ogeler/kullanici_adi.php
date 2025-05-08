@@ -1,27 +1,18 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "kullanici_adi" . (isset($id) ? $id : ""),
+    "name" => "kullanici_adi",
+    "label" => "Kullanıcı Adı",
+    "placeholder" => "Kullanıcı Adı",
+    "required" => TRUE,
+    "value" => isset($value) ? $value : "",
+    "minlength" => "3",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <label for="kullanici_adi';
-if (isset($id)) {
-    echo $id;
-}
-echo '">Kullanıcı Adı</label>
-    <input id="kullanici_adi';
-if (isset($id)) {
-    echo $id;
-}
-echo '"';
-if(isset($doldurma)){
-    if($doldurma == FALSE){
-        echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
-    }
-}
-echo ' class="form-control" type="text" name="kullanici_adi" minlength="3" placeholder="Kullanıcı Adı" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
-if (isset($value)) {
-    echo $value;
-}
-echo '" required>
-</div>';
+$this->load->view("ogeler/hazir/standart", array(
+    "info" => $info,
+));

@@ -1,28 +1,30 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "kullanici_teknikservis",
+    "name" => "teknikservis",
+    "label" => "Teknik Servis Elemanı",
+    "placeholder" => "Teknik Servis Elemanı",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <label for="kullanici_teknikservis';
-if (isset($id)) {
-    echo $id;
-}
-echo '">Teknik Servis Elemanı</label>
-    <select id="kullanici_teknikservis';
-if (isset($id)) {
-    echo $id;
-}
-echo '" class="form-control" name="teknikservis" aria-label="Teknik Servis Elemanı">
-        <option value="1"';
-if (isset($value) && $value == 1) {
-    echo " selected";
-}
-echo '>Evet</option>
-        <option value="0"';
-if (isset($value) && $value == 0) {
-    echo " selected";
-}
-echo '>Hayır</option>
-    </select>
-</div>';
+
+$optionEvet = array(
+    "value" => "1",
+    "text" => "Evet",
+    "selected" => isset($value) && $value == 1,
+);
+$optionHayir = array(
+    "value" => "0",
+    "text" => "Hayır",
+    "selected" => isset($value) && $value == 0,
+);
+$info["options"] = array(
+    $optionEvet,
+    $optionHayir,
+);
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

@@ -1,22 +1,34 @@
 <?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
 $sorumlular123 = $this->Kullanicilar_Model->kullanicilar();
 
-echo '<div class="form-group';
+$info = array(
+    "id" => "sorumlu",
+    "name" => "sorumlu",
+    "placeholder" => "Sorumlu",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <select id="sorumlu" class="form-control" name="sorumlu" aria-label="Sorumlu" required>
-        <option value="">Sorumlu Personel Seçin *</option>';
+$options = array(
+    array(
+        "value" => "",
+        "text" => "Sorumlu Personel Seçin *",
+    )
+);
+
 foreach ($sorumlular123 as $sorumlu) {
     if($sorumlu->teknikservis == 1){
-        echo '<option value="' . $sorumlu->id . '"';
-        if (isset($sorumlu_value) && ($sorumlu_value == $sorumlu->ad_soyad || $sorumlu_value == $sorumlu->id)) {
-            echo " selected";
-        }
-        echo '>' . $sorumlu->ad_soyad . '</option>';
-    }
+    $option = array(
+        "value" => $sorumlu->id,
+        "text" =>$sorumlu->ad_soyad,
+        "selected" => isset($sorumlu_value) && ($sorumlu_value == $sorumlu->ad_soyad || $sorumlu_value == $sorumlu->id),
+    );
+    array_push($options, $option);
 }
-
-echo '</select>
-</div>';
+}
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

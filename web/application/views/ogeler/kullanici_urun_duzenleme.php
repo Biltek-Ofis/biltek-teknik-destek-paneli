@@ -1,31 +1,37 @@
 <?php
-echo '<div class="form-group';
-if (isset($sifirla)) {
-    echo " p-0 m-0";
-}
-echo ' col">
-    <label for="kullanici_urunduzenleme';
-if (isset($id)) {
-    echo $id;
-}
-echo '">Ürün Düzenleme</label>
-    <select id="kullanici_urunduzenleme';
-if (isset($id)) {
-    echo $id;
-}
+defined('BASEPATH') or exit('No direct script access allowed');
 
-echo '" class="form-control" name="urunduzenleme" aria-label="Ürün Düzenleme"'.((isset($yonetici) && $yonetici == 1) ? " disabled" : "" ).'>
-        <option value="1"';
+$info = array(
+    "id" => "kullanici_urunduzenleme",
+    "name" => "urunduzenleme",
+    "label" => "Ürün Düzenleme",
+    "placeholder" => "Ürün Düzenleme",
+    "disabled" => isset($yonetici) && $yonetici == 1,
+);
+if (isset($sifirla)) {
+    $info["sifirla"] = $sifirla;
+}
 $onceki_secildi = FALSE;
+
+$optionEvet = array(
+    "value" => "1",
+    "text" => "Evet",
+);
 if ((isset($value) && $value == 1) || (isset($yonetici) && $yonetici == 1)) {
     $onceki_secildi = TRUE;
-    echo " selected";
+    $optionEvet["selected"] = TRUE;
 }
-echo '>Evet</option>
-        <option value="0"';
+$optionHayir = array(
+    "value" => "0",
+    "text" => "Hayır",
+);
 if (isset($value) && $value == 0 && !$onceki_secildi) {
-    echo " selected";
+    $optionHayir["selected"] = TRUE;
 }
-echo '>Hayır</option>
-    </select>
-</div>';
+$info["options"] = array(
+    $optionEvet,
+    $optionHayir,
+);
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

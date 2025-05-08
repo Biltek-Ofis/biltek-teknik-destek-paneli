@@ -1,12 +1,15 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "seri_no",
+    "name" => "seri_no",
+    "placeholder" => "Cihazın Seri Numarası",
+    "value" => isset($seri_no_value) ? $seri_no_value : "",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <input id="seri_no" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="text" name="seri_no" placeholder="Cihazın Seri Numarası" value="';
-if (isset($seri_no_value)) {
-    echo $seri_no_value;
-}
-echo '">
-</div>';
+$this->load->view("ogeler/hazir/standart", array(
+    "info" => $info,
+));

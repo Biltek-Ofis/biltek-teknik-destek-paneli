@@ -1,24 +1,25 @@
 <?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if(!isset($musteri_adi_oto)){
     $musteri_adi_oto = TRUE;
 }
-
-echo '<div class="form-group';
+?>
+    <input id="musteri_kod" name="musteri_kod" type="hidden" value="<?=isset($musteri_kod_value) ? $musteri_kod_value : "";?>">
+<?php
+$info = array(
+    "id" => "musteri_adi".$musteri_adi_sayi,
+    "name" => "musteri_adi",
+    "placeholder" => "Müşteri Adı Soyadı *",
+    "value" => isset($musteri_adi_value) ? $musteri_adi_value : "",
+    "required" => TRUE,
+    "ek" => ' data-mainform="'.$musteri_adi_form.'" data-oto="'.($musteri_adi_oto ? "true" : "false").'"',
+    "class" => "musteri_adi",
+    "ekDiv" => '<ul id="musteri_adi_liste" class="typeahead dropdown-menu col musteri_adi_liste" style="max-height:300px;overflow-y: auto;" role="listbox"></ul>',
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col-12">
-    <input id="musteri_kod" name="musteri_kod" type="hidden" value="';
-if (isset($musteri_kod_value)) {
-    echo $musteri_kod_value;
-}
-echo '">
-    <input id="musteri_adi'.$musteri_adi_sayi.'" data-mainform="'.$musteri_adi_form.'" data-oto="'.($musteri_adi_oto ? "true" : "false").'" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control musteri_adi" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
-if (isset($musteri_adi_value)) {
-    echo $musteri_adi_value;
-}
-echo '" required>
-<ul id="musteri_adi_liste" class="typeahead dropdown-menu col musteri_adi_liste" style="max-height:300px;overflow-y: auto;" role="listbox">
-
-</ul>
-</div>';
+$this->load->view("ogeler/hazir/standart", array(
+    "info" => $info,
+));

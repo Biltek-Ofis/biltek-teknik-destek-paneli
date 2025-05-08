@@ -1,34 +1,32 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "servis_turu",
+    "name" => "servis_turu",
+    "placeholder" => "Servis Türü",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <select id="servis_turu" class="form-control" name="servis_turu" aria-label="Servis Türü">
-        <option value="0"';
-if (isset($servis_turu_value) && $servis_turu_value == 0) {
-    echo " selected";
+$options = array(
+    array(
+        "value" => "0",
+        "text" => "Servis Türü Seçin",
+        "selected"=> isset($servis_turu_value) && $servis_turu_value == 0,
+    )
+);
+
+for ($i = 1; $i <= 4; $i++) {
+    
+    $option = array(
+        "value" => $i,
+        "text" =>$this->Islemler_Model->servisTuru($i),
+        "selected" => isset($servis_turu_value) && $servis_turu_value == $i,
+    );
+    array_push($options, $option);
 }
-echo '>Servis Türü Seçin</option>
-        <option value="1"';
-if (isset($servis_turu_value) && $servis_turu_value == 1) {
-    echo " selected";
-}
-echo '>' . $this->Islemler_Model->servisTuru(1) . '</option>
-        <option value="2"';
-if (isset($servis_turu_value) && $servis_turu_value == 2) {
-    echo " selected";
-}
-echo '>' . $this->Islemler_Model->servisTuru(2) . '</option>
-        <option value="3"';
-if (isset($servis_turu_value) && $servis_turu_value == 3) {
-    echo " selected";
-}
-echo '>' . $this->Islemler_Model->servisTuru(3) . '</option>
-        <option value="4"';
-if (isset($servis_turu_value) && $servis_turu_value == 4) {
-    echo " selected";
-}
-echo '>' . $this->Islemler_Model->servisTuru(4) . '</option>
-    </select>
-</div>';
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

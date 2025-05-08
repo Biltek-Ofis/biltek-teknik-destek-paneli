@@ -1,23 +1,25 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "cihazdaki_hasar",
+    "name" => "cihazdaki_hasar",
+    "placeholder" => "Servis Türü",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <select id="cihazdaki_hasar" class="form-control" name="cihazdaki_hasar" aria-label="Servis Türü">';
+$options = array();
+
 for ($i = 0; $i < count($this->Islemler_Model->cihazdakiHasar); $i++) {
-    echo '<option value="' . $i . '" ';
-    if (isset($cihazdaki_hasar_value) && $cihazdaki_hasar_value == $i) {
-        echo " selected";
-    }
-    echo '>';
-    if ($i == 0) {
-        echo 'Hasar Türü Belirtin';
-    } else {
-        echo $this->Islemler_Model->cihazdakiHasar[$i];
-    }
-    echo '</option>';
+    $option = array(
+        "value" => $i,
+        "text" => $i == 0 ? "Hasar Türü Belirtin" : $this->Islemler_Model->cihazdakiHasar[$i],
+        "selected" => isset($cihazdaki_hasar_value) && $cihazdaki_hasar_value == $i,
+    );
+    array_push($options, $option);
 }
-echo '
-    </select>
-</div>';
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

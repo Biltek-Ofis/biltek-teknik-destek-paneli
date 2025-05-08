@@ -1,21 +1,18 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "isim" . (isset($id) ? $id : ""),
+    "name" => "isim",
+    "label" => "İsim",
+    "placeholder" => "İsim",
+    "required" => TRUE,
+    "value" => isset($tahsilat_sekli_isim_value) ? $tahsilat_sekli_isim_value : "",
+    "minlength" => "3",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <label for="isim';
-if (isset($id)) {
-    echo $id;
-}
-echo '">İsim</label>
-    <input id="isim';
-if (isset($id)) {
-    echo $id;
-}
-echo '" class="form-control" type="text" name="isim" minlength="3" placeholder="İsim" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
-if (isset($tahsilat_sekli_isim_value)) {
-    echo $tahsilat_sekli_isim_value;
-}
-echo '" required>
-</div>';
+$this->load->view("ogeler/hazir/standart", array(
+    "info" => $info,
+));

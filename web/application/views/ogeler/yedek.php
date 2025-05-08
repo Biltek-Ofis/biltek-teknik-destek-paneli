@@ -1,23 +1,25 @@
 <?php
-echo '<div class="form-group';
-if (isset($sifirla)) {
-    echo " p-0 m-0";
-}
-echo ' col">
-    <select id="yedek_durumu" class="form-control" name="yedek_durumu" aria-label="Yedekleme İşlemi">';
-for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
-    echo '<option value="' . $i . '"';
-    if (isset($yedek_durumu_value) && $yedek_durumu_value == $i) {
-        echo " selected";
-    }
-    echo ">";
-    if ($i == 0) {
-        echo 'Yedek alınacak mı?';
-    } else {
-        echo $this->Islemler_Model->evetHayir[$i];
-    }
-    echo '</option>';
-}
+defined('BASEPATH') or exit('No direct script access allowed');
 
-echo '</select>
-</div>';
+$info = array(
+    "id" => "yedek_durumu",
+    "name" => "yedek_durumu",
+    "placeholder" => "Yedekleme İşlemi",
+);
+if (isset($sifirla)) {
+    $info["sifirla"] = $sifirla;
+}
+$options = array();
+
+for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
+    $option = array(
+        "value" => $i,
+        "text" => $i == 0 ? "Yedek alınacak mı?" : $this->Islemler_Model->evetHayir[$i],
+        "selected" => isset($yedek_durumu_value) && $yedek_durumu_value == $i,
+    );
+    array_push($options, $option);
+}
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

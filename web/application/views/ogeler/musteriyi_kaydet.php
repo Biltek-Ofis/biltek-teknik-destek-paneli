@@ -1,13 +1,15 @@
 <?php
-echo '<div class="form-check';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "musteriyi_kaydet",
+    "name" => "musteriyi_kaydet",
+    "label" => "Müşteri bilgilerini kaydet",
+    "checked" => TRUE,
+);
 if (isset($sifirla)) {
-    echo " p-0 ml-3";
-}else{
-    echo " ml-2";
+    $info["sifirla"] = $sifirla;
 }
-echo '">
-    <input class="form-check-input" type="checkbox" name="musteriyi_kaydet[]" id="musteriyi_kaydet" checked>
-    <label class="form-check-label" for="musteriyi_kaydet">
-        Müşteri bilgilerini kaydet
-    </label>
-</div>';
+$this->load->view("ogeler/hazir/check", array(
+    "info" => $info,
+));

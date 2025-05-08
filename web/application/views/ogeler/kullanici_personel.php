@@ -1,36 +1,33 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "kullanici_yonetici",
+    "name" => "yonetici",
+    "placeholder" => "Yönetici",
+    "label" => "Hesap Türü",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <label for="kullanici_yonetici';
-if (isset($id)) {
-    echo $id;
-}
-echo '">Hesap Türü</label>
-    <select id="kullanici_yonetici';
-if (isset($id)) {
-    echo $id;
-}
+
 $hesapTuru = -1;
-if(isset($kullaniciTuru)){
+if (isset($kullaniciTuru)) {
     $hesapTuru = $kullaniciTuru;
 }
-echo '" class="form-control" name="yonetici" aria-label="Yönetici">
-        <option value="0"';
-if (isset($value) && $value == 0) {
-    echo " selected";
-}else if($hesapTuru == 0){
-    echo " selected";
-}
-echo '>Personel</option>
-        <option value="1"';
-if (isset($value) && $value == 1) {
-    echo " selected";
-}else if($hesapTuru == 1){
-    echo " selected";
-}
-echo '>Yönetici</option>
-    </select>
-</div>';
+
+$info["options"] = array(
+    array(
+        "value" => "0",
+        "text" => "Personel",
+        "selected" => (isset($value) && $value == 0) || $hesapTuru == 0,
+    ),
+    array(
+        "value" => "1",
+        "text" => "Yönetici",
+        "selected" => (isset($value) && $value == 1) || $hesapTuru == 1,
+    ),
+);
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

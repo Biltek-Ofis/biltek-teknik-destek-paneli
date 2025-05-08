@@ -1,12 +1,26 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "tarih_girisi",
+    "name" => "tarih_girisi",
+    "label" => "Giriş Tarihi:",
+    "placeholder" => "Tarih Girişi",
+    "options" =>array(
+        array(
+            "value" => "oto",
+            "text" => "Otomatik (Güncel Tarih)",
+            "selected" => TRUE,
+        ),
+        array(
+            "value" => "el",
+            "text" => "El ile Giriş",
+        ),
+    )
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <label for="tarih_girisi">Giriş Tarihi:</label>
-    <select id="tarih_girisi" class="form-control" name="tarih_girisi" aria-label="Tarih Girişi">
-        <option value="oto" selected>Otomatik (Güncel Tarih)</option>
-        <option value="el">El ile Giriş</option>
-    </select>
-</div>';
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

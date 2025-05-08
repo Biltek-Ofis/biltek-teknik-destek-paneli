@@ -1,18 +1,30 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "tahsilat_sekli",
+    "name" => "tahsilat_sekli",
+    "placeholder" => "Tahsilat Şekli",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <select id="tahsilat_sekli" class="form-control" name="tahsilat_sekli" aria-label="Tahsilat Şekli">';
-    echo '<option value="0">Tahsilat Şekli Seçin</option>';
+$options = array(
+    array(
+        "value" => "0",
+        "text" => "Tahsilat Şekli Seçin",
+    )
+);
+
 foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
-    echo '<option value="' . $tahsilatSekli->id . '"';
-    if (isset($tahsilat_sekli_value) && $tahsilat_sekli_value == $tahsilatSekli->id) {
-        echo " selected";
-    }
-    echo '>'.$tahsilatSekli->isim.'</option>';
+    $option = array(
+        "value" => $tahsilatSekli->id,
+        "text" => $tahsilatSekli->isim,
+        "selected" => isset($tahsilat_sekli_value) && $tahsilat_sekli_value == $tahsilatSekli->id,
+    );
+    array_push($options, $option);
 }
-echo '
-    </select>
-</div>';
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));

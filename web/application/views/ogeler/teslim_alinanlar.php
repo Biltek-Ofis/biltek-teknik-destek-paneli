@@ -1,12 +1,15 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$info = array(
+    "id" => "teslim_alinanlar",
+    "name" => "teslim_alinanlar",
+    "placeholder" => "Teslim Alınanlar",
+    "value" => isset($teslim_alinanlar_value) ? $teslim_alinanlar_value : "",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <textarea id="teslim_alinanlar" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="teslim_alinanlar" class="form-control" rows="3" placeholder="Teslim Alınanlar">';
-if (isset($teslim_alinanlar_value)) {
-    echo $teslim_alinanlar_value;
-}
-echo '</textarea>
-</div>';
+$this->load->view("ogeler/hazir/textarea", array(
+    "info" => $info,
+));

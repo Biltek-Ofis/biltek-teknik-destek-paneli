@@ -1,15 +1,19 @@
 <?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if(!isset($tarih_id)){
     $tarih_id = "tarih";
 }
-echo '<div class="form-group';
+
+$info = array(
+    "id" => $tarih_id,
+    "name" => "tarih",
+    "type" => "datetime-local",
+    "value" => isset($tarih_value) ? $this->Islemler_Model->tarihDonusturInput($tarih_value) : "",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <input id="'.$tarih_id.'" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="datetime-local" name="tarih" value="';
-if (isset($tarih_value)) {
-    echo  $this->Islemler_Model->tarihDonusturInput($tarih_value);
-}
-echo '">
-</div>';
+$this->load->view("ogeler/hazir/standart", array(
+    "info" => $info,
+));

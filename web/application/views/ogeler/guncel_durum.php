@@ -1,27 +1,32 @@
 <?php
-echo '<div class="form-group';
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<input type="hidden" name="guncel_durum_suanki" value="<?=(isset($guncel_durum_value) ? $guncel_durum_value : 0) ;?>">
+<?php
+
+
+$info = array(
+    "id" => "guncel_durum",
+    "name" => "guncel_durum",
+    "placeholder" => "Güncel Durum",
+);
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+    $info["sifirla"] = $sifirla;
 }
-echo ' col">
-    <input type="hidden" name="guncel_durum_suanki" value="' . (isset($guncel_durum_value) ? $guncel_durum_value : 0) . '">
-    <select id="guncel_durum" class="form-control" name="guncel_durum" aria-label="Güncel Durum">';
+$options = array();
+
 $cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
+
 foreach ($cihazDurumlari as $cihazDurumu) {
-    echo '<option value="' . $cihazDurumu->id . '"';
-    if (isset($guncel_durum_value) && $guncel_durum_value == $cihazDurumu->id) {
-        echo " selected";
-    }
-    echo '>';
-    if ($cihazDurumu->varsayilan > 0) {
-        echo 'Güncel Durum Seçin (';
-    }
-    echo $cihazDurumu->durum;
-    if ($cihazDurumu->varsayilan > 0) {
-        echo ')';
-    }
-    echo '</option>';
+    $option = array(
+        "value" => $cihazDurumu->id,
+        "text" => ($cihazDurumu->varsayilan > 0 ? "Güncel Durum Seçin (" : "") . $cihazDurumu->durum . ($cihazDurumu->varsayilan > 0 ? ")" : ""),
+        "selected" => isset($guncel_durum_value) && $guncel_durum_value == $cihazDurumu->id,
+    );
+    array_push($options, $option);
 }
-echo '
-    </select>
-</div>';
+$info["options"] = $options;
+$this->load->view("ogeler/hazir/select", array(
+    "info" => $info,
+));
+
