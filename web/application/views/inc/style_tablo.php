@@ -18,32 +18,44 @@ echo '
   echo '
 }
 
-.bg-warning {
+.bg-warning,
+table.dataTable tbody tr.bg-warning th,
+table.dataTable tbody tr.bg-warning td  {
   background-color: rgba(255, 193, 7, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }
 
-.bg-pink {
+.bg-pink,
+table.dataTable tbody tr.bg-pink th,
+table.dataTable tbody tr.bg-pink td  {
   background-color: rgba(232, 62, 140, var(--transparan-kirmizi)) !important;
   color: var(--yazi-rengi) !important;
 }
 
-.bg-primary {
+.bg-primary,
+table.dataTable tbody tr.bg-primary th,
+table.dataTable tbody tr.bg-primary td  {
   background-color: rgba(0, 123, 255, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }
 
-.bg-danger {
+.bg-danger,
+table.dataTable tbody tr.bg-danger th,
+table.dataTable tbody tr.bg-danger td  {
   background-color: rgba(220, 53, 69, var(--transparan-kirmizi)) !important;
   color: var(--yazi-rengi) !important;
 }
 
-.bg-success {
+.bg-success,
+table.dataTable tbody tr.bg-success th,
+table.dataTable tbody tr.bg-success td  {
   background-color: rgba(40, 167, 69, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }
 
-.bg-secondary {
+.bg-secondary,
+table.dataTable tbody tr.bg-secondary th,
+table.dataTable tbody tr.bg-secondary td  {
   background-color: rgba(108, 117, 125, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }

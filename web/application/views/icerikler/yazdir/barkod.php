@@ -7,9 +7,9 @@ $this->load->view("inc/meta");
 
 echo '<title>Barkod ' . ($test ? "0" : $cihaz->id) . '</title>';
 
-$this->load->view("inc/styles");
-$this->load->view("inc/scripts");
-
+$this->load->view("inc/eski/styles");
+$this->load->view("inc/eski/scripts");
+$this->load->view("inc/styles_important");
 $ayarlar = $this->Ayarlar_Model->getir();
 echo '<script src="' . base_url("dist/js/JsBarcode.all.min.js") . '"></script>';
 $style = "width: ".$ayarlar->barkod_en."mm;
@@ -70,10 +70,6 @@ echo '
                 ' . $style . '
             }
             ' . $tableStyle . '
-            
-            .gizli{
-                color: #fff !important;
-            }
         }
     </style>
     <script>
@@ -97,7 +93,7 @@ echo '<body onafterprint="self.close()" class="ozel_tema_yok">
         $("#barkod").css({"height":"' . $ayarlar->barkod_boyutu . 'mm"});
     });
     </script>
-    <table class="table table-borderless m-auto">
+    <table class="table table-borderless">
         <thead>
             <tr>
                 <td></td>
@@ -113,22 +109,26 @@ echo '<body onafterprint="self.close()" class="ozel_tema_yok">
                 <td></td>
                 <td></td>
             </tr>
-        </thead>';
-        $yaziBoyut = "19px;";
-        echo '
+        </thead>
         <tbody class="p-1">
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-center gizli" colspan="12" style="color:#fff !important; font-size:5px; opacity:0;">A</td>
+            <td class="p-0 pl-1 pr-1 m-0 text-start" colspan="5"><div class="icerik">' . $ayarlar->barkod_ad . '</div></td>
+            <td class="p-0 pl-1 pr-1 m-0 text-end" colspan="7"><div class="icerik">' . ($test ? "01.01.2020" : substr($cihaz->tarih, 0, -5)) . '</div></td>
         </tr>
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12" style="font-size:'.$yaziBoyut.' !important;">YAZI 1</td>
+            <td class="p-0 pl-1 pr-1 m-0 text-start" colspan="12"><div class="icerik"><svg style="width:100%;" id="barkod"></svg></div></td>
         </tr>
-        <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12"> </td>
-        </tr>
-        <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-center" colspan="12" style="font-size:'.$yaziBoyut.' !important;">YAZI 2</td>
-        </tr>
+            <tr>
+                <td class="p-0 pl-1 pr-1 m-0 text-start" colspan="12"><div class="icerik">';
+$musteri_adi = $test ? "Müşteri Adı" : $cihaz->musteri_adi;
+if (strlen($musteri_adi) > 40) {
+    // echo rtrim(explode(";;", wordwrap($musteri_adi, 35, ";;"))[0]) . '...';
+    echo rtrim(str_split($musteri_adi, 40)[0]) . '...';
+} else {
+    echo $musteri_adi;
+}
+echo '</div></td>
+            </tr>
         </tbody>
     </table>
 </body>

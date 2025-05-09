@@ -92,12 +92,12 @@ echo '
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-2 w-100">
                 <div class="col-sm-6">
                     <h1>Cihaz Yönetimi</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                <div class="col-sm-6 text-end">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item active">Cihaz Yönetimi</li>
                     </ol>
@@ -111,13 +111,15 @@ echo '
                 <h3 class="card-title">Cihazlar</h3>
             </div>
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">';
-                    if(TEST_ACIK){
-                        echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/musterileriAktar").'">Müşterileri Aktar</a>';
-                        echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/yapilanIslemleriAktar").'">Yapilan İşlemleri Aktar</a>';
-                    }
-                    echo'<button id="yeniCihazGirisiBtn" type="button" class="btn btn-primary me-2 mb-2" style="display:none;" data-toggle="modal" data-target="#yeniCihazEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">';
+                        if(TEST_ACIK){
+                            echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/musterileriAktar").'">Müşterileri Aktar</a>';
+                            echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/yapilanIslemleriAktar").'">Yapilan İşlemleri Aktar</a>';
+                        }
+                        echo'<button id="yeniCihazGirisiBtn" type="button" class="btn btn-primary me-2 mb-2" style="display:none;" data-bs-toggle="modal" data-bs-target="#yeniCihazEkleModal">
                             Yeni Cihaz Girişi
                         </button>
                     </div>
@@ -127,14 +129,12 @@ echo '</div>
         </div>
     </section>
 </div>
-<div class="modal fade" id="yeniCihazEkleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="yeniCihazEkleModalTitle" aria-hidden="true">
+<div class="modal fade" id="yeniCihazEkleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="yeniCihazEkleModalTitle" aria-modal="true" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="yeniCihazEkleModalTitle">Yeni Cihaz Girişi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="yeniCihazForm" method="post">
@@ -214,7 +214,7 @@ echo '</div>
 ';
 echo '<input id="yeniCihazEkleBtn" type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
     <button type="button" onclick="$(\'#yeniCihazForm\')[0].reset();" class="btn btn-primary">Temizle</button>
-    <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
 </div>
 </div>
 </div>

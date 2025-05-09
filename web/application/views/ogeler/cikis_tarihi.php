@@ -1,5 +1,5 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }

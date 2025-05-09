@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <label for="kilitle';
+echo '">
+    <label class="form-label" for="kilitle';
 if (isset($id)) {
     echo $id;
 }
@@ -13,7 +13,7 @@ echo '">Cihaz bu durumdayken düzenleme kilitlensin mi?</label>
 if (isset($id)) {
     echo $id;
 }
-echo '" class="form-control" name="kilitle" aria-label="Cihaz bu durumdayken düzenleme kilitlensin mi?" required>
+echo '" class="form-select" name="kilitle" aria-label="Cihaz bu durumdayken düzenleme kilitlensin mi?" required>
         <option value="1"';
 if (isset($cihaz_durumu_kilitle_value) && $cihaz_durumu_kilitle_value == 1) {
     echo " selected";

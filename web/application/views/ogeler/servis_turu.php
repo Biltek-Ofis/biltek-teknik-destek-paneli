@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <select id="servis_turu" class="form-control" name="servis_turu" aria-label="Servis Türü">
+echo '">
+    <select id="servis_turu" class="form-select" name="servis_turu" aria-label="Servis Türü">
         <option value="0"';
 if (isset($servis_turu_value) && $servis_turu_value == 0) {
     echo " selected";

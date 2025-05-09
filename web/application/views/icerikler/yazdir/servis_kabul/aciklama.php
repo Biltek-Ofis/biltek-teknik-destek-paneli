@@ -8,18 +8,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <tbody>
         <tr>
             <td style="border: 0 !important;">1. Ön sayfada Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen
-                cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR /
+                cihazın bakım - onarımı yerinde / serviste yapılarak <span class="fw-bold">ÇALIŞIR /
                     İADE</span> şeklinde teslim edilecektir. Daha sonra oluşacak arızalardan <span
-                    class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir.</td>
+                    class="fw-bold">ŞİRKETİMİZ</span> sorumlu değildir.</td>
         </tr>
         <tr>
-            <td style="border: 0 !important;">2. <span class="font-weight-bold">Servis hizmet süresi en fazla 20 (yirmi)
+            <td style="border: 0 !important;">2. <span class="fw-bold">Servis hizmet süresi en fazla 20 (yirmi)
                     iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde
                     teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span></td>
         </tr>
         <tr>
             <td style="border: 0 !important;">3. Ön sayfada Marka / Modeli verilen cihazlardaki programların her türlü
-                sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span>
+                sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="fw-bold">ŞİRKETİMİZ</span>
                 sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez.</td>
         </tr>
         <tr>

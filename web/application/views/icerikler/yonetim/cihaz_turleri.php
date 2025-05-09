@@ -21,7 +21,7 @@ $this->load->view("inc/datatables_scripts");
                     <h1>Cihaz Türleri</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="<?= base_url() ;?>">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
                         <li class="breadcrumb-item active">Cihaz Türleri</li>
@@ -33,9 +33,11 @@ $this->load->view("inc/datatables_scripts");
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniCihazTuruEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniCihazTuruEkleModal">
                             Yeni Cihaz Türü Ekle
                         </button>
                     </div>
@@ -45,9 +47,7 @@ $this->load->view("inc/datatables_scripts");
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniCihazTuruEkleModalLabel">Cihaz Türü Ekle</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="cihazTuruEkleForm" autocomplete="off" method="post" action="<?=base_url("yonetim/cihazTuruEkle") ;?>">
@@ -65,13 +65,13 @@ $this->load->view("inc/datatables_scripts");
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" form="cihazTuruEkleForm" value="Ekle" />
-                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="cihaz_turu_tablosu" class="table table-bordered">
+                    <table id="cihaz_turu_tablosu" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Kod</th>
@@ -95,7 +95,7 @@ $this->load->view("inc/datatables_scripts");
                                     <?= ($cihazTuru->sifre == 1 ? "Evet" : "Hayır") ;?>
                                 </td>
                                 <td class="align-middle text-center">
-                                    <a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#cihazTuruDuzenleModal<?= $cihazTuru->id ;?>">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#cihazTuruSilModal<?= $cihazTuru->id ;?>">Sil</a>
+                                    <a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#cihazTuruDuzenleModal<?= $cihazTuru->id ;?>">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#cihazTuruSilModal<?= $cihazTuru->id ;?>">Sil</a>
                                 </td>
                             </tr>
                             <div class="modal fade" id="cihazTuruSilModal<?= $cihazTuru->id ;?>" tabindex="-1" aria-labelledby="cihazTuruSilModal<?= $cihazTuru->id ;?>Label" aria-hidden="true">
@@ -103,16 +103,14 @@ $this->load->view("inc/datatables_scripts");
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="cihazTuruSilModal<?= $cihazTuru->id ;?>Label">Cihaz Türü Sil</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <span class="font-weight-bold"><?= $cihazTuru->isim ;?></span> türünü silmek istediğinize emin misiniz?
+                                            <span class="fw-bold"><?= $cihazTuru->isim ;?></span> türünü silmek istediğinize emin misiniz?
                                         </div>
                                         <div class="modal-footer">
                                             <a href="<?= base_url("yonetim/cihazTuruSil/" . $cihazTuru->id) ;?>" class="btn btn-danger">Evet</a>
-                                            <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
+                                            <a href="#" class="btn btn-success" data-bs-dismiss="modal">Hayır</a>
                                         </div>
                                     </div>
                                 </div>
@@ -122,9 +120,7 @@ $this->load->view("inc/datatables_scripts");
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="cihazTuruDuzenleModal<?= $cihazTuru->id ;?>Label">Cihaz Türü Düzenle</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form id="cihazTuruDuzenleForm<?= $cihazTuru->id ;?>" autocomplete="off" method="post" action="<?= base_url("yonetim/cihazTuruDuzenle/" . $cihazTuru->id) ;?>">
@@ -142,7 +138,7 @@ $this->load->view("inc/datatables_scripts");
                                         </div>
                                         <div class="modal-footer">
                                             <input type="submit" class="btn btn-success" form="cihazTuruDuzenleForm<?= $cihazTuru->id ;?>" value="Kaydet" />
-                                            <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                            <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                                         </div>
                                     </div>
                                 </div>

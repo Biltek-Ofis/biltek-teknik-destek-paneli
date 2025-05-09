@@ -3,11 +3,11 @@ if(!isset($musteri_adi_oto)){
     $musteri_adi_oto = TRUE;
 }
 
-echo '<div class="form-group';
+echo '<div class="col-12';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col-12">
+echo '">
     <input id="musteri_kod" name="musteri_kod" type="hidden" value="';
 if (isset($musteri_kod_value)) {
     echo $musteri_kod_value;

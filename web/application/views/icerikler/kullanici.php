@@ -9,7 +9,7 @@ echo '<div class="content-wrapper">
                     <h1>'. $kullanici["ad_soyad"].'</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="'. base_url().'">Anasayfa</a></li>
                         <li class="breadcrumb-item active">'. $kullanici["ad_soyad"].'</li>
                     </ol>
@@ -31,8 +31,10 @@ echo '<div class="content-wrapper">
                     <div class="row">';
                         $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici["sifre"]));
                     echo '</div>
-                    <div id="container w-100 m-0 p-0">
-                        <div class="row m-0 p-0 d-flex justify-content-end">
+                    <div class="row w-100">
+                        <div class="col-6 col-lg-6">
+                        </div>
+                        <div class="col-6 col-lg-6 text-end">
                             <input type="submit" class="btn btn-success me-2 mb-2" value="Kaydet">
                         </div>
                     </div>

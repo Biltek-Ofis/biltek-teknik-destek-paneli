@@ -2,7 +2,8 @@
 if(!isset($renk_kodu) || !isset($renk_ismi)){
     throw new Exception("Renk ismi veya kodu veya değeri belirtilmemiş.");
 }
-echo '<div class="row"><label class="form-check-label" for="renk_'.$renk_kodu.'';
+echo '<div class="row">
+<label class="form-check-label" for="renk_'.$renk_kodu.'';
 if (isset($id)) {
     echo $id;
 }

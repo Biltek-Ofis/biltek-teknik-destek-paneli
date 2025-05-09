@@ -10,7 +10,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <h1><?= $baslik; ?> - Düzenle</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
                         <li class="breadcrumb-item"><a href="<?= base_url("urunler"); ?>">Ürünler</a></li>
                         <li class="breadcrumb-item active"><?= $baslik; ?></li>
@@ -28,8 +28,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     $this->load->view("icerikler/urunler/form", array("urun_id" => $urun_id));
                     ?>
                 </form>
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
                         <input id="urunDuzenleBtn" type="submit" class="btn btn-success" form="urunDuzenleForm"
                             value="Düzenle" />
                         <a href="<?= base_url("urunler"); ?>" class="btn btn-primary ml-1">Geri</a>

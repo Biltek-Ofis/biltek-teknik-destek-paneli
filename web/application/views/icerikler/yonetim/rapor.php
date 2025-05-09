@@ -1,6 +1,7 @@
 <?php
 $this->load->view("inc/datatables_scripts");
 $this->load->view("inc/style_tablo");
+$this->load->view("inc/styles_important");
 echo '<style>
 .dt-buttons{
     display: none;
@@ -15,7 +16,7 @@ echo '<div class="content-wrapper">
                     <h1>Rapor</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yönetim</li>
                         <li class="breadcrumb-item active">Rapor</li>
@@ -330,25 +331,25 @@ echo '<div class="content-wrapper">
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><th class="h5 font-weight-bold" colspan="6">Kısıtlar</th></tr>    
+                        <tr><th class="h5 fw-bold" colspan="6">Kısıtlar</th></tr>    
                         <tr>
                             <td class="p-1 m-0" colspan="6">
-                                <div class="form-group p-0 m-0">
-                                    <label for="musteri_ara">Müşteri</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="musteri_ara">Müşteri</label>
                                     <input id="musteri_ara" type="text" class="form-control" placeholder="Müşteri Adı">
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="p-1 m-0" colspan="3">
-                                <div class="form-group p-0 m-0">
-                                    <label for="cihaz_marka_ara">Cihaz Markası</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="cihaz_marka_ara">Cihaz Markası</label>
                                     <input id="cihaz_marka_ara" type="text" class="form-control" placeholder="Cihaz Markası">
                                 </div>
                             </td>
                             <td class="p-1 m-0" colspan="3">
-                                <div class="form-group p-0 m-0">
-                                    <label for="cihaz_model_ara">Modeli</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="cihaz_model_ara">Modeli</label>
                                     <input id="cihaz_model_ara" type="text" class="form-control" placeholder="Cihaz Modeli">
                                 </div>
                             </td>
@@ -356,9 +357,9 @@ echo '<div class="content-wrapper">
 $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
 echo '<tr>
                                                 <td class="p-1 m-0" colspan="6">
-                                                    <div class="form-group p-0 m-0">
-                                                        <label for="cihaz_turu">Cihaz Türü</label>
-                                                        <select id="cihaz_turu" class="form-control" aria-label="Cihaz Türü">
+                                                    <div class="p-0 m-0">
+                                                        <label class="form-label" for="cihaz_turu">Cihaz Türü</label>
+                                                        <select id="cihaz_turu" class="form-select" aria-label="Cihaz Türü">
                                                         <option value="">Cihaz Türü Seçin</option>';
 foreach ($cihazTurleri as $cihazTuru) {
     echo '<option value="' . $cihazTuru->isim . '">' . $cihazTuru->isim . '</option>';
@@ -369,9 +370,9 @@ echo '</select>
                                                 </tr>';
 echo '<tr>
         <td class="p-1 m-0" colspan="6">
-            <div class="form-group p-0 m-0">
-                <label for="cihaz_durumu">Cihaz Durumu</label>
-                <select id="cihaz_durumu" class="form-control" aria-label="Cihaz Durumu">
+            <div class="p-0 m-0">
+                <label class="form-label" for="cihaz_durumu">Cihaz Durumu</label>
+                <select id="cihaz_durumu" class="form-select" aria-label="Cihaz Durumu">
                 <option value="">Hepsi</option>';
 $cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 foreach ($cihazDurumlari as $cihazDurumu) {
@@ -385,9 +386,9 @@ echo '</select>
 $personeller = $this->Kullanicilar_Model->kullanicilar(array());
 echo '<tr>
         <td class="p-1 m-0" colspan="6">
-            <div class="form-group p-0 m-0">
-                <label for="personel">Personel</label>
-                <select id="personel" class="form-control" aria-label="Personel">
+            <div class="p-0 m-0">
+                <label class="form-label" for="personel">Personel</label>
+                <select id="personel" class="form-select" aria-label="Personel">
                 <option value="">Tümü</option>';
 foreach ($personeller as $personel) {
     echo '<option value="' . $personel->ad_soyad . '">' . $personel->ad_soyad . '</option>';
@@ -398,22 +399,22 @@ echo '</select>
                                                                         </tr>';
 echo '<tr>
                             <td class="p-1 m-0" colspan="6">
-                                <div class="form-group p-0 m-0">
-                                    <label for="yil">Yıl</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="yil">Yıl</label>
                                     <input id="yil" type="number" min="1900" max="2099" step="1" class="form-control" placeholder="' . date("Y") . '">
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="p-1 m-0" colspan="3">
-                                <div class="form-group p-0 m-0">
-                                    <label for="giris_tarihi_baslangic_ara">Giriş Tarihi Başlangıç</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="giris_tarihi_baslangic_ara">Giriş Tarihi Başlangıç</label>
                                     <input id="giris_tarihi_baslangic_ara" type="text" class="form-control" placeholder="Giriş Tarihi Başlangıç">
                                 </div>
                             </td>
                             <td class="p-1 m-0" colspan="3">
-                                <div class="form-group p-0 m-0">
-                                    <label for="giris_tarihi_bitis_ara">Bitiş</label>
+                                <div class="p-0 m-0">
+                                    <label class="form-label" for="giris_tarihi_bitis_ara">Bitiş</label>
                                     <input id="giris_tarihi_bitis_ara" type="text" class="form-control" placeholder="Giriş Tarihi Bitiş">
                                 </div>
                             </td>
@@ -424,51 +425,53 @@ echo '<tr>
         </div>
         <div class="card">
             <div class="card-body">
-            <table class="table table-borderless mb-3">
-            <thead>
-                <tr>
-                    <th style="width:calc(100% / 6)"></th>
-                    <th style="width:calc(100% / 6)"></th>
-                    <th style="width:calc(100% / 6)"></th>
-                    <th style="width:calc(100% / 6)"></th>
-                    <th style="width:calc(100% / 6)"></th>
-                    <th style="width:calc(100% / 6)"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><th class="h5 font-weight-bold" colspan="6">Sayfa Özellikleri</th></tr>
-                <tr>
-                    <td class="p-1 m-0" colspan="6"> 
-                        <div class="form-group form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="sayfa_sayisi_goster">
-                            <label class="form-check-label" for="sayfa_sayisi_goster">Sayfa Sayısını Göster</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="p-1 m-0" colspan="6">
-                        <div class="form-group">
-                            <label for="sayfaSayisiKonumu">Sayfa Sayısı Konumu</label>
-                            <select class="form-control" id="sayfaSayisiKonumu">
-                                <option value="1">Sağ</option>
-                                <option value="2">Orta</option>
-                                <option value="3">Sol</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="p-1 m-0" colspan="6">
-                        <div class="form-group form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="ucret_goster" checked>
-                            <label class="form-check-label" for="ucret_goster">Ücretleri Göster</label>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-            <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
+                <table class="table table-borderless mb-3">
+                    <thead>
+                        <tr>
+                            <th style="width:calc(100% / 6)"></th>
+                            <th style="width:calc(100% / 6)"></th>
+                            <th style="width:calc(100% / 6)"></th>
+                            <th style="width:calc(100% / 6)"></th>
+                            <th style="width:calc(100% / 6)"></th>
+                            <th style="width:calc(100% / 6)"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th class="h5 fw-bold" colspan="6">Sayfa Özellikleri</th></tr>
+                        <tr>
+                            <td class="p-1 m-0" colspan="6"> 
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" class="form-check-input" id="sayfa_sayisi_goster">
+                                    <label class="form-check-label" for="sayfa_sayisi_goster">Sayfa Sayısını Göster</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 m-0" colspan="6">
+                                <div>
+                                    <label class="form-label" for="sayfaSayisiKonumu">Sayfa Sayısı Konumu</label>
+                                    <select class="form-select" id="sayfaSayisiKonumu">
+                                        <option value="1">Sağ</option>
+                                        <option value="2">Orta</option>
+                                        <option value="3">Sol</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 m-0" colspan="6">
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" class="form-check-input" id="ucret_goster" checked>
+                                    <label class="form-check-label" for="ucret_goster">Ücretleri Göster</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
                         <button id="csvDonustur" type="button" class="btn btn-primary mr-2 mb-2">
                             CSV
                         </button>
@@ -484,8 +487,10 @@ echo '<tr>
         </div>
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
                         <h6>Cihaz Sayısı: <span id="cihazSayisi"></span></h6>
                         <h6>,&nbsp;</h6>
                         <h6>KDV\'siz Tutar: <span id="tutarToplam"></span> TL</h6>
@@ -495,7 +500,7 @@ echo '<tr>
                         <h6>Genel Toplam: <span id="genelToplam"></span> TL</h6>
                     </div>
                 </div>
-            <table id="rapor_tablosu" class="table">
+            <table id="rapor_tablosu" class="table" style="width:100%">
             <thead>
                 <tr>
                     <th style="width:10% !important;">No</th>

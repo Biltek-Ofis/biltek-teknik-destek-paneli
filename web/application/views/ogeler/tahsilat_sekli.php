@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <select id="tahsilat_sekli" class="form-control" name="tahsilat_sekli" aria-label="Tahsilat Şekli">';
+echo '">
+    <select id="tahsilat_sekli" class="form-select" name="tahsilat_sekli" aria-label="Tahsilat Şekli">';
     echo '<option value="0">Tahsilat Şekli Seçin</option>';
 foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
     echo '<option value="' . $tahsilatSekli->id . '"';
