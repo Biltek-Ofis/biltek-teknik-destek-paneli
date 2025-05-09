@@ -151,16 +151,16 @@ class Cihaz extends Varsayilancontroller
         }
         if ($this->Giris_Model->kullaniciGiris() || $gecerli) {
             if($id == "yazdir"){
-                $this->load->view("icerikler/teknik_servis_formu_yazdir");
+                $this->load->view("icerikler/yazdir/teknik_servis_formu");
             }else{
                 $cihaz = $this->Cihazlar_Model->cihazBul($id);
                 if ($cihaz->num_rows() > 0) {
                     $cihaz_bilg = $cihaz->result();
                     $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
                     if(isset($auth)){
-                        $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $veriler, "auth"=>$auth));
+                        $this->load->view("icerikler/yazdir/teknik_servis_formu", array("cihaz" => $veriler, "auth"=>$auth));
                     }else{
-                        $this->load->view("icerikler/teknik_servis_formu_yazdir", array("cihaz" => $veriler));
+                        $this->load->view("icerikler/yazdir/teknik_servis_formu", array("cihaz" => $veriler));
                     }
                 } else {
                     redirect(base_url());
@@ -177,7 +177,7 @@ class Cihaz extends Varsayilancontroller
             $cihaz_bilg = $cihaz->result();
             $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
             $ayarlar = $this->Ayarlar_Model->getir();
-            $this->load->view("icerikler/kargo_bilgisi_yazdir", array("cihaz" => $veriler, "ayarlar"=>$ayarlar));
+            $this->load->view("icerikler/yazdir/kargo_bilgisi", array("cihaz" => $veriler, "ayarlar"=>$ayarlar));
         } else {
             redirect(base_url());
         }
@@ -185,13 +185,13 @@ class Cihaz extends Varsayilancontroller
     public function barkod($id)
     {
         if($id == "test"){
-            $this->load->view("icerikler/barkod_yazdir", array("test" => TRUE));
+            $this->load->view("icerikler/yazdir/barkod", array("test" => TRUE));
         }else{
             $cihaz = $this->Cihazlar_Model->cihazBul($id);
             if ($cihaz->num_rows() > 0) {
                 $cihaz_bilg = $cihaz->result();
                 $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
-                $this->load->view("icerikler/barkod_yazdir", array("cihaz" => $veriler, "test" => FALSE));
+                $this->load->view("icerikler/yazdir/barkod", array("cihaz" => $veriler, "test" => FALSE));
             } else {
                 redirect(base_url());
             }
@@ -204,7 +204,7 @@ class Cihaz extends Varsayilancontroller
         if ($cihaz->num_rows() > 0) {
             $cihaz_bilg = $cihaz->result();
             $veriler =  $this->Cihazlar_Model->cihazVerileriniDonustur($cihaz_bilg)[0];
-            $this->load->view("icerikler/servis_kabul/form", array("cihaz" => $veriler));
+            $this->load->view("icerikler/yazdir/servis_kabul/form", array("cihaz" => $veriler));
         } else {
             redirect(base_url());
         }

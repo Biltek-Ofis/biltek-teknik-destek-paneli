@@ -227,7 +227,7 @@ class Islemler_Model extends CI_Model
             "ordering": true,
             order: ' . $siralama . ',
             "info": true,
-            "autoWidth": false,
+            "autoWidth": true,
             "responsive": true,
             initComplete: function() {
                 ' . $initcomplete . '

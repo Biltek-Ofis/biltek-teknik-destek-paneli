@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <select id="yedek_durumu" class="form-control" name="yedek_durumu" aria-label="Yedekleme İşlemi">';
+echo '">
+    <select id="yedek_durumu" class="form-select" name="yedek_durumu" aria-label="Yedekleme İşlemi">';
 for ($i = 0; $i < count($this->Islemler_Model->evetHayir); $i++) {
     echo '<option value="' . $i . '"';
     if (isset($yedek_durumu_value) && $yedek_durumu_value == $i) {

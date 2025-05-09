@@ -11,9 +11,10 @@ if(isset($cihaz)){
 
 echo '<title>TEKNİK SERVİS FORMU' . ($bilgileri_goster ? " ".$cihaz->id : ""). '</title>';
 
-$this->load->view("inc/styles");
-$this->load->view("inc/scripts");
+$this->load->view("inc/eski/styles");
+$this->load->view("inc/eski/scripts");
 $this->load->view("inc/style_yazdir_tablo");
+$this->load->view("inc/styles_important");
 $alan_musteri = "";
 if(isset($_GET["alan"])){
     $alan_musteri = $_GET["alan"];
@@ -82,7 +83,7 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="' . base_url("dist/img/logo.png") . '" /></td>
             </tr>
             <tr>
-                <th style="border:0 !important;" class="text-right h5 font-weight-bold pr-3" colspan="6">No: ' . ($bilgileri_goster ? $cihaz->servis_no : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"). '</th>
+                <th style="border:0 !important;" class="text-end h5 fw-bold pr-3" colspan="6">No: ' . ($bilgileri_goster ? $cihaz->servis_no : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"). '</th>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="6"></td>
@@ -106,13 +107,13 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center font-weight-bold">TEKNİK SERVİS FORMU</td>
+                <td colspan="20" class="text-center fw-bold">TEKNİK SERVİS FORMU</td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center font-weight-bold">GENEL BİLGİLER</td>
+                <td colspan="20" class="text-center fw-bold">GENEL BİLGİLER</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">MÜŞTERİ ADI SOYADI</th>
+                <td colspan="8" class="fw-bold">MÜŞTERİ ADI SOYADI</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->musteri_adi : "") . '</td>
             </tr>
@@ -127,17 +128,17 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->telefon_numarasi : "") . '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">CİHAZIN MARKASI</th>
+                <td colspan="8" class="fw-bold">CİHAZIN MARKASI</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->cihaz : "") . '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">MODELİ</th>
+                <td colspan="8" class="fw-bold">MODELİ</th>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->cihaz_modeli : "") . '</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">Cihazın Seri Numarası</td>
+                <td colspan="8" class="fw-bold">Cihazın Seri Numarası</td>
                 <td colspan="2" class="text-center">:</td>
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->seri_no : "") . '</td>
             </tr>
@@ -153,10 +154,10 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->teslim_alinanlar : "") . '</td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center font-weight-bold">YAPILACAK İŞLEM</td>
+                <td colspan="20" class="text-center fw-bold">YAPILACAK İŞLEM</td>
             </tr>
             <tr>
-                <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(1) . '</td>
+                <td colspan="8" class="fw-bold">' . $this->Islemler_Model->servisTuru(1) . '</td>
                 <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
 
@@ -165,7 +166,7 @@ if($bilgileri_goster){
     }
 }
 echo '</td>
-<td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(2) . '</td>
+<td colspan="8" class="fw-bold">' . $this->Islemler_Model->servisTuru(2) . '</td>
 <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
 if ($cihaz->servis_turu == 2) {
@@ -175,7 +176,7 @@ if ($cihaz->servis_turu == 2) {
 echo '</td>
             </tr>
             <tr>
-            <td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(3) . '</td>
+            <td colspan="8" class="fw-bold">' . $this->Islemler_Model->servisTuru(3) . '</td>
             <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
 if ($cihaz->servis_turu == 3) {
@@ -183,7 +184,7 @@ if ($cihaz->servis_turu == 3) {
 }
 }
 echo '</td>
-<td colspan="8" class="font-weight-bold">' . $this->Islemler_Model->servisTuru(4) . '</td>
+<td colspan="8" class="fw-bold">' . $this->Islemler_Model->servisTuru(4) . '</td>
 <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
 if ($cihaz->servis_turu == 4) {
@@ -219,18 +220,18 @@ echo '</td>
             <tr>
             </tr>
             <tr>
-                <td colspan="20" class="text-center font-weight-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
+                <td colspan="20" class="text-center fw-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
             </tr>';
 $hasarli_durumlar_rowspan = $bilgileri_goster ? (count($cihaz->islemler) > 5 ? count($cihaz->islemler) : 5) : 5;
 
 echo '
             <tr>
-                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 3) . '" class="text-center font-weight-bold">HASARLI DURUMLAR</td>
-                <td colspan="4" class="text-center font-weight-bold">MALZEME/İŞÇİLİK</td>
-                <td colspan="1" class="text-center font-weight-bold">MİKTAR</td>
-                <td colspan="1" class="text-center font-weight-bold">BİRİM FİYATI</td>
-                <td colspan="2" class="text-center font-weight-bold">TUTAR</td>
-                <td colspan="2" class="text-center font-weight-bold">KDV</td>
+                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 3) . '" class="text-center fw-bold">HASARLI DURUMLAR</td>
+                <td colspan="4" class="text-center fw-bold">MALZEME/İŞÇİLİK</td>
+                <td colspan="1" class="text-center fw-bold">MİKTAR</td>
+                <td colspan="1" class="text-center fw-bold">BİRİM FİYATI</td>
+                <td colspan="2" class="text-center fw-bold">TUTAR</td>
+                <td colspan="2" class="text-center fw-bold">KDV</td>
             </tr>';
 $toplam = 0;
 $kdv = 0;
@@ -337,9 +338,9 @@ echo '</td>
 
             </tr>
             <tr>
-                <td colspan="7" class="text-center font-weight-bold">TESLİM EDEN</td>
-                <td colspan="7" class="text-center font-weight-bold">TESLİM ALAN</td>
-                <td colspan="6" class="text-center font-weight-bold">TEKNİK SORUMLU</td>
+                <td colspan="7" class="text-center fw-bold">TESLİM EDEN</td>
+                <td colspan="7" class="text-center fw-bold">TESLİM ALAN</td>
+                <td colspan="6" class="text-center fw-bold">TEKNİK SORUMLU</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
@@ -364,7 +365,7 @@ echo '</td>
             <tr>
                 <td colspan="3" class="text-center">NOT</td>
                 <td colspan="17" class="text-center">
-                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. <span class="font-weight-bold">Servis hizmet süresi en fazla 20 (yirmi) iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span><!-- Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır. BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.-->
+                    Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="fw-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="fw-bold">ŞİRKETİMİZ</span> sorumlu değildir. <span class="fw-bold">Servis hizmet süresi en fazla 20 (yirmi) iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra 90 (doksan) gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir.</span><!-- Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="fw-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır. BİLDİRİLEN DOSYALAR DIŞINDAKİ, HDD BOZUKLUKLARINDAN DOLAYI VE VİRÜSLERDEN DOLAYI BOZULMUŞ VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. MEYDANA GELEBİLECEK VERİ KAYIPLARINDAN ŞİRKETİMİZ SORUMLU DEĞİLDİR. YEDEKLEME İŞLEMİ ÜCRETE TABİDİR.-->
                 </td>
             </tr>
         </tbody>

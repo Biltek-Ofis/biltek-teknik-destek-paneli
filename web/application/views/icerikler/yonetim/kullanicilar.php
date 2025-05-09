@@ -20,7 +20,7 @@ echo '<div class="content-wrapper">
                     <h1>' . $baslik . '</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
                         <li class="breadcrumb-item active">' . $baslik . '</li>
@@ -32,9 +32,11 @@ echo '<div class="content-wrapper">
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniKullaniciEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniKullaniciEkleModal">
                             Yeni Hesap Ekle
                         </button>
                     </div>
@@ -44,9 +46,7 @@ echo '<div class="content-wrapper">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniKullaniciEkleModalLabel">Hesap Ekle</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="kullaniciEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/kullaniciEkle/" . $kullaniciTuru) . '">
@@ -72,13 +72,13 @@ echo '</div>
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" form="kullaniciEkleForm" value="Ekle" />
-                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="kullanici_tablosu" class="table table-bordered">
+                    <table id="kullanici_tablosu" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Hesap Kodu</th>
@@ -98,7 +98,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                         ' . $kullanici->id . '
                                     </td>
                                     <td>
-                                        ' . $kullanici->ad_soyad . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="font-weight-bold">(Siz)</span>' : "");
+                                        ' . $kullanici->ad_soyad . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? ' <span class="fw-bold">(Siz)</span>' : "");
     echo '</td>
                                     <td>
                                         ' . $kullanici->kullanici_adi . '
@@ -111,7 +111,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                     </td>
                                     <td class="align-middle text-center">
 
-                                        ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>') . '
+                                        ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>') . '
                                     </td>
                                 </tr>';
 
@@ -122,16 +122,14 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="kullaniciSilModal' . $kullanici->id . 'Label">Personel Sil</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold">' . $kullanici->ad_soyad . ' (' . $kullanici->kullanici_adi . ')</span> personelini silmek istediğinize emin misiniz?
+                                                    <span class="fw-bold">' . $kullanici->ad_soyad . ' (' . $kullanici->kullanici_adi . ')</span> personelini silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="' . base_url("yonetim/kullaniciSil/" . $kullanici->id) . "/" . $kullaniciTuru . '" class="btn btn-danger">Evet</a>
-                                                    <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
+                                                    <a href="#" class="btn btn-success" data-bs-dismiss="modal">Hayır</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,9 +139,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="kullaniciDuzenleModal' . $kullanici->id . 'Label">Kullanıcı Düzenle</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form id="kullaniciDuzenleForm' . $kullanici->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/kullaniciDuzenle/" . $kullanici->id . "/" . $kullaniciTuru) . '">
@@ -170,7 +166,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input type="submit" class="btn btn-success" form="kullaniciDuzenleForm' . $kullanici->id . '" value="Kaydet" />
-                                                    <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                                    <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                                                 </div>
                                             </div>
                                         </div>

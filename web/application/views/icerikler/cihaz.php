@@ -21,7 +21,7 @@ echo '<script>
                     <h1>' . $baslik . '</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item active">' . $baslik . '</li>
                     </ol>
@@ -34,13 +34,13 @@ echo '<script>
             <div class="card-header p-0 border-bottom-0">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="genel-bilgiler-tab" data-toggle="pill" href="#genel-bilgiler" role="tab" aria-controls="genel-bilgiler" aria-selected="false">Genel Bilgiler</a>
+                        <a class="nav-link active" id="genel-bilgiler-tab" data-bs-toggle="pill" href="#genel-bilgiler" role="tab" aria-controls="genel-bilgiler" aria-selected="false">Genel Bilgiler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="yapilan-islemler-tab" data-toggle="pill" href="#yapilan-islemler" role="tab" aria-controls="yapilan-islemler" aria-selected="false">Yapılan İşlemler</a>
+                        <a class="nav-link" id="yapilan-islemler-tab" data-bs-toggle="pill" href="#yapilan-islemler" role="tab" aria-controls="yapilan-islemler" aria-selected="false">Yapılan İşlemler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="medyalar-tab" data-toggle="pill" href="#medyalar" role="tab" aria-controls="medyalar" aria-selected="false">Medyalar</a>
+                        <a class="nav-link" id="medyalar-tab" data-bs-toggle="pill" href="#medyalar" role="tab" aria-controls="medyalar" aria-selected="false">Medyalar</a>
                     </li>
                 </ul>
             </div>
@@ -167,15 +167,17 @@ echo '</td>
                                 </table>
                             </div>
                         </form>
-                        <div id="container w-100 m-0 p-0">
-                            <div class="row m-0 p-0 d-flex justify-content-end">
+                        <div class="row w-100">
+                            <div class="col-6 col-lg-6">
+                            </div>
+                            <div class="col-6 col-lg-6 text-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="cihazDuzenleForm" value="Kaydet" />
                                 <a href="javascript:void(0);" id="sifirlaGenel" class="btn btn-secondary mt-2 mr-2">
                                     Sıfırla
                                 </a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
@@ -322,7 +324,7 @@ echo '<tr>
                                         </tr>
                                         <tr>
                                             <td colspan="7">
-                                                <div class="form-group p-0 m-0 col">
+                                                <div class="p-0 m-0 col">
                                                     <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması">' . $cihaz->yapilan_islem_aciklamasi . '</textarea>
                                                 </div>
                                             </td>
@@ -331,12 +333,14 @@ echo '<tr>
                                 </table>
                             </form>
                         </div>
-                        <div id="container w-100 m-0 p-0">
-                            <div class="row m-0 p-0 d-flex justify-content-end">
+                        <div class="row w-100">
+                            <div class="col-6 col-lg-6">
+                            </div>
+                            <div class="col-6 col-lg-6 text-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
@@ -353,21 +357,13 @@ echo '<div class="row text-center">
                             <div class="col-2"></div>
                             <div class="col-8">
                                 <form id="upload_form" onsubmit="dosyaYukle(' . $cihaz->id . ' , function(){window.location.reload();})" enctype="multipart/form-data" method="post">
-                                    <div class="form-group">
-                                        <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
+                                    <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
+                                    <input class="btn btn-primary" type="submit" value="Medya Yükle" name="btnSubmit" accept="image/pjpeg, image/png, image/jpeg, video/mp4">
+                                    <div class="progress" id="progressDiv">
+                                        <progress id="progressBar" value="0" max="100" style="width:100%; height: 1.2rem;"></progress>
                                     </div>
-                                    <div class="form-group">
-                                        <input class="btn btn-primary" type="submit" value="Medya Yükle" name="btnSubmit" accept="image/pjpeg, image/png, image/jpeg, video/mp4">
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="progress" id="progressDiv">
-                                            <progress id="progressBar" value="0" max="100" style="width:100%; height: 1.2rem;"></progress>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <h3 id="durum"></h3>
-                                        <p id="yukleme_durumu"></p>
-                                    </div>
+                                    <h3 id="durum"></h3>
+                                    <p id="yukleme_durumu"></p>
                                 </form>
                             </div>
                             <div class="col-2"></div>
@@ -383,16 +379,14 @@ echo '<div class="row text-center">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="formuYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" onclick="formuYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
-                <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+                <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>
     </div>
@@ -403,16 +397,14 @@ echo '<div class="row text-center">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="servisKabulYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" onclick="servisKabulYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
-                <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+                <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>
     </div>
@@ -422,16 +414,14 @@ echo '<div class="row text-center">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="barkoduYazdirModalLabel">Yazdırma İşlemini Onaylayın</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" onclick="barkoduYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
-                <a class="btn btn-secondary" data-dismiss="modal">Kapat</a>
+                <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>
     </div>

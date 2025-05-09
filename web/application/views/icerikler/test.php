@@ -8,7 +8,7 @@
 
     <?php $this->load->view("inc/styles"); ?>
     <?php $this->load->view("inc/scripts"); ?>
-
+    <?php $this->load->view("inc/styles_important");?>
 </head>
 
 <body>
@@ -205,7 +205,7 @@
             </tr>
             <tr>
                 <td colspan="3" class="text-center">NOT</td>
-                <td colspan="17" class="text-center">Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="font-weight-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Servis hizmet süresi en fazla <span class="font-weight-bold">20 (yirmi)</span> iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra <span class="font-weight-bold">90 (doksan)</span> gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir. Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="font-weight-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.</td>
+                <td colspan="17" class="text-center">Yukarıdaki Markası, Modeli, Seri Numarası ve Genel Durumu belirtilen cihazın bakım - onarımı yerinde / serviste yapılarak <span class="fw-bold">ÇALIŞIR / İADE</span> şeklinde teslim edilmiştir. Daha sonra oluşacak arızalardan <span class="fw-bold">ŞİRKETİMİZ</span> sorumlu değildir. Servis hizmet süresi en fazla <span class="fw-bold">20 (yirmi)</span> iş günüdür. Onarım tamamlandığı bilgisinin müşteriye beyanından sonra <span class="fw-bold">90 (doksan)</span> gün içerisinde teslim alınmayan cihazlardan şirketimiz sorumlu değildir. Yukarıda Marka / Modeli verilen cihazlardaki programların her türlü sorumluluğu müşteriye ait olup sahte yazılımlardan <span class="fw-bold">ŞİRKETİMİZ</span> sorumlu değildir. Lisansı olmayan hiçbir yazılım firmamız tarafından sisteme yüklenmez. Servis formu ibrazı ile sadece cihaz kaydı yaptıran kişiye teslim edilebilir. Onun dışında Kimlik Fotokobisi ve cihazı kaydettiren kişinin onay yazısı ile ilgili kişiye teslim edilebilir. Onarım için servise getirilen cihazların arıza tespiti yapıldıktan sonra onarıma onay verilmemişse {arıza_tespit_ucreti} tutarında arıza tespit ücreti alınır.</td>
             </tr>
         </tbody>
         <thead>

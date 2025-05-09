@@ -10,14 +10,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
     ?>
     <title>SERVİS KABUL FORMU <?= $cihaz->id; ?></title>
     <?php
-    $this->load->view("inc/styles");
-    $this->load->view("inc/scripts");
+    $this->load->view("inc/eski/styles");
+    $this->load->view("inc/eski/scripts");
     ?>
     <script src="<?= base_url("dist/js/JsBarcode.all.min.js"); ?>"></script>
     <script src="<?= base_url("dist/js/qrcode.min.js"); ?>"></script>
     <?php
     $this->load->view("inc/style_yazdir");
     $this->load->view("inc/style_yazdir_tablo");
+    $this->load->view("inc/styles_important");
     ?>
     <style>
         body {
@@ -41,7 +42,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <div class="row">
             <?php
 
-            $this->load->view("icerikler/servis_kabul/tablo", array(
+            $this->load->view("icerikler/yazdir/servis_kabul/tablo", array(
                 "cihaz" => $cihaz,
                 "barcode_script" => 'JsBarcode("#barcode1", "' . $cihaz->servis_no . '", {
     width: 2,
@@ -54,7 +55,7 @@ $("#barcode1").css({"height":"3cm"})',
             ?>
             <div class="col-2"></div>
             <?php
-            $this->load->view("icerikler/servis_kabul/tablo", array(
+            $this->load->view("icerikler/yazdir/servis_kabul/tablo", array(
                 "cihaz" => $cihaz,
                 "barcode_script" => 'new QRCode(document.getElementById("barcode2"), {
 	text: "' . base_url("cihazdurumu") . '/' . $cihaz->takip_numarasi . '",
@@ -73,11 +74,11 @@ $("#barcode2 > img").css({"margin":"auto", "width":"3cm", "height":"3cm"});',
     <div class="dondur">
         <div class="row">
             <?php
-            $this->load->view("icerikler/servis_kabul/aciklama");
+            $this->load->view("icerikler/yazdir/servis_kabul/aciklama");
             ?>
             <div class="col-2"></div>
             <?php
-            $this->load->view("icerikler/servis_kabul/aciklama");
+            $this->load->view("icerikler/yazdir/servis_kabul/aciklama");
             ?>
         </div>
     </div>

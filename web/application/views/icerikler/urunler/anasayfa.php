@@ -28,6 +28,7 @@ $this->load->view("inc/datatables_scripts");
 <?php
 $this->load->view("inc/style_tablo");
 $this->load->view("inc/tarayici_uyari");
+$this->load->view("inc/styles_important");
 ?>
 <script>
     $(document).ready(function () {
@@ -51,7 +52,7 @@ $this->load->view("inc/tarayici_uyari");
                     <h1><?= $baslik; ?></h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
                         <li class="breadcrumb-item active"><?= $baslik; ?></li>
                     </ol>
@@ -62,16 +63,19 @@ $this->load->view("inc/tarayici_uyari");
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end"><button id="yeniUrunEkleBtn" type="button"
-                            class="btn btn-primary me-2 mb-2" data-toggle="modal"
-                            data-target="#yeniUrunEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button id="yeniUrunEkleBtn" type="button"
+                            class="btn btn-primary me-2 mb-2" data-bs-toggle="modal"
+                            data-bs-target="#yeniUrunEkleModal">
                             Yeni Ürün Ekle
                         </button>
                     </div>
                 </div>
                 <div id="urunTablosu" class="table-responsive">
-                    <table id="urun_tablosu" class="table table-bordered mt-2">
+                    <table id="urun_tablosu" class="table table-bordered mt-2" style="width:100%">
                         <thead>
                             <tr>
                                 <th scope="col">Barkod</th>
@@ -115,15 +119,13 @@ $this->load->view("inc/tarayici_uyari");
         </div>
     </section>
 </div>
-<div class="modal fade" id="yeniUrunEkleModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+<div class="modal fade" id="yeniUrunEkleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="yeniUrunEkleModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="yeniUrunEkleModalTitle">Yeni Ürün Girişi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="yeniUrunForm" autocomplete="off" method="post" action="<?= base_url("urunler/ekle/"); ?>">
@@ -137,7 +139,7 @@ $this->load->view("inc/tarayici_uyari");
             </div>
             <div class="modal-footer"></div>
             <input id="yeniUrunEkleBtn" type="submit" class="btn btn-success" form="yeniUrunForm" value="Ekle" />
-            <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
         </div>
     </div>
 </div>
@@ -162,16 +164,14 @@ $this->load->view("inc/tarayici_uyari");
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="urunSilModalLabel">Ürün Silme İşlemini Onaylayın</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Bu üünü (<span id="UrunAdi5"></span>) silmek istediğinize emin misiniz?
             </div>
             <div class="modal-footer">
                 <a id="silOnayBtn" href="#" class="btn btn-success">Evet</a>
-                <button class="btn btn-danger" data-dismiss="modal">Hayır</button>
+                <button class="btn btn-danger" data-bs-dismiss="modal">Hayır</button>
             </div>
         </div>
     </div>

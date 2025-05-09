@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <label for="isim';
+echo '">
+    <label class="form-label" for="isim';
 if (isset($id)) {
     echo $id;
 }

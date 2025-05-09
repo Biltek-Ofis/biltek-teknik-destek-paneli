@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $this->load->view("inc/style_tablo");
+$this->load->view("inc/styles_important");
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -11,7 +12,7 @@ $this->load->view("inc/style_tablo");
                     <h1>Cihaz Durumları</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
                         <li class="breadcrumb-item active">Cihaz Durumları</li>
@@ -23,10 +24,12 @@ $this->load->view("inc/style_tablo");
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal"
-                            data-target="#yeniCihazDurumuEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal"
+                            data-bs-target="#yeniCihazDurumuEkleModal">
                             Yeni Cihaz Durumu Ekle
                         </button>
                     </div>
@@ -38,9 +41,7 @@ $this->load->view("inc/style_tablo");
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniCihazDurumuEkleModalLabel">Cihaz Durumu Ekle</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="cihazDurumuEkleForm" autocomplete="off" method="post"
@@ -64,7 +65,7 @@ $this->load->view("inc/style_tablo");
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" form="cihazDurumuEkleForm" value="Ekle" />
-                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                             </div>
                         </div>
                     </div>
@@ -130,8 +131,8 @@ $this->load->view("inc/style_tablo");
                                             <?php
                                         }
                                         ?>
-                                        <a href="#" class="btn btn-info text-white ml-1" data-toggle="modal"
-                                            data-target="#cihazDurumuDuzenleModal<?= $cihazDurumu->id; ?>">Düzenle</i></a>
+                                        <a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal"
+                                            data-bs-target="#cihazDurumuDuzenleModal<?= $cihazDurumu->id; ?>">Düzenle</i></a>
                                         <a href="<?= base_url("yonetim/cihazDurumuSil/" . $cihazDurumu->id); ?>"
                                             class="btn btn-danger ml-1">Sil</a>
                                     </td>
@@ -145,9 +146,7 @@ $this->load->view("inc/style_tablo");
                                                 <h5 class="modal-title"
                                                     id="cihazDurumuDuzenleModal<?= $cihazDurumu->id; ?>Label">Cihaz Durumu
                                                     Ekle</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form id="cihazDurumuDuzenleForm<?= $cihazDurumu->id; ?>" autocomplete="off"
@@ -172,7 +171,7 @@ $this->load->view("inc/style_tablo");
                                             <div class="modal-footer">
                                                 <input type="submit" class="btn btn-success"
                                                     form="cihazDurumuDuzenleForm<?= $cihazDurumu->id; ?>" value="Kaydet" />
-                                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                                             </div>
                                         </div>
                                     </div>

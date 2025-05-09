@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <label for="kullanici_urunduzenleme';
+echo '">
+    <label class="form-label" for="kullanici_urunduzenleme';
 if (isset($id)) {
     echo $id;
 }
@@ -14,7 +14,7 @@ if (isset($id)) {
     echo $id;
 }
 
-echo '" class="form-control" name="urunduzenleme" aria-label="Ürün Düzenleme"'.((isset($yonetici) && $yonetici == 1) ? " disabled" : "" ).'>
+echo '" class="form-select" name="urunduzenleme" aria-label="Ürün Düzenleme"'.((isset($yonetici) && $yonetici == 1) ? " disabled" : "" ).'>
         <option value="1"';
 $onceki_secildi = FALSE;
 if ((isset($value) && $value == 1) || (isset($yonetici) && $yonetici == 1)) {

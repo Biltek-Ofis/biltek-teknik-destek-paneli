@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-    <label for="kullanici_sifre';
+echo '">
+    <label class="form-label" for="kullanici_sifre';
 if (isset($id)) {
     echo $id;
 }

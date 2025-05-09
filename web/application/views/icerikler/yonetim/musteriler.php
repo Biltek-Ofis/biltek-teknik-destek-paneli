@@ -18,7 +18,7 @@ echo '<div class="content-wrapper">
                     <h1>' . $baslik . '</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
                         <li class="breadcrumb-item active">' . $baslik . '</li>
@@ -30,9 +30,11 @@ echo '<div class="content-wrapper">
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniMusteriEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniMusteriEkleModal">
                             Yeni Müşteri Ekle
                         </button>
                     </div>
@@ -42,9 +44,7 @@ echo '<div class="content-wrapper">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniMusteriEkleModalLabel">Müşteri Ekle</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="musteriEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/musteriEkle/") . '">
@@ -61,13 +61,13 @@ echo '<div class="content-wrapper">
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" form="musteriEkleForm" value="Ekle" />
-                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="musteri_tablosu" class="table table-bordered">
+                    <table id="musteri_tablosu" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Müşteri Kodu</th>
@@ -95,7 +95,7 @@ foreach ($this->Kullanicilar_Model->musteriBilgileri() as $musteri) {
                                         ' . $musteri->telefon_numarasi . '
                                     </td>
                                     <td class="align-middle text-center">
-                                        <a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#musteriDuzenleModal' . $musteri->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#musteriSilModal' . $musteri->id . '">Sil</a>
+                                        <a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#musteriDuzenleModal' . $musteri->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#musteriSilModal' . $musteri->id . '">Sil</a>
                                     </td>
                                 </tr>';
 
@@ -104,16 +104,14 @@ foreach ($this->Kullanicilar_Model->musteriBilgileri() as $musteri) {
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="musteriSilModal' . $musteri->id . 'Label">Müşteri Sil</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold">' . $musteri->musteri_adi . '</span> isimli müşteriyi silmek istediğinize emin misiniz?
+                                                    <span class="fw-bold">' . $musteri->musteri_adi . '</span> isimli müşteriyi silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="' . base_url("yonetim/musteriSil/" . $musteri->id) .'" class="btn btn-danger">Evet</a>
-                                                    <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
+                                                    <a href="#" class="btn btn-success" data-bs-dismiss="modal">Hayır</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,9 +121,7 @@ foreach ($this->Kullanicilar_Model->musteriBilgileri() as $musteri) {
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="musteriDuzenleModal' . $musteri->id . 'Label">Müşteri Düzenle</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form id="musteriDuzenleForm' . $musteri->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/musteriDuzenle/" . $musteri->id) . '">
@@ -145,7 +141,7 @@ echo '</div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input type="submit" class="btn btn-success" form="musteriDuzenleForm' . $musteri->id . '" value="Kaydet" />
-                                                    <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                                    <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                                                 </div>
                                             </div>
                                         </div>

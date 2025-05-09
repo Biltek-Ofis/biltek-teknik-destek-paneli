@@ -7,10 +7,11 @@ $this->load->view("inc/meta");
 
 echo '<title>KARGO BİLGİLERİ ' .$cihaz->id. '</title>';
 
-$this->load->view("inc/styles");
-$this->load->view("inc/scripts");
+$this->load->view("inc/eski/styles");
+$this->load->view("inc/eski/scripts");
 $this->load->view("inc/style_yazdir");
 $this->load->view("inc/style_yazdir_tablo");
+$this->load->view("inc/styles_important");
 $tdPadding = "10px";
 $fontBoyutu = "25pt";
 echo '<style>
@@ -73,34 +74,34 @@ echo '
                         <td style="border:0 !important;" class="p-2" colspan="20"><img height="130" src="' . base_url("dist/img/logo.png") . '" /></td>
                     </tr>
                     <tr>
-                        <td colspan="20" class="text-center font-weight-bold">KARGO BİLGİLERİ</td>
+                        <td colspan="20" class="text-center fw-bold">KARGO BİLGİLERİ</td>
                     </tr>
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Gönderen:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Gönderen:</td>
                         <td colspan="'.$icerikSpan.'">'.$ayarlar->sirket_unvani.'</td>
                     </tr>
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Adres:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Adres:</td>
                         <td colspan="'.$icerikSpan.'">'.$ayarlar->adres.'</td>
                     </tr>
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Telefon:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Telefon:</td>
                         <td colspan="'.$icerikSpan.'">'.$ayarlar->sirket_telefonu.'</td>
                     </tr>
                     <tr>
-                        <td colspan="20" rowspans="5" class="font-weight-bold">&nbsp;&nbsp;</td>
+                        <td colspan="20" rowspans="5" class="fw-bold">&nbsp;&nbsp;</td>
                     </tr>
                     
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Alıcı:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Alıcı:</td>
                         <td colspan="'.$icerikSpan.'">'.$cihaz->musteri_adi.'</td>
                     </tr>
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Adres:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Adres:</td>
                         <td colspan="'.$icerikSpan.'">'.$cihaz->adres.'</td>
                     </tr>
                     <tr>
-                        <td colspan="'.$bolumSpan.'" class="font-weight-bold">Telefon:</td>
+                        <td colspan="'.$bolumSpan.'" class="fw-bold">Telefon:</td>
                         <td colspan="'.$icerikSpan.'">'.$cihaz->telefon_numarasi.'</td>
                     </tr>
                 </tbody>

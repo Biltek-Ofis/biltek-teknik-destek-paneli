@@ -18,7 +18,7 @@ echo '<div class="content-wrapper">
                     <h1>Tahsilat Şekilleri</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
                         <li class="breadcrumb-item">Yonetim</li>
                         <li class="breadcrumb-item active">Tahsilat Şekilleri</li>
@@ -30,9 +30,11 @@ echo '<div class="content-wrapper">
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <div id="container w-100 m-0 p-0">
-                    <div class="row m-0 p-0 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-toggle="modal" data-target="#yeniTahsilatSekliEkleModal">
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniTahsilatSekliEkleModal">
                             Yeni Tahsilat Şekli Ekle
                         </button>
                     </div>
@@ -42,9 +44,7 @@ echo '<div class="content-wrapper">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniTahsilatSekliEkleModalLabel">Tahsilat Sekli Ekle</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="tahsilatSekliEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/tahsilatSekliEkle") . '">
@@ -55,13 +55,13 @@ echo '</div>
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" form="tahsilatSekliEkleForm" value="Ekle" />
-                                <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="tahsilat_sekli_tablosu" class="table table-bordered">
+                    <table id="tahsilat_sekli_tablosu" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Kod</th>
@@ -82,7 +82,7 @@ foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
                                     </td>
                                     <td class="align-middle text-center">
 
-                                        <a href="#" class="btn btn-info text-white ml-1" data-toggle="modal" data-target="#tahsilatSekliDuzenleModal' . $tahsilatSekli->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-toggle="modal" data-target="#tahsilatSekliSilModal' . $tahsilatSekli->id . '">Sil</a>
+                                        <a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#tahsilatSekliDuzenleModal' . $tahsilatSekli->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#tahsilatSekliSilModal' . $tahsilatSekli->id . '">Sil</a>
                                     </td>
                                 </tr>';
 
@@ -91,16 +91,14 @@ foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="tahsilatSekliSilModal' . $tahsilatSekli->id . 'Label">Tahsilat Şekli Sil</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <span class="font-weight-bold">' . $tahsilatSekli->isim . '</span> türünü silmek istediğinize emin misiniz?
+                                                    <span class="fw-bold">' . $tahsilatSekli->isim . '</span> türünü silmek istediğinize emin misiniz?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="' . base_url("yonetim/tahsilatSekliSil/" . $tahsilatSekli->id) . '" class="btn btn-danger">Evet</a>
-                                                    <a href="#" class="btn btn-success" data-dismiss="modal">Hayır</a>
+                                                    <a href="#" class="btn btn-success" data-bs-dismiss="modal">Hayır</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,9 +108,7 @@ foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="tahsilatSekliDuzenleModal' . $tahsilatSekli->id . 'Label">Tahsilat Şekli Düzenle</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form id="tahsilatSekliDuzenleForm' . $tahsilatSekli->id . '" autocomplete="off" method="post" action="' . base_url("yonetim/tahsilatSekliDuzenle/" . $tahsilatSekli->id) . '">
@@ -123,7 +119,7 @@ foreach ($this->Cihazlar_Model->tahsilatSekilleri() as $tahsilatSekli) {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input type="submit" class="btn btn-success" form="tahsilatSekliDuzenleForm' . $tahsilatSekli->id . '" value="Kaydet" />
-                                                    <a href="#" class="btn btn-danger" data-dismiss="modal">İptal</a>
+                                                    <a href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
                                                 </div>
                                             </div>
                                         </div>

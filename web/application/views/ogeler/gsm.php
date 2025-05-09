@@ -14,13 +14,13 @@ if($telefonNumrasiID != $telefonNumrasiIDOrj){
     });
     </script>';
 }
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">';
+echo '">';
 if($telefon_numarasi_label){
-    echo '<label for="' . $telefonNumrasiID . '">GSM:</label>';
+    echo '<label class="form-label" for="' . $telefonNumrasiID . '">GSM:</label>';
 }
 echo '<input id="' . $telefonNumrasiID . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
 if (isset($telefon_numarasi_value)) {

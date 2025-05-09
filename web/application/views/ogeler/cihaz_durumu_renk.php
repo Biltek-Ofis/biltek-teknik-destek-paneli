@@ -5,7 +5,8 @@ if (isset($sifirla)) {
 }else{
     echo " ml-1";
 }
-echo '"><label class="ml-0">Arkaplan Rengi</label></div>';
+echo '">
+<label class="form-label ml-0">Arkaplan Rengi</label></div>';
 echo '<div class="row">';
 echo '<div class="form-check';
 if (isset($sifirla)) {

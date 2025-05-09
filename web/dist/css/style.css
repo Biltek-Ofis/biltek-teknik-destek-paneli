@@ -1,84 +1,102 @@
-.modal#statusSuccessModal .modal-content, 
+.modal#statusSuccessModal .modal-content,
 .modal#statusErrorsModal .modal-content {
 	border-radius: 30px;
 }
-.modal#statusSuccessModal .modal-content svg, 
+
+.modal#statusSuccessModal .modal-content svg,
 .modal#statusErrorsModal .modal-content svg {
-	width: 100px; 
-	display: block; 
+	width: 100px;
+	display: block;
 	margin: 0 auto;
 }
-.modal#statusSuccessModal .modal-content .path, 
+
+.modal#statusSuccessModal .modal-content .path,
 .modal#statusErrorsModal .modal-content .path {
-	stroke-dasharray: 1000; 
+	stroke-dasharray: 1000;
 	stroke-dashoffset: 0;
 }
-.modal#statusSuccessModal .modal-content .path.circle, 
+
+.modal#statusSuccessModal .modal-content .path.circle,
 .modal#statusErrorsModal .modal-content .path.circle {
-	-webkit-animation: dash 0.9s ease-in-out; 
+	-webkit-animation: dash 0.9s ease-in-out;
 	animation: dash 0.9s ease-in-out;
 }
-.modal#statusSuccessModal .modal-content .path.line, 
+
+.modal#statusSuccessModal .modal-content .path.line,
 .modal#statusErrorsModal .modal-content .path.line {
-	stroke-dashoffset: 1000; 
-	-webkit-animation: dash 0.95s 0.35s ease-in-out forwards; 
+	stroke-dashoffset: 1000;
+	-webkit-animation: dash 0.95s 0.35s ease-in-out forwards;
 	animation: dash 0.95s 0.35s ease-in-out forwards;
 }
-.modal#statusSuccessModal .modal-content .path.check, 
+
+.modal#statusSuccessModal .modal-content .path.check,
 .modal#statusErrorsModal .modal-content .path.check {
-	stroke-dashoffset: -100; 
-	-webkit-animation: dash-check 0.95s 0.35s ease-in-out forwards; 
+	stroke-dashoffset: -100;
+	-webkit-animation: dash-check 0.95s 0.35s ease-in-out forwards;
 	animation: dash-check 0.95s 0.35s ease-in-out forwards;
 }
 
-@-webkit-keyframes dash { 
+@-webkit-keyframes dash {
 	0% {
 		stroke-dashoffset: 1000;
 	}
+
 	100% {
 		stroke-dashoffset: 0;
 	}
 }
-@keyframes dash { 
+
+@keyframes dash {
 	0% {
 		stroke-dashoffset: 1000;
 	}
-	100%{
-		stroke-dashoffset: 0;
-	}
-}
-@-webkit-keyframes dash { 
-	0% {
-		stroke-dashoffset: 1000;
-	}
+
 	100% {
 		stroke-dashoffset: 0;
 	}
 }
-@keyframes dash { 
+
+@-webkit-keyframes dash {
 	0% {
-		stroke-dashoffset: 1000;}
+		stroke-dashoffset: 1000;
+	}
+
 	100% {
 		stroke-dashoffset: 0;
 	}
 }
-@-webkit-keyframes dash-check { 
+
+@keyframes dash {
+	0% {
+		stroke-dashoffset: 1000;
+	}
+
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+
+@-webkit-keyframes dash-check {
 	0% {
 		stroke-dashoffset: -100;
 	}
+
 	100% {
 		stroke-dashoffset: 900;
 	}
 }
+
 @keyframes dash-check {
 	0% {
 		stroke-dashoffset: -100;
 	}
+
 	100% {
 		stroke-dashoffset: 900;
 	}
 }
-.box00{
+
+.box00 {
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
@@ -86,39 +104,41 @@
 
 
 svg.patternlock g.lock-dots circle {
-    stroke: transparent;
-    fill: black;
-    stroke-width: 13.5;
+	stroke: transparent;
+	fill: black;
+	stroke-width: 13.5;
 }
 
 svg.patternlock g.lock-actives circle {
-    fill: black;
-    opacity: .2;
-    animation: lock-activate-dot .15s 0s ease 1;
-    transform-origin: center;
+	fill: black;
+	opacity: .2;
+	animation: lock-activate-dot .15s 0s ease 1;
+	transform-origin: center;
 }
 
 svg.patternlock g.lock-lines line {
-    stroke-width: 1.5;
-    stroke-linecap: round;
+	stroke-width: 1.5;
+	stroke-linecap: round;
 }
 
 svg.patternlock.success g.lock-actives circle {
-    fill: green;
+	fill: green;
 }
 
 svg.patternlock.error g.lock-actives circle {
-    fill: red;
+	fill: red;
 }
 
 @keyframes lock-activate-dot {
-    0% {
-        transform: scale(0);
-    }
-    75% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1.0);
-    }
+	0% {
+		transform: scale(0);
+	}
+
+	75% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1.0);
+	}
 }

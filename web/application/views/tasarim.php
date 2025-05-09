@@ -15,16 +15,13 @@ echo '<script>
   var base_url = "' . base_url() . '";
 </script>';
 $this->load->view("inc/scripts");
+$this->load->view("inc/styles_important");
 echo '</head>
 
 <body class="layout-top-nav"> <!--sidebar-collapse-->
   <div class="wrapper">';
 $bilgiler =  array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri());
 $this->load->view("inc/navbar", $bilgiler);
-
-
-//$this->load->view("inc/aside", $bilgiler);
-
 
 $this->load->view("icerikler/" . $icerik, $icerik_array);
 

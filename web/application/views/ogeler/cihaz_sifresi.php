@@ -1,10 +1,10 @@
 <?php
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
-   <select id="sifre_turu" class="form-control" name="sifre_turu" aria-label="Şifre Türü" required>
+echo '">
+   <select id="sifre_turu" class="form-select" name="sifre_turu" aria-label="Şifre Türü" required>
     <option value="">Şifre Türü Belirtin *</option>
     <option value="Pin"'.((isset($cihaz_sifresi_value) && strlen($cihaz_sifresi_value) > 0)? " selected" : "").'>Pin</option>
     <option value="Desen"'.((isset($cihaz_deseni_value) && strlen($cihaz_deseni_value) > 0)? " selected" : "").'>Desen</option>
@@ -12,11 +12,11 @@ echo ' col">
     </select>
 </div>';
 
-echo '<div class="form-group';
+echo '<div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo ' col">
+echo '">
     <input id="cihaz_sifresi" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="hidden" name="cihaz_sifresi" placeholder="Cihaz Sifresi *" value="';
 if (isset($cihaz_sifresi_value)) {
     echo $cihaz_sifresi_value;

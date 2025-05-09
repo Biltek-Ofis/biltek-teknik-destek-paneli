@@ -7,7 +7,7 @@ echo '<div class="content-wrapper">
                     <h1>Anasayfa</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-end">
                         <!--<li class="breadcrumb-item"><a href="'.base_url().'">Anasayfa</a></li>
                         <li class="breadcrumb-item active">Boş Sayfa</li>-->
                     </ol>
