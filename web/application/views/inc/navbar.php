@@ -61,7 +61,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   <?php
 }
 ?>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" href="<?= base_url(); ?>"> </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

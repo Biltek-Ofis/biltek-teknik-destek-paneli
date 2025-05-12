@@ -388,7 +388,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
           </div>
         </th>
         <th scope="col">Sorumlu Personel</th>
-        <th scope="col">Detaylar</th>
+        <th scope="col">İşlemler</th>
     </tr>
 </thead>
 <tbody id="cihazlar">';
@@ -407,8 +407,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
   <td class="text-center">
     <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
    ' . ($sorumlu_belirtildimi ? "" : '<button class="btn btn-info text-white" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>') . '
-   <br>
-   <button class="btn btn-secondary mt-1" onclick="barkoduYazdir({id})">Barkodu Yazdır</button> 
+   <button class="btn btn-secondary" onclick="barkoduYazdir({id})">Barkodu Yazdır</button> 
   </td>
  
 </tr>';

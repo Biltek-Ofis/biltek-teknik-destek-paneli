@@ -15,6 +15,7 @@ echo '<script>
   var base_url = "' . base_url() . '";
 </script>';
 $this->load->view("inc/scripts");
+$this->load->view("inc/style_tablo");
 $this->load->view("inc/styles_important");
 echo '</head>
 

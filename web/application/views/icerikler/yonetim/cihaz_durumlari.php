@@ -4,23 +4,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view("inc/style_tablo");
 $this->load->view("inc/styles_important");
 ?>
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Cihaz Durumları</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Anasayfa</a></li>
-                        <li class="breadcrumb-item">Yonetim</li>
-                        <li class="breadcrumb-item active">Cihaz Durumları</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="content-wrapper"><?php
+$this->load->view("inc/content_header", array(
+    "contentHeader" => array(
+        "baslik"=> "Cihaz Durumları",
+        "items"=> array(
+            array(
+                "link"=> base_url(),
+                "text"=> "Anasayfa",
+            ),
+            array(
+                "text"=> "Yonetim",
+            ),
+            array(
+                "active"=> TRUE,
+                "text"=> "Cihaz Durumları",
+            ),
+        ),
+    ),
+));
+?>
     <section class="content">
         <div class="card">
             <div class="card-body">
