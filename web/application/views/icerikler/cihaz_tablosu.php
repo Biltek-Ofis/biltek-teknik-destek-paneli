@@ -55,6 +55,7 @@ echo '<script>
     $("#dt_duzenle").hide();
     $("#dt_duzenle #musteri_adi_liste").html("");
     $("#kaydetBtn").hide();
+    $("#kaydetFormYazdirBtn").hide();
     $("#iptalBtn").hide();
     $("#dt-goster").show();
     $("#serviskabulBtn").show();
@@ -81,6 +82,7 @@ echo '<script>
     $("#silBtn").hide();
     $("#dt_duzenle").show();
     $("#kaydetBtn").show();
+    $("#kaydetFormYazdirBtn").show();
     $("#iptalBtn").show();
     
     $("#dt-UploadForm")[0].reset();
@@ -109,12 +111,14 @@ echo '<script>
           onComplete();
         }else{
           $("#kaydetBtn").prop("disabled", false);
+          $("#kaydetFormYazdirBtn").prop("disabled", false);
           $("#kaydediliyorModal").modal("hide");
           $("#hata-mesaji").html(data["mesaj"]);
           $("#statusErrorsModal").modal("show");
         }
       }catch(error){
         $("#kaydetBtn").prop("disabled", false);
+        $("#kaydetFormYazdirBtn").prop("disabled", false);
         $("#kaydediliyorModal").modal("hide");
         $("#hata-mesaji").html(error);
         $("#statusErrorsModal").modal("show");
@@ -122,23 +126,29 @@ echo '<script>
     })
     .fail(function(xhr, status, error) {
       $("#kaydetBtn").prop("disabled", false);
+      $("#kaydetFormYazdirBtn").prop("disabled", false);
       $("#kaydediliyorModal").modal("hide");
       $("#hata-mesaji").html(error);
       $("#statusErrorsModal").modal("show");
     });
   }
-  function detaylariKaydet(){
+  function detaylariKaydet(yazdir, id){
     $("#dt_duzenle #musteri_adi_liste").html("");
     $("#kaydediliyorModal").modal("show");
     $("#kaydetBtn").prop("disabled", true);
+    $("#kaydetFormYazdirBtn").prop("disabled", true);
     formKaydet("#dt_duzenleForm", function(){
       formKaydet("#dt-YapilanIslemlerForm", function(){
         $("#kaydetBtn").prop("disabled", false);
+        $("#kaydetFormYazdirBtn").prop("disabled", false);
         cihazBilgileriniGetir();
         $("#kaydediliyorModal").modal("hide");
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
         basariliModalGoster();
+        if(yazdir){
+          formuYazdirOnay(id);
+        }
       }, true);
     }, false);
   }
@@ -295,6 +305,7 @@ echo '<script>
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
     $("#kargoBilgisiBtn").attr("onclick", "kargoBilgisiYazdir(" + id + ")");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
+    $("#kaydetFormYazdirBtn").attr("onclick", "detaylariKaydet(true, " + id + ")");
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
     $("#silBtn").attr("onclick", "silModaliGoster(\'" + id + "\',\'" + servis_no + "\',\'" + musteri_adi + "\')");
 
@@ -966,7 +977,8 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
       <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>
-      <a id="kaydetBtn" href="#" onclick="detaylariKaydet()" style="display:none;" class="btn btn-success">Kaydet</a>
+      <a id="kaydetBtn" href="#" onclick="detaylariKaydet(false, 0)" style="display:none;" class="btn btn-success">Kaydet</a>
+      <a id="kaydetFormYazdirBtn" href="#" onclick="detaylariKaydet(true, 0)" style="display:none;" class="btn btn-primary">Kaydet ve Formu Yazdır</a>
       <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
       <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-white">Kargo Bilgisi Yazdır</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>

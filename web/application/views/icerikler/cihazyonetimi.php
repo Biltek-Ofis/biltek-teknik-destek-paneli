@@ -30,40 +30,50 @@ echo '<script>
         ';
 $this->load->view("inc/ortak_cihaz_script.php");
 echo '        
-    $(document).ready(function() {
-        $("#yeniCihazGirisiBtn").show();
-        $("#yeniCihazForm").submit(function(e){
-            $("#yeniCihazEkleBtn").prop("disabled", true);
-            $("#kaydediliyorModal").modal("show");
-            var formData = $("#yeniCihazForm").serialize();
-            $.post("' . base_url("cihazyonetimi/cihazEkle/post") . '", formData)
-            .done(function(msg){
-                $("#yeniCihazEkleBtn").prop("disabled", false);
-                $("#kaydediliyorModal").modal("hide");
-                try{
-                    data = $.parseJSON( msg );
-                    if(data["sonuc"]==1){
-                        $("#yeniCihazEkleModal").modal("hide");
-                        $(\'#yeniCihazForm\')[0].reset();
-                        $("#basarili-mesaji").html("Yeni kayıt başarıyla eklendi.");
-                        $("#statusSuccessModal").modal("show");
-                    }else{
-                        $("#hata-mesaji").html(data["mesaj"]);
-                        $("#statusErrorsModal").modal("show");
+    function cihazEkle(yazdir){
+        var ceForm = document.getElementById("yeniCihazForm");
+        if (!ceForm.checkValidity()) {
+            ceForm.reportValidity();
+            return;
+        }
+        $("#yeniCihazEkleBtn").prop("disabled", true);
+        $("#yeniCihazEkleBarkodBtn").prop("disabled", true);
+        $("#kaydediliyorModal").modal("show");
+        var formData = $("#yeniCihazForm").serialize();
+        $.post("' . base_url("cihazyonetimi/cihazEkle/post") . '", formData)
+        .done(function(msg){
+            $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
+            $("#kaydediliyorModal").modal("hide");
+            try{
+                data = $.parseJSON( msg );
+                if(data["sonuc"]==1){
+                    $("#yeniCihazEkleModal").modal("hide");
+                    $(\'#yeniCihazForm\')[0].reset();
+                    $("#basarili-mesaji").html("Yeni kayıt başarıyla eklendi.");
+                    $("#statusSuccessModal").modal("show");
+                    if(yazdir){
+                        barkoduYazdir(data["id"]);
                     }
-                }catch(error){
-                    $("#hata-mesaji").html(error);
+                }else{
+                    $("#hata-mesaji").html(data["mesaj"]);
                     $("#statusErrorsModal").modal("show");
                 }
-            })
-            .fail(function(xhr, status, error) {
-                $("#yeniCihazEkleBtn").prop("disabled", false);
-                $("#kaydediliyorModal").modal("hide");
+            }catch(error){
                 $("#hata-mesaji").html(error);
                 $("#statusErrorsModal").modal("show");
-            });
-            return false;
+            }
+        })
+        .fail(function(xhr, status, error) {
+            $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
+            $("#kaydediliyorModal").modal("hide");
+            $("#hata-mesaji").html(error);
+            $("#statusErrorsModal").modal("show");
         });
+    }
+    $(document).ready(function() {
+        $("#yeniCihazGirisiBtn").show();
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).click();
@@ -72,20 +82,24 @@ echo '
         $("#yeniCihazForm #tarih_girisi").on("change", function(e) {
             tarih_girisi(this);
             $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
             //console.log(this.value, clickedIndex, newValue, oldValue)
         });
         $("#yeniCihazForm #cihaz_turu").on("change", function() {
             cihazTurleriSifre($(this).val());
             $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
         });
         cihazTurleriSifre("#yeniCihazForm", $("#yeniCihazForm #cihaz_turu").val());
         $("#yeniCihazForm #fatura_durumu").on("change", function() {
             faturaDurumuInputlar("#yeniCihazForm", $(this).val())
             $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
         });
         //#yeniCihazForm #tarih_girisi, #yeniCihazForm #cihaz_turu, #yeniCihazForm #fatura_durumu
         $("#yeniCihazForm #sorumlu, #yeniCihazForm #cihazdaki_hasar, #yeniCihazForm #servis_turu, #yeniCihazForm #yedek_durumu").on("change", function() {
             $("#yeniCihazEkleBtn").prop("disabled", false);
+            $("#yeniCihazEkleBarkodBtn").prop("disabled", false);
         });
     });
 </script>
@@ -212,7 +226,8 @@ echo '</div>
 </div>
 <div class="modal-footer">
 ';
-echo '<input id="yeniCihazEkleBtn" type="submit" class="btn btn-success" form="yeniCihazForm" value="Ekle" />
+echo '<button id="yeniCihazEkleBtn" class="btn btn-success" onclick="cihazEkle(false)">Ekle</button>
+    <button id="yeniCihazEkleBarkodBtn" class="btn btn-primary" onclick="cihazEkle(true)">Ekle ve Barkodu Yazdır</button>
     <button type="button" onclick="$(\'#yeniCihazForm\')[0].reset();" class="btn btn-primary">Temizle</button>
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
 </div>
