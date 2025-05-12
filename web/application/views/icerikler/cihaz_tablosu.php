@@ -417,8 +417,8 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
   <td><span class="{id}Sorumlu">{sorumlu}</span></td>
   <td class="text-center">
     <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
-   ' . ($sorumlu_belirtildimi ? "" : '<button class="btn btn-info text-white" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>') . '
-   <button class="btn btn-secondary" onclick="barkoduYazdir({id})">Barkodu Yazdır</button> 
+   ' . ($sorumlu_belirtildimi ? "" : '<!--<button class="btn btn-info text-white" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>-->') . '
+  <!--<button class="btn btn-secondary" onclick="barkoduYazdir({id})">Barkodu Yazdır</button>-->
   </td>
  
 </tr>';
