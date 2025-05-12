@@ -1,23 +1,23 @@
 <?php
 $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
 
-echo '<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>'. $kullanici["ad_soyad"].'</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="'. base_url().'">Anasayfa</a></li>
-                        <li class="breadcrumb-item active">'. $kullanici["ad_soyad"].'</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
+echo '<div class="content-wrapper">';
+$this->load->view("inc/content_header", array(
+    "contentHeader" => array(
+        "baslik"=> $kullanici["ad_soyad"],
+        "items"=> array(
+            array(
+                "link"=> base_url(),
+                "text"=> "Anasayfa",
+            ),
+            array(
+                "active"=> TRUE,
+                "text"=> $kullanici["ad_soyad"],
+            ),
+        ),
+    ),
+));
+echo '<section class="content">
         <div class="card">
             <div class="card-body">
                 <form autocomplete="off" method="post" action="'. base_url("kullanici/guncelle").'">

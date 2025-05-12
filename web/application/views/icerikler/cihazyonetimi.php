@@ -89,28 +89,28 @@ echo '
         });
     });
 </script>
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2 w-100">
-                <div class="col-sm-6">
-                    <h1>Cihaz Yönetimi</h1>
-                </div>
-                <div class="col-sm-6 text-end">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="' . base_url() . '">Anasayfa</a></li>
-                        <li class="breadcrumb-item active">Cihaz Yönetimi</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
+<div class="content-wrapper">';
+$this->load->view("inc/content_header", array(
+    "contentHeader" => array(
+        "baslik"=> "Cihaz Yönetimi",
+        "items"=> array(
+            array(
+                "link"=> base_url(),
+                "text"=> "Anasayfa",
+            ),
+            array(
+                "active"=> TRUE,
+                "text"=> "Cihaz Yönetimi",
+            ),
+        ),
+    ),
+));
+echo '<section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Cihazlar</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body px-0 mx-0">
                 <div class="row w-100">
                     <div class="col-6 col-lg-6">
                     </div>
