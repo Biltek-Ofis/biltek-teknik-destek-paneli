@@ -805,6 +805,7 @@ class Cihazlar_Model extends CI_Model
     {
         $veri = $this->cihazPost();
         $servis_no = $this->insertTrigger();
+        $cihaz_id = 0;
         if ($servis_no != 0) {
             $veri["servis_no"] = $servis_no;
             $this->veriGuncellendiEkle();
@@ -814,12 +815,13 @@ class Cihazlar_Model extends CI_Model
             }
             $ekle =  $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
 
-            $cihaz_id = $this->db->insert_id();
+            if($ekle){
+                $cihaz_id = $this->db->insert_id();
+            }
             if(isset($veri["sorumlu"])){
                 $this->Kullanicilar_Model->bildirimGonderCihaz($veri["sorumlu"], $cihaz_id);
             }
             if ($ekle) {
-                $id = $this->db->insert_id();
                 $musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
                 if(((int)$musteriyi_kaydet) == 1){
                     if($veri["musteri_kod"] == NULL){
@@ -837,15 +839,15 @@ class Cihazlar_Model extends CI_Model
                     }
                 }
                 if($tur == "POST" || $tur == "post"){
-                    return array("mesaj" => "", "sonuc" => 1);
+                    return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id);
                 }else{
-                    return array("mesaj" => "", "sonuc" => 1, "yonlendir"=> base_url("") . "#" . $this->cihazDetayModalAdi() . $id);
+                    return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id, "yonlendir"=> base_url("") . "#" . $this->cihazDetayModalAdi() . $cihaz_id);
                 }
             } else {
-                return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0);
+                return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0, "id" =>$cihaz_id);
             }
         } else {
-            return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0);
+            return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0, "id" => $cihaz_id);
         }
     }
     public function ozelIDTabloAdi()
