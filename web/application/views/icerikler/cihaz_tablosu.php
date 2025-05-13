@@ -1391,7 +1391,7 @@ function donusturOnclick(oge){
 }
 function donustur(str, value, yeni) {
     return str.
-    replaceAll("{yeni}", yeni ? \' <span id="\' + value.id + \'Yeni" class="badge badge-danger">Yeni</span>\' : \'\')
+    replaceAll("{yeni}", yeni ? \' <span id="\' + value.id + \'Yeni" class="badge bg-danger">Yeni</span>\' : \'\')
       .replaceAll("{class}", cihazDurumuClass(value.guncel_durum))
       .replaceAll("{display_kilit}",  cihazKilitle(value.guncel_durum) ? "display:none;" : "")
       .replaceAll("{servis_no}", value.servis_no)

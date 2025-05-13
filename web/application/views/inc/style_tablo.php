@@ -39,9 +39,9 @@ table.dataTable tbody tr.bg-primary td  {
   color: var(--yazi-rengi) !important;
 }
 
-.bg-danger,
-table.dataTable tbody tr.bg-danger th,
-table.dataTable tbody tr.bg-danger td  {
+.bg-danger:not(.badge),
+table.dataTable tbody tr.bg-danger:not(.badge) th,
+table.dataTable tbody tr.bg-danger:not(.badge) td  {
   background-color: rgba(220, 53, 69, var(--transparan-kirmizi)) !important;
   color: var(--yazi-rengi) !important;
 }
