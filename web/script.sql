@@ -124,6 +124,7 @@ CREATE TABLE `ts1_cihazlar` (
   `yedek_durumu` int(11) NOT NULL,
   `teslim_alinanlar` longtext,
   `yapilan_islem_aciklamasi` longtext,
+  `notlar` longtext,
   `teslim_edildi` int(11) NOT NULL DEFAULT '0',
   `tarih` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bildirim_tarihi` datetime DEFAULT NULL,

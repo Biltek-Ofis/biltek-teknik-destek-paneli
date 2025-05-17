@@ -893,6 +893,17 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           Text(cihaz!.yapilanIslemAciklamasi)
                         ],
                       ),
+                      TableRow(
+                        children: [
+                          Text(
+                            "Notlar:",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(cihaz!.notlar),
+                        ],
+                      ),
                     ],
                   ),
                   Builder(

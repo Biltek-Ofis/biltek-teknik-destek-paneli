@@ -109,6 +109,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
 
   TextEditingController yapilanIslemAciklamasiController =
       TextEditingController();
+  TextEditingController notlarController = TextEditingController();
 
   bool sayfaYukleniyor = true;
   @override
@@ -199,6 +200,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
       _fiyatlariGuncelle();
       yapilanIslemAciklamasiController.text =
           widget.cihaz.yapilanIslemAciklamasi;
+      notlarController.text = widget.cihaz.notlar;
       setState(() {
         sayfaYukleniyor = false;
       });
@@ -1094,11 +1096,18 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                       label: "Yapılan İşlem Açıklaması",
                                       onChanged: (value) {
                                         setState(() {
-                                          fisNoHata = null;
                                           girildi = true;
                                         });
                                       },
-                                      errorText: fisNoHata,
+                                    ),
+                                    BiltekTextField(
+                                      controller: notlarController,
+                                      label: "Notlar:",
+                                      onChanged: (value) {
+                                        setState(() {
+                                          girildi = true;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
@@ -1404,6 +1413,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
         "fatura_durumu": faturaDurumu.toString(),
         "fis_no": fisNoController.text,
         "yapilan_islem_aciklamasi": yapilanIslemAciklamasiController.text,
+        "notlar": notlarController.text,
       };
       if (bildirimTarihiDuzenlendi) {
         postData.addAll({

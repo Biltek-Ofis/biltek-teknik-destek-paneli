@@ -72,6 +72,11 @@ class Cihaz extends Varsayilancontroller
                 "fatura_durumu" => $fatura_durumu,
                 "fis_no" => $fis_no
             );
+            $notlar = $this->input->post("notlar");
+            if (!isset($notlar)) {
+                $notlar = "";
+            } 
+            $cihaz_verileri["notlar"] = $notlar;
             $tarih = $this->Islemler_Model->tarihDonusturSQL($this->input->post("tarih"));
             $bildirim_tarihi = $this->input->post("bildirim_tarihi");
             if (isset($bildirim_tarihi)) {

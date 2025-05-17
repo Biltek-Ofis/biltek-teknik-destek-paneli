@@ -274,6 +274,13 @@ echo '</td>
 $this->load->view("ogeler/fis_no", array("sifirla" => true, "fis_no_value" => $cihaz->fis_no));
 echo '</td>
 </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="p-0 m-0 col">
+                                                    <textarea id="notlar" autocomplete="off" name="notlar" class="form-control" rows="3" placeholder="Notlar">' . $cihaz->notlar . '</textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <table class="table table-flush">

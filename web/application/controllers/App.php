@@ -376,6 +376,11 @@ class App extends CI_Controller
                     $fatura_durumu = $this->input->post("fatura_durumu");
                     $fis_no = $this->input->post("fis_no");
                     $veri["yapilan_islem_aciklamasi"] = $this->input->post("yapilan_islem_aciklamasi");
+                    $notlar = $this->input->post("notlar");
+                    if (!isset($notlar)) {
+                        $notlar = "";
+                    } 
+                    $veri["notlar"] = $notlar;
                     $veri["guncel_durum"] = $guncel_durum;
                     $veri["tahsilat_sekli"] = $tahsilat_sekli;
                     $veri["fatura_durumu"] = $fatura_durumu;
