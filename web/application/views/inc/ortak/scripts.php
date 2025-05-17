@@ -94,9 +94,11 @@ echo '
 	}
 	$(document).ready(function () {
 		$("input").each(function () {
-			$(this).on("keyup change", function () {
-				ayrilmaEngelle();
-			});
+			if ($(this).attr("type") != "search") {
+				$(this).on("keyup change", function () {
+					ayrilmaEngelle();
+				});
+			}
 		});
 		$("select").each(function () {
 			$(this).on("change", function () {
