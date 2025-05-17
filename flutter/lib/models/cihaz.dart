@@ -24,6 +24,7 @@ class Cihaz {
   final int yedekDurumu;
   final String teslimAlinanlar;
   final String yapilanIslemAciklamasi;
+  final String notlar;
   final String teslimEdildi;
   final String tarih;
   final String bildirimTarihi;
@@ -97,6 +98,7 @@ class Cihaz {
     required this.yedekDurumu,
     required this.teslimAlinanlar,
     required this.yapilanIslemAciklamasi,
+    required this.notlar,
     required this.teslimEdildi,
     required this.tarih,
     required this.bildirimTarihi,
@@ -172,6 +174,7 @@ class Cihaz {
         "yedek_durumu": String yedekDurumu,
         "teslim_alinanlar": String teslimAlinanlar,
         "yapilan_islem_aciklamasi": String yapilanIslemAciklamasi,
+        "notlar": String notlar,
         "teslim_edildi": String teslimEdildi,
         "tarih": String tarih,
         "bildirim_tarihi": String bildirimTarihi,
@@ -245,6 +248,7 @@ class Cihaz {
           yedekDurumu: int.tryParse(yedekDurumu) ?? -1,
           teslimAlinanlar: teslimAlinanlar,
           yapilanIslemAciklamasi: yapilanIslemAciklamasi,
+          notlar: notlar,
           teslimEdildi: teslimEdildi,
           tarih: tarih,
           bildirimTarihi: bildirimTarihi,

@@ -349,6 +349,9 @@ class Cihazlar_Model extends CI_Model
                 if ($result[$i]->yapilan_islem_aciklamasi == null) {
                     $result[$i]->yapilan_islem_aciklamasi = "";
                 }
+                if ($result[$i]->notlar == null) {
+                    $result[$i]->notlar = "";
+                }
                 if ($result[$i]->bildirim_tarihi == null) {
                     $result[$i]->bildirim_tarihi = "";
                 }

@@ -32,7 +32,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{notlar_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 $kaydiKopyalaOnClick = 'kaydiKopyala(\\\'{musteri_kod_onclick}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{sorumlu_val_onclick}\\\')';
 $kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
@@ -248,7 +248,7 @@ echo '<script>
       correctLevel : QRCode.CorrectLevel.H
     });
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, tahsilat_sekli, fatura_durumu, fis_no) {
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
     
@@ -299,6 +299,7 @@ echo '<script>
 
     $("#Sorumlu2").html(sorumlu);
     $("#yapilanIslemAciklamasi").html(yapilan_islem_aciklamasi);
+    $("#notlar").html(notlar);
     $("#TahsilatSekli").html(tahsilat_sekli);
     $("#faturaDurumu").html(fatura_durumu);
     $("#fisNo").html(fis_no);
@@ -535,6 +536,7 @@ if(isset( $_GET["servisNo"])){
       evetHayir("'.donusturOnclick($gosterilenCihaz->yedek_durumu).'"),
       "'.donusturOnclick($gosterilenCihaz->sorumlu).'",
       "'.donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi).'",
+      "'.donusturOnclick($gosterilenCihaz->notlar).'",
       "'.donusturOnclick($gosterilenCihaz->tahsilat_sekli).'",
       faturaDurumu("'.donusturOnclick($gosterilenCihaz->fatura_durumu).'"), 
       "'.donusturOnclick($gosterilenCihaz->fis_no).'");';
@@ -555,7 +557,7 @@ $(document).ready(function(){
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").removeClass("fade");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").addClass("fade");
-            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
+            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.notlar, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
           }
         } catch (error) {
           console.error(error);
@@ -738,6 +740,10 @@ $(document).ready(function(){
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Sorumlu Personel:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="Sorumlu2"></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Notlar:</span></li>
+                <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="notlar"></li>
               </ul>
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Yapılan İşlem Açıklaması:</span></li>
@@ -928,20 +934,29 @@ $(document).ready(function(){
                       <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
                         <tr>
                             <th colspan="5">Toplam</th>
-                            <td colspan="2" id="yapilanIslemToplam">0 TL</td>
+                            <td colspan="3" id="yapilanIslemToplam">0 TL</td>
                         </tr>
                         <tr>
                             <th colspan="5">KDV</th>
-                            <td colspan="2" id="yapilanIslemKdv">0 TL</td>
+                            <td colspan="3" id="yapilanIslemKdv">0 TL</td>
                         </tr>
                         <tr>
                             <th colspan="5">Genel Toplam</th>
-                            <td colspan="2" id="yapilanIslemGenelToplam">0 TL</td>
+                            <td colspan="3" id="yapilanIslemGenelToplam">0 TL</td>
                         </tr>
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="p-0 m-0 col">
+                                    <label for="yapilan_islem_aciklamasi" class="form-label fw-bold">Yapılan işlem açıklaması:</label>
                                     <textarea id="yapilan_islem_aciklamasi" autocomplete="off" name="yapilan_islem_aciklamasi" class="form-control" rows="3" placeholder="Yapılan işlem açıklaması"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="8">
+                                <div class="p-0 m-0 col">
+                                    <label for="notlar" class="form-label fw-bold">Notlar:</label>
+                                    <textarea id="notlar" autocomplete="off" name="notlar" class="form-control" rows="3" placeholder="Notlar"></textarea>
                                 </div>
                             </td>
                         </tr>
@@ -1067,6 +1082,7 @@ $eskiler = array(
   "{servis_turu}",
   "{yedek_durumu}",
   "{yapilan_islem_aciklamasi}",
+  "{notlar}",
   "{tarih}",
   "{tarih2}",
   "{bildirim_tarihi}",
@@ -1098,6 +1114,7 @@ $eskiler = array(
   "{sorumlu_val}",
   "{sorumlu_val_onclick}",
   "{yapilan_islem_aciklamasi_onclick}",
+  "{notlar_onclick}",
   "{tahsilat_sekli_onclick}",
   "{fatura_durumu_onclick}",
   "{fis_no_onclick}",
@@ -1191,6 +1208,7 @@ foreach ($cihazlar as $cihaz) {
     $this->Islemler_Model->servisTuru($cihaz->servis_turu),
     $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
     $cihaz->yapilan_islem_aciklamasi,
+    $cihaz->notlar,
     $cihaz->tarih,
     $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
     $cihaz->bildirim_tarihi,
@@ -1222,6 +1240,7 @@ foreach ($cihazlar as $cihaz) {
     $cihaz->sorumlu_val,
     donusturOnclick($cihaz->sorumlu_val),
     donusturOnclick($cihaz->yapilan_islem_aciklamasi),
+    donusturOnclick($cihaz->notlar),
     donusturOnclick($cihaz->tahsilat_sekli),
     donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
     donusturOnclick($cihaz->fis_no),
@@ -1414,6 +1433,7 @@ function donustur(str, value, yeni) {
       .replaceAll("{servis_turu}", servisTuru(value.servis_turu))
       .replaceAll("{yedek_durumu}", evetHayir(value.yedek_durumu))
       .replaceAll("{yapilan_islem_aciklamasi}", value.yapilan_islem_aciklamasi)
+      .replaceAll("{notlar}", value.notlar)
       .replaceAll("{tarih}", value.tarih)
       .replaceAll("{tarih2}", tarihDonusturSiralama(value.tarih))
       .replaceAll("{bildirim_tarihi}", value.bildirim_tarihi)
@@ -1445,6 +1465,7 @@ function donustur(str, value, yeni) {
       .replaceAll("{sorumlu_val}", value.sorumlu_val)
       .replaceAll("{sorumlu_val_onclick}", donusturOnclick(value.sorumlu_val))
       .replaceAll("{yapilan_islem_aciklamasi_onclick}", donusturOnclick(value.yapilan_islem_aciklamasi))
+      .replaceAll("{notlar_onclick}", donusturOnclick(value.notlar))
       .replaceAll("{tahsilat_sekli_onclick}", donusturOnclick(value.tahsilat_sekli))
       .replaceAll("{fatura_durumu_onclick}", donusturOnclick(faturaDurumu(value.fatura_durumu)))
       .replaceAll("{fis_no_onclick}", donusturOnclick(value.fis_no))
@@ -1553,6 +1574,7 @@ echo '
             $("#YedekDurumu").html(evetHayir(value.yedek_durumu));
             $("#Sorumlu2").html(value.sorumlu);
             $("#yapilanIslemAciklamasi").html(value.yapilan_islem_aciklamasi);
+            $("#notlar").html(value.notlar);
             $("#TahsilatSekli").html(value.tahsilat_sekli);
             $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
             $("#fisNo").html(value.fis_no);
@@ -1621,6 +1643,7 @@ echo '
             $("#dt_duzenle select#fatura_durumu").val(value.fatura_durumu).change();
             $("#dt_duzenle input#fis_no").val(value.fis_no);
             $("#dt_duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
+            $("#dt_duzenle textarea#notlar").val(value.notlar);
             $("#duzenleBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
             ayrilma_durumu_tetikle = true;
