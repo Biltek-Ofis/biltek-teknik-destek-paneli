@@ -346,10 +346,10 @@ echo '<div id="cihazTablosu" class="table-responsive" style="display:none;">';
 echo '<div class="dataTables_wrapper no-footer">
         <div class="row">
           <div class="col-sm-12 col-md-6"></div>
-          <div class="col-sm-12 col-md-6 text-sm-center text-md-end">
+          <div class="col-sm-12 col-md-6 text-sm-center text-md-end pe-4">
             <div class="dataTables_filter">
               Ara: <label>
-                <input id="cihaz_tablosu_ara" type="search" class="form-control form-control-sm" placeholder="">
+                <input id="cihaz_tablosu_ara" type="search" class="form-control form-control-sm" style="width:200px;" placeholder="">
               </label>
             </div>
           </div>
