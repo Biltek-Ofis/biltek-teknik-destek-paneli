@@ -1891,6 +1891,13 @@ echo '$(document).ready(function() {
                 cihazlarArama = $("#cihaz_tablosu_ara").val();
                 cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
             });
+            $("#cihaz_tablosu_ara").on("input", function(e) {
+                if (!e.currentTarget.value)
+                {
+                  cihazlarArama = $("#cihaz_tablosu_ara").val();
+                  cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+                }
+            });
             var orderSira = 0;
         $(".sorting").each(function() {
             var el = $(this);
@@ -1899,10 +1906,6 @@ echo '$(document).ready(function() {
               siralamaGuncelle(el, sira);
             });
             orderSira++;
-        });
-        $("#cihaz_tablosu_ara").keyup(function(){
-        
-            
         });
     $(document).on("show.bs.modal", ".modal", function() {
       ayrilmaEngeliIptal();
