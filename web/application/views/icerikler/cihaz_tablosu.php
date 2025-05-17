@@ -346,7 +346,7 @@ echo '<div id="cihazTablosu" class="table-responsive" style="display:none;">';
 echo '<div class="dataTables_wrapper no-footer">
         <div class="row">
           <div class="col-sm-12 col-md-6"></div>
-          <div class="col-sm-12 col-md-6 text-md-end">
+          <div class="col-sm-12 col-md-6 text-sm-center text-md-end">
             <div class="dataTables_filter">
               Ara: <label>
                 <input id="cihaz_tablosu_ara" type="search" class="form-control form-control-sm" placeholder="">
@@ -1711,7 +1711,7 @@ echo '
                         var toplamSayfa = Math.ceil(toplamCihaz / '.$ayarlar->tablo_oge.');
   
                         var peginationDiv = function(ekDiv){
-                          return \'<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
+                          return \'<div class="dataTables_paginate paging_simple_numbers w-100 text-sm-center text-md-end"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
                         }
                         $("#cihazlar_pegination1 > div:last-child").html(peginationDiv(" ust"));
                         //$("#cihazlar_pegination2 > div:last-child").html(peginationDiv(""));
@@ -1743,11 +1743,11 @@ echo '
                           }
                         }
                       }else{
-                        //$("#cihazlar_pegination2 > div:first-child").html(\'<div class="dataTables_info">Kayıt Yok</div>\');
+                        //$("#cihazlar_pegination2 > div:first-child").html(\'<div class="dataTables_info text-sm-center text-md-start">Kayıt Yok</div>\');
                       }
                       $("#cihazlar_pegination2").html("");
                       
-                      var sonuc_bilgisi = \'<div class="dataTables_info">\';
+                      var sonuc_bilgisi = \'<div class="dataTables_info text-sm-center text-md-start">\';
                       if (toplamCihaz > 0){
                         sonuc_bilgisi += toplamCihaz + \' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor\';
                         
