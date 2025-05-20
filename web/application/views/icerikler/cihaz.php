@@ -175,9 +175,9 @@ echo '</td>
                                 <a href="javascript:void(0);" id="sifirlaGenel" class="btn btn-secondary mt-2 mr-2">
                                     Sıfırla
                                 </a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Bardkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
@@ -345,9 +345,9 @@ echo '<tr>
                             </div>
                             <div class="col-6 col-lg-6 text-end">
                                 <input type="submit" class="btn btn-success mt-2 mr-2" form="yapilanIslemlerForm" value="Kaydet" />
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Bardkodu Yazdır</a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-white mt-2 mr-2">Formu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#servisKabulYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Servis Kabul Formunu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#barkoduYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Bardkodu Yazdır</a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#formuYazdirModal" class="btn btn-dark text-light mt-2 mr-2">Formu Yazdır</a>
                                 <a href="javascript:history.go(-1);" class="btn btn-danger text-white mt-2">Geri</a>
                             </div>
                         </div>
@@ -392,7 +392,7 @@ echo '<div class="row text-center">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0);" onclick="formuYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
+                <a href="javascript:void(0);" onclick="formuYazdir(' . $cihaz->id . ');" class="btn btn-dark text-light">Yazdır</a>
                 <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>
@@ -410,7 +410,7 @@ echo '<div class="row text-center">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0);" onclick="servisKabulYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
+                <a href="javascript:void(0);" onclick="servisKabulYazdir(' . $cihaz->id . ');" class="btn btn-dark text-light">Yazdır</a>
                 <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>
@@ -427,7 +427,7 @@ echo '<div class="row text-center">
                 Yazdırma işleminden önce yaptığınız değişiklikleri kaydetmelisiniz.
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0);" onclick="barkoduYazdir(' . $cihaz->id . ');" class="btn btn-dark text-white">Yazdır</a>
+                <a href="javascript:void(0);" onclick="barkoduYazdir(' . $cihaz->id . ');" class="btn btn-dark text-light">Yazdır</a>
                 <a class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
             </div>
         </div>

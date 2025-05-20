@@ -363,7 +363,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
         <th scope="col">GSM</th>
         <th id="cihazTuruColumn" scope="col" class="no-sort">
           <div class="nav-item dropdown">
-                <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazTuruColumn\'), 3);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "color: black;").'">Tür</a>
+                <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazTuruColumn\'), 3);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Tür</a>
                 <ul class="dropdown-menu cihazTurleriDropdown">';
                     echo '<li class="dropdown-item cihazTurleriDropdownItemTumu active">
                     <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItemTumu\');">Tümü</a>
@@ -381,7 +381,7 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
         <th scope="col">Giriş Tarihi</th>
         <th id="cihazDurumuColumn" class="no-sort" scope="col">
           <div class="nav-item dropdown">
-                <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazDurumuColumn\'), 6);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="'.(strlen($tema->yazi_rengi) > 0 ? "color: ".$tema->yazi_rengi : "color: black;").'">Güncel Durum</a>
+                <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazDurumuColumn\'), 6);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Güncel Durum</a>
                 <ul class="dropdown-menu cihazDurumlariDropdown">';
                 echo '
                     <!--<li class="dropdown-item" style="background: gray;">
@@ -481,11 +481,11 @@ $(document).ready(function(){
             left: "0",
             right: "0",
             width: "100%",
+            background: "var(--bs-body-bg)",
             bottom: "0px",
-            background: \''.(strlen($tema->arkaplan) > 0 ? $tema->arkaplan : "#fff").'\',
             padding: "1rem",
             zIndex : "2",
-            borderTop: "1px solid '.(strlen($tema->yazi_rengi) > 0 ? $tema->yazi_rengi : "black").'"
+            borderTop: "1px solid var(--bs-table-color)"
           });
           $("#cihazlar_pegination2").css({
             height: document.getElementById("cihazlar_pegination1").offsetHeight
@@ -995,10 +995,10 @@ $(document).ready(function(){
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet(false, 0)" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="kaydetFormYazdirBtn" href="#" onclick="detaylariKaydet(true, 0)" style="display:none;" class="btn btn-primary">Kaydet ve Formu Yazdır</a>
       <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
-      <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-white">Kargo Bilgisi Yazdır</a>
-      <a id="serviskabulBtn" href="#" class="btn btn-dark text-white">Servis Kabul Formunu Yazdır</a>
-      <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-white">Barkodu Yazdır</a>
-      <a id="formuYazdirBtn" href="#" class="btn btn-dark text-white">Formu Yazdır</a>
+      <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-light">Kargo Bilgisi Yazdır</a>
+      <a id="serviskabulBtn" href="#" class="btn btn-dark text-light">Servis Kabul Formunu Yazdır</a>
+      <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-light">Barkodu Yazdır</a>
+      <a id="formuYazdirBtn" href="#" class="btn btn-dark text-light">Formu Yazdır</a>
       ' . ($silButonuGizle ? '' : '<a id="silBtn" href="#" style="{display_kilit}" class="btn btn-danger text-white">Sil</a>') . '
       <a id="kapatBtn" href="#" class="btn btn-secondary" onclick="detayModaliKapat();">Kapat</a>
       </div>

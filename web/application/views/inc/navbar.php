@@ -32,30 +32,13 @@ $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
     /*display: block;*/
   }
 
-  .dropdown-item a {
-    color: rgba(0, 0, 0, .5);
-  }
-
-  .dropdown-item.active,
-  .dropdown-item.active a,
-  nav-item.active {
-    color: rgba(0, 0, 0, .9);
-    background-color: transparent;
-  }
-
-  .dropdown-item.active:focus,
-  .dropdown-item.active a:focus,
-  .dropdown-item.active a {
-    background-color: transparent;
-    color: rgba(0, 0, 0, .9);
-  }
 </style>
 <?php
 $detect = new Mobile_Detect();
 if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   ?>
   <div class="w-100 bg-success text-center">
-    <a href="<?= base_url("app/android"); ?>" target="_blank" style="color: blue !important;"><img
+    <a href="<?= base_url("app/android"); ?>" target="_blank"><img
         style="width:calc(100% / 3)" src="<?= base_url(" dist/img/app/google-play.png"); ?>" /></a>
   </div>
   <?php
@@ -189,29 +172,34 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             </li>
           </ul>
         </li>
+        <li class="nav-item align-items-center d-flex" >
+          <i class="fas fa-sun"></i>
+          <!-- Default switch -->
+          <div class="ms-2 form-check form-switch">
+            <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" id="themingSwitcher" />
+          </div>
+          <i class="fas fa-moon"></i>
+        </li>
       </ul>
       <form class="d-flex" role="search">
         <ul class="navbar-nav ml-auto">
 
           <li class="nav-item">
-            <a href="<?= base_url("kullanici"); ?>" class="nav-link"
-              style="<?= strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""; ?>"><?= $kullanicibilgileri123["ad_soyad"]; ?></a>
+            <a href="<?= base_url("kullanici"); ?>" class="nav-link"><?= $kullanicibilgileri123["ad_soyad"]; ?></a>
           </li>
           <!--<li class="nav-item">
-              <a class="nav-link" href="#" role="button" style="<?= strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""; ?>" data-bs-toggle="modal" data-bs-target="#temaSecModal">
+              <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#temaSecModal">
                 <i class="fa-brands fa-themeisle"></i> Tema
               </a>
           </li>-->
           <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-              <i class="fas fa-expand-arrows-alt"
-                style="<?= (strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""); ?>"></i>
+              <i class="fas fa-expand-arrows-alt"></i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="<?= base_url("cikis"); ?>" role="button">
-              <i class="fas fa-right-from-bracket"
-                style="<?= (strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""); ?>"></i>
+              <i class="fas fa-right-from-bracket"></i>
             </a>
           </li>
         </ul>
@@ -235,8 +223,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
         </style>
         <div class="row">
           <div class="col-4">
-            <a href="<?= base_url("kullanici/tema/0"); ?>"
-              style="<?= (strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""); ?>">
+            <a href="<?= base_url("kullanici/tema/0"); ?>">
               <div class="col-2 siteTema">
                 <img src="<?= base_url("dist/img/temalar/" . $this->Ayarlar_Model->siteTema()->onizleme_resmi); ?>"
                   width="200" heigh="100" />
@@ -252,8 +239,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           foreach ($temalar as $gosterimTema) {
             ?>
             <div class="col-4 siteTema">
-              <a href="<?= base_url("kullanici/tema/" . $gosterimTema->id); ?>"
-                style="<?= (strlen($tema->yazi_rengi) > 0 ? "color: " . $tema->yazi_rengi : ""); ?>">
+              <a href="<?= base_url("kullanici/tema/" . $gosterimTema->id); ?>">
                 <div class="col-2 siteTema">
                   <img src="<?= base_url("dist/img/temalar/" . $gosterimTema->onizleme_resmi); ?>" width="200"
                     heigh="100" />
