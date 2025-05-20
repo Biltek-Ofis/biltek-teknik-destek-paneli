@@ -79,11 +79,10 @@ $this->load->view("inc/content_header", array(
                             <tr>
                                 <th>Sıra</th>
                                 <th>Durum</th>
-                                <th class="text-center">Cihaz Düzenlemeyi Kilitle <i class="fas fa-question-circle"
-                                        style="color:grey;"
+                                <th class="text-center">Cihaz Düzenlemeyi Kilitle <i class="fas fa-question-circle text-secondary"
                                         title="Evet olarak ayarlandığında cihaz artık düzenlemeye kapatılır. (Yönetici Hesapları Hariç)"></i>
                                 </th>
-                                <th class="text-center">Sıralama <i class="fas fa-question-circle" style="color:grey;"
+                                <th class="text-center">Sıralama <i class="fas fa-question-circle text-secondary"
                                         title="Cihazlar sayfasındaki cihazların sıralamasını belirler."></i></th>
                                 <th>İşlemler</th>
                             </tr>

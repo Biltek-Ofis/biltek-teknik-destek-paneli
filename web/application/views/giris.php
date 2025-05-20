@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 $ayarlar = $this->Ayarlar_Model->getir();
 echo '<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -111,7 +111,7 @@ echo '
 $detect = new Mobile_Detect();
 if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
     echo '<div class="w-100 mt-2 text-center">
-    <a href="' . base_url("app/android") . '" target="_blank" style="color: blue !important;"><img style="width:calc(100% / 2)" src="' . base_url("dist/img/app/google-play.png") . '"/></a>
+    <a href="' . base_url("app/android") . '" target="_blank"><img style="width:calc(100% / 2)" src="' . base_url("dist/img/app/google-play.png") . '"/></a>
   </div>';
 }
 //<p class="mb-1">

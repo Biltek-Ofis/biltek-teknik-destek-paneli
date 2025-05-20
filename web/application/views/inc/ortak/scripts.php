@@ -94,7 +94,22 @@ echo '
 	}
 	$(document).ready(function () {
 		$("input").each(function () {
-			if ($(this).attr("type") != "search") {
+			var type = $(this).attr("type");
+			var id = $(this).attr("id");
+			const ignoreInpIds = [
+				"karanlikTema"
+			]
+			const ignoreInpTypes = [
+				"search"
+			]
+
+			var engellenebilir = true;
+			
+			if (ignoreInpIds.includes(id) || ignoreInpTypes.includes(type)) {
+				engellenebilir = false;
+			}
+
+			if (engellenebilir) {
 				$(this).on("keyup change", function () {
 					ayrilmaEngelle();
 				});
@@ -128,5 +143,55 @@ echo '
 				}
 			});
 		});
+	});
+	
+	const karanlikTemaStorageKey = "karanlikTema";
+	function karanlikTemaKaydet(durum){
+		if(durum){
+			localStorage.setItem(karanlikTemaStorageKey, "true");
+		}else{
+			localStorage.removeItem(karanlikTemaStorageKey);
+		}
+	}
+	function karanlikTemaUygulanabilir(){
+		var attr = $("html").attr("data-bs-theme");
+		if(typeof attr !== 'undefined' && attr !== false){
+			return true;
+		}
+		return false;
+	}
+	function karanlikTemaDurum(durum){
+		if(karanlikTemaUygulanabilir()){
+			if(durum){
+				$("html").attr("data-bs-theme", "dark");
+				$(".btn-dark").addClass("btn-light");
+				$(".btn-dark").addClass("text-black");
+				$(".btn-dark").removeClass("text-light");
+				$(".btn-dark").removeClass("btn-dark");
+			}else{
+				$("html").attr("data-bs-theme", "light");
+				$(".btn-light").addClass("btn-dark");
+				$(".btn-light").addClass("text-light");
+				$(".btn-light").removeClass("text-black");
+				$(".btn-light").removeClass("btn-light");
+			}
+			karanlikTemaKaydet(durum);
+		}
+	}
+	function karanlikTemaToggle(){
+		if (karanlikTemaUygulanabilir()) {
+			var attr = $("html").attr("data-bs-theme");
+			karanlikTemaDurum(attr != "dark")
+		}
+	}
+	function karanlikTemaYukle(){
+		const karanlikTema = localStorage.getItem(karanlikTemaStorageKey) || false;
+		$("#karanlikTema").prop("checked", karanlikTema == "true").change();
+	}
+	$(document).ready(function () {
+		$("#karanlikTema").on("change", function () {
+			karanlikTemaDurum($(this).prop("checked") == true);
+		});
+		karanlikTemaYukle();
 	});
 </script>
