@@ -34,18 +34,21 @@ class Islemler_Model extends CI_Model
     {
         return date($this->sqlTarihFormati, time());
     }
-    public function tarihDonustur($tarih)
+    public function tarihDonustur($tarih, $saat_dahil = TRUE)
     {
-        return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));
+        $tarih_Str = $saat_dahil ? "d.m.Y H:i" : "d.m.Y";
+        return $tarih == "" ? "" : date($tarih_Str, strtotime($tarih));
     }
 
-    public function tarihDonusturSiralama($tarih)
+    public function tarihDonusturSiralama($tarih, $saat_dahil = TRUE)
     {
-        return $tarih == "" ? "" : date("d.m.Y H:i", strtotime($tarih));
+        $tarih_Str = $saat_dahil ? "d.m.Y H:i" : "d.m.Y";
+        return $tarih == "" ? "" : date($tarih_Str, strtotime($tarih));
     }
-    public function tarihDonusturInput($tarih)
+    public function tarihDonusturInput($tarih, $saat_dahil = TRUE)
     {
-        return $tarih == "" ? "" : date('Y-m-d\TH:i', strtotime($tarih));
+        $tarih_Str = $saat_dahil ? "Y-m-d\TH:i" : "Y-m-d";
+        return $tarih == "" ? "" : date($tarih_Str, strtotime($tarih));
     }
     public function trimle($str)
     {
@@ -238,7 +241,8 @@ class Islemler_Model extends CI_Model
             columnDefs: [
                 {
                 "defaultContent": "-",
-                "targets": "_all"
+                "targets": "_all",
+                "orderSequence": [ "asc", "desc" ]
                 }
                 ';
                 foreach($columnDefs as $columnDef){
