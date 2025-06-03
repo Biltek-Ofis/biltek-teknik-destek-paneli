@@ -70,7 +70,14 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <?php
         }
-
+        ?>
+        <li class="nav-item">
+            <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
+              href="<?= base_url("malzemeteslimi"); ?>">
+              Malzeme Teslimi
+            </a>
+        </li>
+        <?php
         if ($kullanicibilgileri123["yonetici"] == 1) {
           ?>
           <li class="nav-item dropdown">
