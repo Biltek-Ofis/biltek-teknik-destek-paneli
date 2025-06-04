@@ -138,6 +138,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <th colspan="<?=$colspans[6];?>" class="text-center fw-bold">TOPLAM</th>
             </tr>
             <?php
+            $minHeight = "1cm";
             $malzemeTeslimiIslemleri = $bilgileri_goster ? $malzemeTeslimi["islemler"] : [];
             $topTutar = 0;
             $topKdv = 0;
@@ -150,7 +151,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 $topTutar = $topTutar + $toplam;
                 $topKdv = $topKdv + $kdv;
                 ?>
-                <tr>
+                <tr style="min-height: <?=$minHeight;?>;">
                     <th colspan="<?=$colspans[0];?>" class="text-center"><?= $count; ?></th>
                     <td colspan="<?=$colspans[1];?>"><?= $islem["isim"]; ?></td>
                     <td colspan="<?=$colspans[2];?>" class="text-center"><?= $islem["adet"]; ?></td>
@@ -167,7 +168,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             for ($i = 0; $i < $gosterilecenIslemSayisi; $i++) {
                 $count++;
                 ?>
-                <tr style="height:30px;">
+                <tr style="height: <?=$minHeight;?>;">
                     <th colspan="<?=$colspans[0];?>" class="text-center"></th>
                     <td colspan="<?=$colspans[1];?>"></td>
                     <td colspan="<?=$colspans[2];?>" class="text-center"></td>
