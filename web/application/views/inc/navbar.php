@@ -173,8 +173,13 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
               </a>
             </li>-->
             <li>
-              <a class="dropdown-item" href="#" onclick="bosFormYazdir();">
-                Boş Form Yazdır
+              <a class="dropdown-item" href="#" onclick="bosTeknikServisFormuYazdir();">
+                Boş Teknik Servis Formu Yazdır
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" onclick="bosMalzemeTeslimiFormuYazdir();">
+                Boş Malzeme Teslimi Formu Yazdır
               </a>
             </li>
           </ul>
@@ -271,7 +276,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
 </div>
 <script>
 
-  function bosFormYazdir() {
+  function bosTeknikServisFormuYazdir() {
     var url = "<?= base_url("cihaz/teknik_servis_formu/yazdir"); ?>/";
     bosTeknikServisFormuPencere = window.open(
       url,
@@ -280,6 +285,17 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
     );
     $(bosTeknikServisFormuPencere).ready(function () {
       //bosTeknikServisFormuPencere.print();
+    });
+  }
+  function bosMalzemeTeslimiFormuYazdir() {
+    var url = "<?= base_url("malzemeteslimi/yazdir"); ?>/";
+    bosMalzemeTeslimiFormuPencere = window.open(
+      url,
+      "bosMalzemeTeslimiFormuPencere",
+      'status=1,width=' + screen.availWidth + ',height=' + screen.availHeight
+    );
+    $(bosMalzemeTeslimiFormuPencere).ready(function () {
+      //bosMalzemeTeslimiFormuPencere.print();
     });
   }
   function basariliModalGoster() {
