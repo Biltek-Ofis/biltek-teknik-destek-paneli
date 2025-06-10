@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,9 +13,6 @@ class Alerts {
   }
 
   void guncelleme() {
-    if (kDebugMode) {
-      return;
-    }
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -24,16 +20,14 @@ class Alerts {
         return AlertDialog(
           title: Text("Güncelleme Mevcut"),
           content: Text(
-              "Uygulamanın güncel bir sürümü mevcut. Şimdi güncellemek ister misiniz?"),
+            "Uygulamanın güncel bir sürümü mevcut. Şimdi güncellemek ister misiniz?",
+          ),
           actions: [
             TextButton(
               onPressed: () async {
                 Uri url = Uri.parse(Ayarlar.download);
                 if (await canLaunchUrl(url)) {
-                  await launchUrl(
-                    url,
-                    mode: LaunchMode.externalApplication,
-                  );
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
                 }
               },
               child: Text("Güncelle"),
@@ -61,11 +55,7 @@ void yukleniyor(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(),
-            ),
+            SizedBox(width: 40, height: 40, child: CircularProgressIndicator()),
           ],
         ),
       );
