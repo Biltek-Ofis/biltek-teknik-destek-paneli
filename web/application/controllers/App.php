@@ -568,4 +568,7 @@ class App extends CI_Controller
     {
         header("Location: https://play.google.com/store/apps/details?id=tr.com.biltekbilgisayar.teknikservis");
     }
+    public function barkod_ozel(){
+        $this->load->view("icerikler/yazdir/barkod_ozel");
+    }
 }
