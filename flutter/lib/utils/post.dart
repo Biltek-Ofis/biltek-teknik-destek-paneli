@@ -20,9 +20,7 @@ class BiltekPost {
     List<http.MultipartFile> files,
     Map<String, String> data,
   ) async {
-    data.addAll({
-      "token": Ayarlar.token,
-    });
+    data.addAll({"token": Ayarlar.token});
 
     /*var headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -44,10 +42,10 @@ class BiltekPost {
   }
 
   static Future<http.StreamedResponse> post(
-      String url, Map<String, String> data) async {
-    data.addAll({
-      "token": Ayarlar.token,
-    });
+    String url,
+    Map<String, String> data,
+  ) async {
+    data.addAll({"token": Ayarlar.token});
 
     /*var headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -78,16 +76,14 @@ class BiltekPost {
   }
 
   static Future<KullaniciAuthModel?> kullaniciGetir(String auth) async {
-    var response = await BiltekPost.post(
-      Ayarlar.kullaniciGetir,
-      {
-        "auth": auth,
-      },
-    );
+    var response = await BiltekPost.post(Ayarlar.kullaniciGetir, {
+      "auth": auth,
+    });
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       KullaniciGetirModel kullaniciGetir = KullaniciGetirModel.fromJson(
-          jsonDecode(resp) as Map<String, dynamic>);
+        jsonDecode(resp) as Map<String, dynamic>,
+      );
       if (kullaniciGetir.durum) {
         return kullaniciGetir.kullanici;
       } else {
@@ -110,24 +106,15 @@ class BiltekPost {
       "limit": limit.toString(),
     };
     if (sorumlu != null) {
-      postMap.addAll({
-        "sorumlu": sorumlu.toString(),
-      });
+      postMap.addAll({"sorumlu": sorumlu.toString()});
     }
     if (arama != null) {
-      postMap.addAll({
-        "arama": arama,
-      });
+      postMap.addAll({"arama": arama});
     }
     if (specific.isNotEmpty) {
-      postMap.addAll({
-        "specific": jsonEncode(specific),
-      });
+      postMap.addAll({"specific": jsonEncode(specific)});
     }
-    var response = await BiltekPost.post(
-      Ayarlar.cihazlarTumu,
-      postMap,
-    );
+    var response = await BiltekPost.post(Ayarlar.cihazlarTumu, postMap);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -137,18 +124,17 @@ class BiltekPost {
             .toList();
       } on Exception {
         throw Exception(
-            "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+          "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+        );
       }
     } else {
       throw Exception(
-          "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
     }
   }
 
-  static Future<Cihaz?> cihazGetir({
-    int? servisNo,
-    int? takipNo,
-  }) async {
+  static Future<Cihaz?> cihazGetir({int? servisNo, int? takipNo}) async {
     if (servisNo == null && takipNo == null) {
       return null;
     }
@@ -159,10 +145,7 @@ class BiltekPost {
     if (takipNo != null) {
       postData.addAll({"takip_no": takipNo.toString()});
     }
-    var response = await BiltekPost.post(
-      Ayarlar.tekCihaz,
-      postData,
-    );
+    var response = await BiltekPost.post(Ayarlar.tekCihaz, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
@@ -174,7 +157,8 @@ class BiltekPost {
       }
     } else {
       debugPrint(
-          "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
       return null;
     }
   }
@@ -183,26 +167,18 @@ class BiltekPost {
     required String auth,
     required String fcmToken,
   }) async {
-    var response = await BiltekPost.post(
-      Ayarlar.fcmToken,
-      {
-        "auth": auth,
-        "fcmToken": fcmToken,
-      },
-    );
+    var response = await BiltekPost.post(Ayarlar.fcmToken, {
+      "auth": auth,
+      "fcmToken": fcmToken,
+    });
     await response.stream.bytesToString();
   }
 
-  static Future<void> fcmTokenSifirla({
-    required String? fcmToken,
-  }) async {
+  static Future<void> fcmTokenSifirla({required String? fcmToken}) async {
     if (fcmToken != null) {
-      var response = await BiltekPost.post(
-        Ayarlar.fcmTokenSifirla,
-        {
-          "fcmToken": fcmToken,
-        },
-      );
+      var response = await BiltekPost.post(Ayarlar.fcmTokenSifirla, {
+        "fcmToken": fcmToken,
+      });
       await response.stream.bytesToString();
     }
   }
@@ -210,11 +186,10 @@ class BiltekPost {
   static Future<void> fcmTokenGuncelle(String auth, String? fcmToken) async {
     if (fcmToken != null) {
       await SharedPreference.setString(
-          SharedPreference.fcmTokenString, fcmToken);
-      await BiltekPost.fcmToken(
-        auth: auth,
-        fcmToken: fcmToken,
+        SharedPreference.fcmTokenString,
+        fcmToken,
       );
+      await BiltekPost.fcmToken(auth: auth, fcmToken: fcmToken);
     }
   }
 
@@ -223,35 +198,28 @@ class BiltekPost {
     required int servisNo,
   }) async {
     try {
-      var response = await BiltekPost.post(
-        Ayarlar.bilgisayardaAc,
-        {
-          "kullanici_id": kullaniciID.toString(),
-          "servis_no": servisNo.toString(),
-        },
-      );
+      var response = await BiltekPost.post(Ayarlar.bilgisayardaAc, {
+        "kullanici_id": kullaniciID.toString(),
+        "servis_no": servisNo.toString(),
+      });
       await response.stream.bytesToString();
     } on Exception {
       debugPrint("Bilgisayarda ac çalışmadı");
     }
   }
 
-  static Future<List<MedyaModel>> medyalariGetir({
-    required int id,
-  }) async {
+  static Future<List<MedyaModel>> medyalariGetir({required int id}) async {
     Map<String, String> postData = {};
     postData.addAll({"id": id.toString()});
-    var response = await BiltekPost.post(
-      Ayarlar.medyalar,
-      postData,
-    );
+    var response = await BiltekPost.post(Ayarlar.medyalar, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
         var map = jsonDecode(resp) as List<dynamic>;
-        List<MedyaModel> medyaList = map
-            .map((m) => MedyaModel.fromJson(m as Map<String, dynamic>))
-            .toList();
+        List<MedyaModel> medyaList =
+            map
+                .map((m) => MedyaModel.fromJson(m as Map<String, dynamic>))
+                .toList();
         return medyaList;
       } on Exception catch (e) {
         debugPrint(e.toString());
@@ -259,7 +227,8 @@ class BiltekPost {
       }
     } else {
       debugPrint(
-          "Medyalar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Medyalar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
       return [];
     }
   }
@@ -277,9 +246,7 @@ class BiltekPost {
           filename: "upload.png",
         ),
       ],
-      {
-        "id": id.toString(),
-      },
+      {"id": id.toString()},
     );
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
@@ -296,15 +263,10 @@ class BiltekPost {
     return false;
   }
 
-  static Future<bool> medyaSil({
-    required int id,
-  }) async {
-    var response = await BiltekPost.post(
-      Ayarlar.medyaSil,
-      {
-        "id": id.toString(),
-      },
-    );
+  static Future<bool> medyaSil({required int id}) async {
+    var response = await BiltekPost.post(Ayarlar.medyaSil, {
+      "id": id.toString(),
+    });
     var resp = await response.stream.bytesToString();
     debugPrint(resp);
     if (response.statusCode == 201) {
@@ -322,10 +284,7 @@ class BiltekPost {
   }
 
   static Future<CihazDuzenlemeModel> cihazDuzenlemeGetir() async {
-    var response = await BiltekPost.post(
-      Ayarlar.cihazDuzenleme,
-      {},
-    );
+    var response = await BiltekPost.post(Ayarlar.cihazDuzenleme, {});
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
@@ -338,18 +297,14 @@ class BiltekPost {
       }
     } else {
       debugPrint(
-          "Cihaz Duzenleme yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Cihaz Duzenleme yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
       return CihazDuzenlemeModel.bos();
     }
   }
 
-  static Future<bool> cihazEkle({
-    required Map<String, String> postData,
-  }) async {
-    var response = await BiltekPost.post(
-      Ayarlar.cihazEkle,
-      postData,
-    );
+  static Future<bool> cihazEkle({required Map<String, String> postData}) async {
+    var response = await BiltekPost.post(Ayarlar.cihazEkle, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
@@ -369,13 +324,8 @@ class BiltekPost {
     required int id,
     required Map<String, String> postData,
   }) async {
-    postData.addAll({
-      "id": id.toString(),
-    });
-    var response = await BiltekPost.post(
-      Ayarlar.cihazDuzenle,
-      postData,
-    );
+    postData.addAll({"id": id.toString()});
+    var response = await BiltekPost.post(Ayarlar.cihazDuzenle, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
@@ -394,10 +344,7 @@ class BiltekPost {
   static Future<List<Lisans>> lisanslariGetir() async {
     Map<String, String> postMap = {};
 
-    var response = await BiltekPost.post(
-      Ayarlar.lisanslarTumu,
-      postMap,
-    );
+    var response = await BiltekPost.post(Ayarlar.lisanslarTumu, postMap);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -408,21 +355,20 @@ class BiltekPost {
             .toList();
       } on Exception {
         throw Exception(
-            "Lisanslar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+          "Lisanslar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+        );
       }
     } else {
       throw Exception(
-          "Lisanslar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Lisanslar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
     }
   }
 
   static Future<bool> lisansEkle({
     required Map<String, String> postData,
   }) async {
-    var response = await BiltekPost.post(
-      Ayarlar.lisansEkle,
-      postData,
-    );
+    var response = await BiltekPost.post(Ayarlar.lisansEkle, postData);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -445,13 +391,8 @@ class BiltekPost {
     required int id,
     required Map<String, String> postData,
   }) async {
-    postData.addAll({
-      "id": id.toString(),
-    });
-    var response = await BiltekPost.post(
-      Ayarlar.lisansDuzenle,
-      postData,
-    );
+    postData.addAll({"id": id.toString()});
+    var response = await BiltekPost.post(Ayarlar.lisansDuzenle, postData);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -471,14 +412,9 @@ class BiltekPost {
   }
 
   static Future<bool> lisansSil(int id) async {
-    Map<String, String> postMap = {
-      "id": id.toString(),
-    };
+    Map<String, String> postMap = {"id": id.toString()};
 
-    var response = await BiltekPost.post(
-      Ayarlar.lisansSil,
-      postMap,
-    );
+    var response = await BiltekPost.post(Ayarlar.lisansSil, postMap);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -500,10 +436,7 @@ class BiltekPost {
   static Future<List<Versiyon>> versiyonlariGetir() async {
     Map<String, String> postMap = {};
 
-    var response = await BiltekPost.post(
-      Ayarlar.versiyonlarTumu,
-      postMap,
-    );
+    var response = await BiltekPost.post(Ayarlar.versiyonlarTumu, postMap);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -514,21 +447,20 @@ class BiltekPost {
             .toList();
       } on Exception {
         throw Exception(
-            "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+          "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+        );
       }
     } else {
       throw Exception(
-          "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+        "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
     }
   }
 
   static Future<bool> versiyonEkle({
     required Map<String, String> postData,
   }) async {
-    var response = await BiltekPost.post(
-      Ayarlar.versiyonEkle,
-      postData,
-    );
+    var response = await BiltekPost.post(Ayarlar.versiyonEkle, postData);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -551,13 +483,8 @@ class BiltekPost {
     required int id,
     required Map<String, String> postData,
   }) async {
-    postData.addAll({
-      "id": id.toString(),
-    });
-    var response = await BiltekPost.post(
-      Ayarlar.versiyonDuzenle,
-      postData,
-    );
+    postData.addAll({"id": id.toString()});
+    var response = await BiltekPost.post(Ayarlar.versiyonDuzenle, postData);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
@@ -577,14 +504,9 @@ class BiltekPost {
   }
 
   static Future<bool> versiyonSil(int id) async {
-    Map<String, String> postMap = {
-      "id": id.toString(),
-    };
+    Map<String, String> postMap = {"id": id.toString()};
 
-    var response = await BiltekPost.post(
-      Ayarlar.versiyonSil,
-      postMap,
-    );
+    var response = await BiltekPost.post(Ayarlar.versiyonSil, postMap);
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {

@@ -6,10 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 
 class WebviewPage extends StatefulWidget {
-  const WebviewPage({
-    super.key,
-    required this.url,
-  });
+  const WebviewPage({super.key, required this.url});
 
   final String url;
 
@@ -32,26 +29,27 @@ class _WebviewPageState extends State<WebviewPage> {
   void initState() {
     super.initState();
 
-    pullToRefreshController = kIsWeb ||
-            ![TargetPlatform.iOS, TargetPlatform.android]
-                .contains(defaultTargetPlatform)
-        ? null
-        : PullToRefreshController(
-            settings: PullToRefreshSettings(
-              color: Colors.blue,
-            ),
-            onRefresh: () async {
-              if (defaultTargetPlatform == TargetPlatform.android) {
-                webViewController?.reload();
-              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                webViewController?.loadUrl(
-                  urlRequest: URLRequest(
-                    url: await webViewController?.getUrl(),
-                  ),
-                );
-              }
-            },
-          );
+    pullToRefreshController =
+        kIsWeb ||
+                ![
+                  TargetPlatform.iOS,
+                  TargetPlatform.android,
+                ].contains(defaultTargetPlatform)
+            ? null
+            : PullToRefreshController(
+              settings: PullToRefreshSettings(color: Colors.blue),
+              onRefresh: () async {
+                if (defaultTargetPlatform == TargetPlatform.android) {
+                  webViewController?.reload();
+                } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                  webViewController?.loadUrl(
+                    urlRequest: URLRequest(
+                      url: await webViewController?.getUrl(),
+                    ),
+                  );
+                }
+              },
+            );
   }
 
   @override
@@ -79,9 +77,7 @@ class _WebviewPageState extends State<WebviewPage> {
               child: InAppWebView(
                 key: webViewKey,
                 webViewEnvironment: webViewEnvironment,
-                initialUrlRequest: URLRequest(
-                  url: WebUri(widget.url),
-                ),
+                initialUrlRequest: URLRequest(url: WebUri(widget.url)),
                 initialSettings: settings,
                 pullToRefreshController: pullToRefreshController,
                 onWebViewCreated: (controller) {
@@ -95,8 +91,9 @@ class _WebviewPageState extends State<WebviewPage> {
                 },
                 onPermissionRequest: (controller, request) async {
                   return PermissionResponse(
-                      resources: request.resources,
-                      action: PermissionResponseAction.GRANT);
+                    resources: request.resources,
+                    action: PermissionResponseAction.GRANT,
+                  );
                 },
                 shouldOverrideUrlLoading: (controller, navigationAction) async {
                   var uri = navigationAction.request.url!;
@@ -108,13 +105,11 @@ class _WebviewPageState extends State<WebviewPage> {
                     "chrome",
                     "data",
                     "javascript",
-                    "about"
+                    "about",
                   ].contains(uri.scheme)) {
                     if (await canLaunchUrl(uri)) {
                       // Launch the App
-                      await launchUrl(
-                        uri,
-                      );
+                      await launchUrl(uri);
                       // and cancel the request
                       return NavigationActionPolicy.CANCEL;
                     }
@@ -144,17 +139,18 @@ class _WebviewPageState extends State<WebviewPage> {
                     this.progress = progress / 100;
                   });
                 },
-                onUpdateVisitedHistory:
-                    (controller, url, androidIsReload) async {
+                onUpdateVisitedHistory: (
+                  controller,
+                  url,
+                  androidIsReload,
+                ) async {
                   String tt = await webViewController?.getTitle() ?? "";
                   setState(() {
                     title = tt;
                   });
                 },
                 onConsoleMessage: (controller, consoleMessage) {
-                  if (kDebugMode) {
-                    debugPrint(consoleMessage.message);
-                  }
+                  debugPrint(consoleMessage.message);
                   /*if (consoleMessage.message == "window.close();" ||
                       consoleMessage.message == "window.close()") {
                     Navigator.pop(context);
