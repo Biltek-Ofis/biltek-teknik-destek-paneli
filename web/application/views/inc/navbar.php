@@ -31,15 +31,14 @@ $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
   .dropdown-menu:hover {
     /*display: block;*/
   }
-
 </style>
 <?php
 $detect = new Mobile_Detect();
 if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   ?>
   <div class="w-100 bg-success text-center">
-    <a href="<?= base_url("app/android"); ?>" target="_blank"><img
-        style="width:calc(100% / 3)" src="<?= base_url(" dist/img/app/google-play.png"); ?>" /></a>
+    <a href="<?= base_url("app/android"); ?>" target="_blank"><img style="width:calc(100% / 3)"
+        src="<?= base_url(" dist/img/app/google-play.png"); ?>" /></a>
   </div>
   <?php
 }
@@ -72,10 +71,10 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
         }
         ?>
         <li class="nav-item">
-            <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
-              href="<?= base_url("malzemeteslimi"); ?>">
-              Malzeme Teslimi
-            </a>
+          <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
+            href="<?= base_url("malzemeteslimi"); ?>">
+            Malzeme Teslimi
+          </a>
         </li>
         <?php
         if ($kullanicibilgileri123["yonetici"] == 1) {
@@ -173,6 +172,11 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
               </a>
             </li>-->
             <li>
+              <a class="dropdown-item" href="#" onclick="ozelBarkodYazdirPencere();">
+                Özel Barkod Yazdır
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item" href="#" onclick="bosTeknikServisFormuYazdir();">
                 Boş Teknik Servis Formu Yazdır
               </a>
@@ -184,7 +188,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             </li>
           </ul>
         </li>
-        <li class="nav-item align-items-center d-flex" >
+        <li class="nav-item align-items-center d-flex">
           <i class="fas fa-sun"></i>
           <!-- Default switch -->
           <div class="ms-2 form-check form-switch">
@@ -301,6 +305,42 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   function basariliModalGoster() {
     $("#statusSuccessModal").modal("show");
   }
+  function ozelBarkodYazdirPencere() {
+    $("#ozelBarkodYazdirModal").modal("show");
+  }
+  function ozelBarkodYazdir() {
+    var satir1 = $("#ozelBarkodSatir1").val();
+    var satir1YaziBoyutu = $("#ozelBarkodSatir1Yazi").val();
+    var satir1YaziBoyutuSelect = $("#ozelBarkodSatir1YaziSelect").val();
+    var satir1Align = $("#ozelBarkodSatir1HizaSelect").val();
+
+    var satir2 = $("#ozelBarkodSatir2").val();
+    var satir2YaziBoyutu = $("#ozelBarkodSatir2Yazi").val();
+    var satir2YaziBoyutuSelect = $("#ozelBarkodSatir2YaziSelect").val();
+    var satir2Align = $("#ozelBarkodSatir2HizaSelect").val();
+
+    var satir3 = $("#ozelBarkodSatir3").val();
+    var satir3YaziBoyutu = $("#ozelBarkodSatir3Yazi").val();
+    var satir3YaziBoyutuSelect = $("#ozelBarkodSatir3YaziSelect").val();
+    var satir3Align = $("#ozelBarkodSatir3HizaSelect").val();
+
+    var url = "<?= base_url("app/barkod_ozel"); ?>/"
+      + "?satir1=" + satir1
+      + "&satir1YaziBoyut=" + satir1YaziBoyutu + "" + satir1YaziBoyutuSelect
+      + "&satir1Align=" + satir1Align
+
+      + "&satir2=" + satir2
+      + "&satir2YaziBoyut=" + satir2YaziBoyutu + "" + satir2YaziBoyutuSelect
+      + "&satir2Align=" + satir2Align
+      + "&satir3=" + satir3
+      + "&satir3YaziBoyut=" + satir3YaziBoyutu + "" + satir3YaziBoyutuSelect
+      + "&satir3Align=" + satir3Align
+    ozelBarkodYazdirPencereObj = window.open(
+      url,
+      "ozelBarkodYazdirPencereObj",
+      'status=1,width=' + screen.availWidth + ',height=' + screen.availHeight
+    );
+  }
   $(document).ready(function () {
     $("#duyuru_gonder_form").submit(function (e) {
       $("#kaydediliyorModal").modal("show");
@@ -416,6 +456,83 @@ if ($kullanicibilgileri123["yonetici"] == 1) {
           <span class="sr-only">İşlem gerçekleştiriliyor...</span>
         </div>
         <p>İşlem gerçekleştiriliyor...</p>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+function yazi($satir)
+{
+  return '<label for="ozelBarkodSatir' . $satir . '" class="form-label">Yazı:</label>
+          <input id="ozelBarkodSatir' . $satir . '" type="text" class="form-control" placeholder="1. Satır Yazısı" />';
+}
+function yaziBoyutu($satir)
+{
+  return '<label for="ozelBarkodSatir' . $satir . 'Yazi" class="form-label">Yazı Boyutu:</label>
+          <div class="input-group">
+            <input id="ozelBarkodSatir' . $satir . 'Yazi" type="number" class="form-control" placeholder="Satır ' . $satir . ' Yazı Boyutu"
+              aria-label="Satır ' . $satir . ' Yazı Boyutu" value="17">
+            <select class="form-select" id="ozelBarkodSatir' . $satir . 'YaziSelect">
+              <option value="px">px</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>';
+}
+function hizala($satir)
+{
+  return '<label for="ozelBarkodSatir' . $satir . 'HizaSelect" class="form-label">Hizalama:</label>
+          <div class="input-group">
+            <select class="form-select" id="ozelBarkodSatir' . $satir . 'HizaSelect">
+              <option value="left">Sola Yasla</option>
+              <option value="center" selected>Ortala</option>
+              <option value="right">Sağa Yasla</option>
+            </select>
+          </div>';
+}
+?>
+<div class="modal fade" id="ozelBarkodYazdirModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="ozelBarkodYazdirModalTitle" style="z-index: 1040; display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ozelBarkodYazdirModalTitle">Özel Barkod Yazdır</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <H5>Satır 1</H5>
+        <div class="mb-3">
+          <?=yazi("1");?>
+        </div>
+        <div class="mb-3">
+          <?= yaziBoyutu("1"); ?>
+        </div>
+        <div class="mb-3">
+          <?= hizala("1"); ?>
+        </div>
+        <H5>Satır 2</H5>
+        <div class="mb-3">
+          <?=yazi("2");?>
+        </div>
+        <div class="mb-3">
+          <?= yaziBoyutu("2"); ?>
+        </div>
+        <div class="mb-3">
+          <?= hizala("2"); ?>
+        </div>
+        <H5>Satır 3</H5>
+        <div class="mb-3">
+          <?=yazi("3");?>
+        </div>
+        <div class="mb-3">
+          <?= yaziBoyutu("3"); ?>
+        </div>
+        <div class="mb-3">
+          <?= hizala("3"); ?>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="ozelBarkodYazdir()">Yazdır</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
       </div>
     </div>
   </div>
