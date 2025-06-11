@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $ayarlar = $this->Ayarlar_Model->getir();
 ?>
-<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
 <script>
     function parantezEkle(deger) {
         if (deger.length > 0) {
