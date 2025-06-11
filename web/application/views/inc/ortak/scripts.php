@@ -2,7 +2,7 @@
 echo '
 <script src="' . base_url("dist/js/panel.min.js") . '"></script>
 <script src="' . base_url("dist/js/patternlock/patternlock.js") . '" charset="utf-8"></script>
-<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
 <script src="' . base_url("dist/js/kis.js") . '" defer></script>';
 echo '
 <script>
