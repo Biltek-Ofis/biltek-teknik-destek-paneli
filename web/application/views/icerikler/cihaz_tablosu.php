@@ -40,6 +40,15 @@ $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
 
 echo '<script>
+    function tabloyaCihazEkle(el, id, draw){
+      var cihazVarmi = $("#cihaz"+id).length > 0;
+      if(!cihazVarmi){
+        cihazlarTablosu.row.add($(el));
+      }
+      if(draw){
+        cihazlarTablosu.draw();
+      }    
+    }
   var bildirim_tarihi_degisti = false;
   if(yeniCihazGirisiAcik === null){
     var yeniCihazGirisiAcik = false;
@@ -249,7 +258,7 @@ echo '<script>
     });
   }
   function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
-    /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
+    /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
     
     cihazBilgileriniGetir();
@@ -417,7 +426,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
   <td><span class="{id}GuncelDurum">{guncel_durum}</span></td>
   <td><span class="{id}Sorumlu">{sorumlu}</span></td>
   <td class="text-center">
-    <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
+    <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
    ' . ($sorumlu_belirtildimi ? "" : '<!--<button class="btn btn-info text-white" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>-->') . '
   <!--<button class="btn btn-secondary" onclick="barkoduYazdir({id})">Barkodu Yazdır</button>-->
   </td>
@@ -1483,9 +1492,7 @@ echo 'function cihazBilgileriniGetir(){
     $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {})
       .done(function(data) {
         $.each(JSON.parse(data), function(index, value) {
-          const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
+          const cihazVarmi = $("#cihaz" + value.id).length > 0;
           if (cihazVarmi) {
             butonDurumu(value.guncel_durum);
             var toplam = 0;
@@ -1803,7 +1810,7 @@ echo '
                     //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
                     let tabloOrnek = \'' . $tabloOrnek . '\';
                     const tablo = donustur(tabloOrnek, value, false);
-                    cihazlarTablosu.row.add($(tablo));
+                    tabloyaCihazEkle(tablo, value.id, false);
                   });
                   $("#yukleniyorDaire").hide();
                   $("#cihazTablosu").show();
@@ -1944,6 +1951,7 @@ echo '$(document).ready(function() {
       }
 echo '
     ];
+    
     $.fn.dataTable.ext.type.detect.unshift( function ( data ) {
       if (typeof data !== "undefined") {
           if ( data != null )  {
@@ -2009,9 +2017,7 @@ echo '
       cihazBilgileriniGetir();
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
-          const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
+          const cihazVarmi = $( "#cihaz" + value.id).length > 0;
           if (cihazVarmi) {
             cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
@@ -2042,13 +2048,12 @@ echo '
       if(gorunenCihazlarIDs.length > 0){
         $.post(\'' . base_url("cihazyonetimi" . "/cihazlarTumuJQ/") . '\', {spesifik:gorunenCihazlarIDs}, function(data) {
           $.each(JSON.parse(data), function(index, value) {
-            const cihazVarmi = document.querySelectorAll(
-              "#cihaz" + value.id
-            ).length > 0;
+            const cihazVarmi = $("#cihaz" + value.id).length > 0;
             if (cihazVarmi) {
+              console.log("Değişti");
               let cihazDetayBtnOnclick = \'' . $cihazDetayBtnOnclick . '\';
               const cihazDetayBtn = donustur(cihazDetayBtnOnclick, value, true);
-              $("button[id^=\'cihazDetayBtn"+value.id+"\']").each(function () {
+              $(".cihazDetayBtn"+value.id).each(function () {
                 $(this).attr("onclick", cihazDetayBtn);
               });
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn" + value.id).attr("onClick", cihazDetayBtn);
@@ -2088,15 +2093,13 @@ echo '
       }
       $.get(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarJQ/") . '\' + sonCihazID, {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
-            const cihazVarmi = document.querySelectorAll(
-            "#cihaz" + value.id
-          ).length > 0;
+          const cihazVarmi = $("#cihaz" + value.id).length > 0;
           if (!cihazVarmi && cihazlarArama.length == 0 && cihazlarSayfa == 1) {
             //cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
             let tabloOrnek = \'' . $tabloOrnek . '\';
             
             const tablo = donustur(tabloOrnek, value, true);
-            cihazlarTablosu.row.add($(tablo)).draw();
+            tabloyaCihazEkle(tablo, value.id, true);
             //$("#cihazlar").prepend(tablo);
           }
         });
