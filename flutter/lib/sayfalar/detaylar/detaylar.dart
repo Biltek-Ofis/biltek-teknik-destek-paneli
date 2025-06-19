@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:biltekteknikservis/models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -413,12 +414,40 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     String telefon = telefonNumarasi();
 
     if (telefonGecerli(telefon)) {
-      await FlutterContacts.openExternalInsert(
-        Contact(
-          displayName: cihaz!.musteriAdi.trim(),
-          phones: [Phone(telefon)],
-        ),
-      );
+      if (await FlutterContacts.requestPermission()) {
+        Phone phone = Phone(telefon);
+        List<Contact> contacts = await FlutterContacts.getContacts(
+          withProperties: true,
+        );
+
+        contacts =
+            contacts.where((c) {
+              List<Phone> p =
+                  c.phones.where((p) => p.number == phone.number).toList();
+              return p.isNotEmpty;
+            }).toList();
+        for (var element in contacts) {
+          debugPrint("Bulunan kişi: ${element.displayName}");
+        }
+        if (contacts.isEmpty) {
+          Contact contact = Contact(
+            displayName: cihaz!.musteriAdi.trim(),
+            name: Name(first: cihaz!.musteriAdi.trim()),
+            phones: [phone],
+          );
+          await contact.insert();
+          toast("Müşteri rehbere kaydedildi", duration: Toast.LENGTH_LONG);
+        } else {
+          toast("Müşteri kaydı zaten mevcut");
+        }
+
+        //await FlutterContacts.openExternalEdit(contact.id);
+      } else {
+        toast(
+          "Bu işlem için kişilere izin vermeniz gerekiyor.",
+          duration: Toast.LENGTH_LONG,
+        );
+      }
     } else {
       _gecersizTelefonDialog();
     }
