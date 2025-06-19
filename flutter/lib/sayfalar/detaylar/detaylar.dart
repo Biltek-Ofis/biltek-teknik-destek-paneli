@@ -4,6 +4,7 @@ import 'package:biltekteknikservis/models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -130,7 +131,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                         await _whatsapp();
                         break;
                       case "kisilereEkle":
-                        await _kisilereEkle();
+                        await _kisiEkle();
                         break;
                     }
                   },
@@ -410,11 +411,52 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     }
   }
 
-  Future<void> _kisilereEkle() async {
+  Future<void> _kisiEkle() async {
+    await _kisiKontrol();
+  }
+
+  Future<void> _kisiDuzenle() async {
+    await _kisiKontrol(duzenle: true);
+  }
+
+  void kisiIzniUyari() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Kişi İzni Reddedildi"),
+          content: Text(
+            "Kişiler izni reddedilmiş. Bu işleme devam edebilmek için izin Kişiler izni vermelisiniz. Ayarlardan izin verebilirsiniz. Ne yapmak istiyorsunuz?",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                openAppSettings();
+              },
+              child: Text("Ayarları Aç"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("İptal"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _kisiKontrol({bool duzenle = false}) async {
     String telefon = telefonNumarasi();
 
     if (telefonGecerli(telefon)) {
-      if (await FlutterContacts.requestPermission()) {
+      if (await Permission.contacts.isPermanentlyDenied) {
+        kisiIzniUyari();
+        return;
+      }
+      if (await Permission.contacts.request().isGranted) {
         Phone phone = Phone(telefon);
         List<Contact> contacts = await FlutterContacts.getContacts(
           withProperties: true,
@@ -429,24 +471,32 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         for (var element in contacts) {
           debugPrint("Bulunan kişi: ${element.displayName}");
         }
+        Contact? contact;
         if (contacts.isEmpty) {
-          Contact contact = Contact(
+          Contact contactTemp = Contact(
             displayName: cihaz!.musteriAdi.trim(),
             name: Name(first: cihaz!.musteriAdi.trim()),
             phones: [phone],
           );
-          await contact.insert();
-          toast("Müşteri rehbere kaydedildi", duration: Toast.LENGTH_LONG);
-        } else {
-          toast("Müşteri kaydı zaten mevcut");
+          contact = await contactTemp.insert();
+          if (!duzenle) {
+            toast("Müşteri rehbere kaydedildi");
+          }
         }
-
-        //await FlutterContacts.openExternalEdit(contact.id);
+        if (contacts.isNotEmpty) {
+          if (duzenle) {
+            contact = contacts.first;
+          } else {
+            toast("Müşteri kaydı zaten mevcut");
+          }
+        }
+        if (duzenle && contact != null) {
+          await FlutterContacts.openExternalEdit(contact.id);
+          toast("Müşteri düzenleme tamamlandı");
+        }
       } else {
-        toast(
-          "Bu işlem için kişilere izin vermeniz gerekiyor.",
-          duration: Toast.LENGTH_LONG,
-        );
+        kisiIzniUyari();
+        return;
       }
     } else {
       _gecersizTelefonDialog();
@@ -585,33 +635,51 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           children: [
                             Text(cihaz!.telefonNumarasi),
                             SizedBox(height: 2),
-                            Row(
+                            Column(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    await _ara();
-                                  },
-                                  icon: Icon(Icons.phone),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        await _ara();
+                                      },
+                                      icon: Icon(Icons.phone),
+                                    ),
+                                    SizedBox(width: 1),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await _whatsapp();
+                                      },
+                                      icon: Image.asset(
+                                        BiltekAssets.whatsapp,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 1),
-                                IconButton(
-                                  onPressed: () async {
-                                    await _kisilereEkle();
-                                  },
-                                  icon: Icon(Icons.contact_page),
-                                ),
-                                SizedBox(width: 1),
-                                IconButton(
-                                  onPressed: () async {
-                                    await _whatsapp();
-                                  },
-                                  icon: Image.asset(
-                                    BiltekAssets.whatsapp,
-                                    width: 24,
-                                    height: 24,
-                                  ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        await _kisiDuzenle();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                    SizedBox(width: 1),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await _kisiEkle();
+                                      },
+                                      icon: Icon(Icons.contact_page),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

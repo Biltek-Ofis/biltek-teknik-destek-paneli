@@ -1,7 +1,7 @@
 name: biltekteknikservis
 description: "Teknik servis uygulamasi"
 publish_to: 'none'
-version: 0.9.7+97
+version: 0.9.8+98
 
 environment:
   sdk: ^3.7.2
@@ -36,6 +36,7 @@ dependencies:
   mask_text_input_formatter: ^2.9.0
   google_fonts: ^6.2.1
   flutter_keyboard_visibility: ^6.0.0
+  permission_handler: ^11.4.0
 
 dev_dependencies:
   flutter_test:
