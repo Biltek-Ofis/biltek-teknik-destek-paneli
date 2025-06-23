@@ -395,6 +395,19 @@ INSERT INTO `ts1_ozelid` (`id_adi`, `id_grup`, `id_val`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tablo için tablo yapısı `ts1_sessions`
+--
+
+CREATE TABLE `ts1_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `data` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tablo için tablo yapısı `ts1_silinencihazlar`
 --
 
@@ -579,6 +592,13 @@ ALTER TABLE `ts1_musteriler`
 --
 ALTER TABLE `ts1_ozelid`
   ADD PRIMARY KEY (`id_adi`);
+
+--
+-- Tablo için indeksler `ts1_sessions`
+--
+ALTER TABLE `ts1_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ts1_sessions_timestamp` (`timestamp`);
 
 --
 -- Tablo için indeksler `ts1_silinencihazlar`
