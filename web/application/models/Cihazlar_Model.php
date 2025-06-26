@@ -924,12 +924,13 @@ class Cihazlar_Model extends CI_Model
         return $results;
     }
 
-    public function yapilanIslemArray($cihaz_id, $islem_sayisi, $ad, $birim_fiyat, $miktar, $kdv)
+    public function yapilanIslemArray($cihaz_id, $islem_sayisi, $ad, $maliyet, $birim_fiyat, $miktar, $kdv)
     {
         return array(
             "cihaz_id" => $cihaz_id,
             "islem_sayisi" => $islem_sayisi,
             "ad" => $ad,
+            "maliyet" => $maliyet,
             "birim_fiyat" => $birim_fiyat,
             "miktar" => $miktar,
             "kdv" => $kdv

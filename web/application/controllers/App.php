@@ -402,13 +402,22 @@ class App extends CI_Controller
                     for ($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++) {
                         $islem = $this->input->post("islem" . $i);
                         $miktar = $this->input->post("miktar" . $i);
+                        $maliyet = $this->input->post("maliyet" . $i);
+                        if(isset($maliyet)){
+                            if(strlen($maliyet) == 0){
+                                $maliyet = 0;
+                            }
+                        }else{
+                            $maliyet = 0;
+                        }
                         $birim_fiyati = $this->input->post("birim_fiyati" . $i);
                         $kdv = $this->input->post("kdv_" . $i);
                         if(isset($islem) && !empty($islem)){
                             $yapilanIslemVeri = $this->Cihazlar_Model->yapilanIslemArray(
                                 $id, 
                                 $i, 
-                                $islem, 
+                                $islem,
+                                $maliyet,
                                 $birim_fiyati, 
                                 $miktar, 
                                 $kdv

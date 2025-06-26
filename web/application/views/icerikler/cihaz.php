@@ -10,9 +10,9 @@ echo '<script>
         });*/
     });
 </script>
-<script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
-<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
-<script src="' . base_url("dist/js/forms.js") . '"></script>
+<script src="' . base_url("dist/js/cihaz.min.js?v=1.0") . '"></script>
+<script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
+<script src="' . base_url("dist/js/forms.js?v=1.0") . '"></script>
 <div class="content-wrapper">';
 $this->load->view("inc/content_header", array(
     "contentHeader" => array(
@@ -290,6 +290,7 @@ echo '</td>
                                             <!--<th>SK</th>-->
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
+                                            <th>Maliyet</th>
                                             <th>Birim Fiyat (TL)</th>
                                             <th>KDV Oranı (%)</th>
                                             <th>Tutar</th>
