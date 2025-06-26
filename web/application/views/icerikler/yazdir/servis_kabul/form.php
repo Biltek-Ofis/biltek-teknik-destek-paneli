@@ -13,8 +13,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
     $this->load->view("inc/eski/styles");
     $this->load->view("inc/eski/scripts");
     ?>
-    <script src="<?= base_url("dist/js/JsBarcode.all.min.js"); ?>"></script>
-    <script src="<?= base_url("dist/js/qrcode.min.js"); ?>"></script>
+    <script src="<?= base_url("dist/js/JsBarcode.all.min.js?v=1.0"); ?>"></script>
+    <script src="<?= base_url("dist/js/qrcode.min.js?v=1.0"); ?>"></script>
     <?php
     $this->load->view("inc/style_yazdir");
     $this->load->view("inc/style_yazdir_tablo");

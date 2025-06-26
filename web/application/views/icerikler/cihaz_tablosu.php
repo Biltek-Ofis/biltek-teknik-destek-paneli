@@ -1,9 +1,9 @@
 <?php $this->load->view("inc/datatables_scripts");
 
 $tema = $this->Ayarlar_Model->kullaniciTema();
-echo '<script src="' . base_url("dist/js/cihaz.min.js") . '"></script>
-<script src="' . base_url("dist/js/cihazyonetimi.min.js") . '"></script>
-<script src="'. base_url("dist/js/qrcode.min.js").'"></script>';
+echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.0") . '"></script>
+<script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
+<script src="'. base_url("dist/js/qrcode.min.js?v=1.0").'"></script>';
 
 echo '<style>
   .modal.modal-fullscreen .modal-dialog {
@@ -434,6 +434,15 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
 </tr>';
 $ilkOgeGenislik = "40%";
 $ikinciOgeGenislik = "60%";
+
+$yediliIlkOgeGenislik = "40%";
+$yediliIkinciOgeGenislik = "10%";
+$yediliUcuncuOgeGenislik = "10%";
+$yediliDorduncuOgeGenislik = "10%";
+$yediliBesinciOgeGenislik = "10%";
+$yediliAltinciOgeGenislik = "10%";
+$yediliYedinciOgeGenislik = "10%";
+
 $besliIlkOgeGenislik = "40%";
 $besliIkinciOgeGenislik = "10%";
 $besliUcuncuOgeGenislik = "10%";
@@ -759,12 +768,13 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
               </ul>
               <ul class="list-group list-group-horizontal">
-                <li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';"><span class="fw-bold">Malzeme/İşçilik</span></li>
-                <li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';"><span class="fw-bold">Miktar</span></li>
-                <li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';"><span class="fw-bold">Birim Fiyatı</span></li>
-                <li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';"><span class="fw-bold">KDV</span></li>
-                <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="fw-bold">Tutar (KDV\'siz)</span></li>
-                <li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';"><span class="fw-bold">Toplam</span></li>
+                <li class="list-group-item" style="width:' . $yediliIlkOgeGenislik . ';"><span class="fw-bold">Malzeme/İşçilik</span></li>
+                <li class="list-group-item" style="width:' . $yediliIkinciOgeGenislik . ';"><span class="fw-bold">Miktar</span></li>
+                <li class="list-group-item" style="width:' . $yediliUcuncuOgeGenislik . ';"><span class="fw-bold">Maliyet</span></li>
+                <li class="list-group-item" style="width:' . $yediliDorduncuOgeGenislik . ';"><span class="fw-bold">Birim Fiyatı</span></li>
+                <li class="list-group-item" style="width:' . $yediliBesinciOgeGenislik . ';"><span class="fw-bold">KDV</span></li>
+                <li class="list-group-item" style="width:' . $yediliAltinciOgeGenislik . ';"><span class="fw-bold">Tutar (KDV\'siz)</span></li>
+                <li class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';"><span class="fw-bold">Toplam</span></li>
               </ul>
               <div id="yapilanIslem">
                 
@@ -933,6 +943,7 @@ $(document).ready(function(){
                             <!--<th>SK</th>-->
                             <th>Malzeme/İşçilik</th>
                             <th>Miktar</th>
+                            <th>Maliyet</th>
                             <th>Birim Fiyat (TL)</th>
                             <th>KDV Oranı (%)</th>
                             <th>KDV</th>
@@ -941,6 +952,10 @@ $(document).ready(function(){
                         </tr>
                       </thead>
                       <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
+                        <tr>
+                            <th colspan="5">Toplam Maliyet</th>
+                            <td colspan="3" id="yapilanIslemToplamMaliyet">0 TL</td>
+                        </tr>
                         <tr>
                             <th colspan="5">Toplam</th>
                             <td colspan="3" id="yapilanIslemToplam">0 TL</td>
@@ -952,6 +967,10 @@ $(document).ready(function(){
                         <tr>
                             <th colspan="5">Genel Toplam</th>
                             <td colspan="3" id="yapilanIslemGenelToplam">0 TL</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">Toplam Kar</th>
+                            <td colspan="3" id="yapilanIslemToplamKar">0 TL</td>
                         </tr>
                         <tr>
                             <td colspan="8">
@@ -1042,12 +1061,13 @@ $(document).ready(function(){
   </div>
 </div>';
 $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
-<li class="list-group-item" style="width:' . $besliIlkOgeGenislik . ';">{islem}</li>
-<li class="list-group-item" style="width:' . $besliIkinciOgeGenislik . ';">{miktar}</li>
-<li class="list-group-item" style="width:' . $besliUcuncuOgeGenislik . ';">{fiyat} TL</li>
-<li class="list-group-item" style="width:' . $besliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
-<li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
-<li class="list-group-item" style="width:' . $besliDorduncuOgeGenislik . ';">{toplam_islem_fiyati_kdvli} TL</li>
+<li class="list-group-item" style="width:' . $yediliIlkOgeGenislik . ';">{islem}</li>
+<li class="list-group-item" style="width:' . $yediliIkinciOgeGenislik . ';">{miktar}</li>
+<li class="list-group-item" style="width:' . $yediliUcuncuOgeGenislik . ';">{maliyet}</li>
+<li class="list-group-item" style="width:' . $yediliDorduncuOgeGenislik . ';">{fiyat} TL</li>
+<li class="list-group-item" style="width:' . $yediliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
+<li class="list-group-item" style="width:' . $yediliAltinciOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
+<li class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';">{toplam_islem_fiyati_kdvli} TL</li>
 </ul>';
 $yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">{toplam_aciklama}</span></li>
@@ -1138,6 +1158,7 @@ $yapilanIslemToplamEskiArray = array(
 $yapilanIslemEskiArray = array(
   "{islem}",
   "{miktar}",
+  "{maliyet}",
   "{fiyat}",
   "{toplam_islem_kdv}",
   "{toplam_islem_fiyati}",
@@ -1162,6 +1183,7 @@ foreach ($cihazlar as $cihaz) {
       $yapilanIslemYeniArray_suan = array(
         $islem->ad,
         $islem->kdv,
+        $islem->maliyet,
         $islem->birim_fiyat,
         $kdv_suan,
         $toplam_islem_fiyati_suan,
@@ -1495,6 +1517,7 @@ echo 'function cihazBilgileriniGetir(){
           const cihazVarmi = $("#cihaz" + value.id).length > 0;
           if (cihazVarmi) {
             butonDurumu(value.guncel_durum);
+            var toplamMaliyet = 0;
             var toplam = 0;
             var kdv = 0;
             var yapilanIslemler = "";
@@ -1506,6 +1529,7 @@ echo 'function cihazBilgileriniGetir(){
             ayrilma_durumu_tetikle = false;
             $("#dt_duzenle input#yapilanIslem'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslemMaliyet'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
             $("#dt_duzenle input#yapilanIslemKdv'.$i.'").val("").change();
             ayrilma_durumu_tetikle = true;
@@ -1516,12 +1540,15 @@ echo '
             if(Object.keys(value.islemler).length > 0){
               jQuery.each(value.islemler, function(i, islem) {
                 var yapilan_islem_tutari_suan = islem.birim_fiyat * islem.miktar;
+                console.log("Maliyet:" + islem.maliyet);
+                toplamMaliyet = toplamMaliyet + parseFloat(islem.maliyet);
                 toplam = toplam + yapilan_islem_tutari_suan;
                 var kdv_suan = ((yapilan_islem_tutari_suan / 100) * islem.kdv);
                 kdv = kdv + kdv_suan;
                 yapilanIslemler += islemlerSatiri
                   .replaceAll("{islem}", islem.ad)
                   .replaceAll("{miktar}", islem.miktar)
+                  .replaceAll("{maliyet}", islem.maliyet)
                   .replaceAll("{fiyat}", islem.birim_fiyat)
                   .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_suan).toFixed(2))
                   .replaceAll("{toplam_islem_fiyati}", parseFloat(yapilan_islem_tutari_suan).toFixed(2))
@@ -1532,6 +1559,7 @@ echo '
                 ayrilma_durumu_tetikle = false;
                 $("#dt_duzenle input#yapilanIslem"+dz_islemSayisi).val(islem.ad).change();
                 $("#dt_duzenle input#yapilanIslemMiktar"+dz_islemSayisi).val(islem.miktar).change();
+                $("#dt_duzenle input#yapilanIslemMaliyet"+dz_islemSayisi).val(islem.maliyet).change();
                 $("#dt_duzenle input#yapilanIslemFiyat"+dz_islemSayisi).val(islem.birim_fiyat).change();
                 $("#dt_duzenle input#yapilanIslemKdv"+dz_islemSayisi).val(islem.kdv).change();
                 ayrilma_durumu_tetikle = true;            
@@ -1540,10 +1568,12 @@ echo '
               var yapilanIslemler = islemlerSatiriBos;
             }
             var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
+            var toplamMaliyetDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam Maliyet").replaceAll("{toplam_fiyat}", parseFloat(toplamMaliyet).toFixed(2));
             var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
             var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
             var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
-            yapilanIslemler += toplamDiv + kdvDiv + genelToplamDiv;
+            var toplamKarDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam Kar").replaceAll("{toplam_fiyat}", parseFloat(toplam - toplamMaliyet).toFixed(2));
+            yapilanIslemler += toplamMaliyetDiv + toplamDiv + kdvDiv + genelToplamDiv + toplamKarDiv;
             $("#yapilanIslem").html(yapilanIslemler);
             //QRYenile(value.servis_no);
             $("#ServisNo2").html(value.servis_no);

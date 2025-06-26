@@ -241,6 +241,7 @@ CREATE TABLE `ts1_islemler` (
   `cihaz_id` int(11) NOT NULL,
   `islem_sayisi` int(1) NOT NULL,
   `ad` varchar(255) NOT NULL,
+  `maliyet` decimal(28,2) NOT NULL DEFAULT 0.00,
   `birim_fiyat` decimal(28,2) NOT NULL DEFAULT 0.00,
   `miktar` int(11) NOT NULL DEFAULT 0,
   `kdv` decimal(5,2) NOT NULL DEFAULT 0.00

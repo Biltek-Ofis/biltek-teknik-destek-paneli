@@ -30,6 +30,12 @@ echo '<tr id="yapilamIslemRow' . $index . '">
             <input id="yapilanIslemMiktar' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="miktar' . $index . '" class="form-control" type="number" placeholder="Miktar" value="' . (isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["miktar"] : "") . '"' . (isset($yapilanIslemArr["islem"]) ? " required" : "") . '>
         </div>
     </td>
+    
+    <td>
+        <div class="p-0 m-0 col">
+            <input id="yapilanIslemMaliyet' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="maliyet' . $index . '" class="form-control" type="number" placeholder="Maliyet" value="' . (isset($yapilanIslemArr["maliyet"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["maliyet"] : "") . '">
+        </div>
+    </td>
     <td>
         <div class="p-0 m-0 col">
             <input id="yapilanIslemFiyat' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="birim_fiyati' . $index . '" class="form-control" type="number" placeholder="Birim Fiyatı" value="' . (isset($yapilanIslemArr["birim_fiyati"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["birim_fiyati"] : "") . '" step="0.01"' . (isset($yapilanIslemArr["islem"]) ? " required" : "") . '>
