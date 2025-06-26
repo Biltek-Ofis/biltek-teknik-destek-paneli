@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/widgets/overlay_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -6,10 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_io/io.dart';
 
 import 'firebase_ayarlari.dart';
 import 'models/kullanici.dart';
@@ -33,54 +32,14 @@ void main() async {
 
   await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FirebaseMessaging.onMessage.listen(
-    (message) {
-      if (Platform.isAndroid) {
-        FlutterRingtonePlayer().playNotification();
-      }
-      showOverlayNotification(
-        (context) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            child: SafeArea(
-              child: ListTile(
-                leading: SizedBox.fromSize(
-                  size: Size(message.notification?.title != null ? 40 : 20,
-                      message.notification?.title != null ? 40 : 20),
-                  child: ClipOval(
-                    child: Container(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                title: Text(message.notification?.title != null
-                    ? message.notification!.title!
-                    : (message.notification?.body != null
-                        ? message.notification!.body!
-                        : "")),
-                subtitle: message.notification?.title != null
-                    ? (message.notification?.body != null
-                        ? Text(message.notification!.body!)
-                        : null)
-                    : null,
-                trailing: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    OverlaySupportEntry.of(context)?.dismiss();
-                  },
-                ),
-              ),
-            ),
-          );
-        },
-        duration: Duration(milliseconds: 4000),
-      );
-    },
-  );
+  FirebaseMessaging.onMessage.listen((message) {
+    showNotification(
+      title: message.notification?.title,
+      body: message.notification?.body,
+    );
+  });
 
   runApp(const MyApp());
 }
@@ -100,16 +59,17 @@ class MyApp extends StatelessWidget {
               title: 'Biltek Teknik Servis',
               theme: ThemeModel.light,
               darkTheme: ThemeModel.dark,
-              themeMode: myNotifier.isDark == null
-                  ? ThemeMode.system
-                  : (myNotifier.isDark! ? ThemeMode.dark : ThemeMode.light),
+              themeMode:
+                  myNotifier.isDark == null
+                      ? ThemeMode.system
+                      : (myNotifier.isDark! ? ThemeMode.dark : ThemeMode.light),
               debugShowCheckedModeBanner: false,
               scrollBehavior: const MaterialScrollBehavior().copyWith(
                 dragDevices: {
                   PointerDeviceKind.mouse,
                   PointerDeviceKind.touch,
                   PointerDeviceKind.stylus,
-                  PointerDeviceKind.unknown
+                  PointerDeviceKind.unknown,
                 },
               ),
               localizationsDelegates: [
@@ -134,52 +94,47 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<MyNotifier>(
-          builder: (context, MyNotifier myNotifier, child) {
-        return FutureBuilder<String?>(
-          future: SharedPreference.getString(SharedPreference.authString),
-          builder: (context, AsyncSnapshot<String?> authSnapshot) {
-            if (authSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (authSnapshot.hasData && authSnapshot.data != null) {
-                return FutureBuilder<KullaniciAuthModel?>(
-                  future: BiltekPost.kullaniciGetir(authSnapshot.data!),
-                  builder: (context,
-                      AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot) {
-                    if (kullaniciSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      if (kullaniciSnapshot.hasData &&
-                          kullaniciSnapshot.data != null) {
-                        return kullaniciSnapshot.data!.teknikservis
-                            ? CihazlarimSayfasi(
+        builder: (context, MyNotifier myNotifier, child) {
+          return FutureBuilder<String?>(
+            future: SharedPreference.getString(SharedPreference.authString),
+            builder: (context, AsyncSnapshot<String?> authSnapshot) {
+              if (authSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                if (authSnapshot.hasData && authSnapshot.data != null) {
+                  return FutureBuilder<KullaniciAuthModel?>(
+                    future: BiltekPost.kullaniciGetir(authSnapshot.data!),
+                    builder: (
+                      context,
+                      AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot,
+                    ) {
+                      if (kullaniciSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        if (kullaniciSnapshot.hasData &&
+                            kullaniciSnapshot.data != null) {
+                          return kullaniciSnapshot.data!.teknikservis
+                              ? CihazlarimSayfasi(
                                 kullanici: kullaniciSnapshot.data!,
                               )
-                            : Anasayfa(
-                                kullanici: kullaniciSnapshot.data!,
-                              );
-                      } else {
-                        return GirisSayfasi(
-                          kullaniciAdi: myNotifier.username,
-                        );
+                              : Anasayfa(kullanici: kullaniciSnapshot.data!);
+                        } else {
+                          return GirisSayfasi(
+                            kullaniciAdi: myNotifier.username,
+                          );
+                        }
                       }
-                    }
-                  },
-                );
-              } else {
-                return GirisSayfasi(
-                  kullaniciAdi: myNotifier.username,
-                );
+                    },
+                  );
+                } else {
+                  return GirisSayfasi(kullaniciAdi: myNotifier.username);
+                }
               }
-            }
-          },
-        );
-      }),
+            },
+          );
+        },
+      ),
     );
   }
 }

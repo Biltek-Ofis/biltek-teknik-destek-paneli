@@ -1,21 +1,23 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:biltekteknikservis/models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../ayarlar.dart';
 import '../../models/cihaz.dart';
+import '../../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../../models/kullanici.dart';
+import '../../utils/alerts.dart';
 import '../../utils/assets.dart';
 import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../widgets/navigators.dart';
+import '../../widgets/overlay_notification.dart';
 import '../webview.dart';
 import 'duzenle.dart';
 import 'galery.dart';
@@ -39,7 +41,7 @@ class DetaylarSayfasi extends StatefulWidget {
 class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   Cihaz? cihaz;
 
-  bool yukleniyor = true;
+  bool detaylarYukleniyor = true;
 
   Timer? timer;
 
@@ -356,13 +358,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         kdvsizToplam = kdvsizToplamTemp;
         kdvToplam = kdvToplamTemp;
         fiyatlar = fiyatlarTemp;
-        yukleniyor = false;
+        detaylarYukleniyor = false;
       });
     } else {
       kdvsizToplam = kdvsizToplamTemp;
       kdvToplam = kdvToplamTemp;
       fiyatlar = fiyatlarTemp;
-      yukleniyor = false;
+      detaylarYukleniyor = false;
     }
   }
 
@@ -448,29 +450,47 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     );
   }
 
+  bool yukleniyorGosterildi = false;
+  _yukleniyorGoster() {
+    if (!yukleniyorGosterildi) {
+      setState(() {
+        yukleniyorGosterildi = true;
+      });
+      yukleniyor(context);
+    }
+  }
+
+  _yukleniyorGizle() {
+    if (yukleniyorGosterildi) {
+      setState(() {
+        yukleniyorGosterildi = false;
+      });
+      Navigator.pop(context);
+    }
+  }
+
   Future<void> _kisiKontrol({bool duzenle = false}) async {
     String telefon = telefonNumarasi();
-
     if (telefonGecerli(telefon)) {
+      _yukleniyorGoster();
       if (await Permission.contacts.isPermanentlyDenied) {
+        _yukleniyorGizle();
         kisiIzniUyari();
         return;
       }
       if (await Permission.contacts.request().isGranted) {
         Phone phone = Phone(telefon);
         List<Contact> contacts = await FlutterContacts.getContacts(
+          sorted: false,
+          deduplicateProperties: false,
           withProperties: true,
         );
-
         contacts =
             contacts.where((c) {
               List<Phone> p =
                   c.phones.where((p) => p.number == phone.number).toList();
               return p.isNotEmpty;
             }).toList();
-        for (var element in contacts) {
-          debugPrint("Bulunan kişi: ${element.displayName}");
-        }
         Contact? contact;
         if (contacts.isEmpty) {
           Contact contactTemp = Contact(
@@ -480,21 +500,25 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           );
           contact = await contactTemp.insert();
           if (!duzenle) {
-            toast("Müşteri rehbere kaydedildi");
+            _yukleniyorGizle();
+            showNotification(body: "Müşteri rehbere kaydedildi");
           }
         }
         if (contacts.isNotEmpty) {
           if (duzenle) {
             contact = contacts.first;
           } else {
-            toast("Müşteri kaydı zaten mevcut");
+            _yukleniyorGizle();
+            showNotification(body: "Müşteri kaydı zaten mevcut");
           }
         }
         if (duzenle && contact != null) {
+          _yukleniyorGizle();
           await FlutterContacts.openExternalEdit(contact.id);
-          toast("Müşteri düzenleme tamamlandı");
+          showNotification(body: "Müşteri düzenleme tamamlandı");
         }
       } else {
+        _yukleniyorGizle();
         kisiIzniUyari();
         return;
       }
