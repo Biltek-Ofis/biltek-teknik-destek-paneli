@@ -113,7 +113,8 @@ class MainPage extends StatelessWidget {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         if (kullaniciSnapshot.hasData &&
-                            kullaniciSnapshot.data != null) {
+                            kullaniciSnapshot.data != null &&
+                            kullaniciSnapshot.data!.id != 0) {
                           return kullaniciSnapshot.data!.teknikservis
                               ? CihazlarimSayfasi(
                                 kullanici: kullaniciSnapshot.data!,
