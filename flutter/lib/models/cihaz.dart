@@ -220,7 +220,7 @@ class Cihaz {
         "cihaz_turu_val": String cihazTuruVal,
         "tahsilat_sekli_val": String tahsilatSekliVal,
         "sorumlu_val": String sorumluVal,
-        "islemler": List<dynamic> islemler
+        "islemler": List<dynamic> islemler,
       } =>
         Cihaz(
           id: int.tryParse(id) ?? 0,
@@ -294,10 +294,13 @@ class Cihaz {
           cihazTuruVal: int.tryParse(cihazTuruVal) ?? -1,
           tahsilatSekliVal: int.tryParse(tahsilatSekliVal) ?? -1,
           sorumluVal: int.tryParse(sorumluVal) ?? -1,
-          islemler: islemler
-              .map((islem) =>
-                  YapilanIslem.fromJson(islem as Map<String, dynamic>))
-              .toList(),
+          islemler:
+              islemler
+                  .map(
+                    (islem) =>
+                        YapilanIslem.fromJson(islem as Map<String, dynamic>),
+                  )
+                  .toList(),
         ),
       _ => throw FormatException("Cihaz yüklenirken hata oluştu."),
     };
@@ -309,6 +312,7 @@ class YapilanIslem {
   final int cihazID;
   final int islemSayisi;
   final String ad;
+  final double maliyet;
   final double birimFiyati;
   final int miktar;
   final double kdv;
@@ -318,6 +322,7 @@ class YapilanIslem {
     required this.cihazID,
     required this.islemSayisi,
     required this.ad,
+    required this.maliyet,
     required this.birimFiyati,
     required this.miktar,
     required this.kdv,
@@ -329,6 +334,7 @@ class YapilanIslem {
         "cihaz_id": String cihazID,
         "islem_sayisi": String islemSayisi,
         "ad": String ad,
+        "maliyet": String maliyet,
         "birim_fiyat": String birimFiyati,
         "miktar": String miktar,
         "kdv": String kdv,
@@ -338,6 +344,7 @@ class YapilanIslem {
           cihazID: int.tryParse(cihazID) ?? 0,
           islemSayisi: int.tryParse(islemSayisi) ?? 0,
           ad: ad,
+          maliyet: double.tryParse(maliyet) ?? 0.00,
           birimFiyati: double.tryParse(birimFiyati) ?? 0.00,
           miktar: int.tryParse(miktar) ?? 0,
           kdv: double.tryParse(kdv) ?? 0.00,
