@@ -46,6 +46,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   TableBorder tableBorder = TableBorder.all(
     color: Colors.yellow.withAlpha(100),
   );
+  bool maliyetGoster = false;
   double maliyetToplam = 0;
   double kdvsizToplam = 0;
   double kdvToplam = 0;
@@ -337,7 +338,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             children: [
               Container(padding: padding, child: Text(islem.ad)),
               Container(padding: padding, child: Text(islem.miktar.toString())),
-              Container(padding: padding, child: Text("${islem.maliyet} TL")),
+              if (maliyetGoster)
+                Container(padding: padding, child: Text("${islem.maliyet} TL")),
               Container(
                 padding: padding,
                 child: Text("${islem.birimFiyati} TL"),
@@ -928,6 +930,24 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                         double kar = kdvsizToplam - maliyetToplam;
                         return Column(
                           children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    fiyatlar.clear();
+                                    maliyetGoster = !maliyetGoster;
+                                  });
+                                  await _cihaziYenile();
+                                },
+                                icon: Icon(
+                                  maliyetGoster
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ),
+                            ),
                             Table(
                               border: tableBorder,
                               children: [
@@ -951,15 +971,16 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      padding: padding,
-                                      child: Text(
-                                        "Maliyet",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                    if (maliyetGoster)
+                                      Container(
+                                        padding: padding,
+                                        child: Text(
+                                          "Maliyet",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                     Container(
                                       padding: padding,
                                       child: Text(
@@ -998,6 +1019,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                     ),
                                   ],
                                 ),
+
                                 ...fiyatlar,
                               ],
                             ),
@@ -1015,19 +1037,20 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                               child: Table(
                                 border: tableBorder,
                                 children: [
-                                  TableRow(
-                                    children: [
-                                      Text(
-                                        "Maliyet:",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                  if (maliyetGoster)
+                                    TableRow(
+                                      children: [
+                                        Text(
+                                          "Maliyet:",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "${maliyetToplam.toStringAsFixed(2)} TL",
-                                      ),
-                                    ],
-                                  ),
+                                        Text(
+                                          "${maliyetToplam.toStringAsFixed(2)} TL",
+                                        ),
+                                      ],
+                                    ),
                                   TableRow(
                                     children: [
                                       Text(
@@ -1067,17 +1090,18 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                       ),
                                     ],
                                   ),
-                                  TableRow(
-                                    children: [
-                                      Text(
-                                        "Kar:",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                  if (maliyetGoster)
+                                    TableRow(
+                                      children: [
+                                        Text(
+                                          "Kar:",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text("${kar.toStringAsFixed(2)} TL"),
-                                    ],
-                                  ),
+                                        Text("${kar.toStringAsFixed(2)} TL"),
+                                      ],
+                                    ),
                                 ],
                               ),
                             ),
