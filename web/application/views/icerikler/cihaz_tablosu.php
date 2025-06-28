@@ -768,13 +768,16 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
               </ul>
               <ul class="list-group list-group-horizontal">
+                <li class="list-group-item w-100"><button id="maliyetGosterButon1" onclick="maliyetGoster(!maliyetiGoster);" class="btn btn-success btn-small"><i class="fas fa-eye" id="maliyetGosterButon1Icon"></i></button></li>
+              </ul>
+              <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $yediliIlkOgeGenislik . ';"><span class="fw-bold">Malzeme/İşçilik</span></li>
                 <li class="list-group-item" style="width:' . $yediliIkinciOgeGenislik . ';"><span class="fw-bold">Miktar</span></li>
-                <li class="list-group-item" style="width:' . $yediliUcuncuOgeGenislik . ';"><span class="fw-bold">Maliyet</span></li>
+                <li class="list-group-item maliyet" style="width:' . $yediliUcuncuOgeGenislik . ';"><span class="fw-bold">Maliyet</span></li>
                 <li class="list-group-item" style="width:' . $yediliDorduncuOgeGenislik . ';"><span class="fw-bold">Birim Fiyatı</span></li>
                 <li class="list-group-item" style="width:' . $yediliBesinciOgeGenislik . ';"><span class="fw-bold">KDV</span></li>
                 <li class="list-group-item" style="width:' . $yediliAltinciOgeGenislik . ';"><span class="fw-bold">Tutar (KDV\'siz)</span></li>
-                <li class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';"><span class="fw-bold">Toplam</span></li>
+                <li id="detayToplamFiyat" class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';"><span class="fw-bold">Toplam</span></li>
               </ul>
               <div id="yapilanIslem">
                 
@@ -1063,13 +1066,13 @@ $(document).ready(function(){
 $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $yediliIlkOgeGenislik . ';">{islem}</li>
 <li class="list-group-item" style="width:' . $yediliIkinciOgeGenislik . ';">{miktar}</li>
-<li class="list-group-item" style="width:' . $yediliUcuncuOgeGenislik . ';">{maliyet}</li>
+<li class="list-group-item maliyet" style="width:' . $yediliUcuncuOgeGenislik . ';">{maliyet}</li>
 <li class="list-group-item" style="width:' . $yediliDorduncuOgeGenislik . ';">{fiyat} TL</li>
 <li class="list-group-item" style="width:' . $yediliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
 <li class="list-group-item" style="width:' . $yediliAltinciOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
-<li class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';">{toplam_islem_fiyati_kdvli} TL</li>
+<li id="detayToplamFiyatText" class="list-group-item" style="width:'.$yediliYedinciOgeGenislik.';">{toplam_islem_fiyati_kdvli} TL</li>
 </ul>';
-$yapilanIslemToplam = '<ul class="list-group list-group-horizontal">
+$yapilanIslemToplam = '<ul class="list-group list-group-horizontal{ek_class}">
 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">{toplam_aciklama}</span></li>
 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';"><span class="fw-bold">{toplam_fiyat} TL</span></li>
 </ul>';
@@ -1170,117 +1173,6 @@ function donusturOnclick($oge)
   return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
 }
 
-/*
-foreach ($cihazlar as $cihaz) {
-  $cDurumCh = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
-  $yapilanİslemler = "";
-  $toplam_fiyat = 0;
-  $kdv = 0;
-  if (count($cihaz->islemler) > 0) {
-    foreach($cihaz->islemler as $islem){
-      $toplam_islem_fiyati_suan = $islem->birim_fiyat * $islem->miktar;
-      $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
-      $yapilanIslemYeniArray_suan = array(
-        $islem->ad,
-        $islem->kdv,
-        $islem->maliyet,
-        $islem->birim_fiyat,
-        $kdv_suan,
-        $toplam_islem_fiyati_suan,
-        $toplam_islem_fiyati_suan + $kdv_suan,
-        $islem->kdv
-      );
-      $toplam_fiyat = $toplam_fiyat + $toplam_islem_fiyati_suan;
-      $kdv = $kdv + $kdv_suan;
-      $yapilanİslemler .= str_replace($yapilanIslemEskiArray, $yapilanIslemYeniArray_suan, $yapilanIslemlerSatiri);
-    }
-  } else {
-    $yapilanİslemler = $yapilanIslemlerSatiriBos;
-  }
-  $yapilanIslemToplamYeni = array(
-    "Toplam",
-    $toplam_fiyat
-  );
-  $yapilanIslemToplamKDVYeni = array(
-    "KDV",
-    $kdv
-  );
-  $yapilanIslemGenelToplamYeni  = array(
-    "Genel Toplam",
-    $toplam_fiyat + $kdv
-  );
-  $toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamYeni, $yapilanIslemToplam);
-  $kdv = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemToplamKDVYeni, $yapilanIslemToplam);
-  $genel_toplam = str_replace($yapilanIslemToplamEskiArray, $yapilanIslemGenelToplamYeni, $yapilanIslemToplam);
-  $yapilanİslemler .= $toplam . $kdv . $genel_toplam;
-  $yeniler = array(
-    "",
-    "",
-    $cDurumCh->num_rows() > 0 ? $cDurumCh->result()[0]->renk : "bg-white",
-    ($this->Cihazlar_Model->cihazDurumuKilitle($cihaz->guncel_durum) && !$this->Kullanicilar_Model->yonetici()) ? "display:none;" : "",
-    $cihaz->servis_no,
-    $cihaz->takip_numarasi,
-    $cihaz->id,
-    $cihaz->musteri_adi,
-    isset($cihaz->musteri_kod) ? $cihaz->musteri_kod : "Yok",
-    isset($cihaz->musteri_kod) ? donusturOnclick($cihaz->musteri_kod) : "Yok",
-    $cihaz->adres,
-    $cihaz->telefon_numarasi,
-    $cihaz->cihaz_turu,
-    $cihaz->sorumlu,
-    $cihaz->cihaz,
-    $cihaz->cihaz_modeli,
-    $cihaz->seri_no,
-    $cihaz->teslim_alinanlar,
-    $cihaz->cihaz_sifresi,
-    $cihaz->hasar_tespiti,
-    $this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar),
-    $cihaz->ariza_aciklamasi,
-    $this->Islemler_Model->servisTuru($cihaz->servis_turu),
-    $this->Islemler_Model->evetHayir($cihaz->yedek_durumu),
-    $cihaz->yapilan_islem_aciklamasi,
-    $cihaz->notlar,
-    $cihaz->tarih,
-    $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih),
-    $cihaz->bildirim_tarihi,
-    $cihaz->cikis_tarihi,
-    $this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum),
-    $cihaz->guncel_durum,
-    $cihaz->tahsilat_sekli,
-    $this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu),
-    $cihaz->fis_no,
-    $yapilanİslemler,
-    donusturOnclick($cihaz->musteri_adi),
-    donusturOnclick($cihaz->teslim_eden),
-    donusturOnclick($cihaz->teslim_alan),
-    donusturOnclick($cihaz->adres),
-    donusturOnclick($this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum)),
-    donusturOnclick($cihaz->cihaz_turu),
-    $cihaz->cihaz_turu_val,
-    donusturOnclick($cihaz->cihaz_turu_val),
-    donusturOnclick($cihaz->cihaz),
-    donusturOnclick($cihaz->cihaz_modeli),
-    donusturOnclick($cihaz->teslim_alinanlar),
-    donusturOnclick($cihaz->cihaz_sifresi),
-    donusturOnclick($cihaz->cihaz_deseni),
-    donusturOnclick($this->Islemler_Model->cihazdakiHasar($cihaz->cihazdaki_hasar)),
-    donusturOnclick($cihaz->hasar_tespiti),
-    donusturOnclick($cihaz->ariza_aciklamasi),
-    donusturOnclick($this->Islemler_Model->servisTuru($cihaz->servis_turu)),
-    donusturOnclick($cihaz->sorumlu),
-    $cihaz->sorumlu_val,
-    donusturOnclick($cihaz->sorumlu_val),
-    donusturOnclick($cihaz->yapilan_islem_aciklamasi),
-    donusturOnclick($cihaz->notlar),
-    donusturOnclick($cihaz->tahsilat_sekli),
-    donusturOnclick($this->Islemler_Model->faturaDurumu($cihaz->fatura_durumu)),
-    donusturOnclick($cihaz->fis_no),
-    $cihaz->takip_numarasi,
-    donusturOnclick($cihaz->seri_no)
-  );
-  $tablo = str_replace($eskiler, $yeniler, $tabloOrnek);
-  //echo $tablo;
-}*/
 echo '
 </tbody>
 </table>';
@@ -1439,6 +1331,9 @@ function donusturOnclick(oge){
     return "";
   }
 }
+maliyetBoyutFonksiyon = function() {
+  $("#detayToplamFiyat, #detayToplamFiyatText").css("width", maliyetiGoster ? "' . $yediliYedinciOgeGenislik . '" : "calc( ' . $yediliUcuncuOgeGenislik . ' + ' . $yediliYedinciOgeGenislik . ' )");
+};
 function donustur(str, value, yeni) {
     return str.
     replaceAll("{yeni}", yeni ? \' <span id="\' + value.id + \'Yeni" class="badge bg-danger">Yeni</span>\' : \'\')
@@ -1540,7 +1435,6 @@ echo '
             if(Object.keys(value.islemler).length > 0){
               jQuery.each(value.islemler, function(i, islem) {
                 var yapilan_islem_tutari_suan = islem.birim_fiyat * islem.miktar;
-                console.log("Maliyet:" + islem.maliyet);
                 toplamMaliyet = toplamMaliyet + parseFloat(islem.maliyet);
                 toplam = toplam + yapilan_islem_tutari_suan;
                 var kdv_suan = ((yapilan_islem_tutari_suan / 100) * islem.kdv);
@@ -1553,7 +1447,8 @@ echo '
                   .replaceAll("{toplam_islem_kdv}", parseFloat(kdv_suan).toFixed(2))
                   .replaceAll("{toplam_islem_fiyati}", parseFloat(yapilan_islem_tutari_suan).toFixed(2))
                   .replaceAll("{toplam_islem_fiyati_kdvli}", parseFloat(yapilan_islem_tutari_suan + kdv_suan).toFixed(2))
-                  .replaceAll("{kdv_orani}", islem.kdv);
+                  .replaceAll("{kdv_orani}", islem.kdv)
+                  .replaceAll("{genel_toplam_uzunluk}",  maliyetiGoster ? "' . $yediliYedinciOgeGenislik . '" : "calc( ' . $yediliUcuncuOgeGenislik . ' + ' . $yediliYedinciOgeGenislik . ' )");
                 // Duzenleme
                 var dz_islemSayisi = i + 1;
                 ayrilma_durumu_tetikle = false;
@@ -1568,13 +1463,14 @@ echo '
               var yapilanIslemler = islemlerSatiriBos;
             }
             var yapilanIslemToplam = \'' . $yapilanIslemToplam . '\';
-            var toplamMaliyetDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam Maliyet").replaceAll("{toplam_fiyat}", parseFloat(toplamMaliyet).toFixed(2));
-            var toplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
-            var kdvDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
-            var genelToplamDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
-            var toplamKarDiv = yapilanIslemToplam.replaceAll("{toplam_aciklama}", "Toplam Kar").replaceAll("{toplam_fiyat}", parseFloat(toplam - toplamMaliyet).toFixed(2));
+            var toplamMaliyetDiv = yapilanIslemToplam.replaceAll("{ek_class}", " maliyet").replaceAll("{toplam_aciklama}", "Toplam Maliyet").replaceAll("{toplam_fiyat}", parseFloat(toplamMaliyet).toFixed(2));
+            var toplamDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
+            var kdvDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
+            var genelToplamDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
+            var toplamKarDiv = yapilanIslemToplam.replaceAll("{ek_class}", " maliyet").replaceAll("{toplam_aciklama}", "Toplam Kar").replaceAll("{toplam_fiyat}", parseFloat(toplam - toplamMaliyet).toFixed(2));
             yapilanIslemler += toplamMaliyetDiv + toplamDiv + kdvDiv + genelToplamDiv + toplamKarDiv;
             $("#yapilanIslem").html(yapilanIslemler);
+            maliyetDurumuGuncelle();
             //QRYenile(value.servis_no);
             $("#ServisNo2").html(value.servis_no);
             $("#TakipNo").html(value.takip_numarasi);

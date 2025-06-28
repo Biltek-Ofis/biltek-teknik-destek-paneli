@@ -6,7 +6,30 @@ $asilTema = $this->Ayarlar_Model->kullaniciAsilTema();
 $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
 ?>
 <script>
+
+  var maliyetiGoster = false;
+  var maliyetBoyutFonksiyon = null;
+  
+  function maliyetGoster(durum) {
+    maliyetiGoster = durum;
+    maliyetDurumuGuncelle();
+  }
+  function maliyetDurumuGuncelle() {
+    if (maliyetiGoster) {
+      $(".maliyet").show();
+      $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").removeClass("fa-eye-slash");
+      $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").addClass("fa-eye");
+    } else {
+      $(".maliyet").hide();
+      $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").removeClass("fa-eye");
+      $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").addClass("fa-eye-slash");
+    }
+    if(maliyetBoyutFonksiyon != null){
+      maliyetBoyutFonksiyon();
+    }
+  }
   $(document).ready(function () {
+    maliyetGoster(false);
     function toggleDropdown(e) {
       const _d = $(e.target).closest(".dropdown"),
         _m = $(".dropdown-menu", _d)
@@ -192,7 +215,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           <i class="fas fa-sun"></i>
           <!-- Default switch -->
           <div class="ms-2 form-check form-switch">
-            <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" id="themingSwitcher" />
+            <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
           </div>
           <i class="fas fa-moon"></i>
         </li>
@@ -501,7 +524,7 @@ function hizala($satir)
       <div class="modal-body">
         <H5>Satır 1</H5>
         <div class="mb-3">
-          <?=yazi("1");?>
+          <?= yazi("1"); ?>
         </div>
         <div class="mb-3">
           <?= yaziBoyutu("1"); ?>
@@ -511,7 +534,7 @@ function hizala($satir)
         </div>
         <H5>Satır 2</H5>
         <div class="mb-3">
-          <?=yazi("2");?>
+          <?= yazi("2"); ?>
         </div>
         <div class="mb-3">
           <?= yaziBoyutu("2"); ?>
@@ -521,7 +544,7 @@ function hizala($satir)
         </div>
         <H5>Satır 3</H5>
         <div class="mb-3">
-          <?=yazi("3");?>
+          <?= yazi("3"); ?>
         </div>
         <div class="mb-3">
           <?= yaziBoyutu("3"); ?>
