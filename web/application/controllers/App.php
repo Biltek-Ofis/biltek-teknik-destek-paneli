@@ -333,8 +333,14 @@ class App extends CI_Controller
         if (isset($token)) {
             if ($this->token($token)) {
                 if(isset($cihaz_id)){
+                    $medya = $this->Cihazlar_Model->medyaBul($cihaz_id);
                     $sil = $this->Cihazlar_Model->medyaSil($cihaz_id);
-                    if($sil){                   
+                    if($sil){ 
+                        if($medya != null){
+                            if(file_exists($medya->konum)){
+                                unlink($medya->konum);
+                            }    
+                        }         
                         echo json_encode(array("sonuc"=> 1)); 
                     } else {
                         echo json_encode($this->hataMesaji(99));

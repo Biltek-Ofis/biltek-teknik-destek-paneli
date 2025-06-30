@@ -238,9 +238,11 @@ class Cihaz extends Varsayilancontroller
             $sil = $this->Cihazlar_Model->medyaSil($id);
             if($json == "post"){
                 if($sil){
-                    if(file_exists($medya->konum)){
-                        unlink($medya->konum);
-                    }
+                    if($medya != null){
+                        if(file_exists($medya->konum)){
+                            unlink($medya->konum);
+                        }    
+                    }   
                     echo json_encode(array("mesaj" => "", "sonuc" => 1));
                 }else{
                     echo json_encode(array("mesaj" => "Medya silinemedi lütfen daha sonra tekrar deneyin", "sonuc" => 0));    
