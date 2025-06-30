@@ -1,7 +1,7 @@
 <?php $this->load->view("inc/datatables_scripts");
 
 $tema = $this->Ayarlar_Model->kullaniciTema();
-echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.0") . '"></script>
+echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.1") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
 <script src="'. base_url("dist/js/qrcode.min.js?v=1.0").'"></script>';
 
@@ -94,12 +94,18 @@ echo '<script>
     $("#kaydetFormYazdirBtn").show();
     $("#iptalBtn").show();
     
-    $("#dt-UploadForm")[0].reset();
-    $("#dt-UploadForm #durum").html("");
-    $("#dt-UploadForm #yukleme_durumu").html("");
+    uploadSifirla(true);
     
     $("#detaylar_body").scrollTop(0);
     duzenleme_modu = true;
+  }
+  function uploadSifirla(formSifirla){
+    if(formSifirla){
+      $("#dt-UploadForm")[0].reset();
+    }
+    $("#dt-UploadForm #progressDiv").show();
+    $("#dt-UploadForm #durum").html("");
+    $("#dt-UploadForm #yukleme_durumu").html("");
   }
   function formKaydet(formDiv, onComplete, bildirim_tarihi){
     var formAction = $(formDiv).attr("action");
@@ -1002,7 +1008,7 @@ $(document).ready(function(){
                   <div class="col-2"></div>
                   <div class="col-8">
                       <form id="dt-UploadForm" onsubmit="" enctype="multipart/form-data" method="post">
-                          <input type="file" name="yuklenecekDosya" id="yuklenecekDosya" required>
+                          <input type="file" onchange="uploadSifirla(false);" name="yuklenecekDosya" id="yuklenecekDosya" required>
                           <div class="progress" id="progressDiv">
                               <progress id="progressBar" value="0" max="100" style="width:100%; height: 1.2rem;"></progress>
                           </div>
