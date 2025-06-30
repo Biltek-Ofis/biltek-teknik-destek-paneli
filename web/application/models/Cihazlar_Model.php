@@ -5,6 +5,7 @@ class Cihazlar_Model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Islemler_Model");
     }
     public function cihazlarTabloAdi()
     {
@@ -968,47 +969,55 @@ class Cihazlar_Model extends CI_Model
                         "tur" => $tur,
                         "yerel"=> 1,
                     );
-                    if(DOSYA_YUKLEME_URL == "/"){
-                        /*$boyut = $_FILES["yuklenecekDosya"]["size"];
-                        $boyut_mb = number_format(($boyut / 1048576), 2);*/
-                        $dosyaKonumu = "yuklemeler/";
-                        $tasinacakKonum = "$dosyaKonumu" . $id . "_" . rand(1000, 9999) . "_" . $_FILES["yuklenecekDosya"]["name"];
-                        if (move_uploaded_file($gecici_dosya_adi, $tasinacakKonum)) {
-                            $yukleVeri["konum"] = $tasinacakKonum;
-                            $basariyla_yuklendi = TRUE;
-                        }
-                    } else {
-                        $yukleVeri["yerel"] = 0;
-                        $cfile = new CURLFile($gecici_dosya_adi, mime_content_type($gecici_dosya_adi), $orjinal_dosya_adi);
-                        $post_data = [
-                            "file" => $cfile,
-                            "id"=> $id
-                        ];
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_URL, DOSYA_YUKLEME_URL);
-                        curl_setopt($ch, CURLOPT_POST, true);
-                        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $medya_cihazi = $this->db->reset_query()->where("id", $id)->get($this->cihazlarTabloAdi());
 
-                        // Flask sunucusundan gelen yanıtı al
-                        $response = curl_exec($ch);
-                        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                        curl_close($ch);
-                        try{
-                            $sonuc = json_decode($response, FALSE);
-                            if($sonuc != null){
-                                if(property_exists($sonuc, "basarili")) 
-                                {
-                                    if($sonuc->basarili){
-                                        $yukleVeri["konum"] = $sonuc->dosya;
-                                        $basariyla_yuklendi = TRUE;
+                    if($medya_cihazi->num_rows() > 0){
+                        $servis_no = $medya_cihazi->result()[0]->servis_no;
+                        if(DOSYA_YUKLEME_URL == "/"){
+                            /*$boyut = $_FILES["yuklenecekDosya"]["size"];
+                            $boyut_mb = number_format(($boyut / 1048576), 2);*/
+                            $dosyaKonumu = "yuklemeler/$servis_no/";
+                            $tasinacakKonum = $this->Islemler_Model->dosyaAdiOlustur($dosyaKonumu, $_FILES["yuklenecekDosya"]["name"]);
+                            if (move_uploaded_file($gecici_dosya_adi, $tasinacakKonum)) {
+                                $yukleVeri["konum"] = $tasinacakKonum;
+                                $basariyla_yuklendi = TRUE;
+                            }
+                        } else {
+                            $yukleVeri["yerel"] = 0;
+                            $cfile = new CURLFile($gecici_dosya_adi, mime_content_type($gecici_dosya_adi), $orjinal_dosya_adi);
+                            $post_data = [
+                                "file" => $cfile,
+                                "id"=> $servis_no
+                            ];
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, DOSYA_YUKLEME_URL);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                            // Flask sunucusundan gelen yanıtı al
+                            $response = curl_exec($ch);
+                            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                            curl_close($ch);
+                            try{
+                                $sonuc = json_decode($response, FALSE);
+                                if($sonuc != null){
+                                    if(property_exists($sonuc, "basarili")) 
+                                    {
+                                        if($sonuc->basarili){
+                                            $yukleVeri["konum"] = $sonuc->dosya;
+                                            $basariyla_yuklendi = TRUE;
+                                        }
                                     }
                                 }
+                            }catch(Exception $e){
+                                $basariyla_yuklendi = FALSE;
                             }
-                        }catch(Exception $e){
-                            $basariyla_yuklendi = FALSE;
                         }
+                    }else{
+                        return array("mesaj" => "Medya eklenecek cihaz bulunamadı.", "sonuc" => 0);
                     }
+                    
                     
                     if($basariyla_yuklendi){
                         $ekle = $this->medyaKaydet($yukleVeri);

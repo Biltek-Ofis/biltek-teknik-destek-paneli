@@ -343,4 +343,18 @@ class Islemler_Model extends CI_Model
         $ayarlar = $this->Ayarlar_Model->getir();
         return $ayarlar->app_version;
     }
+    
+    public function dosyaAdiOlustur($konum, $dosya_adi) {
+        //"$dosyaKonumu" . rand(1000, 9999) . "_" . $_FILES["yuklenecekDosya"]["name"];
+        $yeni_dosya_adi = $konum . rand(1000, 9999) . "_" . $dosya_adi;
+        if(!file_exists($konum . $yeni_dosya_adi)){
+            if (!is_dir($konum)) {
+                mkdir($konum, 0777, TRUE);
+            }
+            return $yeni_dosya_adi;
+        }
+        else{
+            return $this->dosyaAdiOlustur($konum, $dosya_adi);
+        }
+    }
 }

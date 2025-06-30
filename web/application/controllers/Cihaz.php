@@ -233,24 +233,31 @@ class Cihaz extends Varsayilancontroller
         }
     }
     public function medyaSil($cihaz_id, $id, $json="get")
-    {
-        $medya = $this->Cihazlar_Model->medyaBul($id);
-        if(file_exists($medya->konum)){
-            unlink($medya->konum);
-        }
-        $sil = $this->Cihazlar_Model->medyaSil($id);
-        if($json == "post"){
-            if($sil){
-                echo json_encode(array("mesaj" => "", "sonuc" => 1));
-            }else{
-                echo json_encode(array("mesaj" => "Medya silinemedi lütfen daha sonra tekrar deneyin", "sonuc" => 0));    
+    {   if ($this->Giris_Model->kullaniciGiris()) {
+            $medya = $this->Cihazlar_Model->medyaBul($id);
+            $sil = $this->Cihazlar_Model->medyaSil($id);
+            if($json == "post"){
+                if($sil){
+                    if(file_exists($medya->konum)){
+                        unlink($medya->konum);
+                    }
+                    echo json_encode(array("mesaj" => "", "sonuc" => 1));
+                }else{
+                    echo json_encode(array("mesaj" => "Medya silinemedi lütfen daha sonra tekrar deneyin", "sonuc" => 0));    
+                }
             }
-        }
-        else{
-            if ($sil) {
-                redirect(base_url("cihaz/" . $cihaz_id));
-            } else {
-                $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Medya silinemedi lütfen daha sonra tekrar deneyin");
+            else{
+                if ($sil) {
+                    redirect(base_url("cihaz/" . $cihaz_id));
+                } else {
+                    $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Medya silinemedi lütfen daha sonra tekrar deneyin");
+                }
+            }
+        }else{
+            if($json == "post"){
+                 echo json_encode(array("mesaj" => "Giriş yapmadığınız için bu işlemi gerçekleştiremezsiniz.", "sonuc" => 0));    
+            }else{
+                $this->Kullanicilar_Model->girisUyari("cihaz/" . $cihaz_id, "Giriş yapmadığınız için bu işlemi gerçekleştiremezsiniz.");
             }
         }
     }
