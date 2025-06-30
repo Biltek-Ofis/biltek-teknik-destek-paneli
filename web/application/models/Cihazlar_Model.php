@@ -1048,7 +1048,11 @@ class Cihazlar_Model extends CI_Model
 
     public function medyaBul($id)
     {
-        return $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi())->result()[0];
+        $medya = $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi());
+        if($medya->num_rows() == 0){
+            return null;
+        }
+        return $medya->result()[0];
     }
     public function medyalar($id)
     {
