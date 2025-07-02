@@ -78,7 +78,6 @@ class Ayarlar {
 
 class FirebaseAyarlari {
   String get projectID => const String.fromEnvironment('FIREBASE_PROJECT_ID');
-  String get authDomain => const String.fromEnvironment('FIREBASE_AUTH_DOMAIN');
   String get storageBucket =>
       const String.fromEnvironment('FIREBASE_STORAGE_BUCKET');
   String get messagingSenderId =>

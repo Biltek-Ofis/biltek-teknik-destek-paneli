@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,8 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   StreamSubscription<bool>? keyboardSubscription;
   bool klavyeAcik = false;
+
+  bool chatEnabled = true;
 
   int bottomNavigationSelectedIndex = 0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -196,6 +199,23 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                             _aramaDurumuDuzenle(true);
                           },
                         ),
+                        if (chatEnabled)
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => YeniCihazSayfasi(
+                                        cihazlariYenile: () async {
+                                          await _cihazlariYenile();
+                                        },
+                                      ),
+                                ),
+                              );
+                            },
+                            icon: Icon(Icons.add),
+                          ),
                       ],
                     ),
             resizeToAvoidBottomInset: false,
@@ -259,43 +279,60 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                       },
                     ),
             floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
+                chatEnabled
+                    ? FloatingActionButtonLocation.endFloat
+                    : FloatingActionButtonLocation.centerDocked,
             extendBody: true,
             floatingActionButton:
                 klavyeAcik
                     ? null
-                    : FloatingActionButton(
-                      shape: const CircleBorder(),
-                      onPressed: () {
-                        if (yukariKaydir) {
-                          scrollController.animateTo(
-                            0,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.bounceIn,
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => YeniCihazSayfasi(
-                                    cihazlariYenile: () async {
-                                      await _cihazlariYenile();
-                                    },
-                                  ),
-                            ),
-                          );
-                        }
-                      },
-                      backgroundColor:
-                          Theme.of(context).appBarTheme.backgroundColor,
-                      child: Icon(
-                        yukariKaydir ? Icons.arrow_upward : Icons.add,
-                        color:
-                            Theme.of(context).appBarTheme.iconTheme?.color ??
-                            Colors.white,
-                      ),
-                    ),
+                    : (chatEnabled
+                        ? FloatingActionButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AIChatPage(),
+                              ),
+                            );
+                          },
+                          shape: const CircleBorder(),
+                          backgroundColor: Colors.green,
+                          child: Icon(Icons.chat, color: Colors.white),
+                        )
+                        : FloatingActionButton(
+                          shape: const CircleBorder(),
+                          onPressed: () {
+                            if (yukariKaydir) {
+                              scrollController.animateTo(
+                                0,
+                                duration: Duration(seconds: 1),
+                                curve: Curves.bounceIn,
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => YeniCihazSayfasi(
+                                        cihazlariYenile: () async {
+                                          await _cihazlariYenile();
+                                        },
+                                      ),
+                                ),
+                              );
+                            }
+                          },
+                          backgroundColor:
+                              Theme.of(context).appBarTheme.backgroundColor,
+                          child: Icon(
+                            yukariKaydir ? Icons.arrow_upward : Icons.add,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).appBarTheme.iconTheme?.color ??
+                                Colors.white,
+                          ),
+                        )),
             body: Container(
               decoration: BoxDecoration(color: Colors.white),
               width: MediaQuery.of(context).size.width,
