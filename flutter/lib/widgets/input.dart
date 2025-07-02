@@ -13,6 +13,7 @@ class BiltekTextField extends StatelessWidget {
     this.nextFocus,
     this.textInputAction,
     this.label,
+    this.hint,
     this.errorText,
     this.onChanged,
     this.onSubmitted,
@@ -23,6 +24,7 @@ class BiltekTextField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
     this.style,
+    this.readOnly = false,
   });
 
   final TextEditingController? controller;
@@ -30,6 +32,7 @@ class BiltekTextField extends StatelessWidget {
   final FocusNode? nextFocus;
   final TextInputAction? textInputAction;
   final String? label;
+  final String? hint;
   final String? errorText;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
@@ -40,19 +43,22 @@ class BiltekTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final TextStyle? style;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       focusNode: currentFocus,
-      textInputAction: textInputAction ??
+      textInputAction:
+          textInputAction ??
           (nextFocus != null ? TextInputAction.next : TextInputAction.done),
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
         errorText: errorText,
         suffix: suffix,
+        hint: hint != null ? Text(hint ?? '') : null,
       ),
       onChanged: onChanged,
       onSubmitted: (value) {
@@ -66,6 +72,7 @@ class BiltekTextField extends StatelessWidget {
       autocorrect: autocorrect,
       inputFormatters: inputFormatters,
       style: style,
+      readOnly: readOnly,
     );
   }
 }
@@ -78,22 +85,26 @@ class BiltekSifre extends StatefulWidget {
     this.nextFocus,
     this.textInputAction,
     this.label,
+    this.hint,
     this.errorText,
     this.onChanged,
     this.onSubmitted,
     this.keyboardType,
     this.style,
+    this.readOnly = false,
   });
   final TextEditingController? controller;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
   final TextInputAction? textInputAction;
   final String? label;
+  final String? hint;
   final String? errorText;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
   final TextInputType? keyboardType;
   final TextStyle? style;
+  final bool readOnly;
 
   @override
   State<BiltekSifre> createState() => _BiltekSifreState();
@@ -110,6 +121,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
       nextFocus: widget.nextFocus,
       textInputAction: widget.textInputAction,
       label: widget.label,
+      hint: widget.hint,
       errorText: widget.errorText,
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
@@ -119,15 +131,14 @@ class _BiltekSifreState extends State<BiltekSifre> {
             sifreyiGoster = !sifreyiGoster;
           });
         },
-        icon: Icon(
-          sifreyiGoster ? Icons.visibility_off : Icons.visibility,
-        ),
+        icon: Icon(sifreyiGoster ? Icons.visibility_off : Icons.visibility),
       ),
       obscureText: !sifreyiGoster,
       enableSuggestions: sifreyiGoster,
       autocorrect: sifreyiGoster,
       keyboardType: widget.keyboardType,
       style: widget.style,
+      readOnly: widget.readOnly,
     );
   }
 }
@@ -154,9 +165,7 @@ class BiltekCheckbox extends StatelessWidget {
       ),
       title: Text(label),
       onTap: () {
-        onChanged?.call(
-          value != null ? !value! : false,
-        );
+        onChanged?.call(value != null ? !value! : false);
       },
     );
   }
@@ -189,22 +198,26 @@ class BiltekSelect<T> extends StatelessWidget {
           labelText: title,
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: errorText != null
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.primary,
+              color:
+                  errorText != null
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.primary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-            color: errorText != null
-                ? Theme.of(context).colorScheme.error
-                : Theme.of(context).colorScheme.primary,
-          )),
+            borderSide: BorderSide(
+              color:
+                  errorText != null
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.primary,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: errorText != null
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.primary,
+              color:
+                  errorText != null
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.primary,
             ),
           ),
           errorText: errorText,
@@ -240,18 +253,16 @@ class BiltekTarih extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: errorText,
-      ),
+      decoration: InputDecoration(labelText: label, errorText: errorText),
       readOnly: true,
       onTap: () {
         debugPrint(format);
         showTakvim(
           context,
-          initialDate: controller.text.isEmpty
-              ? DateTime.now()
-              : DateFormat(format).parse(controller.text),
+          initialDate:
+              controller.text.isEmpty
+                  ? DateTime.now()
+                  : DateFormat(format).parse(controller.text),
           onConfirm: (date) {
             onConfirm?.call(date!);
           },

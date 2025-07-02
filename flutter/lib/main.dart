@@ -1,6 +1,3 @@
-import 'package:biltekteknikservis/widgets/overlay_notification.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +7,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
-import 'firebase_ayarlari.dart';
 import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/cihazlarim.dart';
 import 'sayfalar/giris_sayfasi.dart';
+import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
@@ -25,21 +22,14 @@ WebViewEnvironment? webViewEnvironment;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await FirebaseApi.initialize();
+
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
 
   await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  FirebaseMessaging.onMessage.listen((message) {
-    showNotification(
-      title: message.notification?.title,
-      body: message.notification?.body,
-    );
-  });
 
   runApp(const MyApp());
 }
