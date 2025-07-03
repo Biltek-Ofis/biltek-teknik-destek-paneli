@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:biltekteknikservis/models/ai_chat.dart';
 import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/firebase.dart';
+import '../utils/shared_preferences.dart';
 
 class AIChatPage extends StatefulWidget {
   const AIChatPage({super.key});
@@ -21,6 +24,36 @@ class _AIChatPageState extends State<AIChatPage> {
   bool botYaziyor = false;
 
   ScrollController scrollController = ScrollController();
+
+  @override
+  initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      final aiChatHistoryString = await SharedPreference.getStringList(
+        'ai_chat_history',
+      );
+      aiChatList =
+          aiChatHistoryString
+              .map((e) => AiChatModel.fromJson(jsonDecode(e)))
+              .toList();
+      aiChatHistory =
+          aiChatList
+              .map(
+                (e) =>
+                    Content(e.isUser ? "user" : "model", [TextPart(e.mesaj)]),
+              )
+              .toList();
+      setState(() {});
+      _altaKaydir();
+    });
+  }
+
+  @override
+  dispose() {
+    mesajController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +207,10 @@ class _AIChatPageState extends State<AIChatPage> {
     });
     debugPrint("Aİ: ${response.text}");
     _altaKaydir();
+    await SharedPreference.setStringList(
+      'ai_chat_history',
+      aiChatList.map((e) => jsonEncode(e.toJson())).toList(),
+    );
     return response.text ?? "";
   }
 
