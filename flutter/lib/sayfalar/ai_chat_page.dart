@@ -4,8 +4,12 @@ import 'package:biltekteknikservis/models/ai_chat.dart';
 import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
+import '../utils/assets.dart';
 import '../utils/firebase.dart';
+import '../utils/islemler.dart';
 import '../utils/shared_preferences.dart';
 
 class AIChatPage extends StatefulWidget {
@@ -224,11 +228,13 @@ class _AIChatPageState extends State<AIChatPage> {
       ),
       child:
           icon ??
-          Icon(
-            chat.isUser ? Icons.person : Icons.android,
-            color: chat.isUser ? Colors.blue : Colors.green,
-            size: 20, // ufak tutunca balonu taşırmaz
-          ),
+          (chat.isUser
+              ? Icon(
+                Icons.person,
+                color: Colors.blue,
+                size: 20, // ufak tutunca balonu taşırmaz
+              )
+              : Image.asset(BiltekAssets.icon, width: 20, height: 20)),
     );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -265,14 +271,17 @@ class _AIChatPageState extends State<AIChatPage> {
                             ? CrossAxisAlignment.end
                             : CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        chat.mesaj,
-                        style: const TextStyle(color: Colors.black),
+                      MarkdownWidget(
+                        data: chat.mesaj,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                       ),
                       if (chat.tarih != null) ...[
                         const SizedBox(height: 4),
                         Text(
-                          chat.tarih!,
+                          DateFormat(
+                            Islemler.tarihFormat,
+                          ).format(DateTime.parse(chat.tarih!)),
                           style: TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
