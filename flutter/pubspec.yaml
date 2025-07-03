@@ -39,6 +39,7 @@ dependencies:
   firebase_messaging: ^15.2.8
   firebase_in_app_messaging: ^0.8.1+8
   firebase_ai: ^2.2.0
+  markdown_widget: ^2.3.2+8
 
 dev_dependencies:
   flutter_test:
