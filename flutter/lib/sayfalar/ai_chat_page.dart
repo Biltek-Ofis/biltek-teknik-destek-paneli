@@ -32,6 +32,12 @@ class _AIChatPageState extends State<AIChatPage> {
 
   ScrollController scrollController = ScrollController();
 
+  Content yzPrompt = Content('model', [
+    TextPart(
+      "Senin adın Biltek Yapay Zeka. Biltek'in yapay zeka destekli asistanısın. Bilgisayar, telefon, yazıcı hakkındaki sorular, hatalar konusunda yardımcı olabilirsin.",
+    ),
+  ]);
+
   @override
   initState() {
     super.initState();
@@ -44,13 +50,8 @@ class _AIChatPageState extends State<AIChatPage> {
           aiChatHistoryString
               .map((e) => AiChatModel.fromJson(jsonDecode(e)))
               .toList();
-      aiChatHistory =
-          aiChatList
-              .map(
-                (e) =>
-                    Content(e.isUser ? "user" : "model", [TextPart(e.mesaj)]),
-              )
-              .toList();
+      aiChatHistory = _aiChatHistory(aiChatList);
+
       setState(() {});
       _altaKaydir();
       _yukleniyorGizle();
@@ -91,15 +92,13 @@ class _AIChatPageState extends State<AIChatPage> {
                                 (chat) => seciliMesajlar.containsKey(chat.id),
                               );
                               seciliMesajlar.clear();
-                              aiChatHistory =
-                                  aiChatList
-                                      .map(
-                                        (e) => Content(
-                                          e.isUser ? "user" : "model",
-                                          [TextPart(e.mesaj)],
-                                        ),
-                                      )
-                                      .toList();
+                              aiChatHistory = _aiChatHistory(aiChatList);
+                              SharedPreference.setStringList(
+                                'ai_chat_history',
+                                aiChatList
+                                    .map((e) => jsonEncode(e.toJson()))
+                                    .toList(),
+                              );
                             });
                             _yukleniyorGizle();
                             Navigator.pop(context);
@@ -414,5 +413,14 @@ class _AIChatPageState extends State<AIChatPage> {
         yukleniyorAcik = false;
       });
     }
+  }
+
+  List<Content> _aiChatHistory(List<AiChatModel> aiChatList) {
+    return [
+      yzPrompt,
+      ...aiChatList.map(
+        (e) => Content(e.isUser ? "user" : "model", [TextPart(e.mesaj)]),
+      ),
+    ];
   }
 }
