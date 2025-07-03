@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
+import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/firebase.dart';
 import '../utils/islemler.dart';
@@ -27,12 +28,15 @@ class _AIChatPageState extends State<AIChatPage> {
   bool mesajReadOnly = false;
   bool botYaziyor = false;
 
+  Map<String, AiChatModel> seciliMesajlar = {};
+
   ScrollController scrollController = ScrollController();
 
   @override
   initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
+    Future.delayed(const Duration(seconds: 1), () async {
+      _yukleniyorGoster();
       final aiChatHistoryString = await SharedPreference.getStringList(
         'ai_chat_history',
       );
@@ -49,6 +53,7 @@ class _AIChatPageState extends State<AIChatPage> {
               .toList();
       setState(() {});
       _altaKaydir();
+      _yukleniyorGizle();
     });
   }
 
@@ -62,7 +67,57 @@ class _AIChatPageState extends State<AIChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Biltek Yapay Zeka')),
+      appBar: AppBar(
+        title: const Text('Biltek Yapay Zeka'),
+        actions: [
+          if (seciliMesajlar.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Mesajları Sil'),
+                      content: const Text(
+                        'Seçili mesajları silmek istediğinize emin misiniz?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            _yukleniyorGoster();
+                            setState(() {
+                              aiChatList.removeWhere(
+                                (chat) => seciliMesajlar.containsKey(chat.id),
+                              );
+                              seciliMesajlar.clear();
+                              aiChatHistory =
+                                  aiChatList
+                                      .map(
+                                        (e) => Content(
+                                          e.isUser ? "user" : "model",
+                                          [TextPart(e.mesaj)],
+                                        ),
+                                      )
+                                      .toList();
+                            });
+                            _yukleniyorGizle();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Evet'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Hayır'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +131,7 @@ class _AIChatPageState extends State<AIChatPage> {
                   if (index == aiChatList.length && botYaziyor) {
                     return mesaj(
                       AiChatModel(
-                        id: 0,
+                        id: "",
                         mesaj: "Yazıyor...",
                         tarih: null,
                         isUser: false,
@@ -166,14 +221,7 @@ class _AIChatPageState extends State<AIChatPage> {
       mesajError = null;
       botYaziyor = true;
       aiChatHistory.add(userMessage);
-      aiChatList.add(
-        AiChatModel(
-          id: aiChatList.length + 1,
-          mesaj: message,
-          tarih: DateTime.now().toIso8601String(),
-          isUser: true,
-        ),
-      );
+      aiChatList.add(AiChatModel.create(mesaj: message, isUser: true));
       mesajController.text = "";
     });
     _altaKaydir();
@@ -194,14 +242,7 @@ class _AIChatPageState extends State<AIChatPage> {
     final response = await chat.sendMessage(userMessage);
     if (response.text != null && response.text!.isNotEmpty) {
       aiChatHistory.add(Content('model', [TextPart(response.text!)]));
-      aiChatList.add(
-        AiChatModel(
-          id: aiChatList.length + 1,
-          mesaj: response.text!,
-          tarih: DateTime.now().toIso8601String(),
-          isUser: false,
-        ),
-      );
+      aiChatList.add(AiChatModel.create(mesaj: response.text!, isUser: false));
     }
 
     setState(() {
@@ -209,8 +250,6 @@ class _AIChatPageState extends State<AIChatPage> {
       botYaziyor = false;
       mesajError = null;
     });
-    debugPrint("Aİ: ${response.text}");
-    _altaKaydir();
     await SharedPreference.setStringList(
       'ai_chat_history',
       aiChatList.map((e) => jsonEncode(e.toJson())).toList(),
@@ -236,64 +275,102 @@ class _AIChatPageState extends State<AIChatPage> {
               )
               : Image.asset(BiltekAssets.icon, width: 20, height: 20)),
     );
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        mainAxisAlignment:
-            chat.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start, // <‑‑ ikon tepede
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onLongPress: () {
+        _sec(chat);
+      },
+      onTap: () {
+        if (seciliMesajlar.isNotEmpty) {
+          _sec(chat);
+        }
+      },
+      child: Stack(
         children: [
-          // Bot mesajıysa: ikon solda
-          if (!chat.isUser) ...[userIcon, const SizedBox(width: 4)],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              mainAxisAlignment:
+                  chat.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start, // <‑‑ ikon tepede
+              children: [
+                // Bot mesajıysa: ikon solda
+                if (!chat.isUser) ...[userIcon, const SizedBox(width: 4)],
 
-          // Balon
-          Flexible(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: chat.isUser ? Colors.blue[50] : Colors.green[50],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                    bottomLeft: chat.isUser ? Radius.circular(12) : Radius.zero,
-                    bottomRight:
-                        chat.isUser ? Radius.zero : Radius.circular(12),
+                // Balon
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: chat.isUser ? Colors.blue[50] : Colors.green[50],
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12),
+                          bottomLeft:
+                              chat.isUser ? Radius.circular(12) : Radius.zero,
+                          bottomRight:
+                              chat.isUser ? Radius.zero : Radius.circular(12),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment:
+                              chat.isUser
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
+                          children: [
+                            MarkdownWidget(
+                              data: chat.mesaj,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              selectable: false,
+                            ),
+                            if (chat.tarih != null) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                DateFormat(
+                                  Islemler.tarihFormat,
+                                ).format(DateTime.parse(chat.tarih!)),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment:
-                        chat.isUser
-                            ? CrossAxisAlignment.end
-                            : CrossAxisAlignment.start,
-                    children: [
-                      MarkdownWidget(
-                        data: chat.mesaj,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                      ),
-                      if (chat.tarih != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          DateFormat(
-                            Islemler.tarihFormat,
-                          ).format(DateTime.parse(chat.tarih!)),
-                          style: TextStyle(fontSize: 10, color: Colors.grey),
-                        ),
-                      ],
-                    ],
+
+                // Kullanıcı mesajıysa: ikon sağda
+                if (chat.isUser) ...[const SizedBox(width: 4), userIcon],
+              ],
+            ),
+          ),
+          if (seciliMesajlar.containsKey(chat.id))
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withAlpha(50),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                      bottomLeft:
+                          chat.isUser ? Radius.circular(12) : Radius.zero,
+                      bottomRight:
+                          chat.isUser ? Radius.zero : Radius.circular(12),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-
-          // Kullanıcı mesajıysa: ikon sağda
-          if (chat.isUser) ...[const SizedBox(width: 4), userIcon],
         ],
       ),
     );
@@ -309,5 +386,33 @@ class _AIChatPageState extends State<AIChatPage> {
         );
       }
     });
+  }
+
+  void _sec(AiChatModel chat) {
+    if (seciliMesajlar.containsKey(chat.id)) {
+      seciliMesajlar.remove(chat.id);
+    } else {
+      seciliMesajlar[chat.id] = chat;
+    }
+    setState(() {});
+  }
+
+  bool yukleniyorAcik = false;
+  void _yukleniyorGoster() {
+    if (mounted && !yukleniyorAcik) {
+      setState(() {
+        yukleniyorAcik = true;
+      });
+      yukleniyor(context);
+    }
+  }
+
+  void _yukleniyorGizle() {
+    if (mounted && yukleniyorAcik) {
+      Navigator.pop(context);
+      setState(() {
+        yukleniyorAcik = false;
+      });
+    }
   }
 }
