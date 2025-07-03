@@ -1,5 +1,7 @@
+import '../utils/islemler.dart';
+
 class AiChatModel {
-  final int id;
+  final String id;
   final String mesaj;
   final String? tarih;
   final bool isUser;
@@ -10,7 +12,14 @@ class AiChatModel {
     required this.tarih,
     required this.isUser,
   });
-
+  factory AiChatModel.create({required String mesaj, required bool isUser}) {
+    return AiChatModel(
+      id: Islemler.rastgeleYazi(10),
+      mesaj: mesaj,
+      tarih: DateTime.now().toIso8601String(),
+      isUser: isUser,
+    );
+  }
   factory AiChatModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -20,17 +29,17 @@ class AiChatModel {
         "isUser": String isUser,
       } =>
         AiChatModel(
-          id: int.tryParse(id) ?? 0,
+          id: id,
           mesaj: mesaj,
           tarih: tarih,
           isUser: (int.tryParse(isUser) ?? 1) == 1,
         ),
-      _ => AiChatModel(id: 0, mesaj: "", tarih: "", isUser: true),
+      _ => AiChatModel(id: "0", mesaj: "", tarih: "", isUser: true),
     };
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
+      'id': id,
       'mesaj': mesaj,
       'tarih': tarih ?? DateTime.now().toIso8601String(),
       'isUser': isUser ? '1' : '0',

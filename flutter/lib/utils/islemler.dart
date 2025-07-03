@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:android_id/android_id.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -5,10 +7,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
 
 class Islemler {
-  static Color? arkaRenk(
-    String renkClass, {
-    int? alpha,
-  }) {
+  static Color? arkaRenk(String renkClass, {int? alpha}) {
     alpha ??= (255 * 0.3).floor();
     switch (renkClass) {
       case "bg-white":
@@ -81,7 +80,7 @@ class Islemler {
     "Çizik",
     "Kırık",
     "Çatlak",
-    "Diğer"
+    "Diğer",
   ];
   static String cihazdakiHasar(int index) {
     return _listGetir(cihazdakiHasarlar, index);
@@ -98,11 +97,7 @@ class Islemler {
     return _listGetir(servisTurleri, index);
   }
 
-  static final List<String> evetHayirlar = [
-    "Belirtilmemiş",
-    "Evet",
-    "Hayır",
-  ];
+  static final List<String> evetHayirlar = ["Belirtilmemiş", "Evet", "Hayır"];
   static String evetHayir(int index) {
     return _listGetir(evetHayirlar, index);
   }
@@ -150,9 +145,24 @@ class Islemler {
   static String lisansNormalTarih = "dd/MM/yyyy";
 
   static String tarihGoruntule(
-      String date, String orjinalFormat, String goruntulemeFormati) {
+    String date,
+    String orjinalFormat,
+    String goruntulemeFormati,
+  ) {
     DateTime dateTime = DateFormat(orjinalFormat).parse(date).toLocal();
 
     return DateFormat(goruntulemeFormati).format(dateTime);
+  }
+
+  static String rastgeleYazi(int length) {
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random rnd = Random();
+    return String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
+      ),
+    );
   }
 }
