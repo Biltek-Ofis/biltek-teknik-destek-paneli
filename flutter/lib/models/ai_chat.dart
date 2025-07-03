@@ -28,4 +28,12 @@ class AiChatModel {
       _ => AiChatModel(id: 0, mesaj: "", tarih: "", isUser: true),
     };
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id.toString(),
+      'mesaj': mesaj,
+      'tarih': tarih ?? DateTime.now().toIso8601String(),
+      'isUser': isUser ? '1' : '0',
+    };
+  }
 }
