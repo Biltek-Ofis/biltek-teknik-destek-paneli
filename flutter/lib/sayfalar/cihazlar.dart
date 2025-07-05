@@ -291,7 +291,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => AIChatPage(),
+                                builder:
+                                    (context) =>
+                                        AIChatPage(kullanici: widget.kullanici),
                               ),
                             );
                           },

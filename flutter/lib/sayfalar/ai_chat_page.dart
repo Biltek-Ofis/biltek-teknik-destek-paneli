@@ -1,20 +1,27 @@
 import 'dart:convert';
 
 import 'package:biltekteknikservis/models/ai_chat.dart';
+import 'package:biltekteknikservis/models/ai_resp.dart';
+import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
+import '../models/cihaz.dart';
 import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/firebase.dart';
 import '../utils/islemler.dart';
+import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
+import 'detaylar/detaylar.dart';
 
 class AIChatPage extends StatefulWidget {
-  const AIChatPage({super.key});
+  const AIChatPage({super.key, required this.kullanici});
+
+  final KullaniciAuthModel kullanici;
 
   @override
   State<AIChatPage> createState() => _AIChatPageState();
@@ -32,9 +39,13 @@ class _AIChatPageState extends State<AIChatPage> {
 
   ScrollController scrollController = ScrollController();
 
-  Content yzPrompt = Content('model', [
+  Content yzPrompt = Content('user', [
     TextPart(
       "Senin adın Biltek Yapay Zeka. Biltek'in yapay zeka destekli asistanısın. Bilgisayar, telefon, yazıcı hakkındaki sorular, hatalar konusunda yardımcı olabilirsin.",
+    ),
+    TextPart("Sana sorulan sorulara net, kısa ve anlaşılır cevaplar ver."),
+    TextPart(
+      'Sana şu kişinin cihazlarını göster ve benzeri bir şey denildiğinde bir json formatında cevap ver. Mesela ahmetin cihazlarını göster denildiğinde cevabın şu şekilde olsun: { "type":"cihazAra","query":"ahmet"}',
     ),
   ]);
 
@@ -240,8 +251,79 @@ class _AIChatPageState extends State<AIChatPage> {
 
     final response = await chat.sendMessage(userMessage);
     if (response.text != null && response.text!.isNotEmpty) {
-      aiChatHistory.add(Content('model', [TextPart(response.text!)]));
-      aiChatList.add(AiChatModel.create(mesaj: response.text!, isUser: false));
+      debugPrint("AI Response: ${response.text}");
+      if (response.text!.startsWith("```json")) {
+        String responseText =
+            response.text!
+                .replaceAll("```json", "")
+                .replaceAll("```", "")
+                .trim();
+        AiResponseModel aiResponseModel = AiResponseModel.fromJson(
+          jsonDecode(responseText),
+        );
+        switch (aiResponseModel.type) {
+          case "cihazAra":
+            List<Cihaz> cihazlarTemp = await BiltekPost.cihazlariGetir(
+              arama: aiResponseModel.query,
+              limit: 10,
+            );
+            if (cihazlarTemp.isEmpty) {
+              aiChatList.add(
+                AiChatModel.create(
+                  mesaj: "**${aiResponseModel.query} cihazı bulunamadı**",
+                  isUser: false,
+                ),
+              );
+            } else {
+              String cihazlarText =
+                  "${aiResponseModel.query} sorgusuna ait son 10 cihaz:\n";
+              for (var i = 0; i < cihazlarTemp.length; i++) {
+                final cihaz = cihazlarTemp[i];
+                cihazlarText += "**-----------------------------**";
+                cihazlarText +=
+                    "\n[Servis No: ${cihaz.servisNo}\nMüşteri Adı: ${cihaz.musteriAdi}\nCihaz: ${cihaz.cihaz} ${cihaz.cihazModeli}\nTarih: ${cihaz.tarih}](servisNo:${cihaz.servisNo})";
+              }
+              aiChatHistory.add(Content('model', [TextPart(cihazlarText)]));
+              aiChatList.add(
+                AiChatModel.create(mesaj: cihazlarText, isUser: false),
+              );
+            }
+            break;
+          default:
+            aiChatHistory.add(
+              Content('model', [
+                TextPart(
+                  "**Bir hata oluştu. Lütfen daha sonra tekrar deneyin**",
+                ),
+              ]),
+            );
+            aiChatList.add(
+              AiChatModel.create(
+                mesaj: "**Bir hata oluştu. Lütfen daha sonra tekrar deneyin**",
+                isUser: false,
+              ),
+            );
+            break;
+        }
+      } else {
+        aiChatHistory.add(Content('model', [TextPart(response.text!)]));
+        aiChatList.add(
+          AiChatModel.create(mesaj: response.text!, isUser: false),
+        );
+      }
+    } else {
+      debugPrint("AI Response is empty or null");
+      aiChatHistory.add(
+        Content('model', [
+          TextPart("**Bir hata oluştu. Lütfen daha sonra tekrar deneyin**"),
+        ]),
+      );
+      aiChatList.add(
+        AiChatModel.create(
+          mesaj: "**Bir hata oluştu. Lütfen daha sonra tekrar deneyin**",
+          isUser: false,
+        ),
+      );
     }
 
     setState(() {
@@ -327,6 +409,38 @@ class _AIChatPageState extends State<AIChatPage> {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               selectable: false,
+                              config: MarkdownConfig(
+                                configs: [
+                                  LinkConfig(
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    onTap: (url) {
+                                      if (url.isNotEmpty) {
+                                        if (url.startsWith("servisNo:") &&
+                                            !chat.isUser) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) => DetaylarSayfasi(
+                                                    kullanici: widget.kullanici,
+                                                    servisNo: int.parse(
+                                                      url.replaceAll(
+                                                        "servisNo:",
+                                                        "",
+                                                      ),
+                                                    ),
+                                                    cihazlariYenile: () {},
+                                                  ),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                             if (chat.tarih != null) ...[
                               const SizedBox(height: 4),
