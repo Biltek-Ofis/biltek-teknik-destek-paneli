@@ -8,6 +8,7 @@ import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../models/cihaz.dart';
 import '../utils/alerts.dart';
@@ -49,6 +50,10 @@ class _AIChatPageState extends State<AIChatPage> {
     ),
   ]);
 
+  stt.SpeechToText speech = stt.SpeechToText();
+  bool sttAvailable = false;
+  bool dinliyor = false;
+
   @override
   initState() {
     super.initState();
@@ -62,7 +67,26 @@ class _AIChatPageState extends State<AIChatPage> {
               .map((e) => AiChatModel.fromJson(jsonDecode(e)))
               .toList();
       aiChatHistory = _aiChatHistory(aiChatList);
-
+      bool available = await speech.initialize(
+        onStatus: (status) {
+          debugPrint("SpeechToText Status: $status");
+          if (status == stt.SpeechToText.listeningStatus) {
+            mesajError = null;
+            dinliyor = true;
+          } else if (status == stt.SpeechToText.notListeningStatus) {
+            dinliyor = false;
+          }
+          setState(() {});
+        },
+        onError: (error) {
+          debugPrint("SpeechToText Error: ${error.errorMsg}");
+          setState(() {
+            mesajError = "Sesli mesaj dinleme hatası: Lütfen tekrar deneyin.";
+            dinliyor = false;
+          });
+        },
+      );
+      sttAvailable = available;
       setState(() {});
       _altaKaydir();
       _yukleniyorGizle();
@@ -73,6 +97,8 @@ class _AIChatPageState extends State<AIChatPage> {
   dispose() {
     mesajController.dispose();
     scrollController.dispose();
+    speech.stop();
+    speech.cancel();
     super.dispose();
   }
 
@@ -175,9 +201,51 @@ class _AIChatPageState extends State<AIChatPage> {
                       hint: 'Mesajınızı yazın',
                     ),
                   ),
+
+                  if (sttAvailable)
+                    InkWell(
+                      onTap:
+                          mesajReadOnly
+                              ? null
+                              : () async {
+                                if (!dinliyor) {
+                                  speech.listen(
+                                    onResult: (result) {
+                                      debugPrint(
+                                        "SpeechToText Result: ${result.recognizedWords}",
+                                      );
+
+                                      _insertText(result.recognizedWords);
+                                      if (result.finalResult) {
+                                        setState(() {
+                                          dinliyor = false;
+                                        });
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  speech.stop();
+                                  speech.cancel();
+                                }
+                              },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                          color: mesajReadOnly ? Colors.grey : Colors.blue,
+                        ),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          dinliyor ? Icons.mic : Icons.mic_off,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  if (sttAvailable) SizedBox(width: 8),
                   InkWell(
                     onTap:
-                        mesajReadOnly
+                        mesajReadOnly || dinliyor
                             ? null
                             : () async {
                               await _mesajControl(mesajController.text);
@@ -185,11 +253,14 @@ class _AIChatPageState extends State<AIChatPage> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(100)),
-                        color: mesajReadOnly ? Colors.grey : Colors.blue,
+                        color:
+                            mesajReadOnly || dinliyor
+                                ? Colors.grey
+                                : Colors.blue,
                       ),
-                      width: 60,
-                      height: 60,
-                      child: Icon(Icons.send, color: Colors.white, size: 30),
+                      width: 40,
+                      height: 40,
+                      child: Icon(Icons.send, color: Colors.white, size: 20),
                     ),
                   ),
                 ],
@@ -536,5 +607,18 @@ class _AIChatPageState extends State<AIChatPage> {
         (e) => Content(e.isUser ? "user" : "model", [TextPart(e.mesaj)]),
       ),
     ];
+  }
+
+  void _insertText(String inserted) {
+    final text = mesajController.text;
+    final selection = mesajController.selection;
+    final newText = text.replaceRange(selection.start, selection.end, inserted);
+    mesajController.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(
+        offset: selection.baseOffset + inserted.length,
+      ),
+    );
+    setState(() {});
   }
 }
