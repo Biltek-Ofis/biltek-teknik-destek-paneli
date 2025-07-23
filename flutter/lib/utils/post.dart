@@ -66,7 +66,10 @@ class BiltekPost {
       if (response.statusCode == 201) {
         var resp = await response.stream.bytesToString();
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        return packageInfo.version != resp;
+        debugPrint("Current version: ${packageInfo.buildNumber}");
+        int currentVersion = int.parse(packageInfo.buildNumber);
+        int updatedVersion = int.parse(resp);
+        return currentVersion < updatedVersion;
       } else {
         return false;
       }
