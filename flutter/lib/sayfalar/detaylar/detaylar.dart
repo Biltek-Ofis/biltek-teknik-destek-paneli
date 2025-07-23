@@ -41,8 +41,6 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   bool detaylarYukleniyor = true;
 
-  Timer? timer;
-
   TableBorder tableBorder = TableBorder.all(
     color: Colors.yellow.withAlpha(100),
   );
@@ -64,16 +62,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       await _cihazDuzenlemeGetir();
       await _cihaziYenile();
     });
-    timer = Timer.periodic(Duration(seconds: 5), (timer) async {
-      await _cihaziYenile();
-    });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -222,7 +211,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                         heroTag: "Edit",
                         shape: const CircleBorder(),
                         onPressed: () async {
-                          Navigator.of(context).push(
+                          NavigatorState navigatorState = Navigator.of(context);
+                          await _cihaziYenile();
+                          navigatorState.push(
                             MaterialPageRoute(
                               builder:
                                   (context) => DetayDuzenle(
@@ -266,21 +257,26 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             }
           },
         ),
-        body: Container(
-          padding: EdgeInsets.all(8),
-          child: PageView(
-            controller: pageController,
-            onPageChanged: (index) {
-              if (index == 3) {
-                pageController.jumpToPage(2);
-                _galeriyiAc();
-              } else {
-                setState(() {
-                  seciliIndex = index;
-                });
-              }
-            },
-            children: [_genel(), _cihazBilgileri(), _islemler(), SizedBox()],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await _cihaziYenile();
+          },
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (index) {
+                if (index == 3) {
+                  pageController.jumpToPage(2);
+                  _galeriyiAc();
+                } else {
+                  setState(() {
+                    seciliIndex = index;
+                  });
+                }
+              },
+              children: [_genel(), _cihazBilgileri(), _islemler(), SizedBox()],
+            ),
           ),
         ),
       ),
@@ -288,6 +284,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   }
 
   Future<void> _cihaziYenile() async {
+    _yukleniyorGoster();
     Cihaz? cihazTemp = await BiltekPost.cihazGetir(servisNo: widget.servisNo);
     if (mounted) {
       setState(() {
@@ -371,6 +368,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       fiyatlar = fiyatlarTemp;
       detaylarYukleniyor = false;
     }
+
+    _yukleniyorGizle();
   }
 
   Future<void> _ara() async {
