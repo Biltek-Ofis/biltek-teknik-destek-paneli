@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
@@ -288,6 +289,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                     ? null
                     : (chatEnabled
                         ? FloatingActionButton(
+                          heroTag: "chat${Random().nextInt(1000)}",
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
