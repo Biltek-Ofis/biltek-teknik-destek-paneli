@@ -288,7 +288,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                     ? null
                     : (chatEnabled
                         ? FloatingActionButton(
-                          heroTag: "aiChat",
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(

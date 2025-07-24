@@ -10,6 +10,7 @@ import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../widgets/input.dart';
+import '../../widgets/musteri_sec.dart';
 
 class DetayDuzenle extends StatefulWidget {
   const DetayDuzenle({
@@ -30,6 +31,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
 
   TextEditingController musteriAdiController = TextEditingController();
   FocusNode musteriAdiFocus = FocusNode();
+  FocusNode musteriAdiDialogFocus = FocusNode();
   String? musteriAdiHata;
 
   TextEditingController teslimEdenController = TextEditingController();
@@ -216,6 +218,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
   void dispose() {
     musteriAdiController.dispose();
     musteriAdiFocus.dispose();
+    musteriAdiDialogFocus.dispose();
     teslimEdenController.dispose();
     teslimEdenFocus.dispose();
     teslimAlanController.dispose();
@@ -301,11 +304,33 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                         nextFocus: teslimEdenFocus,
                                         label: "Müşteri Adı *",
                                         errorText: musteriAdiHata,
+                                        readOnly: true,
                                         onChanged: (value) {
                                           setState(() {
                                             girildi = true;
                                             musteriAdiHata = null;
                                           });
+                                        },
+                                        onTap: () async {
+                                          MusteriSec.show(
+                                            context,
+                                            musteriAdiController:
+                                                musteriAdiController,
+                                            musteriAdiFocus:
+                                                musteriAdiDialogFocus,
+                                            onMusteriSec: (musteri) {
+                                              musteriAdiController.text =
+                                                  musteri.musteriAdi;
+                                              adresController.text =
+                                                  musteri.adres;
+                                              gsmController.text =
+                                                  musteri.telefonNumarasi;
+                                              setState(() {
+                                                girildi = true;
+                                                musteriAdiHata = null;
+                                              });
+                                            },
+                                          );
                                         },
                                       ),
                                       BiltekTextField(
@@ -1497,7 +1522,6 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
     if (!hataVar) {
       Map<String, String> postData = {
         "musteri_kod": "",
-        //TODO: Musteri bilgileri otomatik getirilecek.
         "musteri_adi": musteriAdi,
         "teslim_eden": teslimEdenController.text,
         "teslim_alan": teslimAlanController.text,

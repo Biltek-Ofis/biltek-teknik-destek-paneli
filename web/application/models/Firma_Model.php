@@ -14,20 +14,24 @@ class Firma_Model extends CI_Model
         return DB_ON_EK_STR."musteriler";
     }
     public $stokTablosu = "TBLSTSABIT";
-    public function musteriBilgileri($aranacak, $ara)
+    public function musteriBilgileri($aranacak, $ara, $limit = 0)
     {
-        return $this->ara($this->musteriTablosu(), $aranacak, $ara);
+        return $this->ara($this->musteriTablosu(), $aranacak, $ara, $limit);
         //return $this->firmadb()->like('LOWER(' . $aranacak . ')', strtolower($ara))->get($this->musteriTablosu())->result();
     }
-    public function stok($aranacak, $ara)
+    public function stok($aranacak, $ara, $limit = 0)
     {
-        return $this->ara($this->stokTablosu, $aranacak, $ara);
+        return $this->ara($this->stokTablosu, $aranacak, $ara, $limit);
         //return $this->firmadb()->like($aranacak, "N'" . $ara . "'")->get($this->stokTablosu)->result();
     }
-    public function ara($tablo, $aranacak, $ara)
+    public function ara($tablo, $aranacak, $ara, $limit = 0)
     {
         //$ara = $this->Islemler_Model->turkceKarakterArama($ara);
         //return $this->firmadb()->query("SELECT * FROM " . $tablo . " WHERE " . $aranacak . " LIKE N'%" . $ara . "%' collate Turkish_CI_AS")->result();
-        return $this->db->reset_query()->like($aranacak, $ara)->get($tablo)->result();
+        $query = $this->db->reset_query()->like($aranacak, $ara);
+        if($limit > 0){
+            $query = $query->limit($limit);
+        }
+        return $query->get($tablo)->result();
     }
 }

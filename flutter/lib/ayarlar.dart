@@ -37,6 +37,7 @@ class Ayarlar {
   static String get cihazEkle => "${appUrl}cihazEkle/";
   static String get cihazDuzenle => "${appUrl}cihazDuzenle/";
   static String get cihazDuzenleme => "${appUrl}cihazDuzenleme/";
+  static String get musteriler => "${appUrl}musteriler/";
 
   static String teknikservisformu({
     required String auth,
