@@ -240,7 +240,7 @@ class Kullanicilar_Model extends CI_Model
     public function musteriBilgileri()
     {
         $this->load->model("Firma_Model");
-        return $this->db->reset_query()->get($this->Firma_Model->musteriTablosu())->result();
+        return $this->db->reset_query()->order_by("musteri_adi", "ASC")->get($this->Firma_Model->musteriTablosu())->result();
     }
     public function musteriPost($veri)
     {
