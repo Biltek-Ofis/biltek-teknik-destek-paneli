@@ -79,97 +79,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       child: Scaffold(
         appBar: AppBar(
           title: cihaz != null ? Text("${cihaz!.servisNo}") : null,
-          actions: [
-            /*if (cihaz != null)
-                  IconButton(
-                    onPressed: () async {
-                      String url = Ayarlar.teknikservisformu(
-                        auth: widget.kullanici.auth,
-                        cihazID: cihaz!.id,
-                      );
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => WebviewPage(
-                            url: url,
-                          ),
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.print),
-                  ),*/
-            /*if (cihaz != null)
-                PopupMenuButton<String>(
-                  onSelected: (value) async {
-                    switch (value) {
-                      case "bilgisayardaAc":
-                        await BiltekPost.bilgisayardaAc(
-                          kullaniciID: widget.kullanici.id,
-                          servisNo: cihaz!.servisNo,
-                        );
-                        BarkodOkuyucu? barkodOkuyucu =
-                            await BarkodOkuyucu.getir();
-                        await barkodOkuyucu?.servisNo(cihaz!.servisNo);
-                        break;
-                      case "fiyatPaylas":
-                        await _fiyatBilgisiPaylas();
-                        break;
-                      case "ara":
-                        await _ara();
-                        break;
-                      case "mesajGonder":
-                        await _whatsapp();
-                        break;
-                      case "kisilereEkle":
-                        await _kisiEkle();
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem<String>(
-                        value: "bilgisayardaAc",
-                        child: ListTile(
-                          leading: Icon(Icons.desktop_windows),
-                          title: Text("Bilgisayarda Aç"),
-                        ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: "fiyatPaylas",
-                        child: ListTile(
-                          leading: Icon(Icons.share),
-                          title: Text("Fiyat Bilgisi Paylaş"),
-                        ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: "ara",
-                        child: ListTile(
-                          leading: Icon(Icons.phone),
-                          title: Text("Ara"),
-                        ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: "mesajGonder",
-                        child: ListTile(
-                          leading: Image.asset(
-                            BiltekAssets.whatsapp,
-                            width: 24,
-                            height: 24,
-                          ),
-                          title: Text("Mesaj Gönder"),
-                        ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: "kisilereEkle",
-                        child: ListTile(
-                          leading: Icon(Icons.contact_page),
-                          title: Text("Rehbere Ekle"),
-                        ),
-                      ),
-                    ];
-                  },
-                ),*/
-          ],
+          actions: [],
         ),
         floatingActionButton: Builder(
           builder: (context) {
@@ -382,14 +292,6 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     }
   }
 
-  Future<void> _kisiEkle() async {
-    await _kisiKontrol();
-  }
-
-  Future<void> _kisiDuzenle() async {
-    await _kisiKontrol(duzenle: true);
-  }
-
   void kisiIzniUyari() {
     showDialog(
       context: context,
@@ -438,59 +340,37 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     }
   }
 
-  Future<void> _kisiKontrol({bool duzenle = false}) async {
+  Future<void> _kisiEkle() async {
     String telefon = telefonNumarasi();
     if (telefonGecerli(telefon)) {
-      _yukleniyorGoster();
       if (await Permission.contacts.isPermanentlyDenied) {
-        _yukleniyorGizle();
         kisiIzniUyari();
         return;
       }
       if (await Permission.contacts.request().isGranted) {
-        Phone phone = Phone(telefon);
-        List<Contact> contacts = await FlutterContacts.getContacts(
-          sorted: false,
-          deduplicateProperties: false,
-          withProperties: true,
+        Contact? contact = await FlutterContacts.openExternalInsert(
+          Contact(phones: [Phone(telefon)], displayName: cihaz!.musteriAdi),
         );
-        contacts =
-            contacts.where((c) {
-              List<Phone> p =
-                  c.phones.where((p) => p.number == phone.number).toList();
-              return p.isNotEmpty;
-            }).toList();
-        Contact? contact;
-        if (contacts.isEmpty) {
-          Contact contactTemp = Contact(
-            displayName: cihaz!.musteriAdi.trim(),
-            name: Name(first: cihaz!.musteriAdi.trim()),
-            phones: [phone],
-          );
-          contact = await contactTemp.insert();
-          if (!duzenle) {
-            _yukleniyorGizle();
-            showNotification(body: "Müşteri rehbere kaydedildi");
-          }
-        }
-        if (contacts.isNotEmpty) {
-          if (duzenle) {
-            contact = contacts.first;
-          } else {
-            _yukleniyorGizle();
-            showNotification(body: "Müşteri kaydı zaten mevcut");
-          }
-        }
-        if (duzenle && contact != null) {
-          _yukleniyorGizle();
-          await FlutterContacts.openExternalEdit(contact.id);
-          showNotification(body: "Müşteri düzenleme tamamlandı");
+        debugPrint("Kişi: $contact");
+        if (contact != null) {
+          showNotification(body: "Müşteri kaydedildi.");
+        } else {
+          showNotification(body: "Müşteri kaydetme iptal edildi.");
         }
       } else {
-        _yukleniyorGizle();
         kisiIzniUyari();
         return;
       }
+    } else {
+      _gecersizTelefonDialog();
+    }
+  }
+
+  Future<void> _sms() async {
+    String telefon = telefonNumarasi();
+
+    if (telefonGecerli(telefon)) {
+      launchUrlString("sms:$telefon");
     } else {
       _gecersizTelefonDialog();
     }
@@ -645,13 +525,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                     SizedBox(width: 1),
                                     IconButton(
                                       onPressed: () async {
-                                        await _whatsapp();
+                                        await _kisiEkle();
                                       },
-                                      icon: Image.asset(
-                                        BiltekAssets.whatsapp,
-                                        width: 24,
-                                        height: 24,
-                                      ),
+                                      icon: Icon(Icons.contact_page),
                                     ),
                                   ],
                                 ),
@@ -661,16 +537,24 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                   children: [
                                     IconButton(
                                       onPressed: () async {
-                                        await _kisiDuzenle();
+                                        await _sms();
                                       },
-                                      icon: Icon(Icons.edit),
+                                      icon: Image.asset(
+                                        BiltekAssets.sms,
+                                        width: 24,
+                                        height: 24,
+                                      ),
                                     ),
                                     SizedBox(width: 1),
                                     IconButton(
                                       onPressed: () async {
-                                        await _kisiEkle();
+                                        await _whatsapp();
                                       },
-                                      icon: Icon(Icons.contact_page),
+                                      icon: Image.asset(
+                                        BiltekAssets.whatsapp,
+                                        width: 24,
+                                        height: 24,
+                                      ),
                                     ),
                                   ],
                                 ),
