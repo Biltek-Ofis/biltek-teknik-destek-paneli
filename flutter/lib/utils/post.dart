@@ -12,6 +12,7 @@ import '../models/kullanici.dart';
 import '../models/lisans/lisans.dart';
 import '../models/lisans/versiyon.dart';
 import '../models/medya.dart';
+import '../models/musteri.dart';
 import 'shared_preferences.dart';
 
 class BiltekPost {
@@ -342,6 +343,34 @@ class BiltekPost {
       }
     }
     return false;
+  }
+
+  static Future<List<MusteriModel>> musteriBilgileriGetir(
+    String musteriAdi,
+  ) async {
+    Map<String, String> postMap = {};
+
+    postMap.addAll({"ara": musteriAdi});
+
+    var response = await BiltekPost.post(Ayarlar.musteriler, postMap);
+    if (response.statusCode == 201) {
+      var resp = await response.stream.bytesToString();
+      try {
+        debugPrint(resp);
+        List<dynamic> musteriler = jsonDecode(resp) as List<dynamic>;
+        return musteriler
+            .map(
+              (cihaz) => MusteriModel.fromJson(cihaz as Map<String, dynamic>),
+            )
+            .toList();
+      } on Exception catch (e) {
+        debugPrint("Musteri bilgileri yüklenirken bir hata oluştu. $e");
+        return [];
+      }
+    } else {
+      debugPrint("Musteri bilgileri yüklenirken bir hata oluştu.");
+      return [];
+    }
   }
 
   static Future<List<Lisans>> lisanslariGetir() async {
