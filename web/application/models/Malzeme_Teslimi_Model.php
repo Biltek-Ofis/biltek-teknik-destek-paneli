@@ -57,9 +57,40 @@ class Malzeme_Teslimi_Model extends CI_Model
         if ($malzeme_teslim_no != "0") {
             $veri["teslim_no"] = $malzeme_teslim_no;
             $ekle = $this->db->reset_query()->insert($this->tabloAdi(), $veri);
-            return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!1", $ekle);
+            if ($ekle) {
+                $id = $this->db->insert_id();
+                for ($i = 1; $i <= 10; $i++) {
+                    $islem = $this->input->post("islem" . $i);
+                    $adet = $this->input->post("adet" . $i);
+                    $birim_fiyati = $this->input->post("birim_fiyati" . $i);
+                    $kdv = $this->input->post("kdv_" . $i);
+                    if (isset($islem) && !empty($islem)) {
+                        $veri = $this->islemArray(
+                            $id,
+                            $i,
+                            $islem,
+                            $birim_fiyati,
+                            $adet,
+                            $kdv
+                        );
+                        $duzenle = $this->islemDuzenle($id, $veri);
+                        if (!$duzenle) {
+                            echo json_encode(array("mesaj" => "Ekleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));
+                            return;
+                        }
+                    } else {
+                        $duzenle = $this->islemSil($id, $i);
+                        if (!$duzenle) {
+                            return $this->resp("Ekleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], FALSE);
+                        }
+                    }
+                }
+                return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $ekle);
+            } else {
+                return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $ekle);
+            }
         } else {
-            return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!2");
+            return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!");
         }
     }
     public function malzemeTeslimiDuzenle($id)
@@ -100,8 +131,8 @@ class Malzeme_Teslimi_Model extends CI_Model
     public function malzemeTeslimiSil($id)
     {
         $sil = $this->db->reset_query()->where("teslim_id", $id)->delete($this->islemlerTabloAdi());
-        
-        if(!$sil){
+
+        if (!$sil) {
             return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $sil);
         }
         $sil = $this->db->reset_query()->where("id", $id)->delete($this->tabloAdi());
