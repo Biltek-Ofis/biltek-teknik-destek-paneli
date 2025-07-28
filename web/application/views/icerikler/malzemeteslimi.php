@@ -255,6 +255,7 @@ $this->load->view("inc/style_tablo");
             var formData = $("#yeniMalzemeTeslimiForm").serialize();
             formBaslangic("#yeniMalzemeTeslimiEkleBtn");
             $.post('<?= base_url("malzemeteslimi/malzemeTeslimiEkleJQ"); ?>', formData).done(function (data) {
+                console.log(data);
                 var resp = JSON.parse(data);
                 if (resp["sonuc"]) {
                     $("#statusSuccessModal").modal("show");
@@ -440,50 +441,10 @@ $this->load->view("inc/style_tablo");
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="yeniMalzemeTeslimiForm" method="post">
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/firma", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_eden", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_alan", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/siparis_tarihi", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_tarihi", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/vade_tarihi", array(
-                            "id" => "1",
-                        ));
-                        ?>
-                    </div>
-                </form>
+                <?php $this->load->view("icerikler/malzeme_teslimi_form_div", array(
+                    "form_ad" => "yeni",
+                    "form_id" => "1",
+                )); ?>
             </div>
             <div class="modal-footer">
                 <button type="submit" id="yeniMalzemeTeslimiEkleBtn" class="btn btn-success"
@@ -572,163 +533,10 @@ $this->load->view("inc/style_tablo");
                         </tbody>
                     </table>
                 </div>
-                <form id="duzenleMalzemeTeslimiForm" method="post">
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/firma", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_eden", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_alan", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/siparis_tarihi", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/teslim_tarihi", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/vade_tarihi", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <div class="row">
-                        <?php
-                        $this->load->view("ogeler/malzemeteslimi/odeme_durumu", array(
-                            "id" => "2",
-                        ));
-                        ?>
-                    </div>
-                    <table class="table table-flush">
-                        <thead>
-                            <tr>
-                                <th>#</th> <!--<th>SK</th>-->
-                                <th>Malzeme</th>
-                                <th>Adet</th>
-                                <th>Birim Fiyat (TL)</th>
-                                <th>KDV Oranı (%)</th>
-                                <th>KDV</th>
-                                <th>Tutar (KDV'siz)</th>
-                                <th>Toplam</th>
-                            </tr>
-                        </thead>
-                        <tbody id="yapilanIslemBody">
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "1",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "2",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "3",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "4",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "5",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "6",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "7",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "8",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "9",
-                                ));
-                                ?>
-                            </div>
-                            <div class="row">
-
-                                <?php
-                                $this->load->view("ogeler/malzemeteslimi/islem", array(
-                                    "id" => "2",
-                                    "index" => "10",
-                                ));
-                                ?>
-                            </div>
-                        </tbody>
-                    </table>
-                </form>
+                <?php $this->load->view("icerikler/malzeme_teslimi_form_div", array(
+                    "form_ad" => "duzenle",
+                    "form_id" => "2",
+                )); ?>
             </div>
             <div class="modal-footer">
                 <button type="submit" id="kaydetMalzemeTeslimiBtn" class="btn btn-success">Kaydet</button>
