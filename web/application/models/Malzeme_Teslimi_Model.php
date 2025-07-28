@@ -85,7 +85,9 @@ class Malzeme_Teslimi_Model extends CI_Model
                         }
                     }
                 }
-                return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $ekle);
+                $sonuc = $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $ekle);
+                $sonuc["id"] = $id;
+                return $sonuc;
             } else {
                 return $this->resp("Bir hata oluştu. Lütfen daha sonra tekrar deneyin!", $ekle);
             }

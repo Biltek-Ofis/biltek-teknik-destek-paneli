@@ -107,11 +107,13 @@ $this->load->view("inc/style_tablo");
             $("#silMalzemeTeslimiBtn").hide();
             $("#duzenleMalzemeTeslimiForm").show();
             $("#kaydetMalzemeTeslimiBtn").show();
+            $("#kaydetVeYazdirMalzemeTeslimiBtn").show();
             $("#iptalMalzemeTeslimiBtn").show();
         }
         function detayGoster() {
             $("#duzenleMalzemeTeslimiForm").hide();
             $("#kaydetMalzemeTeslimiBtn").hide();
+            $("#kaydetVeYazdirMalzemeTeslimiBtn").hide();
             $("#iptalMalzemeTeslimiBtn").hide();
             $("#duzenleMalzemeTeslimiBtn").show();
             $("#silMalzemeTeslimiBtn").show();
@@ -182,7 +184,8 @@ $this->load->view("inc/style_tablo");
             } else {
                 $("#islemler3").html(islemlerHtml);
             }
-            $("#kaydetMalzemeTeslimiBtn").attr("onclick", id == 0 ? "" : "duzenle('" + id + "')");
+            $("#kaydetMalzemeTeslimiBtn").attr("onclick", id == 0 ? "" : "duzenle('" + id + "', false)");
+            $("#kaydetVeYazdirMalzemeTeslimiBtn").attr("onclick", id == 0 ? "" : "duzenle('" + id + "', true)");
             $("#silMalzemeTeslimiBtn").attr("onclick", id == 0 ? "" : "silOnay('" + id + "')");
 
             detayGoster();
@@ -251,7 +254,7 @@ $this->load->view("inc/style_tablo");
                 }
             });
         }
-        function yeniEkle() {
+        function yeniEkle(yazdir) {
             var formData = $("#yeniMalzemeTeslimiForm").serialize();
             formBaslangic("#yeniMalzemeTeslimiEkleBtn");
             $.post('<?= base_url("malzemeteslimi/malzemeTeslimiEkleJQ"); ?>', formData).done(function (data) {
@@ -262,6 +265,9 @@ $this->load->view("inc/style_tablo");
                     $('#yeniMalzemeTeslimiForm')[0].reset();
                     $("#yeniMalzemeTeslimiEkleModal").modal("hide");
                     malzemeTeslimleriGetir();
+                    if(yazdir){
+                        teslimFormuYazdir(resp["id"]);
+                    }
                 } else {
                     $("#hata-mesaji").html(resp["mesaj"]);
                     $("#statusErrorsModal").modal("show");
@@ -273,23 +279,29 @@ $this->load->view("inc/style_tablo");
                 formBitis("#yeniMalzemeTeslimiEkleBtn");
             });
         }
-        function duzenle(id) {
+        function duzenle(id, yazdir) {
             var formData = $("#duzenleMalzemeTeslimiForm").serialize();
             formBaslangic("#kaydetMalzemeTeslimiBtn");
+            formBaslangic("#kaydetVeYazdirMalzemeTeslimiBtn");
             $.post('<?= base_url("malzemeteslimi/malzemeTeslimiDuzenleJQ"); ?>/' + id, formData).done(function (data) {
                 var resp = JSON.parse(data);
                 if (resp["sonuc"]) {
                     $("#statusSuccessModal").modal("show");
                     malzemeTeslimleriGetir();
+                    if(yazdir){
+                        teslimFormuYazdir(id);
+                    }
                 } else {
                     $("#hata-mesaji").html(resp["mesaj"]);
                     $("#statusErrorsModal").modal("show");
                 }
                 formBitis("#kaydetMalzemeTeslimiBtn");
+                formBitis("#kaydetVeYazdirMalzemeTeslimiBtn");
             }).fail(function (xhr, status, error) {
                 $("#hata-mesaji").html(error);
                 $("#statusErrorsModal").modal("show");
                 formBitis("#kaydetMalzemeTeslimiBtn");
+                formBitis("#kaydetVeYazdirMalzemeTeslimiBtn");
             });
         }
 
@@ -310,10 +322,12 @@ $this->load->view("inc/style_tablo");
                     $("#statusErrorsModal").modal("show");
                 }
                 formBitis("#kaydetMalzemeTeslimiBtn");
+                formBitis("#kaydetVeYazdirMalzemeTeslimiBtn");
             }).fail(function (xhr, status, error) {
                 $("#hata-mesaji").html(error);
                 $("#statusErrorsModal").modal("show");
                 formBitis("#kaydetMalzemeTeslimiBtn");
+                formBitis("#kaydetVeYazdirMalzemeTeslimiBtn");
             });
         }
         $(document).ready(function () {
@@ -448,7 +462,9 @@ $this->load->view("inc/style_tablo");
             </div>
             <div class="modal-footer">
                 <button type="submit" id="yeniMalzemeTeslimiEkleBtn" class="btn btn-success"
-                    onclick="yeniEkle()">Ekle</button>
+                    onclick="yeniEkle(false)">Ekle</button>
+                    <button type="submit" id="yeniVeYazdirMalzemeTeslimiEkleBtn" class="btn btn-info text-white"
+                    onclick="yeniEkle(true)">Ekle ve Yazdır</button>
                 <button type="button" onclick="$('#yeniMalzemeTeslimiForm')[0].reset();"
                     class="btn btn-primary">Temizle</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
@@ -540,6 +556,7 @@ $this->load->view("inc/style_tablo");
             </div>
             <div class="modal-footer">
                 <button type="submit" id="kaydetMalzemeTeslimiBtn" class="btn btn-success">Kaydet</button>
+                <button type="submit" id="kaydetVeYazdirMalzemeTeslimiBtn" class="btn btn-info text-white">Kaydet ve Yazdır</button>
                 <button type="submit" id="iptalMalzemeTeslimiBtn" class="btn btn-danger"
                     onclick="detayGoster()">İptal</button>
                 <button type="submit" id="duzenleMalzemeTeslimiBtn" class="btn btn-success"
