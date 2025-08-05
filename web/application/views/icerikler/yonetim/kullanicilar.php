@@ -1,7 +1,16 @@
 <?php $this->load->view("inc/datatables_scripts");
 
 $kullaniciTuru = $kullaniciTuru ?? 1;
-
+echo '<script>
+$(document).ready(function(){
+    ayrilma_durumu_tetikle = false;
+    $("input").each(function(){
+        $($this).on("change keyup", function(){
+            ayrilmaEngeliIptal();
+        });
+    });
+});
+</script>';
 echo '<script>
     $(document).ready(function() {
         var tabloDiv = "#kullanici_tablosu";
@@ -154,7 +163,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici->sifre, "id" => $kullanici->id, "doldurma" => FALSE));
+        $this->load->view("ogeler/kullanici_sifre", array("value" => "", "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));

@@ -8,7 +8,13 @@ echo '">
 if (isset($id)) {
     echo $id;
 }
-echo '">Şifre</label>
+echo '">';
+if(isset($label)){
+    echo $label;
+}else{
+    echo "Şifre";
+}
+echo '</label>
     <input onClick="this.select();" id="kullanici_sifre';
 if (isset($id)) {
     echo $id;
@@ -19,9 +25,23 @@ if(isset($doldurma)){
         echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
     }
 }
-echo ' class="form-control" type="password" name="sifre" minlength="6" placeholder="Şifre" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" value="';
+echo ' class="form-control" type="password" name="';
+if(isset($name)){
+    echo $name;
+}else{
+    echo "sifre";
+}
+echo '" minlength="6" placeholder="Şifre" autocomplete="new-password" value="';
 if (isset($value)) {
     echo $value;
 }
-echo '" required>
+echo '"';
+if(isset($required)){
+    if($required){
+        echo " required";
+    }
+}else{
+    echo " required";
+}
+echo '>
 </div>';
