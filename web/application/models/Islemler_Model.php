@@ -259,6 +259,9 @@ class Islemler_Model extends CI_Model
     {
         return password_hash($sifre, PASSWORD_DEFAULT);
     }
+    public function sifreKontrol($yeni_sifre, $eski_sifre_hash){
+        return password_verify($yeni_sifre, $eski_sifre_hash);
+    }
     public $bozukHarfler = array(
         '\u00d0',
         '\u00de',

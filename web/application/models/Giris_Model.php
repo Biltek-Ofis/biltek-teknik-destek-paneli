@@ -24,7 +24,8 @@ class Giris_Model extends CI_Model
         $this->load->model("Kullanicilar_Model");
         $query = $this->db->reset_query()->limit(1)->where('kullanici_adi', $kullanici_adi)->get($this->Kullanicilar_Model->kullanicilarTabloAdi());
         if ($query->num_rows() > 0) {
-            if (password_verify($sifre, $query->result()[0]->sifre)) {
+            $this->load->model("Islemler_Model");
+            if ($this->Islemler_Model->sifreKontrol($sifre, $query->result()[0]->sifre)) {
                 return true;
             } else {
                 return false;

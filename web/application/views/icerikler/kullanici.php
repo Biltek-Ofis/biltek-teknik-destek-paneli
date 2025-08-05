@@ -1,6 +1,15 @@
 <?php
 $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
-
+echo '<script>
+$(document).ready(function(){
+    ayrilma_durumu_tetikle = false;
+    $("input").each(function(){
+        $($this).on("change keyup", function(){
+            ayrilmaEngeliIptal();
+        });
+    });
+});
+</script>';
 echo '<div class="content-wrapper">';
 $this->load->view("inc/content_header", array(
     "contentHeader" => array(
@@ -28,8 +37,29 @@ echo '<section class="content">
                         <input type="hidden" name="kullanici_adi_orj" value="'. $kullanici["kullanici_adi"].'">';
                         $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici["kullanici_adi"]));
                     echo '</div>
+                    <input type="hidden" name="sifre" value="">
                     <div class="row">';
-                        $this->load->view("ogeler/kullanici_sifre", array("value" => $kullanici["sifre"]));
+                        $this->load->view("ogeler/kullanici_sifre", array(
+                            "value" => "",
+                            "label" => "Eski Şifre",
+                            "name"=> "eski_sifre",
+                        ));
+                    echo '</div>
+                    <div class="row">';
+                        $this->load->view("ogeler/kullanici_sifre", array(
+                            "value" => "",
+                            "label" => "Yeni Şifre",
+                            "name"=> "yeni_sifre",
+                            "required" => FALSE,
+                        ));
+                    echo '</div>
+                    <div class="row">';
+                        $this->load->view("ogeler/kullanici_sifre", array(
+                            "value" => "",
+                            "label" => "Yeni Şifre Tekrar",
+                            "name"=> "yeni_sifre_tekrar",
+                            "required" => FALSE,
+                        ));
                     echo '</div>
                     <div class="row w-100">
                         <div class="col-6 col-lg-6">
