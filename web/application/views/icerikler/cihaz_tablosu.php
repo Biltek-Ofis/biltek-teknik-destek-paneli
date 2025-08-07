@@ -3,7 +3,7 @@
 $tema = $this->Ayarlar_Model->kullaniciTema();
 echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.1") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
-<script src="'. base_url("dist/js/qrcode.min.js?v=1.0").'"></script>';
+<script src="' . base_url("dist/js/qrcode.min.js?v=1.0") . '"></script>';
 
 echo '<style>
   .modal.modal-fullscreen .modal-dialog {
@@ -57,7 +57,7 @@ echo '<script>
     yeniCihazGirisiAcik = false;
   }
   var suankiCihaz = 0;
-  var yonetici = '.($this->Kullanicilar_Model->yonetici() ? "true" : "false").';
+  var yonetici = ' . ($this->Kullanicilar_Model->yonetici() ? "true" : "false") . ';
   var duzenleme_modu = false;
   function detaylariGoster(){
 
@@ -170,12 +170,12 @@ echo '<script>
     function cihazKilitle(guncelDurum){
       guncelDurum = parseInt(guncelDurum);
       switch (guncelDurum) {';
-      foreach($cDurumlari as $cDurumu){
-        echo '
-        case '.$cDurumu->id.':
-          return '.($cDurumu->kilitle == 0 ? "false": "true").';';
-      }
-      echo '
+foreach ($cDurumlari as $cDurumu) {
+  echo '
+        case ' . $cDurumu->id . ':
+          return ' . ($cDurumu->kilitle == 0 ? "false" : "true") . ';';
+}
+echo '
         default:
           return false;
       }
@@ -224,7 +224,7 @@ echo '<script>
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
           cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
-          $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").modal("hide");
+          $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
           basariliModalGoster();
@@ -245,7 +245,7 @@ echo '<script>
     });
   }
   function silModaliGoster(id, servis_no, musteri_adi){
-    $("#silOnayBtn").attr("onclick", "cihaziSil(" + id + ", '.($sorumlu_belirtildimi ? "true": "false").')");
+    $("#silOnayBtn").attr("onclick", "cihaziSil(" + id + ", ' . ($sorumlu_belirtildimi ? "true" : "false") . ')");
 
     $("#ServisNo4").html(servis_no);
     $("#MusteriAdi3").html(musteri_adi);
@@ -380,15 +380,15 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
           <div class="nav-item dropdown">
                 <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazTuruColumn\'), 3);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Tür</a>
                 <ul class="dropdown-menu cihazTurleriDropdown">';
-                    echo '<li class="dropdown-item cihazTurleriDropdownItemTumu active">
+echo '<li class="dropdown-item cihazTurleriDropdownItemTumu active">
                     <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItemTumu\');">Tümü</a>
                   </li>';
-                foreach($cTurleri as $cTuru){
-                  echo '<li class="dropdown-item cihazTurleriDropdownItem'.$cTuru->id.'">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \''.$cTuru->id.'\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItem'.$cTuru->id.'\');">'.$cTuru->isim.'</a>
+foreach ($cTurleri as $cTuru) {
+  echo '<li class="dropdown-item cihazTurleriDropdownItem' . $cTuru->id . '">
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'' . $cTuru->id . '\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItem' . $cTuru->id . '\');">' . $cTuru->isim . '</a>
                   </li>';
-                }
-                echo '
+}
+echo '
                     </ul>
             </div>
         </th>
@@ -398,19 +398,19 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
           <div class="nav-item dropdown">
                 <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazDurumuColumn\'), 6);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Güncel Durum</a>
                 <ul class="dropdown-menu cihazDurumlariDropdown">';
-                echo '
+echo '
                     <!--<li class="dropdown-item" style="background: gray;">
                       <a href="javascript:void(0)" class="d-block w-100">SIRALA</a>
                     </li>-->';
-                    echo '<li class="dropdown-item cihazDurumlariDropdownItemTumu active">
+echo '<li class="dropdown-item cihazDurumlariDropdownItemTumu active">
                     <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \'\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItemTumu\');">Tümü</a>
                   </li>';
-                foreach($cDurumlari as $cDurumu54){
-                  echo '<li class="dropdown-item cihazDurumlariDropdownItem'.$cDurumu54->id.'">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \''.$cDurumu54->id.'\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItem'.$cDurumu54->id.'\');">'.$cDurumu54->durum.'</a>
+foreach ($cDurumlari as $cDurumu54) {
+  echo '<li class="dropdown-item cihazDurumlariDropdownItem' . $cDurumu54->id . '">
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \'' . $cDurumu54->id . '\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItem' . $cDurumu54->id . '\');">' . $cDurumu54->durum . '</a>
                   </li>';
-                }
-                echo '
+}
+echo '
                     </ul>
           </div>
         </th>
@@ -456,8 +456,8 @@ $besliDorduncuOgeGenislik = "20%";
 $besliBesinciOgeGenislik = "20%";
 
 $yapilanIslemInputlari = "";
-for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
-  $yapilanIslemInputlari .= "\n".$this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
+for ($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++) {
+  $yapilanIslemInputlari .= "\n" . $this->load->view("ogeler/yapilan_islem", array("index" => $i, "yapilanIslemArr" => null), true);
 }
 echo '<script>
 function bildirim_tarih_durumu_duzenle(durum){
@@ -525,45 +525,45 @@ $(document).ready(function(){
       
   });
 ';
-if(isset( $_GET["servisNo"])){
+if (isset($_GET["servisNo"])) {
 
   $cihazGoster = $_GET["servisNo"];
   $gosterilenCihaz = $this->Cihazlar_Model->tekCihazApp($cihazGoster);
-  if($gosterilenCihaz != null){
+  if ($gosterilenCihaz != null) {
 
     echo 'detayModaliGoster(
-      "'.donusturOnclick($gosterilenCihaz->id).'", 
-      "'.donusturOnclick($gosterilenCihaz->servis_no).'", 
-      "'.donusturOnclick($gosterilenCihaz->takip_numarasi).'", 
-      "'.donusturOnclick($gosterilenCihaz->musteri_kod).'", 
-      "'.donusturOnclick($gosterilenCihaz->musteri_adi).'", 
-      "'.donusturOnclick($gosterilenCihaz->teslim_eden).'",
-      "'.donusturOnclick($gosterilenCihaz->teslim_alan).'",
-      "'.donusturOnclick($gosterilenCihaz->adres).'",
-      "'.donusturOnclick($gosterilenCihaz->telefon_numarasi).'",
-      "'.donusturOnclick($gosterilenCihaz->tarih).'",
-      "'.donusturOnclick($gosterilenCihaz->bildirim_tarihi).'",
-      "'.donusturOnclick($gosterilenCihaz->cikis_tarihi).'",
-      cihazDurumu("'.donusturOnclick($gosterilenCihaz->guncel_durum).'"),
-      "'.donusturOnclick($gosterilenCihaz->guncel_durum).'",
-      "'.donusturOnclick($gosterilenCihaz->cihaz_turu).'",
-      "'.donusturOnclick($gosterilenCihaz->cihaz).'",
-      "'.donusturOnclick($gosterilenCihaz->cihaz_modeli).'",
-      "'.donusturOnclick($gosterilenCihaz->seri_no).'",
-      "'.donusturOnclick($gosterilenCihaz->teslim_alinanlar).'",
-      "'.donusturOnclick($gosterilenCihaz->cihaz_sifresi).'",
-      "'.donusturOnclick($gosterilenCihaz->cihaz_deseni).'",
-      "'.donusturOnclick($gosterilenCihaz->cihazdaki_hasar).'",
-      "'.donusturOnclick($gosterilenCihaz->hasar_tespiti).'",
-      "'.donusturOnclick($gosterilenCihaz->ariza_aciklamasi).'",
-      servisTuru("'.donusturOnclick($gosterilenCihaz->servis_turu).'"),
-      evetHayir("'.donusturOnclick($gosterilenCihaz->yedek_durumu).'"),
-      "'.donusturOnclick($gosterilenCihaz->sorumlu).'",
-      "'.donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi).'",
-      "'.donusturOnclick($gosterilenCihaz->notlar).'",
-      "'.donusturOnclick($gosterilenCihaz->tahsilat_sekli).'",
-      faturaDurumu("'.donusturOnclick($gosterilenCihaz->fatura_durumu).'"), 
-      "'.donusturOnclick($gosterilenCihaz->fis_no).'");';
+      "' . donusturOnclick($gosterilenCihaz->id) . '", 
+      "' . donusturOnclick($gosterilenCihaz->servis_no) . '", 
+      "' . donusturOnclick($gosterilenCihaz->takip_numarasi) . '", 
+      "' . donusturOnclick($gosterilenCihaz->musteri_kod) . '", 
+      "' . donusturOnclick($gosterilenCihaz->musteri_adi) . '", 
+      "' . donusturOnclick($gosterilenCihaz->teslim_eden) . '",
+      "' . donusturOnclick($gosterilenCihaz->teslim_alan) . '",
+      "' . donusturOnclick($gosterilenCihaz->adres) . '",
+      "' . donusturOnclick($gosterilenCihaz->telefon_numarasi) . '",
+      "' . donusturOnclick($gosterilenCihaz->tarih) . '",
+      "' . donusturOnclick($gosterilenCihaz->bildirim_tarihi) . '",
+      "' . donusturOnclick($gosterilenCihaz->cikis_tarihi) . '",
+      cihazDurumu("' . donusturOnclick($gosterilenCihaz->guncel_durum) . '"),
+      "' . donusturOnclick($gosterilenCihaz->guncel_durum) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_turu) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_modeli) . '",
+      "' . donusturOnclick($gosterilenCihaz->seri_no) . '",
+      "' . donusturOnclick($gosterilenCihaz->teslim_alinanlar) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_sifresi) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_deseni) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihazdaki_hasar) . '",
+      "' . donusturOnclick($gosterilenCihaz->hasar_tespiti) . '",
+      "' . donusturOnclick($gosterilenCihaz->ariza_aciklamasi) . '",
+      servisTuru("' . donusturOnclick($gosterilenCihaz->servis_turu) . '"),
+      evetHayir("' . donusturOnclick($gosterilenCihaz->yedek_durumu) . '"),
+      "' . donusturOnclick($gosterilenCihaz->sorumlu) . '",
+      "' . donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi) . '",
+      "' . donusturOnclick($gosterilenCihaz->notlar) . '",
+      "' . donusturOnclick($gosterilenCihaz->tahsilat_sekli) . '",
+      faturaDurumu("' . donusturOnclick($gosterilenCihaz->fatura_durumu) . '"), 
+      "' . donusturOnclick($gosterilenCihaz->fis_no) . '");';
   }
 }
 echo '
@@ -834,11 +834,11 @@ $(document).ready(function(){
                       <tbody>
                         <tr>
                             <th class="align-middle">Müşteri Adı: </th>
-                            <td class="align-middle">'.$this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_form" => "#dt_duzenleForm", "musteri_adi_sayi" => "2"), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/musteri_adi", array("sifirla" => true, "musteri_adi_form" => "#dt_duzenleForm", "musteri_adi_sayi" => "2"), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim Eden: </th>
-                            <td class="align-middle">'.$this->load->view("ogeler/teslim_eden", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/teslim_eden", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim Alan: </th>
@@ -846,59 +846,59 @@ $(document).ready(function(){
                         </tr>
                         <tr>
                             <th class="align-middle">Adresi: </th>
-                            <td class="align-middle">'.$this->load->view("ogeler/adres", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/adres", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">GSM *: </th>
-                            <td class="align-middle">'.$this->load->view("ogeler/gsm", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/gsm", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Cihaz Türü:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_turleri", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/cihaz_turleri", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Sorumlu Personel:</th>
-                            <td id="dz-sorumlu-personel" class="align-middle">'.($this->Kullanicilar_Model->yonetici() ?$this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) : "").'</td>
+                            <td id="dz-sorumlu-personel" class="align-middle">' . ($this->Kullanicilar_Model->yonetici() ? $this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) : "") . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Markası:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_markasi", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/cihaz_markasi", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Modeli:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_modeli", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/cihaz_modeli", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Seri Numarası:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/seri_no", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/seri_no", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Cihaz Şifresi:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/cihaz_sifresi", array("formID" => "dt_duzenle", "sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/cihaz_sifresi", array("formID" => "dt_duzenle", "sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim alınırken belirlenen hasar türü:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/hasar_turu", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/hasar_turu", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim alınırken yapılan hasar tespiti:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/hasar_tespiti", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/hasar_tespiti", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Arıza Açıklaması:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/ariza_aciklamasi", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Teslim Alınanlar:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Servis Türü:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/servis_turu", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/servis_turu", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Yedek Alınacak mı?:</th>
-                            <td class="align-middle">'.$this->load->view("ogeler/yedek", array("sifirla" => true), true).'</td>
+                            <td class="align-middle">' . $this->load->view("ogeler/yedek", array("sifirla" => true), true) . '</td>
                         </tr>
                       </tbody>
                     </table>
@@ -920,28 +920,28 @@ $(document).ready(function(){
                       <tbody id="form">
                           <tr>
                               <th class="align-middle" colspan="2">Giriş Tarihi:</th>
-                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tarih", array("tarih_id"=>"dz-tarih","sifirla" => true), true).'</td>
+                              <td class="align-middle" colspan="2">' . $this->load->view("ogeler/tarih", array("tarih_id" => "dz-tarih", "sifirla" => true), true) . '</td>
                           </tr>
                           <tr>
                               <th class="align-middle" colspan="2">Bildirim Tarihi:</th>
-                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/bildirim_tarihi", array("sifirla" => true), true).'</td>
+                              <td class="align-middle" colspan="2">' . $this->load->view("ogeler/bildirim_tarihi", array("sifirla" => true), true) . '</td>
                           </tr>
                           <tr>
                               <th class="align-middle" colspan="2">Çıkış Tarihi:</th>
-                              <td class="align-middle" colspan="2">'.$this->load->view("ogeler/cikis_tarihi", array("sifirla" => true), true).'</td>
+                              <td class="align-middle" colspan="2">' . $this->load->view("ogeler/cikis_tarihi", array("sifirla" => true), true) . '</td>
                           </tr>
                           <tr>
                             <th class="align-middle" colspan="2">Güncel Durum:</th>
-                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/guncel_durum", array("sifirla" => true), true).'</td>
+                            <td class="align-middle" colspan="2">' . $this->load->view("ogeler/guncel_durum", array("sifirla" => true), true) . '</td>
                           </tr>
                           <tr>
                             <th class="align-middle" colspan="2">Tahsilat Şekli:</th>
-                            <td class="align-middle" colspan="2">'.$this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true), true).'</td>
+                            <td class="align-middle" colspan="2">' . $this->load->view("ogeler/tahsilat_sekli", array("sifirla" => true), true) . '</td>
                           </tr>
                           <tr>
                             <th class="align-middle" colspan="2">Fatura Durumu:</th>
-                            <td id="fatura_durumu_td" class="align-middle" colspan="2">'.$this->load->view("ogeler/fatura_durumu", array("sifirla" => true), true).'</td>
-                            <td id="fis_no_td" class="align-middle" style="display:none;" colspan="0">'.$this->load->view("ogeler/fis_no", array("sifirla" => true), true).'</td>
+                            <td id="fatura_durumu_td" class="align-middle" colspan="2">' . $this->load->view("ogeler/fatura_durumu", array("sifirla" => true), true) . '</td>
+                            <td id="fis_no_td" class="align-middle" style="display:none;" colspan="0">' . $this->load->view("ogeler/fis_no", array("sifirla" => true), true) . '</td>
                           </tr>
                     </tbody>
                     </table>
@@ -960,7 +960,7 @@ $(document).ready(function(){
                             <th>Toplam</th>
                         </tr>
                       </thead>
-                      <tbody id="yapilanIslemBody">'.$yapilanIslemInputlari.'
+                      <tbody id="yapilanIslemBody">' . $yapilanIslemInputlari . '
                         <tr>
                             <th colspan="5">Toplam Maliyet</th>
                             <td colspan="3" id="yapilanIslemToplamMaliyet">0 TL</td>
@@ -1076,7 +1076,7 @@ $yapilanIslemlerSatiri = '<ul class="list-group list-group-horizontal">
 <li class="list-group-item" style="width:' . $yediliDorduncuOgeGenislik . ';">{fiyat} TL</li>
 <li class="list-group-item" style="width:' . $yediliBesinciOgeGenislik . ';">{toplam_islem_kdv} TL ({kdv_orani}%)</li>
 <li class="list-group-item" style="width:' . $yediliAltinciOgeGenislik . ';">{toplam_islem_fiyati} TL</li>
-<li id="detayToplamFiyatText" class="list-group-item" style="width:'.$yediliYedinciOgeGenislik.';">{toplam_islem_fiyati_kdvli} TL</li>
+<li id="detayToplamFiyatText" class="list-group-item" style="width:' . $yediliYedinciOgeGenislik . ';">{toplam_islem_fiyati_kdvli} TL</li>
 </ul>';
 $yapilanIslemToplam = '<ul class="list-group list-group-horizontal{ek_class}">
 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">{toplam_aciklama}</span></li>
@@ -1176,7 +1176,7 @@ $yapilanIslemEskiArray = array(
 );
 function donusturOnclick($oge)
 {
-  return str_replace("'","\'",trim(preg_replace('/\s\s+/', '<br>', $oge)));
+  return str_replace("'", "\'", trim(preg_replace('/\s\s+/', '<br>', $oge)));
 }
 
 echo '
@@ -1199,7 +1199,7 @@ $yapilanIslemToplamKDVYeni2 = array(
   "KDV",
   "0"
 );
-$yapilanIslemGenelToplamYeni2  = array(
+$yapilanIslemGenelToplamYeni2 = array(
   "Genel Toplam",
   "0"
 );
@@ -1273,26 +1273,26 @@ echo '
   function cihazDurumu(id) {
     id = parseInt(id);
     switch (id) {';
-    foreach($cDurumlari as $cDurumu){
-      echo '
-      case '.$cDurumu->id.':
-        return "'.$cDurumu->durum.'";';
-    }
-    echo '
+foreach ($cDurumlari as $cDurumu) {
+  echo '
+      case ' . $cDurumu->id . ':
+        return "' . $cDurumu->durum . '";';
+}
+echo '
       default:
-        return "'.$this->Cihazlar_Model->cihazDurumuIsım(0).'";
+        return "' . $this->Cihazlar_Model->cihazDurumuIsım(0) . '";
     }
   }';
-      echo '
+echo '
           function faturaDurumu(id) {
             id = parseInt(id);
             switch (id) {';
-      for ($i = 0; $i < count($this->Islemler_Model->faturaDurumu); $i++) {
-        echo '
+for ($i = 0; $i < count($this->Islemler_Model->faturaDurumu); $i++) {
+  echo '
               case ' . $i . ':
                 return "' . $this->Islemler_Model->faturaDurumu[$i] . '";';
-      }
-      echo '
+}
+echo '
               default:
                 return "' . $this->Islemler_Model->faturaDurumu[0] . '";
             }
@@ -1302,11 +1302,11 @@ echo '
   function cihazDurumuClass(id) {
     id = parseInt(id);
     switch (id) {';
-    
-    foreach($cDurumlari as $cDurumu){
-      echo 'case '.$cDurumu->id.':
-        return "'.$cDurumu->renk.'";';
-    }
+
+foreach ($cDurumlari as $cDurumu) {
+  echo 'case ' . $cDurumu->id . ':
+        return "' . $cDurumu->renk . '";';
+}
 echo '
       default:
         return "bg-white";
@@ -1314,14 +1314,14 @@ echo '
   }';
 
 
-  echo 'function tarihDonusturSiralama(tarih) {
+echo 'function tarihDonusturSiralama(tarih) {
     var gun = tarih.slice(0, 2);
     var ay = tarih.slice(3, 5);
     var yil = tarih.slice(6, 10);
     var saat = tarih.slice(11, 16);
     return gun + "." + ay + "." + yil + " " + saat ;
   }';
-  echo 'function tarihDonusturInput(tarih) {
+echo 'function tarihDonusturInput(tarih) {
       var gun = tarih.slice(0, 2);
       var ay = tarih.slice(3, 5);
       var yil = tarih.slice(6, 10);
@@ -1410,6 +1410,21 @@ echo 'function tarihiFormatla(tarih12){
 echo 'function spaniSil(veri){
   return veri.replace(/<\/?span[^>]*>/g, "");
 }';
+echo 'function telefonNumarasiRaw(telNo){
+  return telNo.replaceAll(" ", "")
+              .replaceAll("(", "")
+              .replaceAll(")", "")
+              .replaceAll("_", "")
+              .replaceAll("-", "")
+              .trim();
+}';
+echo 'function telefonNumarasiValid(telNo){
+  var yeniTelNo = telefonNumarasiRaw(telNo);
+  if(yeniTelNo == "" || yeniTelNo == "+" || yeniTelNo =="+9" || yeniTelNo == "+90"){
+    return false;
+  }
+  return true;
+}';
 echo 'function cihazBilgileriniGetir(){
   if(suankiCihaz > 0){
     $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {})
@@ -1425,17 +1440,17 @@ echo 'function cihazBilgileriniGetir(){
             var islemlerSatiri = \'' . $yapilanIslemlerSatiri . '\';
             var islemlerSatiriBos = \'' . $yapilanIslemlerSatiriBos . '\';
             ';
-            for($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++){
-              echo '
+for ($i = 1; $i <= $this->Islemler_Model->maxIslemSayisi; $i++) {
+  echo '
             ayrilma_durumu_tetikle = false;
-            $("#dt_duzenle input#yapilanIslem'.$i.'").val("").change();
-            $("#dt_duzenle input#yapilanIslemMiktar'.$i.'").val("").change();
-            $("#dt_duzenle input#yapilanIslemMaliyet'.$i.'").val("").change();
-            $("#dt_duzenle input#yapilanIslemFiyat'.$i.'").val("").change();
-            $("#dt_duzenle input#yapilanIslemKdv'.$i.'").val("").change();
+            $("#dt_duzenle input#yapilanIslem' . $i . '").val("").change();
+            $("#dt_duzenle input#yapilanIslemMiktar' . $i . '").val("").change();
+            $("#dt_duzenle input#yapilanIslemMaliyet' . $i . '").val("").change();
+            $("#dt_duzenle input#yapilanIslemFiyat' . $i . '").val("").change();
+            $("#dt_duzenle input#yapilanIslemKdv' . $i . '").val("").change();
             ayrilma_durumu_tetikle = true;
             ';
-            }
+}
 echo '
 
             if(Object.keys(value.islemler).length > 0){
@@ -1485,7 +1500,13 @@ echo '
             $("#TeslimEden2").html(value.teslim_eden);
             $("#TeslimAlan2").html(value.teslim_alan);
             $("#MusteriAdres").html(value.adres);
-            $("#MusteriGSM2").html(value.telefon_numarasi);
+            var gsmHtml = value.telefon_numarasi;
+            if(telefonNumarasiValid(value.telefon_numarasi)){
+              gsmHtml += \' <a href="https://wa.me/\'+telefonNumarasiRaw(value.telefon_numarasi)+\'" target="_blank"><img class="ms-2" width="30" height="30" src="' . base_url("dist/img/app/whatsapp.png") . '"></a>\';
+            }
+            
+            $("#MusteriGSM2").html(gsmHtml);
+
             $("#GirisTarihi").html(value.tarih);
             $("#BildirimTarihi").html(value.bildirim_tarihi);
             $("#CikisTarihi").html(value.cikis_tarihi);
@@ -1601,7 +1622,10 @@ echo '
               $("#percentageText").html(durum + "%");
             }
     var tabloDiv = "#cihaz_tablosu";
-    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari("[[ 6, \"asc\" ], [ 5, \"desc\" ]]", "false", ' 
+    var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari(
+      "[[ 6, \"asc\" ], [ 5, \"desc\" ]]",
+      "false",
+      ' 
     "processing": true,
     "aoColumns": [
       null,
@@ -1614,13 +1638,16 @@ echo '
       null,
       null
     ],'
-    , "", FALSE, 
+      ,
+      "",
+      FALSE,
       array(
         '{
           "targets": \'no-sort\',
           "orderable": false,
         }'
-      )) . ');
+      )
+    ) . ');
               var cihazlarSayfa = 0;
               var cihazlarArama = "";
               var cihazlariGetirPost;
@@ -1647,7 +1674,7 @@ echo '
                       var butonlar = sayfaButonuGetir(sayfa - 1, false, sayfa == 1, sayfa != 1, "Önceki", arama);
 
                       if(toplamCihaz >0){
-                        var toplamSayfa = Math.ceil(toplamCihaz / '.$ayarlar->tablo_oge.');
+                        var toplamSayfa = Math.ceil(toplamCihaz / ' . $ayarlar->tablo_oge . ');
   
                         var peginationDiv = function(ekDiv){
                           return \'<div class="dataTables_paginate paging_simple_numbers w-100 text-sm-center text-md-end"><ul class="pagination\'+ekDiv+\'"></ul></div>\';
@@ -1688,7 +1715,7 @@ echo '
                       
                       var sonuc_bilgisi = \'<div class="dataTables_info text-sm-center text-md-start">\';
                       if (toplamCihaz > 0){
-                        sonuc_bilgisi += toplamCihaz + \' kayıttan \'+(((sayfa - 1) * '.$ayarlar->tablo_oge.') + 1)+\' - \'+(sayfa * '.$ayarlar->tablo_oge.')+\' arasındaki kayıtlar gösteriliyor\';
+                        sonuc_bilgisi += toplamCihaz + \' kayıttan \'+(((sayfa - 1) * ' . $ayarlar->tablo_oge . ') + 1)+\' - \'+(sayfa * ' . $ayarlar->tablo_oge . ')+\' arasındaki kayıtlar gösteriliyor\';
                         
                         butonlar += sayfaButonuGetir(sayfa + 1, false, sayfa == toplamSayfa, sayfa != toplamSayfa, "Sonraki", arama);
                         
@@ -1727,7 +1754,7 @@ echo '
                 cihazlarDurumSpec = durumSpec;
                 cihazlarTurSpec = turSpec;
                 cihazlariGetirPost = $.post(\'' . base_url(($sorumlu_belirtildimi ? "cihazlarim" : "cihazyonetimi") . "/cihazlarTumuJQ/") . '\', {
-                    limit: '.$ayarlar->tablo_oge.',
+                    limit: ' . $ayarlar->tablo_oge . ',
                     sayfa: sayfa,
                     arama: arama,
                     orderIsim: orderIsim, 
@@ -1871,16 +1898,16 @@ echo '$(document).ready(function() {
       });
     });
     ';
-  
-    echo '
+
+echo '
     var cihazDurumuSiralama = [ 
       ';
-      for($i = 0; $i < count($cDurumlari); $i++){
-        echo '"' . $cDurumlari[$i]->durum . '"';
-        if ($i < count($cDurumlari) - 1) {
-          echo ',';
-        }
-      }
+for ($i = 0; $i < count($cDurumlari); $i++) {
+  echo '"' . $cDurumlari[$i]->durum . '"';
+  if ($i < count($cDurumlari) - 1) {
+    echo ',';
+  }
+}
 echo '
     ];
     
@@ -2008,14 +2035,14 @@ echo '
               classlariGuncelle(value.id + "MusteriGSM", value.telefon_numarasi);
               //$("." + value.id + "Tarih2").html(tarihDonusturSiralama(value.tarih));
               classlariGuncelle(value.id + "Tarih2", tarihDonusturSiralama(value.tarih));';
-  if ($sorumlu_belirtildimi) {
-    $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
-    echo '
+if ($sorumlu_belirtildimi) {
+  $kullaniciBilgileri = $this->Kullanicilar_Model->kullaniciBilgileri();
+  echo '
               if(value.sorumlu != "' . $kullaniciBilgileri["ad_soyad"] . '"){
                 cihazlarTablosu.row($("#cihaz" + value.id)).remove().draw();
               }';
-  }
-  echo '
+}
+echo '
             }
           });
         });
@@ -2037,7 +2064,7 @@ echo '
         });
       });
     }
-    var sonGuncelleme = '.time().';
+    var sonGuncelleme = ' . time() . ';
     setInterval(() => {
       if(!duzenleme_modu && !yeniCihazGirisiAcik){
         verileriGuncelle();
@@ -2053,7 +2080,7 @@ echo '
         //console.log("Yeni Cihaz Girişi Modalı açık olduğu için veriler güncellenmedi");
       }
     }, 5000);
-    $("#'.$this->Cihazlar_Model->cihazDetayModalAdi().'").on("hidden.bs.modal", function (e) {
+    $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").on("hidden.bs.modal", function (e) {
       detaylariGoster();
     });
     $("#statusErrorsModal").on("hidden.bs.modal", function(e) {
@@ -2088,15 +2115,15 @@ $(document).ready(function(){
       <div class="row">
         <h6 class="col">Belirtmek istemiyorsanız boş bırakabilirsiniz.</h6>
       </div>';
-      echo '<div class="col-12';
+echo '<div class="col-12';
 if (isset($sifirla)) {
-    echo " p-0 m-0";
+  echo " p-0 m-0";
 }
 echo '">
-    <input id="teslim_alan_form" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="text" placeholder="Teslim Alan Müşteri" value="">
+    <input id="teslim_alan_form" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" class="form-control" type="text" placeholder="Teslim Alan Müşteri" value="">
 
 </div>';
-      echo '
+echo '
       </div>
       <div class="modal-footer">
         <button id="teslimAlanYazdir" type="button" class="btn btn-success">Yazdır</button>
