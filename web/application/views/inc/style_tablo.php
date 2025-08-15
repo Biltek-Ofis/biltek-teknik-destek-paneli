@@ -59,4 +59,10 @@ table.dataTable tbody tr.bg-secondary td  {
   background-color: rgba(108, 117, 125, var(--transparan)) !important;
   color: var(--yazi-rengi) !important;
 }
+.bg-yellow,
+table.dataTable tbody tr.bg-yellow th,
+table.dataTable tbody tr.bg-yellow td  {
+  background-color: rgba(255, 251, 33, var(--transparan)) !important;
+  color: var(--yazi-rengi) !important;
+}
 </style>';
