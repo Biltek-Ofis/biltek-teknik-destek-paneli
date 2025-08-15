@@ -34,6 +34,7 @@ $this->load->view("ogeler/cihaz_durumu_renk_radio", array_merge(array("renk_kodu
 $this->load->view("ogeler/cihaz_durumu_renk_radio", array_merge(array("renk_kodu"=>"danger", "renk_ismi"=>"Kırmızı"), $renkArray));
 $this->load->view("ogeler/cihaz_durumu_renk_radio", array_merge(array("renk_kodu"=>"pink", "renk_ismi"=>"Pembe"), $renkArray));
 $this->load->view("ogeler/cihaz_durumu_renk_radio", array_merge(array("renk_kodu"=>"warning", "renk_ismi"=>"Turuncu"), $renkArray));
+$this->load->view("ogeler/cihaz_durumu_renk_radio", array_merge(array("renk_kodu"=>"yellow", "renk_ismi"=>"Sarı"), $renkArray));
 
 echo '</div>';
 

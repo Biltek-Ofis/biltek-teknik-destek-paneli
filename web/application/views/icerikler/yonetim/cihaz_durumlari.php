@@ -4,26 +4,37 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view("inc/style_tablo");
 $this->load->view("inc/styles_important");
 ?>
-<div class="content-wrapper"><?php
-$this->load->view("inc/content_header", array(
-    "contentHeader" => array(
-        "baslik"=> "Cihaz Durumları",
-        "items"=> array(
-            array(
-                "link"=> base_url(),
-                "text"=> "Anasayfa",
-            ),
-            array(
-                "text"=> "Yonetim",
-            ),
-            array(
-                "active"=> TRUE,
-                "text"=> "Cihaz Durumları",
+<div class="content-wrapper">
+    <?php
+    $this->load->view("inc/content_header", array(
+        "contentHeader" => array(
+            "baslik" => "Cihaz Durumları",
+            "items" => array(
+                array(
+                    "link" => base_url(),
+                    "text" => "Anasayfa",
+                ),
+                array(
+                    "text" => "Yonetim",
+                ),
+                array(
+                    "active" => TRUE,
+                    "text" => "Cihaz Durumları",
+                ),
             ),
         ),
-    ),
-));
-?>
+    ));
+    ?>
+    <script>
+        $(document).ready(function () {
+            ayrilma_durumu_tetikle = false;
+            $("input").each(function () {
+                $(this).on("change keyup", function () {
+                    ayrilmaEngeliIptal();
+                });
+            });
+        });
+    </script>
     <section class="content">
         <div class="card">
             <div class="card-body">
@@ -44,7 +55,8 @@ $this->load->view("inc/content_header", array(
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="yeniCihazDurumuEkleModalLabel">Cihaz Durumu Ekle</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="cihazDurumuEkleForm" autocomplete="off" method="post"
@@ -79,7 +91,8 @@ $this->load->view("inc/content_header", array(
                             <tr>
                                 <th>Sıra</th>
                                 <th>Durum</th>
-                                <th class="text-center">Cihaz Düzenlemeyi Kilitle <i class="fas fa-question-circle text-secondary"
+                                <th class="text-center">Cihaz Düzenlemeyi Kilitle <i
+                                        class="fas fa-question-circle text-secondary"
                                         title="Evet olarak ayarlandığında cihaz artık düzenlemeye kapatılır. (Yönetici Hesapları Hariç)"></i>
                                 </th>
                                 <th class="text-center">Sıralama <i class="fas fa-question-circle text-secondary"
@@ -147,8 +160,9 @@ $this->load->view("inc/content_header", array(
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
                                                     id="cihazDurumuDuzenleModal<?= $cihazDurumu->id; ?>Label">Cihaz Durumu
-                                                    Ekle</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    Düzenle</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form id="cihazDurumuDuzenleForm<?= $cihazDurumu->id; ?>" autocomplete="off"
