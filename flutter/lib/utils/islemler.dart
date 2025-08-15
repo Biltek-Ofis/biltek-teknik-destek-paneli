@@ -26,6 +26,8 @@ class Islemler {
         return Color.fromARGB(alpha, 232, 62, 140);
       case "bg-warning":
         return Color.fromARGB(alpha, 255, 193, 7);
+      case "bg-yellow":
+        return Color.fromARGB(alpha, 255, 251, 33);
       case "bg-info":
         return Color.fromARGB(alpha, 23, 162, 184);
 
