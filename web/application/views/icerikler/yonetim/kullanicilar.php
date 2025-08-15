@@ -5,7 +5,7 @@ echo '<script>
 $(document).ready(function(){
     ayrilma_durumu_tetikle = false;
     $("input").each(function(){
-        $($this).on("change keyup", function(){
+        $(this).on("change keyup", function(){
             ayrilmaEngeliIptal();
         });
     });
