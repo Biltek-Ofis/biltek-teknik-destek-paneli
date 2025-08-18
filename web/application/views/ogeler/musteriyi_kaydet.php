@@ -1,7 +1,7 @@
 <?php
 echo '<div class="form-check';
 if (isset($sifirla)) {
-    echo " p-0 ml-3";
+    echo " ml-3";
 }else{
     echo " ml-2";
 }
