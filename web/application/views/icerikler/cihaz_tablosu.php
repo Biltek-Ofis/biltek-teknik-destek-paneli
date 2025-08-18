@@ -32,10 +32,8 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{notlar_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{sorumlu_val_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{notlar_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
-$kaydiKopyalaOnClick = 'kaydiKopyala(\\\'{musteri_kod_onclick}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{sorumlu_val_onclick}\\\')';
-$kaydiKopyalaOnClick = $this->Islemler_Model->trimle($kaydiKopyalaOnClick);
 $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
 
@@ -77,6 +75,9 @@ echo '<script>
     if($("#duzenleBtn").hasClass("goster")){
       $("#duzenleBtn").show();
     }
+    if($("#yeniKayitAcBtn").hasClass("goster")){
+      $("#yeniKayitAcBtn").show();
+    }
     //$("#detaylar_body").scrollTop(0);
     duzenleme_modu = false;
   }
@@ -84,6 +85,7 @@ echo '<script>
     $("#dt-goster").hide();
     $("#dt_duzenle #musteri_adi_liste").html("");
     $("#duzenleBtn").hide();
+    $("#yeniKayitAcBtn").hide();
     $("#serviskabulBtn").hide();
     $("#barkoduYazdirBtn").hide();
     $("#kargoBilgisiBtn").hide();
@@ -187,6 +189,12 @@ echo '
           $("#duzenleBtn").addClass("goster");
         }
         $("#duzenleBtn").show();
+
+        if(!$("#yeniKayitAcBtn").hasClass("goster")){
+          $("#yeniKayitAcBtn").addClass("goster");
+        }
+        $("#yeniKayitAcBtn").show();
+
         if(!$("#silBtn").hasClass("goster")){
           $("#silBtn").addClass("goster");
         }
@@ -197,6 +205,11 @@ echo '
         $("#duzenleBtn").removeClass("goster");
       }
       $("#duzenleBtn").hide();
+      if($("#yeniKayitAcBtn").hasClass("goster")){
+        $("#yeniKayitAcBtn").removeClass("goster");
+      }
+      $("#yeniKayitAcBtn").hide();
+      
       if($("#silBtn").hasClass("goster")){
         $("#silBtn").removeClass("goster");
       }
@@ -263,7 +276,7 @@ echo '
       correctLevel : QRCode.CorrectLevel.H
     });
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi,cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
+  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz_turu_val, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, sorumlu_val, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
     
@@ -271,6 +284,7 @@ echo '
 
     butonDurumu(guncel_durum_sayi);
     $("#duzenleBtn").prop("disabled", true);
+    $("#yeniKayitAcBtn").prop("disabled", true);
     $("#silBtn").prop("disabled", true);
     QRYenile(servis_no);
     $("#ServisNo2, #ServisNo3").html(servis_no);
@@ -312,6 +326,8 @@ echo '
     $("#ServisTuru").html(servis_turu);
     $("#YedekDurumu").html(yedek_durumu);
 
+    console.log("Sorumlu1: "+sorumlu_val);
+
     $("#Sorumlu2").html(sorumlu);
     $("#yapilanIslemAciklamasi").html(yapilan_islem_aciklamasi);
     $("#notlar").html(notlar);
@@ -320,6 +336,7 @@ echo '
     $("#fisNo").html(fis_no);
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
     $("#kargoBilgisiBtn").attr("onclick", "kargoBilgisiYazdir(" + id + ")");
+    $("#yeniKayitAcBtn").attr("onclick", "kaydiKopyala(\'" + donusturOnclick(musteri_kod) + "\', \'" + donusturOnclick(musteri_adi) + "\' , \'" + donusturOnclick(adres) + "\', \'" + donusturOnclick(telefon_numarasi) + "\', \'" + donusturOnclick(cihaz_turu_val) + "\', \'" + donusturOnclick(cihaz) + "\', \'" + donusturOnclick(cihaz_modeli) + "\', \'" + donusturOnclick(seri_no) + "\', \'" + donusturOnclick(cihaz_sifresi) + "\', \'" + donusturOnclick(cihaz_deseni) + "\', \'" + donusturOnclick(sorumlu_val) + "\')");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
     $("#kaydetFormYazdirBtn").attr("onclick", "detaylariKaydet(true, " + id + ")");
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
@@ -327,7 +344,9 @@ echo '
 
     $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("show");
   }
-  function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, sorumlu){
+  function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, cihaz_deseni, sorumlu){
+      
+      detayModaliKapat();
 
       $(\'#yeniCihazForm\')[0].reset();
       
@@ -336,7 +355,7 @@ echo '
         $("#yeniCihazForm #musteri_kod").val(musteri_kod);
       }
         
-      $("#yeniCihazForm #musteri_adi").val(musteri_adi);
+      $("#yeniCihazForm #musteri_adi1").val(musteri_adi);
       $("#yeniCihazForm #adres").val(adres);
       $("#yeniCihazForm #musteriyi_kaydet").prop("checked", false);
       $("#yeniCihazForm #telefon_numarasi").val(telefon_numarasi);
@@ -344,7 +363,30 @@ echo '
       $("#yeniCihazForm #cihaz").val(cihaz);
       $("#yeniCihazForm #cihaz_modeli").val(cihaz_modeli);
       $("#yeniCihazForm #seri_no").val(seri_no);
-      $("#yeniCihazForm #cihaz_sifresi").val(cihaz_sifresi);
+
+      var sifreVar = false;
+      if(cihaz_deseni.length > 0){
+        $("#yeniCihazForm select#sifre_turu").val("Desen").change();
+
+        yeniCihazFormDesenP.setPattern(cihaz_deseni);
+        $("#yeniCihazForm input#cihaz_deseni").val(cihaz_deseni);
+
+        sifreVar = true;
+      }else{
+        $("#yeniCihazForm input#cihaz_deseni").val("");
+      }
+      if(cihaz_sifresi.length > 0 && cihaz_sifresi != "Yok"){
+        $("#yeniCihazForm select#sifre_turu").val("Pin").change();
+        $("#yeniCihazForm input#cihaz_sifresi").val(cihaz_sifresi);
+        sifreVar = true;
+      }else{
+        $("#yeniCihazForm input#cihaz_sifresi").val("");
+      }
+      if(!sifreVar){
+        $("#yeniCihazForm select#sifre_turu").val("Yok").change();
+      }
+
+
       $("#yeniCihazForm #sorumlu").val(sorumlu);
 
       ayrilma_durumu_tetikle = true;
@@ -433,7 +475,7 @@ $tabloOrnek = '<tr id="cihaz{id}" class="{class}" data-cihazid="{id}" onClick="$
   <td><span class="{id}Sorumlu">{sorumlu}</span></td>
   <td class="text-center">
     <button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>
-   ' . ($sorumlu_belirtildimi ? "" : '<!--<button class="btn btn-info text-white" alt="Aynı bilgilerle yeni kayıt oluştur." title="Aynı bilgilerle yeni kayıt oluştur." onClick="' . $kaydiKopyalaOnClick . '"><i class="fa-solid fa-copy"></i></button>-->') . '
+   ' . ($sorumlu_belirtildimi ? "" : "") . '
   <!--<button class="btn btn-secondary" onclick="barkoduYazdir({id})">Barkodu Yazdır</button>-->
   </td>
  
@@ -547,6 +589,7 @@ if (isset($_GET["servisNo"])) {
       cihazDurumu("' . donusturOnclick($gosterilenCihaz->guncel_durum) . '"),
       "' . donusturOnclick($gosterilenCihaz->guncel_durum) . '",
       "' . donusturOnclick($gosterilenCihaz->cihaz_turu) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_turu_val) . '",
       "' . donusturOnclick($gosterilenCihaz->cihaz) . '",
       "' . donusturOnclick($gosterilenCihaz->cihaz_modeli) . '",
       "' . donusturOnclick($gosterilenCihaz->seri_no) . '",
@@ -559,6 +602,7 @@ if (isset($_GET["servisNo"])) {
       servisTuru("' . donusturOnclick($gosterilenCihaz->servis_turu) . '"),
       evetHayir("' . donusturOnclick($gosterilenCihaz->yedek_durumu) . '"),
       "' . donusturOnclick($gosterilenCihaz->sorumlu) . '",
+      "' . donusturOnclick($gosterilenCihaz->sorumlu_val) . '",
       "' . donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi) . '",
       "' . donusturOnclick($gosterilenCihaz->notlar) . '",
       "' . donusturOnclick($gosterilenCihaz->tahsilat_sekli) . '",
@@ -581,7 +625,7 @@ $(document).ready(function(){
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").removeClass("fade");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").addClass("fade");
-            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.yapilan_islem_aciklamasi, value.notlar, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
+            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz_turu_val, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.sorumlu_val, value.yapilan_islem_aciklamasi, value.notlar, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
           }
         } catch (error) {
           console.error(error);
@@ -1028,7 +1072,12 @@ $(document).ready(function(){
         </div>
       </div>
       <div class="modal-footer">
-      <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>
+      <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>';
+      if(!$sorumlu_belirtildimi){
+        $cihazDetayOrnek .= '
+        <a id="yeniKayitAcBtn" href="#" style="{display_kilit}" class="btn btn-info text-white goster">Yeni Kayıt Aç</a>';
+      }
+      $cihazDetayOrnek .= '
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet(false, 0)" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="kaydetFormYazdirBtn" href="#" onclick="detaylariKaydet(true, 0)" style="display:none;" class="btn btn-primary">Kaydet ve Formu Yazdır</a>
       <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
@@ -1605,12 +1654,14 @@ echo '
             $("#dt_duzenle textarea#yapilan_islem_aciklamasi").val(value.yapilan_islem_aciklamasi);
             $("#dt_duzenle textarea#notlar").val(value.notlar);
             $("#duzenleBtn").prop("disabled", false);
+            $("#yeniKayitAcBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
             ayrilma_durumu_tetikle = true;
           }
         });
       }).fail(function(xhr, status, error) {
         $("#duzenleBtn").prop("disabled", false);
+        $("#yeniKayitAcBtn").prop("disabled", false);
         $("#silBtn").prop("disabled", false);
       }); 
   }
