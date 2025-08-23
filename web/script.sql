@@ -290,6 +290,19 @@ CREATE TABLE `ts1_kullanici_auth` (
   `bitis` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- --------------------------------------------------------
+--
+-- Tablo için tablo yapısı `ts1_loglar`
+--
+
+CREATE TABLE `ts1_loglar` (
+  `id` int(11) NOT NULL,
+  `cihaz_id` int(11) NOT NULL,
+  `aciklama` text NOT NULL,
+  `tarih` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -571,6 +584,12 @@ ALTER TABLE `ts1_kullanici_auth`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_loglar`
+--
+ALTER TABLE `ts1_loglar`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_lisanslar`
 --
 ALTER TABLE `ts1_lisanslar`
@@ -700,6 +719,12 @@ ALTER TABLE `ts1_kullanicilar`
 --
 ALTER TABLE `ts1_kullanici_auth`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_loglar`
+--
+ALTER TABLE `ts1_loglar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_medyalar`

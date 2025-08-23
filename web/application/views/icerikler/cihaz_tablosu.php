@@ -217,13 +217,16 @@ echo '
       detaylariGoster();
     }
   }
-  function medyalariYukle(id) {
+  function medyalariYukle(id, logGetir) {
     $.post("' . base_url("medyalar") . '/" + id, {}, function(data) {
       $("#list-medyalar").html(data);
     });
     $.post("' . base_url("medyalar") . '/" + id + "/1", {}, function(data) {
       $("#dt-medyalar").html(data);
     });
+    if(logGetir){
+      loglariGetir(id);
+    }
   }
   function cihaziSil(id, sorumlu_belirtildimi){
     $("#silOnayBtn").prop("disabled", true);
@@ -274,6 +277,24 @@ echo '
       colorDark : "#000000",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
+    });
+  }
+  function loglariGetir(id){
+    $.post("' . base_url("cihazlar/loglar") . '/" + id, {}, function(data) {
+      var jsPr = JSON.parse(data);
+      var ht = \'<table class="table table-bordered table-responsive">\';
+      if(jsPr.length > 0){
+        ht += \'<thead><tr><th>Açıklama</th><th>Tarih</th></tr></thead>\';
+      }
+      ht += \'<tbody>\';
+      for(var i=0; i < jsPr.length; i++){
+        ht += "<tr><td>" + jsPr[i].aciklama + "</td><td>" + tarihDonusturLog(jsPr[i].tarih) + "</td></tr>";
+      }
+      if(jsPr.length == 0){
+        ht += \'<tr><td colspan="2" class="text-center">Bu cihaza ait herhangi bir işlem kaydı bulunmamaktadır.</td></tr>\';
+      }
+      ht += "</tbody></table>";
+      $("#dt-loglar").html(ht);
     });
   }
   function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz_turu_val, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, sorumlu_val, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
@@ -341,7 +362,7 @@ echo '
     $("#kaydetFormYazdirBtn").attr("onclick", "detaylariKaydet(true, " + id + ")");
     $("#formuYazdirBtn").attr("onclick", "formuYazdir(" + id + ")");
     $("#silBtn").attr("onclick", "silModaliGoster(\'" + id + "\',\'" + servis_no + "\',\'" + musteri_adi + "\')");
-
+    loglariGetir(id);
     $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("show");
   }
   function kaydiKopyala(musteri_kod, musteri_adi, adres, telefon_numarasi, cihaz_turu, cihaz, cihaz_modeli, seri_no, cihaz_sifresi, cihaz_deseni, sorumlu){
@@ -868,6 +889,9 @@ $(document).ready(function(){
               <li class="nav-item">
                   <a class="nav-link" id="medyalar-tab" data-bs-toggle="pill" href="#medyalar" role="tab" aria-controls="medyalar" aria-selected="false">Medyalar</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="loglar-tab" data-bs-toggle="pill" href="#loglar" role="tab" aria-controls="loglar" aria-selected="false">Loglar</a>
+              </li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="genel-bilgiler" role="tabpanel" aria-labelledby="genel-bilgiler-tab">
@@ -1066,6 +1090,9 @@ $(document).ready(function(){
                   </div>
                   <div class="col-2"></div>
                 </div>
+              </div>
+              <div class="tab-pane fade" id="loglar" role="tabpanel" aria-labelledby="loglar">
+                <div id="dt-loglar" class="row"></div>
               </div>
             </div>
           </div>
@@ -1362,7 +1389,14 @@ echo '
     }
   }';
 
-
+echo 'function tarihDonusturLog(tarih) {
+    // 2025-08-23 11:57:47
+    var yil = tarih.slice(0, 4);
+    var ay = tarih.slice(5, 7);
+    var gun = tarih.slice(8, 10);
+    var saat = tarih.slice(11, 19);
+    return gun + "." + ay + "." + yil + " " + saat ;
+  }';
 echo 'function tarihDonusturSiralama(tarih) {
     var gun = tarih.slice(0, 2);
     var ay = tarih.slice(3, 5);
@@ -1587,12 +1621,12 @@ echo '
             $("#TahsilatSekli").html(value.tahsilat_sekli);
             $("#faturaDurumu").html(faturaDurumu(value.fatura_durumu));
             $("#fisNo").html(value.fis_no);
-            medyalariYukle(value.id);
+            medyalariYukle(value.id, false);
             
             // Düzenleme
             $("#dt_duzenleForm").attr("action", "' . base_url("cihaz/duzenle/") . '/" + value.id + "/post");
             $("#dt-YapilanIslemlerForm").attr("action", "' . base_url("cihaz/yapilanIslemDuzenle") . '/" + value.id + "/post");
-            $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+")})");
+            $("#medyaYukleBtn").attr("onclick", "dosyaYukle("+value.id+", function(){medyalariYukle("+value.id+", true)})");
             
             ayrilma_durumu_tetikle = false;
             $("#dt_duzenle input#musteri_kod").val(value.musteri_kod);
@@ -1656,6 +1690,7 @@ echo '
             $("#duzenleBtn").prop("disabled", false);
             $("#yeniKayitAcBtn").prop("disabled", false);
             $("#silBtn").prop("disabled", false);
+            loglariGetir(value.id);
             ayrilma_durumu_tetikle = true;
           }
         });

@@ -48,4 +48,12 @@ class Cihazlar extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari("cikis");
 		}
 	}
+	public function loglar($cihaz_id) {
+		if ($this->Giris_Model->kullaniciGiris()) {
+			$this->load->model("Log_Model");
+			echo json_encode($this->Log_Model->getir($cihaz_id));
+		} else{
+			echo "[]";
+		}
+	}
 }

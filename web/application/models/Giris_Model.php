@@ -17,6 +17,9 @@ class Giris_Model extends CI_Model
     public function kullaniciTanimi(){
         return isset($_SESSION["KULLANICI_ID"]);
     }
+    public function kullaniciID(){
+        return $_SESSION["KULLANICI_ID"];
+    }
     public function girisDurumu($kullanici_adi, $sifre)
     {
         //Şifreleme $this->Islemler_Model->sifrele($sifre);
