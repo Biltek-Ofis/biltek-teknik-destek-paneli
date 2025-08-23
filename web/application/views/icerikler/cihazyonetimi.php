@@ -145,12 +145,12 @@ echo '</div>
 </div>
 <div class="modal fade" id="yeniCihazEkleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="yeniCihazEkleModalTitle" aria-modal="true" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content px-1 pb-1" style="background-color: var(--bs-primary)">
+            <div class="modal-header text-white">
                 <h5 class="modal-title" id="yeniCihazEkleModalTitle">Yeni Cihaz Girişi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close beyaz" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: var(--bs-body-bg);">
                 <form id="yeniCihazForm" method="post">
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
@@ -224,7 +224,7 @@ $this->load->view("ogeler/yedek");
 echo '</div>
 </form>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" style="background-color: var(--bs-body-bg);">
 ';
 echo '<button id="yeniCihazEkleBtn" class="btn btn-success" onclick="cihazEkle(false)">Ekle</button>
     <button id="yeniCihazEkleBarkodBtn" class="btn btn-primary" onclick="cihazEkle(true)">Ekle ve Barkodu Yazdır</button>
