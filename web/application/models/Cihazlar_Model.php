@@ -151,7 +151,7 @@ class Cihazlar_Model extends CI_Model
     public function cihazTurleri()
     {
         return $this->db->reset_query()->where(array(
-            "goster"=> 1,
+            "goster" => 1,
         ))->order_by("siralama DESC, isim ASC")->get($this->cihazTurleriTabloAdi())->result();
     }
     public function cihazTuruEkle($veri)
@@ -318,7 +318,7 @@ class Cihazlar_Model extends CI_Model
     {
         $this->load->model("Islemler_Model");
         for ($i = 0; $i < count($result); $i++) {
-            if(property_exists($result[$i], "cID")){
+            if (property_exists($result[$i], "cID")) {
                 $result[$i]->id = $result[$i]->cID;
             }
             $result[$i]->tarih = $this->Islemler_Model->tarihDonustur($result[$i]->tarih);
@@ -478,36 +478,37 @@ class Cihazlar_Model extends CI_Model
     public function cihazlarTumuJQ($sorumlu = "")
     {
         $result = $this->cihazlarTumuTablo($sorumlu)->result();
-        
+
         //throw new Exception($this->cihazlarTumuSelect($sorumlu)->get_compiled_select());
         return $this->cihazVerileriniDonustur($result);
     }
     public function cihazlarTumuTablo($sorumlu = "")
-    {   
-        
+    {
+
         return $this->cihazlarTumuSelect($sorumlu)->get($this->cihazlarTabloAdi());
     }
-    public function cihazlarTumuSelect($sorumlu = ""){
+    public function cihazlarTumuSelect($sorumlu = "")
+    {
         $spesifik = $this->input->post('spesifik');
         $dondurme = FALSE;
-        if(!isset($spesifik)){
+        if (!isset($spesifik)) {
             $spesifik = array();
-        }else{
+        } else {
             $dondurme = TRUE;
         }
         $limit = $this->input->post("limit");
         $sayfa = $this->input->post("sayfa");
-        if(!isset($limit)){
+        if (!isset($limit)) {
             $limit = "";
         }
-        if(!isset($sayfa)){
+        if (!isset($sayfa)) {
             $sayfa = "";
         }
         $arama = $this->input->post("arama");
-        if(!isset($arama)){
+        if (!isset($arama)) {
             $arama = "";
         }
-        if(count($spesifik) == 0 && $dondurme){
+        if (count($spesifik) == 0 && $dondurme) {
             throw new Exception("Specifik boşsa değer döndürülemez");
         }
         $where = array();
@@ -517,16 +518,16 @@ class Cihazlar_Model extends CI_Model
 
         $result = $this->db->reset_query();
         $this->load->model("Kullanicilar_Model");
-        if(strlen($limit) > 0 && strlen($sayfa) > 0){
-            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, ".$this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, ".$this->cihazDurumlariTabloAdi() . ".id as cdID, ".$this->cihazlarTabloAdi().".id as cID, ".$this->cihazlarTabloAdi().".*, ".$this->cihazDurumlariTabloAdi() .".*");
-        }else{
-            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, ".$this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, ".$this->cihazlarTabloAdi().".*");
+        if (strlen($limit) > 0 && strlen($sayfa) > 0) {
+            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, " . $this->cihazDurumlariTabloAdi() . ".id as cdID, " . $this->cihazlarTabloAdi() . ".id as cID, " . $this->cihazlarTabloAdi() . ".*, " . $this->cihazDurumlariTabloAdi() . ".*");
+        } else {
+            $result = $result->select($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id as kID, " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad as kAdSoyad, " . $this->cihazlarTabloAdi() . ".*");
         }
 
         $result = $result->where($where);
 
         if (count($spesifik) > 0) {
-            $result = $result->where_in($this->cihazlarTabloAdi().".id", $spesifik);
+            $result = $result->where_in($this->cihazlarTabloAdi() . ".id", $spesifik);
         }
         if (strlen($arama) > 0) {
             $result = $result->group_start();
@@ -534,36 +535,36 @@ class Cihazlar_Model extends CI_Model
             $result = $result->or_like("musteri_adi", $arama);
             $result = $result->or_like("cihaz", $arama);
             $result = $result->or_like("cihaz_modeli", $arama);
-            $result = $result->or_like($this->Kullanicilar_Model->kullanicilarTabloAdi().".ad_soyad", $arama);
+            $result = $result->or_like($this->Kullanicilar_Model->kullanicilarTabloAdi() . ".ad_soyad", $arama);
             $result = $result->group_end();
         }
 
         $orderIsim = $this->input->post("orderIsim");
-        if(!isset($orderIsim)){
+        if (!isset($orderIsim)) {
             $orderIsim = "";
         }
 
         $orderDurum = $this->input->post("orderDurum");
-        if(!isset($orderDurum)){
+        if (!isset($orderDurum)) {
             $orderDurum = "";
         }
-        
+
         $durumSpec = $this->input->post("durumSpec");
-        if(!isset($durumSpec)){
+        if (!isset($durumSpec)) {
             $durumSpec = "";
         }
-        if(strlen($durumSpec) > 0){
+        if (strlen($durumSpec) > 0) {
             $result = $result->where("guncel_durum", $durumSpec);
         }
         $turSpec = $this->input->post("turSpec");
-        if(!isset($turSpec)){
+        if (!isset($turSpec)) {
             $turSpec = "";
         }
-        if(strlen($turSpec) > 0){
+        if (strlen($turSpec) > 0) {
             $result = $result->where("cihaz_turu", $turSpec);
         }
-        
-        if(strlen($orderIsim) > 0){
+
+        if (strlen($orderIsim) > 0) {
             switch ($orderIsim) {
                 case 'Servis No':
                     $orderIsim = "servis_no";
@@ -589,35 +590,34 @@ class Cihazlar_Model extends CI_Model
                 case 'Sorumlu Personel':
                     $orderIsim = "sorumlu";
                     break;
-                
+
                 default:
                     $orderIsim = "";
                     $orderDurum = "";
             }
         }
-        $orderText = $this->cihazlarTabloAdi().".id DESC";
-        
+        $orderText = $this->cihazlarTabloAdi() . ".id DESC";
+
         $result = $result->join($this->Kullanicilar_Model->kullanicilarTabloAdi(), $this->cihazlarTabloAdi() . ".sorumlu = " . $this->Kullanicilar_Model->kullanicilarTabloAdi() . ".id", "left");
-        if(strlen($limit) > 0 && strlen($sayfa) > 0){
-            
+        if (strlen($limit) > 0 && strlen($sayfa) > 0) {
+
             $result = $result->join($this->cihazDurumlariTabloAdi(), $this->cihazlarTabloAdi() . ".guncel_durum = " . $this->cihazDurumlariTabloAdi() . ".id");
-            if(strlen($orderIsim) > 0 && strlen($orderDurum)){
-                if($orderIsim == "cihaz"){
-                    $orderText = $this->cihazlarTabloAdi() . ".".$orderIsim." ".$orderDurum.", ". $this->cihazlarTabloAdi() . ".cihaz_modeli ".$orderDurum;
-                }else if($orderIsim == "guncel_durum"){
-                    $orderText = $this->cihazDurumlariTabloAdi() . ".siralama ".$orderDurum;
-                }else{
-                    $orderText = $this->cihazlarTabloAdi() . ".".$orderIsim." ".$orderDurum;
+            if (strlen($orderIsim) > 0 && strlen($orderDurum)) {
+                if ($orderIsim == "cihaz") {
+                    $orderText = $this->cihazlarTabloAdi() . "." . $orderIsim . " " . $orderDurum . ", " . $this->cihazlarTabloAdi() . ".cihaz_modeli " . $orderDurum;
+                } else if ($orderIsim == "guncel_durum") {
+                    $orderText = $this->cihazDurumlariTabloAdi() . ".siralama " . $orderDurum;
+                } else {
+                    $orderText = $this->cihazlarTabloAdi() . "." . $orderIsim . " " . $orderDurum;
                 }
-            }
-            else{
+            } else {
                 $orderText = $this->cihazDurumlariTabloAdi() . ".siralama ASC, " . $this->cihazlarTabloAdi() . ".tarih DESC";
             }
-            
+
             $result = $result->order_by($orderText);
             $result = $result->limit($limit, ($sayfa - 1) * $limit);
-        }else{
-            $result = $result->order_by($this->cihazlarTabloAdi().".id", "DESC");
+        } else {
+            $result = $result->order_by($this->cihazlarTabloAdi() . ".id", "DESC");
         }
         return $result;
     }
@@ -655,49 +655,50 @@ class Cihazlar_Model extends CI_Model
         $where = array();
 
         $sorunlu = 0;
-        if(strlen($servis_no) > 0){
+        if (strlen($servis_no) > 0) {
             $where["servis_no"] = $servis_no;
-        }else{
+        } else {
             $sorunlu++;
         }
-        if(strlen($takip_no) > 0){
+        if (strlen($takip_no) > 0) {
             $where["takip_numarasi "] = $takip_no;
-        }else{
+        } else {
             $sorunlu++;
         }
 
-        if($sorunlu >= 2){
+        if ($sorunlu >= 2) {
             return null;
         }
 
         $result = $this->db->reset_query()->where($where)->limit(1);
 
         $result = $result->get($this->cihazlarTabloAdi());
-        if($result->num_rows() > 0){
+        if ($result->num_rows() > 0) {
             $result = $result->result();
             return $this->cihazVerileriniDonustur($result, TRUE)[0];
-        }else{
+        } else {
             return null;
         }
     }
-    public function bilgisayardaAcGetir($kullanici_id){
+    public function bilgisayardaAcGetir($kullanici_id)
+    {
         $kontrol = $this->db->reset_query()->where("kullanici_id", $kullanici_id)->get($this->cihazAcTabloAdi());
-        if($kontrol->num_rows() > 0){
+        if ($kontrol->num_rows() > 0) {
             $sonuc = $kontrol->result();
             $this->bilgisayardaAcSifirla($kullanici_id);
             return $this->tekCihazApp($sonuc[0]->servis_no);
-        }else{
+        } else {
             return array();
         }
     }
     public function bilgisayardaAc($servis_no, $kullanici_id)
     {
         $kontrol = $this->db->reset_query()->where("kullanici_id", $kullanici_id)->get($this->cihazAcTabloAdi());
-        if($kontrol->num_rows() > 0){
+        if ($kontrol->num_rows() > 0) {
             $this->db->reset_query()->where("kullanici_id", $kullanici_id)->update($this->cihazAcTabloAdi(), array(
                 "servis_no" => $servis_no,
             ));
-        }else{
+        } else {
             $this->db->reset_query()->insert($this->cihazAcTabloAdi(), array(
                 "kullanici_id" => $kullanici_id,
                 "servis_no" => $servis_no,
@@ -777,10 +778,18 @@ class Cihazlar_Model extends CI_Model
         }
         return $veri;
     }
-    public function cihazDuzenle($id, $veri)
+    public function cihazDuzenle($id, $veri, $uye_id = 0, $log_al = TRUE)
     {
         $this->veriGuncellendiEkle();
-        return $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
+        $duzenle = $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
+        if ($duzenle && $log_al) {
+            $this->load->model("Log_Model");
+            $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+            if ($kullanici != null) {
+                $this->Log_Model->ekle($id, $kullanici->ad_soyad . " adlı kullanıcı tarafından duzenleme yapıldı.");
+            }
+        }
+        return $duzenle;
     }
     public function islemDuzenle($id, $veri)
     {
@@ -805,7 +814,7 @@ class Cihazlar_Model extends CI_Model
             "islem_sayisi" => $islem_sayisi
         ))->delete($this->islemlerTabloAdi());
     }
-    public function cihazEkle($tur)
+    public function cihazEkle($tur, $uye_id = 0)
     {
         $veri = $this->cihazPost();
         $servis_no = $this->insertTrigger();
@@ -817,23 +826,23 @@ class Cihazlar_Model extends CI_Model
             if (count($varsayilanDurum) > 0) {
                 $veri["guncel_durum"] = $varsayilanDurum[0]->id;
             }
-            $ekle =  $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
+            $ekle = $this->db->reset_query()->insert($this->cihazlarTabloAdi(), $veri);
 
-            if($ekle){
+            if ($ekle) {
                 $cihaz_id = $this->db->insert_id();
             }
-            if(isset($veri["sorumlu"])){
+            if (isset($veri["sorumlu"])) {
                 $this->Kullanicilar_Model->bildirimGonderCihaz($veri["sorumlu"], $cihaz_id);
             }
             if ($ekle) {
                 $musteriyi_kaydet = $this->input->post('musteriyi_kaydet');
-                if(((int)$musteriyi_kaydet) == 1){
-                    if($veri["musteri_kod"] == NULL){
-                        $musteri_bilgileri =  array(
+                if (((int) $musteriyi_kaydet) == 1) {
+                    if ($veri["musteri_kod"] == NULL) {
+                        $musteri_bilgileri = array(
                             "musteri_adi" => $veri["musteri_adi"],
                             "adres" => $veri["adres"],
                         );
-                        if(isset($veri["telefon_numarasi"])){
+                        if (isset($veri["telefon_numarasi"])) {
                             $musteri_bilgileri["telefon_numarasi"] = $veri["telefon_numarasi"];
                         }
                         $this->db->reset_query()->insert(
@@ -842,13 +851,18 @@ class Cihazlar_Model extends CI_Model
                         );
                     }
                 }
-                if($tur == "POST" || $tur == "post"){
+                $this->load->model("Log_Model");
+                $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+                if ($kullanici != null) {
+                    $this->Log_Model->ekle($cihaz_id, $kullanici->ad_soyad . " adlı kullanıcı tarafından kayıt yapıldı.");
+                }
+                if ($tur == "POST" || $tur == "post") {
                     return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id);
-                }else{
-                    return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id, "yonlendir"=> base_url("") . "#" . $this->cihazDetayModalAdi() . $cihaz_id);
+                } else {
+                    return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id, "yonlendir" => base_url("") . "#" . $this->cihazDetayModalAdi() . $cihaz_id);
                 }
             } else {
-                return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0, "id" =>$cihaz_id);
+                return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0, "id" => $cihaz_id);
             }
         } else {
             return array("mesaj" => "Ekleme işlemi gerçekleştirilemedi. " . $this->db->error()["message"], "sonuc" => 0, "id" => $cihaz_id);
@@ -941,7 +955,8 @@ class Cihazlar_Model extends CI_Model
     {
         return "cihazDetay";
     }
-    public function medyaYukle($id){
+    public function medyaYukle($id, $uye_id = 0)
+    {
         if (!isset($_FILES["yuklenecekDosya"])) {
             echo json_encode(array("mesaj" => "Hata: Lütfen bir resim seçin", "sonuc" => 0));
         } else {
@@ -953,7 +968,8 @@ class Cihazlar_Model extends CI_Model
                 $basariyla_yuklendi = FALSE;
                 $uzanti = pathinfo($_FILES['yuklenecekDosya']['name'], PATHINFO_EXTENSION);
                 $uzanti = strtolower($uzanti);
-                if (($_FILES["yuklenecekDosya"]["type"] == "image/pjpeg")
+                if (
+                    ($_FILES["yuklenecekDosya"]["type"] == "image/pjpeg")
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/jpeg")
                     //|| ($_FILES["yuklenecekDosya"]["type"] == "video/mp4")
                     || ($_FILES["yuklenecekDosya"]["type"] == "image/png")
@@ -967,13 +983,13 @@ class Cihazlar_Model extends CI_Model
                     $yukleVeri = array(
                         "cihaz_id" => $id,
                         "tur" => $tur,
-                        "yerel"=> 1,
+                        "yerel" => 1,
                     );
                     $medya_cihazi = $this->db->reset_query()->where("id", $id)->get($this->cihazlarTabloAdi());
 
-                    if($medya_cihazi->num_rows() > 0){
+                    if ($medya_cihazi->num_rows() > 0) {
                         $servis_no = $medya_cihazi->result()[0]->servis_no;
-                        if(DOSYA_YUKLEME_URL == "/"){
+                        if (DOSYA_YUKLEME_URL == "/") {
                             /*$boyut = $_FILES["yuklenecekDosya"]["size"];
                             $boyut_mb = number_format(($boyut / 1048576), 2);*/
                             $dosyaKonumu = "yuklemeler/$servis_no/";
@@ -987,7 +1003,7 @@ class Cihazlar_Model extends CI_Model
                             $cfile = new CURLFile($gecici_dosya_adi, mime_content_type($gecici_dosya_adi), $orjinal_dosya_adi);
                             $post_data = [
                                 "file" => $cfile,
-                                "id"=> $servis_no
+                                "id" => $servis_no
                             ];
                             $ch = curl_init();
                             curl_setopt($ch, CURLOPT_URL, DOSYA_YUKLEME_URL);
@@ -999,57 +1015,77 @@ class Cihazlar_Model extends CI_Model
                             $response = curl_exec($ch);
                             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                             curl_close($ch);
-                            try{
+                            try {
                                 $sonuc = json_decode($response, FALSE);
-                                if($sonuc != null){
-                                    if(property_exists($sonuc, "basarili")) 
-                                    {
-                                        if($sonuc->basarili){
+                                if ($sonuc != null) {
+                                    if (property_exists($sonuc, "basarili")) {
+                                        if ($sonuc->basarili) {
                                             $yukleVeri["konum"] = $sonuc->dosya;
                                             $basariyla_yuklendi = TRUE;
                                         }
                                     }
                                 }
-                            }catch(Exception $e){
+                            } catch (Exception $e) {
                                 $basariyla_yuklendi = FALSE;
                             }
                         }
-                    }else{
+                    } else {
                         return array("mesaj" => "Medya eklenecek cihaz bulunamadı.", "sonuc" => 0);
                     }
-                    
-                    
-                    if($basariyla_yuklendi){
-                        $ekle = $this->medyaKaydet($yukleVeri);
+
+
+                    if ($basariyla_yuklendi) {
+                        $ekle = $this->medyaKaydet($yukleVeri, $uye_id);
                         if ($ekle) {
                             return array("mesaj" => "$orjinal_dosya_adi dosyasının yüklemesi tamamlandı.", "sonuc" => 1);
                         } else {
                             return array("mesaj" => "Resim yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
                         }
-                    }else{
+                    } else {
                         return array("mesaj" => "Resim yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
                     }
                 } else {
                     return array("mesaj" => "Geçerli bir resim dosyası seçin.", "sonuc" => 0);
                 }
-            }  
+            }
         }
     }
-    public function medyaKaydet($veri)
+    public function medyaKaydet($veri, $uye_id = 0)
     {
         $this->veriGuncellendiEkle();
-        return $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
+        $ekle = $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
+        if($ekle){
+            $this->load->model("Log_Model");
+            $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+            if ($kullanici != null) {
+                $this->Log_Model->ekle($veri["cihaz_id"], $kullanici->ad_soyad . " adlı kullanıcı tarafından bir medya yüklendi.");
+            }
+        }
+        return $ekle;
     }
-    public function medyaSil($id)
+    public function medyaSil($id, $uye_id = 0)
     {
         $this->veriGuncellendiEkle();
-        return $this->db->reset_query()->where("id", $id)->delete($this->medyalarTabloAdi());
+        $medya = $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi());
+        $cihaz_id = 0;
+        if($medya->num_rows() > 0){
+            $cihaz_id = $medya->result()[0]->cihaz_id;
+        }
+        $sil = $this->db->reset_query()->where("id", $id)->delete($this->medyalarTabloAdi());
+        if($sil && $cihaz_id != 0){
+            $this->load->model("Log_Model");
+            $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+            if ($kullanici != null) {
+                $this->Log_Model->ekle($cihaz_id, $kullanici->ad_soyad . " adlı kullanıcı tarafından bir medya silindi.");
+            }
+        }
+        return $sil;
     }
 
     public function medyaBul($id)
     {
         $medya = $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi());
-        if($medya->num_rows() == 0){
+        if ($medya->num_rows() == 0) {
             return null;
         }
         return $medya->result()[0];
