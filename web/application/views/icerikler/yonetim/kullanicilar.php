@@ -131,7 +131,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
 
         echo '<div class="modal fade" id="kullaniciSilModal' . $kullanici->id . '" tabindex="-1" aria-labelledby="kullaniciSilModal' . $kullanici->id . 'Label" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content">
+                                            <div class="modal-content modal-danger">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="kullaniciSilModal' . $kullanici->id . 'Label">Personel Sil</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

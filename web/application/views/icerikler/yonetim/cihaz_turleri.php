@@ -104,7 +104,7 @@ $this->load->view("inc/content_header", array(
                             </tr>
                             <div class="modal fade" id="cihazTuruSilModal<?= $cihazTuru->id ;?>" tabindex="-1" aria-labelledby="cihazTuruSilModal<?= $cihazTuru->id ;?>Label" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content">
+                                    <div class="modal-content modal-danger">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="cihazTuruSilModal<?= $cihazTuru->id ;?>Label">Cihaz Türü Sil</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
