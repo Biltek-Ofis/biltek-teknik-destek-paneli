@@ -162,7 +162,7 @@ $this->load->view("inc/styles_important");
 <div class="modal fade" id="urunSilModal" tabindex="-1" role="dialog" aria-labelledby="urunSilModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content modal-danger">
             <div class="modal-header">
                 <h5 class="modal-title" id="urunSilModalLabel">Ürün Silme İşlemini Onaylayın</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

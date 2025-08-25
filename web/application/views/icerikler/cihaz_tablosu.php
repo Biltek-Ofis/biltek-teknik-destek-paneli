@@ -1130,7 +1130,7 @@ $(document).ready(function(){
 </script>
 <div class="modal fade" id="cihaziSilModal" tabindex="-1" role="dialog" aria-labelledby="cihaziSilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-danger">
       <div class="modal-header">
         <h5 class="modal-title" id="cihaziSilModalLabel">Cihaz Silme İşlemini Onaylayın</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -2221,7 +2221,7 @@ echo '
 echo '
 <div class="modal fade" id="cihazSilindiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cihazSilindiModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content modal-danger">
       <div class="modal-header">
         <h5 class="modal-title" id="cihazSilindiModalLabel">Cihaz Silindi</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
