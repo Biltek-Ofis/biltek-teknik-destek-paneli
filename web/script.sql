@@ -43,6 +43,7 @@ CREATE TABLE `ts1_ayarlar` (
   `barkod_musteri_adi_boyutu` int(11) NOT NULL,
   `barkod_sirket_adi_boyutu` int(11) NOT NULL,
   `app_version` varchar(10) NOT NULL DEFAULT '0.0.1',
+  `biltekdesk_url` TEXT NOT NULL,
   `kis_modu` tinyint(4) NOT NULL DEFAULT 0,
   `tema` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
@@ -51,8 +52,8 @@ CREATE TABLE `ts1_ayarlar` (
 -- Tablo döküm verisi `ts1_ayarlar`
 --
 
-INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `adres`, `sirket_telefonu`, `tablo_oge`, `barkod_ad`, `barkod_en`, `barkod_boy`, `barkod_boyutu`, `barkod_numarasi_boyutu`, `barkod_musteri_adi_boyutu`, `barkod_sirket_adi_boyutu`, `app_version`, `kis_modu`, `tema`) VALUES
-(1, 'Biltek Bilgisayar Teknik Servis', 'http://www.biltekbilgisayar.com.tr/', 'BİLTEK OFİS ve BİLİŞİM SİSTEMLERİ SAN. TİC. LTD. ŞTİ.', 'Güzelhisar Mahallesi, Yedi Eylül Caddesi, No: 16/A, Efeler/AYDIN', '+90 (544) 397-0992', 50, 'Biltek Bilgisayar', 40, 20, 14, 12, 12, 10, '114', 1, 1);
+INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `adres`, `sirket_telefonu`, `tablo_oge`, `barkod_ad`, `barkod_en`, `barkod_boy`, `barkod_boyutu`, `barkod_numarasi_boyutu`, `barkod_musteri_adi_boyutu`, `barkod_sirket_adi_boyutu`, `app_version`, `biltekdesk_url`, `kis_modu`, `tema`) VALUES
+(1, 'Biltek Bilgisayar Teknik Servis', 'http://www.biltekbilgisayar.com.tr/', 'BİLTEK OFİS ve BİLİŞİM SİSTEMLERİ SAN. TİC. LTD. ŞTİ.', 'Güzelhisar Mahallesi, Yedi Eylül Caddesi, No: 16/A, Efeler/AYDIN', '+90 (544) 397-0992', 50, 'Biltek Bilgisayar', 40, 20, 14, 12, 12, 10, '114', '', 1, 1);
 
 -- --------------------------------------------------------
 
