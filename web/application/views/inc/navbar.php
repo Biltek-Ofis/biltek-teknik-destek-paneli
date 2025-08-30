@@ -194,6 +194,12 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
                 Komisyon Oranlarını İndir
               </a>
             </li>-->
+            
+            <li>
+              <a class="dropdown-item" href="<?=base_url("app/biltekdeskts");?>">
+                BiltekDesk Programını İndir
+              </a>
+            </li>
             <li>
               <a class="dropdown-item" href="#" onclick="ozelBarkodYazdirPencere();">
                 Özel Barkod Yazdır
