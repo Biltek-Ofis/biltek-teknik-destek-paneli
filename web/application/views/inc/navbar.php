@@ -196,7 +196,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             </li>-->
             
             <li>
-              <a class="dropdown-item" href="<?=base_url("app/biltekdesk");?>">
+              <a class="dropdown-item" target="_blank" href="<?=base_url("app/biltekdesk");?>">
                 BiltekDesk Programını İndir
               </a>
             </li>
