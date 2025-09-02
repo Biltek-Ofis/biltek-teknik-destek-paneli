@@ -609,26 +609,8 @@ class App extends CI_Controller
     {
         $this->load->view("icerikler/yazdir/barkod_ozel");
     }
-    public function biltekdeskts(){
-        if ($this->Giris_Model->kullaniciGiris()){
-            $file = base_url("dist/indir/BiltekDesk.zip"); 
-
-            header("Content-Description: File Transfer"); 
-            header("Content-Type: application/octet-stream"); 
-            header("Content-Disposition: attachment; filename=\"". basename($file) ."\""); 
-
-            readfile ($file);
-            exit(); 
-        }else{
-            redirect(base_url());
-        }
-    }
     public function biltekdesk(){
         $ayarlar = $this->Ayarlar_Model->getir();
-        if(strlen($ayarlar->biltekdesk_url)){
-            redirect($ayarlar->biltekdesk_url);
-        }else{
-            redirect(base_url());
-        }
+        redirect($ayarlar->biltekdesk_url);
     }
 }
