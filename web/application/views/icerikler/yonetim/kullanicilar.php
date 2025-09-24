@@ -70,7 +70,9 @@ $this->load->view("ogeler/kullanici_adi", array("doldurma" => FALSE));
 echo '</div>
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
-echo '</div>
+echo '</div>';
+if($kullaniciTuru != 2){
+echo '
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_personel", array("kullaniciTuru" => $kullaniciTuru));
 echo '</div>
@@ -79,7 +81,9 @@ $this->load->view("ogeler/kullanici_teknik_servis");
 echo '</div>
                                     <div class="row">';
 $this->load->view("ogeler/kullanici_urun_duzenleme");
-echo '</div>
+echo '</div>';
+}
+echo '
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -94,16 +98,20 @@ echo '</div>
                         <thead>
                             <tr>
                                 <th>Hesap Kodu</th>
-                                <th>Ad Soyad</th>
-                                <th>Kullanıcı Adı</th>
+                                <th>İsim</th>
+                                <th>Kullanıcı Adı</th>';
+                                if($kullaniciTuru != 2){
+                                echo '
                                 <th>Teknik Servis Elemanı</th>
-                                <th>Ürün Düzenleme</th>
+                                <th>Ürün Düzenleme</th>';
+                                }
+                                echo '
                                 <th>İşlemler</th>
                             </tr>
                         </thead>
                         <tbody>';
 
-foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciTuru)) as $kullanici) {
+foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciTuru == 1 ? 1 : 0, "musteri" => $kullaniciTuru == 2 ? 1 : 0)) as $kullanici) {
 
     echo '<tr>
                                     <td>
@@ -114,13 +122,17 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
     echo '</td>
                                     <td>
                                         ' . $kullanici->kullanici_adi . '
-                                    </td>
+                                    </td>';
+                                    if($kullaniciTuru != 2){
+                                    echo '
                                     <td>
                                         ' . ( $kullanici->teknikservis == 1 ? "Evet" : "Hayır" ) . '
                                     </td>
                                     <td>
                                         ' . ( ($kullanici->urunduzenleme == 1 || $kullanici->yonetici) ? "Evet" : "Hayır" ) . '
-                                    </td>
+                                    </td>';
+                                    }
+                                    echo '
                                     <td class="align-middle text-center">
 
                                         ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>') . '
@@ -164,7 +176,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_sifre", array("value" => "", "id" => $kullanici->id, "doldurma" => FALSE));
-        echo '</div>
+        echo '</div>';
+        if($kullaniciTuru != 2){
+        echo '
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));
         echo '</div>
@@ -173,7 +187,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         echo '</div>
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_urun_duzenleme", array("value" => $kullanici->urunduzenleme, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
-        echo '</div>
+        echo '</div>';
+        }
+        echo '
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">

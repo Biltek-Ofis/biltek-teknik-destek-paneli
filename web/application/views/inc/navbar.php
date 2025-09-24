@@ -92,6 +92,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <?php
         }
+        if($this->Giris_Model->kullaniciGiris()){
         ?>
         <li class="nav-item">
           <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
@@ -99,7 +100,14 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             Malzeme Teslimi
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link<?= $aktifSayfa == "cagri_kaydi" || $aktifSayfa == "cagri_kaydi_detay" ? ' active" aria-current="page' : ''; ?>"
+            href="<?= base_url("cagrikayitlari"); ?>">
+            Çağrı Kayıtları
+          </a>
+        </li>
         <?php
+        }
         if ($kullanicibilgileri123["yonetici"] == 1) {
           ?>
           <li class="nav-item dropdown">
@@ -126,6 +134,12 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
                 <a class="dropdown-item<?= $aktifSayfa == "yonetim/personel" ? ' active" aria-current="page' : ""; ?>"
                   href="<?= base_url("yonetim/personel"); ?>">
                   Personel Hesapları
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item<?= $aktifSayfa == "yonetim/musteri_hesaplari" ? ' active" aria-current="page' : ""; ?>"
+                  href="<?= base_url("yonetim/musteri_hesaplari"); ?>">
+                  Müşteri Hesapları
                 </a>
               </li>
               <li>
@@ -177,6 +191,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <?php
         }
+        if($this->Giris_Model->kullaniciGiris()){
         ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -217,20 +232,24 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             </li>
           </ul>
         </li>
-        <li class="nav-item align-items-center d-flex">
-          <i class="fas fa-sun"></i>
-          <!-- Default switch -->
-          <div class="ms-2 form-check form-switch">
-            <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
-          </div>
-          <i class="fas fa-moon"></i>
-        </li>
+        
+        <?php
+        }
+        ?>
       </ul>
       <form class="d-flex" role="search">
         <ul class="navbar-nav ml-auto">
 
           <li class="nav-item">
             <a href="<?= base_url("kullanici"); ?>" class="nav-link"><?= $kullanicibilgileri123["ad_soyad"]; ?></a>
+          </li>
+          <li class="nav-item align-items-center d-flex">
+          <i class="fas fa-sun"></i>
+            <!-- Default switch -->
+            <div class="ms-2 form-check form-switch">
+              <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
+            </div>
+            <i class="fas fa-moon"></i>
           </li>
           <!--<li class="nav-item">
               <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#temaSecModal">
