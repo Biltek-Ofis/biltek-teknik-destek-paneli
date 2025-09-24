@@ -11,6 +11,10 @@ class Cihazlar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "cihazlar";
     }
+    public function cagriKayitlariTabloAdi()
+    {
+        return DB_ON_EK_STR . "cagri_kayitlari";
+    }
     public function islemlerTabloAdi()
     {
         return DB_ON_EK_STR . "islemler";
@@ -256,6 +260,14 @@ class Cihazlar_Model extends CI_Model
     public function cihazDurumuBul($id)
     {
         return $this->db->reset_query()->where("id", $id)->get($this->cihazDurumlariTabloAdi());
+    }
+    public function cihazDurumuBulIsimden($isim)
+    {
+        $durum = $this->db->reset_query()->where("durum", $isim)->get($this->cihazDurumlariTabloAdi());
+        if ($durum->num_rows() > 0) {
+            return $durum->result()[0];
+        }
+        return null;
     }
     public function cihazDurumuKilitle($id)
     {
@@ -752,6 +764,14 @@ class Cihazlar_Model extends CI_Model
             "servis_turu" => $this->input->post("servis_turu"),
             "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
+        $cagri_id = $this->input->post("cagri_id");
+        if (isset($cagri_id)) {
+            $veri["cagri_id"] = $cagri_id;
+        }
+        $kull_id = $this->input->post("kull_id");
+        if (isset($kull_id)) {
+            $veri["kull_id"] = $kull_id;
+        }
         $tel_no = $this->input->post("telefon_numarasi");
         if (isset($tel_no)) {
             if ($tel_no == $this->telefon_numarasi_bos) {
@@ -1054,7 +1074,7 @@ class Cihazlar_Model extends CI_Model
     {
         $this->veriGuncellendiEkle();
         $ekle = $this->db->reset_query()->insert($this->medyalarTabloAdi(), $veri);
-        if($ekle){
+        if ($ekle) {
             $this->load->model("Log_Model");
             $kullanici = $this->Log_Model->kullaniciBul($uye_id);
             if ($kullanici != null) {
@@ -1068,11 +1088,11 @@ class Cihazlar_Model extends CI_Model
         $this->veriGuncellendiEkle();
         $medya = $this->db->reset_query()->where("id", $id)->get($this->medyalarTabloAdi());
         $cihaz_id = 0;
-        if($medya->num_rows() > 0){
+        if ($medya->num_rows() > 0) {
             $cihaz_id = $medya->result()[0]->cihaz_id;
         }
         $sil = $this->db->reset_query()->where("id", $id)->delete($this->medyalarTabloAdi());
-        if($sil && $cihaz_id != 0){
+        if ($sil && $cihaz_id != 0) {
             $this->load->model("Log_Model");
             $kullanici = $this->Log_Model->kullaniciBul($uye_id);
             if ($kullanici != null) {
@@ -1119,6 +1139,84 @@ class Cihazlar_Model extends CI_Model
             $this->db->reset_query()->insert($this->guncellemeTabloAdi(), array(
                 "guncelleme_tarihi" => time()
             ));
+        }
+    }
+    public function cagriKayitlari($kull_id = 0)
+    {
+        $query = $this->db->reset_query();
+        if ($kull_id != 0 && $kull_id != "") {
+            $query = $query->where("kull_id", $kull_id);
+        }
+        $query = $query->order_by("id", "DESC")->get($this->cagriKayitlariTabloAdi());
+        return $query->result();
+    }
+    public function cagriCihazi($cagriID)
+    {
+        $query = $this->db->reset_query()->where("cagri_id", $cagriID)->get($this->cihazlarTabloAdi());
+        if ($query->num_rows() > 0) {
+            return $query->result()[0];
+        } else {
+            return null;
+        }
+    }
+    public function cagriKaydiGetir($cagriID)
+    {
+        $query = $this->db->reset_query()->where("id", $cagriID)->get($this->cagriKayitlariTabloAdi());
+        if ($query->num_rows() > 0) {
+            return $query->result()[0];
+        } else {
+            return null;
+        }
+    }
+    public function cagriKaydiEkle()
+    {
+        $veri = $this->cagriKaydiPost(FALSE);
+        return $this->db->reset_query()->insert($this->cagriKayitlariTabloAdi(), $veri);
+    }
+    public function cagriKaydiDuzenle($id)
+    {
+        $veri = $this->cagriKaydiPost(TRUE);
+        return $this->db->reset_query()->where("id", $id)->update($this->cagriKayitlariTabloAdi(), $veri);
+    }
+    public function cagriKaydiSil($id)
+    {
+        return $this->db->reset_query()->where("id", $id)->delete($this->cagriKayitlariTabloAdi());
+    }
+    public function cagriKaydiPost($duzenle = FALSE)
+    {
+        $veri = array(
+            "cihaz_turu" => $this->input->post("cihaz_turu"),
+            "cihaz" => $this->input->post("cihaz"),
+            "cihaz_modeli" => $this->input->post("cihaz_modeli"),
+            "seri_no" => $this->input->post("seri_no"),
+            "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
+        );
+        if (!$duzenle) {
+            $kull_id = $this->input->post("musteri");
+            if (isset($kull_id) && $kull_id != "") {
+                $veri["kull_id"] = $kull_id;
+            } else {
+                $veri["kull_id"] = $this->Kullanicilar_Model->kullaniciBilgileri()["id"];
+            }
+        }
+        return $veri;
+    }
+
+    public function cagriDurumGuncelle($id, $durum)
+    {
+        $yeniDurum = $this->Cihazlar_Model->cihazDurumuBulIsimden($durum);
+        if ($yeniDurum != null) {
+            $cagri = $this->Cihazlar_Model->cagriKaydiGetir($id);
+            if ($cagri != null) {
+                $cihaz = $this->Cihazlar_Model->cagriCihazi($cagri->id);
+                if ($cihaz != null) {
+                    $this->Cihazlar_Model->cihazDuzenle($cihaz->id, array(
+                        "guncel_durum" => $yeniDurum->id,
+                    ), 0, FALSE);
+                }else{
+
+                }
+            }
         }
     }
 }

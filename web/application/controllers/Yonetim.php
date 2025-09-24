@@ -29,6 +29,14 @@ class Yonetim extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
+	public function musteri_hesaplari()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Müşteri Hesapları", "yonetim/musteri_hesaplari", array("baslik" => "Müşteri Hesapları"), "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 	public function kullaniciEkle($tur = 0)
 	{
 		if ($this->Kullanicilar_Model->yonetici()) {
@@ -38,6 +46,9 @@ class Yonetim extends Varsayilancontroller
 					if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"])) {
 						$sifre = $veri["sifre"];
 						$veri["sifre"] = $this->Islemler_Model->sifrele($sifre);
+						if($tur == 2){
+							$veri["musteri"] = 1;
+						}
 						$ekle = $this->Kullanicilar_Model->ekle($veri);
 						if ($ekle) {
 							redirect(base_url($this->konum($tur)));
@@ -113,6 +124,8 @@ class Yonetim extends Varsayilancontroller
 		$konum = "yonetim/personel";
 		if ($tur == 1) {
 			$konum = "yonetim/yoneticiler";
+		}else if( $tur == 2){
+			$konum = "yonetim/musteri_hesaplari";
 		}
 		return $konum;
 	}

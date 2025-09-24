@@ -1,5 +1,7 @@
 <?php
-
+function getDuzenle($str, $varsayilan = ""){
+    return (isset($_GET[$str]) ? htmlspecialchars($_GET[$str], ENT_QUOTES) : $varsayilan);
+}
 echo '<script>
     var yeniCihazGirisiAcik = false;
     $(document).ready(function(){
@@ -9,6 +11,11 @@ echo '<script>
         $("#yeniCihazEkleModal").on("hidden.bs.modal", function(e) {
             yeniCihazGirisiAcik = false;
         });
+        ';
+        if(isset($_GET['yeniCihaz']) && $_GET['yeniCihaz']==1) {
+            echo '$("#yeniCihazEkleModal").modal("show");';
+        }
+        echo '
     });
     function createDateAsUTC(date) {
         return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
@@ -52,6 +59,13 @@ echo '
                     $(\'#yeniCihazForm\')[0].reset();
                     $("#basarili-mesaji").html("Yeni kayıt başarıyla eklendi.");
                     $("#statusSuccessModal").modal("show");
+                    ';
+                    if(isset($_GET['yeniCihaz']) && $_GET['yeniCihaz']==1) {
+                        echo '
+                        const newUrl = window.location.origin + window.location.pathname;
+                        window.history.replaceState({}, document.title, newUrl);';
+                    }
+                    echo '
                     if(yazdir){
                         barkoduYazdir(data["id"]);
                     }
@@ -155,6 +169,8 @@ echo '</div>
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
                     </div>
+                    <input type="hidden" name="cagri_id" id="cagri_id" value="'.getDuzenle("cagri_id", 0).'">
+                    <input type="hidden" name="kull_id" id="kull_id" value="'.getDuzenle("musteri_id", 0).'">
                     <div id="giris_tarihi_div" class="row">';
 $this->load->view("ogeler/tarih_girisi");
 echo '</div>
@@ -162,7 +178,11 @@ echo '</div>
 $this->load->view("ogeler/tarih");
 echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/musteri_adi", array("musteri_adi_form" => "#yeniCihazForm", "musteri_adi_sayi" => "1"));
+$this->load->view("ogeler/musteri_adi", array(
+    "musteri_adi_form" => "#yeniCihazForm", 
+    "musteri_adi_sayi" => "1",
+    "musteri_adi_value" => getDuzenle("musteri_adi", ""),
+));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/teslim_eden");
@@ -177,7 +197,9 @@ echo '</div>
 $this->load->view("ogeler/gsm", array("telefon_numarasi_label"=>TRUE));
 echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/cihaz_turleri");
+$this->load->view("ogeler/cihaz_turleri", array(
+    "cihaz_turu_value" => getDuzenle("cihazTuru", "")
+));
 echo '</div>';
 
 //if ($this->Kullanicilar_Model->yonetici()) {
@@ -190,19 +212,33 @@ echo '</div>';
 //}
 
 echo '<div class="row">';
-$this->load->view("ogeler/cihaz_markasi");
+$this->load->view("ogeler/cihaz_markasi", array(
+    "cihaz_value" => getDuzenle("cihaz", "")
+));
 echo '</div>
 <div class="row">';
-$this->load->view("ogeler/cihaz_modeli");
+$this->load->view("ogeler/cihaz_modeli",
+    array(
+        "cihaz_modeli_value" => getDuzenle("model", "")
+    )
+);
 echo '</div>
 <div class="row">';
-$this->load->view("ogeler/seri_no");
+$this->load->view("ogeler/seri_no",
+    array(
+        "seri_no_value" => getDuzenle("seri_no", "")
+    )
+);
 echo '</div>
 <div class="row">';
 $this->load->view("ogeler/cihaz_sifresi", array("formID" => "yeniCihazForm"));
 echo '</div>
 <div class="row">';
-$this->load->view("ogeler/ariza_aciklamasi");
+$this->load->view("ogeler/ariza_aciklamasi",
+    array(
+        "ariza_aciklamasi_value" => getDuzenle("ariza", "")
+    )
+);
 echo '</div>
 <div class="row">';
 $this->load->view("ogeler/teslim_alinanlar");

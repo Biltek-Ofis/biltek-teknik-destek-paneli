@@ -55,6 +55,24 @@ CREATE TABLE `ts1_ayarlar` (
 INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `adres`, `sirket_telefonu`, `tablo_oge`, `barkod_ad`, `barkod_en`, `barkod_boy`, `barkod_boyutu`, `barkod_numarasi_boyutu`, `barkod_musteri_adi_boyutu`, `barkod_sirket_adi_boyutu`, `app_version`, `biltekdesk_url`, `kis_modu`, `tema`) VALUES
 (1, 'Biltek Bilgisayar Teknik Servis', 'http://www.biltekbilgisayar.com.tr/', 'BİLTEK OFİS ve BİLİŞİM SİSTEMLERİ SAN. TİC. LTD. ŞTİ.', 'Güzelhisar Mahallesi, Yedi Eylül Caddesi, No: 16/A, Efeler/AYDIN', '+90 (544) 397-0992', 50, 'Biltek Bilgisayar', 40, 20, 14, 12, 12, 10, '114', '', 1, 1);
 
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_cagri_kayitlari`
+--
+
+CREATE TABLE `ts1_cagri_kayitlari` (
+  `id` int(11) NOT NULL,
+  `kull_id` int(11) NOT NULL,
+  `cihaz_turu` int(11) NOT NULL,
+  `cihaz` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `cihaz_modeli` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `seri_no` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `ariza_aciklamasi` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `tarih` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -103,6 +121,8 @@ CREATE TABLE `ts1_cihazlar` (
   `id` int(11) NOT NULL,
   `servis_no` varchar(50) DEFAULT NULL,
   `takip_numarasi` int(11) NOT NULL,
+  `cagri_id` INT NOT NULL DEFAULT '0', 
+  `kull_id` INT NOT NULL DEFAULT '0',
   `musteri_kod` int(11) DEFAULT NULL,
   `musteri_adi` varchar(255) NOT NULL,
   `teslim_eden` varchar(255) NOT NULL DEFAULT '',
@@ -260,8 +280,9 @@ CREATE TABLE `ts1_kullanicilar` (
   `ad_soyad` varchar(100) DEFAULT NULL,
   `sifre` varchar(255) NOT NULL,
   `urunduzenleme` int(1) NOT NULL DEFAULT 0,
-  `teknikservis` int(1) NOT NULL DEFAULT 1,
-  `yonetici` int(10) NOT NULL DEFAULT 0,
+  `teknikservis` int(1) NOT NULL DEFAULT 0,
+  `yonetici` int(1) NOT NULL DEFAULT 0,
+  `musteri` int(1) NOT NULL DEFAULT 0,
   `tema` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -518,6 +539,12 @@ ALTER TABLE `ts1_ayarlar`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_cagri_kayitlari`
+--
+ALTER TABLE `ts1_cagri_kayitlari`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_cihazdurumlari`
 --
 ALTER TABLE `ts1_cihazdurumlari`
@@ -672,6 +699,12 @@ ALTER TABLE `ts1_malzeme_teslimi_islemler`
 --
 ALTER TABLE `ts1_ayarlar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_cagri_kayitlari`
+--
+ALTER TABLE `ts1_cagri_kayitlari`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_cihazdurumlari`

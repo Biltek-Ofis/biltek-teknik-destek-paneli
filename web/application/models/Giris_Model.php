@@ -5,11 +5,15 @@ class Giris_Model extends CI_Model
     {
         parent::__construct();
     }
-    public function kullaniciGiris()
+    public function kullaniciGiris($musteri = FALSE)
     {
         if($this-> kullaniciTanimi()){
             $this->load->model("Kullanicilar_Model");
-            return $this->Kullanicilar_Model->kullaniciBilgileri()["id"] != "";
+            if($musteri ){
+                return $this->Kullanicilar_Model->kullaniciBilgileri()["id"] != "" && $this->Kullanicilar_Model->kullaniciBilgileri()["musteri"] == 1;
+            }else{
+                return $this->Kullanicilar_Model->kullaniciBilgileri()["id"] != "" && $this->Kullanicilar_Model->kullaniciBilgileri()["musteri"] == 0;
+            }
         }else{
             return false;
         }
