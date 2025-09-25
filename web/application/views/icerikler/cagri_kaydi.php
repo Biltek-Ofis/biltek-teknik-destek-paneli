@@ -43,7 +43,7 @@ if ($this->Giris_Model->kullaniciGiris()) {
             $("#cagriKaydiDuzenleForm").attr("action", "<?= base_url("cagrikayitlari/duzenle"); ?>/" + id);
             $("#cagriKaydiDuzenleForm #bolge").val(bolge);
             $("#cagriKaydiDuzenleForm #birim").val(birim);
-            $("#cagriKaydiDuzenleForm #telefon_numarasi2").val(birim);
+            $("#cagriKaydiDuzenleForm #telefon_numarasi2").val(tel);
             $("#cagriKaydiDuzenleForm #cihaz_turu").val(cihazTuru);
             $("#cagriKaydiDuzenleForm #cihaz").val(cihaz);
             $("#cagriKaydiDuzenleForm #cihaz_modeli").val(cihazModeli);
