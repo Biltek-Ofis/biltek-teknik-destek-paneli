@@ -9,6 +9,7 @@ import '../../utils/shared_preferences.dart';
 import '../../widgets/selector.dart';
 import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
+import 'bildirim.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({super.key, required this.pcYenile});
@@ -109,6 +110,17 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                                 GirisSayfasi(kullaniciAdi: myNotifier.username),
                       ),
                       (route) => false,
+                    );
+                  },
+                ),
+                BiltekListTile(
+                  title: "Bildirimler",
+                  subtitle: "Bildirim ayarlarınızı özelleştirin.",
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BildirimAyarlari(),
+                      ),
                     );
                   },
                 ),

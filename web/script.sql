@@ -69,10 +69,10 @@ CREATE TABLE `ts1_cagri_kayitlari` (
   `birim` varchar(255) NOT NULL DEFAULT '',
   `telefon_numarasi` VARCHAR(255) NOT NULL DEFAULT '',
   `cihaz_turu` int(11) NOT NULL,
-  `cihaz` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `cihaz_modeli` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `seri_no` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `ariza_aciklamasi` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `cihaz` varchar(255) NOT NULL,
+  `cihaz_modeli` varchar(255) NOT NULL,
+  `seri_no` varchar(255) NOT NULL,
+  `ariza_aciklamasi` longtext NOT NULL,
   `tarih` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
@@ -315,6 +315,18 @@ CREATE TABLE `ts1_kullanici_auth` (
   `bitis` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_kullanici_bildirimleri`
+--
+
+CREATE TABLE `ts1_kullanici_bildirimleri` (
+  `id` int(11) NOT NULL,
+  `kullanici_id` int(11) NOT NULL,
+  `bildirim_turu` varchar(255) NOT NULL,
+  `durum` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- --------------------------------------------------------
 --
@@ -615,6 +627,12 @@ ALTER TABLE `ts1_kullanici_auth`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_kullanici_bildirimleri`
+--
+ALTER TABLE `ts1_kullanici_bildirimleri`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_loglar`
 --
 ALTER TABLE `ts1_loglar`
@@ -756,6 +774,12 @@ ALTER TABLE `ts1_kullanicilar`
 --
 ALTER TABLE `ts1_kullanici_auth`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_kullanici_bildirimleri`
+--
+ALTER TABLE `ts1_kullanici_bildirimleri`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_loglar`
