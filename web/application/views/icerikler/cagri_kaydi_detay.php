@@ -50,8 +50,18 @@ if (isset($cagri) || $cagri != null) {
                         <?php
                         ?>
                         <tr>
-                            <th>Cihaz Türü:</th>
-                            <td><?= $this->Cihazlar_Model->cihazTuru($cihaz != null ? $cihaz->cihaz_turu : $cagri->cihaz_turu); ?>
+                            <th>Bölge:</th>
+                            <td><?= $cagri->bolge; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Birim:</th>
+                            <td><?= $cagri->birim; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>GSM:</th>
+                            <td><?= $cagri->telefon_numarasi; ?>
                             </td>
                         </tr>
                         <tr>

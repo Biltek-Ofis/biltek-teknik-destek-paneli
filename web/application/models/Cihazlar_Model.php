@@ -1191,6 +1191,18 @@ class Cihazlar_Model extends CI_Model
             "seri_no" => $this->input->post("seri_no"),
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
         );
+        $bolge = $this->input->post("bolge");
+        if (isset($bolge)) {
+            $veri["bolge"] = $bolge;
+        }
+        $birim = $this->input->post("birim");
+        if (isset($birim)) {
+            $veri["birim"] = $birim;
+        }
+        $telefon_numarasi = $this->input->post("telefon_numarasi");
+        if (isset($telefon_numarasi)) {
+            $veri["telefon_numarasi"] = $telefon_numarasi;
+        }
         if (!$duzenle) {
             $kull_id = $this->input->post("musteri");
             if (isset($kull_id) && $kull_id != "") {

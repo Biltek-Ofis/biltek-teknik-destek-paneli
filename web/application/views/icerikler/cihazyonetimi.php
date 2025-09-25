@@ -194,7 +194,7 @@ echo '</div>
 $this->load->view("ogeler/musteriyi_kaydet");
 echo '</div>
                     <div class="row">';
-$this->load->view("ogeler/gsm", array("telefon_numarasi_label"=>TRUE));
+$this->load->view("ogeler/gsm", array("telefon_numarasi_label"=>TRUE, "telefon_numarasi_value"=>getDuzenle("gsm", "+90")));
 echo '</div>
                     <div class="row">';
 $this->load->view("ogeler/cihaz_turleri", array(
