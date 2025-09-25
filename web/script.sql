@@ -65,6 +65,9 @@ INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `
 CREATE TABLE `ts1_cagri_kayitlari` (
   `id` int(11) NOT NULL,
   `kull_id` int(11) NOT NULL,
+  `bolge` varchar(255) NOT NULL DEFAULT '',
+  `birim` varchar(255) NOT NULL DEFAULT '',
+  `telefon_numarasi` VARCHAR(255) NOT NULL DEFAULT '',
   `cihaz_turu` int(11) NOT NULL,
   `cihaz` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `cihaz_modeli` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,

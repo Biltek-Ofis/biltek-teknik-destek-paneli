@@ -29,6 +29,9 @@ if ($this->Giris_Model->kullaniciGiris()) {
             });
             $("#cagriKaydiDuzenleModal").on("hidden.bs.modal", function (e) {
                 $("##cagriKaydiDuzenleForm").attr("action", "");
+                $("#cagriKaydiDuzenleForm #bolge").val("");
+                $("#cagriKaydiDuzenleForm #birim").val("");
+                $("#cagriKaydiDuzenleForm #telefon_numarasi1").val("");
                 $("#cagriKaydiDuzenleForm #cihaz_turu").val("");
                 $("#cagriKaydiDuzenleForm #cihaz").val("");
                 $("#cagriKaydiDuzenleForm #cihaz_modeli").val("");
@@ -36,8 +39,11 @@ if ($this->Giris_Model->kullaniciGiris()) {
                 $("#cagriKaydiDuzenleForm #ariza_aciklamasi").val("");
             });
         });
-        function cagriKaydiDuzenle(id, cihazTuru, cihaz, cihazModeli, seriNo, ariza) {
+        function cagriKaydiDuzenle(id, bolge, birim, tel, cihazTuru, cihaz, cihazModeli, seriNo, ariza) {
             $("#cagriKaydiDuzenleForm").attr("action", "<?= base_url("cagrikayitlari/duzenle"); ?>/" + id);
+            $("#cagriKaydiDuzenleForm #bolge").val(bolge);
+            $("#cagriKaydiDuzenleForm #birim").val(birim);
+            $("#cagriKaydiDuzenleForm #telefon_numarasi2").val(birim);
             $("#cagriKaydiDuzenleForm #cihaz_turu").val(cihazTuru);
             $("#cagriKaydiDuzenleForm #cihaz").val(cihaz);
             $("#cagriKaydiDuzenleForm #cihaz_modeli").val(cihazModeli);
@@ -160,13 +166,13 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                 if ($this->Giris_Model->kullaniciGiris()) {
                                     if ($cihaz == null) {
                                         ?>
-                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $musteri[0]->ad_soyad . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
+                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge ." ". $cagri->birim . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
                                             class="btn btn-sm btn-success">Kayıt Aç</a>
                                         <?php
                                     }
                                     ?>
                                     <button class="btn btn-sm btn-info text-white"
-                                        onclick="cagriKaydiDuzenle('<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($cagri->cihaz_turu); ?>', '<?= donusturOnclick($cagri->cihaz); ?>', '<?= donusturOnclick($cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cagri->seri_no); ?>', '<?= donusturOnclick($cagri->ariza_aciklamasi); ?>')">Düzenle</button>
+                                        onclick="cagriKaydiDuzenle('<?= donusturOnclick($cagri->id); ?>','<?= donusturOnclick($cagri->bolge); ?>', '<?= donusturOnclick($cagri->birim); ?>', '<?= donusturOnclick($cagri->telefon_numarasi); ?>', '<?= donusturOnclick($cagri->cihaz_turu); ?>', '<?= donusturOnclick($cagri->cihaz); ?>', '<?= donusturOnclick($cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cagri->seri_no); ?>', '<?= donusturOnclick($cagri->ariza_aciklamasi); ?>')">Düzenle</button>
                                     <button class="btn btn-sm btn-danger"
                                         onclick="silModaliGoster('<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($musteri[0]->ad_soyad); ?>')">Sil</button>
 
@@ -182,16 +188,16 @@ if ($this->Giris_Model->kullaniciGiris()) {
                 </tbody>
             </table>
         </div>
-        
+
         <?php
         if ($this->Giris_Model->kullaniciGiris(TRUE)) {
-        $ayarlar = $this->Ayarlar_Model->getir();
-        ?>
-        <div class="alert alert-success text-center" role="alert">
-            Çağrı kaydınız hakkında bilgi almak (istek, fiyat onayı, iade talebi vb) için
-            <b><?= $ayarlar->sirket_telefonu; ?></b> numarasından bize ulaşabilirsiniz.
-        </div>
-        <?php
+            $ayarlar = $this->Ayarlar_Model->getir();
+            ?>
+            <div class="alert alert-success text-center" role="alert">
+                Çağrı kaydınız hakkında bilgi almak (istek, fiyat onayı, iade talebi vb) için
+                <b><?= $ayarlar->sirket_telefonu; ?></b> numarasından bize ulaşabilirsiniz.
+            </div>
+            <?php
         }
         ?>
     </section>
@@ -213,6 +219,21 @@ if ($this->Giris_Model->kullaniciGiris()) {
                     <div class="row">
                         <?php
                         $this->load->view("ogeler/musteri_sec");
+                        ?>
+                    </div>
+                    <div class="row">
+                        <?php
+                        $this->load->view("ogeler/bolge");
+                        ?>
+                    </div>
+                    <div class="row">
+                        <?php
+                        $this->load->view("ogeler/birim");
+                        ?>
+                    </div>
+                    <div class="row">
+                        <?php
+                        $this->load->view("ogeler/gsm", array("gsm_id" => "telefon_numarasi1"));
                         ?>
                     </div>
                     <div class="row">
@@ -267,6 +288,21 @@ if ($this->Giris_Model->kullaniciGiris()) {
                     <form id="cagriKaydiDuzenleForm" method="post">
                         <div class="row">
                             <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>
+                        </div>
+                        <div class="row">
+                            <?php
+                            $this->load->view("ogeler/bolge");
+                            ?>
+                        </div>
+                        <div class="row">
+                            <?php
+                            $this->load->view("ogeler/birim");
+                            ?>
+                        </div>
+                        <div class="row">
+                            <?php
+                            $this->load->view("ogeler/gsm", array("gsm_id" => "telefon_numarasi2"));
+                            ?>
                         </div>
                         <div class="row">
                             <?php
