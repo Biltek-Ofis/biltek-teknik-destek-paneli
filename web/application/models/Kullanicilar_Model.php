@@ -26,6 +26,10 @@ class Kullanicilar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "kullanici_auth";
     }
+    public function kullaniciBildirimleriTabloAdi()
+    {
+        return DB_ON_EK_STR . "kullanici_bildirimleri";
+    }
 
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $musteri = 0, $tema = "oto")
     {
@@ -273,5 +277,15 @@ class Kullanicilar_Model extends CI_Model
     public function musteriSil($id)
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
+    }
+    public function bildirimGetir($kullanici_id, $bildirim_turu){
+        $query = $this->db->reset_query()->where(array("kullanici_id"=> $kullanici_id, "bildirim_turu"=> $bildirim_turu))->get($this->kullaniciBildirimleriTabloAdi());
+        if($query->num_rows() > 0){
+            $sonuc = $query->result()[0];
+            return $sonuc->durum;
+        } else {
+            return -1;
+        }
+
     }
 }
