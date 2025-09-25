@@ -233,32 +233,32 @@ if ($this->Giris_Model->kullaniciGiris()) {
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/gsm", array("gsm_id" => "telefon_numarasi1"));
+                        $this->load->view("ogeler/gsm", array("telefon_numarasi_label"=> TRUE, "gsm_id" => "telefon_numarasi1"));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_turleri");
+                        $this->load->view("ogeler/cihaz_turleri", array("cihaz_turleri_label"=> TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_markasi");
+                        $this->load->view("ogeler/cihaz_markasi", array("cihaz_markasi_label"=> TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_modeli");
+                        $this->load->view("ogeler/cihaz_modeli", array("cihaz_modeli_label"=> TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/seri_no");
+                        $this->load->view("ogeler/seri_no", array("seri_no_label"=> TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/ariza_aciklamasi");
+                        $this->load->view("ogeler/ariza_aciklamasi", array("ariza_aciklamasi_label"=> TRUE));
                         ?>
                     </div>
                 </form>
@@ -301,32 +301,32 @@ if ($this->Giris_Model->kullaniciGiris()) {
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/gsm", array("gsm_id" => "telefon_numarasi2"));
+                            $this->load->view("ogeler/gsm", array("telefon_numarasi_label"=> TRUE, "gsm_id" => "telefon_numarasi2"));
                             ?>
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/cihaz_turleri");
+                            $this->load->view("ogeler/cihaz_turleri", array("cihaz_turleri_label"=> TRUE));
                             ?>
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/cihaz_markasi");
+                            $this->load->view("ogeler/cihaz_markasi", array("cihaz_markasi_label"=> TRUE));
                             ?>
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/cihaz_modeli");
+                            $this->load->view("ogeler/cihaz_modeli", array("cihaz_modeli_label"=> TRUE));
                             ?>
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/seri_no");
+                            $this->load->view("ogeler/seri_no", array("seri_no_label"=> TRUE));
                             ?>
                         </div>
                         <div class="row">
                             <?php
-                            $this->load->view("ogeler/ariza_aciklamasi");
+                            $this->load->view("ogeler/ariza_aciklamasi", array("ariza_aciklamasi_label"=> TRUE));
                             ?>
                         </div>
                     </form>

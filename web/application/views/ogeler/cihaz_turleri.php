@@ -1,12 +1,18 @@
 <?php
 $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
-
+if (!isset($cihaz_turleri_label)) {
+    $cihaz_turleri_label = FALSE;
+}
 echo '
 <div class="col';
 if (isset($sifirla)) {
     echo " p-0 m-0";
 }
-echo '">
+echo '">';
+if ($cihaz_turleri_label) {
+    echo '<label class="form-label" for="cihaz_turu">Cihaz Türü (*):</label>';
+}
+echo '
     <select id="cihaz_turu" class="form-select" name="cihaz_turu" aria-label="Cihaz türü" required>
         <option value="">Cihaz Türü Seçin *</option>';
 foreach ($cihazTurleri as $cihazTuru) {
