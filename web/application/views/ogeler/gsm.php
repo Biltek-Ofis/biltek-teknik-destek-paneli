@@ -20,7 +20,7 @@ if (isset($sifirla)) {
 }
 echo '">';
 if($telefon_numarasi_label){
-    echo '<label class="form-label" for="' . $telefonNumrasiID . '">GSM:</label>';
+    echo '<label class="form-label" for="' . $telefonNumrasiID . '">Telefon Numarası:</label>';
 }
 echo '<input id="' . $telefonNumrasiID . '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" name="telefon_numarasi" class="form-control" type="tel" value="';
 if (isset($telefon_numarasi_value)) {
