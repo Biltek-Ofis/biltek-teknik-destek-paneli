@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/widgets/list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,10 +11,7 @@ import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
-  const AyarlarSayfasi({
-    super.key,
-    required this.pcYenile,
-  });
+  const AyarlarSayfasi({super.key, required this.pcYenile});
 
   final VoidCallback pcYenile;
   @override
@@ -34,9 +32,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Ayarlar"),
-      ),
+      appBar: AppBar(title: Text("Ayarlar")),
       body: Consumer<MyNotifier>(
         builder: (context, MyNotifier myNotifier, child) {
           return SizedBox(
@@ -73,22 +69,14 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     );
                   },
                 ),*/
-                ListTile(
-                  title: Text("Tema"),
-                  subtitleTextStyle: TextStyle(
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.color
-                          ?.withAlpha(200)),
-                  subtitle: Container(
-                    padding: EdgeInsets.only(left: 5),
-                    child: myNotifier.isDark == null
-                        ? Text("Sistem Varsayılanı")
-                        : (myNotifier.isDark == true
-                            ? Text("Karanlık")
-                            : Text("Aydınlık")),
-                  ),
+                BiltekListTile(
+                  title: "Tema",
+                  subtitle:
+                      myNotifier.isDark == null
+                          ? "Sistem Varsayılanı"
+                          : (myNotifier.isDark == true
+                              ? "Karanlık"
+                              : "Aydınlık"),
                   onTap: () {
                     showSelector<bool?>(
                       context,
@@ -104,27 +92,26 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     );
                   },
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                  ),
-                  title: Text("Çıkış Yap"),
+                BiltekListTile(
+                  leading: Icon(Icons.logout),
+                  title: "Çıkış Yap",
                   onTap: () async {
                     NavigatorState navigatorState = Navigator.of(context);
                     await SharedPreference.remove(SharedPreference.authString);
                     String? fcmToken = await SharedPreference.getString(
-                        SharedPreference.fcmTokenString);
+                      SharedPreference.fcmTokenString,
+                    );
                     await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
                     navigatorState.pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => GirisSayfasi(
-                          kullaniciAdi: myNotifier.username,
-                        ),
+                        builder:
+                            (context) =>
+                                GirisSayfasi(kullaniciAdi: myNotifier.username),
                       ),
                       (route) => false,
                     );
                   },
-                )
+                ),
               ],
             ),
           );
@@ -148,9 +135,11 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
           builder: (context) {
             return AlertDialog(
               title: Text(elle ? "Başarılı" : "Eşleştirme"),
-              content: Text(elle
-                  ? "Ayarlarınız başarıyla kaydedildi"
-                  : "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir."),
+              content: Text(
+                elle
+                    ? "Ayarlarınız başarıyla kaydedildi"
+                    : "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir.",
+              ),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -171,7 +160,8 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
           return AlertDialog(
             title: Text("Hata"),
             content: Text(
-                "QR Kod Geçersiz! Lütfen tekrar deneyin veya el ile girin"),
+              "QR Kod Geçersiz! Lütfen tekrar deneyin veya el ile girin",
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -179,16 +169,17 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BarkodOkuyucuAyarlari(
-                        onBOKaydet: (durum, elle) {
-                          barkodOkuyucuAyarlariDurumu(
-                            durum,
-                            elle,
-                            kaydedildi: kaydedildi,
-                            pcYenile: pcYenile,
-                          );
-                        },
-                      ),
+                      builder:
+                          (context) => BarkodOkuyucuAyarlari(
+                            onBOKaydet: (durum, elle) {
+                              barkodOkuyucuAyarlariDurumu(
+                                durum,
+                                elle,
+                                kaydedildi: kaydedildi,
+                                pcYenile: pcYenile,
+                              );
+                            },
+                          ),
                     ),
                   );
                 },
