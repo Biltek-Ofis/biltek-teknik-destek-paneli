@@ -14,7 +14,7 @@ class MyNotifier extends ChangeNotifier {
     getPreferences();
   }
 
-//Switching the themes
+  //Switching the themes
   set isDark(bool? value) {
     _isDark = value;
     if (value != null) {
@@ -35,10 +35,11 @@ class MyNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  getPreferences() async {
+  void getPreferences() async {
     _isDark = await SharedPreference.getBool(SharedPreference.darkThemeString);
-    _username =
-        await SharedPreference.getString(SharedPreference.usernameString);
+    _username = await SharedPreference.getString(
+      SharedPreference.usernameString,
+    );
     notifyListeners();
   }
 }

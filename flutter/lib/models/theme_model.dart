@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeModel {
-  static List<Color> chartColors = [
-    Colors.purple,
-    Colors.yellow,
-  ];
+  static List<Color> chartColors = [Colors.purple, Colors.yellow];
   static ThemeData get dark {
     Color buttonColor = const Color.fromARGB(255, 54, 54, 54);
     Color buttonHoverColor = const Color.fromARGB(255, 43, 42, 42);
@@ -20,15 +17,11 @@ class ThemeModel {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: buttonColor,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
+        backgroundColor: buttonColor,
+        iconTheme: const IconThemeData(color: Colors.white),
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
+      iconTheme: const IconThemeData(color: Colors.white),
       colorScheme: ColorScheme.dark(primary: Colors.blue),
     );
   }
@@ -43,15 +36,11 @@ class ThemeModel {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        color: Colors.blue,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+        backgroundColor: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.black,
-      ),
+      iconTheme: const IconThemeData(color: Colors.black),
       colorScheme: ColorScheme.light(primary: Colors.blue),
     );
   }

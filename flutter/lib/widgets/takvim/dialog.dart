@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'widget.dart';
 
 Future<T?> showTakvim<T>(
-  context, {
+  BuildContext context, {
   required DateTime initialDate,
   Function(DateTime?)? onSelection,
   Function(DateTime?)? onConfirm,
@@ -16,16 +16,8 @@ Future<T?> showTakvim<T>(
       return TakvimSecici(
         initialDate: initialDate,
         datePickerOnly: saatiGoster ? false : true,
-        minYear: DateTime.now()
-            .subtract(
-              Duration(days: 365 * 5),
-            )
-            .year,
-        maxYear: DateTime.now()
-            .add(
-              Duration(days: 365 * 5),
-            )
-            .year,
+        minYear: DateTime.now().subtract(Duration(days: 365 * 5)).year,
+        maxYear: DateTime.now().add(Duration(days: 365 * 5)).year,
         onSelection: onSelection,
         onConfirm: onConfirm,
         use24hFormat: saatiGoster ? true : false,
