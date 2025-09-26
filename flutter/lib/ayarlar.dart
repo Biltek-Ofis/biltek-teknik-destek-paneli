@@ -36,8 +36,13 @@ class Ayarlar {
   static String get medyaSil => "${appUrl}medyaSil/";
   static String get cihazEkle => "${appUrl}cihazEkle/";
   static String get cihazDuzenle => "${appUrl}cihazDuzenle/";
+  static String get cihazTurleri => "${appUrl}cihazTurleri/";
   static String get cihazDuzenleme => "${appUrl}cihazDuzenleme/";
   static String get musteriler => "${appUrl}musteriler/";
+
+  static String get bildirimleriGetir => "${appUrl}bildirimleriGetir/";
+  static String get bildirimAyarla => "${appUrl}bildirimAyarla/";
+  static String get bildirimAyarlaToplu => "${appUrl}bildirimAyarlaToplu/";
 
   static String teknikservisformu({
     required String auth,

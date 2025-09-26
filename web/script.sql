@@ -324,7 +324,7 @@ CREATE TABLE `ts1_kullanici_auth` (
 CREATE TABLE `ts1_kullanici_bildirimleri` (
   `id` int(11) NOT NULL,
   `kullanici_id` int(11) NOT NULL,
-  `bildirim_turu` varchar(255) NOT NULL,
+  `tur` varchar(255) NOT NULL,
   `durum` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-showNotification({String? title, String? body, Duration? duration}) {
+void showNotification({String? title, String? body, Duration? duration}) {
   FlutterRingtonePlayer().playNotification();
   showOverlayNotification(
     (context) {
@@ -30,4 +30,17 @@ showNotification({String? title, String? body, Duration? duration}) {
     position: NotificationPosition.top,
     duration: duration ?? Duration(milliseconds: 4000),
   );
+}
+
+void toast(
+  String message, {
+  BuildContext? context,
+  ScaffoldMessengerState? scaffoldMessenger,
+}) {
+  SnackBar snackBar = SnackBar(content: Text(message));
+  if (context != null) {
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  } else if (scaffoldMessenger != null) {
+    scaffoldMessenger.showSnackBar(snackBar);
+  }
 }

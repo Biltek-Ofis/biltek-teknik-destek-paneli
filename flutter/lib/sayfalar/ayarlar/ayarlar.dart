@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/widgets/list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,9 +13,14 @@ import 'barkod_okuyucu.dart';
 import 'bildirim.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
-  const AyarlarSayfasi({super.key, required this.pcYenile});
+  const AyarlarSayfasi({
+    super.key,
+    required this.pcYenile,
+    required this.kullanici,
+  });
 
   final VoidCallback pcYenile;
+  final KullaniciAuthModel kullanici;
   @override
   State<AyarlarSayfasi> createState() => _AyarlarSayfasiState();
 }
@@ -94,6 +100,19 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                   },
                 ),
                 BiltekListTile(
+                  title: "Bildirimler",
+                  subtitle: "Bildirim ayarlarınızı özelleştirin.",
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                BildirimAyarlari(kullanici: widget.kullanici),
+                      ),
+                    );
+                  },
+                ),
+                BiltekListTile(
                   leading: Icon(Icons.logout),
                   title: "Çıkış Yap",
                   onTap: () async {
@@ -110,17 +129,6 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                                 GirisSayfasi(kullaniciAdi: myNotifier.username),
                       ),
                       (route) => false,
-                    );
-                  },
-                ),
-                BiltekListTile(
-                  title: "Bildirimler",
-                  subtitle: "Bildirim ayarlarınızı özelleştirin.",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => BildirimAyarlari(),
-                      ),
                     );
                   },
                 ),

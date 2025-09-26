@@ -149,7 +149,8 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("auth", $auth)->update($this->kullaniciAuthTabloAdi(), $veri);
     }
-    public function gecerliAuth($auth){
+    public function gecerliAuth($auth)
+    {
         $query = $this->db->reset_query()->where("auth", $auth)->get($this->kullaniciAuthTabloAdi());
         if ($query->num_rows() > 0) {
             $sonuc = $query->result()[0];
@@ -170,11 +171,12 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
     }
-    public function bildirimGonder($id, $baslik = "", $icerik = ""){
+    public function bildirimGonder($id, $baslik = "", $icerik = "")
+    {
         $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
-        
+
         if ($query->num_rows() > 0) {
-            
+
             $query = $query->result();
             $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
             $bearerToken = FCM::getBearerToken($authKeyContent);
@@ -200,10 +202,49 @@ class Kullanicilar_Model extends CI_Model
     }
     public function bildirimGonderCihaz($id, $cihaz_id)
     {
+        $bildirimler = $this->bildirimleriGetirKullaniciTur($id, "cihaz");
+
         $cihaz = $this->Cihazlar_Model->cihazBul($cihaz_id);
-        if($cihaz->num_rows() > 0){
+        if ($cihaz->num_rows() > 0) {
             $cihaz = $cihaz->result()[0];
-            $this->bildirimGonder($id, 'Yeni cihaz girişi yapıldı.', $cihaz->musteri_adi . " - " . $cihaz->cihaz . "" . (strlen($cihaz->cihaz_modeli) > 0 ? " " . $cihaz->cihaz_modeli : "") . " - " . $cihaz->ariza_aciklamasi);
+            $baslik = 'Yeni cihaz girişi yapıldı.';
+            $mesaj = $cihaz->musteri_adi . " - " . $cihaz->cihaz . "" . (strlen($cihaz->cihaz_modeli) > 0 ? " " . $cihaz->cihaz_modeli : "") . " - " . $cihaz->ariza_aciklamasi;
+            if (count($bildirimler) > 0) {
+                $bildirim = $bildirimler[0];
+                if (strval($bildirim->durum) == "1") {
+                    $this->bildirimGonder($id, $baslik, $mesaj);
+                }
+            }else{
+                $this->bildirimGonder($id, $baslik, $mesaj);
+            }
+        }
+    }
+    public function bildirimGonderCagri($tur_id, $cagri_id, $tip = "")
+    {
+        if(strlen($tip) == 0) {
+            return;
+        }
+        $bildirimler = $this->bildirimleriGetirTur("cagri-" . $tur_id);
+        $cagri = $this->Cihazlar_Model->cagriKaydiGetir($cagri_id);
+        if ($cagri != null) {
+            foreach ($bildirimler as $bildirim) {
+                if (strval($bildirim->durum) == "1") {
+                    $baslik = 'Yeni Çağrı Kaydı';
+                    $mesaj = "";
+                    
+                    $cihaz = $this->Cihazlar_Model->cagriCihazi($cagri->id);
+                    if($cihaz != null){
+                        $mesaj .= $cihaz->servis_no . " - ";
+                    }
+                    $mesaj .= $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . "" . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
+                    if ($tip == "fiyatonay") {
+                        $baslik = 'Çağrı Kaydı Fiyatı Onaylandı';
+                    } else if ($tip == 'fiyatret') {
+                        $baslik = 'Çağrı Kaydı Fiyatı Reddedildi';
+                    }
+                    $this->bildirimGonder($bildirim->kullanici_id, $baslik, $mesaj);
+                }
+            }
         }
     }
     public function girisDurumuAuth($auth)
@@ -233,10 +274,10 @@ class Kullanicilar_Model extends CI_Model
         );
         $teknikservis = $this->input->post("teknikservis");
         $urunduzenleme = $this->input->post("urunduzenleme");
-        if(isset($teknikservis)){
+        if (isset($teknikservis)) {
             $veri["teknikservis"] = $teknikservis;
         }
-        if(isset($urunduzenleme)){
+        if (isset($urunduzenleme)) {
             $veri["urunduzenleme"] = $urunduzenleme;
         }
         $yonetici = $this->input->post("yonetici");
@@ -278,13 +319,49 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->Firma_Model->musteriTablosu());
     }
-    public function bildirimGetir($kullanici_id, $bildirim_turu){
-        $query = $this->db->reset_query()->where(array("kullanici_id"=> $kullanici_id, "bildirim_turu"=> $bildirim_turu))->get($this->kullaniciBildirimleriTabloAdi());
-        if($query->num_rows() > 0){
-            $sonuc = $query->result()[0];
-            return $sonuc->durum;
+    public function bildirimleriGetirTur($tur)
+    {
+        return $this->db->reset_query()->where(array("tur" => $tur))->get($this->kullaniciBildirimleriTabloAdi())->result();
+    }
+    public function bildirimleriGetirKullaniciTur($kullanici_id, $tur)
+    {
+        return $this->db->reset_query()->where(array("kullanici_id" => $kullanici_id, "tur" => $tur))->get($this->kullaniciBildirimleriTabloAdi())->result();
+    }
+    public function bildirimleriGetir($kullanici_id)
+    {
+        return $this->db->reset_query()->where(array("kullanici_id" => $kullanici_id))->get($this->kullaniciBildirimleriTabloAdi())->result();
+    }
+    public function bildirimAyarla($kullanici_id, $tur, $durum)
+    {
+        $whereVeri = array(
+            "kullanici_id" => $kullanici_id,
+            "tur" => $tur,
+        );
+        $bildirim = $this->db->reset_query()->where($whereVeri)->get($this->kullaniciBildirimleriTabloAdi());
+        $durumDuz = strval($durum);
+        if (is_bool($durum)) {
+            $durumDuz = $durum ? "1" : "0";
+        } else if (is_numeric($durum)) {
+            $durumDuz = $durum == 1 ? "1" : "0";
+        } else if (is_string($durum)) {
+            if ($durum == "1") {
+                $durumDuz = "1";
+            } else if (strtolower($durum) == "true") {
+                $durumDuz = "1";
+            } else {
+                $durumDuz = "0";
+            }
+        }
+        if ($bildirim->num_rows() > 0) {
+            return $this->db->reset_query()->where($whereVeri)->update($this->kullaniciBildirimleriTabloAdi(), array(
+                "durum" => $durumDuz == "1" ? 1 : 0,
+            ));
         } else {
-            return -1;
+            return $this->db->reset_query()->insert($this->kullaniciBildirimleriTabloAdi(), array(
+                "kullanici_id" => $kullanici_id,
+                "tur" => $tur,
+                "durum" => $durumDuz == "1" ? 1 : 0,
+            ));
         }
 
     }

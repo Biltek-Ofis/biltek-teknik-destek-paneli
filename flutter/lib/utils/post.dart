@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:biltekteknikservis/models/bildirim.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../ayarlar.dart';
 import '../models/cihaz.dart';
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
+import '../models/cihaz_duzenleme/cihaz_turleri.dart';
 import '../models/kullanici.dart';
 import '../models/lisans/lisans.dart';
 import '../models/lisans/versiyon.dart';
@@ -287,6 +289,29 @@ class BiltekPost {
     return false;
   }
 
+  static Future<List<CihazTurleriModel>> cihazTurleri() async {
+    var response = await BiltekPost.post(Ayarlar.cihazTurleri, {});
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        var list = jsonDecode(resp) as List<dynamic>;
+        return list
+            .map(
+              (tur) => CihazTurleriModel.fromJson(tur as Map<String, dynamic>),
+            )
+            .toList();
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        return [];
+      }
+    } else {
+      debugPrint(
+        "Cihaz turleri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
+      return [];
+    }
+  }
+
   static Future<CihazDuzenlemeModel> cihazDuzenlemeGetir() async {
     var response = await BiltekPost.post(Ayarlar.cihazDuzenleme, {});
     var resp = await response.stream.bytesToString();
@@ -553,6 +578,83 @@ class BiltekPost {
         return false;
       }
     } else {
+      return false;
+    }
+  }
+
+  static Future<List<BildirimModel>> bildirimleriGetir(int kullaniciID) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.bildirimleriGetir, {
+        "kullanici_id": kullaniciID.toString(),
+      });
+      if (response.statusCode == 201) {
+        var resp = await response.stream.bytesToString();
+        List<dynamic> bildirimler = jsonDecode(resp) as List<dynamic>;
+        return bildirimler
+            .map(
+              (bildirim) =>
+                  BildirimModel.fromJson(bildirim as Map<String, dynamic>),
+            )
+            .toList();
+      } else {
+        return [];
+      }
+    } on Exception {
+      return [];
+    }
+  }
+
+  static Future<bool> bildirimAyarla(
+    int kullaniciID,
+    String tur,
+    bool durum,
+  ) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.bildirimAyarla, {
+        "kullanici_id": kullaniciID.toString(),
+        "tur": tur,
+        "durum": durum.toString(),
+      });
+      var resp = await response.stream.bytesToString();
+      debugPrint("durum: $resp");
+      if (response.statusCode == 201) {
+        Map<String, dynamic> map = jsonDecode(resp);
+        if (map.containsKey("sonuc")) {
+          int sonuc = int.tryParse(map["sonuc"].toString()) ?? 0;
+          return sonuc == 1;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    } on Exception {
+      return false;
+    }
+  }
+
+  static Future<bool> bildirimAyarlaToplu(
+    int kullaniciID,
+    List<BildirimModel> bildirimler,
+  ) async {
+    try {
+      String b = jsonEncode(bildirimler.map((b) => b.toJson()).toList());
+      var response = await BiltekPost.post(Ayarlar.bildirimAyarlaToplu, {
+        "kullanici_id": kullaniciID.toString(),
+        "bildirimler": b,
+      });
+      var resp = await response.stream.bytesToString();
+      debugPrint("durum: $resp");
+      if (response.statusCode == 201) {
+        Map<String, dynamic> map = jsonDecode(resp);
+        if (map.containsKey("sonuc")) {
+          int sonuc = int.tryParse(map["sonuc"].toString()) ?? 0;
+          return sonuc == 1;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    } on Exception {
       return false;
     }
   }
