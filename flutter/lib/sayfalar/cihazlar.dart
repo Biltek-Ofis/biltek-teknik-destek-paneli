@@ -271,8 +271,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder:
-                                    (context) =>
-                                        AyarlarSayfasi(pcYenile: pcYenile),
+                                    (context) => AyarlarSayfasi(
+                                      pcYenile: pcYenile,
+                                      kullanici: widget.kullanici,
+                                    ),
                               ),
                             );
                             break;

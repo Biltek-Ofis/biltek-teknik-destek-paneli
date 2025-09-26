@@ -536,6 +536,21 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function cihazTurleri()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
+                echo json_encode($cihazTurleri);
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
     public function musteriler()
     {
         $this->headerlar();
@@ -616,18 +631,75 @@ class App extends CI_Controller
         redirect($ayarlar->biltekdesk_url);
     }
 
-    public function bildirimGetir()
+    public function bildirimleriGetir()
     {
         $this->headerlar();
         $kullanici_id = $this->input->post("kullanici_id");
-        $bildirim_turu = $this->input->post("bildirim_turu");
         $token = $this->tokenPost();
         if (isset($token)) {
             if ($this->token($token)) {
                 if (isset($kullanici_id)) {
-                    if (isset($bildirim_turu)) {
-                        $durum = $this->Cihazlar_Model->bildirimGetir($kullanici_id, $bildirim_turu);
-                        json_encode(array("durum" => $durum));
+                    $sonuc = $this->Kullanicilar_Model->bildirimleriGetir($kullanici_id);
+                    echo json_encode($sonuc);
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function bildirimAyarla()
+    {
+        $this->headerlar();
+        $kullanici_id = $this->input->post("kullanici_id");
+        $tur = $this->input->post("tur");
+        $durum = $this->input->post("durum");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($kullanici_id)) {
+                    if (isset($tur)) {
+                        if (isset($durum)) {
+                            $sonuc = $this->Kullanicilar_Model->bildirimAyarla($kullanici_id, $tur, $durum);
+                            echo json_encode(array("sonuc" => $sonuc ? "1" : "0"));
+                        } else {
+                            echo json_encode($this->hataMesaji(1));
+                        }
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function bildirimAyarlaToplu()
+    {
+        $this->headerlar();
+        $kullanici_id = $this->input->post("kullanici_id");
+        $bildirimler = $this->input->post("bildirimler");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($kullanici_id)) {
+                    if (isset($bildirimler)) {
+                        $bildirimler = json_decode($bildirimler);
+                        $sonuc = FALSE;
+                        foreach($bildirimler as $bildirim){
+                            $sonuc = $this->Kullanicilar_Model->bildirimAyarla($kullanici_id, $bildirim->tur, $bildirim->durum);
+                            if(!$sonuc){
+                                break;
+                            }
+                        }
+                        echo json_encode(array("sonuc" => $sonuc ? "1" : "0"));
                     } else {
                         echo json_encode($this->hataMesaji(1));
                     }

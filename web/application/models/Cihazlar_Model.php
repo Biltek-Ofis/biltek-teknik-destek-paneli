@@ -1171,7 +1171,12 @@ class Cihazlar_Model extends CI_Model
     public function cagriKaydiEkle()
     {
         $veri = $this->cagriKaydiPost(FALSE);
-        return $this->db->reset_query()->insert($this->cagriKayitlariTabloAdi(), $veri);
+        $ekle = $this->db->reset_query()->insert($this->cagriKayitlariTabloAdi(), $veri);
+        if($ekle){
+            $this->Kullanicilar_Model->bildirimGonderCagri($veri["cihaz_turu"], $this->db->insert_id(), "eklendi");
+            return $ekle;
+        }
+        return FALSE;
     }
     public function cagriKaydiDuzenle($id)
     {
@@ -1214,21 +1219,24 @@ class Cihazlar_Model extends CI_Model
         return $veri;
     }
 
-    public function cagriDurumGuncelle($id, $durum)
+    public function cagriDurumGuncelle($id, $durum, $bildirim_turu = "")
     {
-        $yeniDurum = $this->Cihazlar_Model->cihazDurumuBulIsimden($durum);
+        $yeniDurum = $this->cihazDurumuBulIsimden($durum);
         if ($yeniDurum != null) {
-            $cagri = $this->Cihazlar_Model->cagriKaydiGetir($id);
+            $cagri = $this->cagriKaydiGetir($id);
             if ($cagri != null) {
-                $cihaz = $this->Cihazlar_Model->cagriCihazi($cagri->id);
+                $cihaz = $this->cagriCihazi($cagri->id);
                 if ($cihaz != null) {
-                    $this->Cihazlar_Model->cihazDuzenle($cihaz->id, array(
+                    $durum = $this->cihazDuzenle($cihaz->id, array(
                         "guncel_durum" => $yeniDurum->id,
                     ), 0, FALSE);
-                }else{
-
+                    if ($durum && strlen($bildirim_turu) > 0) {
+                        $this->Kullanicilar_Model->bildirimGonderCagri($cagri->cihaz_turu, $cagri->id, $bildirim_turu);
+                    }
+                    return $durum; 
                 }
             }
         }
+        return FALSE;
     }
 }
