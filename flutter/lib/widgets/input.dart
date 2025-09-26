@@ -229,7 +229,7 @@ class BiltekSelect<T> extends StatelessWidget {
           errorText: errorText,
         ),
         isExpanded: true,
-        value: value,
+        initialValue: value,
         items: items,
         onChanged: onChanged,
       ),

@@ -322,7 +322,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   }
 
   bool yukleniyorGosterildi = false;
-  _yukleniyorGoster() {
+  void _yukleniyorGoster() {
     if (!yukleniyorGosterildi) {
       setState(() {
         yukleniyorGosterildi = true;
@@ -331,7 +331,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
     }
   }
 
-  _yukleniyorGizle() {
+  void _yukleniyorGizle() {
     if (yukleniyorGosterildi) {
       setState(() {
         yukleniyorGosterildi = false;
