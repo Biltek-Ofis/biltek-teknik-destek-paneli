@@ -44,6 +44,8 @@ class Ayarlar {
   static String get bildirimAyarla => "${appUrl}bildirimAyarla/";
   static String get bildirimAyarlaToplu => "${appUrl}bildirimAyarlaToplu/";
 
+  static String get cagriKayitlari => "${appUrl}cagriKayitlari/";
+
   static String teknikservisformu({
     required String auth,
     required int cihazID,

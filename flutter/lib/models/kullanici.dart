@@ -6,18 +6,15 @@ class KullaniciGetirModel {
 
   factory KullaniciGetirModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {
-      {
-        'durum': bool durum,
-        'kullanici': Map<String, dynamic> kullanici,
-      } =>
+      {'durum': bool durum, 'kullanici': Map<String, dynamic> kullanici} =>
         KullaniciGetirModel(
           durum: durum,
           kullanici: KullaniciAuthModel.fromJson(kullanici),
         ),
       _ => KullaniciGetirModel(
-          durum: false,
-          kullanici: KullaniciAuthModel.fromJson({}),
-        )
+        durum: false,
+        kullanici: KullaniciAuthModel.fromJson({}),
+      ),
     };
   }
 }
@@ -32,6 +29,7 @@ class KullaniciAuthModel extends KullaniciModel {
     required super.urunduzenleme,
     required super.teknikservis,
     required super.yonetici,
+    required super.musteri,
     required this.auth,
   });
 
@@ -44,6 +42,7 @@ class KullaniciAuthModel extends KullaniciModel {
         'urunduzenleme': String urunduzenleme,
         'teknikservis': String teknikservis,
         'yonetici': String yonetici,
+        'musteri': String musteri,
         'auth': String auth,
       } =>
         KullaniciAuthModel(
@@ -53,17 +52,19 @@ class KullaniciAuthModel extends KullaniciModel {
           urunduzenleme: urunduzenleme == "1",
           teknikservis: teknikservis == "1",
           yonetici: yonetici == "1",
+          musteri: musteri == "1",
           auth: auth,
         ),
       _ => KullaniciAuthModel(
-          id: 0,
-          kullaniciAdi: "",
-          adSoyad: "",
-          urunduzenleme: false,
-          teknikservis: false,
-          yonetici: false,
-          auth: "",
-        ),
+        id: 0,
+        kullaniciAdi: "",
+        adSoyad: "",
+        urunduzenleme: false,
+        teknikservis: false,
+        yonetici: false,
+        musteri: true,
+        auth: "",
+      ),
     };
   }
 }
@@ -75,6 +76,7 @@ class KullaniciModel {
   final bool urunduzenleme;
   final bool teknikservis;
   final bool yonetici;
+  final bool musteri;
 
   const KullaniciModel({
     required this.id,
@@ -83,6 +85,7 @@ class KullaniciModel {
     required this.urunduzenleme,
     required this.teknikservis,
     required this.yonetici,
+    required this.musteri,
   });
 
   factory KullaniciModel.fromJson(Map<String, dynamic> json) {
@@ -94,6 +97,7 @@ class KullaniciModel {
         'urunduzenleme': String urunduzenleme,
         'teknikservis': String teknikservis,
         'yonetici': String yonetici,
+        'musteri': String musteri,
       } =>
         KullaniciModel(
           id: int.tryParse(id) ?? 0,
@@ -102,15 +106,17 @@ class KullaniciModel {
           urunduzenleme: urunduzenleme == "1",
           teknikservis: teknikservis == "1",
           yonetici: yonetici == "1",
+          musteri: musteri == "1",
         ),
       _ => KullaniciModel(
-          id: 0,
-          kullaniciAdi: "",
-          adSoyad: "",
-          urunduzenleme: false,
-          teknikservis: false,
-          yonetici: false,
-        ),
+        id: 0,
+        kullaniciAdi: "",
+        adSoyad: "",
+        urunduzenleme: false,
+        teknikservis: false,
+        yonetici: false,
+        musteri: true,
+      ),
     };
   }
 }

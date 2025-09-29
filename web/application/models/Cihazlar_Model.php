@@ -326,99 +326,104 @@ class Cihazlar_Model extends CI_Model
         );
         return $veri;
     }
+
     public function cihazVerileriniDonustur($result, $nullariDuzelt = FALSE)
     {
         $this->load->model("Islemler_Model");
         for ($i = 0; $i < count($result); $i++) {
-            if (property_exists($result[$i], "cID")) {
-                $result[$i]->id = $result[$i]->cID;
-            }
-            $result[$i]->tarih = $this->Islemler_Model->tarihDonustur($result[$i]->tarih);
-            $result[$i]->bildirim_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->bildirim_tarihi);
-            $result[$i]->cikis_tarihi = $this->Islemler_Model->tarihDonustur($result[$i]->cikis_tarihi);
-            $result[$i]->cihaz_turu_val = $result[$i]->cihaz_turu;
-            $result[$i]->cihaz_turu = $this->cihazTuru($result[$i]->cihaz_turu);
-            $result[$i]->tahsilat_sekli_val = $result[$i]->tahsilat_sekli;
-            $result[$i]->tahsilat_sekli = $this->tahsilatSekli($result[$i]->tahsilat_sekli);
-            $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($result[$i]->sorumlu);
-            $result[$i]->sorumlu_val = $result[$i]->sorumlu;
-            $result[$i]->sorumlu = isset($sorumlu_per) ? $sorumlu_per->ad_soyad : "Atanmamış";
-            $result[$i]->islemler = $this->islemleriGetir($result[$i]->id);
-            $result[$i]->guncel_durum_text = $this->cihazDurumuIsım($result[$i]->guncel_durum);
-            $result[$i]->guncel_durum_renk = $this->cihazDurumuRenk($result[$i]->guncel_durum);
-            if ($nullariDuzelt) {
-                if ($result[$i]->musteri_kod == null) {
-                    $result[$i]->musteri_kod = "0";
-                }
-                if ($result[$i]->cihaz_sifresi == null) {
-                    $result[$i]->cihaz_sifresi = "";
-                }
-                if ($result[$i]->ariza_aciklamasi == null) {
-                    $result[$i]->ariza_aciklamasi = "";
-                }
-                if ($result[$i]->teslim_alinanlar == null) {
-                    $result[$i]->teslim_alinanlar = "";
-                }
-                if ($result[$i]->yapilan_islem_aciklamasi == null) {
-                    $result[$i]->yapilan_islem_aciklamasi = "";
-                }
-                if ($result[$i]->notlar == null) {
-                    $result[$i]->notlar = "";
-                }
-                if ($result[$i]->bildirim_tarihi == null) {
-                    $result[$i]->bildirim_tarihi = "";
-                }
-                if ($result[$i]->cikis_tarihi == null) {
-                    $result[$i]->cikis_tarihi = "";
-                }
-                if ($result[$i]->i_stok_kod_1 == null) {
-                    $result[$i]->i_stok_kod_1 = "";
-                }
-                if ($result[$i]->i_ad_1 == null) {
-                    $result[$i]->i_ad_1 = "";
-                }
-                if ($result[$i]->i_ad_1 == null) {
-                    $result[$i]->i_ad_1 = "";
-                }
-                if ($result[$i]->i_stok_kod_2 == null) {
-                    $result[$i]->i_stok_kod_2 = "";
-                }
-                if ($result[$i]->i_ad_2 == null) {
-                    $result[$i]->i_ad_2 = "";
-                }
-                if ($result[$i]->i_stok_kod_3 == null) {
-                    $result[$i]->i_stok_kod_3 = "";
-                }
-                if ($result[$i]->i_ad_3 == null) {
-                    $result[$i]->i_ad_3 = "";
-                }
-                if ($result[$i]->i_stok_kod_4 == null) {
-                    $result[$i]->i_stok_kod_4 = "";
-                }
-                if ($result[$i]->i_ad_4 == null) {
-                    $result[$i]->i_ad_4 = "";
-                }
-                if ($result[$i]->i_stok_kod_5 == null) {
-                    $result[$i]->i_stok_kod_5 = "";
-                }
-                if ($result[$i]->i_ad_5 == null) {
-                    $result[$i]->i_ad_5 = "";
-                }
-                if ($result[$i]->i_stok_kod_6 == null) {
-                    $result[$i]->i_stok_kod_6 = "";
-                }
-                if ($result[$i]->i_ad_6 == null) {
-                    $result[$i]->i_ad_6 = "";
-                }
-                if ($result[$i]->i_ad_5 == null) {
-                    $result[$i]->i_ad_5 = "";
-                }
-                if ($result[$i]->i_ad_5 == null) {
-                    $result[$i]->i_ad_5 = "";
-                }
-            }
+           $result[$i] = $this->cihazVerileriniDonusturTek($result[$i], $nullariDuzelt);
         }
         return $result;
+    }
+    public function cihazVerileriniDonusturTek($cihaz, $nullariDuzelt = FALSE){
+        if (property_exists($cihaz, "cID")) {
+            $cihaz->id = $cihaz->cID;
+        }
+        $cihaz->tarih = $this->Islemler_Model->tarihDonustur($cihaz->tarih);
+        $cihaz->bildirim_tarihi = $this->Islemler_Model->tarihDonustur($cihaz->bildirim_tarihi);
+        $cihaz->cikis_tarihi = $this->Islemler_Model->tarihDonustur($cihaz->cikis_tarihi);
+        $cihaz->cihaz_turu_val = $cihaz->cihaz_turu;
+        $cihaz->cihaz_turu = $this->cihazTuru($cihaz->cihaz_turu);
+        $cihaz->tahsilat_sekli_val = $cihaz->tahsilat_sekli;
+        $cihaz->tahsilat_sekli = $this->tahsilatSekli($cihaz->tahsilat_sekli);
+        $sorumlu_per = $this->Kullanicilar_Model->tekKullanici($cihaz->sorumlu);
+        $cihaz->sorumlu_val = $cihaz->sorumlu;
+        $cihaz->sorumlu = isset($sorumlu_per) ? $sorumlu_per->ad_soyad : "Atanmamış";
+        $cihaz->islemler = $this->islemleriGetir($cihaz->id);
+        $cihaz->guncel_durum_text = $this->cihazDurumuIsım($cihaz->guncel_durum);
+        $cihaz->guncel_durum_renk = $this->cihazDurumuRenk($cihaz->guncel_durum);
+        if ($nullariDuzelt) {
+            if ($cihaz->musteri_kod == null) {
+                $cihaz->musteri_kod = "0";
+            }
+            if ($cihaz->cihaz_sifresi == null) {
+                $cihaz->cihaz_sifresi = "";
+            }
+            if ($cihaz->ariza_aciklamasi == null) {
+                $cihaz->ariza_aciklamasi = "";
+            }
+            if ($cihaz->teslim_alinanlar == null) {
+                $cihaz->teslim_alinanlar = "";
+            }
+            if ($cihaz->yapilan_islem_aciklamasi == null) {
+                $cihaz->yapilan_islem_aciklamasi = "";
+            }
+            if ($cihaz->notlar == null) {
+                $cihaz->notlar = "";
+            }
+            if ($cihaz->bildirim_tarihi == null) {
+                $cihaz->bildirim_tarihi = "";
+            }
+            if ($cihaz->cikis_tarihi == null) {
+                $cihaz->cikis_tarihi = "";
+            }
+            if ($cihaz->i_stok_kod_1 == null) {
+                $cihaz->i_stok_kod_1 = "";
+            }
+            if ($cihaz->i_ad_1 == null) {
+                $cihaz->i_ad_1 = "";
+            }
+            if ($cihaz->i_ad_1 == null) {
+                $cihaz->i_ad_1 = "";
+            }
+            if ($cihaz->i_stok_kod_2 == null) {
+                $cihaz->i_stok_kod_2 = "";
+            }
+            if ($cihaz->i_ad_2 == null) {
+                $cihaz->i_ad_2 = "";
+            }
+            if ($cihaz->i_stok_kod_3 == null) {
+                $cihaz->i_stok_kod_3 = "";
+            }
+            if ($cihaz->i_ad_3 == null) {
+                $cihaz->i_ad_3 = "";
+            }
+            if ($cihaz->i_stok_kod_4 == null) {
+                $cihaz->i_stok_kod_4 = "";
+            }
+            if ($cihaz->i_ad_4 == null) {
+                $cihaz->i_ad_4 = "";
+            }
+            if ($cihaz->i_stok_kod_5 == null) {
+                $cihaz->i_stok_kod_5 = "";
+            }
+            if ($cihaz->i_ad_5 == null) {
+                $cihaz->i_ad_5 = "";
+            }
+            if ($cihaz->i_stok_kod_6 == null) {
+                $cihaz->i_stok_kod_6 = "";
+            }
+            if ($cihaz->i_ad_6 == null) {
+                $cihaz->i_ad_6 = "";
+            }
+            if ($cihaz->i_ad_5 == null) {
+                $cihaz->i_ad_5 = "";
+            }
+            if ($cihaz->i_ad_5 == null) {
+                $cihaz->i_ad_5 = "";
+            }
+        }
+        return $cihaz;
     }
     public function cihazlar($limit = 0)
     {

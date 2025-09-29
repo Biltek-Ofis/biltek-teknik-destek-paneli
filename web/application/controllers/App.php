@@ -713,4 +713,32 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function cagriKayitlari(){
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $kullanici_id = $this->input->post("kullanici_id");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $kayitlar = $this->hataMesaji(1);
+                if(isset($kullanici_id)){
+                    $kayitlar = $this->Cihazlar_Model->cagriKayitlari($kullanici_id);
+                }else{
+                    $kayitlar = $this->Cihazlar_Model->cagriKayitlari();
+                }
+                for( $i = 0; $i < count($kayitlar); $i++){
+                    $cihaz = $this->Cihazlar_Model->cagriCihazi($kayitlar[$i]->id);
+                    if($cihaz != null){
+                        $kayitlar[$i]->cihaz_bilgileri =  $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
+                    }
+                    $kayitlar[$i]->cihaz_turu_val = $cihaz != null ? $cihaz->cihaz_turu_val : $kayitlar[$i]->cihaz_turu;
+                    $kayitlar[$i]->cihaz_turu = $this->Cihazlar_Model->cihazTuru($kayitlar[$i]->cihaz_turu_val);
+                }
+                echo json_encode($kayitlar);
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
 }

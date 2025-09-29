@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:biltekteknikservis/models/bildirim.dart';
+import 'package:biltekteknikservis/models/cagri_kaydi.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -656,6 +657,33 @@ class BiltekPost {
       }
     } on Exception {
       return false;
+    }
+  }
+
+  static Future<List<CagriKaydiModel>> cagriKayitlari({
+    int kullaniciID = 0,
+  }) async {
+    try {
+      Map<String, String> data = {};
+      if (kullaniciID > 0) {
+        data.addAll({"kullanici_id": kullaniciID.toString()});
+      }
+      var response = await BiltekPost.post(Ayarlar.cagriKayitlari, data);
+      if (response.statusCode == 201) {
+        var resp = await response.stream.bytesToString();
+        List<dynamic> cagrilar = jsonDecode(resp) as List<dynamic>;
+        return cagrilar
+            .map(
+              (cagri) =>
+                  CagriKaydiModel.fromJson(cagri as Map<String, dynamic>),
+            )
+            .toList();
+      } else {
+        return [];
+      }
+    } on Exception catch (ex) {
+      debugPrint("Cağrı kaydı hata: $ex");
+      return [];
     }
   }
 }
