@@ -99,19 +99,20 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     );
                   },
                 ),
-                BiltekListTile(
-                  title: "Bildirimler",
-                  subtitle: "Bildirim ayarlarınızı özelleştirin.",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                BildirimAyarlari(kullanici: widget.kullanici),
-                      ),
-                    );
-                  },
-                ),
+                if (!widget.kullanici.musteri)
+                  BiltekListTile(
+                    title: "Bildirimler",
+                    subtitle: "Bildirim ayarlarınızı özelleştirin.",
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  BildirimAyarlari(kullanici: widget.kullanici),
+                        ),
+                      );
+                    },
+                  ),
                 BiltekListTile(
                   leading: Icon(Icons.logout),
                   title: "Çıkış Yap",

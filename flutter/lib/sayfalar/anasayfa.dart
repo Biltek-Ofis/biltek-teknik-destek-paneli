@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:flutter/material.dart';
 
 import '../models/kullanici.dart';
@@ -6,10 +7,7 @@ import '../utils/post.dart';
 import 'cihazlar.dart';
 
 class Anasayfa extends StatefulWidget {
-  const Anasayfa({
-    super.key,
-    required this.kullanici,
-  });
+  const Anasayfa({super.key, required this.kullanici});
 
   final KullaniciAuthModel kullanici;
 
@@ -34,9 +32,8 @@ class _AnasayfaState extends State<Anasayfa> {
 
   @override
   Widget build(BuildContext context) {
-    return CihazlarSayfasi(
-      kullanici: widget.kullanici,
-      seciliSayfa: "Anasayfa",
-    );
+    return widget.kullanici.musteri
+        ? CagriKayitlariSayfasi(kullanici: widget.kullanici)
+        : CihazlarSayfasi(kullanici: widget.kullanici, seciliSayfa: "Anasayfa");
   }
 }

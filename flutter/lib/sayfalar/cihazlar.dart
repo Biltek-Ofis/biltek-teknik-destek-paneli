@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
+import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -749,6 +750,24 @@ Drawer biltekDrawer(
                     }
                     : null,
           ),
+        ListTile(
+          contentPadding: linkPadding,
+          title: const Text("Çağrı Kayıtları"),
+          selected: seciliSayfa == "Çağrı Kayıtları",
+          onTap:
+              seciliSayfa != "Çağrı Kayıtları"
+                  ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                CagriKayitlariSayfasi(kullanici: kullanici),
+                      ),
+                    );
+                  }
+                  : null,
+        ),
         if (kullanici.yonetici && Ayarlar.lisansEtkin)
           ListTile(
             contentPadding: titlePadding,
