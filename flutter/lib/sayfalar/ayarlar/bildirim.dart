@@ -23,11 +23,11 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
   List<CihazTurleriModel> cihazTurleri = [];
   @override
   void initState() {
-    super.initState();
     Future.delayed(Duration.zero, () async {
       await bildirimleriGetir();
       await cihazTurleriniGetir();
     });
+    super.initState();
   }
 
   @override
