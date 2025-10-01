@@ -1,7 +1,9 @@
 import 'package:biltekteknikservis/models/cagri_kaydi.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
+import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kaydi_detay.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/ayarlar.dart';
 import '../../models/cihaz.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
@@ -20,6 +22,7 @@ class CagriKayitlariSayfasi extends StatefulWidget {
 }
 
 class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
+  AyarlarModel? ayarlar;
   List<CagriKaydiModel>? cagriKayitlari;
   ScrollController scrollController = ScrollController();
 
@@ -27,6 +30,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       await cagriKayitlariniGetir();
+      await ayarlariGetir();
     });
     super.initState();
   }
@@ -107,10 +111,10 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
         kullanici: widget.kullanici,
         seciliSayfa: "Çağrı Kayıtları",
       ),
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
-      ),*/
+      ),
       body:
           cagriKayitlari == null
               ? Center(child: CircularProgressIndicator())
@@ -127,106 +131,125 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                     Cihaz? cihaz = cagrikaydi.cihazBilgileri;
                     String renk =
                         cihaz != null ? cihaz.guncelDurumRenk : "bg-warning";
+                    debugPrint("Guncel Durum Renk $renk");
                     Color? renkTemp = Islemler.yaziRengi(renk);
                     return Container(
-                      decoration: BoxDecoration(
-                        color: Islemler.arkaRenk(renk),
-                        border: Border.all(color: Colors.black, width: 1),
-                      ),
-                      child: ListTile(
-                        textColor: renkTemp,
-                        title: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "Çağrı Kodu: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
-                                ),
-                              ),
-                              TextSpan(
-                                text: cagrikaydi.id,
-                                style: TextStyle(color: renkTemp),
-                              ),
-                              if (!widget.kullanici.musteri)
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Islemler.arkaRenk(renk),
+                          border: Border.all(color: Colors.black, width: 1),
+                        ),
+                        child: ListTile(
+                          textColor: renkTemp,
+                          title: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
                                 TextSpan(
-                                  text: "\nMüşteri: ",
+                                  text: "Çağrı Kodu: ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: renkTemp,
                                   ),
                                 ),
-                              if (!widget.kullanici.musteri)
+                                TextSpan(
+                                  text: cagrikaydi.id,
+                                  style: TextStyle(color: renkTemp),
+                                ),
+                                if (!widget.kullanici.musteri)
+                                  TextSpan(
+                                    text: "\nMüşteri: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: renkTemp,
+                                    ),
+                                  ),
+                                if (!widget.kullanici.musteri)
+                                  TextSpan(
+                                    text:
+                                        "${cagrikaydi.bolge} ${cagrikaydi.birim}",
+                                    style: TextStyle(color: renkTemp),
+                                  ),
+                                if (cihaz != null)
+                                  TextSpan(
+                                    text: "\nServis No: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: renkTemp,
+                                    ),
+                                  ),
+                                if (cihaz != null)
+                                  TextSpan(
+                                    text: cihaz.servisNo.toString(),
+                                    style: TextStyle(color: renkTemp),
+                                  ),
+                                TextSpan(
+                                  text: "\nCihaz Türü: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
+                                ),
                                 TextSpan(
                                   text:
-                                      "${cagrikaydi.bolge} ${cagrikaydi.birim}",
+                                      cihaz != null
+                                          ? cihaz.cihazTuru
+                                          : cagrikaydi.cihazTuru,
                                   style: TextStyle(color: renkTemp),
                                 ),
-                              if (cihaz != null)
                                 TextSpan(
-                                  text: "\nServis No: ",
+                                  text: "\nCihaz Marka - Model: ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: renkTemp,
                                   ),
                                 ),
-                              if (cihaz != null)
                                 TextSpan(
-                                  text: cihaz.servisNo.toString(),
+                                  text:
+                                      cihaz != null
+                                          ? "${cihaz.cihaz}${cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : ""}"
+                                          : "${cagrikaydi.cihaz}${cagrikaydi.cihazModeli.isNotEmpty ? " ${cagrikaydi.cihazModeli}" : ""}",
                                   style: TextStyle(color: renkTemp),
                                 ),
-                              TextSpan(
-                                text: "\nCihaz Türü: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: "\nKayıt Tarihi: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: renkTemp,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text:
-                                    cihaz != null
-                                        ? cihaz.cihazTuru
-                                        : cagrikaydi.cihazTuru,
-                                style: TextStyle(color: renkTemp),
-                              ),
-                              TextSpan(
-                                text: "\nCihaz Marka - Model: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
+                                TextSpan(
+                                  text: Islemler.tarihGoruntule(
+                                    cagrikaydi.tarih,
+                                    Islemler.tarihSQLFormat,
+                                    Islemler.tarihFormat,
+                                  ),
+                                  style: TextStyle(color: renkTemp),
                                 ),
-                              ),
-                              TextSpan(
-                                text:
-                                    cihaz != null
-                                        ? "${cihaz.cihaz}${cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : ""}"
-                                        : "${cagrikaydi.cihaz}${cagrikaydi.cihazModeli.isNotEmpty ? " ${cagrikaydi.cihazModeli}" : ""}",
-                                style: TextStyle(color: renkTemp),
-                              ),
-                              TextSpan(
-                                text: "\nKayıt Tarihi: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renkTemp,
+                              ],
+                            ),
+                          ),
+                          subtitle: Text(
+                            cihaz != null
+                                ? cihaz.guncelDurumText.toString()
+                                : "İşlem Bekleniyor",
+                          ),
+                          trailing: DefaultButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => CagriKaydiDetaySayfasi(
+                                        kullanici: widget.kullanici,
+                                        id: cagrikaydi.id,
+                                        ayarlar: ayarlar,
+                                      ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: cagrikaydi.tarih,
-                                style: TextStyle(color: renkTemp),
-                              ),
-                            ],
+                              );
+                            },
+                            text: "Detaylar",
                           ),
                         ),
-                        subtitle: Text(
-                          cihaz != null
-                              ? cihaz.guncelDurumText.toString()
-                              : "İşlem Bekleniyor",
-                        ),
-                        /*trailing: DefaultButton(
-                          onPressed: () {},
-                          text: "Detaylar",
-                        ),*/
                       ),
                     );
                   },
@@ -241,6 +264,13 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
     );
     setState(() {
       cagriKayitlari = cagriKayitlariTemp;
+    });
+  }
+
+  Future<void> ayarlariGetir() async {
+    AyarlarModel? ayarlarTemp = await BiltekPost.ayarlar();
+    setState(() {
+      ayarlar = ayarlarTemp;
     });
   }
 }

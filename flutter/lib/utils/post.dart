@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ayarlar.dart';
+import '../models/ayarlar.dart';
 import '../models/cihaz.dart';
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../models/cihaz_duzenleme/cihaz_turleri.dart';
@@ -79,6 +80,21 @@ class BiltekPost {
       }
     } on Exception {
       return false;
+    }
+  }
+
+  static Future<AyarlarModel?> ayarlar() async {
+    var response = await BiltekPost.post(Ayarlar.ayarlar, {});
+
+    var resp = await response.stream.bytesToString();
+    debugPrint("Ayarlar sonuç: $resp");
+    if (response.statusCode == 201) {
+      AyarlarModel ayarlar = AyarlarModel.fromJson(
+        jsonDecode(resp) as Map<String, dynamic>,
+      );
+      return ayarlar;
+    } else {
+      return null;
     }
   }
 
@@ -684,6 +700,55 @@ class BiltekPost {
     } on Exception catch (ex) {
       debugPrint("Cağrı kaydı hata: $ex");
       return [];
+    }
+  }
+
+  static Future<CagriKaydiModel?> cagriKaydi({required String id}) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.cagriKaydi, {"id": id});
+      var resp = await response.stream.bytesToString();
+      debugPrint("Çağrı kaydı sonuç: $resp");
+      if (response.statusCode == 201) {
+        var cagri = jsonDecode(resp) as Map<String, dynamic>;
+        return CagriKaydiModel.fromJson(cagri);
+      } else {
+        return null;
+      }
+    } on Exception catch (ex) {
+      debugPrint("Cağrı kaydı hata: $ex");
+      return null;
+    }
+  }
+
+  static Future<bool> fiyatiOnayla({required String id}) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.fiyatiOnayla, {"id": id});
+      var resp = await response.stream.bytesToString();
+      debugPrint("Fiyati onayla sonuç: $resp");
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (ex) {
+      debugPrint("Fiyat onayı hata: $ex");
+      return false;
+    }
+  }
+
+  static Future<bool> fiyatiReddet({required String id}) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.fiyatiReddet, {"id": id});
+      var resp = await response.stream.bytesToString();
+      debugPrint("Fiyati reddet sonuç: $resp");
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (ex) {
+      debugPrint("Fiyat reddet hata: $ex");
+      return false;
     }
   }
 }

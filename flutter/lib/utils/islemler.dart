@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:android_id/android_id.dart';
+import 'package:biltekteknikservis/models/cihaz.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -115,6 +116,7 @@ class Islemler {
   }
 
   static const String tarihFormat = "dd.MM.yyyy HH:mm";
+  static const String tarihSQLFormat = "yyyy-MM-dd HH:mm:ss";
   static MaskTextInputFormatter gsmFormatter = MaskTextInputFormatter(
     mask: "+90 (###) ###-####",
     filter: {"#": RegExp(r'[0-9]')},
@@ -165,6 +167,234 @@ class Islemler {
         length,
         (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
       ),
+    );
+  }
+
+  static Widget liste(
+    List<YapilanIslem> islemler, {
+    bool maliyetGosterButon = false,
+  }) {
+    return _IslemlerListe(
+      islemler: islemler,
+      maliyetGosterButon: maliyetGosterButon,
+    );
+  }
+}
+
+class _IslemlerListe extends StatefulWidget {
+  const _IslemlerListe({
+    // ignore: unused_element_parameter
+    super.key,
+    required this.islemler,
+    required this.maliyetGosterButon,
+  });
+
+  final List<YapilanIslem> islemler;
+  final bool maliyetGosterButon;
+
+  @override
+  State<_IslemlerListe> createState() => _IslemlerListeState();
+}
+
+class _IslemlerListeState extends State<_IslemlerListe> {
+  bool maliyetGoster = false;
+
+  @override
+  Widget build(BuildContext context) {
+    EdgeInsetsGeometry padding = EdgeInsets.all(1);
+    TableBorder tableBorder = TableBorder.all(
+      color: Colors.yellow.withAlpha(100),
+    );
+    List<TableRow> fiyatlarTemp = [];
+    double maliyetToplamTemp = 0;
+    double kdvsizToplamTemp = 0;
+    double kdvToplamTemp = 0;
+    for (int i = 0; i < widget.islemler.length; i++) {
+      YapilanIslem islem = widget.islemler[i];
+      if (islem.ad.isNotEmpty) {
+        double kdvsiz = islem.miktar * islem.birimFiyati;
+        double kdv = (kdvsiz / 100) * islem.kdv;
+        double kdvli = kdvsiz + kdv;
+        maliyetToplamTemp += islem.maliyet;
+        kdvsizToplamTemp += kdvsiz;
+        kdvToplamTemp += kdv;
+        fiyatlarTemp.add(
+          TableRow(
+            children: [
+              Container(padding: padding, child: Text(islem.ad)),
+              Container(padding: padding, child: Text(islem.miktar.toString())),
+              if (maliyetGoster && widget.maliyetGosterButon)
+                Container(padding: padding, child: Text("${islem.maliyet} TL")),
+              Container(
+                padding: padding,
+                child: Text("${islem.birimFiyati} TL"),
+              ),
+              Container(
+                padding: padding,
+                child: Text("${islem.kdv} ($kdv TL)"),
+              ),
+              Container(padding: padding, child: Text("$kdvsiz TL")),
+              Container(padding: padding, child: Text("$kdvli TL")),
+            ],
+          ),
+        );
+      }
+    }
+
+    double maliyetToplam = maliyetToplamTemp;
+    double kdvsizToplam = kdvsizToplamTemp;
+    double kdvToplam = kdvToplamTemp;
+    List<TableRow> fiyatlar = fiyatlarTemp;
+    return Builder(
+      builder: (context) {
+        EdgeInsetsGeometry padding = EdgeInsets.all(1);
+        double genelToplam = kdvsizToplam + kdvToplam;
+        double kar = kdvsizToplam - maliyetToplam;
+        return Column(
+          children: [
+            if (widget.maliyetGosterButon)
+              Container(
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () async {
+                    setState(() {
+                      maliyetGoster = !maliyetGoster;
+                    });
+                  },
+                  icon: Icon(
+                    maliyetGoster ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+              ),
+            Table(
+              border: tableBorder,
+              children: [
+                TableRow(
+                  children: [
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "Malzeme/İşçilik",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "Miktar",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    if (maliyetGoster)
+                      Container(
+                        padding: padding,
+                        child: Text(
+                          "Maliyet",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "Birim Fiyatı",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "KDV",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "Tutar (KDV'siz)",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: padding,
+                      child: Text(
+                        "Toplam",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+
+                ...fiyatlar,
+              ],
+            ),
+            if (fiyatlar.isEmpty)
+              Container(
+                padding: EdgeInsets.only(top: 5),
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "Şuanda yapılmış bir işlem yok.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              child: Table(
+                border: tableBorder,
+                children: [
+                  if (maliyetGoster)
+                    TableRow(
+                      children: [
+                        Text(
+                          "Maliyet:",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text("${maliyetToplam.toStringAsFixed(2)} TL"),
+                      ],
+                    ),
+                  TableRow(
+                    children: [
+                      Text(
+                        "Toplam:",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text("${kdvsizToplam.toStringAsFixed(2)} TL"),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Text(
+                        "KDV:",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text("${kdvToplam.toStringAsFixed(2)} TL"),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Text(
+                        "Genel Toplam:",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text("${genelToplam.toStringAsFixed(2)} TL"),
+                    ],
+                  ),
+                  if (maliyetGoster)
+                    TableRow(
+                      children: [
+                        Text(
+                          "Kar:",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text("${kar.toStringAsFixed(2)} TL"),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

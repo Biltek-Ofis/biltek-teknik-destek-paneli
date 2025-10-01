@@ -81,6 +81,7 @@ class Cihaz {
     int guncelDurum = 0,
     String guncelDurumText = "",
     String guncelDurumRenk = "",
+    List<YapilanIslem> islemler = const [],
   }) {
     return Cihaz(
       id: id,
@@ -154,7 +155,7 @@ class Cihaz {
       cihazTuruVal: cihazTuruVal,
       tahsilatSekliVal: 0,
       sorumluVal: 0,
-      islemler: [],
+      islemler: islemler,
     );
   }
 
@@ -413,6 +414,28 @@ class YapilanIslem {
     required this.miktar,
     required this.kdv,
   });
+  static YapilanIslem create({
+    required String id,
+    required String cihazID,
+    required String islemSayisi,
+    required String ad,
+    required String maliyet,
+    required String birimFiyati,
+    required String miktar,
+    required String kdv,
+  }) {
+    return YapilanIslem(
+      id: int.tryParse(id) ?? 0,
+      cihazID: int.tryParse(cihazID) ?? 0,
+      islemSayisi: int.tryParse(islemSayisi) ?? 0,
+      ad: ad,
+      maliyet: double.tryParse(maliyet) ?? 0.00,
+      birimFiyati: double.tryParse(birimFiyati) ?? 0.00,
+      miktar: int.tryParse(miktar) ?? 0,
+      kdv: double.tryParse(kdv) ?? 0.00,
+    );
+  }
+
   factory YapilanIslem.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -425,15 +448,15 @@ class YapilanIslem {
         "miktar": String miktar,
         "kdv": String kdv,
       } =>
-        YapilanIslem(
-          id: int.tryParse(id) ?? 0,
-          cihazID: int.tryParse(cihazID) ?? 0,
-          islemSayisi: int.tryParse(islemSayisi) ?? 0,
+        YapilanIslem.create(
+          id: id,
+          cihazID: cihazID,
+          islemSayisi: islemSayisi,
           ad: ad,
-          maliyet: double.tryParse(maliyet) ?? 0.00,
-          birimFiyati: double.tryParse(birimFiyati) ?? 0.00,
-          miktar: int.tryParse(miktar) ?? 0,
-          kdv: double.tryParse(kdv) ?? 0.00,
+          maliyet: maliyet,
+          birimFiyati: birimFiyati,
+          miktar: miktar,
+          kdv: kdv,
         ),
       _ => throw FormatException("Yapılan işlem yüklenirken hata oluştu."),
     };

@@ -1,0 +1,289 @@
+import 'package:biltekteknikservis/models/ayarlar.dart';
+import 'package:biltekteknikservis/models/cagri_kaydi.dart';
+import 'package:biltekteknikservis/models/kullanici.dart';
+import 'package:biltekteknikservis/utils/buttons.dart';
+import 'package:biltekteknikservis/utils/post.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../utils/islemler.dart';
+
+class CagriKaydiDetaySayfasi extends StatefulWidget {
+  const CagriKaydiDetaySayfasi({
+    super.key,
+    required this.kullanici,
+    required this.id,
+    this.ayarlar,
+  });
+
+  final KullaniciAuthModel kullanici;
+  final String id;
+  final AyarlarModel? ayarlar;
+
+  @override
+  State<CagriKaydiDetaySayfasi> createState() => _CagriKaydiDetaySayfasiState();
+}
+
+class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
+  CagriKaydiModel? cagri;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      await cagriKaydiGetir();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.id)),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child:
+            cagri != null
+                ? RefreshIndicator(
+                  onRefresh: () async {
+                    await cagriKaydiGetir();
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "Çağrı Kodu: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: cagri!.id),
+                              if (!widget.kullanici.musteri)
+                                TextSpan(
+                                  text: "\nMüşteri: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (!widget.kullanici.musteri)
+                                TextSpan(
+                                  text: "${cagri!.bolge} ${cagri!.birim}",
+                                ),
+                              if (cagri!.cihazBilgileri != null)
+                                TextSpan(
+                                  text: "\nServis No: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (cagri!.cihazBilgileri != null)
+                                TextSpan(
+                                  text:
+                                      cagri!.cihazBilgileri!.servisNo
+                                          .toString(),
+                                ),
+                              TextSpan(
+                                text: "\nCihaz Türü: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    cagri!.cihazBilgileri != null
+                                        ? cagri!.cihazBilgileri!.cihazTuru
+                                        : cagri!.cihazTuru,
+                              ),
+                              TextSpan(
+                                text: "\nCihaz Marka - Model: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    cagri!.cihazBilgileri != null
+                                        ? "${cagri!.cihazBilgileri!.cihaz}${cagri!.cihazBilgileri!.cihazModeli.isNotEmpty ? " ${cagri!.cihazBilgileri!.cihazModeli}" : ""}"
+                                        : "${cagri!.cihaz}${cagri!.cihazModeli.isNotEmpty ? " ${cagri!.cihazModeli}" : ""}",
+                              ),
+                              TextSpan(
+                                text: "\nKayıt Tarihi: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: Islemler.tarihGoruntule(
+                                  cagri!.tarih,
+                                  Islemler.tarihSQLFormat,
+                                  Islemler.tarihFormat,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: "\nDurum: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              if (cagri!.cihazBilgileri != null)
+                                TextSpan(
+                                  text:
+                                      cagri!.cihazBilgileri!.guncelDurumText
+                                          .toString(),
+                                ),
+                            ],
+                          ),
+                        ),
+                        if (cagri!.cihazBilgileri == null)
+                          Container(
+                            decoration: BoxDecoration(color: Colors.white),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Islemler.arkaRenk("bg-warning"),
+                              ),
+                              child: Text(
+                                "Çağrı kaydınızın yetkili tarafından işleme alınması bekleniyor.",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        if (cagri!.cihazBilgileri != null)
+                          Islemler.liste(cagri!.cihazBilgileri!.islemler),
+                        if (cagri!.cihazBilgileri != null &&
+                            cagri!.cihazBilgileri!.guncelDurumText ==
+                                "Fiyat Onayı Bekleniyor")
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DefaultButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    cagri = null;
+                                  });
+                                  await BiltekPost.fiyatiOnayla(id: widget.id);
+                                  await cagriKaydiGetir();
+                                },
+                                background: Islemler.arkaRenk("bg-success"),
+                                text: "Fiyatı Onayla",
+                              ),
+                              DefaultButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    cagri = null;
+                                  });
+                                  await BiltekPost.fiyatiReddet(id: widget.id);
+                                  await cagriKaydiGetir();
+                                },
+                                background: Islemler.arkaRenk("bg-danger"),
+                                text: "Fiyatı Reddet",
+                              ),
+                            ],
+                          ),
+                        if (widget.ayarlar != null &&
+                            widget.ayarlar!.sirketTelefonu.isNotEmpty)
+                          SizedBox(height: 10),
+                        if (widget.ayarlar != null &&
+                            widget.ayarlar!.sirketTelefonu.isNotEmpty)
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(color: Colors.white),
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Islemler.arkaRenk("bg-success"),
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text:
+                                          "Çağrı kaydınız hakkında bilgi almak (istek, fiyat onayı, iade talebi vb) için ",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: widget.ayarlar!.sirketTelefonu,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer:
+                                          TapGestureRecognizer()
+                                            ..onTap = () {
+                                              String telefon = Islemler.telNo(
+                                                widget.ayarlar!.sirketTelefonu,
+                                              );
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      widget
+                                                          .ayarlar!
+                                                          .sirketTelefonu,
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          NavigatorState
+                                                          navigatorState =
+                                                              Navigator.of(
+                                                                context,
+                                                              );
+                                                          await Clipboard.setData(
+                                                            ClipboardData(
+                                                              text:
+                                                                  widget
+                                                                      .ayarlar!
+                                                                      .sirketTelefonu,
+                                                            ),
+                                                          );
+                                                          navigatorState.pop();
+                                                          toast(
+                                                            "Telefon numarası panoya kopyalandı",
+                                                          );
+                                                        },
+                                                        child: Text("Kopyala"),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          launchUrlString(
+                                                            "tel://$telefon",
+                                                          );
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop();
+                                                        },
+                                                        child: Text("Ara"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          " numarasından bize ulaşabilirsiniz.",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                )
+                : Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
+
+  Future<void> cagriKaydiGetir() async {
+    CagriKaydiModel? cagriKaydiModel = await BiltekPost.cagriKaydi(
+      id: widget.id,
+    );
+
+    setState(() {
+      cagri = cagriKaydiModel;
+    });
+  }
+}
