@@ -69,6 +69,23 @@ class CagriKaydiModel {
         json.containsKey("cihaz_bilgileri")
             ? json["cihaz_bilgileri"] as Map<String, dynamic>
             : {};
+    List<YapilanIslem> yapilanIslemler =
+        cihazBilgileri.containsKey("islemler")
+            ? (cihazBilgileri["islemler"] as List<dynamic>)
+                .map(
+                  (i) => YapilanIslem.create(
+                    id: i["id"].toString(),
+                    cihazID: i["cihaz_id"].toString(),
+                    islemSayisi: i["islem_sayisi"].toString(),
+                    ad: i["ad"].toString(),
+                    maliyet: "0.00",
+                    birimFiyati: i["birim_fiyat"].toString(),
+                    miktar: i["miktar"].toString(),
+                    kdv: i["kdv"].toString(),
+                  ),
+                )
+                .toList()
+            : [];
     return CagriKaydiModel(
       id: json["id"] ?? "",
       kullID: json["kull_id"] ?? "",
@@ -83,7 +100,7 @@ class CagriKaydiModel {
       arizaAciklamasi: json["ariza_aciklamasi"] ?? "",
       tarih: json["tarih"] ?? "2025-01-01 0:00:00",
       cihazBilgileri:
-          cihazBilgileri.isNotEmpty
+          cihazBilgileri.keys.isNotEmpty
               ? Cihaz.create(
                 id: int.tryParse(cihazBilgileri["id"]) ?? 0,
                 servisNo: int.tryParse(cihazBilgileri["servis_no"]) ?? 0,
@@ -95,6 +112,7 @@ class CagriKaydiModel {
                 guncelDurum: int.tryParse(cihazBilgileri["guncel_durum"]) ?? 0,
                 guncelDurumRenk: cihazBilgileri["guncel_durum_renk"],
                 guncelDurumText: cihazBilgileri["guncel_durum_text"],
+                islemler: yapilanIslemler,
               )
               : null,
     );

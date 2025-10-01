@@ -713,6 +713,35 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function cagriKaydi(){
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $id = $this->input->post("id");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if(isset($id)){
+                    $kayit = $this->Cihazlar_Model->cagriKaydiGetir($id);
+                    if($kayit != null){
+                        $cihaz = $this->Cihazlar_Model->cagriCihazi($kayit->id);
+                        if($cihaz != null){
+                            $kayit->cihaz_bilgileri =  $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
+                        }
+                        $kayit->cihaz_turu_val = $cihaz != null ? $cihaz->cihaz_turu_val : $kayit->cihaz_turu;
+                        $kayit->cihaz_turu = $this->Cihazlar_Model->cihazTuru($kayit->cihaz_turu_val);
+                        echo json_encode($kayit);
+                    }else{
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                }else{
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
     public function cagriKayitlari(){
         $this->headerlar();
         $token = $this->tokenPost();
@@ -734,6 +763,34 @@ class App extends CI_Controller
                     $kayitlar[$i]->cihaz_turu = $this->Cihazlar_Model->cihazTuru($kayitlar[$i]->cihaz_turu_val);
                 }
                 echo json_encode($kayitlar);
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function fiyatiOnayla(){
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $id = $this->input->post("id");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $this->Cihazlar_Model->cagriDurumGuncelle($id, "Fiyat Onaylandı", "fiyatonay");
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function fiyatiReddet(){
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $id = $this->input->post("id");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $this->Cihazlar_Model->cagriDurumGuncelle($id, "Fiyat Onaylanmadı", "fiyatret");
             } else {
                 echo json_encode($this->hataMesaji(1));
             }
