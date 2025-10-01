@@ -90,7 +90,7 @@ if (isset($cagri) || $cagri != null) {
                                 <td><?php
                                 $durum = $this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum);
                                 echo $durum;
-                                if ($durum == "Fiyat Onayı Bekleniyor" && $this->Giris_Model->kullaniciGiris(TRUE)) {
+                                if ($durum == "Fiyat Onayı Bekleniyor") {
                                     ?>
                                         <a href="<?= base_url("cagrikayitlari/fiyationayla/" . $cagri->id); ?>"
                                             class="btn btn-sm btn-success ms-2">Fiyatı Onayla</a>
