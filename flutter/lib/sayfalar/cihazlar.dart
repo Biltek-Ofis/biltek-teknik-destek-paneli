@@ -717,56 +717,45 @@ Drawer biltekDrawer(
           contentPadding: linkPadding,
           title: const Text("Anasayfa"),
           selected: seciliSayfa == "Anasayfa",
-          onTap:
-              seciliSayfa != "Anasayfa"
-                  ? () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => Anasayfa(kullanici: kullanici),
-                      ),
-                      (route) => false,
-                    );
-                  }
-                  : null,
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => Anasayfa(kullanici: kullanici),
+              ),
+              (route) => false,
+            );
+          },
         ),
         if (kullanici.teknikservis)
           ListTile(
             contentPadding: linkPadding,
             title: const Text("Cihazlarım"),
             selected: seciliSayfa == "Cihazlarım",
-            onTap:
-                seciliSayfa != "Cihazlarım"
-                    ? () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  CihazlarimSayfasi(kullanici: kullanici),
-                        ),
-                        (route) => false,
-                      );
-                    }
-                    : null,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => CihazlarimSayfasi(kullanici: kullanici),
+                ),
+                (route) => false,
+              );
+            },
           ),
         ListTile(
           contentPadding: linkPadding,
           title: const Text("Çağrı Kayıtları"),
           selected: seciliSayfa == "Çağrı Kayıtları",
-          onTap:
-              seciliSayfa != "Çağrı Kayıtları"
-                  ? () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                CagriKayitlariSayfasi(kullanici: kullanici),
-                      ),
-                    );
-                  }
-                  : null,
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder:
+                    (context) => CagriKayitlariSayfasi(kullanici: kullanici),
+              ),
+              (route) => false,
+            );
+          },
         ),
         if (kullanici.yonetici && Ayarlar.lisansEtkin)
           ListTile(
