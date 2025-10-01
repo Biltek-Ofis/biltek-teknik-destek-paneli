@@ -5,6 +5,7 @@ import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/post.dart';
 import 'cihazlar.dart';
+import 'cihazlarim.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key, required this.kullanici});
@@ -34,6 +35,11 @@ class _AnasayfaState extends State<Anasayfa> {
   Widget build(BuildContext context) {
     return widget.kullanici.musteri
         ? CagriKayitlariSayfasi(kullanici: widget.kullanici)
-        : CihazlarSayfasi(kullanici: widget.kullanici, seciliSayfa: "Anasayfa");
+        : (widget.kullanici.teknikservis
+            ? CihazlarimSayfasi(kullanici: widget.kullanici)
+            : CihazlarSayfasi(
+              kullanici: widget.kullanici,
+              seciliSayfa: "Anasayfa",
+            ));
   }
 }
