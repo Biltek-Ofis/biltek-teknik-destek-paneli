@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
-import 'sayfalar/cihazlarim.dart';
 import 'sayfalar/giris_sayfasi.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
@@ -105,11 +104,7 @@ class MainPage extends StatelessWidget {
                         if (kullaniciSnapshot.hasData &&
                             kullaniciSnapshot.data != null &&
                             kullaniciSnapshot.data!.id != 0) {
-                          return kullaniciSnapshot.data!.teknikservis
-                              ? CihazlarimSayfasi(
-                                kullanici: kullaniciSnapshot.data!,
-                              )
-                              : Anasayfa(kullanici: kullaniciSnapshot.data!);
+                          return Anasayfa(kullanici: kullaniciSnapshot.data!);
                         } else {
                           return GirisSayfasi(
                             kullaniciAdi: myNotifier.username,
