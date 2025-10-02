@@ -111,10 +111,10 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
         kullanici: widget.kullanici,
         seciliSayfa: "Çağrı Kayıtları",
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
-      ),
+      ),*/
       body:
           cagriKayitlari == null
               ? Center(child: CircularProgressIndicator())
