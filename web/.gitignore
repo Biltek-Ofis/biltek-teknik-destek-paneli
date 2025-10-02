@@ -42,3 +42,5 @@ assets/*.json
 yuklemeler/
 !yuklemeler/index.html
 !yuklemeler/favicon.ico
+
+firebase-messaging-sw.js

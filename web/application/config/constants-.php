@@ -104,6 +104,18 @@ defined('A4_YUKSEKLIK')        or define('A4_YUKSEKLIK', 397);
 
 defined('AUTH_TOKEN')        or define('AUTH_TOKEN', "");
 
+defined("FIREBASE_CONFIG")                         or define('FIREBASE_CONFIG', array(
+    "apiKey"=> "",
+    "authDomain"=> "",
+    "projectId"=> "",
+    "storageBucket"=> "",
+    "messagingSenderId"=> "",
+    "appId"=> "",
+    "recaptchaV3SiteKey"=> "",
+    "webPushCertificates"=> ""
+)); // FIREBASE AYARLARI
+
+
 defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 
 

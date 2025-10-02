@@ -9,6 +9,7 @@ class Cikis extends CI_Controller{
     }
     public function index(){
         unset($_SESSION["KULLANICI_ID"]);
+        unset($_SESSION["auth"]);
         redirect(base_url());
     }
 

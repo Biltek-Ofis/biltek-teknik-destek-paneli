@@ -89,7 +89,7 @@ class Kullanici extends Varsayilancontroller
 					$kullanicilar = $this->Kullanicilar_Model->kullanicilar();
 
 					foreach ($kullanicilar as $kullanici) {
-						$this->Kullanicilar_Model->bildirimGonder($kullanici->id, $duyuru_baslik, $duyuru_mesaj);
+						$this->Kullanicilar_Model->bildirimGonder($kullanici->id, $duyuru_baslik, $duyuru_mesaj, "duyuru");
 					}
 					echo json_encode(array("mesaj" => "Başarılı", "sonuc" => 1));
 				} catch (Exception $e) {
@@ -100,6 +100,18 @@ class Kullanici extends Varsayilancontroller
 			}
 		} else {
 			echo json_encode(array("mesaj" => "Lütfen önce kullanıcı girişi yapın", "sonuc" => 0));
+		}
+	}
+	public function fcmToken(){
+		if ($this->Giris_Model->kullaniciGiris() || $this->Giris_Model->kullaniciGiris(TRUE)) {
+			$fcmToken = $this->input->post("token");
+			$auth = $this->Giris_Model->auth();
+			if(isset($auth) && strlen($auth) > 0 && isset($fcmToken) && strlen($fcmToken) > 0){
+				$this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
+				$this->Kullanicilar_Model->authDuzenle($auth, array(
+					"fcmToken" => $fcmToken,
+				));
+			}
 		}
 	}
 }

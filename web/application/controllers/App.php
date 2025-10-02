@@ -189,21 +189,9 @@ class App extends CI_Controller
                                 "durum" => FALSE,
                             );
                             if ($durum) {
-                                $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
                                 $auth = random_string('alnum', 50);
-                                ///2024-12-22 10:46:21.00000
-                                $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
-                                $veri = array(
-                                    "kullanici_id" => $kullaniciBilgileri->id,
-                                    "auth" => $auth,
-                                    "bitis" => date($this->Kullanicilar_Model->format, $bitis),
-                                    "cihazID" => $cihazID,
-                                );
-                                if (isset($fcmToken)) {
-                                    $this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
-                                    $veri["fcmToken"] = $fcmToken;
-                                }
-                                $this->Kullanicilar_Model->authEkle($veri);
+                                $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullaniciAdi);
+                                $this->Kullanicilar_Model->authOlustur($kullaniciBilgileri, $auth, $cihazID);
                                 if (isset($kullaniciBilgileri)) {
                                     $sonuc["durum"] = TRUE;
                                     $sonuc["auth"] = $auth;
