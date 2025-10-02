@@ -53,4 +53,22 @@ class Giris_Model extends CI_Model
     {
         unset($_SESSION["KULLANICI_ID"]);
     }
+    public function cihazID(){
+        if(isset($_SESSION["cihazID"]) && strlen($_SESSION["cihazID"]) > 0){
+            return $_SESSION["cihazID"];
+        }else{
+            $cihazID = random_string('alnum', 50);
+            $_SESSION["cihazID"] = $cihazID;
+            return $_SESSION["cihazID"];
+        }
+    }
+    public function auth(){
+        if(isset($_SESSION["auth"]) && strlen($_SESSION["auth"]) > 0){
+            return $_SESSION["auth"];
+        }else{
+            $auth = random_string('alnum', 50);
+            $_SESSION["auth"] = $auth;
+            return $_SESSION["auth"];
+        }
+    }
 }

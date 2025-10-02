@@ -132,6 +132,22 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->kullanicilarTabloAdi());
     }
+    public function authOlustur($kullaniciBilgileri, $auth, $cihazID){
+
+        ///2024-12-22 10:46:21.00000
+        $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
+        $veri = array(
+            "kullanici_id" => $kullaniciBilgileri->id,
+            "auth" => $auth,
+            "bitis" => date($this->Kullanicilar_Model->format, $bitis),
+            "cihazID" => $cihazID,
+        );
+        if (isset($fcmToken)) {
+            $this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
+            $veri["fcmToken"] = $fcmToken;
+        }
+        $this->Kullanicilar_Model->authEkle($veri);
+    }
     public function authEkle($veri)
     {
         $query = $this->db->reset_query()->where(array("cihazID" => $veri["cihazID"]))->get($this->kullaniciAuthTabloAdi());
@@ -171,30 +187,33 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
     }
-    public function bildirimGonder($id, $baslik = "", $icerik = "")
+    public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart")
     {
-        $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
+        if($this->firebaseAyarlandi()){
+            $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
 
-        if ($query->num_rows() > 0) {
+            if ($query->num_rows() > 0) {
 
-            $query = $query->result();
-            $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
-            $bearerToken = FCM::getBearerToken($authKeyContent);
-            foreach ($query as $row) {
-                if (strlen($row->fcmToken) > 0) {
-                    $body = [
-                        'message' => [
-                            'token' => $row->fcmToken,
-                            'notification' => [
-                                'title' => $baslik,
-                                'body' => $icerik,
+                $query = $query->result();
+                $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
+                $bearerToken = FCM::getBearerToken($authKeyContent);
+                foreach ($query as $row) {
+                    if (strlen($row->fcmToken) > 0) {
+                        $body = [
+                            'message' => [
+                                'token' => $row->fcmToken,
+                                'data' => [
+                                    'title' => $baslik,
+                                    'body' => $icerik,
+                                    'tip'=> $tip
+                                ],
                             ],
-                        ],
-                    ];
-                    try {
-                        FCM::send($bearerToken, FCM_APP_ID, $body);
-                    } catch (Exception $e) {
+                        ];
+                        try {
+                            FCM::send($bearerToken, FIREBASE_CONFIG["projectId"], $body);
+                        } catch (Exception $e) {
 
+                        }
                     }
                 }
             }
@@ -212,10 +231,10 @@ class Kullanicilar_Model extends CI_Model
             if (count($bildirimler) > 0) {
                 $bildirim = $bildirimler[0];
                 if (strval($bildirim->durum) == "1") {
-                    $this->bildirimGonder($id, $baslik, $mesaj);
+                    $this->bildirimGonder($id, $baslik, $mesaj, "cihaz");
                 }
             }else{
-                $this->bildirimGonder($id, $baslik, $mesaj);
+                $this->bildirimGonder($id, $baslik, $mesaj, "cihaz");
             }
         }
     }
@@ -242,7 +261,7 @@ class Kullanicilar_Model extends CI_Model
                     } else if ($tip == 'fiyatret') {
                         $baslik = 'Çağrı Kaydı Fiyatı Reddedildi';
                     }
-                    $this->bildirimGonder($bildirim->kullanici_id, $baslik, $mesaj);
+                    $this->bildirimGonder($bildirim->kullanici_id, $baslik, $mesaj, "cagri");
                 }
             }
         }
@@ -364,5 +383,20 @@ class Kullanicilar_Model extends CI_Model
             ));
         }
 
+    }
+    public function firebaseAyarlandi(){
+        if(defined("FIREBASE_CONFIG")){
+            if(isset(FIREBASE_CONFIG["apiKey"]) && strlen(FIREBASE_CONFIG["apiKey"]) > 0
+                && isset(FIREBASE_CONFIG["authDomain"]) && strlen(FIREBASE_CONFIG["authDomain"]) > 0
+                && isset(FIREBASE_CONFIG["projectId"]) && strlen(FIREBASE_CONFIG["projectId"]) > 0
+                && isset(FIREBASE_CONFIG["storageBucket"]) && strlen(FIREBASE_CONFIG["storageBucket"]) > 0
+                && isset(FIREBASE_CONFIG["messagingSenderId"]) && strlen(FIREBASE_CONFIG["messagingSenderId"]) > 0
+                && isset(FIREBASE_CONFIG["appId"]) && strlen(FIREBASE_CONFIG["appId"]) > 0
+                && isset(FIREBASE_CONFIG["webPushCertificates"]) && strlen(FIREBASE_CONFIG["webPushCertificates"]) > 0
+            ){
+                return TRUE;
+            }
+        }
+        return FALSE;
     }
 }

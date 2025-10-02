@@ -22,6 +22,10 @@ class Giris extends CI_Controller{
             if($durum){
                 $this->Giris_Model->kullaniciOturumAc($kullanici_adi);
                 $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+                $auth = $this->Giris_Model->auth();
+                $cihazID = $this->Giris_Model->cihazID();
+                $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullanici["kullanici_adi"]);
+                $this->Kullanicilar_Model->authOlustur($kullaniciBilgileri, $auth, $cihazID);
                 if($kullanici["teknikservis"] == 1){
                     redirect(base_url("cihazlarim/".$ekServisNo));
                 }else{
