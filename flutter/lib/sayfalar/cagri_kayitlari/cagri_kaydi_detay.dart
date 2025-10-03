@@ -16,12 +16,10 @@ class CagriKaydiDetaySayfasi extends StatefulWidget {
     super.key,
     required this.kullanici,
     required this.id,
-    this.ayarlar,
   });
 
   final KullaniciAuthModel kullanici;
   final String id;
-  final AyarlarModel? ayarlar;
 
   @override
   State<CagriKaydiDetaySayfasi> createState() => _CagriKaydiDetaySayfasiState();
@@ -29,10 +27,14 @@ class CagriKaydiDetaySayfasi extends StatefulWidget {
 
 class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
   CagriKaydiModel? cagri;
-
+  AyarlarModel? ayarlarModel;
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      AyarlarModel? ayarlarModelTemp = await BiltekPost.ayarlar();
+      setState(() {
+        ayarlarModel = ayarlarModelTemp;
+      });
       await cagriKaydiGetir();
     });
     super.initState();
@@ -174,11 +176,11 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                               ),
                             ],
                           ),
-                        if (widget.ayarlar != null &&
-                            widget.ayarlar!.sirketTelefonu.isNotEmpty)
+                        if (ayarlarModel != null &&
+                            ayarlarModel!.sirketTelefonu.isNotEmpty)
                           SizedBox(height: 10),
-                        if (widget.ayarlar != null &&
-                            widget.ayarlar!.sirketTelefonu.isNotEmpty)
+                        if (ayarlarModel != null &&
+                            ayarlarModel!.sirketTelefonu.isNotEmpty)
                           Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(color: Colors.white),
@@ -197,7 +199,7 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     TextSpan(
-                                      text: widget.ayarlar!.sirketTelefonu,
+                                      text: ayarlarModel!.sirketTelefonu,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -207,15 +209,14 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                           TapGestureRecognizer()
                                             ..onTap = () {
                                               String telefon = Islemler.telNo(
-                                                widget.ayarlar!.sirketTelefonu,
+                                                ayarlarModel!.sirketTelefonu,
                                               );
                                               showDialog(
                                                 context: context,
                                                 builder: (context) {
                                                   return AlertDialog(
                                                     title: Text(
-                                                      widget
-                                                          .ayarlar!
+                                                      ayarlarModel!
                                                           .sirketTelefonu,
                                                     ),
                                                     actions: [
@@ -229,8 +230,7 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                                           await Clipboard.setData(
                                                             ClipboardData(
                                                               text:
-                                                                  widget
-                                                                      .ayarlar!
+                                                                  ayarlarModel!
                                                                       .sirketTelefonu,
                                                             ),
                                                           );

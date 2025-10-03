@@ -3,7 +3,6 @@ import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kaydi_detay.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/ayarlar.dart';
 import '../../models/cihaz.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
@@ -22,7 +21,6 @@ class CagriKayitlariSayfasi extends StatefulWidget {
 }
 
 class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
-  AyarlarModel? ayarlar;
   List<CagriKaydiModel>? cagriKayitlari;
   ScrollController scrollController = ScrollController();
 
@@ -30,7 +28,6 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       await cagriKayitlariniGetir();
-      await ayarlariGetir();
     });
     super.initState();
   }
@@ -242,7 +239,6 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                       (context) => CagriKaydiDetaySayfasi(
                                         kullanici: widget.kullanici,
                                         id: cagrikaydi.id,
-                                        ayarlar: ayarlar,
                                       ),
                                 ),
                               );
@@ -264,13 +260,6 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
     );
     setState(() {
       cagriKayitlari = cagriKayitlariTemp;
-    });
-  }
-
-  Future<void> ayarlariGetir() async {
-    AyarlarModel? ayarlarTemp = await BiltekPost.ayarlar();
-    setState(() {
-      ayarlar = ayarlarTemp;
     });
   }
 }

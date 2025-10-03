@@ -18,11 +18,12 @@ class BiltekFirebaseMessagingService : FirebaseMessagingService() {
         val title = remoteMessage.data["title"] ?: remoteMessage.notification?.title ?: "Yeni Bildirim"
         val body = remoteMessage.data["body"] ?: remoteMessage.notification?.body ?: ""
         val tip = remoteMessage.data["tip"] ?: "standart"
+        val id = remoteMessage.data["id"] ?: "0"
 
-        showNotification(title, body, tip)
+        showNotification(title, body, tip, id)
     }
 
-    private fun showNotification(title: String, body: String, tip: String) {
+    private fun showNotification(title: String, body: String, tip: String, id: String) {
         val channelId = "default_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -39,6 +40,7 @@ class BiltekFirebaseMessagingService : FirebaseMessagingService() {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtra("tip", tip)
+            putExtra("id", id)
         }
 
         val pendingIntent = PendingIntent.getActivity(

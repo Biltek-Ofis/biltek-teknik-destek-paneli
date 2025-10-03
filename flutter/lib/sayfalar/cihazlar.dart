@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
-import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
-import 'cihazlarim.dart';
 import 'lisans/lisans.dart';
 import 'lisans/versiyon.dart';
 import 'yeni_cihaz.dart';
@@ -721,7 +719,9 @@ Drawer biltekDrawer(
             Navigator.pop(context);
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Anasayfa(kullanici: kullanici),
+                builder:
+                    (context) =>
+                        Anasayfa(sayfa: "anasayfa", kullanici: kullanici),
               ),
               (route) => false,
             );
@@ -736,7 +736,9 @@ Drawer biltekDrawer(
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => CihazlarimSayfasi(kullanici: kullanici),
+                  builder:
+                      (context) =>
+                          Anasayfa(sayfa: "cihazlarim", kullanici: kullanici),
                 ),
                 (route) => false,
               );
@@ -751,7 +753,7 @@ Drawer biltekDrawer(
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder:
-                    (context) => CagriKayitlariSayfasi(kullanici: kullanici),
+                    (context) => Anasayfa(sayfa: "cagri", kullanici: kullanici),
               ),
               (route) => false,
             );

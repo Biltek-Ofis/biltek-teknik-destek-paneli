@@ -16,13 +16,9 @@ import '../utils/shared_preferences.dart';
 import '../widgets/input.dart';
 import 'anasayfa.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';
-import 'cihazlarim.dart';
 
 class GirisSayfasi extends StatefulWidget {
-  const GirisSayfasi({
-    super.key,
-    this.kullaniciAdi,
-  });
+  const GirisSayfasi({super.key, this.kullaniciAdi});
 
   final String? kullaniciAdi;
 
@@ -68,100 +64,86 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<MyNotifier>(
-          builder: (context, MyNotifier myNotifier, child) {
-        return Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(10),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width > 400
-                ? 400
-                : MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.asset(BiltekAssets.logo),
-                  Text(
-                    hataMesaji,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  BiltekTextField(
-                    controller: kullaniciAdiController,
-                    currentFocus: kullaniciAdiFocus,
-                    nextFocus: sifreFocus,
-                    label: "Kullanıcı Adı",
-                    errorText: kullaniciAdiError,
-                    onChanged: (value) {
-                      setState(() {
-                        kullaniciAdiError = null;
-                        hataMesaji = "";
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  BiltekSifre(
-                    controller: sifreController,
-                    currentFocus: sifreFocus,
-                    label: "Şifre",
-                    errorText: sifreError,
-                    onChanged: (value) {
-                      setState(() {
-                        sifreError = null;
-                        hataMesaji = "";
-                      });
-                    },
-                    onSubmitted: (val) async {
-                      await _girisYap(myNotifier);
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: DefaultButton(
-                      onPressed: () async {
+        builder: (context, MyNotifier myNotifier, child) {
+          return Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(10),
+            child: SizedBox(
+              width:
+                  MediaQuery.of(context).size.width > 400
+                      ? 400
+                      : MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(BiltekAssets.logo),
+                    Text(hataMesaji, style: TextStyle(color: Colors.red)),
+                    SizedBox(height: 10),
+                    BiltekTextField(
+                      controller: kullaniciAdiController,
+                      currentFocus: kullaniciAdiFocus,
+                      nextFocus: sifreFocus,
+                      label: "Kullanıcı Adı",
+                      errorText: kullaniciAdiError,
+                      onChanged: (value) {
+                        setState(() {
+                          kullaniciAdiError = null;
+                          hataMesaji = "";
+                        });
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    BiltekSifre(
+                      controller: sifreController,
+                      currentFocus: sifreFocus,
+                      label: "Şifre",
+                      errorText: sifreError,
+                      onChanged: (value) {
+                        setState(() {
+                          sifreError = null;
+                          hataMesaji = "";
+                        });
+                      },
+                      onSubmitted: (val) async {
                         await _girisYap(myNotifier);
                       },
-                      text: "Giriş Yap",
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: DefaultButton(
-                      background: Islemler.arkaRenk(
-                        "bg-info",
-                        alpha: 255,
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: DefaultButton(
+                        onPressed: () async {
+                          await _girisYap(myNotifier);
+                        },
+                        text: "Giriş Yap",
                       ),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => CihazDurumuGiris(),
-                          ),
-                        );
-                      },
-                      text: "Cihaz Durumunu Görüntüle",
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: DefaultButton(
+                        background: Islemler.arkaRenk("bg-info", alpha: 255),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CihazDurumuGiris(),
+                            ),
+                          );
+                        },
+                        text: "Cihaz Durumunu Görüntüle",
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 
@@ -199,23 +181,24 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
 
         postData["cihazID"] = cihazID;
 
-        String? fcmToken =
-            await SharedPreference.getString(SharedPreference.fcmTokenString);
+        String? fcmToken = await SharedPreference.getString(
+          SharedPreference.fcmTokenString,
+        );
         if (fcmToken != null) {
           postData["fcmToken"];
         }
-        var response = await BiltekPost.post(
-          Ayarlar.girisYap,
-          postData,
-        );
+        var response = await BiltekPost.post(Ayarlar.girisYap, postData);
         if (response.statusCode == 201) {
           var resp = await response.stream.bytesToString();
           try {
-            GirisDurumu girisDurumu =
-                GirisDurumu.fromJson(jsonDecode(resp) as Map<String, dynamic>);
+            GirisDurumu girisDurumu = GirisDurumu.fromJson(
+              jsonDecode(resp) as Map<String, dynamic>,
+            );
             if (girisDurumu.durum && girisDurumu.auth.isNotEmpty) {
               await SharedPreference.setString(
-                  SharedPreference.authString, girisDurumu.auth);
+                SharedPreference.authString,
+                girisDurumu.auth,
+              );
               KullaniciAuthModel? kullaniciModel =
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
@@ -227,13 +210,16 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                 navigatorState.pop();
                 navigatorState.pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => kullaniciModel.teknikservis
-                        ? CihazlarimSayfasi(
-                            kullanici: kullaniciModel,
-                          )
-                        : Anasayfa(
-                            kullanici: kullaniciModel,
-                          ),
+                    builder:
+                        (context) => Anasayfa(
+                          sayfa:
+                              kullaniciModel.musteri
+                                  ? "cagri"
+                                  : (kullaniciModel.teknikservis
+                                      ? "cihazlarim"
+                                      : "anasayfa"),
+                          kullanici: kullaniciModel,
+                        ),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -250,8 +236,9 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             }
           } on Exception {
             try {
-              HataDurumu hataDurumu =
-                  HataDurumu.fromJson(jsonDecode(resp) as Map<String, dynamic>);
+              HataDurumu hataDurumu = HataDurumu.fromJson(
+                jsonDecode(resp) as Map<String, dynamic>,
+              );
               setState(() {
                 hataMesaji = hataDurumu.mesaj;
               });
