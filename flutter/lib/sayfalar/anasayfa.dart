@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/main.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class _AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(Duration.zero, () async {
       if (mounted) {
         Alerts alerts = Alerts.of(context);
@@ -33,13 +35,23 @@ class _AnasayfaState extends State<Anasayfa> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.kullanici.musteri
-        ? CagriKayitlariSayfasi(kullanici: widget.kullanici)
-        : (widget.kullanici.teknikservis
-            ? CihazlarimSayfasi(kullanici: widget.kullanici)
-            : CihazlarSayfasi(
-              kullanici: widget.kullanici,
-              seciliSayfa: "Anasayfa",
-            ));
+    Widget? sayfa;
+    switch (baslangicSayfasi) {
+      case "cihaz":
+        sayfa = CihazlarimSayfasi(kullanici: widget.kullanici);
+      case "cagri":
+        sayfa = CagriKayitlariSayfasi(kullanici: widget.kullanici);
+      default:
+        sayfa =
+            widget.kullanici.musteri
+                ? CagriKayitlariSayfasi(kullanici: widget.kullanici)
+                : (widget.kullanici.teknikservis
+                    ? CihazlarimSayfasi(kullanici: widget.kullanici)
+                    : CihazlarSayfasi(
+                      kullanici: widget.kullanici,
+                      seciliSayfa: "Anasayfa",
+                    ));
+    }
+    return sayfa;
   }
 }

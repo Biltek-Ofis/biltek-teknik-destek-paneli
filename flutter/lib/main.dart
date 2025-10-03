@@ -13,14 +13,21 @@ import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris_sayfasi.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
+import 'utils/notification.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
+String? baslangicSayfasi;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  NativeNotification.init((tip) {
+    debugPrint("Notification clicked with tip=$tip");
+    baslangicSayfasi = tip;
+  });
   await FirebaseApi.initialize();
 
   LicenseRegistry.addLicense(() async* {
