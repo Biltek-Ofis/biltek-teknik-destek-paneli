@@ -9,14 +9,14 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity(){
     private val CHANNEL = "teknikservis/notifications"
     private var methodChannel: MethodChannel? = null
-    private var pendingNotificationTip: String? = null
+    private var pendingNotificationData: Map<String, String?>? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-        pendingNotificationTip?.let {
-            methodChannel?.invokeMethod("notificationClicked", mapOf("tip" to it))
-            pendingNotificationTip = null
+        pendingNotificationData?.let {
+            methodChannel?.invokeMethod("notificationClicked", it)
+            pendingNotificationData = null
         }
     }
 
@@ -34,13 +34,15 @@ class MainActivity : FlutterActivity(){
 
     private fun handleIntent(intent: Intent) {
         val tip = intent.getStringExtra("tip")
+        val id = intent.getStringExtra("id")
         if (tip != null) {
             // FlutterEngine hazır değilse intent'i sakla
+            val data = mapOf("tip" to tip, "id" to id)
             if (methodChannel != null) {
-                methodChannel?.invokeMethod("notificationClicked", mapOf("tip" to tip))
+                methodChannel?.invokeMethod("notificationClicked", data)
             } else {
                 // FlutterEngine hazır olunca çağırılacak şekilde sakla
-                pendingNotificationTip = tip
+                pendingNotificationData = data
             }
         }
     }

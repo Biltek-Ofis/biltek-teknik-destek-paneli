@@ -19,14 +19,14 @@ import 'utils/shared_preferences.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
-String? baslangicSayfasi;
+Map<String, String> bildirimIntent = {};
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  NativeNotification.init((tip) {
+  NativeNotification.init((tip, id) {
     debugPrint("Notification clicked with tip=$tip");
-    baslangicSayfasi = tip;
+    bildirimIntent.addAll({"tip": tip, "id": id});
   });
   await FirebaseApi.initialize();
 
@@ -111,7 +111,15 @@ class MainPage extends StatelessWidget {
                         if (kullaniciSnapshot.hasData &&
                             kullaniciSnapshot.data != null &&
                             kullaniciSnapshot.data!.id != 0) {
-                          return Anasayfa(kullanici: kullaniciSnapshot.data!);
+                          return Anasayfa(
+                            sayfa:
+                                kullaniciSnapshot.data!.musteri
+                                    ? "cagri"
+                                    : (kullaniciSnapshot.data!.teknikservis
+                                        ? "cihazlarim"
+                                        : "anasayfa"),
+                            kullanici: kullaniciSnapshot.data!,
+                          );
                         } else {
                           return GirisSayfasi(
                             kullaniciAdi: myNotifier.username,

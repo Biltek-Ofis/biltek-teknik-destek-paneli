@@ -60,14 +60,14 @@ const app = firebase.initializeApp(firebaseConfig);
 // Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = firebase.messaging()
 
-async function bildirimGoster(payload){
+async function bildirimGoster(payload) {
 
     const locked = await getLock('notification_lock');
     if (locked) return; // başka bir sekme zaten gösteriyor
 
     await setLock('notification_lock');
 
-    const notificationTitle =  payload.data.title || "Yeni bildirim";
+    const notificationTitle = payload.data.title || "Yeni bildirim";
     const notificationOptions = {
         body: payload.data.body || "",
         icon: '/dist/img/favicon.ico',
@@ -78,7 +78,7 @@ async function bildirimGoster(payload){
         notificationOptions);
 }
 
-messaging.onBackgroundMessage( async (payload) => {
+messaging.onBackgroundMessage(async (payload) => {
     await bildirimGoster(payload);
 });
 
@@ -87,24 +87,29 @@ self.addEventListener("notificationclick", function (event) {
     event.waitUntil(
         clients.matchAll({ type: "window", includeUncontrolled: true }).then(clientList => {
             let tip = event.notification.data.tip || "standart";
+            let id = event.notification.data.id || "0";
             let url = siteDomain;
             switch (tip) {
                 case "cihaz":
                     url = siteDomain + "/cihazlarim";
                     break;
                 case "cagri":
-                    url = siteDomain + "/cagrikayitlari";
+                    if (id != "" && id != "0") {
+                        url = siteDomain + "/cagrikayitlari/detay/" + id;
+                    } else {
+                        url = siteDomain + "/cagrikayitlari";
+                    }
                     break;
                 default:
                     break;
             }
             for (const client of clientList) {
-                if (client.url.includes( url ) && "focus" in client) {
+                if (client.url.includes(url) && "focus" in client) {
                     return client.focus();
                 }
             }
             if (clients.openWindow) {
-                return clients.openWindow(url);
+                return clients.openWindow("https://" + url);
             }
         })
     );

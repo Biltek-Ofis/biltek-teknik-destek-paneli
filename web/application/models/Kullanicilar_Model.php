@@ -187,7 +187,7 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
     }
-    public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart")
+    public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart", $bildirimID = "0")
     {
         if($this->firebaseAyarlandi()){
             $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
@@ -205,7 +205,8 @@ class Kullanicilar_Model extends CI_Model
                                 'data' => [
                                     'title' => $baslik,
                                     'body' => $icerik,
-                                    'tip'=> $tip
+                                    'tip'=> $tip,
+                                    'id' => $bildirimID,
                                 ],
                             ],
                         ];
@@ -231,10 +232,10 @@ class Kullanicilar_Model extends CI_Model
             if (count($bildirimler) > 0) {
                 $bildirim = $bildirimler[0];
                 if (strval($bildirim->durum) == "1") {
-                    $this->bildirimGonder($id, $baslik, $mesaj, "cihaz");
+                    $this->bildirimGonder($id, $baslik, $mesaj, "cihaz", $cihaz->servis_no);
                 }
             }else{
-                $this->bildirimGonder($id, $baslik, $mesaj, "cihaz");
+                $this->bildirimGonder($id, $baslik, $mesaj, "cihaz",  $cihaz->servis_no);
             }
         }
     }
@@ -261,7 +262,7 @@ class Kullanicilar_Model extends CI_Model
                     } else if ($tip == 'fiyatret') {
                         $baslik = 'Çağrı Kaydı Fiyatı Reddedildi';
                     }
-                    $this->bildirimGonder($bildirim->kullanici_id, $baslik, $mesaj, "cagri");
+                    $this->bildirimGonder($bildirim->kullanici_id, $baslik, $mesaj, "cagri", $cagri->id);
                 }
             }
         }
