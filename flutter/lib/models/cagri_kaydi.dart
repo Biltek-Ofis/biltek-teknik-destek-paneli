@@ -112,6 +112,8 @@ class CagriKaydiModel {
                 guncelDurum: int.tryParse(cihazBilgileri["guncel_durum"]) ?? 0,
                 guncelDurumRenk: cihazBilgileri["guncel_durum_renk"],
                 guncelDurumText: cihazBilgileri["guncel_durum_text"],
+                yapilanIslemAciklamasi:
+                    cihazBilgileri["yapilan_islem_aciklamasi"],
                 islemler: yapilanIslemler,
               )
               : null,

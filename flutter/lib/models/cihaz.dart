@@ -81,6 +81,7 @@ class Cihaz {
     int guncelDurum = 0,
     String guncelDurumText = "",
     String guncelDurumRenk = "",
+    String yapilanIslemAciklamasi = "",
     List<YapilanIslem> islemler = const [],
   }) {
     return Cihaz(
@@ -108,7 +109,7 @@ class Cihaz {
       servisTuru: 0,
       yedekDurumu: 0,
       teslimAlinanlar: "",
-      yapilanIslemAciklamasi: "",
+      yapilanIslemAciklamasi: yapilanIslemAciklamasi,
       notlar: "",
       teslimEdildi: "",
       tarih: "",
