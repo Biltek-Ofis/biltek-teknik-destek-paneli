@@ -3,3 +3,25 @@
 <?php
 $this->load->view("inc/ortak/styles");
 ?>
+<style>
+    input[type="date"],
+    input[type="date-local"],
+    input[type="datetime"],
+    input[type="datetime-local"] {
+        position: relative;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="date-local"]::-webkit-calendar-picker-indicator,
+    input[type="datetime"]::-webkit-calendar-picker-indicator,
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        color: transparent;
+        background: transparent;
+    }
+</style>
