@@ -42,8 +42,9 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
 
   @override
   Widget build(BuildContext context) {
+    Color? yaziRengi = Theme.of(context).textTheme.bodySmall?.color;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.id)),
+      appBar: AppBar(title: Text("Çağrı Kodu: ${widget.id}")),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -63,52 +64,77 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: "Çağrı Kodu: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
                               ),
-                              TextSpan(text: cagri!.id),
+                              TextSpan(
+                                text: cagri!.id,
+                                style: TextStyle(color: yaziRengi),
+                              ),
                               if (!widget.kullanici.musteri)
                                 TextSpan(
                                   text: "\nMüşteri: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: yaziRengi,
+                                  ),
                                 ),
                               if (!widget.kullanici.musteri)
                                 TextSpan(
                                   text: "${cagri!.bolge} ${cagri!.birim}",
+                                  style: TextStyle(color: yaziRengi),
                                 ),
                               if (cagri!.cihazBilgileri != null)
                                 TextSpan(
                                   text: "\nServis No: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: yaziRengi,
+                                  ),
                                 ),
                               if (cagri!.cihazBilgileri != null)
                                 TextSpan(
                                   text:
                                       cagri!.cihazBilgileri!.servisNo
                                           .toString(),
+                                  style: TextStyle(color: yaziRengi),
                                 ),
                               TextSpan(
                                 text: "\nCihaz Türü: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
                               ),
                               TextSpan(
                                 text:
                                     cagri!.cihazBilgileri != null
                                         ? cagri!.cihazBilgileri!.cihazTuru
                                         : cagri!.cihazTuru,
+                                style: TextStyle(color: yaziRengi),
                               ),
                               TextSpan(
                                 text: "\nCihaz Marka - Model: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
                               ),
                               TextSpan(
                                 text:
                                     cagri!.cihazBilgileri != null
                                         ? "${cagri!.cihazBilgileri!.cihaz}${cagri!.cihazBilgileri!.cihazModeli.isNotEmpty ? " ${cagri!.cihazBilgileri!.cihazModeli}" : ""}"
                                         : "${cagri!.cihaz}${cagri!.cihazModeli.isNotEmpty ? " ${cagri!.cihazModeli}" : ""}",
+                                style: TextStyle(color: yaziRengi),
                               ),
                               TextSpan(
                                 text: "\nKayıt Tarihi: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
                               ),
                               TextSpan(
                                 text: Islemler.tarihGoruntule(
@@ -116,17 +142,38 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                   Islemler.tarihSQLFormat,
                                   Islemler.tarihFormat,
                                 ),
+                                style: TextStyle(color: yaziRengi),
                               ),
 
                               TextSpan(
                                 text: "\nDurum: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
                               ),
                               if (cagri!.cihazBilgileri != null)
                                 TextSpan(
                                   text:
                                       cagri!.cihazBilgileri!.guncelDurumText
                                           .toString(),
+                                  style: TextStyle(color: yaziRengi),
+                                ),
+                              TextSpan(
+                                text: "\nYapılan İşlem Açıklaması: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: yaziRengi,
+                                ),
+                              ),
+                              if (cagri!.cihazBilgileri != null)
+                                TextSpan(
+                                  text:
+                                      cagri!
+                                          .cihazBilgileri!
+                                          .yapilanIslemAciklamasi
+                                          .toString(),
+                                  style: TextStyle(color: yaziRengi),
                                 ),
                             ],
                           ),
@@ -144,7 +191,8 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                               ),
                             ),
                           ),
-                        if (cagri!.cihazBilgileri != null)
+                        if (cagri!.cihazBilgileri != null &&
+                            cagri!.cihazBilgileri!.islemler.isNotEmpty)
                           Islemler.liste(cagri!.cihazBilgileri!.islemler),
                         if (cagri!.cihazBilgileri != null &&
                             cagri!.cihazBilgileri!.guncelDurumText ==
