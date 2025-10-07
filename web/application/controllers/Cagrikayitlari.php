@@ -57,7 +57,11 @@ class Cagrikayitlari extends Varsayilancontroller
             if (strlen($id) > 0) {
                 $duzenle = $this->Cihazlar_Model->cagriKaydiDuzenle($id);
                 if ($duzenle) {
-                    redirect(base_url("cagrikayitlari"));
+                    if(isset($_GET["cagri"])){
+                        redirect(base_url("cagrikayitlari/detay/".$id));
+                    }else{
+                        redirect(base_url("cagrikayitlari"));
+                    }
                 } else {
                     $this->Kullanicilar_Model->girisUyari("cagrikayitlari", "Çağrı kaydı duzenlenemedi lütfen daha sonra tekrar deneyin");
                 }
