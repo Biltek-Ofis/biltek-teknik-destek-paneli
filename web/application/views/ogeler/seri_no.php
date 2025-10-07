@@ -15,5 +15,5 @@ echo '
 if (isset($seri_no_value)) {
     echo $seri_no_value;
 }
-echo '">
+echo '"'.(isset($seri_no_readonly) ? ($seri_no_readonly ? " readonly" : "") : "").'>
 </div>';

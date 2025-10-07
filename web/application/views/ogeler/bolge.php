@@ -9,5 +9,5 @@ echo '">
 if (isset($bolge_value)) {
     echo $bolge_value;
 }
-echo '" required>
+echo '" required'.(isset($bolge_readonly) ? ($bolge_readonly ? " readonly" : "") : "").'>
 </div>';

@@ -15,5 +15,5 @@ echo '
 if (isset($cihaz_value)) {
     echo $cihaz_value;
 }
-echo '" required>
+echo '" required'.(isset($cihaz_readonly) ? ($cihaz_readonly ? " readonly" : "") : "").'>
 </div>';

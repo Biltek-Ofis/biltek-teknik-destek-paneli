@@ -15,5 +15,5 @@ echo '
 if (isset($cihaz_modeli_value)) {
     echo $cihaz_modeli_value;
 }
-echo '">
+echo '"'.(isset($cihaz_modeli_readonly) ? ($cihaz_modeli_readonly ? " readonly" : "") : "").'>
 </div>';
