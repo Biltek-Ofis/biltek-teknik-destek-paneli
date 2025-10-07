@@ -125,7 +125,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       child: DefaultButton(
-                        background: Islemler.arkaRenk("bg-info", alpha: 255),
+                        background: Islemler.arkaRenk("bg-info", alpha: 1),
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

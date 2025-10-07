@@ -48,6 +48,7 @@ class Ayarlar {
   static String get cagriKayitlari => "${appUrl}cagriKayitlari/";
   static String get fiyatiOnayla => "${appUrl}fiyatiOnayla/";
   static String get fiyatiReddet => "${appUrl}fiyatiReddet/";
+  static String get cagriKaydiSil => "${appUrl}cagriKaydiSil/";
 
   static String teknikservisformu({
     required String auth,

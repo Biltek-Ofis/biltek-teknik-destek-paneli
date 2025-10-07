@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'cihaz.dart';
 
 class CagriKaydiModel {
-  final String id;
-  final String kullID;
+  final int id;
+  final int kullID;
   final String bolge;
   final String birim;
   final String telefonNumarasi;
   final String cihazTuru;
-  final String cihazTuruVal;
+  final int cihazTuruVal;
   final String cihaz;
   final String cihazModeli;
   final String seriNo;
@@ -33,13 +33,13 @@ class CagriKaydiModel {
     this.cihazBilgileri,
   });
   factory CagriKaydiModel.create({
-    required String id,
-    required String kullID,
+    required int id,
+    required int kullID,
     required String bolge,
     required String birim,
     required String telefonNumarasi,
     required String cihazTuru,
-    required String cihazTuruVal,
+    required int cihazTuruVal,
     required String cihaz,
     required String cihazModeli,
     required String seriNo,
@@ -87,12 +87,12 @@ class CagriKaydiModel {
                 .toList()
             : [];
     return CagriKaydiModel(
-      id: json["id"] ?? "",
-      kullID: json["kull_id"] ?? "",
+      id: int.tryParse(json["id"].toString()) ?? 0,
+      kullID: int.tryParse(json["kull_id"].toString()) ?? 0,
       bolge: json["bolge"] ?? "",
       birim: json["birim"] ?? "",
       telefonNumarasi: json["telefon_numarasi"] ?? "",
-      cihazTuruVal: json["cihaz_turu_val"] ?? "",
+      cihazTuruVal: int.tryParse(json["cihaz_turu_val"].toString()) ?? 0,
       cihazTuru: json["cihaz_turu"] ?? "",
       cihaz: json["cihaz"] ?? "",
       cihazModeli: json["cihaz_modeli"] ?? "",

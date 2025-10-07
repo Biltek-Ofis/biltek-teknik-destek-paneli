@@ -786,4 +786,21 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function cagriKaydiSil(){
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $id = $this->input->post("id");
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $sil = $this->Cihazlar_Model->cagriKaydiSil($id);
+                echo json_encode(array(
+                    "sonuc"=> $sil,
+                ));
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
 }

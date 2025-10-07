@@ -1,3 +1,4 @@
+import 'package:biltekteknikservis/models/cihaz.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,9 +13,15 @@ import '../widgets/musteri_sec.dart';
 import '../widgets/takvim/dialog.dart';
 
 class YeniCihazSayfasi extends StatefulWidget {
-  const YeniCihazSayfasi({super.key, required this.cihazlariYenile});
+  const YeniCihazSayfasi({
+    super.key,
+    required this.cihazlariYenile,
+    this.initialCihaz,
+  });
 
   final VoidCallback cihazlariYenile;
+
+  final Cihaz? initialCihaz;
 
   @override
   State<YeniCihazSayfasi> createState() => _YeniCihazSayfasiState();
@@ -26,6 +33,9 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
   String tarihGirisi = "oto";
 
   TextEditingController tarihController = TextEditingController();
+
+  int cagriID = 0;
+  int kullID = 0;
 
   TextEditingController musteriAdiController = TextEditingController();
   FocusNode musteriAdiFocus = FocusNode();
@@ -101,9 +111,40 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
         //FocusScope.of(context).requestFocus(musteriAdiFocus);
       }
       await _cihazDuzenlemeGetir();
+      if (widget.initialCihaz != null) {
+        girildi = true;
+        if (widget.initialCihaz!.kullID != 0) {
+          kullID = widget.initialCihaz!.kullID;
+        }
+        if (widget.initialCihaz!.musteriAdi.isNotEmpty) {
+          musteriAdiController.text = widget.initialCihaz!.musteriAdi;
+        }
+        if (widget.initialCihaz!.telefonNumarasi.isNotEmpty) {
+          gsmController.text = widget.initialCihaz!.telefonNumarasi;
+        }
+        if (widget.initialCihaz!.cagriID != 0) {
+          cagriID = widget.initialCihaz!.cagriID;
+        }
+        if (widget.initialCihaz!.cihazTuruVal != 0) {
+          cihazTuru = widget.initialCihaz!.cihazTuruVal;
+        }
+        if (widget.initialCihaz!.cihaz.isNotEmpty) {
+          cihazController.text = widget.initialCihaz!.cihaz;
+        }
+        if (widget.initialCihaz!.cihazModeli.isNotEmpty) {
+          cihazModeliController.text = widget.initialCihaz!.cihazModeli;
+        }
+        if (widget.initialCihaz!.seriNo.isNotEmpty) {
+          seriNoController.text = widget.initialCihaz!.seriNo;
+        }
+        if (widget.initialCihaz!.arizaAciklamasi.isNotEmpty) {
+          arizaAciklamasiController.text = widget.initialCihaz!.arizaAciklamasi;
+        }
+      } else {
+        girildi = false;
+      }
       setState(() {
         sayfaYukleniyor = false;
-        girildi = false;
       });
     });
   }
@@ -698,6 +739,8 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
       Map<String, String> postData = {
         "musteri_kod": "",
         "musteri_adi": musteriAdi,
+        "cagri_id": cagriID.toString(),
+        "kull_id": kullID.toString(),
         "musteriyi_kaydet": musteriyiKaydet ? "1" : "0",
         "teslim_eden": teslimEdenController.text,
         "adres": adresController.text,
