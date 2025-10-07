@@ -96,16 +96,19 @@ class _AnasayfaState extends State<Anasayfa> {
           );
         }
       case "cagri":
-        if (id.isNotEmpty && id != "0") {
-          navigatorState.push(
-            MaterialPageRoute(
-              builder:
-                  (context) => CagriKaydiDetaySayfasi(
-                    kullanici: widget.kullanici,
-                    id: id,
-                  ),
-            ),
-          );
+        if (id.isNotEmpty) {
+          int idInt = int.tryParse(id) ?? 0;
+          if (idInt > 0) {
+            navigatorState.push(
+              MaterialPageRoute(
+                builder:
+                    (context) => CagriKaydiDetaySayfasi(
+                      kullanici: widget.kullanici,
+                      id: idInt,
+                    ),
+              ),
+            );
+          }
         }
     }
   }

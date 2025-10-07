@@ -8,29 +8,29 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
 
 class Islemler {
-  static Color? arkaRenk(String renkClass, {int? alpha}) {
-    alpha ??= (255 * 0.3).floor();
+  static Color? arkaRenk(String renkClass, {double? alpha}) {
+    alpha ??= 0.3;
     switch (renkClass) {
       case "bg-white":
         return Colors.white;
       case "bg-dark":
         return Colors.black;
       case "bg-secondary":
-        return Color.fromARGB(alpha, 108, 117, 125);
+        return Color.fromARGB(255, 108, 117, 125).withValues(alpha: alpha);
       case "bg-primary":
-        return Color.fromARGB(alpha, 0, 123, 255);
+        return Color.fromARGB(255, 0, 123, 255).withValues(alpha: alpha);
       case "bg-success":
-        return Color.fromARGB(alpha, 40, 167, 69);
+        return Color.fromARGB(255, 40, 167, 69).withValues(alpha: alpha);
       case "bg-danger":
-        return Color.fromARGB(alpha, 220, 53, 69);
+        return Color.fromARGB(255, 220, 53, 69).withValues(alpha: alpha);
       case "bg-pink":
-        return Color.fromARGB(alpha, 232, 62, 140);
+        return Color.fromARGB(255, 232, 62, 140).withValues(alpha: alpha);
       case "bg-warning":
-        return Color.fromARGB(alpha, 255, 193, 7);
+        return Color.fromARGB(255, 255, 193, 7).withValues(alpha: alpha);
       case "bg-yellow":
-        return Color.fromARGB(alpha, 255, 251, 33);
+        return Color.fromARGB(255, 255, 251, 33).withValues(alpha: alpha);
       case "bg-info":
-        return Color.fromARGB(alpha, 23, 162, 184);
+        return Color.fromARGB(255, 23, 162, 184).withValues(alpha: alpha);
 
       default:
         return Colors.white;

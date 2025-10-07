@@ -703,9 +703,11 @@ class BiltekPost {
     }
   }
 
-  static Future<CagriKaydiModel?> cagriKaydi({required String id}) async {
+  static Future<CagriKaydiModel?> cagriKaydi({required int id}) async {
     try {
-      var response = await BiltekPost.post(Ayarlar.cagriKaydi, {"id": id});
+      var response = await BiltekPost.post(Ayarlar.cagriKaydi, {
+        "id": id.toString(),
+      });
       var resp = await response.stream.bytesToString();
       debugPrint("Çağrı kaydı sonuç: $resp");
       if (response.statusCode == 201) {
@@ -720,9 +722,11 @@ class BiltekPost {
     }
   }
 
-  static Future<bool> fiyatiOnayla({required String id}) async {
+  static Future<bool> fiyatiOnayla({required int id}) async {
     try {
-      var response = await BiltekPost.post(Ayarlar.fiyatiOnayla, {"id": id});
+      var response = await BiltekPost.post(Ayarlar.fiyatiOnayla, {
+        "id": id.toString(),
+      });
       var resp = await response.stream.bytesToString();
       debugPrint("Fiyati onayla sonuç: $resp");
       if (response.statusCode == 201) {
@@ -736,9 +740,11 @@ class BiltekPost {
     }
   }
 
-  static Future<bool> fiyatiReddet({required String id}) async {
+  static Future<bool> fiyatiReddet({required int id}) async {
     try {
-      var response = await BiltekPost.post(Ayarlar.fiyatiReddet, {"id": id});
+      var response = await BiltekPost.post(Ayarlar.fiyatiReddet, {
+        "id": id.toString(),
+      });
       var resp = await response.stream.bytesToString();
       debugPrint("Fiyati reddet sonuç: $resp");
       if (response.statusCode == 201) {
@@ -748,6 +754,27 @@ class BiltekPost {
       }
     } on Exception catch (ex) {
       debugPrint("Fiyat reddet hata: $ex");
+      return false;
+    }
+  }
+
+  static Future<bool> cagriKaydiSil({required int id}) async {
+    try {
+      var response = await BiltekPost.post(Ayarlar.cagriKaydiSil, {
+        "id": id.toString(),
+      });
+      var resp = await response.stream.bytesToString();
+      if (response.statusCode == 201) {
+        Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
+        if (sonuc.containsKey("sonuc")) {
+          return sonuc["sonuc"];
+        }
+        return false;
+      } else {
+        return false;
+      }
+    } on Exception catch (ex) {
+      debugPrint("Çağrı kaydı sil hata: $ex");
       return false;
     }
   }

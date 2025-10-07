@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../models/cihaz.dart';
+import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
@@ -12,7 +13,9 @@ import '../../utils/shared_preferences.dart';
 import '../../widgets/navigators.dart';
 import '../ayarlar/ayarlar.dart';
 import '../cihazlar.dart';
+import '../detaylar/detaylar.dart';
 import '../giris_sayfasi.dart';
+import '../yeni_cihaz.dart';
 
 class CagriKayitlariSayfasi extends StatefulWidget {
   const CagriKayitlariSayfasi({super.key, required this.kullanici});
@@ -201,7 +204,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: cagrikaydi.id,
+                                    text: cagrikaydi.id.toString(),
                                     style: TextStyle(color: renkTemp),
                                   ),
                                   if (!widget.kullanici.musteri)
@@ -277,25 +280,207 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                 ],
                               ),
                             ),
-                            subtitle: Text(
-                              cihaz != null
-                                  ? cihaz.guncelDurumText.toString()
-                                  : "İşlem Bekleniyor",
-                            ),
-                            trailing: DefaultButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => CagriKaydiDetaySayfasi(
-                                          kullanici: widget.kullanici,
-                                          id: cagrikaydi.id,
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cihaz != null
+                                      ? cihaz.guncelDurumText.toString()
+                                      : "İşlem Bekleniyor",
+                                ),
+                                if (!widget.kullanici.musteri)
+                                  Wrap(
+                                    children: [
+                                      DefaultButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) =>
+                                                      CagriKaydiDetaySayfasi(
+                                                        kullanici:
+                                                            widget.kullanici,
+                                                        id: cagrikaydi.id,
+                                                      ),
+                                            ),
+                                          );
+                                        },
+                                        text: "Detaylar",
+                                      ),
+                                      SizedBox(width: 5),
+                                      if (cihaz != null)
+                                        DefaultButton(
+                                          background: Islemler.arkaRenk(
+                                            "bg-success",
+                                            alpha: 1,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (
+                                                      context,
+                                                    ) => DetaylarSayfasi(
+                                                      kullanici:
+                                                          widget.kullanici,
+                                                      servisNo:
+                                                          cagrikaydi
+                                                              .cihazBilgileri!
+                                                              .servisNo,
+                                                      cihazlariYenile: () async {
+                                                        await cagriKayitlariniGetir();
+                                                      },
+                                                    ),
+                                              ),
+                                            );
+                                          },
+                                          text: "Servis Kaydını Görüntüle",
                                         ),
+                                      if (cihaz == null)
+                                        DefaultButton(
+                                          background: Islemler.arkaRenk(
+                                            "bg-success",
+                                            alpha: 1,
+                                          ),
+                                          onPressed: () {
+                                            Cihaz cihaz = Cihaz.create(
+                                              kullID: cagrikaydi.kullID,
+                                              musteriAdi:
+                                                  "${cagrikaydi.bolge}${cagrikaydi.birim.isNotEmpty ? " ${cagrikaydi.birim}" : ""}",
+                                              telefonNumarasi:
+                                                  cagrikaydi.telefonNumarasi,
+                                              cagriID: cagrikaydi.id,
+                                              cihazTuruVal:
+                                                  cagrikaydi.cihazTuruVal,
+                                              cihazTuru: cagrikaydi.cihazTuru,
+                                              cihaz: cagrikaydi.cihaz,
+                                              cihazModeli:
+                                                  cagrikaydi.cihazModeli,
+                                              seriNo: cagrikaydi.seriNo,
+                                              arizaAciklamasi:
+                                                  cagrikaydi.arizaAciklamasi,
+                                            );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (
+                                                      context,
+                                                    ) => YeniCihazSayfasi(
+                                                      initialCihaz: cihaz,
+                                                      cihazlariYenile: () async {
+                                                        await cagriKayitlariniGetir();
+                                                      },
+                                                    ),
+                                              ),
+                                            );
+                                          },
+                                          text: "Kayıt Aç",
+                                        ),
+                                      SizedBox(width: 5),
+                                      DefaultButton(
+                                        background: Islemler.arkaRenk(
+                                          "bg-danger",
+                                          alpha: 1,
+                                        ),
+                                        onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  "Çağrı Kaydını Sil",
+                                                ),
+                                                content: Text(
+                                                  "${cagrikaydi.id} kodlu çağrı kaydını silmek istediğinize emin misiniz?",
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      _yukleniyorGoster();
+                                                      bool sonuc =
+                                                          await BiltekPost.cagriKaydiSil(
+                                                            id: cagrikaydi.id,
+                                                          );
+                                                      if (sonuc) {
+                                                        await cagriKayitlariniGetir();
+                                                        _yukleniyorGizle();
+                                                      } else {
+                                                        _yukleniyorGizle();
+                                                        if (context.mounted) {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (
+                                                                  context,
+                                                                ) => AlertDialog(
+                                                                  title: Text(
+                                                                    "Silinemedi",
+                                                                  ),
+                                                                  content: Text(
+                                                                    "Çağrı kaydı silinirken bir hata oluştu",
+                                                                  ),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed: () {
+                                                                        Navigator.pop(
+                                                                          context,
+                                                                        );
+                                                                      },
+                                                                      child: Text(
+                                                                        "Tamam",
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                          );
+                                                        }
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      "Evet",
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Hayır"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        text: "Sil",
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                              text: "Detaylar",
+                              ],
                             ),
+                            trailing:
+                                widget.kullanici.musteri
+                                    ? DefaultButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    CagriKaydiDetaySayfasi(
+                                                      kullanici:
+                                                          widget.kullanici,
+                                                      id: cagrikaydi.id,
+                                                    ),
+                                          ),
+                                        );
+                                      },
+                                      text: "Detaylar",
+                                    )
+                                    : null,
                           ),
                         ),
                       );
@@ -313,5 +498,24 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
     setState(() {
       cagriKayitlari = cagriKayitlariTemp;
     });
+  }
+
+  bool yukleniyorAcik = false;
+  void _yukleniyorGoster() {
+    if (mounted && !yukleniyorAcik) {
+      setState(() {
+        yukleniyorAcik = true;
+      });
+      yukleniyor(context);
+    }
+  }
+
+  void _yukleniyorGizle() {
+    if (mounted && yukleniyorAcik) {
+      Navigator.pop(context);
+      setState(() {
+        yukleniyorAcik = false;
+      });
+    }
   }
 }

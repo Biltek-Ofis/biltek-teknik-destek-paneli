@@ -19,7 +19,7 @@ class CagriKaydiDetaySayfasi extends StatefulWidget {
   });
 
   final KullaniciAuthModel kullanici;
-  final String id;
+  final int id;
 
   @override
   State<CagriKaydiDetaySayfasi> createState() => _CagriKaydiDetaySayfasiState();
@@ -70,7 +70,7 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                 ),
                               ),
                               TextSpan(
-                                text: cagri!.id,
+                                text: cagri!.id.toString(),
                                 style: TextStyle(color: yaziRengi),
                               ),
                               if (!widget.kullanici.musteri)
