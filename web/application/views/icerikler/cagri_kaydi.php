@@ -39,16 +39,37 @@ if ($this->Giris_Model->kullaniciGiris()) {
                 $("#cagriKaydiDuzenleForm #ariza_aciklamasi").val("");
             });
         });
-        function cagriKaydiDuzenle(id, bolge, birim, tel, cihazTuru, cihaz, cihazModeli, seriNo, ariza) {
+        function cagriKaydiDuzenle(cihaz_var, servis_no, id, bolge, birim, tel, cihazTuru, cihaz, cihazModeli, seriNo, ariza) {
             $("#cagriKaydiDuzenleForm").attr("action", "<?= base_url("cagrikayitlari/duzenle"); ?>/" + id);
             $("#cagriKaydiDuzenleForm #bolge").val(bolge);
             $("#cagriKaydiDuzenleForm #birim").val(birim);
+
             $("#cagriKaydiDuzenleForm #telefon_numarasi2").val(tel);
+            $("#cagriKaydiDuzenleForm #telefon_numarasi2").prop("readonly", cihaz_var);
+
             $("#cagriKaydiDuzenleForm #cihaz_turu").val(cihazTuru);
+            $("#cagriKaydiDuzenleForm #cihaz_turu").prop("disabled", cihaz_var);
+
             $("#cagriKaydiDuzenleForm #cihaz").val(cihaz);
+            $("#cagriKaydiDuzenleForm #cihaz").prop("readonly", cihaz_var);
+
             $("#cagriKaydiDuzenleForm #cihaz_modeli").val(cihazModeli);
+            $("#cagriKaydiDuzenleForm #cihaz_modeli").prop("readonly", cihaz_var);
+
             $("#cagriKaydiDuzenleForm #seri_no").val(seriNo);
+            $("#cagriKaydiDuzenleForm #seri_no").prop("readonly", cihaz_var);
+
             $("#cagriKaydiDuzenleForm #ariza_aciklamasi").val(ariza);
+            $("#cagriKaydiDuzenleForm #ariza_aciklamasi").prop("readonly", cihaz_var);
+
+            if(cihaz_var){
+                $("#cagriKaydiDuzenleAlert").attr("style", "");
+                $("#cagriDuzenleServisNo").html("Servis No: "+servis_no);
+            }else{
+                $("#cagriKaydiDuzenleAlert").attr("style", "display:none;");
+                $("#cagriDuzenleServisNo").html("");
+            }
+
             $("#cagriKaydiDuzenleModal").modal("show");
         }
         function silModaliGoster(id, musteri_adi) {
@@ -166,13 +187,13 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                 if ($this->Giris_Model->kullaniciGiris()) {
                                     if ($cihaz == null) {
                                         ?>
-                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge ." ". $cagri->birim . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
+                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge ." ". $cagri->birim . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
                                             class="btn btn-sm btn-success">Kayıt Aç</a>
                                         <?php
                                     }
                                     ?>
                                     <button class="btn btn-sm btn-info text-white"
-                                        onclick="cagriKaydiDuzenle('<?= donusturOnclick($cagri->id); ?>','<?= donusturOnclick($cagri->bolge); ?>', '<?= donusturOnclick($cagri->birim); ?>', '<?= donusturOnclick($cagri->telefon_numarasi); ?>', '<?= donusturOnclick($cagri->cihaz_turu); ?>', '<?= donusturOnclick($cagri->cihaz); ?>', '<?= donusturOnclick($cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cagri->seri_no); ?>', '<?= donusturOnclick($cagri->ariza_aciklamasi); ?>')">Düzenle</button>
+                                        onclick="cagriKaydiDuzenle(<?=$cihaz != null ? 'true' : 'false';?>, '<?= donusturOnclick($cihaz != null ? $cihaz->servis_no : '0'); ?>' ,'<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($cagri->bolge); ?>', '<?= donusturOnclick($cagri->birim); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->telefon_numarasi : $cagri->telefon_numarasi); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz_turu : $cagri->cihaz_turu); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz : $cagri->cihaz); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz_modeli : $cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->seri_no : $cagri->seri_no); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->ariza_aciklamasi : $cagri->ariza_aciklamasi); ?>')">Düzenle</button>
                                     <button class="btn btn-sm btn-danger"
                                         onclick="silModaliGoster('<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($musteri[0]->ad_soyad); ?>')">Sil</button>
 

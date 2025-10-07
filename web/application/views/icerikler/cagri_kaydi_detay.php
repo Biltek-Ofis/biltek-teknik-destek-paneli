@@ -2,10 +2,10 @@
 if (isset($cagri) || $cagri != null) {
     ?>
     <script>
-    $(document).ready(function () {
-        ayrilma_durumu_tetikle = false;
-    });
-</script>
+        $(document).ready(function () {
+            ayrilma_durumu_tetikle = false;
+        });
+    </script>
     <div class="content-wrapper">
         <section class="content-header py-4">
             <div class="container-fluid">
@@ -66,7 +66,7 @@ if (isset($cagri) || $cagri != null) {
                         </tr>
                         <tr>
                             <th>GSM:</th>
-                            <td><?= $cagri->telefon_numarasi; ?>
+                            <td><?= $cihaz != null ? $cihaz->telefon_numarasi : $cagri->telefon_numarasi; ?>
                             </td>
                         </tr>
                         <tr>
@@ -111,6 +111,16 @@ if (isset($cagri) || $cagri != null) {
                                 ?>
                                 </td>
                             </tr>
+                            <?php
+                            if ($cihaz != null) {
+                                ?>
+                                <tr>
+                                    <th>Servis No:</th>
+                                    <td><?= $cihaz->servis_no; ?></td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
                             <tr>
                                 <th>Yapılan İşlem Açıklaması:</th>
                                 <td><?= $cihaz->yapilan_islem_aciklamasi; ?></td>
@@ -209,16 +219,17 @@ if (isset($cagri) || $cagri != null) {
     </div>
     <?php
     $this->load->view("inc/modal_cagri_kaydi_duzenle", array(
-        "form_action" => base_url("cagrikayitlari/duzenle/" . $cagri->id."/?cagri=1"),
+        "cagri_servis_no" => $cihaz != null ? $cihaz->servis_no : "",
+        "cihaz_mevcut" => $cihaz != null ? TRUE : FALSE,
+        "form_action" => base_url("cagrikayitlari/duzenle/" . $cagri->id . "/?cagri=1"),
         "bolge_value" => $cagri->bolge,
         "birim_value" => $cagri->birim,
-        "telefon_numarasi_value" => $cagri->telefon_numarasi,
+        "telefon_numarasi_value" => $cihaz != null ? $cihaz->telefon_numarasi : $cagri->telefon_numarasi,
         "cihaz_turu_value" => $cihaz != null ? $cihaz->cihaz_turu : $cagri->cihaz_turu,
         "cihaz_value" => $cihaz != null ? $cihaz->cihaz : $cagri->cihaz,
         "cihaz_modeli_value" => $cihaz != null ? $cihaz->cihaz_modeli : $cagri->cihaz_modeli,
         "seri_no_value" => $cihaz != null ? $cihaz->seri_no : $cagri->seri_no,
         "ariza_aciklamasi_value" => $cihaz != null ? $cihaz->ariza_aciklamasi : $cagri->ariza_aciklamasi,
-
     ));
 } else {
     ?>

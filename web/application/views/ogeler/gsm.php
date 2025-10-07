@@ -32,5 +32,5 @@ if (isset($telefon_numarasi_value)) {
 } else {
     echo "+90";
 }
-echo '" required>
+echo '" required'.(isset($telefon_numarasi_readonly) ? ($telefon_numarasi_readonly ? " readonly" : "") : "").'>
 </div>';

@@ -9,5 +9,5 @@ echo '">
 if (isset($birim_value)) {
     echo $birim_value;
 }
-echo '" required>
+echo '" required'.(isset($birim_readonly) ? ($birim_readonly ? " readonly" : "") : "").'>
 </div>';
