@@ -208,7 +208,10 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                   await BiltekPost.fiyatiOnayla(id: widget.id);
                                   await cagriKaydiGetir();
                                 },
-                                background: Islemler.arkaRenk("bg-success"),
+                                background: Islemler.arkaRenk(
+                                  "bg-success",
+                                  alpha: 1,
+                                ),
                                 text: "Fiyatı Onayla",
                               ),
                               DefaultButton(
@@ -219,7 +222,10 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                   await BiltekPost.fiyatiReddet(id: widget.id);
                                   await cagriKaydiGetir();
                                 },
-                                background: Islemler.arkaRenk("bg-danger"),
+                                background: Islemler.arkaRenk(
+                                  "bg-danger",
+                                  alpha: 1,
+                                ),
                                 text: "Fiyatı Reddet",
                               ),
                             ],
