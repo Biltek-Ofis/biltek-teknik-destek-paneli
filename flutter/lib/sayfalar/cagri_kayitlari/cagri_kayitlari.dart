@@ -30,7 +30,6 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
   ScrollController scrollController = ScrollController();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  int bottomNavigationSelectedIndex = 0;
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -132,7 +131,10 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
           kullanici: widget.kullanici,
           seciliSayfa: "Çağrı Kayıtları",
         ),
-        /*floatingActionButton: FloatingActionButton(
+        /*
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
           onPressed: () {},
           child: Icon(Icons.add),
         ),*/
@@ -144,8 +146,6 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
               label: "Ayarlar",
             ),
           ],
-          currentIndex: bottomNavigationSelectedIndex,
-          selectedItemColor: Theme.of(context).appBarTheme.iconTheme?.color,
           onTap: (index) async {
             debugPrint("Index: $index");
             switch (index) {
@@ -377,6 +377,15 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                           },
                                           text: "Kayıt Aç",
                                         ),
+                                      /*SizedBox(width: 5),
+                                      DefaultButton(
+                                        background: Islemler.arkaRenk(
+                                          "bg-info",
+                                          alpha: 1,
+                                        ),
+                                        onPressed: () {},
+                                        text: "Düzenle",
+                                      ),*/
                                       SizedBox(width: 5),
                                       DefaultButton(
                                         background: Islemler.arkaRenk(
