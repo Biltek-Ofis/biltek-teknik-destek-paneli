@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:biltekteknikservis/utils/encryption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreference {
   static const darkThemeString = "darkTheme";
-  static const usernameString = "username";
+  static const kullaniciString = "kullanici";
+  static const beniHatirlaString = "beniHatirla";
   static const authString = "auth";
   static const fcmTokenString = "fcmToken";
   static const barkodIP = "barkodIP";
@@ -18,10 +22,7 @@ class SharedPreference {
     }
   }
 
-  static Future<Object?> get(
-    String key, {
-    Object? defaultValue,
-  }) async {
+  static Future<Object?> get(String key, {Object? defaultValue}) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -41,10 +42,7 @@ class SharedPreference {
     }
   }
 
-  static Future<String?> getString(
-    String key, {
-    String? defaultValue,
-  }) async {
+  static Future<String?> getString(String key, {String? defaultValue}) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -64,10 +62,7 @@ class SharedPreference {
     }
   }
 
-  static Future<bool?> getBool(
-    String key, {
-    bool? defaultValue,
-  }) async {
+  static Future<bool?> getBool(String key, {bool? defaultValue}) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -87,10 +82,7 @@ class SharedPreference {
     }
   }
 
-  static Future<double?> getDouble(
-    String key, {
-    double? defaultValue,
-  }) async {
+  static Future<double?> getDouble(String key, {double? defaultValue}) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -110,10 +102,7 @@ class SharedPreference {
     }
   }
 
-  static Future<int?> getInt(
-    String key, {
-    int? defaultValue,
-  }) async {
+  static Future<int?> getInt(String key, {int? defaultValue}) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -123,10 +112,7 @@ class SharedPreference {
     }
   }
 
-  static Future<bool> setStringList(
-    String key,
-    List<String> value,
-  ) async {
+  static Future<bool> setStringList(String key, List<String> value) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -167,5 +153,74 @@ class SharedPreference {
     } catch (e) {
       return Future.error(e);
     }
+  }
+}
+
+class SPKullanici {
+  final String isim;
+  final String kullaniciAdi;
+  String sifre;
+  bool _sifrelendi = false;
+
+  SPKullanici._({
+    required this.isim,
+    required this.kullaniciAdi,
+    required this.sifre,
+  });
+
+  factory SPKullanici.create({
+    required String isim,
+    required String kullaniciAdi,
+    required String sifre,
+    bool sifrele = true,
+  }) {
+    SPKullanici spKullanici = SPKullanici._(
+      isim: isim,
+      kullaniciAdi: kullaniciAdi,
+      sifre: sifre,
+    );
+    if (sifrele) {
+      spKullanici.sifrele();
+    }
+    return spKullanici;
+  }
+
+  String sifrele() {
+    if (!_sifrelendi) {
+      _sifrelendi = true;
+      sifre = Encryption.encrypt(sifre);
+    }
+    return sifre;
+  }
+
+  String sifreyiCoz() {
+    if (_sifrelendi) {
+      _sifrelendi = false;
+      sifre = Encryption.decrypt(sifre);
+    }
+    return sifre;
+  }
+
+  factory SPKullanici.fromJson(Map<String, dynamic> json) {
+    SPKullanici spKullanici = SPKullanici._(
+      isim: json["isim"],
+      kullaniciAdi: json["kullaniciAdi"],
+      sifre: json["sifre"],
+    );
+    spKullanici._sifrelendi = json["sifrelendi"];
+    return spKullanici;
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      "isim": isim,
+      "kullaniciAdi": kullaniciAdi,
+      "sifre": sifre,
+      "sifrelendi": _sifrelendi,
+    };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
   }
 }

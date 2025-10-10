@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'shared_preferences.dart';
@@ -6,11 +8,12 @@ class MyNotifier extends ChangeNotifier {
   late bool? _isDark;
   bool? get isDark => _isDark;
 
-  late String? _username;
-  String? get username => _username;
+  late SPKullanici? _kullanici;
+  SPKullanici? get kullanici => _kullanici;
 
   MyNotifier() {
     _isDark = false;
+    _kullanici = null;
     getPreferences();
   }
 
@@ -25,21 +28,29 @@ class MyNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set username(String? value) {
-    _username = value;
+  set kullanici(SPKullanici? value) {
+    _kullanici = value;
     if (value != null) {
-      SharedPreference.setString(SharedPreference.usernameString, value);
+      SharedPreference.setString(
+        SharedPreference.kullaniciString,
+        value.toString(),
+      );
     } else {
-      SharedPreference.remove(SharedPreference.usernameString);
+      SharedPreference.remove(SharedPreference.kullaniciString);
     }
     notifyListeners();
   }
 
   void getPreferences() async {
     _isDark = await SharedPreference.getBool(SharedPreference.darkThemeString);
-    _username = await SharedPreference.getString(
-      SharedPreference.usernameString,
+    String? kullaniciString = await SharedPreference.getString(
+      SharedPreference.kullaniciString,
     );
+    if (kullaniciString != null) {
+      _kullanici = SPKullanici.fromJson(
+        jsonDecode(kullaniciString) as Map<String, dynamic>,
+      );
+    }
     notifyListeners();
   }
 }

@@ -127,7 +127,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       MaterialPageRoute(
                         builder:
                             (context) =>
-                                GirisSayfasi(kullaniciAdi: myNotifier.username),
+                                GirisSayfasi(spKullanici: myNotifier.kullanici),
                       ),
                       (route) => false,
                     );
