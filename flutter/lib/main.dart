@@ -122,14 +122,14 @@ class MainPage extends StatelessWidget {
                           );
                         } else {
                           return GirisSayfasi(
-                            kullaniciAdi: myNotifier.username,
+                            spKullanici: myNotifier.kullanici,
                           );
                         }
                       }
                     },
                   );
                 } else {
-                  return GirisSayfasi(kullaniciAdi: myNotifier.username);
+                  return GirisSayfasi(spKullanici: myNotifier.kullanici);
                 }
               }
             },

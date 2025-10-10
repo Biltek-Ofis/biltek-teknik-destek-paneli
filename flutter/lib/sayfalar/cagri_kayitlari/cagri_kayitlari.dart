@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:biltekteknikservis/models/cagri_kaydi.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kaydi_detay.dart';
@@ -99,12 +101,27 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                           SharedPreference.fcmTokenString,
                         );
                         await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+                        String? kullaniciString =
+                            await SharedPreference.getString(
+                              SharedPreference.kullaniciString,
+                            );
+                        SPKullanici spKullanici =
+                            kullaniciString != null
+                                ? SPKullanici.fromJson(
+                                  jsonDecode(kullaniciString)
+                                      as Map<String, dynamic>,
+                                )
+                                : SPKullanici.create(
+                                  isim: "",
+                                  kullaniciAdi: "",
+                                  sifre: "",
+                                  sifrele: false,
+                                );
                         navigatorState.pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder:
-                                (context) => GirisSayfasi(
-                                  kullaniciAdi: widget.kullanici.kullaniciAdi,
-                                ),
+                                (context) =>
+                                    GirisSayfasi(spKullanici: spKullanici),
                           ),
                           (route) => false,
                         );

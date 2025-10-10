@@ -18,9 +18,9 @@ import 'anasayfa.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';
 
 class GirisSayfasi extends StatefulWidget {
-  const GirisSayfasi({super.key, this.kullaniciAdi});
+  const GirisSayfasi({super.key, this.spKullanici});
 
-  final String? kullaniciAdi;
+  final SPKullanici? spKullanici;
 
   @override
   State<GirisSayfasi> createState() => _GirisSayfasiState();
@@ -33,6 +33,8 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   FocusNode sifreFocus = FocusNode();
   bool sifreyiGoster = false;
 
+  bool beniHatirla = true;
+
   String hataMesaji = "";
   String? kullaniciAdiError;
   String? sifreError;
@@ -42,11 +44,20 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      if (widget.kullaniciAdi != null) {
-        kullaniciAdiController.text = widget.kullaniciAdi!;
+      if (widget.spKullanici != null) {
+        SPKullanici spKullanici = widget.spKullanici!;
+        spKullanici.sifreyiCoz();
+        kullaniciAdiController.text = spKullanici.kullaniciAdi;
+        sifreController.text = widget.spKullanici!.sifre;
       }
+      bool beniHatirlaTemp =
+          await SharedPreference.getBool(SharedPreference.beniHatirlaString) ??
+          true;
+      setState(() {
+        beniHatirla = beniHatirlaTemp;
+      });
       if (mounted) {
-        if (widget.kullaniciAdi != null) {
+        if (widget.spKullanici != null) {
           FocusScope.of(context).requestFocus(sifreFocus);
         } else {
           FocusScope.of(context).requestFocus(kullaniciAdiFocus);
@@ -107,6 +118,19 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                       },
                       onSubmitted: (val) async {
                         await _girisYap(myNotifier);
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    BiltekCheckbox(
+                      value: beniHatirla,
+                      label: "Beni Hatırla",
+                      onChanged: (val) {
+                        if (val == null) {
+                          return;
+                        }
+                        setState(() {
+                          beniHatirla = val;
+                        });
                       },
                     ),
                     SizedBox(height: 10),
@@ -203,10 +227,20 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
                 kapatildi = true;
-                myNotifier.username = kullaniciAdi;
-                /*await SharedPreference.remove(
-                  SharedPreference.usernameString,
-                );*/
+                if (beniHatirla) {
+                  SPKullanici spKullanici = SPKullanici.create(
+                    isim: kullaniciModel.adSoyad,
+                    kullaniciAdi: kullaniciAdi,
+                    sifre: sifre,
+                  );
+                  myNotifier.kullanici = spKullanici;
+                } else {
+                  myNotifier.kullanici = null;
+                }
+                await SharedPreference.setBool(
+                  SharedPreference.beniHatirlaString,
+                  beniHatirla,
+                );
                 navigatorState.pop();
                 navigatorState.pushAndRemoveUntil(
                   MaterialPageRoute(

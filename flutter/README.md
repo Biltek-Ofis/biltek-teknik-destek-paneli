@@ -5,6 +5,8 @@ Teknik servis uygulamasi
 - .env dosyası oluştur ve şu değerleri tanımla
 
 ```
+ENCRYPTION_KEY=ŞİFRELEME KEY
+ENCRYPTION_IV=ŞİFRELEME IV
 TOKEN=token_buraya
 API_URL=Full sürüm url
 DEBUG_API_URL=Debug url (Testler için)
