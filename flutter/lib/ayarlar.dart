@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 class Ayarlar {
+  static const String _debugUrl = String.fromEnvironment('DEBUG_API_URL');
+  static const String _apiUrl = String.fromEnvironment('API_URL');
   static String get _url {
-    if (kDebugMode) {
-      return const String.fromEnvironment('DEBUG_API_URL');
-    } else {
-      return const String.fromEnvironment('API_URL');
-    }
+    return kDebugMode ? _debugUrl : _apiUrl;
   }
 
   static String get url {
