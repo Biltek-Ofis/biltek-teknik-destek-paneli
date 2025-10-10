@@ -559,32 +559,36 @@ $(document).ready(function(){
 
   
   window.addEventListener("scroll", function () {
-     
-        const targetDiv = document.getElementById("cihazlar_main");
-        const rect = targetDiv.getBoundingClientRect();
-        if (rect.top <= 0) {
-          $("#cihazlar_pegination1").css({
-            position: "fixed",
-            left: "0",
-            right: "0",
-            width: "100%",
-            background: "var(--bs-body-bg)",
-            bottom: "0px",
-            padding: "1rem",
-            zIndex : "2",
-            borderTop: "1px solid var(--bs-table-color)"
-          });
-          $("#cihazlar_pegination2").css({
-            height: document.getElementById("cihazlar_pegination1").offsetHeight
-          });
-        } else {
-          $("#cihazlar_pegination1").attr("style", "");
-          $("#cihazlar_pegination2").css({
-            height: "0"
-          });  
-        }
 
-        isFixed = true; // Tekrar tetiklenmesini önler
+    try {
+      const targetDiv = document.getElementById("cihazlar_main");
+      const rect = targetDiv.getBoundingClientRect();
+      if (rect.top <= 0) {
+        $("#cihazlar_pegination1").css({
+          position: "fixed",
+          left: "0",
+          right: "0",
+          width: "100%",
+          background: "var(--bs-body-bg)",
+          bottom: "0px",
+          padding: "1rem",
+          zIndex : "2",
+          borderTop: "1px solid var(--bs-table-color)"
+        });
+        $("#cihazlar_pegination2").css({
+          height: document.getElementById("cihazlar_pegination1").offsetHeight
+        });
+      } else {
+        $("#cihazlar_pegination1").attr("style", "");
+        $("#cihazlar_pegination2").css({
+          height: "0"
+        });  
+      }
+
+      isFixed = true; // Tekrar tetiklenmesini önler
+    } catch (error) {
+      console.error(error);
+    }
       
   });
 ';
