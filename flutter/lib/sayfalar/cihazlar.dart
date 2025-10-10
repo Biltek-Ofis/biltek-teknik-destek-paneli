@@ -72,7 +72,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   bool chatEnabled = true;
 
-  int bottomNavigationSelectedIndex = 0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
@@ -241,7 +240,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           label: "Ayarlar",
                         ),
                       ],
-                      currentIndex: bottomNavigationSelectedIndex,
                       selectedItemColor:
                           Theme.of(context).appBarTheme.iconTheme?.color,
                       onTap: (index) async {

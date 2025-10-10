@@ -73,7 +73,6 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
           if (medyalar.isNotEmpty)
             BottomNavigationBarItem(icon: Icon(Icons.delete), label: "Sil"),
         ],
-        currentIndex: 0,
         selectedItemColor: Theme.of(context).appBarTheme.iconTheme?.color,
         onTap: (index) async {
           switch (index) {

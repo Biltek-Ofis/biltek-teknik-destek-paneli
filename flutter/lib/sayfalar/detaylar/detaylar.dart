@@ -158,6 +158,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                 duration: Duration(milliseconds: 500),
                 curve: Curves.ease,
               );
+              setState(() {
+                seciliIndex = index;
+              });
             }
           },
         ),
