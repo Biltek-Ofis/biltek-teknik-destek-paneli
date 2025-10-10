@@ -1,6 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_darwin/local_auth_darwin.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:provider/provider.dart';
 
 import '../ayarlar.dart';
@@ -48,7 +53,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         SPKullanici spKullanici = widget.spKullanici!;
         spKullanici.sifreyiCoz();
         kullaniciAdiController.text = spKullanici.kullaniciAdi;
-        sifreController.text = widget.spKullanici!.sifre;
+        //sifreController.text = widget.spKullanici!.sifre;
+        if (widget.spKullanici!.sifre.isNotEmpty) {
+          await _biyometricGiris();
+        }
       }
       bool beniHatirlaTemp =
           await SharedPreference.getBool(SharedPreference.beniHatirlaString) ??
@@ -171,7 +179,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
-  Future<void> _girisYap(MyNotifier myNotifier) async {
+  Future<void> _girisYap(MyNotifier? myNotifier) async {
     setState(() {
       kullaniciAdiError = null;
       sifreError = null;
@@ -227,15 +235,17 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                   await BiltekPost.kullaniciGetir(girisDurumu.auth);
               if (kullaniciModel != null) {
                 kapatildi = true;
-                if (beniHatirla) {
-                  SPKullanici spKullanici = SPKullanici.create(
-                    isim: kullaniciModel.adSoyad,
-                    kullaniciAdi: kullaniciAdi,
-                    sifre: sifre,
-                  );
-                  myNotifier.kullanici = spKullanici;
-                } else {
-                  myNotifier.kullanici = null;
+                if (myNotifier != null) {
+                  if (beniHatirla) {
+                    SPKullanici spKullanici = SPKullanici.create(
+                      isim: kullaniciModel.adSoyad,
+                      kullaniciAdi: kullaniciAdi,
+                      sifre: sifre,
+                    );
+                    myNotifier.kullanici = spKullanici;
+                  } else {
+                    myNotifier.kullanici = null;
+                  }
                 }
                 await SharedPreference.setBool(
                   SharedPreference.beniHatirlaString,
@@ -302,6 +312,41 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     }
     if (!kapatildi) {
       navigatorState.pop();
+    }
+  }
+
+  Future<void> _biyometricGiris() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    try {
+      final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+      final bool canAuthenticate =
+          canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+      if (canAuthenticate) {
+        final bool didAuthenticate = await auth.authenticate(
+          localizedReason:
+              'Daha önce giriş yapılmış bir hesabınız bulunuyor. Biyometrik kimliğinizi doğrulayarak tekrar giriş yapabilirsiniz.',
+          authMessages: const <AuthMessages>[
+            AndroidAuthMessages(
+              signInTitle: 'Biyometrik Doğrulama ile Giriş Yapın',
+              cancelButton: 'Hayır Teşekkürler',
+            ),
+            IOSAuthMessages(cancelButton: 'Hayır Teşekkürler'),
+          ],
+        );
+        if (didAuthenticate) {
+          sifreController.text = widget.spKullanici!.sifre;
+          await _girisYap(null);
+        }
+      }
+    } on PlatformException catch (e) {
+      if (e.code == auth_error.notEnrolled) {
+        // Add handling of no hardware here.
+      } else if (e.code == auth_error.lockedOut ||
+          e.code == auth_error.permanentlyLockedOut) {
+        // ...
+      } else {
+        // ...
+      }
     }
   }
 }
