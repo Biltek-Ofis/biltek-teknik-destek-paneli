@@ -158,7 +158,7 @@ echo '<script>
       formKaydet("#dt-YapilanIslemlerForm", function(){
         $("#kaydetBtn").prop("disabled", false);
         $("#kaydetFormYazdirBtn").prop("disabled", false);
-        cihazBilgileriniGetir();
+        cihazBilgileriniGetir(false);
         $("#kaydediliyorModal").modal("hide");
         detaylariGoster();
         $("#basarili-mesaji").html("Bilgiler başarıyla kaydedildi.");
@@ -301,7 +301,7 @@ echo '
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
     
-    cihazBilgileriniGetir();
+    cihazBilgileriniGetir(false);
 
     butonDurumu(guncel_durum_sayi);
     $("#duzenleBtn").prop("disabled", true);
@@ -592,49 +592,7 @@ $(document).ready(function(){
       
   });
 ';
-if (isset($_GET["servisNo"])) {
 
-  $cihazGoster = $_GET["servisNo"];
-  $gosterilenCihaz = $this->Cihazlar_Model->tekCihazApp($cihazGoster);
-  if ($gosterilenCihaz != null) {
-
-    echo 'detayModaliGoster(
-      "' . donusturOnclick($gosterilenCihaz->id) . '", 
-      "' . donusturOnclick($gosterilenCihaz->servis_no) . '", 
-      "' . donusturOnclick($gosterilenCihaz->takip_numarasi) . '", 
-      "' . donusturOnclick($gosterilenCihaz->musteri_kod) . '", 
-      "' . donusturOnclick($gosterilenCihaz->musteri_adi) . '", 
-      "' . donusturOnclick($gosterilenCihaz->teslim_eden) . '",
-      "' . donusturOnclick($gosterilenCihaz->teslim_alan) . '",
-      "' . donusturOnclick($gosterilenCihaz->adres) . '",
-      "' . donusturOnclick($gosterilenCihaz->telefon_numarasi) . '",
-      "' . donusturOnclick($gosterilenCihaz->tarih) . '",
-      "' . donusturOnclick($gosterilenCihaz->bildirim_tarihi) . '",
-      "' . donusturOnclick($gosterilenCihaz->cikis_tarihi) . '",
-      cihazDurumu("' . donusturOnclick($gosterilenCihaz->guncel_durum) . '"),
-      "' . donusturOnclick($gosterilenCihaz->guncel_durum) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz_turu) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz_turu_val) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz_modeli) . '",
-      "' . donusturOnclick($gosterilenCihaz->seri_no) . '",
-      "' . donusturOnclick($gosterilenCihaz->teslim_alinanlar) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz_sifresi) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihaz_deseni) . '",
-      "' . donusturOnclick($gosterilenCihaz->cihazdaki_hasar) . '",
-      "' . donusturOnclick($gosterilenCihaz->hasar_tespiti) . '",
-      "' . donusturOnclick($gosterilenCihaz->ariza_aciklamasi) . '",
-      servisTuru("' . donusturOnclick($gosterilenCihaz->servis_turu) . '"),
-      evetHayir("' . donusturOnclick($gosterilenCihaz->yedek_durumu) . '"),
-      "' . donusturOnclick($gosterilenCihaz->sorumlu) . '",
-      "' . donusturOnclick($gosterilenCihaz->sorumlu_val) . '",
-      "' . donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi) . '",
-      "' . donusturOnclick($gosterilenCihaz->notlar) . '",
-      "' . donusturOnclick($gosterilenCihaz->tahsilat_sekli) . '",
-      faturaDurumu("' . donusturOnclick($gosterilenCihaz->fatura_durumu) . '"), 
-      "' . donusturOnclick($gosterilenCihaz->fis_no) . '");';
-  }
-}
 echo '
 });
 </script>';
@@ -1512,13 +1470,13 @@ echo 'function telefonNumarasiValid(telNo){
   }
   return true;
 }';
-echo 'function cihazBilgileriniGetir(){
+echo 'function cihazBilgileriniGetir(tabloyu_yoksay){
   if(suankiCihaz > 0){
     $.get(\'' . base_url("cihazyonetimi/tekCihazJQ") . '/\' + suankiCihaz + \'\', {})
       .done(function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = $("#cihaz" + value.id).length > 0;
-          if (cihazVarmi) {
+          if (cihazVarmi || tabloyu_yoksay) {
             butonDurumu(value.guncel_durum);
             var toplamMaliyet = 0;
             var toplam = 0;
@@ -2063,7 +2021,7 @@ echo '
       });
     }
     function verileriGuncelle(){
-      cihazBilgileriniGetir();
+      cihazBilgileriniGetir(false);
       $.get(\'' . base_url("cihazyonetimi/silinenCihazlariBul") . '\', {}, function(data) {
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = $( "#cihaz" + value.id).length > 0;
@@ -2178,8 +2136,52 @@ echo '
     });
     $("#statusSuccessModal").on("hidden.bs.modal", function(e) {
       $("#basarili-mesaji").html("");
-    });
-    
+    });';
+if (isset($_GET["servisNo"])) {
+  $cihazGoster = $_GET["servisNo"];
+  $gosterilenCihaz = $this->Cihazlar_Model->tekCihazApp($cihazGoster);
+  if ($gosterilenCihaz != null) {
+
+    echo 'detayModaliGoster(
+      "' . donusturOnclick($gosterilenCihaz->id) . '", 
+      "' . donusturOnclick($gosterilenCihaz->servis_no) . '", 
+      "' . donusturOnclick($gosterilenCihaz->takip_numarasi) . '", 
+      "' . donusturOnclick($gosterilenCihaz->musteri_kod) . '", 
+      "' . donusturOnclick($gosterilenCihaz->musteri_adi) . '", 
+      "' . donusturOnclick($gosterilenCihaz->teslim_eden) . '",
+      "' . donusturOnclick($gosterilenCihaz->teslim_alan) . '",
+      "' . donusturOnclick($gosterilenCihaz->adres) . '",
+      "' . donusturOnclick($gosterilenCihaz->telefon_numarasi) . '",
+      "' . donusturOnclick($gosterilenCihaz->tarih) . '",
+      "' . donusturOnclick($gosterilenCihaz->bildirim_tarihi) . '",
+      "' . donusturOnclick($gosterilenCihaz->cikis_tarihi) . '",
+      cihazDurumu("' . donusturOnclick($gosterilenCihaz->guncel_durum) . '"),
+      "' . donusturOnclick($gosterilenCihaz->guncel_durum) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_turu) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_turu_val) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_modeli) . '",
+      "' . donusturOnclick($gosterilenCihaz->seri_no) . '",
+      "' . donusturOnclick($gosterilenCihaz->teslim_alinanlar) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_sifresi) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihaz_deseni) . '",
+      "' . donusturOnclick($gosterilenCihaz->cihazdaki_hasar) . '",
+      "' . donusturOnclick($gosterilenCihaz->hasar_tespiti) . '",
+      "' . donusturOnclick($gosterilenCihaz->ariza_aciklamasi) . '",
+      servisTuru("' . donusturOnclick($gosterilenCihaz->servis_turu) . '"),
+      evetHayir("' . donusturOnclick($gosterilenCihaz->yedek_durumu) . '"),
+      "' . donusturOnclick($gosterilenCihaz->sorumlu) . '",
+      "' . donusturOnclick($gosterilenCihaz->sorumlu_val) . '",
+      "' . donusturOnclick($gosterilenCihaz->yapilan_islem_aciklamasi) . '",
+      "' . donusturOnclick($gosterilenCihaz->notlar) . '",
+      "' . donusturOnclick($gosterilenCihaz->tahsilat_sekli) . '",
+      faturaDurumu("' . donusturOnclick($gosterilenCihaz->fatura_durumu) . '"), 
+      "' . donusturOnclick($gosterilenCihaz->fis_no) . '");
+      suankiCihaz = '.$gosterilenCihaz->id.';
+      cihazBilgileriniGetir(true);';
+  }
+}
+echo '
   });
 </script>';
 echo $cihazDetayOrnek;
