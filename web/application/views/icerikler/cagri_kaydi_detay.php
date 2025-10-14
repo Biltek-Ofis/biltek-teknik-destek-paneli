@@ -209,10 +209,16 @@ if (isset($cagri) || $cagri != null) {
             ?>
 
             <div class="col-sm-12 text-center">
-                <button id="cagriKaydiDuzenleBtn" type="button" class="btn btn-info text-white me-2" data-bs-toggle="modal"
-                    data-bs-target="#cagriKaydiDuzenleModal">
-                    Düzenle
-                </button>
+                <?php
+                if ($this->Giris_Model->kullaniciGiris()) {
+                ?>
+                    <button id="cagriKaydiDuzenleBtn" type="button" class="btn btn-info text-white me-2" data-bs-toggle="modal"
+                        data-bs-target="#cagriKaydiDuzenleModal">
+                        Düzenle
+                    </button>
+                <?php
+                }
+                ?>
                 <a href="<?= base_url("cagrikayitlari"); ?>" class="btn btn-primary">Geri Dön</a>
             </div>
         </section>
