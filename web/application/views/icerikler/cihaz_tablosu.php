@@ -32,7 +32,7 @@ $this->load->view("inc/style_tablo");
 $sorumlu_belirtildimi = isset($suankiPersonel) ? true : false;
 $silButonuGizle = isset($silButonuGizle) ? $silButonuGizle : false;
 
-$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{sorumlu_val_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{notlar_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
+$cihazDetayBtnOnclick = 'detayModaliGoster(\\\'{id}\\\',\\\'{cagri_id}\\\',\\\'{servis_no}\\\',\\\'{takip_no}\\\',\\\'{musteri_kod}\\\',\\\'{musteri_adi_onclick}\\\',\\\'{teslim_eden_onclick}\\\',\\\'{teslim_alan_onclick}\\\',\\\'{adres_onclick}\\\',\\\'{telefon_numarasi}\\\',\\\'{tarih}\\\',\\\'{bildirim_tarihi}\\\',\\\'{cikis_tarihi}\\\',\\\'{guncel_durum_onclick}\\\',\\\'{guncel_durum_sayi}\\\',\\\'{cihaz_turu_onclick}\\\',\\\'{cihaz_turu_val_onclick}\\\',\\\'{cihaz_onclick}\\\',\\\'{cihaz_modeli_onclick}\\\',\\\'{seri_no_onclick}\\\',\\\'{teslim_alinanlar_onclick}\\\',\\\'{cihaz_sifresi_onclick}\\\',\\\'{cihaz_deseni_onclick}\\\',\\\'{cihazdaki_hasar_onclick}\\\',\\\'{hasar_tespiti_onclick}\\\',\\\'{ariza_aciklamasi_onclick}\\\',\\\'{servis_turu_onclick}\\\',\\\'{yedek_durumu}\\\',\\\'{sorumlu_onclick}\\\',\\\'{sorumlu_val_onclick}\\\',\\\'{yapilan_islem_aciklamasi_onclick}\\\',\\\'{notlar_onclick}\\\',\\\'{tahsilat_sekli_onclick}\\\',\\\'{fatura_durumu_onclick}\\\',\\\'{fis_no_onclick}\\\')';
 $cihazDetayBtnOnclick = $this->Islemler_Model->trimle($cihazDetayBtnOnclick);
 $cDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 $cTurleri = $this->Cihazlar_Model->cihazTurleri();
@@ -54,6 +54,7 @@ echo '<script>
   if(yeniCihazGirisiAcik === undefined){
     yeniCihazGirisiAcik = false;
   }
+  var cagriKaydiBtnGoster = false;
   var suankiCihaz = 0;
   var yonetici = ' . ($this->Kullanicilar_Model->yonetici() ? "true" : "false") . ';
   var duzenleme_modu = false;
@@ -68,6 +69,9 @@ echo '<script>
     $("#serviskabulBtn").show();
     $("#barkoduYazdirBtn").show();
     $("#kargoBilgisiBtn").show();
+    if(cagriKaydiBtnGoster){
+      $("#cagriKaydiBtn").show();
+    }
     $("#formuYazdirBtn").show();
     if($("#silBtn").hasClass("goster")){
       $("#silBtn").show();
@@ -89,6 +93,7 @@ echo '<script>
     $("#serviskabulBtn").hide();
     $("#barkoduYazdirBtn").hide();
     $("#kargoBilgisiBtn").hide();
+    $("#cagriKaydiBtn").hide();
     $("#formuYazdirBtn").hide();
     $("#silBtn").hide();
     $("#dt_duzenle").show();
@@ -297,7 +302,7 @@ echo '
       $("#dt-loglar").html(ht);
     });
   }
-  function detayModaliGoster(id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz_turu_val, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, sorumlu_val, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
+  function detayModaliGoster(id, cagri_id, servis_no, takip_no, musteri_kod, musteri_adi, teslim_eden, teslim_alan, adres, telefon_numarasi, tarih, bildirim_tarihi, cikis_tarihi, guncel_durum, guncel_durum_sayi, cihaz_turu, cihaz_turu_val, cihaz, cihaz_modeli, seri_no, teslim_alinanlar, cihaz_sifresi, cihaz_deseni, cihazdaki_hasar, hasar_tespiti, ariza_aciklamasi, servis_turu, yedek_durumu, sorumlu, sorumlu_val, yapilan_islem_aciklamasi, notlar, tahsilat_sekli, fatura_durumu, fis_no) {
     /*<button id="' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" class="btn btn-info text-white ' . $this->Cihazlar_Model->cihazDetayModalAdi() . 'Btn{id}" onClick="' . $cihazDetayBtnOnclick . '">Detaylar</button>*/
     suankiCihaz = parseInt(id);
     
@@ -357,6 +362,15 @@ echo '
     $("#fisNo").html(fis_no);
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
     $("#kargoBilgisiBtn").attr("onclick", "kargoBilgisiYazdir(" + id + ")");
+    if(cagri_id != 0 && cagri_id !== undefined && cagri_id !== null){
+      cagriKaydiBtnGoster = true;
+      $("#cagriKaydiBtn").attr("href", "'.base_url("cagrikayitlari/detay/").'"+cagri_id);
+      $("#cagriKaydiBtn").show();
+    }else{
+      cagriKaydiBtnGoster = false;
+      $("#cagriKaydiBtn").attr("href", "#");
+      $("#cagriKaydiBtn").hide();
+    }
     $("#yeniKayitAcBtn").attr("onclick", "kaydiKopyala(\'" + donusturOnclick(musteri_kod) + "\', \'" + donusturOnclick(musteri_adi) + "\' , \'" + donusturOnclick(adres) + "\', \'" + donusturOnclick(telefon_numarasi) + "\', \'" + donusturOnclick(cihaz_turu_val) + "\', \'" + donusturOnclick(cihaz) + "\', \'" + donusturOnclick(cihaz_modeli) + "\', \'" + donusturOnclick(seri_no) + "\', \'" + donusturOnclick(cihaz_sifresi) + "\', \'" + donusturOnclick(cihaz_deseni) + "\', \'" + donusturOnclick(sorumlu_val) + "\')");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
     $("#kaydetFormYazdirBtn").attr("onclick", "detaylariKaydet(true, " + id + ")");
@@ -608,7 +622,7 @@ $(document).ready(function(){
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").removeClass("fade");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
             $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").addClass("fade");
-            detayModaliGoster(value.id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz_turu_val, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.sorumlu_val, value.yapilan_islem_aciklamasi, value.notlar, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
+            detayModaliGoster(value.id, value.cagri_id, value.servis_no, value.takip_numarasi, value.musteri_kod, value.musteri_adi, value.teslim_eden, value.teslim_alan, value.adres, value.telefon_numarasi, value.tarih, value.bildirim_tarihi, value.cikis_tarihi, cihazDurumu(value.guncel_durum), value.guncel_durum, value.cihaz_turu, value.cihaz_turu_val, value.cihaz, value.cihaz_modeli, value.seri_no, value.teslim_alinanlar, value.cihaz_sifresi, value.cihaz_deseni, value.cihazdaki_hasar, value.hasar_tespiti, value.ariza_aciklamasi, servisTuru(value.servis_turu), evetHayir(value.yedek_durumu), value.sorumlu, value.sorumlu_val, value.yapilan_islem_aciklamasi, value.notlar, value.tahsilat_sekli, faturaDurumu(value.fatura_durumu), value.fis_no);
           }
         } catch (error) {
           console.error(error);
@@ -1070,6 +1084,7 @@ $(document).ready(function(){
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet(false, 0)" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="kaydetFormYazdirBtn" href="#" onclick="detaylariKaydet(true, 0)" style="display:none;" class="btn btn-primary">Kaydet ve Formu Yazdır</a>
       <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
+      <a id="cagriKaydiBtn" href="#" class="btn btn-success">Çağrı Kaydı</a>
       <a id="kargoBilgisiBtn" href="#" class="btn btn-dark text-light">Kargo Bilgisi Yazdır</a>
       <a id="serviskabulBtn" href="#" class="btn btn-dark text-light">Servis Kabul Formunu Yazdır</a>
       <a id="barkoduYazdirBtn" href="#" class="btn btn-dark text-light">Barkodu Yazdır</a>
@@ -1140,6 +1155,7 @@ $eskiler = array(
   "{servis_no}",
   "{takip_no}",
   "{id}",
+  "{cagri_id}",
   "{musteri_adi}",
   "{musteri_kod}",
   "{musteri_kod_onclick}",
@@ -1392,6 +1408,7 @@ function donustur(str, value, yeni) {
       .replaceAll("{display_kilit}",  cihazKilitle(value.guncel_durum) ? "display:none;" : "")
       .replaceAll("{servis_no}", value.servis_no)
       .replaceAll("{id}", value.id)
+      .replaceAll("{cagri_id}", value.cagri_id)
       .replaceAll("{musteri_adi}", value.musteri_adi)
       .replaceAll("{musteri_kod}", value.musteri_kod ? value.musteri_kod : "Yok")
       .replaceAll("{musteri_kod_onclick}", value.musteri_kod ? donusturOnclick(value.musteri_kod) : "Yok")
@@ -2144,6 +2161,7 @@ if (isset($_GET["servisNo"])) {
 
     echo 'detayModaliGoster(
       "' . donusturOnclick($gosterilenCihaz->id) . '", 
+      "' . donusturOnclick($gosterilenCihaz->cagri_id) . '",
       "' . donusturOnclick($gosterilenCihaz->servis_no) . '", 
       "' . donusturOnclick($gosterilenCihaz->takip_numarasi) . '", 
       "' . donusturOnclick($gosterilenCihaz->musteri_kod) . '", 
