@@ -137,7 +137,7 @@ if (isset($cagri) || $cagri != null) {
                     $islemler = $this->Cihazlar_Model->islemleriGetir($cihaz->id);
                     if (count($islemler) > 0) {
                         ?>
-                        <table>
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>İşlem</th>
