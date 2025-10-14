@@ -211,6 +211,13 @@ if (isset($cagri) || $cagri != null) {
             <div class="col-sm-12 text-center">
                 <?php
                 if ($this->Giris_Model->kullaniciGiris()) {
+                    if ($cihaz != null) {
+                    $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+                ?>
+                    <a href="<?= base_url($kullanici["teknikservis"] == 1 ? "cihazlarim/?servisNo=" . $cihaz->servis_no : "?servisNo=" . $cihaz->servis_no); ?>"
+                        class="btn btn-success me-2">Servis Kaydı</a>
+                <?php    
+                }
                 ?>
                     <button id="cagriKaydiDuzenleBtn" type="button" class="btn btn-info text-white me-2" data-bs-toggle="modal"
                         data-bs-target="#cagriKaydiDuzenleModal">

@@ -190,6 +190,13 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                         <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge ."". (strlen($cagri->birim) > 0 ? " ".$cagri->birim : "") . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
                                             class="btn btn-sm btn-success">Kayıt Aç</a>
                                         <?php
+                                    }else{
+                                        $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+                                        ?>
+                                        
+                                        <a href="<?= base_url($kullanici["teknikservis"] == 1 ? "cihazlarim/?servisNo=" . $cihaz->servis_no : "?servisNo=" . $cihaz->servis_no); ?>"
+                                            class="btn btn-sm btn-success">Servis Kaydı</a>
+                                        <?php
                                     }
                                     ?>
                                     <button class="btn btn-sm btn-info text-white"
