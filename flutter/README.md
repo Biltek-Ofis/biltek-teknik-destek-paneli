@@ -30,13 +30,13 @@ flutter run --dart-define-from-file=.env
 -Android
 
 ```
-flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
+flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info
 ```
 
 - Windows
 
 ```
-flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
+flutter build windows --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info
 ```
 
 - Google Play
@@ -46,5 +46,5 @@ java -jar pepk.jar --keystore=keystore.jks --alias=biltek --output=output.zip --
 ```
 
 ```
-flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info="C:\Users\Ozay\Documents\biltekteknikservis"
+flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info
 ```
