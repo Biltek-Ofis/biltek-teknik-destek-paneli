@@ -76,9 +76,6 @@ class Kullanicilar_Model extends CI_Model
                 $kullanici_adi_var = True;
             }
         }
-        if (!$kullanici_adi_var) {
-            $where["kullanici_adi !="] = "OZAY";
-        }
         return $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi())->result();
     }
     public function tekKullanici($id)
