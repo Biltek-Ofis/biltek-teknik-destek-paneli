@@ -113,6 +113,15 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
     echo '<div class="w-100 mt-2 text-center">
     <a href="' . base_url("app/android") . '" target="_blank"><img style="width:calc(100% / 2)" src="' . base_url("dist/img/app/google-play.png") . '"/></a>
   </div>';
+  if(strlen(MOBIL_SURUM_URL) > 0){
+    echo '
+    <div class="w-100 text-center">
+        veya
+    </div>
+    <div class="w-100 text-center">
+        <a href="' . base_url("m") . '">Mobil Sürüme Geç</a>
+    </div>';
+  }
 }
 //<p class="mb-1">
 //    <a href="forgot-password.html">Şifremi Unuttum</a>

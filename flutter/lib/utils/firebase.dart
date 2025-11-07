@@ -2,6 +2,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
+import '../ayarlar.dart';
 import '../firebase_ayarlari.dart';
 
 class FirebaseApi {
@@ -14,6 +15,7 @@ class FirebaseApi {
     );
 
     await FirebaseAppCheck.instance.activate(
+      providerWeb: ReCaptchaV3Provider(Ayarlar.firebase.recaptchaSiteKey),
       androidProvider:
           kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
       appleProvider: kDebugMode ? AppleProvider.debug : AppleProvider.appAttest,

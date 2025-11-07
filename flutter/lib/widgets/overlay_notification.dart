@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:universal_io/io.dart';
 
 void showNotification({String? title, String? body, Duration? duration}) {
-  FlutterRingtonePlayer().playNotification();
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    FlutterRingtonePlayer().playNotification();
+  }
   showOverlayNotification(
     (context) {
       return Card(

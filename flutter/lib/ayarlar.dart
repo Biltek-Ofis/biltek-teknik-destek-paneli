@@ -92,9 +92,14 @@ class FirebaseAyarlari {
       const String.fromEnvironment('FIREBASE_STORAGE_BUCKET');
   String get messagingSenderId =>
       const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID');
+  String get authDomain => const String.fromEnvironment('FIREBASE_AUTH_DOMAIN');
 
   String get androidApiKey =>
       const String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
   String get androidAppID =>
       const String.fromEnvironment('FIREBASE_ANDROID_APP_ID');
+  String get webApiKey => const String.fromEnvironment('FIREBASE_WEB_API_KEY');
+  String get webAppID => const String.fromEnvironment('FIREBASE_WEB_APP_ID');
+  String get recaptchaSiteKey =>
+      const String.fromEnvironment('RECAPTCHA_SITE_KEY');
 }

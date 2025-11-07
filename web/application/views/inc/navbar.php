@@ -61,7 +61,16 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   ?>
   <div class="w-100 bg-success text-center">
     <a href="<?= base_url("app/android"); ?>" target="_blank"><img style="width:calc(100% / 3)"
-        src="<?= base_url(" dist/img/app/google-play.png"); ?>" /></a>
+        src="<?= base_url("dist/img/app/google-play.png"); ?>" /></a><?php
+        
+        
+  if(strlen(MOBIL_SURUM_URL) > 0){
+    ?>
+    veya <a href="<?= base_url("m"); ?>">Mobil Sürüme Geç</a>
+    <?php
+  }
+  ?>
+        
   </div>
   <?php
 }

@@ -19,10 +19,7 @@ import 'ayarlar.dart';
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -59,6 +56,14 @@ class DefaultFirebaseOptions {
     appId: Ayarlar.firebase.androidAppID,
     messagingSenderId: Ayarlar.firebase.messagingSenderId,
     projectId: Ayarlar.firebase.projectID,
+    storageBucket: Ayarlar.firebase.storageBucket,
+  );
+  static final FirebaseOptions web = FirebaseOptions(
+    apiKey: Ayarlar.firebase.webApiKey,
+    appId: Ayarlar.firebase.webAppID,
+    messagingSenderId: Ayarlar.firebase.messagingSenderId,
+    projectId: Ayarlar.firebase.projectID,
+    authDomain: Ayarlar.firebase.authDomain,
     storageBucket: Ayarlar.firebase.storageBucket,
   );
 }

@@ -98,6 +98,10 @@ defined('DB_PASSWORD')         or define('DB_PASSWORD', 'sifre');
 // Veritabani son
 
 defined('TEKNIK_SERVIS_URL')   or define('TEKNIK_SERVIS_URL', "http://localhost/");
+
+defined('MOBIL_SURUM_URL')   or define('MOBIL_SURUM_URL', ""); // Flutter'dan build ettiğiniz mobil sürümün web urlsi. 
+                                                                                                    // Örnek: https://m.biltekbilgisayar.com.tr/ veya https://teknikservis.biltekbilgisayar.com.tr/m/
+
 defined('DOSYA_YUKLEME_URL')   or define('DOSYA_YUKLEME_URL', "/"); #python scripti kurulduysa flask url'si (Örnek https://example.com/upload)
 defined('A4_GENISLIK')         or define('A4_GENISLIK', 270);
 defined('A4_YUKSEKLIK')        or define('A4_YUKSEKLIK', 397);

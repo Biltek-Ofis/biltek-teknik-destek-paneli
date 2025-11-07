@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_barcode_scanner/screens/shared.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:universal_io/io.dart';
 
 import '../ayarlar.dart';
 import '../models/cihaz.dart';
@@ -837,12 +839,14 @@ Future<void> barkodTara(
             scanFormat: ScanFormat.ALL_FORMATS,
             onScanned: (res) async {
               NavigatorState navigatorState = Navigator.of(context);
-              await FlutterRingtonePlayer().play(
-                fromAsset: BiltekAssets.barkod,
-                looping: false,
-                asAlarm: false,
-                volume: 0.5,
-              );
+              if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+                await FlutterRingtonePlayer().play(
+                  fromAsset: BiltekAssets.barkod,
+                  looping: false,
+                  asAlarm: false,
+                  volume: 0.5,
+                );
+              }
               Future.delayed(Duration(seconds: 1), () async {
                 navigatorState.pop();
                 debugPrint("Sonuc: $res");
