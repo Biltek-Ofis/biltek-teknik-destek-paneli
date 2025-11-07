@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -93,12 +94,15 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           auth: widget.kullanici.auth,
                           cihazID: cihaz!.id,
                         );
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => WebviewPage(url: url),
-                          ),
-                        );
+                        if (kIsWeb) {
+                          launchUrlString(url);
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => WebviewPage(url: url),
+                            ),
+                          );
+                        }
                       },
                       child: Icon(Icons.print),
                     ),
@@ -472,12 +476,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                       icon: Icon(Icons.phone),
                                     ),
                                     SizedBox(width: 1),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await _kisiEkle();
-                                      },
-                                      icon: Icon(Icons.contact_page),
-                                    ),
+                                    if (!kIsWeb)
+                                      IconButton(
+                                        onPressed: () async {
+                                          await _kisiEkle();
+                                        },
+                                        icon: Icon(Icons.contact_page),
+                                      ),
                                   ],
                                 ),
                                 Row(

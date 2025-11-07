@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 
 import 'shared_preferences.dart';
@@ -12,10 +11,7 @@ class BarkodOkuyucu {
 
   static const int varsayilanPort = 9200;
 
-  BarkodOkuyucu._(
-    this.ip, {
-    this.port = varsayilanPort,
-  });
+  BarkodOkuyucu._(this.ip, {this.port = varsayilanPort});
 
   static Future<BarkodOkuyucu?> getir() async {
     String? ip = await SharedPreference.getString(SharedPreference.barkodIP);
@@ -48,6 +44,10 @@ class BarkodOkuyucu {
   }
 
   Future<void> _mesajGonder(String mesaj) async {
+    if (kIsWeb) {
+      return;
+    }
+
     Socket? socket;
     try {
       String? ip = await SharedPreference.getString(SharedPreference.barkodIP);

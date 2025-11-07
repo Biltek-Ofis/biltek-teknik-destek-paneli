@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
@@ -54,7 +55,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         spKullanici.sifreyiCoz();
         kullaniciAdiController.text = spKullanici.kullaniciAdi;
         //sifreController.text = widget.spKullanici!.sifre;
-        if (widget.spKullanici!.sifre.isNotEmpty) {
+        if (!kIsWeb && widget.spKullanici!.sifre.isNotEmpty) {
           await _biyometricGiris();
         }
       }

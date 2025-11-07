@@ -48,3 +48,4 @@ firebase.json
 lib/firebase_options.dart
 .env
 /split-debug-info/
+web/firebase-variables.js

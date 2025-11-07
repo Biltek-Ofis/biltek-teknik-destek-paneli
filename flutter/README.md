@@ -15,8 +15,12 @@ LISANS_URL=lisans sayfası url'si
 FIREBASE_PROJECT_ID=
 FIREBASE_STORAGE_BUCKET=
 FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_AUTH_DOMAIN=
 FIREBASE_ANDROID_API_KEY=
 FIREBASE_ANDROID_APP_ID=
+FIREBASE_WEB_API_KEY=
+FIREBASE_WEB_APP_ID=
+RECAPTCHA_SITE_KEY=
 ```
 
 ## Run
@@ -31,6 +35,15 @@ flutter run --dart-define-from-file=.env
 
 ```
 flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info
+```
+
+- Web
+
+- Eğer domainin altklasöründe yayınlayacaksanız sonda "/" yerine alt kasörün ismini girin
+- Örnek: "/mobil/"
+
+```
+flutter build web --dart-define-from-file=.env --release --base-href "/"
 ```
 
 - Windows

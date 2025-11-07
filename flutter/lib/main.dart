@@ -28,15 +28,17 @@ void main() async {
     debugPrint("Notification clicked with tip=$tip");
     bildirimIntent.addAll({"tip": tip, "id": id});
   });
+
   await FirebaseApi.initialize();
 
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-
-  await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-
+  if (!kIsWeb) {
+    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+  }
+  debugPrint("1");
   runApp(const MyApp());
 }
 
