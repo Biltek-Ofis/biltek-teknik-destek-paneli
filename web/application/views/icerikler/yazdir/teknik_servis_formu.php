@@ -1,6 +1,6 @@
 <?php
 echo '<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>';
 $this->load->view("inc/meta");

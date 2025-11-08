@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 $ayarlar = $this->Ayarlar_Model->getir();
 echo '<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="tr" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
