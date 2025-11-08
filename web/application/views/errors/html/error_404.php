@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="tr" data-bs-theme="light">
 <head>
 <meta charset="utf-8">
 <title>404 Sayfa Bulunamadı</title>

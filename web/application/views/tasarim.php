@@ -1,6 +1,6 @@
 <?php
 echo '<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="tr" data-bs-theme="light">
 
 <head>';
 $this->load->view("inc/meta");
