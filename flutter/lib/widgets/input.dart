@@ -9,6 +9,7 @@ class BiltekTextField extends StatelessWidget {
   const BiltekTextField({
     super.key,
     this.controller,
+    this.autofillHints,
     this.currentFocus,
     this.nextFocus,
     this.textInputAction,
@@ -29,6 +30,7 @@ class BiltekTextField extends StatelessWidget {
   });
 
   final TextEditingController? controller;
+  final Iterable<String>? autofillHints;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
   final TextInputAction? textInputAction;
@@ -51,6 +53,7 @@ class BiltekTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      autofillHints: autofillHints,
       focusNode: currentFocus,
       textInputAction:
           textInputAction ??
@@ -84,6 +87,7 @@ class BiltekSifre extends StatefulWidget {
   const BiltekSifre({
     super.key,
     this.controller,
+    this.autofillHints,
     this.currentFocus,
     this.nextFocus,
     this.textInputAction,
@@ -98,6 +102,7 @@ class BiltekSifre extends StatefulWidget {
     this.onTap,
   });
   final TextEditingController? controller;
+  final Iterable<String>? autofillHints;
   final FocusNode? currentFocus;
   final FocusNode? nextFocus;
   final TextInputAction? textInputAction;
@@ -122,6 +127,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
   Widget build(BuildContext context) {
     return BiltekTextField(
       controller: widget.controller,
+      autofillHints: widget.autofillHints,
       currentFocus: widget.currentFocus,
       nextFocus: widget.nextFocus,
       textInputAction: widget.textInputAction,

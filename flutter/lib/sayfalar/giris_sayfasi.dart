@@ -100,35 +100,44 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                     Image.asset(BiltekAssets.logo),
                     Text(hataMesaji, style: TextStyle(color: Colors.red)),
                     SizedBox(height: 10),
-                    BiltekTextField(
-                      controller: kullaniciAdiController,
-                      currentFocus: kullaniciAdiFocus,
-                      nextFocus: sifreFocus,
-                      label: "Kullanıcı Adı",
-                      errorText: kullaniciAdiError,
-                      onChanged: (value) {
-                        setState(() {
-                          kullaniciAdiError = null;
-                          hataMesaji = "";
-                        });
-                      },
+                    AutofillGroup(
+                      child: Column(
+                        children: [
+                          BiltekTextField(
+                            controller: kullaniciAdiController,
+                            autofillHints: [AutofillHints.username],
+                            currentFocus: kullaniciAdiFocus,
+                            nextFocus: sifreFocus,
+                            label: "Kullanıcı Adı",
+                            errorText: kullaniciAdiError,
+                            onChanged: (value) {
+                              setState(() {
+                                kullaniciAdiError = null;
+                                hataMesaji = "";
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          BiltekSifre(
+                            controller: sifreController,
+                            autofillHints: [AutofillHints.password],
+                            currentFocus: sifreFocus,
+                            label: "Şifre",
+                            errorText: sifreError,
+                            onChanged: (value) {
+                              setState(() {
+                                sifreError = null;
+                                hataMesaji = "";
+                              });
+                            },
+                            onSubmitted: (val) async {
+                              await _girisYap(myNotifier);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 10),
-                    BiltekSifre(
-                      controller: sifreController,
-                      currentFocus: sifreFocus,
-                      label: "Şifre",
-                      errorText: sifreError,
-                      onChanged: (value) {
-                        setState(() {
-                          sifreError = null;
-                          hataMesaji = "";
-                        });
-                      },
-                      onSubmitted: (val) async {
-                        await _girisYap(myNotifier);
-                      },
-                    ),
+
                     SizedBox(height: 10),
                     BiltekCheckbox(
                       value: beniHatirla,
