@@ -120,6 +120,7 @@ defined("FIREBASE_CONFIG")                         or define('FIREBASE_CONFIG', 
 )); // FIREBASE AYARLARI
 
 
+defined('DATATABLES_LOCAL')           or define('DATATABLES_LOCAL', FALSE);
 defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 
 
