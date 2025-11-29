@@ -88,7 +88,7 @@ $ayarlar = $this->Ayarlar_Model->getir();
 
     <main class="form-signin w-100 m-auto">
         <div class="alert alert-danger" style="<?= (strlen($girisHatasi) == 0 ? "display:none;" : ""); ?>" role="alert">
-            <?= $girisHatasi; ?>
+            <?= $girisHatasi.""; ?>
         </div>
         <?php
         $this->load->view("inc/tarayici_uyari");
