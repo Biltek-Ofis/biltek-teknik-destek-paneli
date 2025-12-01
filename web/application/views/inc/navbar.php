@@ -253,12 +253,21 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             <a href="<?= base_url("kullanici"); ?>" class="nav-link"><?= $kullanicibilgileri123["ad_soyad"]; ?></a>
           </li>
           <li class="nav-item align-items-center d-flex">
-          <i class="fas fa-sun"></i>
-            <!-- Default switch -->
-            <div class="ms-2 form-check form-switch">
-              <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
-            </div>
+            <i class="fas fa-sun"></i>
+              <!-- Default switch -->
+              <div class="ms-2 form-check form-switch">
+                <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
+              </div>
             <i class="fas fa-moon"></i>
+          </li>
+           &nbsp;&nbsp;&nbsp;
+          <li class="nav-item align-items-center d-flex" style="<?= KIS_MODU ? "" : "display:none !important; "; ?>">
+            <i class="far fa-sun"></i>
+              <!-- Default switch -->
+              <div class="ms-2 form-check form-switch">
+                <input id="kisModu" class="form-check-input" type="checkbox" role="switch" />
+              </div>
+            <i class="fas fa-snowflake"></i>
           </li>
           <!--<li class="nav-item">
               <a class="nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#temaSecModal">
