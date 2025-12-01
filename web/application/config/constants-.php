@@ -124,3 +124,4 @@ defined('DATATABLES_LOCAL')           or define('DATATABLES_LOCAL', FALSE);
 defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 
 
+defined('KIS_MODU')           or define('KIS_MODU', FALSE);

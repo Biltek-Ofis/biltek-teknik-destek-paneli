@@ -103,9 +103,87 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <?php
   }
   ?>
+  <style>
+    #santa-container {
+      <?= KIS_MODU ? "" : "display: none;"; ?>
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 500;
+    }
+
+    #santa {
+      <?= KIS_MODU ? "" : "display: none;"; ?>
+      width: 150px;
+      height: 80;
+      position: absolute;
+      transform-origin: center;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const santa = document.getElementById("santa");
+
+      let posX = 0;
+      let posY = 100;
+
+      let direction = 1;       // 1 = sağa, -1 = sola
+      let t = 0;
+
+      const speed = 5;
+      const swayAmount = 20;
+      const swaySpeed = 0.05;
+
+      const screenW = () => window.innerWidth;
+      const screenH = () => window.innerHeight;
+
+      function resetSanta() {
+
+        // 👉 Artık rastgele değil, sırayla yön değiştiriyoruz
+        direction = direction * -1;
+
+        // Y konumu rastgele
+        posY = Math.random() * (screenH() - 150);
+
+        if (direction === 1) {
+          // soldan → sağa gidiyor
+          posX = -200;
+          santa.style.transform = "scaleX(1)";
+          santa.style.transformOrigin = "left center";
+        } else {
+          // sağdan → sola gidiyor
+          posX = screenW() + 200;
+          santa.style.transform = "scaleX(-1)";
+          santa.style.transformOrigin = "right center";
+        }
+      }
+
+      function animate() {
+        t += swaySpeed;
+        posX += direction * speed;
+
+        const sway = Math.sin(t) * swayAmount;
+
+        santa.style.left = posX + "px";
+        santa.style.top = (posY + sway) + "px";
+
+        if (posX < -300 || posX > screenW() + 300) {
+          resetSanta();
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      resetSanta();
+      animate();
+    });
+  </script>
+
 </head>
 
 <body class="layout-top-nav"> <!--sidebar-collapse-->
+
   <div class="wrapper">
     <?php
     $bilgiler = array("aktifSayfa" => $icerik, "baslik" => $baslik, "cihazTurleri" => $this->Cihazlar_Model->cihazTurleri());
@@ -115,6 +193,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     //$this->load->view("inc/footer");
     ?>
+  </div>
+  <div id="santa-container">
+    <img id="santa" src="<?= base_url("dist/img/kis/santa.png") ?>" alt="Santa">
   </div>
 </body>
 

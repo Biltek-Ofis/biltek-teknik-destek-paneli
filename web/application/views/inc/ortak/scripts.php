@@ -8,10 +8,7 @@ echo '
 <script>
 	$(document).ready(function(){';
 $ayarlar = $this->Ayarlar_Model->getir();
-$kar_yagisi = $this->Ayarlar_Model->kar_yagisi();
-if ($kar_yagisi) {
-	echo 'karYagdir("#e6caca", 100);';
-}
+
 echo '
 		$.ajaxSetup({
 			error: function(xhr, status, error) {
@@ -97,14 +94,15 @@ echo '
 			var type = $(this).attr("type");
 			var id = $(this).attr("id");
 			const ignoreInpIds = [
-				"karanlikTema"
+				"karanlikTema",
+				"kisModu"
 			]
 			const ignoreInpTypes = [
 				"search"
 			]
 
 			var engellenebilir = true;
-			
+
 			if (ignoreInpIds.includes(id) || ignoreInpTypes.includes(type)) {
 				engellenebilir = false;
 			}
@@ -144,54 +142,131 @@ echo '
 			});
 		});
 	});
-	
+
 	const karanlikTemaStorageKey = "karanlikTema";
-	function karanlikTemaKaydet(durum){
-		if(durum){
+
+	function karanlikTemaBul() {
+		return (localStorage.getItem(karanlikTemaStorageKey) || "false") == "true";
+	}
+	function karanlikTemaKaydet(durum) {
+		if (durum) {
 			localStorage.setItem(karanlikTemaStorageKey, "true");
-		}else{
+		} else {
 			localStorage.removeItem(karanlikTemaStorageKey);
 		}
 	}
-	function karanlikTemaUygulanabilir(){
+	function karanlikTemaUygulanabilir() {
 		var attr = $("html").attr("data-bs-theme");
-		if(typeof attr !== 'undefined' && attr !== false){
+		if (typeof attr !== 'undefined' && attr !== false) {
 			return true;
 		}
 		return false;
 	}
-	function karanlikTemaDurum(durum){
-		if(karanlikTemaUygulanabilir()){
-			if(durum){
+	function karanlikTemaDurum(durum) {
+		if (karanlikTemaUygulanabilir()) {
+			karDurdur();
+			if (durum) {
 				$("html").attr("data-bs-theme", "dark");
 				$(".btn-dark").addClass("btn-light");
 				$(".btn-dark").addClass("text-black");
 				$(".btn-dark").removeClass("text-light");
 				$(".btn-dark").removeClass("btn-dark");
-			}else{
+				<?php
+				if (KIS_MODU) {
+					?>
+					if (kisModuBul()) {
+						karYagdir("#FFFFFF", 100);
+					}
+					<?php
+				}
+				?>
+			} else {
 				$("html").attr("data-bs-theme", "light");
 				$(".btn-light").addClass("btn-dark");
 				$(".btn-light").addClass("text-light");
 				$(".btn-light").removeClass("text-black");
 				$(".btn-light").removeClass("btn-light");
+				<?php
+				if (KIS_MODU) {
+					?>
+					if (kisModuBul()) {
+						karYagdir("#1786d0", 100);
+					}
+					<?php
+				}
+				?>
 			}
 			karanlikTemaKaydet(durum);
 		}
 	}
-	function karanlikTemaToggle(){
+	function karanlikTemaToggle() {
 		if (karanlikTemaUygulanabilir()) {
 			var attr = $("html").attr("data-bs-theme");
 			karanlikTemaDurum(attr != "dark")
 		}
 	}
-	function karanlikTemaYukle(){
-		const karanlikTema = localStorage.getItem(karanlikTemaStorageKey) || false;
-		$("#karanlikTema").prop("checked", karanlikTema == "true").change();
+	function karanlikTemaYukle() {
+		const karanlikTema = karanlikTemaBul();
+		$("#karanlikTema").prop("checked", karanlikTema).change();
+	}
+
+	const kisModuStorageKey = "kisModu";
+	function kisModuBul() {
+		return (localStorage.getItem(kisModuStorageKey) || "true") == "true";
+	}
+	function kisModuKaydet(durum) {
+		if (durum) {
+			localStorage.setItem(kisModuStorageKey, "true");
+		} else {
+			localStorage.setItem(kisModuStorageKey, "false");
+		}
+	}
+	function kisModuDurum(durum) {
+		if (durum) {
+			if (karanlikTemaBul()) {
+				karYagdir("#FFFFFF", 100);
+			} else {
+				karYagdir("#1786d0", 100);
+			}
+			$("#santa").show();
+			$("#santa-container").show();
+		} else {
+			karDurdur();
+
+			$("#santa").hide();
+			$("#santa-container").hide();
+		}
+		kisModuKaydet(durum);
+	}
+	function kisModuToggle() {
+		const kisModu = kisModuBul();
+		kisModuDurum(!kisModu);
+	}
+	function kisModuYukle() {
+		const kisModu = kisModuBul();
+		$("#kisModu").prop("checked", kisModu).change();
 	}
 	$(document).ready(function () {
 		$("#karanlikTema").on("change", function () {
 			karanlikTemaDurum($(this).prop("checked") == true);
 		});
 		karanlikTemaYukle();
+		<?php
+		if (!KIS_MODU) {
+			?>
+			localStorage.removeItem(kisModuStorageKey);
+			<?php
+		}
+		?>
+		$("#kisModu").on("change", function () {
+			kisModuDurum($(this).prop("checked") == true);
+		});
+		<?php
+		if (KIS_MODU) {
+			?>
+			kisModuYukle();
+			<?php
+		}
+		?>
 	});
 </script>
