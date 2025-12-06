@@ -537,7 +537,7 @@ function yaziBoyutu($satir)
   return '<label for="ozelBarkodSatir' . $satir . 'Yazi" class="form-label">Yazı Boyutu:</label>
           <div class="input-group">
             <input id="ozelBarkodSatir' . $satir . 'Yazi" type="number" class="form-control" placeholder="Satır ' . $satir . ' Yazı Boyutu"
-              aria-label="Satır ' . $satir . ' Yazı Boyutu" value="17">
+              aria-label="Satır ' . $satir . ' Yazı Boyutu" value="15">
             <select class="form-select" id="ozelBarkodSatir' . $satir . 'YaziSelect">
               <option value="px">px</option>
               <option value="cm">cm</option>
