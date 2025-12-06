@@ -139,13 +139,13 @@ echo '
             <td class="p-0 pl-1 pr-1 m-0 text-center gizli" colspan="12" style="color:#fff !important; font-size:5px; opacity:0;"></td>
         </tr>
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir1Align . '" colspan="12" style="font-size:' . $satir1YaziBoyut . ' !important;">' . $satir1 . '</td>
+            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir1Align . '" colspan="12" style="font-size:' . $satir1YaziBoyut . ' !important;">' . (strlen(trim($satir1)) > 0 ? $satir1 : "&nbsp;") . '</td>
         </tr>
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir2Align . '" colspan="12" style="font-size:' . $satir2YaziBoyut . ' !important;">' . $satir2 . '</td>
+            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir2Align . '" colspan="12" style="font-size:' . $satir2YaziBoyut . ' !important;">' . (strlen(trim($satir2)) > 0 ? $satir2 : "&nbsp;") . '</td>
         </tr>
         <tr>
-            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir3Align . '" colspan="12" style="font-size:' . $satir3YaziBoyut . ' !important;">' . $satir3 . '</td>
+            <td class="p-0 pl-1 pr-1 m-0 text-' . $satir3Align . '" colspan="12" style="font-size:' . $satir3YaziBoyut . ' !important;">' . (strlen(trim($satir3)) > 0 ? $satir3 : "&nbsp;") . '</td>
         </tr>
         </tbody>
     </table>
