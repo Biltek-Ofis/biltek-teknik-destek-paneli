@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_darwin/local_auth_darwin.dart';
-import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:provider/provider.dart';
 
 import '../ayarlar.dart';
@@ -348,11 +346,11 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
           await _girisYap(null);
         }
       }
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notEnrolled) {
+    } on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
         // Add handling of no hardware here.
-      } else if (e.code == auth_error.lockedOut ||
-          e.code == auth_error.permanentlyLockedOut) {
+      } else if (e.code == LocalAuthExceptionCode.temporaryLockout ||
+          e.code == LocalAuthExceptionCode.biometricLockout) {
         // ...
       } else {
         // ...
