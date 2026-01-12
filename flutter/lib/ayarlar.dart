@@ -48,6 +48,9 @@ class Ayarlar {
   static String get fiyatiReddet => "${appUrl}fiyatiReddet/";
   static String get cagriKaydiSil => "${appUrl}cagriKaydiSil/";
 
+  static String get imzaYukle => "${appUrl}imzaYukle/";
+  static String get imzaSil => "${appUrl}imzaSil/";
+
   static String teknikservisformu({
     required String auth,
     required int cihazID,

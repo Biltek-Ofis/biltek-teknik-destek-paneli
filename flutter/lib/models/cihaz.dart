@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:signature/signature.dart';
+
 class Cihaz {
   final int id;
   final int servisNo;
@@ -72,6 +77,8 @@ class Cihaz {
   final int cihazTuruVal;
   final int tahsilatSekliVal;
   final int sorumluVal;
+  final String imzaDosyasi;
+  final String imzaPoints;
   final List<YapilanIslem> islemler;
   static Cihaz create({
     int id = 0,
@@ -149,6 +156,8 @@ class Cihaz {
     int siralama = 0,
     int tahsilatSekliVal = 0,
     int sorumluVal = 0,
+    String imzaDosyasi = "",
+    String imzaPoints = "",
     List<YapilanIslem> islemler = const [],
   }) {
     return Cihaz(
@@ -225,6 +234,8 @@ class Cihaz {
       cihazTuruVal: cihazTuruVal,
       tahsilatSekliVal: 0,
       sorumluVal: 0,
+      imzaDosyasi: imzaDosyasi,
+      imzaPoints: imzaPoints,
       islemler: islemler,
     );
   }
@@ -303,6 +314,8 @@ class Cihaz {
     required this.cihazTuruVal,
     required this.tahsilatSekliVal,
     required this.sorumluVal,
+    required this.imzaDosyasi,
+    required this.imzaPoints,
     required this.islemler,
   });
   factory Cihaz.fromJson(Map<String, dynamic> json) {
@@ -381,6 +394,8 @@ class Cihaz {
         "cihaz_turu_val": String cihazTuruVal,
         "tahsilat_sekli_val": String tahsilatSekliVal,
         "sorumlu_val": String sorumluVal,
+        "imza_dosyasi": String imzaDosyasi,
+        "imza_points": String imzaPoints,
         "islemler": List<dynamic> islemler,
       } =>
         Cihaz(
@@ -457,6 +472,8 @@ class Cihaz {
           cihazTuruVal: int.tryParse(cihazTuruVal) ?? -1,
           tahsilatSekliVal: int.tryParse(tahsilatSekliVal) ?? -1,
           sorumluVal: int.tryParse(sorumluVal) ?? -1,
+          imzaDosyasi: imzaDosyasi,
+          imzaPoints: imzaPoints,
           islemler:
               islemler
                   .map(
@@ -467,6 +484,61 @@ class Cihaz {
         ),
       _ => throw FormatException("Cihaz yüklenirken hata oluştu."),
     };
+  }
+
+  static String imzaPointsToJson(List<Point> points) {
+    List<Map<String, dynamic>> pointList = [];
+    try {
+      for (var i = 0; i < points.length; i++) {
+        Point point = points[i];
+        Map<String, dynamic> pointMap = {};
+        pointMap.addAll({
+          "pressure": point.pressure,
+          "type": point.type.name,
+          "offset": {"dx": point.offset.dx, "dy": point.offset.dy},
+        });
+        pointList.add(pointMap);
+      }
+    } on Exception catch (e) {
+      debugPrint("Imza json'a dönüştürülemedi: $e");
+    }
+    return jsonEncode(pointList);
+  }
+
+  List<Point> imzaJsonToPoint() {
+    if (imzaPoints.trim().isNotEmpty) {
+      try {
+        List<Point> points = [];
+        debugPrint("İmza points: $imzaPoints");
+        List<dynamic> pointList = jsonDecode(imzaPoints.trim());
+        for (var i = 0; i < pointList.length; i++) {
+          Map<String, dynamic> pointMap = pointList[i] as Map<String, dynamic>;
+          String type = pointMap["type"] ?? "";
+          PointType pointType;
+          switch (type) {
+            case "tap":
+              pointType = PointType.tap;
+              break;
+            default:
+              pointType = PointType.move;
+              break;
+          }
+          Point point = Point(
+            Offset(
+              pointMap["offset"]["dx"] ?? 0,
+              pointMap["offset"]["dy"] ?? 0,
+            ),
+            pointType,
+            pointMap["pressure"] ?? 0,
+          );
+          points.add(point);
+        }
+        return points;
+      } on Exception catch (e) {
+        debugPrint("Imza points'e dönüştürülemedi: $e");
+      }
+    }
+    return [];
   }
 }
 

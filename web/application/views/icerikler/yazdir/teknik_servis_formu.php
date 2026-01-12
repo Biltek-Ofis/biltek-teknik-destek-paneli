@@ -16,11 +16,18 @@ $this->load->view("inc/eski/scripts");
 $this->load->view("inc/style_yazdir_tablo");
 $this->load->view("inc/styles_important");
 $alan_musteri = "";
+$guncelle = FALSE;
 if(isset($_GET["alan"])){
     $alan_musteri = $_GET["alan"];
 }
-if($bilgileri_goster){
+if(isset($_GET["guncelle"])){
+    $guncelle = TRUE;
+}
+if($bilgileri_goster && $guncelle){
     $cihaz->teslim_alan = $alan_musteri;
+    $this->Cihazlar_Model->cihazDuzenle($cihaz->id, array(
+        "teslim_alan" => $alan_musteri,
+    ), 0, FALSE);
 }
 
 echo '<style>
@@ -351,14 +358,20 @@ echo '</td>
                 <td colspan="3" class="text-center">'. ($bilgileri_goster ? $cihaz->sorumlu : "") . '';
 
 /* echo $cihaz->sorumlu;*/
-
+$imza_konum = "";
+if($bilgileri_goster){
+    $imza_konum = $cihaz->imza_dosyasi;
+    if($cihaz->imza_yerel == 1){
+        $imza_konum = base_url($cihaz->imza_dosyasi);
+    }
+}
 echo '</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">İMZASI</td>
                 <td colspan="4" class="text-center"></td>
                 <td colspan="3" class="text-center">İMZASI</td>
-                <td colspan="4" class="text-center"></td>
+                <td colspan="4" class="text-center">'.(strlen($imza_konum) > 0 ? '<img height="30" src="'.$imza_konum.'"/>' : "").'</td>
                 <td colspan="3" class="text-center">İMZASI</td>
                 <td colspan="3" class="text-center"></td>
             </tr>

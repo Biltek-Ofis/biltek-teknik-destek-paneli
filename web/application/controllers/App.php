@@ -379,9 +379,7 @@ class App extends CI_Controller
                     $sil = $this->Cihazlar_Model->medyaSil($cihaz_id);
                     if ($sil) {
                         if ($medya != null) {
-                            if (file_exists($medya->konum)) {
-                                unlink($medya->konum);
-                            }
+                            $this->Cihazlar_Model->dosyaSil($medya->konum);
                         }
                         echo json_encode(array("sonuc" => 1));
                     } else {
@@ -798,6 +796,53 @@ class App extends CI_Controller
                 ));
             } else {
                 echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function imzaYukle()
+    {
+        $this->headerlar();
+        $cihaz_id = $this->input->post("id");
+        $points = $this->input->post("points");
+        $uye_id = $this->input->post("uye_id");
+        $teslim_alan = $this->input->post("teslim_alan");
+
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($cihaz_id)) {
+                    $yukle = $this->Cihazlar_Model->imzaYukle($cihaz_id, $points, $teslim_alan, $uye_id);
+                    echo json_encode($yukle);
+                }
+            } else {
+                echo json_encode($this->hataMesaji(4));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function imzaSil()
+    {
+        $this->headerlar();
+        $cihaz_id = $this->input->post("id");
+        $uye_id = $this->input->post("uye_id");
+        $teslim_alan = $this->input->post("teslim_alan");
+
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($cihaz_id)) {
+                    $sil = $this->Cihazlar_Model->imzaSil($cihaz_id,  $teslim_alan, $uye_id);
+                    if ($sil) {
+                        echo json_encode(array("sonuc" => 1));
+                    } else {
+                        echo json_encode($this->hataMesaji(99));
+                    }
+                }
+            } else {
+                echo json_encode($this->hataMesaji(4));
             }
         } else {
             echo json_encode($this->hataMesaji(1));

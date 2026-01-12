@@ -28,7 +28,7 @@ echo '
 		var url = "' . base_url("cihaz/teknik_servis_formu") . '/" + id;
 		var alan = $("#teslim_alan_form").val();
 		if(alan.length > 0){
-			url = url + "?alan=" + alan;
+			url = url + "?alan=" + alan + "&guncelle=1";
 		}
 		teknikServisFormuPencere = window.open(
 			url,
