@@ -52,9 +52,12 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         SPKullanici spKullanici = widget.spKullanici!;
         spKullanici.sifreyiCoz();
         kullaniciAdiController.text = spKullanici.kullaniciAdi;
-        //sifreController.text = widget.spKullanici!.sifre;
-        if (!kIsWeb && widget.spKullanici!.sifre.isNotEmpty) {
-          await _biyometricGiris();
+        if (widget.spKullanici!.sifre.isNotEmpty) {
+          if (!kIsWeb) {
+            await _biyometricGiris();
+          } else {
+            sifreController.text = widget.spKullanici!.sifre;
+          }
         }
       }
       bool beniHatirlaTemp =
@@ -345,6 +348,8 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
           sifreController.text = widget.spKullanici!.sifre;
           await _girisYap(null);
         }
+      } else {
+        sifreController.text = widget.spKullanici!.sifre;
       }
     } on LocalAuthException catch (e) {
       if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
