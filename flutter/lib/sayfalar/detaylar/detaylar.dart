@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -17,6 +18,7 @@ import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../widgets/navigators.dart';
 import '../../widgets/overlay_notification.dart';
+import '../imza.dart';
 import '../webview.dart';
 import 'duzenle.dart';
 import 'galery.dart';
@@ -80,6 +82,35 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
           builder: (context) {
             return Stack(
               children: [
+                Positioned(
+                  right: 0,
+                  bottom: duzenlenebilir() ? 120 : 60,
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: FloatingActionButton(
+                      heroTag: "Signature",
+                      shape: const CircleBorder(),
+                      onPressed: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ImzaSayfasi(
+                                  id: cihaz!.id,
+                                  points: cihaz!.imzaJsonToPoint(),
+                                  kullanici: widget.kullanici,
+                                  teslimAlan: cihaz!.teslimAlan,
+                                  onYuklendi: () async {
+                                    await _cihaziYenile();
+                                  },
+                                ),
+                          ),
+                        );
+                      },
+                      child: Icon(CupertinoIcons.signature),
+                    ),
+                  ),
+                ),
                 Positioned(
                   right: 0,
                   bottom: duzenlenebilir() ? 60 : 0,

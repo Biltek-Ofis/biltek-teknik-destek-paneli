@@ -778,4 +778,69 @@ class BiltekPost {
       return false;
     }
   }
+
+  static Future<bool> imzaYukle({
+    required int id,
+    required Uint8List medya,
+    required String points,
+    required int kullaniciID,
+    required String teslimAlan,
+  }) async {
+    var response = await BiltekPost.postMultiPart(
+      Ayarlar.imzaYukle,
+      [
+        http.MultipartFile.fromBytes(
+          "yuklenecekDosya",
+          medya,
+          filename: "upload.png",
+        ),
+      ],
+      {
+        "id": id.toString(),
+        "points": points,
+        "uye_id": kullaniciID.toString(),
+        "teslim_alan": teslimAlan,
+      },
+    );
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<bool> imzaSil({
+    required int id,
+    required int kullaniciID,
+    required String teslimAlan,
+  }) async {
+    var response = await BiltekPost.post(Ayarlar.imzaSil, {
+      "id": id.toString(),
+      "uye_id": kullaniciID.toString(),
+      "teslim_alan": teslimAlan,
+    });
+    var resp = await response.stream.bytesToString();
+    debugPrint(resp);
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
 }

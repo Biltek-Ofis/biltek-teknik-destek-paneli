@@ -27,6 +27,7 @@ class BiltekTextField extends StatelessWidget {
     this.style,
     this.readOnly = false,
     this.onTap,
+    this.border,
   });
 
   final TextEditingController? controller;
@@ -48,6 +49,7 @@ class BiltekTextField extends StatelessWidget {
   final TextStyle? style;
   final bool readOnly;
   final VoidCallback? onTap;
+  final InputBorder? border;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class BiltekTextField extends StatelessWidget {
         errorText: errorText,
         suffix: suffix,
         hint: hint != null ? Text(hint ?? '') : null,
+        border: border,
       ),
       onChanged: onChanged,
       onSubmitted: (value) {

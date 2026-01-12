@@ -1119,6 +1119,138 @@ class Cihazlar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("cihaz_id", $id)->get($this->medyalarTabloAdi())->result();
     }
+    public function imzaYukle($id, $points, $teslim_alan, $uye_id = 0)
+    {
+        if (!isset($_FILES["yuklenecekDosya"])) {
+            echo json_encode(array("mesaj" => "Hata: Lütfen bir resim seçin", "sonuc" => 0));
+        } else {
+            if ($_FILES["yuklenecekDosya"]["error"] !== UPLOAD_ERR_OK) {
+                echo json_encode(array("mesaj" => "Dosya yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0));
+            } else {
+                $gecici_dosya_adi = $_FILES["yuklenecekDosya"]["tmp_name"];
+                $orjinal_dosya_adi = $_FILES["yuklenecekDosya"]["name"];
+                $basariyla_yuklendi = FALSE;
+                $uzanti = pathinfo($_FILES['yuklenecekDosya']['name'], PATHINFO_EXTENSION);
+                $uzanti = strtolower($uzanti);
+                if (
+                    ($_FILES["yuklenecekDosya"]["type"] == "image/pjpeg")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/jpeg")
+                    //|| ($_FILES["yuklenecekDosya"]["type"] == "video/mp4")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/png")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/gif")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/bmp")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/tiff")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "image/webp")
+                    || ($_FILES["yuklenecekDosya"]["type"] == "application/octet-stream")
+                ) {
+                    $yukleVeri = array(
+                        "imza_points" => $points,
+                        "imza_yerel" => 1,
+                        "teslim_alan" => $teslim_alan,
+                    );
+                    $imza_cihazi = $this->db->reset_query()->where("id", $id)->get($this->cihazlarTabloAdi());
+
+                    if ($imza_cihazi->num_rows() > 0) {
+                        $servis_no = $imza_cihazi->result()[0]->servis_no;
+                        if (DOSYA_YUKLEME_URL == "/") {
+                            /*$boyut = $_FILES["yuklenecekDosya"]["size"];
+                            $boyut_mb = number_format(($boyut / 1048576), 2);*/
+                            $dosyaKonumu = "yuklemeler/$servis_no/imzalar/";
+                            $tasinacakKonum = $this->Islemler_Model->dosyaAdiOlustur($dosyaKonumu, $_FILES["yuklenecekDosya"]["name"]);
+                            if (move_uploaded_file($gecici_dosya_adi, $tasinacakKonum)) {
+                                $yukleVeri["imza_dosyasi"] = $tasinacakKonum;
+                                $basariyla_yuklendi = TRUE;
+                            }
+                        } else {
+                            $yukleVeri["imza_yerel"] = 0;
+                            $cfile = new CURLFile($gecici_dosya_adi, mime_content_type($gecici_dosya_adi), $orjinal_dosya_adi);
+                            $post_data = [
+                                "file" => $cfile,
+                                "id" => $servis_no
+                            ];
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, DOSYA_YUKLEME_URL);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                            // Flask sunucusundan gelen yanıtı al
+                            $response = curl_exec($ch);
+                            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                            curl_close($ch);
+                            try {
+                                $sonuc = json_decode($response, FALSE);
+                                if ($sonuc != null) {
+                                    if (property_exists($sonuc, "basarili")) {
+                                        if ($sonuc->basarili) {
+                                            $yukleVeri["imza_dosyasi"] = $sonuc->dosya;
+                                            $basariyla_yuklendi = TRUE;
+                                        }
+                                    }
+                                }
+                            } catch (Exception $e) {
+                                $basariyla_yuklendi = FALSE;
+                            }
+                        }
+                    } else {
+                        return array("mesaj" => "İmza eklenecek cihaz bulunamadı.", "sonuc" => 0);
+                    }
+
+
+                    if ($basariyla_yuklendi) {
+                        $ekle = $this->imzaKaydet($yukleVeri, $id, $uye_id);
+                        if ($ekle) {
+                            return array("mesaj" => "İmza dosyasının yüklemesi tamamlandı.", "sonuc" => 1);
+                        } else {
+                            return array("mesaj" => "İmza yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
+                        }
+                    } else {
+                        return array("mesaj" => "İmza yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.", "sonuc" => 0);
+                    }
+                } else {
+                    return array("mesaj" => "Geçersiz imza dosyası.", "sonuc" => 0);
+                }
+            }
+        }
+    }
+    public function imzaKaydet($veri, $id, $uye_id = 0)
+    {
+        $this->veriGuncellendiEkle();
+        $sil = $this->imzaSil($id, $veri["teslim_alan"]);
+        $ekle = $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), $veri);
+        if ($ekle) {
+            $this->load->model("Log_Model");
+            $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+            if ($kullanici != null) {
+                $this->Log_Model->ekle($id, $kullanici->ad_soyad . " adlı kullanıcı bir müşteri imzası kaydetti.");
+            }
+        }
+        return $ekle;
+    }
+    public function imzaSil($id, $teslim_alan, $uye_id = 0)
+    {
+        $this->veriGuncellendiEkle();
+        $cihazQ = $this->cihazBul($id);
+        if($cihazQ->num_rows() > 0){
+            $cihazBilg = $cihazQ->result();
+            $sil = $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), array(
+                "imza_points" => "",
+                "imza_dosyasi" => "",
+                "teslim_alan" => $teslim_alan,
+            ));
+            if ($sil) {
+                $this->dosyaSil($cihazBilg[0]->imza_dosyasi);
+                $this->load->model("Log_Model");
+                $kullanici = $this->Log_Model->kullaniciBul($uye_id);
+                if ($kullanici != null) {
+                    $this->Log_Model->ekle($id, $kullanici->ad_soyad . " adlı kullanıcı tarafından müşteri imzası kaldırıldı.");
+                }
+            }
+            return $sil;
+        }else{
+            return FALSE;
+        }
+    }
     public function veriGuncellendiGetir()
     {
         return $this->db->reset_query()->get($this->guncellemeTabloAdi());
@@ -1243,5 +1375,13 @@ class Cihazlar_Model extends CI_Model
             }
         }
         return FALSE;
+    }
+
+    public function dosyaSil($dosyaAdi){
+        if (strlen($dosyaAdi) > 0) {
+            if (file_exists($dosyaAdi)) {
+                unlink($dosyaAdi);
+            }
+        }
     }
 }

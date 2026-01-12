@@ -186,7 +186,10 @@ CREATE TABLE `ts1_cihazlar` (
   `i_ad_6` varchar(255) DEFAULT NULL,
   `i_birim_fiyat_6` decimal(28,2) NOT NULL DEFAULT 0.00,
   `i_miktar_6` int(11) NOT NULL DEFAULT 0,
-  `i_kdv_6` decimal(5,2) NOT NULL DEFAULT 0.00
+  `i_kdv_6` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `imza_dosyasi` varchar(255) NOT NULL DEFAULT '',
+  `imza_points` text NOT NULL DEFAULT '',
+  `imza_yerel` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
