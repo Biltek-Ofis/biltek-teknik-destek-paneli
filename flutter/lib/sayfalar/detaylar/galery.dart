@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:biltekteknikservis/widgets/navigators.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -65,13 +66,19 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
       appBar: AppBar(title: Text("${widget.servisNo} Galeri")),
       bottomNavigationBar: BiltekBottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Ekle"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.refresh),
+            icon: Icon(CupertinoIcons.add),
+            label: "Ekle",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.refresh),
             label: "Resimleri Yenile",
           ),
           if (medyalar.isNotEmpty)
-            BottomNavigationBarItem(icon: Icon(Icons.delete), label: "Sil"),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.delete),
+              label: "Sil",
+            ),
         ],
         selectedItemColor: Theme.of(context).appBarTheme.iconTheme?.color,
         onTap: (index) async {

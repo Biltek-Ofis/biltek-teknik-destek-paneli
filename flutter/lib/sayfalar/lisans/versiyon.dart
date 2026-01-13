@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,10 +9,7 @@ import '../cihazlar.dart';
 import 'versiyon_ekle_duzenle.dart';
 
 class VersiyonSayfasi extends StatefulWidget {
-  const VersiyonSayfasi({
-    super.key,
-    required this.kullanici,
-  });
+  const VersiyonSayfasi({super.key, required this.kullanici});
 
   final KullaniciAuthModel kullanici;
 
@@ -67,100 +65,98 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
               onPressed: () async {
                 await _versiyonlariYenile();
               },
-              icon: Icon(Icons.refresh),
+              icon: Icon(CupertinoIcons.refresh),
             ),
           ],
         ),
-        floatingActionButton: yukariKaydir
-            ? FloatingActionButton(
-                onPressed: () {
-                  scrollController.animateTo(
-                    0,
-                    duration: Duration(seconds: 1),
-                    curve: Curves.bounceIn,
-                  );
-                },
-                child: Icon(
-                  Icons.arrow_upward,
-                  color: Colors.white,
-                ),
-              )
-            : FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VersiyonDuzenlemeSayfasi(
-                        versiyonlariYenile: () async {
-                          await _versiyonlariYenile();
-                        },
+        floatingActionButton:
+            yukariKaydir
+                ? FloatingActionButton(
+                  onPressed: () {
+                    scrollController.animateTo(
+                      0,
+                      duration: Duration(seconds: 1),
+                      curve: Curves.bounceIn,
+                    );
+                  },
+                  child: Icon(CupertinoIcons.arrow_up, color: Colors.white),
+                )
+                : FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => VersiyonDuzenlemeSayfasi(
+                              versiyonlariYenile: () async {
+                                await _versiyonlariYenile();
+                              },
+                            ),
                       ),
-                    ),
-                  );
-                },
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
+                    );
+                  },
+                  child: Icon(CupertinoIcons.add, color: Colors.white),
                 ),
-              ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: versiyonlar == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : RefreshIndicator(
-                  onRefresh: () async {
-                    await _versiyonlariYenile();
-                  },
-                  child: versiyonlar!.isEmpty
-                      ? Center(
-                          child: Text("Henüz Bir Versiyon Eklenmemiş"),
-                        )
-                      : ListView.builder(
-                          itemCount: versiyonlar?.length,
-                          controller: scrollController,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            Versiyon versiyon = versiyonlar![index];
-                            return ListTile(
-                              title: Text(versiyon.versiyon),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              VersiyonDuzenlemeSayfasi(
-                                            versiyon: versiyon,
-                                            versiyonlariYenile: () async {
-                                              await _versiyonlariYenile();
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    icon: Icon(Icons.edit),
+          child:
+              versiyonlar == null
+                  ? Center(child: CircularProgressIndicator())
+                  : RefreshIndicator(
+                    onRefresh: () async {
+                      await _versiyonlariYenile();
+                    },
+                    child:
+                        versiyonlar!.isEmpty
+                            ? Center(
+                              child: Text("Henüz Bir Versiyon Eklenmemiş"),
+                            )
+                            : ListView.builder(
+                              itemCount: versiyonlar?.length,
+                              controller: scrollController,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                Versiyon versiyon = versiyonlar![index];
+                                return ListTile(
+                                  title: Text(versiyon.versiyon),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (
+                                                    context,
+                                                  ) => VersiyonDuzenlemeSayfasi(
+                                                    versiyon: versiyon,
+                                                    versiyonlariYenile: () async {
+                                                      await _versiyonlariYenile();
+                                                    },
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(CupertinoIcons.pen),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _versiyonSil(
+                                            versiyon.id,
+                                            versiyon.versiyon,
+                                          );
+                                        },
+                                        icon: Icon(CupertinoIcons.delete),
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      _versiyonSil(
-                                        versiyon.id,
-                                        versiyon.versiyon,
-                                      );
-                                    },
-                                    icon: Icon(Icons.delete),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                ),
+                                );
+                              },
+                            ),
+                  ),
         ),
       ),
     );
@@ -212,7 +208,8 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
         return AlertDialog(
           title: Text("Versiyon Sil"),
           content: Text(
-              "$versiyon versiyonunu silmek istediğinize emin misiniz?  Bu versiyona atanmış lisanslar devredışı kalacak!"),
+            "$versiyon versiyonunu silmek istediğinize emin misiniz?  Bu versiyona atanmış lisanslar devredışı kalacak!",
+          ),
           actions: [
             TextButton(
               onPressed: () async {
@@ -227,10 +224,7 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
                   _hataMesaji("Versiyon silinirken bir hata oluştu.");
                 }
               },
-              child: Text(
-                "Evet",
-                style: TextStyle(color: Colors.red),
-              ),
+              child: Text("Evet", style: TextStyle(color: Colors.red)),
             ),
             TextButton(
               onPressed: () {

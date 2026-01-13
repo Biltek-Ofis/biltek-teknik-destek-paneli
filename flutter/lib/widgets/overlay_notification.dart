@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
@@ -21,7 +22,7 @@ void showNotification({String? title, String? body, Duration? duration}) {
             title: Text(title ?? (body ?? "")),
             subtitle: title != null ? (body != null ? Text(body) : null) : null,
             trailing: IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(CupertinoIcons.xmark),
               onPressed: () {
                 OverlaySupportEntry.of(context)?.dismiss();
               },

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
@@ -9,10 +10,7 @@ import '../../widgets/input.dart';
 typedef OnBOKaydet = Function(bool durum, bool elle);
 
 class BarkodOkuyucuAyarlari extends StatefulWidget {
-  const BarkodOkuyucuAyarlari({
-    super.key,
-    this.onBOKaydet,
-  });
+  const BarkodOkuyucuAyarlari({super.key, this.onBOKaydet});
 
   final OnBOKaydet? onBOKaydet;
 
@@ -91,7 +89,7 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
                 widget.onBOKaydet?.call(false, false);
               }
             },
-            icon: Icon(Icons.qr_code),
+            icon: Icon(CupertinoIcons.qrcode),
           ),
         ],
       ),
@@ -127,7 +125,7 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
                     text: "Kaydet",
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -139,9 +137,13 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
     NavigatorState navigatorState = Navigator.of(context);
     try {
       await SharedPreference.setString(
-          SharedPreference.barkodIP, ipController.text);
+        SharedPreference.barkodIP,
+        ipController.text,
+      );
       await SharedPreference.setInt(
-          SharedPreference.barkodPort, int.parse(portController.text));
+        SharedPreference.barkodPort,
+        int.parse(portController.text),
+      );
 
       navigatorState.pop();
       widget.onBOKaydet?.call(true, elle);

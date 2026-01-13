@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
 import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -195,7 +196,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                       ),
                       actions: [
                         IconButton(
-                          icon: Icon(Icons.search),
+                          icon: Icon(CupertinoIcons.search),
                           onPressed: () {
                             _aramaDurumuDuzenle(true);
                           },
@@ -215,7 +216,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.add),
+                            icon: Icon(CupertinoIcons.add),
                           ),
                       ],
                     ),
@@ -226,19 +227,19 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                     : BiltekBottomNavigationBar(
                       items: [
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.menu),
+                          icon: Icon(CupertinoIcons.line_horizontal_3),
                           label: "Menü",
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.qr_code),
+                          icon: Icon(CupertinoIcons.qrcode),
                           label: "Barkod Tara",
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.search),
+                          icon: Icon(CupertinoIcons.search),
                           label: "Cihaz Ara",
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.settings),
+                          icon: Icon(CupertinoIcons.gear),
                           label: "Ayarlar",
                         ),
                       ],
@@ -302,7 +303,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           },
                           shape: const CircleBorder(),
                           backgroundColor: Colors.green,
-                          child: Icon(Icons.chat, color: Colors.white),
+                          child: Icon(
+                            CupertinoIcons.sparkles,
+                            color: Colors.white,
+                          ),
                         )
                         : FloatingActionButton(
                           shape: const CircleBorder(),
@@ -330,7 +334,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                           backgroundColor:
                               Theme.of(context).appBarTheme.backgroundColor,
                           child: Icon(
-                            yukariKaydir ? Icons.arrow_upward : Icons.add,
+                            yukariKaydir
+                                ? CupertinoIcons.arrow_up
+                                : CupertinoIcons.add,
                             color:
                                 Theme.of(
                                   context,
@@ -833,7 +839,7 @@ Future<void> barkodTara(
               appBarTitle: 'Barkod Tara',
               centerTitle: false,
               enableBackButton: true,
-              backButtonIcon: Icon(Icons.arrow_back_ios),
+              backButtonIcon: Icon(CupertinoIcons.arrow_left),
             ),
             delayMillis: 2000,
             scanFormat: ScanFormat.ALL_FORMATS,

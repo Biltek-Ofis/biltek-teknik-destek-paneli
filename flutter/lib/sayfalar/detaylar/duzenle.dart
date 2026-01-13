@@ -1,4 +1,5 @@
 import 'package:biltekteknikservis/models/islemler_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -1132,7 +1133,9 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                       });
                                                       _fiyatlariGuncelle();
                                                     },
-                                                    icon: Icon(Icons.remove),
+                                                    icon: Icon(
+                                                      CupertinoIcons.delete,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -1186,7 +1189,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                     girildi = true;
                                                   });
                                                 },
-                                                icon: Icon(Icons.add),
+                                                icon: Icon(CupertinoIcons.add),
                                               ),
                                             ],
                                           ),

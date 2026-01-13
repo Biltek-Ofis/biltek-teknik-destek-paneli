@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:android_id/android_id.dart';
 import 'package:biltekteknikservis/models/cihaz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -271,7 +272,9 @@ class _IslemlerListeState extends State<_IslemlerListe> {
                     });
                   },
                   icon: Icon(
-                    maliyetGoster ? Icons.visibility : Icons.visibility_off,
+                    maliyetGoster
+                        ? CupertinoIcons.eye
+                        : CupertinoIcons.eye_slash,
                   ),
                 ),
               ),
