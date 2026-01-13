@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -145,7 +146,9 @@ class _BiltekSifreState extends State<BiltekSifre> {
             sifreyiGoster = !sifreyiGoster;
           });
         },
-        icon: Icon(sifreyiGoster ? Icons.visibility_off : Icons.visibility),
+        icon: Icon(
+          sifreyiGoster ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+        ),
       ),
       obscureText: !sifreyiGoster,
       enableSuggestions: sifreyiGoster,

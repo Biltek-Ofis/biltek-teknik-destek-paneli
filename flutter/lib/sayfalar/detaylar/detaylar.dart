@@ -107,7 +107,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           ),
                         );
                       },
-                      child: Icon(CupertinoIcons.signature),
+                      child: Icon(
+                        CupertinoIcons.signature,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
+                      ),
                     ),
                   ),
                 ),
@@ -135,7 +138,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           );
                         }
                       },
-                      child: Icon(Icons.print),
+                      child: Icon(
+                        CupertinoIcons.printer,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
+                      ),
                     ),
                   ),
                 ),
@@ -164,7 +170,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                             ),
                           );
                         },
-                        child: Icon(Icons.edit),
+                        child: Icon(
+                          CupertinoIcons.pen,
+                          color: Theme.of(context).appBarTheme.iconTheme?.color,
+                        ),
                       ),
                     ),
                   ),
@@ -175,12 +184,21 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         bottomNavigationBar: BiltekBottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.device_hub),
+              icon: Icon(CupertinoIcons.info),
               label: "Genel",
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.laptop), label: "Servis"),
-            BottomNavigationBarItem(icon: Icon(Icons.mouse), label: "İşlemler"),
-            BottomNavigationBarItem(icon: Icon(Icons.image), label: "Galeri"),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.device_laptop),
+              label: "Servis",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.wrench),
+              label: "İşlemler",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.photo),
+              label: "Galeri",
+            ),
           ],
           selectedItemColor: Colors.greenAccent,
           currentIndex: seciliIndex,
@@ -504,7 +522,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                       onPressed: () async {
                                         await _ara();
                                       },
-                                      icon: Icon(Icons.phone),
+                                      icon: Icon(CupertinoIcons.phone),
                                     ),
                                     SizedBox(width: 1),
                                     if (!kIsWeb)
@@ -512,7 +530,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                                         onPressed: () async {
                                           await _kisiEkle();
                                         },
-                                        icon: Icon(Icons.contact_page),
+                                        icon: Icon(CupertinoIcons.person),
                                       ),
                                   ],
                                 ),

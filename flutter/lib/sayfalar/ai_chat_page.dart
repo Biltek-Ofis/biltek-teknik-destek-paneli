@@ -5,6 +5,7 @@ import 'package:biltekteknikservis/models/ai_resp.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:firebase_ai/firebase_ai.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
@@ -110,7 +111,7 @@ class _AIChatPageState extends State<AIChatPage> {
         actions: [
           if (seciliMesajlar.isNotEmpty)
             IconButton(
-              icon: const Icon(Icons.delete),
+              icon: const Icon(CupertinoIcons.delete),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -236,7 +237,9 @@ class _AIChatPageState extends State<AIChatPage> {
                         width: 40,
                         height: 40,
                         child: Icon(
-                          dinliyor ? Icons.mic : Icons.mic_off,
+                          dinliyor
+                              ? CupertinoIcons.mic
+                              : CupertinoIcons.mic_off,
                           color: Colors.white,
                           size: 20,
                         ),
@@ -260,7 +263,11 @@ class _AIChatPageState extends State<AIChatPage> {
                       ),
                       width: 40,
                       height: 40,
-                      child: Icon(Icons.send, color: Colors.white, size: 20),
+                      child: Icon(
+                        CupertinoIcons.paperplane_fill,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ],

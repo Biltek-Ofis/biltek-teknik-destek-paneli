@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:biltekteknikservis/models/cagri_kaydi.dart';
 import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kaydi_detay.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -83,7 +84,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                       child: Row(
                         children: [
                           Icon(
-                            Icons.settings,
+                            CupertinoIcons.gear,
                             color: Theme.of(context).textTheme.bodySmall?.color,
                           ),
                           SizedBox(width: 10),
@@ -129,7 +130,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                       child: Row(
                         children: [
                           Icon(
-                            Icons.logout,
+                            CupertinoIcons.square_arrow_left,
                             color: Theme.of(context).textTheme.bodySmall?.color,
                           ),
                           SizedBox(width: 10),
@@ -153,13 +154,16 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
         floatingActionButton: FloatingActionButton(
           shape: CircleBorder(),
           onPressed: () {},
-          child: Icon(Icons.add),
+          child: Icon(CupertinoIcons.add),
         ),*/
         bottomNavigationBar: BiltekBottomNavigationBar(
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Menü"),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: Icon(CupertinoIcons.line_horizontal_3),
+              label: "Menü",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.gear),
               label: "Ayarlar",
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:biltekteknikservis/models/kullanici.dart';
 import 'package:biltekteknikservis/widgets/list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -114,7 +115,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     },
                   ),
                 BiltekListTile(
-                  leading: Icon(Icons.logout),
+                  leading: Icon(CupertinoIcons.square_arrow_left),
                   title: "Çıkış Yap",
                   onTap: () async {
                     NavigatorState navigatorState = Navigator.of(context);

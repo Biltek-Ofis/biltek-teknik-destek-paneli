@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:biltekteknikservis/widgets/input.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
@@ -156,8 +157,8 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                         await _imzaYukle();
                       },
                       icon: Icon(
-                        Icons.check,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        CupertinoIcons.check_mark,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
                       ),
                     ),
                     IconButton(
@@ -168,8 +169,8 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                               }
                               : null,
                       icon: Icon(
-                        Icons.undo,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        CupertinoIcons.arrow_uturn_left,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
                       ),
                     ),
                     IconButton(
@@ -178,8 +179,8 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                         _setRedoUndo();
                       },
                       icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        CupertinoIcons.delete,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
                       ),
                     ),
                     IconButton(
@@ -190,8 +191,8 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                               }
                               : null,
                       icon: Icon(
-                        Icons.redo,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        CupertinoIcons.arrow_uturn_right,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
                       ),
                     ),
                     IconButton(
@@ -228,8 +229,8 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                         }
                       },
                       icon: Icon(
-                        Icons.close,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        CupertinoIcons.xmark,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color,
                       ),
                     ),
                   ],
