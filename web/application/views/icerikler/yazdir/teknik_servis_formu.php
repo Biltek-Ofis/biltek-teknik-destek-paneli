@@ -361,7 +361,7 @@ echo '</td>
 $imza_konum = "";
 if($bilgileri_goster){
     $imza_konum = $cihaz->imza_dosyasi;
-    if($cihaz->imza_yerel == 1){
+    if($cihaz->imza_yerel == 1 && strlen(trim($cihaz->imza_dosyasi)) > 0){
         $imza_konum = base_url($cihaz->imza_dosyasi);
     }
 }
