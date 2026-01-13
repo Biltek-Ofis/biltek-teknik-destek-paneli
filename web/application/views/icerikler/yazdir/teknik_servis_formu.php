@@ -371,7 +371,7 @@ echo '</td>
                 <td colspan="3" class="text-center">İMZASI</td>
                 <td colspan="4" class="text-center"></td>
                 <td colspan="3" class="text-center">İMZASI</td>
-                <td colspan="4" class="text-center">'.(strlen($imza_konum) > 0 ? '<img height="30" src="'.$imza_konum.'"/>' : "").'</td>
+                <td colspan="4" class="text-center">'.(strlen($imza_konum) > 0 ? '<img width="110" height="30" src="'.$imza_konum.'"/>' : "").'</td>
                 <td colspan="3" class="text-center">İMZASI</td>
                 <td colspan="3" class="text-center"></td>
             </tr>
