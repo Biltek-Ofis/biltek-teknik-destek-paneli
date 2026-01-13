@@ -5,4 +5,3 @@ const tsAuthDomain = "";
 const tsProjectId = "";
 const tsStorageBucket = "";
 const tsMessagingSenderId = "";
-const tsRecaptchaV3SiteKey = "";
