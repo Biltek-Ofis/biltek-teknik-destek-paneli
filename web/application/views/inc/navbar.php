@@ -220,6 +220,12 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             </li>-->
             
             <li>
+              <a class="dropdown-item<?= $aktifSayfa == "yonetim/ucretler" ? ' active" aria-current="page' : ""; ?>"
+                href="<?= base_url("yonetim/ucretler"); ?>">
+                İşlem Ücretleri
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item" target="_blank" href="<?=base_url("app/biltekdesk");?>">
                 BiltekDesk Programını İndir
               </a>

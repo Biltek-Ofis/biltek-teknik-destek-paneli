@@ -1,7 +1,7 @@
 <?php $this->load->view("inc/datatables_scripts");
 
 $tema = $this->Ayarlar_Model->kullaniciTema();
-echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.1") . '"></script>
+echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.2") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
 <script src="' . base_url("dist/js/qrcode.min.js?v=1.0") . '"></script>';
 

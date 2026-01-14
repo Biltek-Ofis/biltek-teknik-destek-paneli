@@ -20,7 +20,7 @@ echo '<tr id="yapilamIslemRow' . $index . '">
         <div class="p-0 m-0 col">
             <input id="yapilanIslem' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="islem' . $index . '" class="form-control" type="text" placeholder="İşlem" value="' . (isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["islem"] : "") . '">
 
-            <ul id="stok_liste_' . $index . '" class="typeahead dropdown-menu col" style="max-height: 300px; overflow-y: auto;display:none;" role="listbox">
+            <ul id="ucret_liste_' . $index . '" class="typeahead dropdown-menu col" style="max-height: 300px; overflow-y: auto;display:none;" role="listbox">
 
             </ul>
         </div>

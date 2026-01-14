@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 31 May 2025, 16:40:47
--- Sunucu sürümü: 10.4.27-MariaDB
--- PHP Sürümü: 7.4.33
+-- Anamakine: localhost
+-- Üretim Zamanı: 14 Oca 2026, 15:38:31
+-- Sunucu sürümü: 10.6.22-MariaDB
+-- PHP Sürümü: 8.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `ts1_ayarlar` (
   `id` int(11) NOT NULL,
-  `site_basligi` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `firma_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `site_basligi` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `firma_url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `sirket_unvani` varchar(255) DEFAULT '',
   `adres` text NOT NULL,
   `sirket_telefonu` varchar(255) NOT NULL,
@@ -43,18 +43,17 @@ CREATE TABLE `ts1_ayarlar` (
   `barkod_musteri_adi_boyutu` int(11) NOT NULL,
   `barkod_sirket_adi_boyutu` int(11) NOT NULL,
   `app_version` varchar(10) NOT NULL DEFAULT '0.0.1',
-  `biltekdesk_url` TEXT NOT NULL,
+  `biltekdesk_url` text NOT NULL,
   `kis_modu` tinyint(4) NOT NULL DEFAULT 0,
   `tema` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_turkish_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_ayarlar`
 --
 
 INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `adres`, `sirket_telefonu`, `tablo_oge`, `barkod_ad`, `barkod_en`, `barkod_boy`, `barkod_boyutu`, `barkod_numarasi_boyutu`, `barkod_musteri_adi_boyutu`, `barkod_sirket_adi_boyutu`, `app_version`, `biltekdesk_url`, `kis_modu`, `tema`) VALUES
-(1, 'Biltek Bilgisayar Teknik Servis', 'http://www.biltekbilgisayar.com.tr/', 'BİLTEK OFİS ve BİLİŞİM SİSTEMLERİ SAN. TİC. LTD. ŞTİ.', 'Güzelhisar Mahallesi, Yedi Eylül Caddesi, No: 16/A, Efeler/AYDIN', '+90 (544) 397-0992', 50, 'Biltek Bilgisayar', 40, 20, 14, 12, 12, 10, '114', '', 1, 1);
-
+(1, 'Biltek Bilgisayar Teknik Servis', 'http://www.biltekbilgisayar.com.tr/', 'BİLTEK OFİS ve BİLİŞİM SİSTEMLERİ SAN. TİC. LTD. ŞTİ.', 'Güzelhisar Mahallesi, Yedi Eylül Caddesi, No: 16/A, Efeler/AYDIN', '+90 (544) 397-0992', 50, 'Biltek Bilgisayar', 40, 20, 14, 12, 12, 10, '133', 'https://desk.biltekbilgisayar.com.tr/', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -65,16 +64,16 @@ INSERT INTO `ts1_ayarlar` (`id`, `site_basligi`, `firma_url`, `sirket_unvani`, `
 CREATE TABLE `ts1_cagri_kayitlari` (
   `id` int(11) NOT NULL,
   `kull_id` int(11) NOT NULL,
-  `bolge` varchar(255) NOT NULL DEFAULT '',
-  `birim` varchar(255) NOT NULL DEFAULT '',
-  `telefon_numarasi` VARCHAR(255) NOT NULL DEFAULT '',
+  `bolge` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `birim` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `telefon_numarasi` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `cihaz_turu` int(11) NOT NULL,
-  `cihaz` varchar(255) NOT NULL,
-  `cihaz_modeli` varchar(255) NOT NULL,
-  `seri_no` varchar(255) NOT NULL,
-  `ariza_aciklamasi` longtext NOT NULL,
-  `tarih` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+  `cihaz` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `cihaz_modeli` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `seri_no` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `ariza_aciklamasi` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `tarih` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -85,11 +84,11 @@ CREATE TABLE `ts1_cagri_kayitlari` (
 CREATE TABLE `ts1_cihazdurumlari` (
   `id` int(11) NOT NULL,
   `siralama` int(11) NOT NULL,
-  `durum` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `durum` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `renk` varchar(255) NOT NULL,
   `kilitle` tinyint(1) NOT NULL DEFAULT 0,
   `varsayilan` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_turkish_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_cihazdurumlari`
@@ -102,17 +101,18 @@ INSERT INTO `ts1_cihazdurumlari` (`id`, `siralama`, `durum`, `renk`, `kilitle`, 
 (4, 8, 'CASPER  (GARANTİLİ) Merkez Servise Gönderildi', 'bg-pink', 0, 0),
 (5, 4, 'Fiyat Onayı Bekleniyor', 'bg-warning', 0, 0),
 (6, 9, 'Fiyat Onaylandı', 'bg-primary', 0, 0),
-(7, 15, 'Fiyat Onaylanmadı', 'bg-danger', 0, 0),
-(8, 16, 'İade Edildi', 'bg-danger', 0, 0),
+(7, 16, 'Fiyat Onaylanmadı', 'bg-danger', 0, 0),
+(8, 17, 'İade Edildi', 'bg-yellow', 0, 0),
 (9, 6, 'Teslim Edilmeye Hazır', 'bg-primary', 0, 0),
-(10, 11, 'Teslim Edildi / Ödeme Alınmadı', 'bg-danger', 0, 0),
-(11, 13, 'Teslim Edildi', 'bg-success', 1, 0),
-(12, 10, 'Garantisiz DIŞ Servise Gönderildi', 'bg-pink', 0, 0),
-(13, 14, 'iade Edilecek', 'bg-white', 0, 0),
-(14, 12, 'Teslim Edildi / Garantili Cihaz (Ücretsiz)', 'bg-success', 1, 0),
+(10, 12, 'Teslim Edildi / Ödeme Alınmadı', 'bg-danger', 0, 0),
+(11, 14, 'Teslim Edildi', 'bg-success', 1, 0),
+(12, 11, 'Garantisiz DIŞ Servise Gönderildi', 'bg-pink', 0, 0),
+(13, 15, 'İade Edilecek', 'bg-white', 0, 0),
+(14, 13, 'Teslim Edildi / Garantili Cihaz (Ücretsiz)', 'bg-success', 1, 0),
 (15, 7, 'Teslim Edilmeye Hazır / Müşteri Arandı', 'bg-primary', 0, 0),
-(16, 5, 'Fiyat Onaylandı / Yedek Parça Sipariş Edilecek ', 'bg-primary', 0, 0),
-(17, 17, 'MAKİNE KURULUMU', 'bg-white', 0, 0);
+(16, 5, 'Fiyat Onaylandı / Yedek Parça Sipariş Edilecek', 'bg-primary', 0, 0),
+(17, 18, 'Makine Kurulumu', 'bg-white', 0, 0),
+(18, 10, 'Garantili Servise Gönderildi', 'bg-danger', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -124,8 +124,8 @@ CREATE TABLE `ts1_cihazlar` (
   `id` int(11) NOT NULL,
   `servis_no` varchar(50) DEFAULT NULL,
   `takip_numarasi` int(11) NOT NULL,
-  `cagri_id` INT NOT NULL DEFAULT '0', 
-  `kull_id` INT NOT NULL DEFAULT '0',
+  `cagri_id` int(11) NOT NULL DEFAULT 0,
+  `kull_id` int(11) NOT NULL DEFAULT 0,
   `musteri_kod` int(11) DEFAULT NULL,
   `musteri_adi` varchar(255) NOT NULL,
   `teslim_eden` varchar(255) NOT NULL DEFAULT '',
@@ -190,7 +190,7 @@ CREATE TABLE `ts1_cihazlar` (
   `imza_dosyasi` varchar(255) NOT NULL DEFAULT '',
   `imza_points` text NOT NULL DEFAULT '',
   `imza_yerel` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE `ts1_cihazturleri` (
   `isim` varchar(255) NOT NULL,
   `sifre` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `goster` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_cihazturleri`
@@ -213,13 +213,14 @@ CREATE TABLE `ts1_cihazturleri` (
 INSERT INTO `ts1_cihazturleri` (`id`, `siralama`, `isim`, `sifre`, `goster`) VALUES
 (1, 12, 'Bilgisayar', 1, 1),
 (2, 11, 'Tablet - Telefon', 1, 0),
-(3, 8, 'Yazıcı', 0, 1),
+(3, 8, 'Yazıcı/Fotokopi', 0, 1),
 (4, 6, 'Çevre Birimleri', 0, 1),
 (5, 5, 'Toner/Sarf Malzeme Teslimi', 0, 1),
 (6, 10, 'Telefon', 1, 1),
 (7, 9, 'Tablet', 1, 1),
 (8, 7, 'Tarayıcı', 0, 1),
-(9, 0, 'Genel Bakım Servis', 0, 1);
+(9, 0, 'Genel Bakım Servis', 0, 1),
+(10, 0, 'Programlama', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -231,14 +232,73 @@ CREATE TABLE `ts1_cihaz_ac` (
   `id` int(11) NOT NULL,
   `kullanici_id` int(11) NOT NULL,
   `servis_no` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
 
 --
--- Tablo döküm verisi `ts1_cihaz_ac`
+-- Tablo için tablo yapısı `ts1_formlar`
 --
 
-INSERT INTO `ts1_cihaz_ac` (`id`, `kullanici_id`, `servis_no`) VALUES
-(44, 0, 2025000393);
+CREATE TABLE `ts1_formlar` (
+  `id` int(11) NOT NULL,
+  `kisa_kod` varchar(5) NOT NULL DEFAULT '',
+  `isim` varchar(255) NOT NULL DEFAULT '',
+  `aciklama` text NOT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `tarih` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Tablo döküm verisi `ts1_formlar`
+--
+
+INSERT INTO `ts1_formlar` (`id`, `kisa_kod`, `isim`, `aciklama`, `aktif`, `tarih`) VALUES
+(1, 'B5KTQ', 'Müşteri Deneyimi Anketi', 'Deneyimleriniz hakkında bilgi verin', 1, '2025-04-24');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_form_kullanici_cevaplari`
+--
+
+CREATE TABLE `ts1_form_kullanici_cevaplari` (
+  `id` int(11) NOT NULL,
+  `form_id` int(11) NOT NULL,
+  `cevaplar` text NOT NULL,
+  `tarih` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Tablo döküm verisi `ts1_form_kullanici_cevaplari`
+--
+
+INSERT INTO `ts1_form_kullanici_cevaplari` (`id`, `form_id`, `cevaplar`, `tarih`) VALUES
+(1, 1, '{\"1\":\"Orta Derecede Menmunum\\r\\n\",\"2\":\"\\u00d6zay\"}', '2025-04-24 15:06:27');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_form_sorulari`
+--
+
+CREATE TABLE `ts1_form_sorulari` (
+  `id` int(11) NOT NULL,
+  `form_id` int(11) NOT NULL,
+  `oncelik` int(11) NOT NULL DEFAULT 0,
+  `tur` tinyint(1) NOT NULL DEFAULT -1,
+  `soru` varchar(255) NOT NULL DEFAULT '',
+  `cevaplar` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Tablo döküm verisi `ts1_form_sorulari`
+--
+
+INSERT INTO `ts1_form_sorulari` (`id`, `form_id`, `oncelik`, `tur`, `soru`, `cevaplar`) VALUES
+(1, 1, 0, 0, 'Bizden ne kadar memnun kaldınız?', 'Memnun Değilim\r\nAz Derecede Memnunum\r\nOrta Derecede Menmunum\r\nİyi Derecede Memnunum\r\nÇok Menunum'),
+(2, 1, 0, 2, 'İsminiz', '');
+
 -- --------------------------------------------------------
 
 --
@@ -248,14 +308,14 @@ INSERT INTO `ts1_cihaz_ac` (`id`, `kullanici_id`, `servis_no`) VALUES
 CREATE TABLE `ts1_guncelleme` (
   `id` int(11) NOT NULL,
   `guncelleme_tarihi` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_guncelleme`
 --
 
 INSERT INTO `ts1_guncelleme` (`id`, `guncelleme_tarihi`) VALUES
-(1, 1748700159);
+(1, 1768390890);
 
 -- --------------------------------------------------------
 
@@ -272,8 +332,7 @@ CREATE TABLE `ts1_islemler` (
   `birim_fiyat` decimal(28,2) NOT NULL DEFAULT 0.00,
   `miktar` int(11) NOT NULL DEFAULT 0,
   `kdv` decimal(5,2) NOT NULL DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 -- --------------------------------------------------------
 
 --
@@ -290,18 +349,14 @@ CREATE TABLE `ts1_kullanicilar` (
   `yonetici` int(1) NOT NULL DEFAULT 0,
   `musteri` int(1) NOT NULL DEFAULT 0,
   `tema` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_kullanicilar`
 --
 
-INSERT INTO `ts1_kullanicilar` (`id`, `kullanici_adi`, `ad_soyad`, `sifre`, `urunduzenleme`, `teknikservis`, `yonetici`, `tema`) VALUES
-(3, 'HUSNU', 'Hüsnü SÖZÜTOK', '$2y$10$sSaswokEL5GoLaKg8N.64.o6lzhwzaMlOAZn.478jVMC/EqfCthEu', 1, 1, 0, 0),
-(5, 'ISILTAN', 'Işıltan KÜÇÜKKAYA', '$2y$10$ziTZg6lOAQt2I8WzEc2CG.IW3tIawb388KaX0X6.1U5sthjReF1XC', 0, 1, 0, 0),
-(9, 'RUKIYE', 'Rukiye AKTÜRK', '$2y$10$LgO1yUTHOF.EZXiYtevp6OFloW0ZkRsJJMvNSVO.Hy1SYFVfnM9qe', 0, 0, 1, 0),
-(12, 'OZAY', 'Özay AKCAN', '$2y$10$l8YCw.d56otWDtcTL1z9KuUTdWb6lbQ1vz4m1yfvnPcJWcJ3QTHfW', 0, 0, 1, 0),
-(13, 'YUKSEL', 'YÜKSEL GÜMÜŞ', '$2y$10$9CUynqZ5p4qdBBqNaVd.k..mLriP5Plf.AmRb2sx8AFGnzQ07e.wi', 0, 1, 0, 0);
+INSERT INTO `ts1_kullanicilar` (`id`, `kullanici_adi`, `ad_soyad`, `sifre`, `urunduzenleme`, `teknikservis`, `yonetici`, `musteri`, `tema`) VALUES
+(12, 'OZAY', 'Özay AKCAN', '$2y$10$IaMlNPqlnmbweO7oqhjBe.HZTYnq6VnUiv1Aum7X4pmV4zYZoUMZe', 0, 1, 1, 0, 0),
 
 -- --------------------------------------------------------
 
@@ -316,7 +371,7 @@ CREATE TABLE `ts1_kullanici_auth` (
   `fcmToken` varchar(255) NOT NULL DEFAULT '',
   `cihazID` varchar(255) NOT NULL DEFAULT '',
   `bitis` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -329,9 +384,10 @@ CREATE TABLE `ts1_kullanici_bildirimleri` (
   `kullanici_id` int(11) NOT NULL,
   `tur` varchar(255) NOT NULL,
   `durum` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_turkish_ci;
 
 -- --------------------------------------------------------
+
 --
 -- Tablo için tablo yapısı `ts1_loglar`
 --
@@ -340,8 +396,8 @@ CREATE TABLE `ts1_loglar` (
   `id` int(11) NOT NULL,
   `cihaz_id` int(11) NOT NULL,
   `aciklama` text NOT NULL,
-  `tarih` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `tarih` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -359,7 +415,7 @@ CREATE TABLE `ts1_malzeme_teslimi` (
   `teslim_eden` varchar(255) NOT NULL,
   `teslim_alan` varchar(255) NOT NULL,
   `odeme_durumu` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -368,7 +424,7 @@ CREATE TABLE `ts1_malzeme_teslimi` (
 --
 
 CREATE TABLE `ts1_malzeme_teslimi_islemler` (
-   `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `teslim_id` int(11) NOT NULL,
   `islem_sira` int(11) NOT NULL,
   `stok_kodu` varchar(255) NOT NULL DEFAULT '',
@@ -376,7 +432,7 @@ CREATE TABLE `ts1_malzeme_teslimi_islemler` (
   `birim_fiyati` decimal(28,2) NOT NULL DEFAULT 0.00,
   `adet` int(11) NOT NULL DEFAULT 0,
   `kdv` decimal(28,2) NOT NULL DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -388,14 +444,14 @@ CREATE TABLE `ts1_malzeme_teslimi_ozelid` (
   `id_adi` varchar(50) NOT NULL,
   `id_grup` varchar(10) NOT NULL,
   `id_val` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_malzeme_teslimi_ozelid`
 --
 
 INSERT INTO `ts1_malzeme_teslimi_ozelid` (`id_adi`, `id_grup`, `id_val`) VALUES
-('2025', '2025', 1);
+('2026', '2026', 1);
 
 -- --------------------------------------------------------
 
@@ -409,7 +465,7 @@ CREATE TABLE `ts1_medyalar` (
   `konum` varchar(255) NOT NULL,
   `yerel` tinyint(1) NOT NULL DEFAULT 1,
   `tur` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -422,7 +478,7 @@ CREATE TABLE `ts1_musteriler` (
   `musteri_adi` varchar(255) NOT NULL,
   `adres` varchar(255) NOT NULL,
   `telefon_numarasi` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -434,17 +490,14 @@ CREATE TABLE `ts1_ozelid` (
   `id_adi` varchar(50) NOT NULL,
   `id_grup` varchar(10) NOT NULL,
   `id_val` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_ozelid`
 --
 
 INSERT INTO `ts1_ozelid` (`id_adi`, `id_grup`, `id_val`) VALUES
-('2022', '2022', 638),
-('2023', '2023', 1380),
-('2024', '2024', 1146),
-('2025', '2025', 511);
+('2026', '2026', 1);
 
 -- --------------------------------------------------------
 
@@ -462,20 +515,26 @@ CREATE TABLE `ts1_sessions` (
 -- --------------------------------------------------------
 
 --
+-- Tablo için tablo yapısı `ts1_sessions_l`
+--
+
+CREATE TABLE `ts1_sessions_l` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `data` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tablo için tablo yapısı `ts1_silinencihazlar`
 --
 
 CREATE TABLE `ts1_silinencihazlar` (
   `id` int(11) NOT NULL,
   `silinme_tarihi` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Tablo döküm verisi `ts1_silinencihazlar`
---
-
-INSERT INTO `ts1_silinencihazlar` (`id`, `silinme_tarihi`) VALUES
-(3683, '2025-05-27 15:42:07');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -486,7 +545,7 @@ INSERT INTO `ts1_silinencihazlar` (`id`, `silinme_tarihi`) VALUES
 CREATE TABLE `ts1_tahsilatsekilleri` (
   `id` int(11) NOT NULL,
   `isim` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_tahsilatsekilleri`
@@ -515,7 +574,7 @@ CREATE TABLE `ts1_temalar` (
   `menu_icon_rengi` varchar(255) NOT NULL DEFAULT '',
   `kar_yagisi` int(1) NOT NULL DEFAULT 0,
   `onizleme_resmi` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Tablo döküm verisi `ts1_temalar`
@@ -524,6 +583,30 @@ CREATE TABLE `ts1_temalar` (
 INSERT INTO `ts1_temalar` (`id`, `isim`, `arkaplan`, `yazi_rengi`, `giris_arkaplani`, `beyaz_arkaplan_yazi`, `menu_icon_rengi`, `kar_yagisi`, `onizleme_resmi`) VALUES
 (1, 'Varsayılan', '', '', '', '', '', 0, 'varsayilan.png'),
 (2, 'Kış Modu', 'linear-gradient(#123, #111)', '#ffffff', 'rgba(170, 166, 166, 0.6)', 'black', '255, 255, 255, 1', 1, 'kis.gif');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_ucretler`
+--
+
+CREATE TABLE `ts1_ucretler` (
+  `id` int(11) NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `isim` varchar(255) NOT NULL,
+  `ucret` decimal(28,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `ts1_ucretler_kat`
+--
+
+CREATE TABLE `ts1_ucretler_kat` (
+  `id` int(11) NOT NULL,
+  `isim` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -543,9 +626,8 @@ CREATE TABLE `ts1_urunler` (
   `satis` decimal(28,2) NOT NULL DEFAULT 0.00,
   `indirimli` decimal(28,2) NOT NULL DEFAULT 0.00,
   `kg` decimal(28,2) NOT NULL DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
--- --------------------------------------------------------
 --
 -- Dökümü yapılmış tablolar için indeksler
 --
@@ -642,9 +724,15 @@ ALTER TABLE `ts1_loglar`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `ts1_lisanslar`
+-- Tablo için indeksler `ts1_malzeme_teslimi`
 --
-ALTER TABLE `ts1_lisanslar`
+ALTER TABLE `ts1_malzeme_teslimi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `ts1_malzeme_teslimi_islemler`
+--
+ALTER TABLE `ts1_malzeme_teslimi_islemler`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -673,6 +761,13 @@ ALTER TABLE `ts1_sessions`
   ADD KEY `ts1_sessions_timestamp` (`timestamp`);
 
 --
+-- Tablo için indeksler `ts1_sessions_l`
+--
+ALTER TABLE `ts1_sessions_l`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ts1_sessions_l_timestamp` (`timestamp`);
+
+--
 -- Tablo için indeksler `ts1_silinencihazlar`
 --
 ALTER TABLE `ts1_silinencihazlar`
@@ -691,27 +786,21 @@ ALTER TABLE `ts1_temalar`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_ucretler`
+--
+ALTER TABLE `ts1_ucretler`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `ts1_ucretler_kat`
+--
+ALTER TABLE `ts1_ucretler_kat`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_urunler`
 --
 ALTER TABLE `ts1_urunler`
-  ADD PRIMARY KEY (`id`);
-
---
--- Tablo için indeksler `ts1_versiyonlar`
---
-ALTER TABLE `ts1_versiyonlar`
-  ADD PRIMARY KEY (`id`);
-
---
--- Tablo için indeksler `ts1_malzeme_teslimi`
---
-ALTER TABLE `ts1_malzeme_teslimi`
-  ADD PRIMARY KEY (`id`);
-
---
--- Tablo için indeksler `ts1_malzeme_teslimi_islemler`
---
-ALTER TABLE `ts1_malzeme_teslimi_islemler`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -728,13 +817,13 @@ ALTER TABLE `ts1_ayarlar`
 -- Tablo için AUTO_INCREMENT değeri `ts1_cagri_kayitlari`
 --
 ALTER TABLE `ts1_cagri_kayitlari`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_cihazdurumlari`
 --
 ALTER TABLE `ts1_cihazdurumlari`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_cihazlar`
@@ -746,13 +835,31 @@ ALTER TABLE `ts1_cihazlar`
 -- Tablo için AUTO_INCREMENT değeri `ts1_cihazturleri`
 --
 ALTER TABLE `ts1_cihazturleri`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_cihaz_ac`
 --
 ALTER TABLE `ts1_cihaz_ac`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_formlar`
+--
+ALTER TABLE `ts1_formlar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_form_kullanici_cevaplari`
+--
+ALTER TABLE `ts1_form_kullanici_cevaplari`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_form_sorulari`
+--
+ALTER TABLE `ts1_form_sorulari`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_guncelleme`
@@ -770,7 +877,7 @@ ALTER TABLE `ts1_islemler`
 -- Tablo için AUTO_INCREMENT değeri `ts1_kullanicilar`
 --
 ALTER TABLE `ts1_kullanicilar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_kullanici_auth`
@@ -788,7 +895,19 @@ ALTER TABLE `ts1_kullanici_bildirimleri`
 -- Tablo için AUTO_INCREMENT değeri `ts1_loglar`
 --
 ALTER TABLE `ts1_loglar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi`
+--
+ALTER TABLE `ts1_malzeme_teslimi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi_islemler`
+--
+ALTER TABLE `ts1_malzeme_teslimi_islemler`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_medyalar`
@@ -815,22 +934,22 @@ ALTER TABLE `ts1_temalar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- Tablo için AUTO_INCREMENT değeri `ts1_ucretler`
+--
+ALTER TABLE `ts1_ucretler`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_ucretler_kat`
+--
+ALTER TABLE `ts1_ucretler_kat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Tablo için AUTO_INCREMENT değeri `ts1_urunler`
 --
 ALTER TABLE `ts1_urunler`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
---
--- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi`
---
-ALTER TABLE `ts1_malzeme_teslimi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
---
--- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi_islemler`
---
-ALTER TABLE `ts1_malzeme_teslimi_islemler`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
