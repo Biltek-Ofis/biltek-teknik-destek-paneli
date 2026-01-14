@@ -10,7 +10,7 @@ echo '<script>
         });*/
     });
 </script>
-<script src="' . base_url("dist/js/cihaz.min.js?v=1.1") . '"></script>
+<script src="' . base_url("dist/js/cihaz.min.js?v=1.2") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
 <script src="' . base_url("dist/js/forms.js?v=1.0") . '"></script>
 <div class="content-wrapper">';

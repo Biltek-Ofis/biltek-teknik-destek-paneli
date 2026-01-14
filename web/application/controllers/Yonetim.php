@@ -484,4 +484,97 @@ class Yonetim extends Varsayilancontroller
 			$this->Kullanicilar_Model->girisUyari();
 		}
 	}
+	public function ucretler()
+	{
+		 if ($this->Giris_Model->kullaniciGiris()) {
+			$this->load->model("Ucretler_Model");
+			$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Ücretler", "yonetim/ucretler", [], "inc/datatables"));
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function kategoriEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$ekle = $this->Ucretler_Model->kategoriEkle();
+			if ($ekle["sonuc"]) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", $ekle["mesaj"]);
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function kategoriDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$duzenle = $this->Ucretler_Model->kategoriDuzenle($id);
+			if ($duzenle["sonuc"]) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", $duzenle["mesaj"]);
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function kategoriSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$sil = $this->Ucretler_Model->kategoriSil($id);
+			if ($sil) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", "Kategori silinemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function ucretEkle()
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$ekle = $this->Ucretler_Model->ucretEkle();
+			if ($ekle["sonuc"]) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", $ekle["mesaj"]);
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function ucretDuzenle($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$duzenle = $this->Ucretler_Model->ucretDuzenle($id);
+			if ($duzenle["sonuc"]) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", $duzenle["mesaj"]);
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
+	public function ucretSil($id)
+	{
+		if ($this->Kullanicilar_Model->yonetici()) {
+			$this->load->model("Ucretler_Model");
+			$sil = $this->Ucretler_Model->ucretSil($id);
+			if ($sil) {
+				redirect(base_url("yonetim/ucretler"));
+			} else {
+				$this->Kullanicilar_Model->girisUyari("yonetim/ucretler", "Ücret silinemedi lütfen daha sonra tekrar deneyin");
+			}
+		} else {
+			$this->Kullanicilar_Model->girisUyari();
+		}
+	}
 }

@@ -125,3 +125,6 @@ defined('TEST_ACIK')           or define('TEST_ACIK', FALSE);
 
 
 defined('KIS_MODU')           or define('KIS_MODU', FALSE);
+
+
+defined('DIGER_ID')           or define('DIGER_ID', 99999999);
