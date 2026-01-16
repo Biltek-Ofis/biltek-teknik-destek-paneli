@@ -1,3 +1,15 @@
+<script>
+    $(document).ready(function () {
+        $("#musteri_adi<?=$musteri_adi_sayi;?>").attr('autocomplete', 'off');
+        $("#musteri_adi<?=$musteri_adi_sayi;?>").attr('readonly', true);
+
+        setTimeout(() => {
+            $("#musteri_adi<?=$musteri_adi_sayi;?>").removeAttr('readonly');
+        }, 100);
+        
+    });
+</script>
+
 <?php
 if(!isset($musteri_adi_oto)){
     $musteri_adi_oto = TRUE;
@@ -17,7 +29,7 @@ echo '">
 if (isset($musteri_adi_value)) {
     echo $musteri_adi_value;
 }
-echo '" required>
+echo '" readonly required>
 <ul id="musteri_adi_liste" class="typeahead dropdown-menu col musteri_adi_liste" style="max-height:300px;overflow-y: auto;" role="listbox">
 
 </ul>
