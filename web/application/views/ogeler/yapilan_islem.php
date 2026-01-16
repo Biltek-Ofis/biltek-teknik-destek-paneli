@@ -9,6 +9,13 @@
                 $("#yapilanIslemMiktar<?= $index; ?>").val("");
             }
         });
+        $("#yapilanIslem<?=$index;?>").attr('autocomplete', 'off');
+        $("#yapilanIslem<?=$index;?>").attr('readonly', true);
+
+        setTimeout(() => {
+            $("#yapilanIslem<?=$index;?>").removeAttr('readonly');
+        }, 100);
+        
     });
 </script>
 <?php
@@ -18,7 +25,7 @@ echo '<tr id="yapilamIslemRow' . $index . '">
     <td>
         <input id="yapilanIslemStokKod' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="stok_kod' . $index . '" type="hidden" value="' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "") . '">
         <div class="p-0 m-0 col">
-            <input id="yapilanIslem' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="islem' . $index . '" class="form-control" type="text" placeholder="İşlem" value="' . (isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["islem"] : "") . '">
+            <input id="yapilanIslem' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="islem' . $index . '" class="form-control" type="text" placeholder="İşlem" value="' . (isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["islem"] : "") . '" readonly>
 
             <ul id="ucret_liste_' . $index . '" class="typeahead dropdown-menu col" style="max-height: 300px; overflow-y: auto;display:none;" role="listbox">
 
