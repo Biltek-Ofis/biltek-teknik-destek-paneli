@@ -95,6 +95,15 @@ $ayarlar = $this->Ayarlar_Model->getir();
         if (!isset($ekServisNo)) {
             $ekServisNo = "";
         }
+        if(DEMO & strlen(DEMO_KULLANICI_ADI) > 0 & strlen(DEMO_SIFRE) > 0){
+            ?>
+            <div class="alert alert-success text-center" role="alert">
+                Biltek Teknik Servis Paneli için demo sayfasıdır. Demoyu kullanmak için alttaki bilgilerle giriş yapabilirsiniz.</br></br>
+                <span class="fw-bold">Kullanıcı Adı: </span> <?= DEMO_KULLANICI_ADI ?></br>
+                <span class="fw-bold">Şifre: </span> <?= DEMO_SIFRE ?></br>
+            </div>
+            <?php
+        }
         ?>
         <form action="<?= base_url("giris/" . $ekServisNo);?>" method="POST">
         <img class="mb-4" src="<?= base_url("dist/img/logo.png") ;?>" class="w-100">

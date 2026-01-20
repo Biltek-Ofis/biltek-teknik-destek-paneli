@@ -132,3 +132,9 @@ defined('DIGER_ID')            or define('DIGER_ID', 99999999);
 defined('BILTEKDESK')                or define('BILTEKDESK', TRUE);
 
 defined('DEMO')                or define('DEMO', FALSE);
+
+# Buradaki ayar kullanıcı eklemez sadece giriş ekranında bilgileri gösterir.
+# Kullanıcıyı sistemden sizin eklemeniz gerekir.
+# Not: Şifre boş olmamalı yoksa bilgiler giriş ekranında görünmez.
+defined('DEMO_KULLANICI_ADI')                or define('DEMO_KULLANICI_ADI', "");
+defined('DEMO_SIFRE')                or define('DEMO_SIFRE', "");
