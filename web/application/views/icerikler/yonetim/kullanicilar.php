@@ -14,7 +14,7 @@ $(document).ready(function(){
 echo '<script>
     $(document).ready(function() {
         var tabloDiv = "#kullanici_tablosu";
-        var cihazlarTablosu = $(tabloDiv).DataTable('.$this->Islemler_Model->datatablesAyarlari('[0, "asc"]').');
+        var cihazlarTablosu = $(tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari('[0, "asc"]') . ');
         var hash = location.hash.replace(/^#/, \'\');
         if (hash) {
             $(\'#\' + hash).modal(\'show\');
@@ -25,18 +25,18 @@ echo '<div class="content-wrapper">';
 
 $this->load->view("inc/content_header", array(
     "contentHeader" => array(
-        "baslik"=> $baslik,
-        "items"=> array(
+        "baslik" => $baslik,
+        "items" => array(
             array(
-                "link"=> base_url(),
-                "text"=> "Anasayfa",
+                "link" => base_url(),
+                "text" => "Anasayfa",
             ),
             array(
-                "text"=> "Yonetim",
+                "text" => "Yonetim",
             ),
             array(
-                "active"=> TRUE,
-                "text"=> $baslik,
+                "active" => TRUE,
+                "text" => $baslik,
             ),
         ),
     ),
@@ -47,12 +47,21 @@ echo '<section class="content">
                 <div class="row w-100">
                     <div class="col-6 col-lg-6">
                     </div>
-                    <div class="col-6 col-lg-6 text-end">
-                        <button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniKullaniciEkleModal">
+                    <div class="col-6 col-lg-6 text-end">';
+if (DEMO) {
+    echo '<button type="button" class="btn btn-primary me-2 mb-2" onclick="alert(\'Demo sürümde bu işlemi gerçekleştiremezsiniz!\')">
                             Yeni Hesap Ekle
-                        </button>
+                        </button>';
+} else {
+    echo '<button type="button" class="btn btn-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#yeniKullaniciEkleModal">
+                            Yeni Hesap Ekle
+                        </button>';
+}
+echo '
                     </div>
-                </div>
+                </div>';
+if (!DEMO) {
+    echo '
                 <div class="modal fade" id="yeniKullaniciEkleModal" tabindex="-1" aria-labelledby="yeniKullaniciEkleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -63,27 +72,27 @@ echo '<section class="content">
                             <div class="modal-body">
                                 <form id="kullaniciEkleForm" autocomplete="off" method="post" action="' . base_url("yonetim/kullaniciEkle/" . $kullaniciTuru) . '">
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_ad", array("doldurma" => FALSE));
-echo '</div>
+    $this->load->view("ogeler/kullanici_ad", array("doldurma" => FALSE));
+    echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_adi", array("doldurma" => FALSE));
-echo '</div>
+    $this->load->view("ogeler/kullanici_adi", array("doldurma" => FALSE));
+    echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
-echo '</div>';
-if($kullaniciTuru != 2){
-echo '
+    $this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
+    echo '</div>';
+    if ($kullaniciTuru != 2) {
+        echo '
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_personel", array("kullaniciTuru" => $kullaniciTuru));
-echo '</div>
+        $this->load->view("ogeler/kullanici_personel", array("kullaniciTuru" => $kullaniciTuru));
+        echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_teknik_servis");
-echo '</div>
+        $this->load->view("ogeler/kullanici_teknik_servis");
+        echo '</div>
                                     <div class="row">';
-$this->load->view("ogeler/kullanici_urun_duzenleme");
-echo '</div>';
-}
-echo '
+        $this->load->view("ogeler/kullanici_urun_duzenleme");
+        echo '</div>';
+    }
+    echo '
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -92,7 +101,10 @@ echo '
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>';
+}
+
+echo '
                 <div class="table-responsive">
                     <table id="kullanici_tablosu" class="table table-bordered" style="width:100%">
                         <thead>
@@ -100,12 +112,12 @@ echo '
                                 <th>Hesap Kodu</th>
                                 <th>İsim</th>
                                 <th>Kullanıcı Adı</th>';
-                                if($kullaniciTuru != 2){
-                                echo '
+if ($kullaniciTuru != 2) {
+    echo '
                                 <th>Teknik Servis Elemanı</th>
                                 <th>Ürün Düzenleme</th>';
-                                }
-                                echo '
+}
+echo '
                                 <th>İşlemler</th>
                             </tr>
                         </thead>
@@ -123,23 +135,33 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                     <td>
                                         ' . $kullanici->kullanici_adi . '
                                     </td>';
-                                    if($kullaniciTuru != 2){
-                                    echo '
+    if ($kullaniciTuru != 2) {
+        echo '
                                     <td>
-                                        ' . ( $kullanici->teknikservis == 1 ? "Evet" : "Hayır" ) . '
+                                        ' . ($kullanici->teknikservis == 1 ? "Evet" : "Hayır") . '
                                     </td>
                                     <td>
-                                        ' . ( ($kullanici->urunduzenleme == 1 || $kullanici->yonetici) ? "Evet" : "Hayır" ) . '
+                                        ' . (($kullanici->urunduzenleme == 1 || $kullanici->yonetici) ? "Evet" : "Hayır") . '
                                     </td>';
-                                    }
-                                    echo '
-                                    <td class="align-middle text-center">
+    }
+    echo '
+                                    <td class="align-middle text-center">';
 
-                                        ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a><a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>') . '
-                                    </td>
+    if (DEMO) {
+        echo '
+                                        ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<button class="btn btn-info text-white ml-1" onclick="alert(\'Demo sürümde bu işlemi gerçekleştiremezsiniz!\')">Düzenle</button>
+                                        <button class="btn btn-danger ml-1" onclick="alert(\'Demo sürümde bu işlemi gerçekleştiremezsiniz!\')">Sil</button>') . '
+                                    ';
+    } else {
+        echo '
+                                        ' . ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] == $kullanici->id ? "" : '<a href="#" class="btn btn-info text-white ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciDuzenleModal' . $kullanici->id . '">Düzenle</a>
+                                        <a href="#" class="btn btn-danger ml-1" data-bs-toggle="modal" data-bs-target="#kullaniciSilModal' . $kullanici->id . '">Sil</a>') . '
+                                    ';
+    }
+    echo '</td>
                                 </tr>';
 
-    if ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] != $kullanici->id) {
+    if ($this->Kullanicilar_Model->kullaniciBilgileri()["id"] != $kullanici->id && !DEMO) {
 
         echo '<div class="modal fade" id="kullaniciSilModal' . $kullanici->id . '" tabindex="-1" aria-labelledby="kullaniciSilModal' . $kullanici->id . 'Label" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -177,17 +199,17 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                                         <div class="row">';
         $this->load->view("ogeler/kullanici_sifre", array("value" => "", "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>';
-        if($kullaniciTuru != 2){
-        echo '
+        if ($kullaniciTuru != 2) {
+            echo '
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));
-        echo '</div>
+            $this->load->view("ogeler/kullanici_personel", array("value" => $kullanici->yonetici, "id" => $kullanici->id));
+            echo '</div>
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_teknik_servis", array("value" => $kullanici->teknikservis, "id" => $kullanici->id));
-        echo '</div>
+            $this->load->view("ogeler/kullanici_teknik_servis", array("value" => $kullanici->teknikservis, "id" => $kullanici->id));
+            echo '</div>
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_urun_duzenleme", array("value" => $kullanici->urunduzenleme, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
-        echo '</div>';
+            $this->load->view("ogeler/kullanici_urun_duzenleme", array("value" => $kullanici->urunduzenleme, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
+            echo '</div>';
         }
         echo '
                                                     </form>
@@ -202,7 +224,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
     }
 }
 echo
-'</tbody>
+    '</tbody>
 </table>
 </div>
 </div>

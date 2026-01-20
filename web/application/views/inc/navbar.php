@@ -225,11 +225,17 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
                 İşlem Ücretleri
               </a>
             </li>
-            <li>
-              <a class="dropdown-item" target="_blank" href="<?=base_url("app/biltekdesk");?>">
-                BiltekDesk Programını İndir
-              </a>
-            </li>
+            <?php
+            if(BILTEKDESK){
+              ?>
+              <li>
+                <a class="dropdown-item" target="_blank" href="<?=base_url("app/biltekdesk");?>">
+                  BiltekDesk Programını İndir
+                </a>
+              </li>
+              <?php
+            }
+            ?>
             <li>
               <a class="dropdown-item" href="#" onclick="ozelBarkodYazdirPencere();">
                 Özel Barkod Yazdır
