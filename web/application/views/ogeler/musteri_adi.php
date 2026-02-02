@@ -1,17 +1,24 @@
-<script>
-    $(document).ready(function () {
-        $("#musteri_adi<?=$musteri_adi_sayi;?>").attr('autocomplete', 'off');
-        $("#musteri_adi<?=$musteri_adi_sayi;?>").attr('readonly', true);
+<?php
+if (!OTO_TAMAMLAMA) {
+    ?>
+    <script>
+        $(document).ready(function () {
+            $("#musteri_adi<?= $musteri_adi_sayi; ?>").attr('autocomplete', 'off');
 
-        setTimeout(() => {
-            $("#musteri_adi<?=$musteri_adi_sayi;?>").removeAttr('readonly');
-        }, 100);
-        
-    });
-</script>
+            $("#musteri_adi<?= $musteri_adi_sayi; ?>").attr('readonly', true);
+
+            setTimeout(() => {
+                $("#musteri_adi<?= $musteri_adi_sayi; ?>").removeAttr('readonly');
+            }, 100);
+
+        });
+    </script>
+    <?php
+}
+?>
 
 <?php
-if(!isset($musteri_adi_oto)){
+if (!isset($musteri_adi_oto)) {
     $musteri_adi_oto = TRUE;
 }
 
@@ -25,11 +32,11 @@ if (isset($musteri_kod_value)) {
     echo $musteri_kod_value;
 }
 echo '">
-    <input id="musteri_adi'.$musteri_adi_sayi.'" data-mainform="'.$musteri_adi_form.'" data-oto="'.($musteri_adi_oto ? "true" : "false").'" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control musteri_adi" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
+    <input id="musteri_adi' . $musteri_adi_sayi . '" data-mainform="' . $musteri_adi_form . '" data-oto="' . ($musteri_adi_oto ? "true" : "false") . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" class="form-control musteri_adi" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
 if (isset($musteri_adi_value)) {
     echo $musteri_adi_value;
 }
-echo '" readonly required>
+echo '"' . (OTO_TAMAMLAMA ? "" : " readonly") . ' required>
 <ul id="musteri_adi_liste" class="typeahead dropdown-menu col musteri_adi_liste" style="max-height:300px;overflow-y: auto;" role="listbox">
 
 </ul>

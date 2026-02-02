@@ -131,6 +131,9 @@ defined('DIGER_ID')            or define('DIGER_ID', 99999999);
 
 defined('BILTEKDESK')                or define('BILTEKDESK', TRUE);
 
+// Bazı inputlardaki oto tamamlama özelliğini devredışı bırakır.
+defined('OTO_TAMAMLAMA')                or define('OTO_TAMAMLAMA', FALSE);
+
 defined('DEMO')                or define('DEMO', FALSE);
 
 # Buradaki ayar kullanıcı eklemez sadece giriş ekranında bilgileri gösterir.
