@@ -15,6 +15,7 @@ class CagriKaydiModel {
   final String seriNo;
   final String arizaAciklamasi;
   final String tarih;
+  final double toplamUcret;
   final Cihaz? cihazBilgileri;
 
   const CagriKaydiModel({
@@ -30,6 +31,7 @@ class CagriKaydiModel {
     required this.seriNo,
     required this.arizaAciklamasi,
     required this.tarih,
+    required this.toplamUcret,
     this.cihazBilgileri,
   });
   factory CagriKaydiModel.create({
@@ -45,6 +47,7 @@ class CagriKaydiModel {
     required String seriNo,
     required String arizaAciklamasi,
     required String tarih,
+    required double toplamUcret,
     Cihaz? cihazBilgileri,
   }) {
     return CagriKaydiModel(
@@ -60,6 +63,7 @@ class CagriKaydiModel {
       seriNo: seriNo,
       arizaAciklamasi: arizaAciklamasi,
       tarih: tarih,
+      toplamUcret: toplamUcret,
       cihazBilgileri: cihazBilgileri,
     );
   }
@@ -99,6 +103,7 @@ class CagriKaydiModel {
       seriNo: json["seri_no"] ?? "",
       arizaAciklamasi: json["ariza_aciklamasi"] ?? "",
       tarih: json["tarih"] ?? "2025-01-01 0:00:00",
+      toplamUcret: double.tryParse(json["toplamUcret"].toString()) ?? 0.0,
       cihazBilgileri:
           cihazBilgileri.keys.isNotEmpty
               ? Cihaz.create(

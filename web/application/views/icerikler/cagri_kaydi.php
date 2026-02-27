@@ -62,10 +62,10 @@ if ($this->Giris_Model->kullaniciGiris()) {
             $("#cagriKaydiDuzenleForm #ariza_aciklamasi").val(ariza);
             $("#cagriKaydiDuzenleForm #ariza_aciklamasi").prop("readonly", cihaz_var);
 
-            if(cihaz_var){
+            if (cihaz_var) {
                 $("#cagriKaydiDuzenleAlert").attr("style", "");
-                $("#cagriDuzenleServisNo").html("Servis No: "+servis_no);
-            }else{
+                $("#cagriDuzenleServisNo").html("Servis No: " + servis_no);
+            } else {
                 $("#cagriKaydiDuzenleAlert").attr("style", "display:none;");
                 $("#cagriDuzenleServisNo").html("");
             }
@@ -102,6 +102,9 @@ if ($this->Giris_Model->kullaniciGiris()) {
             </div>
         </div>
     </section>
+    <?php
+    $cagriKayitlari = $this->Cihazlar_Model->cagriKayitlari(($this->Giris_Model->kullaniciGiris(TRUE) ? $this->Kullanicilar_Model->kullaniciBilgileri()["id"] : 0));
+    ?>
     <section class="content">
         <div class="card">
             <div class="card-header">
@@ -117,6 +120,34 @@ if ($this->Giris_Model->kullaniciGiris()) {
                         </button>
                     </div>
                 </div>
+                <?php
+                if ($this->Giris_Model->kullaniciGiris()) {
+                ?>
+                <div class="row w-100">
+                    <div class="col-6 col-lg-6">
+                    </div>
+                    <div class="col-6 col-lg-6 text-end">
+                        <?php
+                        $toplamOdenmeyen = 0;
+                        foreach ($cagriKayitlari as $cagri) {
+                            if ($cagri->cihazInfo != null) {
+                                if ($this->Cihazlar_Model->cihazDurumuIsım($cagri->cihazInfo->guncel_durum) == "Teslim Edildi / Ödeme Alınmadı") {
+                                    $toplamOdenmeyen += floatval($cagri->toplamUcret);
+                                }
+                            }
+                        }
+                        if ($toplamOdenmeyen > 0) {
+                            ?>
+                            <div class="alert alert-danger">Teslim Edilip Ödeme Alınmayan Toplam Ücret:
+                                <?= number_format($toplamOdenmeyen, 2, ",", "."); ?> TL</div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
         <div class="table-responsive">
@@ -136,20 +167,25 @@ if ($this->Giris_Model->kullaniciGiris()) {
                         <th>Cihaz Marka - Model</th>
                         <th>Kayıt Tarihi</th>
                         <th>Durum</th>
+                        <?php
+                        if ($this->Giris_Model->kullaniciGiris()) {
+                            ?>
+                            <th>Toplam Ücret</th>
+                        <?php
+                        } ?>
                         <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $cagriKayitlari = $this->Cihazlar_Model->cagriKayitlari(($this->Giris_Model->kullaniciGiris(TRUE) ? $this->Kullanicilar_Model->kullaniciBilgileri()["id"] : 0));
+
                     foreach ($cagriKayitlari as $cagri) {
-                        $cihaz = $this->Cihazlar_Model->cagriCihazi($cagri->id);
                         $musteri = $this->Kullanicilar_Model->kullaniciGetir($cagri->kull_id);
                         ?>
                         <tr class="<?php
-                        if ($cihaz != null) {
+                        if ($cagri->cihazInfo != null) {
                             echo $this->Cihazlar_Model->
-                                cihazDurumuRenk($cihaz->guncel_durum);
+                                cihazDurumuRenk($cagri->cihazInfo->guncel_durum);
                         } else {
                             echo "bg-warning";
                         }
@@ -162,16 +198,16 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                 <?php
                             }
                             ?>
-                            <td><?= $cihaz != null ? $cihaz->servis_no : "-"; ?>
-                            <td><?= $this->Cihazlar_Model->cihazTuru($cihaz != null ? $cihaz->cihaz_turu : $cagri->cihaz_turu); ?>
+                            <td><?= $cagri->cihazInfo != null ? $cagri->cihazInfo->servis_no : "-"; ?>
+                            <td><?= $this->Cihazlar_Model->cihazTuru($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_turu : $cagri->cihaz_turu); ?>
                             </td>
-                            <td><?= ($cihaz != null ? $cihaz->cihaz : $cagri->cihaz) . ' - ' . ($cihaz != null ? $cihaz->cihaz_modeli : $cagri->cihaz_modeli); ?>
+                            <td><?= ($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz : $cagri->cihaz) . ' - ' . ($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_modeli : $cagri->cihaz_modeli); ?>
                             </td>
                             <td><?= $this->Islemler_Model->tarihDonustur($cagri->tarih); ?></td>
                             <td>
                                 <?php
-                                if ($cihaz != null) {
-                                    echo $this->Cihazlar_Model->cihazDurumuIsım($cihaz->guncel_durum);
+                                if ($cagri->cihazInfo != null) {
+                                    echo $this->Cihazlar_Model->cihazDurumuIsım($cagri->cihazInfo->guncel_durum);
                                 } else {
                                     ?>
                                     İşlem Bekleniyor
@@ -179,28 +215,45 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                 }
                                 ?>
                             </td>
-
+                            <?php
+                            if ($this->Giris_Model->kullaniciGiris()) {
+                                ?>
+                                <td><?php
+                                if ($cagri->cihazInfo != null) {
+                                    $ucret = $cagri->toplamUcret;
+                                    if (floatval($ucret) > 0) {
+                                        echo number_format($ucret, 2, ",", ".") . " TL";
+                                    } else {
+                                        echo "-";
+                                    }
+                                } else {
+                                    echo "-";
+                                }
+                                ?></td>
+                                <?php
+                            }
+                            ?>
                             <td>
                                 <a href="<?= base_url("cagrikayitlari/detay/" . $cagri->id); ?>"
                                     class="btn btn-sm btn-primary">Detaylar</a>
                                 <?php
                                 if ($this->Giris_Model->kullaniciGiris()) {
-                                    if ($cihaz == null) {
+                                    if ($cagri->cihazInfo == null) {
                                         ?>
-                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge ."". (strlen($cagri->birim) > 0 ? " ".$cagri->birim : "") . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
+                                        <a href="<?= base_url("?yeniCihaz=1&musteri_id=" . $cagri->kull_id . "&musteri_adi=" . $cagri->bolge . "" . (strlen($cagri->birim) > 0 ? " " . $cagri->birim : "") . "&gsm=" . $cagri->telefon_numarasi . "&cagri_id=" . $cagri->id . "&cihazTuru=" . $cagri->cihaz_turu . "&cihaz=" . $cagri->cihaz . "&model=" . $cagri->cihaz_modeli . "&seri_no=" . $cagri->seri_no . "&ariza=" . $cagri->ariza_aciklamasi); ?>"
                                             class="btn btn-sm btn-success">Kayıt Aç</a>
                                         <?php
-                                    }else{
+                                    } else {
                                         $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
                                         ?>
-                                        
-                                        <a href="<?= base_url($kullanici["teknikservis"] == 1 ? "cihazlarim/?servisNo=" . $cihaz->servis_no : "?servisNo=" . $cihaz->servis_no); ?>"
+
+                                        <a href="<?= base_url($kullanici["teknikservis"] == 1 ? "cihazlarim/?servisNo=" . $cagri->cihazInfo->servis_no : "?servisNo=" . $cagri->cihazInfo->servis_no); ?>"
                                             class="btn btn-sm btn-success">Servis Kaydı</a>
                                         <?php
                                     }
                                     ?>
                                     <button class="btn btn-sm btn-info text-white"
-                                        onclick="cagriKaydiDuzenle(<?=$cihaz != null ? 'true' : 'false';?>, '<?= donusturOnclick($cihaz != null ? $cihaz->servis_no : '0'); ?>' ,'<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($cagri->bolge); ?>', '<?= donusturOnclick($cagri->birim); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->telefon_numarasi : $cagri->telefon_numarasi); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz_turu : $cagri->cihaz_turu); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz : $cagri->cihaz); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->cihaz_modeli : $cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->seri_no : $cagri->seri_no); ?>', '<?= donusturOnclick($cihaz != null ? $cihaz->ariza_aciklamasi : $cagri->ariza_aciklamasi); ?>')">Düzenle</button>
+                                        onclick="cagriKaydiDuzenle(<?= $cagri->cihazInfo != null ? 'true' : 'false'; ?>, '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->servis_no : '0'); ?>' ,'<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($cagri->bolge); ?>', '<?= donusturOnclick($cagri->birim); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->telefon_numarasi : $cagri->telefon_numarasi); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_turu : $cagri->cihaz_turu); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz : $cagri->cihaz); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_modeli : $cagri->cihaz_modeli); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->seri_no : $cagri->seri_no); ?>', '<?= donusturOnclick($cagri->cihazInfo != null ? $cagri->cihazInfo->ariza_aciklamasi : $cagri->ariza_aciklamasi); ?>')">Düzenle</button>
                                     <button class="btn btn-sm btn-danger"
                                         onclick="silModaliGoster('<?= donusturOnclick($cagri->id); ?>', '<?= donusturOnclick($musteri[0]->ad_soyad); ?>')">Sil</button>
 
@@ -261,32 +314,32 @@ if ($this->Giris_Model->kullaniciGiris()) {
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/gsm", array("telefon_numarasi_label"=> TRUE, "gsm_id" => "telefon_numarasi1"));
+                        $this->load->view("ogeler/gsm", array("telefon_numarasi_label" => TRUE, "gsm_id" => "telefon_numarasi1"));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_turleri", array("cihaz_turleri_label"=> TRUE));
+                        $this->load->view("ogeler/cihaz_turleri", array("cihaz_turleri_label" => TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_markasi", array("cihaz_markasi_label"=> TRUE));
+                        $this->load->view("ogeler/cihaz_markasi", array("cihaz_markasi_label" => TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/cihaz_modeli", array("cihaz_modeli_label"=> TRUE));
+                        $this->load->view("ogeler/cihaz_modeli", array("cihaz_modeli_label" => TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/seri_no", array("seri_no_label"=> TRUE));
+                        $this->load->view("ogeler/seri_no", array("seri_no_label" => TRUE));
                         ?>
                     </div>
                     <div class="row">
                         <?php
-                        $this->load->view("ogeler/ariza_aciklamasi", array("ariza_aciklamasi_label"=> TRUE));
+                        $this->load->view("ogeler/ariza_aciklamasi", array("ariza_aciklamasi_label" => TRUE));
                         ?>
                     </div>
                 </form>
@@ -305,7 +358,7 @@ if ($this->Giris_Model->kullaniciGiris()) {
 if ($this->Giris_Model->kullaniciGiris()) {
     $this->load->view("inc/modal_cagri_kaydi_duzenle");
     ?>
-    
+
     <div class="modal fade" id="cagriKaydiniSilModal" tabindex="-1" role="dialog"
         aria-labelledby="cagriKaydiniSilModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

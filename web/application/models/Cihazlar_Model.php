@@ -132,6 +132,22 @@ class Cihazlar_Model extends CI_Model
         }
         $this->veriGuncellendiEkle();
     }
+    public function cihazToplamUcreti($cihaz_id)
+    {
+        $query = $this->db->reset_query()->where("cihaz_id", $cihaz_id)->get($this->islemlerTabloAdi());
+        if($query->num_rows() > 0){
+            $islemler = $query->result();
+            $toplam = 0;
+            foreach($islemler as $islem){
+                $ucret = $islem->birim_fiyat * $islem->miktar;
+                $kdv = ($ucret / 100) * $islem->kdv;
+                $toplam += $ucret + $kdv;
+            }
+            return round($toplam, 2);
+        } else {
+            return 0;
+        }
+    }
     public function cihazBul($id)
     {
         return $this->db->reset_query()->where("id", $id)->limit(1)->get($this->cihazlarTabloAdi());
@@ -1285,6 +1301,16 @@ class Cihazlar_Model extends CI_Model
             $query = $query->where("kull_id", $kull_id);
         }
         $query = $query->order_by("id", "DESC")->get($this->cagriKayitlariTabloAdi());
+        $result = $query->result();
+        for ($i = 0; $i < count($result); $i++) {
+            $cihaz = $this->Cihazlar_Model->cagriCihazi($result[$i]->id);
+            $result[$i]->cihazInfo = $cihaz;
+            if($cihaz != null){
+                $result[$i]->toplamUcret = $this->Cihazlar_Model->cihazToplamUcreti($cihaz->id);
+            }else{
+                $result[$i]->toplamUcret = 0;
+            }
+        }
         return $query->result();
     }
     public function cagriCihazi($cagriID)
