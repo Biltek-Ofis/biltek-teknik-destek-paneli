@@ -1356,6 +1356,10 @@ class Cihazlar_Model extends CI_Model
     }
     public function cagriKaydiSil($id)
     {
+        $this->db->where("cagri_id", $id)->update($this->cihazlarTabloAdi(), array(
+            "cagri_id" => 0,
+            "kull_id" => 0,
+        ));
         return $this->db->reset_query()->where("id", $id)->delete($this->cagriKayitlariTabloAdi());
     }
     public function cagriKaydiPost($duzenle = FALSE)
