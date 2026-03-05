@@ -41,7 +41,7 @@ class Cagrikayitlari extends Varsayilancontroller
     public function ekle()
     {
         if ($this->Giris_Model->kullaniciGiris() || $this->Giris_Model->kullaniciGiris(TRUE)) {
-            $ekle = $this->Cihazlar_Model->cagriKaydiEkle();
+            $ekle = $this->Cihazlar_Model->cagriKaydiEkle(isset($_GET["servisNo"]) ? $_GET["servisNo"] : "");
             if ($ekle) {
                 redirect(base_url("cagrikayitlari"));
             } else {
@@ -57,9 +57,9 @@ class Cagrikayitlari extends Varsayilancontroller
             if (strlen($id) > 0) {
                 $duzenle = $this->Cihazlar_Model->cagriKaydiDuzenle($id);
                 if ($duzenle) {
-                    if(isset($_GET["cagri"])){
-                        redirect(base_url("cagrikayitlari/detay/".$id));
-                    }else{
+                    if (isset($_GET["cagri"])) {
+                        redirect(base_url("cagrikayitlari/detay/" . $id));
+                    } else {
                         redirect(base_url("cagrikayitlari"));
                     }
                 } else {

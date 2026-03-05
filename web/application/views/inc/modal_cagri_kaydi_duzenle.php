@@ -16,7 +16,7 @@ if(isset($cihaz_mevcut)){
                 <form id="cagriKaydiDuzenleForm" <?= isset($form_action) ? ' action="' . $form_action . '"' : ""; ?>
                     method="post">
                     <div id="cagriKaydiDuzenleAlert" class="row alert alert-danger" role="alert" style="<?=$cihaz_var ? "" : "display:none;";?>">
-                    Bu çağrıya servis kaydı açıldığı için bazı bölümler düzenlenemez. Lütfen gerekli düzenlemeleri servis kaydı üzerinde yapın. <span id="cagriDuzenleServisNo" class="fw-bold"><?=isset($cagri_servis_no) && strlen($cagri_servis_no) ? "Servis No: ".$cagri_servis_no : "";?></span>
+                    Bu çağrıya servis kaydı açıldığı için bazı bölümler düzenlenemez. Lütfen gerekli düzenlemeleri servis kaydı üzerinde yapın. <span id="cagriDuzenleServisNo" class="fw-bold"><?=isset($cagri_servis_no) && strlen($cagri_servis_no) > 0 ? "Servis No: ".$cagri_servis_no : "";?></span>
                     </div>
                     <div class="row">
                         <h6 class="col">Gerekli alanlar * ile belirtilmiştir.</h6>

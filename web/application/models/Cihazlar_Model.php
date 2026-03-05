@@ -135,10 +135,10 @@ class Cihazlar_Model extends CI_Model
     public function cihazToplamUcreti($cihaz_id)
     {
         $query = $this->db->reset_query()->where("cihaz_id", $cihaz_id)->get($this->islemlerTabloAdi());
-        if($query->num_rows() > 0){
+        if ($query->num_rows() > 0) {
             $islemler = $query->result();
             $toplam = 0;
-            foreach($islemler as $islem){
+            foreach ($islemler as $islem) {
                 $ucret = $islem->birim_fiyat * $islem->miktar;
                 $kdv = ($ucret / 100) * $islem->kdv;
                 $toplam += $ucret + $kdv;
@@ -347,11 +347,12 @@ class Cihazlar_Model extends CI_Model
     {
         $this->load->model("Islemler_Model");
         for ($i = 0; $i < count($result); $i++) {
-           $result[$i] = $this->cihazVerileriniDonusturTek($result[$i], $nullariDuzelt);
+            $result[$i] = $this->cihazVerileriniDonusturTek($result[$i], $nullariDuzelt);
         }
         return $result;
     }
-    public function cihazVerileriniDonusturTek($cihaz, $nullariDuzelt = FALSE){
+    public function cihazVerileriniDonusturTek($cihaz, $nullariDuzelt = FALSE)
+    {
         if (property_exists($cihaz, "cID")) {
             $cihaz->id = $cihaz->cID;
         }
@@ -1247,7 +1248,7 @@ class Cihazlar_Model extends CI_Model
     {
         $this->veriGuncellendiEkle();
         $cihazQ = $this->cihazBul($id);
-        if($cihazQ->num_rows() > 0){
+        if ($cihazQ->num_rows() > 0) {
             $cihazBilg = $cihazQ->result();
             $sil = $this->db->reset_query()->where("id", $id)->update($this->cihazlarTabloAdi(), array(
                 "imza_points" => "",
@@ -1263,7 +1264,7 @@ class Cihazlar_Model extends CI_Model
                 }
             }
             return $sil;
-        }else{
+        } else {
             return FALSE;
         }
     }
@@ -1305,9 +1306,9 @@ class Cihazlar_Model extends CI_Model
         for ($i = 0; $i < count($result); $i++) {
             $cihaz = $this->Cihazlar_Model->cagriCihazi($result[$i]->id);
             $result[$i]->cihazInfo = $cihaz;
-            if($cihaz != null){
+            if ($cihaz != null) {
                 $result[$i]->toplamUcret = $this->Cihazlar_Model->cihazToplamUcreti($cihaz->id);
-            }else{
+            } else {
                 $result[$i]->toplamUcret = 0;
             }
         }
@@ -1331,11 +1332,18 @@ class Cihazlar_Model extends CI_Model
             return null;
         }
     }
-    public function cagriKaydiEkle()
+    public function cagriKaydiEkle($servisNo = "")
     {
         $veri = $this->cagriKaydiPost(FALSE);
         $ekle = $this->db->reset_query()->insert($this->cagriKayitlariTabloAdi(), $veri);
-        if($ekle){
+        if ($ekle) {
+            if (strlen($servisNo) > 0) {
+                $cagri_id = $this->db->insert_id();
+                $this->db->where("servis_no", $servisNo)->update($this->cihazlarTabloAdi(), array(
+                    "cagri_id" => $cagri_id,
+                    "kull_id" => $veri["kull_id"],
+                ));
+            }
             $this->Kullanicilar_Model->bildirimGonderCagri($veri["cihaz_turu"], $this->db->insert_id(), "eklendi");
             return $ekle;
         }
@@ -1396,14 +1404,15 @@ class Cihazlar_Model extends CI_Model
                     if ($durum && strlen($bildirim_turu) > 0) {
                         $this->Kullanicilar_Model->bildirimGonderCagri($cagri->cihaz_turu, $cagri->id, $bildirim_turu);
                     }
-                    return $durum; 
+                    return $durum;
                 }
             }
         }
         return FALSE;
     }
 
-    public function dosyaSil($dosyaAdi){
+    public function dosyaSil($dosyaAdi)
+    {
         if (strlen($dosyaAdi) > 0) {
             if (file_exists($dosyaAdi)) {
                 unlink($dosyaAdi);

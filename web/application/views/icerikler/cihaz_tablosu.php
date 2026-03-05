@@ -54,7 +54,7 @@ echo '<script>
   if(yeniCihazGirisiAcik === undefined){
     yeniCihazGirisiAcik = false;
   }
-  var cagriKaydiBtnGoster = false;
+  var cagriKaydiVar = false;
   var suankiCihaz = 0;
   var yonetici = ' . ($this->Kullanicilar_Model->yonetici() ? "true" : "false") . ';
   var duzenleme_modu = false;
@@ -69,9 +69,7 @@ echo '<script>
     $("#serviskabulBtn").show();
     $("#barkoduYazdirBtn").show();
     $("#kargoBilgisiBtn").show();
-    if(cagriKaydiBtnGoster){
-      $("#cagriKaydiBtn").show();
-    }
+    $("#cagriKaydiBtn").show();
     $("#formuYazdirBtn").show();
     if($("#silBtn").hasClass("goster")){
       $("#silBtn").show();
@@ -363,13 +361,13 @@ echo '
     $("#serviskabulBtn").attr("onclick", "servisKabulYazdir(" + id + ")");
     $("#kargoBilgisiBtn").attr("onclick", "kargoBilgisiYazdir(" + id + ")");
     if(cagri_id != 0 && cagri_id !== undefined && cagri_id !== null){
-      cagriKaydiBtnGoster = true;
-      $("#cagriKaydiBtn").attr("href", "'.base_url("cagrikayitlari/detay/").'"+cagri_id);
-      $("#cagriKaydiBtn").show();
+      cagriKaydiVar = true;
+      $("#cagriKaydiBtn").html("Çağrı Kaydı");
+      $("#cagriKaydiBtn").attr("href", "' . base_url("cagrikayitlari/detay/") . '"+cagri_id);
     }else{
-      cagriKaydiBtnGoster = false;
-      $("#cagriKaydiBtn").attr("href", "#");
-      $("#cagriKaydiBtn").hide();
+      cagriKaydiVar = false;
+      $("#cagriKaydiBtn").html("Çağrı Kaydı Oluştur");
+      $("#cagriKaydiBtn").attr("href", "' . base_url("cagrikayitlari") . '?servisNo="+servis_no+"&birim="+musteri_adi+"&gsm="+telefon_numarasi+"&cihaz_turu="+cihaz_turu_val+"&cihaz="+cihaz+"&model="+cihaz_modeli+"&seriNo="+seri_no+"&ariza="+ariza_aciklamasi);
     }
     $("#yeniKayitAcBtn").attr("onclick", "kaydiKopyala(\'" + donusturOnclick(musteri_kod) + "\', \'" + donusturOnclick(musteri_adi) + "\' , \'" + donusturOnclick(adres) + "\', \'" + donusturOnclick(telefon_numarasi) + "\', \'" + donusturOnclick(cihaz_turu_val) + "\', \'" + donusturOnclick(cihaz) + "\', \'" + donusturOnclick(cihaz_modeli) + "\', \'" + donusturOnclick(seri_no) + "\', \'" + donusturOnclick(cihaz_sifresi) + "\', \'" + donusturOnclick(cihaz_deseni) + "\', \'" + donusturOnclick(sorumlu_val) + "\')");
     $("#barkoduYazdirBtn").attr("onclick", "barkoduYazdir(" + id + ")");
@@ -1076,11 +1074,11 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
       <a id="duzenleBtn" href="#" onclick="duzenleyiGoster()" style="{display_kilit}" class="btn btn-primary goster">Düzenle</a>';
-      if(!$sorumlu_belirtildimi){
-        $cihazDetayOrnek .= '
+if (!$sorumlu_belirtildimi) {
+  $cihazDetayOrnek .= '
         <a id="yeniKayitAcBtn" href="#" style="{display_kilit}" class="btn btn-info text-white goster">Yeni Kayıt Aç</a>';
-      }
-      $cihazDetayOrnek .= '
+}
+$cihazDetayOrnek .= '
       <a id="kaydetBtn" href="#" onclick="detaylariKaydet(false, 0)" style="display:none;" class="btn btn-success">Kaydet</a>
       <a id="kaydetFormYazdirBtn" href="#" onclick="detaylariKaydet(true, 0)" style="display:none;" class="btn btn-primary">Kaydet ve Formu Yazdır</a>
       <a id="iptalBtn" href="#" onclick="detayModaliIptal()" style="display:none;" class="btn btn-danger">İptal</a>
@@ -2195,7 +2193,7 @@ if (isset($_GET["servisNo"])) {
       "' . donusturOnclick($gosterilenCihaz->tahsilat_sekli) . '",
       faturaDurumu("' . donusturOnclick($gosterilenCihaz->fatura_durumu) . '"), 
       "' . donusturOnclick($gosterilenCihaz->fis_no) . '");
-      suankiCihaz = '.$gosterilenCihaz->id.';
+      suankiCihaz = ' . $gosterilenCihaz->id . ';
       cihazBilgileriniGetir(true);';
   }
 }
