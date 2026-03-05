@@ -10,7 +10,7 @@ function donusturOnclick($oge)
 <script>
     $(document).ready(function () {
         <?php
-        if ($_GET["servisNo"]) {
+        if (isset($_GET["servisNo"])) {
             ?>
             $("#yeniCagriKaydiModal").modal("show");
             <?php
