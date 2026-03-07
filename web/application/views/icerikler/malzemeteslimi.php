@@ -70,15 +70,15 @@ $this->load->view("inc/style_tablo");
             if (kdvVal.length == 0) {
                 kdvVal = "0";
             }
-            var adet = parseInt(adetVal);
-            var fiyat = parseInt(fiyatVal);
+            var adet = parseFloat(adetVal);
+            var fiyat = parseFloat(fiyatVal);
             var topFiyat = fiyat * adet;
-            var kdv = (topFiyat / 100) * parseInt(kdvVal);
+            var kdv = (topFiyat / 100) * parseFloat(kdvVal);
             var kompleToplam = topFiyat + kdv;
             return {
-                kdv: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? kdv.toFixed(2) + " TL (" + kdvVal + "%)" : "",
-                tutar: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? topFiyat.toFixed(2) + " TL" : "",
-                toplam: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? kompleToplam.toFixed(2) + " TL" : ""
+                kdv: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? parseFloat(kdv).toFixed(2) + " TL (" + parseFloat(kdvVal).toFixed(2) + "%)" : "",
+                tutar: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? parseFloat(topFiyat).toFixed(2) + " TL" : "",
+                toplam: orjAdetVal.length > 0 && orjFiyatVal.length > 0 ? parseFloat(kompleToplam).toFixed(2) + " TL" : ""
             }
         }
         function tarihDonusturInput(tarih) {
@@ -265,7 +265,7 @@ $this->load->view("inc/style_tablo");
                     $('#yeniMalzemeTeslimiForm')[0].reset();
                     $("#yeniMalzemeTeslimiEkleModal").modal("hide");
                     malzemeTeslimleriGetir();
-                    if(yazdir){
+                    if (yazdir) {
                         teslimFormuYazdir(resp["id"]);
                     }
                 } else {
@@ -288,7 +288,7 @@ $this->load->view("inc/style_tablo");
                 if (resp["sonuc"]) {
                     $("#statusSuccessModal").modal("show");
                     malzemeTeslimleriGetir();
-                    if(yazdir){
+                    if (yazdir) {
                         teslimFormuYazdir(id);
                     }
                 } else {
@@ -463,7 +463,7 @@ $this->load->view("inc/style_tablo");
             <div class="modal-footer">
                 <button type="submit" id="yeniMalzemeTeslimiEkleBtn" class="btn btn-success"
                     onclick="yeniEkle(false)">Ekle</button>
-                    <button type="submit" id="yeniVeYazdirMalzemeTeslimiEkleBtn" class="btn btn-info text-white"
+                <button type="submit" id="yeniVeYazdirMalzemeTeslimiEkleBtn" class="btn btn-info text-white"
                     onclick="yeniEkle(true)">Ekle ve Yazdır</button>
                 <button type="button" onclick="$('#yeniMalzemeTeslimiForm')[0].reset();"
                     class="btn btn-primary">Temizle</button>
@@ -497,7 +497,7 @@ $this->load->view("inc/style_tablo");
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             <tr>
                                 <th colspan="4">No:</th>
                                 <td id="teslim_no3" colspan="16"></td>
@@ -556,7 +556,8 @@ $this->load->view("inc/style_tablo");
             </div>
             <div class="modal-footer">
                 <button type="submit" id="kaydetMalzemeTeslimiBtn" class="btn btn-success">Kaydet</button>
-                <button type="submit" id="kaydetVeYazdirMalzemeTeslimiBtn" class="btn btn-info text-white">Kaydet ve Yazdır</button>
+                <button type="submit" id="kaydetVeYazdirMalzemeTeslimiBtn" class="btn btn-info text-white">Kaydet ve
+                    Yazdır</button>
                 <button type="submit" id="iptalMalzemeTeslimiBtn" class="btn btn-danger"
                     onclick="detayGoster()">İptal</button>
                 <button type="submit" id="duzenleMalzemeTeslimiBtn" class="btn btn-success"
