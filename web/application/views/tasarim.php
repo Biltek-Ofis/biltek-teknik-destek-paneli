@@ -194,6 +194,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
     //$this->load->view("inc/footer");
     ?>
   </div>
+  <?php
+  $this->load->view("inc/internet_durumu");
+  ?>
   <div id="santa-container">
     <img id="santa" src="<?= base_url("dist/img/kis/santa.png") ?>" alt="Santa">
   </div>
