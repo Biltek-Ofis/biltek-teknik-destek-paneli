@@ -268,5 +268,38 @@ echo '
 			<?php
 		}
 		?>
+		$(document).on("show.bs.modal", ".modal", function () {
+			ayrilmaEngeliIptal();
+		});
+
+		$(document).on("shown.bs.modal", ".modal", function () {
+			const visibleModals = $(".modal:visible");
+
+			visibleModals.each(function (index) {
+				const zIndex = 1040 + (index + 1) * 10;
+				$(this).css("z-index", zIndex + 1);
+			});
+
+			$(".modal-backdrop").not(".modal-stack").each(function (index) {
+				const zIndex = 1040 + (index + 1) * 10;
+				$(this).css("z-index", zIndex).addClass("modal-stack");
+			});
+		});
+
+		$(document).on("hidden.bs.modal", ".modal", function () {
+			if ($(".modal:visible").length > 0) {
+				$("body").addClass("modal-open");
+			}
+
+			$(".modal-stack").each(function (index) {
+				const zIndex = 1040 + (index + 1) * 10;
+				$(this).css("z-index", zIndex);
+			});
+
+			$(".modal:visible").each(function (index) {
+				const zIndex = 1040 + (index + 1) * 10;
+				$(this).css("z-index", zIndex + 1);
+			});
+		});
 	});
 </script>

@@ -1936,17 +1936,6 @@ echo '$(document).ready(function() {
             });
             orderSira++;
         });
-    $(document).on("show.bs.modal", ".modal", function() {
-      ayrilmaEngeliIptal();
-      const zIndex = 1040 + 10 * $(".modal:visible").length;
-      $(this).css("z-index", zIndex);
-      setTimeout(() => $(".modal-backdrop").not(".modal-stack").css("z-index", zIndex - 1).addClass("modal-stack"));
-    });
-    $(document).on("hidden.bs.modal", ".modal", function() {
-      if($(".modal:visible").length > 0){
-        $("body").addClass("modal-open");
-      }
-    });
     $(window).on("resize", function(){
       $("#cihazlar tr.child").each(function(){
         $(this).remove();
