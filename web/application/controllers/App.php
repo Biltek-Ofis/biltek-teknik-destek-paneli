@@ -679,9 +679,9 @@ class App extends CI_Controller
                     if (isset($bildirimler)) {
                         $bildirimler = json_decode($bildirimler);
                         $sonuc = FALSE;
-                        foreach($bildirimler as $bildirim){
+                        foreach ($bildirimler as $bildirim) {
                             $sonuc = $this->Kullanicilar_Model->bildirimAyarla($kullanici_id, $bildirim->tur, $bildirim->durum);
-                            if(!$sonuc){
+                            if (!$sonuc) {
                                 break;
                             }
                         }
@@ -699,26 +699,27 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function cagriKaydi(){
+    public function cagriKaydi()
+    {
         $this->headerlar();
         $token = $this->tokenPost();
         $id = $this->input->post("id");
         if (isset($token)) {
             if ($this->token($token)) {
-                if(isset($id)){
+                if (isset($id)) {
                     $kayit = $this->Cihazlar_Model->cagriKaydiGetir($id);
-                    if($kayit != null){
+                    if ($kayit != null) {
                         $cihaz = $this->Cihazlar_Model->cagriCihazi($kayit->id);
-                        if($cihaz != null){
-                            $kayit->cihaz_bilgileri =  $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
+                        if ($cihaz != null) {
+                            $kayit->cihaz_bilgileri = $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
                         }
                         $kayit->cihaz_turu_val = $cihaz != null ? $cihaz->cihaz_turu_val : $kayit->cihaz_turu;
                         $kayit->cihaz_turu = $this->Cihazlar_Model->cihazTuru($kayit->cihaz_turu_val);
                         echo json_encode($kayit);
-                    }else{
+                    } else {
                         echo json_encode($this->hataMesaji(1));
                     }
-                }else{
+                } else {
                     echo json_encode($this->hataMesaji(1));
                 }
             } else {
@@ -728,22 +729,23 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function cagriKayitlari(){
+    public function cagriKayitlari()
+    {
         $this->headerlar();
         $token = $this->tokenPost();
         $kullanici_id = $this->input->post("kullanici_id");
         if (isset($token)) {
             if ($this->token($token)) {
                 $kayitlar = $this->hataMesaji(1);
-                if(isset($kullanici_id)){
+                if (isset($kullanici_id)) {
                     $kayitlar = $this->Cihazlar_Model->cagriKayitlari($kullanici_id);
-                }else{
+                } else {
                     $kayitlar = $this->Cihazlar_Model->cagriKayitlari();
                 }
-                for( $i = 0; $i < count($kayitlar); $i++){
+                for ($i = 0; $i < count($kayitlar); $i++) {
                     $cihaz = $this->Cihazlar_Model->cagriCihazi($kayitlar[$i]->id);
-                    if($cihaz != null){
-                        $kayitlar[$i]->cihaz_bilgileri =  $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
+                    if ($cihaz != null) {
+                        $kayitlar[$i]->cihaz_bilgileri = $this->Cihazlar_Model->cihazVerileriniDonusturTek($cihaz, TRUE);
                     }
                     $kayitlar[$i]->cihaz_turu_val = $cihaz != null ? $cihaz->cihaz_turu_val : $kayitlar[$i]->cihaz_turu;
                     $kayitlar[$i]->cihaz_turu = $this->Cihazlar_Model->cihazTuru($kayitlar[$i]->cihaz_turu_val);
@@ -756,7 +758,8 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function fiyatiOnayla(){
+    public function fiyatiOnayla()
+    {
         $this->headerlar();
         $token = $this->tokenPost();
         $id = $this->input->post("id");
@@ -770,7 +773,8 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function fiyatiReddet(){
+    public function fiyatiReddet()
+    {
         $this->headerlar();
         $token = $this->tokenPost();
         $id = $this->input->post("id");
@@ -784,7 +788,8 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
-    public function cagriKaydiSil(){
+    public function cagriKaydiSil()
+    {
         $this->headerlar();
         $token = $this->tokenPost();
         $id = $this->input->post("id");
@@ -792,7 +797,7 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 $sil = $this->Cihazlar_Model->cagriKaydiSil($id);
                 echo json_encode(array(
-                    "sonuc"=> $sil,
+                    "sonuc" => $sil,
                 ));
             } else {
                 echo json_encode($this->hataMesaji(1));
@@ -834,7 +839,7 @@ class App extends CI_Controller
         if (isset($token)) {
             if ($this->token($token)) {
                 if (isset($cihaz_id)) {
-                    $sil = $this->Cihazlar_Model->imzaSil($cihaz_id,  $teslim_alan, $uye_id);
+                    $sil = $this->Cihazlar_Model->imzaSil($cihaz_id, $teslim_alan, $uye_id);
                     if ($sil) {
                         echo json_encode(array("sonuc" => 1));
                     } else {
@@ -844,6 +849,47 @@ class App extends CI_Controller
             } else {
                 echo json_encode($this->hataMesaji(4));
             }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function qrEkle()
+    {
+        $this->headerlar();
+        $kullanici_id = $this->input->post("id");
+        $qr = $this->input->post("qr");
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($kullanici_id)) {
+                    if (isset($kullanici_id)) {
+                        $ekle = $this->Kullanicilar_Model->qrEkle($kullanici_id, $qr);
+                        if ($ekle) {
+                            echo json_encode(array("sonuc" => 1));
+                        } else {
+                            echo json_encode($this->hataMesaji(99));
+                        }
+                    } else {
+                        echo json_encode($this->hataMesaji(4));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(4));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(4));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function qrCheck()
+    {
+        $this->headerlar();
+        $qr = $this->input->post("qr");
+        $ekServisNo = $this->input->post("ekServisNo");
+        $resp = $this->Kullanicilar_Model->qrCheck($qr, $ekServisNo);
+        if ($resp != null) {
+            echo json_encode(array("sonuc" => 1, "data" => $resp));
         } else {
             echo json_encode($this->hataMesaji(1));
         }

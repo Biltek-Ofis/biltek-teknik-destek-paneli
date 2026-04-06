@@ -31,6 +31,10 @@ class Kullanicilar_Model extends CI_Model
         return DB_ON_EK_STR . "kullanici_bildirimleri";
     }
 
+    public function kullaniciQRTabloAdi()
+    {
+        return DB_ON_EK_STR . "kullanici_qr";
+    }
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $musteri = 0, $tema = "oto")
     {
         return array(
@@ -129,7 +133,8 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->kullanicilarTabloAdi());
     }
-    public function authOlustur($kullaniciBilgileri, $auth, $cihazID){
+    public function authOlustur($kullaniciBilgileri, $auth, $cihazID)
+    {
 
         ///2024-12-22 10:46:21.00000
         $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
@@ -186,7 +191,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart", $bildirimID = "0")
     {
-        if($this->firebaseAyarlandi()){
+        if ($this->firebaseAyarlandi()) {
             $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
 
             if ($query->num_rows() > 0) {
@@ -202,7 +207,7 @@ class Kullanicilar_Model extends CI_Model
                                 'data' => [
                                     'title' => $baslik,
                                     'body' => $icerik,
-                                    'tip'=> $tip,
+                                    'tip' => $tip,
                                     'id' => $bildirimID,
                                 ],
                             ],
@@ -231,14 +236,14 @@ class Kullanicilar_Model extends CI_Model
                 if (strval($bildirim->durum) == "1") {
                     $this->bildirimGonder($id, $baslik, $mesaj, "cihaz", $cihaz->servis_no);
                 }
-            }else{
-                $this->bildirimGonder($id, $baslik, $mesaj, "cihaz",  $cihaz->servis_no);
+            } else {
+                $this->bildirimGonder($id, $baslik, $mesaj, "cihaz", $cihaz->servis_no);
             }
         }
     }
     public function bildirimGonderCagri($tur_id, $cagri_id, $tip = "")
     {
-        if(strlen($tip) == 0) {
+        if (strlen($tip) == 0) {
             return;
         }
         $bildirimler = $this->bildirimleriGetirTur("cagri-" . $tur_id);
@@ -248,9 +253,9 @@ class Kullanicilar_Model extends CI_Model
                 if (strval($bildirim->durum) == "1") {
                     $baslik = 'Yeni Çağrı Kaydı';
                     $mesaj = "";
-                    
+
                     $cihaz = $this->Cihazlar_Model->cagriCihazi($cagri->id);
-                    if($cihaz != null){
+                    if ($cihaz != null) {
                         $mesaj .= $cihaz->servis_no . " - ";
                     }
                     $mesaj .= $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . "" . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
@@ -382,19 +387,41 @@ class Kullanicilar_Model extends CI_Model
         }
 
     }
-    public function firebaseAyarlandi(){
-        if(defined("FIREBASE_CONFIG")){
-            if(isset(FIREBASE_CONFIG["apiKey"]) && strlen(FIREBASE_CONFIG["apiKey"]) > 0
+    public function firebaseAyarlandi()
+    {
+        if (defined("FIREBASE_CONFIG")) {
+            if (
+                isset(FIREBASE_CONFIG["apiKey"]) && strlen(FIREBASE_CONFIG["apiKey"]) > 0
                 && isset(FIREBASE_CONFIG["authDomain"]) && strlen(FIREBASE_CONFIG["authDomain"]) > 0
                 && isset(FIREBASE_CONFIG["projectId"]) && strlen(FIREBASE_CONFIG["projectId"]) > 0
                 && isset(FIREBASE_CONFIG["storageBucket"]) && strlen(FIREBASE_CONFIG["storageBucket"]) > 0
                 && isset(FIREBASE_CONFIG["messagingSenderId"]) && strlen(FIREBASE_CONFIG["messagingSenderId"]) > 0
                 && isset(FIREBASE_CONFIG["appId"]) && strlen(FIREBASE_CONFIG["appId"]) > 0
                 && isset(FIREBASE_CONFIG["webPushCertificates"]) && strlen(FIREBASE_CONFIG["webPushCertificates"]) > 0
-            ){
+            ) {
                 return TRUE;
             }
         }
         return FALSE;
+    }
+    public function qrEkle($kullanici_id, $qr)
+    {
+        $veri = array(
+            "kullanici_id" => $kullanici_id,
+            "qr" => $qr,
+        );
+        return $this->db->reset_query()->insert($this->kullaniciQRTabloAdi(), $veri);
+    }
+    public function qrCheck($qr, $ekServisNo = "")
+    {
+        $query = $this->db->reset_query()->where("qr", $qr)->get($this->kullaniciQRTabloAdi());
+        if ($query->num_rows() > 0) {
+            $resp = $query->result()[0];
+            $this->db->reset_query()->where("qr", $qr)->delete($this->kullaniciQRTabloAdi());
+            $kullanici = $this->tekKullanici($resp->kullanici_id);
+            $this->Giris_Model->kullaniciGirisYap($kullanici->kullanici_adi, $ekServisNo, FALSE);
+            return $resp;
+        }
+        return null;
     }
 }

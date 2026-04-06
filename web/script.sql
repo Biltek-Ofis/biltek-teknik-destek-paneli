@@ -389,6 +389,18 @@ CREATE TABLE `ts1_kullanici_bildirimleri` (
 -- --------------------------------------------------------
 
 --
+-- Tablo için tablo yapısı `ts1_kullanici_qr`
+--
+
+CREATE TABLE `ts1_kullanici_qr` (
+  `id` int(11) NOT NULL,
+  `kullanici_id` int(11) NOT NULL,
+  `qr` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tablo için tablo yapısı `ts1_loglar`
 --
 
@@ -718,6 +730,12 @@ ALTER TABLE `ts1_kullanici_bildirimleri`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_kullanici_qr`
+--
+ALTER TABLE `ts1_kullanici_qr`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_loglar`
 --
 ALTER TABLE `ts1_loglar`
@@ -890,6 +908,12 @@ ALTER TABLE `ts1_kullanici_auth`
 --
 ALTER TABLE `ts1_kullanici_bildirimleri`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_kullanici_qr`
+--
+ALTER TABLE `ts1_kullanici_qr`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_loglar`

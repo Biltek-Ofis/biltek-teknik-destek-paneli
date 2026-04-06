@@ -16,7 +16,13 @@ $ayarlar = $this->Ayarlar_Model->getir();
     <?php
     $this->load->view("inc/scripts");
     $this->load->view("inc/styles_important");
+
+    if (!isset($ekServisNo)) {
+        $ekServisNo = "";
+    }
     ?>
+    <script src="<?= base_url("dist/js/JsBarcode.all.min.js?v=1.0"); ?>"></script>
+    <script src="<?= base_url("dist/js/qrcode.min.js?v=1.0"); ?>"></script>
     <style>
         html,
         body {
@@ -49,6 +55,37 @@ $ayarlar = $this->Ayarlar_Model->getir();
         }
     </style>
     <script>
+        var sonBarkod = "";
+        function barkod_olustur() {
+            const array = new Uint8Array(16);
+            crypto.getRandomValues(array);
+            const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            new QRCode(document.getElementById("girisBarkod"), {
+                text: "giris:" + token,
+                width: 80,
+                height: 80,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            sonBarkod = token;
+            $("#girisBarkod > img").css({ "margin": "auto", "width": "3cm", "height": "3cm" });
+        }
+        function barkod_kontrol() {
+            if (sonBarkod.length > 0) {
+                $.ajax({
+                    url: "<?= base_url("app/qrCheck"); ?>",
+                    method: "POST",
+                    data: { qr: sonBarkod, ekServisNo: "<?= $ekServisNo; ?>" },
+                    success: function (response) {
+                        var data = JSON.parse(response);
+                        if (data.sonuc == 1) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        }
         $(document).ready(function () {
             ayrilma_durumu_tetikle = false;
             $("input").each(function () {
@@ -56,6 +93,14 @@ $ayarlar = $this->Ayarlar_Model->getir();
                     ayrilmaEngeliIptal();
                 });
             });
+            barkod_olustur();
+            setInterval(function () {
+                $("#girisBarkod").html("");
+                barkod_olustur();
+            }, 30000);
+            setInterval(function () {
+                barkod_kontrol();
+            }, 1000);
         });
     </script>
 </head>
@@ -88,39 +133,49 @@ $ayarlar = $this->Ayarlar_Model->getir();
 
     <main class="form-signin w-100 m-auto">
         <div class="alert alert-danger" style="<?= (strlen($girisHatasi) == 0 ? "display:none;" : ""); ?>" role="alert">
-            <?= $girisHatasi.""; ?>
+            <?= $girisHatasi . ""; ?>
         </div>
         <?php
         $this->load->view("inc/tarayici_uyari");
-        if (!isset($ekServisNo)) {
-            $ekServisNo = "";
-        }
-        if(DEMO & strlen(DEMO_KULLANICI_ADI) > 0 & strlen(DEMO_SIFRE) > 0){
+        if (DEMO & strlen(DEMO_KULLANICI_ADI) > 0 & strlen(DEMO_SIFRE) > 0) {
             ?>
             <div class="alert alert-success text-center" role="alert">
-                Biltek Teknik Servis Paneli için demo sayfasıdır. Demoyu kullanmak için alttaki bilgilerle giriş yapabilirsiniz.</br></br>
+                Biltek Teknik Servis Paneli için demo sayfasıdır. Demoyu kullanmak için alttaki bilgilerle giriş
+                yapabilirsiniz.</br></br>
                 <span class="fw-bold">Kullanıcı Adı: </span> <?= DEMO_KULLANICI_ADI ?></br>
                 <span class="fw-bold">Şifre: </span> <?= DEMO_SIFRE ?></br>
             </div>
             <?php
         }
         ?>
-        <form action="<?= base_url("giris/" . $ekServisNo);?>" method="POST">
-        <img class="mb-4" src="<?= base_url("dist/img/logo.png") ;?>" class="w-100">
+        <form action="<?= base_url("giris/" . $ekServisNo); ?>" method="POST">
+            <img class="mb-4" src="<?= base_url("dist/img/logo.png"); ?>" class="w-100">
 
-        <div class="form-floating">
-            <input id="kullanici_adi" name="kullanici_adi" type="username" class="form-control" placeholder="Kullanıcı Adı" required>
-            <label for="kullanici_adi">Kullanıcı Adı:</label>
+            <div class="form-floating">
+                <input id="kullanici_adi" name="kullanici_adi" type="username" class="form-control"
+                    placeholder="Kullanıcı Adı" required>
+                <label for="kullanici_adi">Kullanıcı Adı:</label>
+            </div>
+            <div class="form-floating">
+                <input id="sifre" name="sifre" type="password" class="form-control" placeholder="Şifre" required>
+                <label for="sifre">Şifre</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
+        </form>
+        <div class="w-100 mt-3 row">
+            <div class="text-center col-12">
+                Mobil uygulamada <div class="fw-bold">Ayarlar > QR ile Hızlı Giriş</div>
+                adımından bu QR kodu okutarak giriş yapabilirsiniz
+            </div>
+            <div class="text-center row col-12">
+                <div class="ms-3 my-2 col-12" id="girisBarkod"></div>
+            </div>
         </div>
-        <div class="form-floating">
-            <input id="sifre" name="sifre" type="password" class="form-control" placeholder="Şifre" required>
-            <label for="sifre">Şifre</label>
+
+        <div class="col-12 mt-2">
+            <a href="<?= base_url("cihazdurumu"); ?>" class="btn btn-info btn-block w-100 text-white">Cihazımın Durumunu
+                Görüntüle</a>
         </div>
-        <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
-    </form>
-    <div class="col-12 mt-2">
-        <a href="<?= base_url("cihazdurumu") ;?>" class="btn btn-info btn-block w-100 text-white">Cihazımın Durumunu Görüntüle</a>
-    </div>
         <?php
         $detect = new Mobile_Detect();
         if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {

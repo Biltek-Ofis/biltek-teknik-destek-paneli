@@ -1,4 +1,5 @@
 import 'package:biltekteknikservis/models/kullanici.dart';
+import 'package:biltekteknikservis/sayfalar/cihazlar.dart';
 import 'package:biltekteknikservis/widgets/list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +115,19 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       );
                     },
                   ),
+                BiltekListTile(
+                  leading: Icon(CupertinoIcons.qrcode),
+                  title: "QR ile Hızlı Giriş",
+                  onTap: () async {
+                    await barkodTara(
+                      context,
+                      kullanici: widget.kullanici,
+                      cihazlariYenile: () {},
+                      pcYenile: () {},
+                      sadeceGiris: true,
+                    );
+                  },
+                ),
                 BiltekListTile(
                   leading: Icon(CupertinoIcons.square_arrow_left),
                   title: "Çıkış Yap",

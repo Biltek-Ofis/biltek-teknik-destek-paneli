@@ -51,6 +51,8 @@ class Ayarlar {
   static String get imzaYukle => "${appUrl}imzaYukle/";
   static String get imzaSil => "${appUrl}imzaSil/";
 
+  static String get qrEkle => "${appUrl}qrEkle/";
+
   static String teknikservisformu({
     required String auth,
     required int cihazID,

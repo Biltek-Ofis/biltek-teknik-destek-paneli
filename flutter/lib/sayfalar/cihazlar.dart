@@ -822,6 +822,7 @@ Future<void> barkodTara(
   required KullaniciAuthModel kullanici,
   required VoidCallback cihazlariYenile,
   required VoidCallback pcYenile,
+  bool sadeceGiris = false,
 }) async {
   ServisNo servisNoCls = ServisNo.of(context);
 
@@ -845,7 +846,9 @@ Future<void> barkodTara(
             scanFormat: ScanFormat.ALL_FORMATS,
             onScanned: (res) async {
               NavigatorState navigatorState = Navigator.of(context);
-              if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+              if (!kIsWeb &&
+                  (Platform.isAndroid || Platform.isIOS) &&
+                  !sadeceGiris) {
                 await FlutterRingtonePlayer().play(
                   fromAsset: BiltekAssets.barkod,
                   looping: false,
@@ -856,6 +859,56 @@ Future<void> barkodTara(
               Future.delayed(Duration(seconds: 1), () async {
                 navigatorState.pop();
                 debugPrint("Sonuc: $res");
+                if (sadeceGiris) {
+                  debugPrint("Giriş sadece modunda tarandı: $res");
+                  if (res.isNotEmpty && res.startsWith("giris:")) {
+                    var splt = res.split(":");
+                    if (splt.length == 2) {
+                      bool sonuc = await BiltekPost.barkodGiris(
+                        id: kullanici.id,
+                        qr: splt[1],
+                      );
+                      if (sonuc) {
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Giriş Başarılı"),
+                                content: Icon(
+                                  CupertinoIcons.check_mark_circled,
+                                  color: Colors.green,
+                                  size: 50,
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Tamam"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      } else {
+                        if (context.mounted) {
+                          barkodGecersiz(context);
+                        }
+                      }
+                    } else {
+                      if (context.mounted) {
+                        barkodGecersiz(context);
+                      }
+                    }
+                  } else {
+                    if (context.mounted) {
+                      barkodGecersiz(context);
+                    }
+                  }
+                  return;
+                }
                 if (res.isNotEmpty && res != "-1" && res.startsWith("20")) {
                   try {
                     int servisNo = int.parse(res);

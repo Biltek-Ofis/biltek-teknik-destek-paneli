@@ -843,4 +843,24 @@ class BiltekPost {
     }
     return false;
   }
+
+  static Future<bool> barkodGiris({required int id, required String qr}) async {
+    var response = await BiltekPost.post(Ayarlar.qrEkle, {
+      "id": id.toString(),
+      "qr": qr,
+    });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
 }

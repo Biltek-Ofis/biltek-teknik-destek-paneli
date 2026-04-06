@@ -7,21 +7,40 @@ class Giris_Model extends CI_Model
     }
     public function kullaniciGiris($musteri = FALSE)
     {
-        if($this-> kullaniciTanimi()){
+        if ($this->kullaniciTanimi()) {
             $this->load->model("Kullanicilar_Model");
-            if($musteri ){
+            if ($musteri) {
                 return $this->Kullanicilar_Model->kullaniciBilgileri()["id"] != "" && $this->Kullanicilar_Model->kullaniciBilgileri()["musteri"] == 1;
-            }else{
+            } else {
                 return $this->Kullanicilar_Model->kullaniciBilgileri()["id"] != "" && $this->Kullanicilar_Model->kullaniciBilgileri()["musteri"] == 0;
             }
-        }else{
+        } else {
             return false;
         }
     }
-    public function kullaniciTanimi(){
+    public function kullaniciGirisYap($kullanici_adi, $ekServisNo = "", $redirect = TRUE)
+    {
+        $this->Giris_Model->kullaniciOturumAc($kullanici_adi);
+        $kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
+        $auth = $this->Giris_Model->auth();
+        $cihazID = $this->Giris_Model->cihazID();
+        $kullaniciBilgileri = $this->Kullanicilar_Model->tekKullaniciAdi($kullanici["kullanici_adi"]);
+        $this->Kullanicilar_Model->authOlustur($kullaniciBilgileri, $auth, $cihazID);
+        if (!$redirect) {
+            return;
+        }
+        if ($kullanici["teknikservis"] == 1) {
+            redirect(base_url("cihazlarim/" . $ekServisNo));
+        } else {
+            redirect(base_url($ekServisNo));
+        }
+    }
+    public function kullaniciTanimi()
+    {
         return isset($_SESSION["KULLANICI_ID"]);
     }
-    public function kullaniciID(){
+    public function kullaniciID()
+    {
         return $_SESSION["KULLANICI_ID"];
     }
     public function girisDurumu($kullanici_adi, $sifre)
@@ -53,19 +72,21 @@ class Giris_Model extends CI_Model
     {
         unset($_SESSION["KULLANICI_ID"]);
     }
-    public function cihazID(){
-        if(isset($_SESSION["cihazID"]) && strlen($_SESSION["cihazID"]) > 0){
+    public function cihazID()
+    {
+        if (isset($_SESSION["cihazID"]) && strlen($_SESSION["cihazID"]) > 0) {
             return $_SESSION["cihazID"];
-        }else{
+        } else {
             $cihazID = random_string('alnum', 50);
             $_SESSION["cihazID"] = $cihazID;
             return $_SESSION["cihazID"];
         }
     }
-    public function auth(){
-        if(isset($_SESSION["auth"]) && strlen($_SESSION["auth"]) > 0){
+    public function auth()
+    {
+        if (isset($_SESSION["auth"]) && strlen($_SESSION["auth"]) > 0) {
             return $_SESSION["auth"];
-        }else{
+        } else {
             $auth = random_string('alnum', 50);
             $_SESSION["auth"] = $auth;
             return $_SESSION["auth"];
