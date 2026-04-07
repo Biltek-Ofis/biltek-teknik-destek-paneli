@@ -350,8 +350,11 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         return;
       }
       if (await Permission.contacts.request().isGranted) {
-        Contact? contact = await FlutterContacts.openExternalInsert(
-          Contact(phones: [Phone(telefon)], displayName: cihaz!.musteriAdi),
+        String? contact = await FlutterContacts.native.showCreator(
+          contact: Contact(
+            phones: [Phone(number: telefon)],
+            name: Name(first: cihaz!.musteriAdi),
+          ),
         );
         debugPrint("Kişi: $contact");
         if (contact != null) {
