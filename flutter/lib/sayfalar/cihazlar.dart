@@ -606,8 +606,8 @@ class CihazNo {
     required VoidCallback cihazlariYenile,
   }) async {
     try {
-      if (qr.startsWith(Ayarlar.cihazDurumu)) {
-        final ts = qr.replaceAll(Ayarlar.cihazDurumu, "").replaceAll("/", "");
+      if (isValidCihaz(qr)) {
+        final ts = noFromUrl(qr);
         int no = int.parse(ts);
         await ac(
           no: no,
@@ -625,8 +625,8 @@ class CihazNo {
 
   Future<void> qrAcMusteri({required String qr}) async {
     try {
-      if (qr.startsWith(Ayarlar.cihazDurumu)) {
-        final ts = qr.replaceAll(Ayarlar.cihazDurumu, "").replaceAll("/", "");
+      if (isValidCihaz(qr)) {
+        final ts = noFromUrl(qr);
         int no = int.parse(ts);
         await acMusteri(no: no);
       }
@@ -636,6 +636,19 @@ class CihazNo {
         barkodGecersiz(context);
       }
     }
+  }
+
+  bool isValidCihaz(String qr) {
+    return qr.startsWith(Ayarlar.cihazDurumu) ||
+        qr.startsWith(Ayarlar.cihazDurumuDeep);
+  }
+
+  String noFromUrl(String qr) {
+    final ts = qr
+        .replaceAll(Ayarlar.cihazDurumu, "")
+        .replaceAll(Ayarlar.cihazDurumuDeep, "")
+        .replaceAll("/", "");
+    return ts;
   }
 }
 
@@ -959,7 +972,7 @@ Future<void> barkodTara(
                 }
                 if (res.isNotEmpty &&
                     res != "-1" &&
-                    res.startsWith(Ayarlar.cihazDurumu)) {
+                    cihazNoCls.isValidCihaz(res)) {
                   cihazNoCls.qrAc(
                     qr: res,
                     kullanici: kullanici,

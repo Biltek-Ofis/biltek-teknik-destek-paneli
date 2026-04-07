@@ -58,13 +58,6 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      if (!kIsWeb) {
-        final bool canAuthenticateWithBiometrics =
-            await localAuth.canCheckBiometrics;
-        canAuthenticateBio =
-            canAuthenticateWithBiometrics ||
-            await localAuth.isDeviceSupported();
-      }
       if (mounted) {
         cihazNoCls = CihazNo.of(context);
 
@@ -76,6 +69,15 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         kullaniciAdiController.text = spKullanici.kullaniciAdi;
         if (widget.spKullanici!.sifre.isNotEmpty) {
           if (!kIsWeb) {
+            final bool canAuthenticateWithBiometrics =
+                await localAuth.canCheckBiometrics;
+            canAuthenticateBio =
+                canAuthenticateWithBiometrics ||
+                await localAuth.isDeviceSupported();
+            /*if (!canAuthenticateBio) {
+              sifreController.text = widget.spKullanici!.sifre;
+            }*/
+          } else {
             sifreController.text = widget.spKullanici!.sifre;
           }
         }

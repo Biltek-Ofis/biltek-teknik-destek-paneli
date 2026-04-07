@@ -11,6 +11,14 @@ $ayarlar = $this->Ayarlar_Model->getir();
   <title>Cihaz Durumu<?= (isset($ayarlar->site_basligi) ? " - " . $ayarlar->site_basligi : ""); ?></title>
   <?php
   $this->load->view("inc/meta");
+  if (strlen($takip_numarasi) > 0) {
+    $cihazBul = $this->Cihazlar_Model->takipNumarasi($takip_numarasi);
+    if ($cihazBul->num_rows() > 0) {
+      ?>
+      <meta name="google-play-app" content="app-id=tr.com.biltekbilgisayar.teknikservis">
+      <?php
+    }
+  }
   $this->load->view("inc/styles");
   $this->load->view("inc/styles_important");
   ?>
@@ -210,17 +218,113 @@ if (strlen($takip_numarasi) > 0) {
             </div>
           </div>
           <div class="row w-100 mt-1">
-              <div class="col-6 col-lg-6">
-              </div>
-              <div class="col-6 col-lg-6 text-end">
-                <a href="<?= base_url("cihazdurumu"); ?>" class="btn btn-danger me-2 mb-2">
-                  Geri
-                </a>
-              </div>
+            <div class="col-6 col-lg-6">
+            </div>
+            <div class="col-6 col-lg-6 text-end">
+              <a href="<?= base_url("cihazdurumu"); ?>" class="btn btn-danger me-2 mb-2">
+                Geri
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <?php
+      $detect = new Mobile_Detect();
+      if ($detect->isAndroidOS()) {
+        ?>
+        <div id="openAppBanner">
+          <button class="close-btn" id="closeBanner">&times;</button>
+          <div class="banner-text">
+            Bu cihazın durumunu uygulamada açabilirsiniz.
+          </div>
+          <div class="banner-actions">
+            <a href="intent:///cihazdurumu/<?= $takip_numarasi; ?>#Intent;scheme=biltekts;package=tr.com.biltekbilgisayar.teknikservis;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dtr.com.biltekbilgisayar.teknikservis;end">Uygulamada Aç</a>
+          </div>
+        </div>
+        <style>
+          /* Modern Banner */
+          #openAppBanner {
+            background: linear-gradient(90deg, #0d6efd, #0a58ca);
+            color: white;
+            padding: 1rem 1.25rem;
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 500px;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1050;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+          }
+
+          #openAppBanner .banner-text {
+            font-size: 0.95rem;
+            line-height: 1.3;
+          }
+
+          #openAppBanner .banner-actions {
+            margin-top: 0.75rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+          }
+
+          #openAppBanner .banner-actions a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.45rem 0.85rem;
+            background-color: #198754;
+            border-radius: 0.5rem;
+            transition: background 0.3s, transform 0.2s;
+          }
+
+          #openAppBanner .banner-actions a:hover {
+            background-color: #157347;
+            transform: translateY(-2px);
+          }
+
+          /* Close button sağ üstte */
+          #openAppBanner .close-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+          }
+
+          #openAppBanner .close-btn:hover {
+            color: #f8d7da;
+          }
+
+          /* Responsive */
+          @media (max-width: 500px) {
+            #openAppBanner {
+              text-align: center;
+            }
+
+            #openAppBanner .banner-actions {
+              justify-content: center;
+            }
+          }
+        </style>
+        <script>
+          const banner = document.getElementById('openAppBanner');
+          const closeBtn = document.getElementById('closeBanner');
+
+          closeBtn.addEventListener('click', () => {
+            banner.style.display = 'none';
+          });
+        </script>
+        <?php
+      }
     } else {
       echo $hataMesaji;
     }

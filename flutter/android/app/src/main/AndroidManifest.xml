@@ -48,8 +48,19 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="teknikservis.biltekbilgisayar.com.tr" 
-                    android:pathPrefix="/cihazdurumu"/>
+                    android:host="teknikservis.biltekbilgisayar.com.tr"
+                    android:pathPrefix="/cihazdurumu" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Custom scheme -->
+                <data
+                    android:scheme="biltekts"
+                    android:host=""
+                    android:pathPrefix="/cihazdurumu" />
             </intent-filter>
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
         </activity>

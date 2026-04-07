@@ -15,6 +15,8 @@ class Ayarlar {
     }
   }
 
+  static String get deepLinkUrl => "biltekts://";
+
   static String get appUrl => "${url}app/";
 
   static String get ayarlar => "${appUrl}ayarlar/";
@@ -55,6 +57,7 @@ class Ayarlar {
 
   // Deeplinks
   static String get cihazDurumu => "${url}cihazdurumu/";
+  static String get cihazDurumuDeep => "$deepLinkUrl/cihazdurumu/";
 
   static String teknikservisformu({
     required String auth,
