@@ -409,7 +409,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                             kullanici:
                                                                 widget
                                                                     .kullanici,
-                                                            servisNo:
+                                                            no:
                                                                 cagrikaydi
                                                                     .cihazBilgileri!
                                                                     .servisNo,

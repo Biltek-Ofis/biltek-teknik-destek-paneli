@@ -8,7 +8,9 @@ import '../../utils/post.dart';
 import 'cihaz_durumu.dart';
 
 class CihazDurumuGiris extends StatefulWidget {
-  const CihazDurumuGiris({super.key});
+  const CihazDurumuGiris({super.key, this.no});
+
+  final int? no;
 
   @override
   State<CihazDurumuGiris> createState() => _CihazDurumuGirisState();
@@ -26,6 +28,10 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
     Future.delayed(Duration.zero, () async {
       if (mounted) {
         FocusScope.of(context).requestFocus(takipNoFocus);
+        if (widget.no != null) {
+          takipNoController.text = widget.no!.toString();
+          await _ara();
+        }
       }
     });
   }
@@ -33,16 +39,15 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Cihaz Durumu Görüntüle"),
-      ),
+      appBar: AppBar(title: Text("Cihaz Durumu Görüntüle")),
       body: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
         child: SizedBox(
-          width: MediaQuery.of(context).size.width > 400
-              ? 400
-              : MediaQuery.of(context).size.width,
+          width:
+              MediaQuery.of(context).size.width > 400
+                  ? 400
+                  : MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -66,9 +71,7 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
                     errorText: cihazDurumuError,
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
@@ -79,9 +82,7 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
                     text: "Ara",
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
               ],
             ),
           ),
@@ -97,14 +98,12 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
     NavigatorState navigatorState = Navigator.of(context);
     yukleniyor(context);
     Cihaz? cihazTemp = await BiltekPost.cihazGetir(
-      takipNo: int.tryParse(takipNoController.text),
+      no: int.tryParse(takipNoController.text) ?? 0,
     );
     navigatorState.pop();
     if (cihazTemp != null) {
       navigatorState.push(
-        MaterialPageRoute(
-          builder: (context) => CihazDurumu(cihaz: cihazTemp),
-        ),
+        MaterialPageRoute(builder: (context) => CihazDurumu(cihaz: cihazTemp)),
       );
     } else {
       setState(() {

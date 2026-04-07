@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:biltekteknikservis/main.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../models/kullanici.dart';
 import '../utils/alerts.dart';
@@ -24,12 +26,16 @@ class Anasayfa extends StatefulWidget {
 }
 
 class _AnasayfaState extends State<Anasayfa> {
+  CihazNo? cihazNoCls;
+  StreamSubscription? _deepLinkSubscription;
+
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
       if (mounted) {
+        cihazNoCls = CihazNo.of(context);
         String tip = bildirimIntent["tip"] ?? "standart";
         String id = bildirimIntent["id"] ?? "0";
         NativeNotification.init((tip, id) {
@@ -44,8 +50,15 @@ class _AnasayfaState extends State<Anasayfa> {
         if (guncelleme) {
           alerts.guncelleme();
         }
+        await initUniLinks();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _deepLinkSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -89,7 +102,7 @@ class _AnasayfaState extends State<Anasayfa> {
               builder:
                   (context) => DetaylarSayfasi(
                     kullanici: widget.kullanici,
-                    servisNo: idInt,
+                    no: idInt,
                     cihazlariYenile: () async {},
                   ),
             ),
@@ -110,6 +123,26 @@ class _AnasayfaState extends State<Anasayfa> {
             );
           }
         }
+    }
+  }
+
+  Future<void> initUniLinks() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      final appLinks = AppLinks(); // AppLinks is singleton
+
+      // Subscribe to all events (initial link and further)
+      _deepLinkSubscription = appLinks.uriLinkStream.listen((uri) {
+        if (cihazNoCls != null) {
+          cihazNoCls!.qrAc(
+            qr: uri.toString(),
+            kullanici: widget.kullanici,
+            cihazlariYenile: () async {},
+          );
+        }
+      });
+    } on PlatformException catch (e) {
+      debugPrint("Failed to get initial link.\n$e");
     }
   }
 }

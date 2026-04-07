@@ -503,7 +503,7 @@ class _AIChatPageState extends State<AIChatPage> {
                                               builder:
                                                   (context) => DetaylarSayfasi(
                                                     kullanici: widget.kullanici,
-                                                    servisNo: int.parse(
+                                                    no: int.parse(
                                                       url.replaceAll(
                                                         "servisNo:",
                                                         "",

@@ -298,18 +298,22 @@ class App extends CI_Controller
     public function tekCihaz()
     {
         $this->headerlar();
+        $no = $this->input->post("no");
+        if (!isset($no)) {
+            $no = "";
+        }
         $servis_no = $this->input->post("servis_no");
-        if (!isset($servis_no)) {
-            $servis_no = "";
+        if (isset($servis_no)) {
+            $no = $servis_no;
         }
         $takip_no = $this->input->post("takip_no");
-        if (!isset($takip_no)) {
-            $takip_no = "";
+        if (isset($takip_no)) {
+            $no = $takip_no;
         }
         $token = $this->tokenPost();
         if (isset($token)) {
             if ($this->token($token)) {
-                $cihaz = $this->Cihazlar_Model->tekCihazApp($servis_no, $takip_no);
+                $cihaz = $this->Cihazlar_Model->tekCihazApp($no);
                 if ($cihaz != null) {
                     $cihaz->cihazDurumuID = "0";
                     $cihaz->siralama = "0";

@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_darwin/local_auth_darwin.dart';
@@ -20,6 +23,7 @@ import '../utils/shared_preferences.dart';
 import '../widgets/input.dart';
 import 'anasayfa.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';
+import 'cihazlar.dart';
 
 class GirisSayfasi extends StatefulWidget {
   const GirisSayfasi({super.key, this.spKullanici});
@@ -31,6 +35,9 @@ class GirisSayfasi extends StatefulWidget {
 }
 
 class _GirisSayfasiState extends State<GirisSayfasi> {
+  CihazNo? cihazNoCls;
+  StreamSubscription? _deepLinkSubscription;
+
   TextEditingController kullaniciAdiController = TextEditingController();
   FocusNode kullaniciAdiFocus = FocusNode();
   TextEditingController sifreController = TextEditingController();
@@ -43,19 +50,32 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   String? kullaniciAdiError;
   String? sifreError;
 
+  final LocalAuthentication localAuth = LocalAuthentication();
+  bool canAuthenticateBio = false;
+
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
+      if (!kIsWeb) {
+        final bool canAuthenticateWithBiometrics =
+            await localAuth.canCheckBiometrics;
+        canAuthenticateBio =
+            canAuthenticateWithBiometrics ||
+            await localAuth.isDeviceSupported();
+      }
+      if (mounted) {
+        cihazNoCls = CihazNo.of(context);
+
+        await initUniLinks();
+      }
       if (widget.spKullanici != null) {
         SPKullanici spKullanici = widget.spKullanici!;
         spKullanici.sifreyiCoz();
         kullaniciAdiController.text = spKullanici.kullaniciAdi;
         if (widget.spKullanici!.sifre.isNotEmpty) {
           if (!kIsWeb) {
-            await _biyometricGiris();
-          } else {
             sifreController.text = widget.spKullanici!.sifre;
           }
         }
@@ -79,6 +99,12 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _deepLinkSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -163,6 +189,22 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                         text: "Giriş Yap",
                       ),
                     ),
+                    if (canAuthenticateBio) SizedBox(height: 10),
+                    if (canAuthenticateBio)
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: DefaultButton(
+                          background: Islemler.arkaRenk(
+                            "bg-secondary",
+                            alpha: 1,
+                          ),
+                          onPressed: () async {
+                            await _biyometricGiris();
+                          },
+                          text: "Biyometrik Giriş",
+                        ),
+                      ),
                     SizedBox(height: 10),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
@@ -327,13 +369,13 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
   }
 
   Future<void> _biyometricGiris() async {
-    final LocalAuthentication auth = LocalAuthentication();
     try {
-      final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+      final bool canAuthenticateWithBiometrics =
+          await localAuth.canCheckBiometrics;
       final bool canAuthenticate =
-          canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+          canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
       if (canAuthenticate) {
-        final bool didAuthenticate = await auth.authenticate(
+        final bool didAuthenticate = await localAuth.authenticate(
           localizedReason:
               'Daha önce giriş yapılmış bir hesabınız bulunuyor. Biyometrik kimliğinizi doğrulayarak tekrar giriş yapabilirsiniz.',
           authMessages: const <AuthMessages>[
@@ -360,6 +402,22 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       } else {
         // ...
       }
+    }
+  }
+
+  Future<void> initUniLinks() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      final appLinks = AppLinks(); // AppLinks is singleton
+
+      // Subscribe to all events (initial link and further)
+      _deepLinkSubscription = appLinks.uriLinkStream.listen((uri) {
+        if (cihazNoCls != null) {
+          cihazNoCls!.qrAcMusteri(qr: uri.toString());
+        }
+      });
+    } on PlatformException catch (e) {
+      debugPrint("Failed to get initial link.\n$e");
     }
   }
 }

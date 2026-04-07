@@ -28,6 +28,7 @@ import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
 import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
+import 'cihaz_durumu/cihaz_durumu_giris.dart';
 import 'lisans/lisans.dart';
 import 'lisans/versiyon.dart';
 import 'yeni_cihaz.dart';
@@ -461,7 +462,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                         builder:
                                             (context) => DetaylarSayfasi(
                                               kullanici: widget.kullanici,
-                                              servisNo: cihaz.servisNo,
+                                              no: cihaz.servisNo,
                                               cihazlariYenile: () async {
                                                 await _cihazlariYenile();
                                               },
@@ -550,34 +551,35 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   }
 }
 
-class ServisNo {
+class CihazNo {
   BuildContext context;
-  ServisNo._(this.context);
+  CihazNo._(this.context);
 
-  factory ServisNo.of(BuildContext context) {
-    return ServisNo._(context);
+  factory CihazNo.of(BuildContext context) {
+    return CihazNo._(context);
   }
 
   Future<void> ac({
-    required int servisNo,
+    required int no,
     required KullaniciAuthModel kullanici,
     required VoidCallback cihazlariYenile,
     bool bilgisayardaAc = true,
   }) async {
+    if (kullanici.musteri) {
+      acMusteri(no: no);
+      return;
+    }
     NavigatorState navigatorState = Navigator.of(context);
 
     if (bilgisayardaAc) {
-      await BiltekPost.bilgisayardaAc(
-        kullaniciID: kullanici.id,
-        servisNo: servisNo,
-      );
+      await BiltekPost.bilgisayardaAc(kullaniciID: kullanici.id, no: no);
     }
     navigatorState.push(
       MaterialPageRoute(
         builder:
             (context) => DetaylarSayfasi(
               kullanici: kullanici,
-              servisNo: servisNo,
+              no: no,
               cihazlariYenile: () {
                 cihazlariYenile.call();
               },
@@ -586,7 +588,53 @@ class ServisNo {
     );
     if (bilgisayardaAc) {
       BarkodOkuyucu? barkodOkuyucu = await BarkodOkuyucu.getir();
-      await barkodOkuyucu?.servisNo(servisNo);
+      await barkodOkuyucu?.no(no);
+    }
+  }
+
+  Future<void> acMusteri({required int no, bool bilgisayardaAc = true}) async {
+    NavigatorState navigatorState = Navigator.of(context);
+
+    navigatorState.push(
+      MaterialPageRoute(builder: (context) => CihazDurumuGiris(no: no)),
+    );
+  }
+
+  Future<void> qrAc({
+    required String qr,
+    required KullaniciAuthModel kullanici,
+    required VoidCallback cihazlariYenile,
+  }) async {
+    try {
+      if (qr.startsWith(Ayarlar.cihazDurumu)) {
+        final ts = qr.replaceAll(Ayarlar.cihazDurumu, "").replaceAll("/", "");
+        int no = int.parse(ts);
+        await ac(
+          no: no,
+          kullanici: kullanici,
+          cihazlariYenile: cihazlariYenile,
+        );
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      if (context.mounted) {
+        barkodGecersiz(context);
+      }
+    }
+  }
+
+  Future<void> qrAcMusteri({required String qr}) async {
+    try {
+      if (qr.startsWith(Ayarlar.cihazDurumu)) {
+        final ts = qr.replaceAll(Ayarlar.cihazDurumu, "").replaceAll("/", "");
+        int no = int.parse(ts);
+        await acMusteri(no: no);
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      if (context.mounted) {
+        barkodGecersiz(context);
+      }
     }
   }
 }
@@ -824,7 +872,7 @@ Future<void> barkodTara(
   required VoidCallback pcYenile,
   bool sadeceGiris = false,
 }) async {
-  ServisNo servisNoCls = ServisNo.of(context);
+  CihazNo cihazNoCls = CihazNo.of(context);
 
   Navigator.push<String>(
     context,
@@ -909,30 +957,25 @@ Future<void> barkodTara(
                   }
                   return;
                 }
-                if (res.isNotEmpty && res != "-1" && res.startsWith("20")) {
-                  try {
-                    int servisNo = int.parse(res);
-                    await servisNoCls.ac(
-                      servisNo: servisNo,
-                      kullanici: kullanici,
-                      cihazlariYenile: cihazlariYenile,
-                    );
-                  } on Exception catch (e) {
-                    debugPrint(e.toString());
-                    if (context.mounted) {
-                      barkodGecersiz(context);
-                    }
-                  }
+                if (res.isNotEmpty &&
+                    res != "-1" &&
+                    res.startsWith(Ayarlar.cihazDurumu)) {
+                  cihazNoCls.qrAc(
+                    qr: res,
+                    kullanici: kullanici,
+                    cihazlariYenile: cihazlariYenile,
+                  );
                 } else if (res.isNotEmpty &&
                     res != "-1" &&
                     res.split(":").length == 2) {
                   var splt = res.split(":");
                   switch (splt[0]) {
                     case "servisNo":
+                    case "no":
                       try {
-                        int servisNo = int.parse(splt[1]);
-                        await servisNoCls.ac(
-                          servisNo: servisNo,
+                        int no = int.parse(splt[1]);
+                        await cihazNoCls.ac(
+                          no: no,
                           kullanici: kullanici,
                           cihazlariYenile: cihazlariYenile,
                           bilgisayardaAc: false,

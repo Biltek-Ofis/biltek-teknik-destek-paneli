@@ -682,20 +682,17 @@ class Cihazlar_Model extends CI_Model
         $result = $result->limit($limit)->offset($sira);
         $result = $result->get($this->cihazlarTabloAdi())->result();
         //return  $this->db->last_query();
-        return $this->cihazVerileriniDonustur($result, TRUE);
+        return $this->cihazVerileriniDonustur($result, TRUE); 
     }
-    public function tekCihazApp($servis_no = "", $takip_no = "")
+    public function tekCihazApp($no = "")
     {
         $where = array();
+        $or_where = array();
 
         $sorunlu = 0;
-        if (strlen($servis_no) > 0) {
-            $where["servis_no"] = $servis_no;
-        } else {
-            $sorunlu++;
-        }
-        if (strlen($takip_no) > 0) {
-            $where["takip_numarasi "] = $takip_no;
+        if (strlen($no) > 0) {
+            $where["servis_no"] = $no;
+            $or_where["takip_numarasi"] = $no;
         } else {
             $sorunlu++;
         }
@@ -704,7 +701,7 @@ class Cihazlar_Model extends CI_Model
             return null;
         }
 
-        $result = $this->db->reset_query()->where($where)->limit(1);
+        $result = $this->db->reset_query()->where($where)->or_where($or_where)->limit(1);
 
         $result = $result->get($this->cihazlarTabloAdi());
         if ($result->num_rows() > 0) {

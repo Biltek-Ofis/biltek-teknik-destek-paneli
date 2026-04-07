@@ -39,8 +39,8 @@ class BarkodOkuyucu {
     await _mesajGonder("cmd:$komut");
   }
 
-  Future<void> servisNo(int servisNo) async {
-    await _mesajGonder("servisNo:$servisNo");
+  Future<void> no(int no) async {
+    await _mesajGonder("servisNo:$no");
   }
 
   Future<void> _mesajGonder(String mesaj) async {

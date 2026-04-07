@@ -53,6 +53,9 @@ class Ayarlar {
 
   static String get qrEkle => "${appUrl}qrEkle/";
 
+  // Deeplinks
+  static String get cihazDurumu => "${url}cihazdurumu/";
+
   static String teknikservisformu({
     required String auth,
     required int cihazID,

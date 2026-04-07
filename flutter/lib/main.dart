@@ -38,7 +38,6 @@ void main() async {
   if (!kIsWeb) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
-  debugPrint("1");
   runApp(const MyApp());
 }
 

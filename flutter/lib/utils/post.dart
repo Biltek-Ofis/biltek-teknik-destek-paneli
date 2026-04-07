@@ -157,17 +157,9 @@ class BiltekPost {
     }
   }
 
-  static Future<Cihaz?> cihazGetir({int? servisNo, int? takipNo}) async {
-    if (servisNo == null && takipNo == null) {
-      return null;
-    }
-    Map<String, String> postData = {};
-    if (servisNo != null) {
-      postData.addAll({"servis_no": servisNo.toString()});
-    }
-    if (takipNo != null) {
-      postData.addAll({"takip_no": takipNo.toString()});
-    }
+  static Future<Cihaz?> cihazGetir({required int no}) async {
+    Map<String, String> postData = {"servis_no": no.toString()};
+
     var response = await BiltekPost.post(Ayarlar.tekCihaz, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
@@ -218,12 +210,12 @@ class BiltekPost {
 
   static Future<void> bilgisayardaAc({
     required int kullaniciID,
-    required int servisNo,
+    required int no,
   }) async {
     try {
       var response = await BiltekPost.post(Ayarlar.bilgisayardaAc, {
         "kullanici_id": kullaniciID.toString(),
-        "servis_no": servisNo.toString(),
+        "servis_no": no.toString(),
       });
       await response.stream.bytesToString();
     } on Exception {

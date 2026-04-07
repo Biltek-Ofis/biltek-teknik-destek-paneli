@@ -27,12 +27,12 @@ class DetaylarSayfasi extends StatefulWidget {
   const DetaylarSayfasi({
     super.key,
     required this.kullanici,
-    required this.servisNo,
+    required this.no,
     required this.cihazlariYenile,
   });
 
   final KullaniciAuthModel kullanici;
-  final int servisNo;
+  final int no;
   final VoidCallback cihazlariYenile;
 
   @override
@@ -245,7 +245,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   Future<void> _cihaziYenile() async {
     _yukleniyorGoster();
-    Cihaz? cihazTemp = await BiltekPost.cihazGetir(servisNo: widget.servisNo);
+    Cihaz? cihazTemp = await BiltekPost.cihazGetir(no: widget.no);
     if (mounted) {
       setState(() {
         cihaz = cihazTemp;
