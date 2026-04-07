@@ -88,7 +88,7 @@ $this->load->view("inc/content_header", array(
                         </div>
                     </div>
 
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_sirket_adi_boyutu">Şirket Adı <span
                                 id="baslik_parantez"></span>ve Tarih
                             Boyutu</label>
@@ -99,7 +99,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">pt</div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_en">En</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_en" name="db_barkod_en" autocomplete="off" class="form-control"
@@ -107,7 +107,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">mm</div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_boy">Boy</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_boy" name="db_barkod_boy" autocomplete="off" class="form-control"
@@ -115,7 +115,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">mm</div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_boyutu">Barkod Boyutu</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_boyutu" name="db_barkod_boyutu" autocomplete="off" class="form-control"
@@ -124,7 +124,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">mm</div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_numarasi_boyutu">Barkod Numarası Boyutu</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_numarasi_boyutu" name="db_barkod_numarasi_boyutu" autocomplete="off"
@@ -133,7 +133,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">pt</div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col d-none">
                         <label class="form-label" for="db_barkod_musteri_adi_boyutu">Müşteri Adı Boyutu</label>
                         <div class="input-group mb-2">
                             <input id="db_barkod_musteri_adi_boyutu" name="db_barkod_musteri_adi_boyutu"
@@ -142,7 +142,7 @@ $this->load->view("inc/content_header", array(
                             <div class="input-group-text">pt</div>
                         </div>
                     </div>
-                    <div class="row w-100">
+                    <div class="row w-100 d-none">
                         <div class="col-6 col-lg-6">
                         </div>
                         <div class="col-6 col-lg-6 text-end">

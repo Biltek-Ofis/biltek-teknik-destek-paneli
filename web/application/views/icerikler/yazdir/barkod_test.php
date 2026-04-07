@@ -11,15 +11,14 @@ $ayarlar = $this->Ayarlar_Model->getir();
 
 echo '
 <style>
-
 @page {
-    size: 40mm 20mm;
+    size: 40mm 19mm;
     margin: 0;
 }
 
 html, body {
     width: 40mm;
-    height: 20mm;
+    height: 19mm;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -28,8 +27,9 @@ html, body {
 /* ANA KUTU */
 .etiket {
     width: 40mm;
-    height: 20mm;
+    height: 19mm;
     padding: 1mm 1mm 0 1mm;
+    box-sizing: border-box;
 }
 
 /* ÜST */
@@ -37,10 +37,10 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 5pt;
-    font-weight: bold;
-    border-bottom: 0.2mm solid #ccc;
-    padding-bottom: 0.5mm;
+    font-size: 6pt;
+    font-weight: 1000 !important;
+    border-bottom: 0.2mm solid #000;
+    padding-bottom: 0.3mm;
 }
 
 /* ALT */
@@ -49,6 +49,7 @@ html, body {
     height: 12mm;
     margin-top: 0.5mm;
 }
+
 /* QR */
 .qr {
     width: 13mm;
@@ -61,32 +62,27 @@ html, body {
     padding-left: 1mm;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* ÖNEMLİ */
-    gap: 0.4mm; /* kontrollü boşluk */
-}
-/* SERVİS LABEL */
-.label {
-    font-size: 4pt;
-    color: #666;
+    justify-content: flex-start;
+    gap: 0.3mm;
 }
 
 /* SERVİS NO */
 .servis {
-    font-size: 6pt;
-    font-weight: bold;
+    font-size: 7pt;
+    font-weight: 1000 !important;
     line-height: 1;
 }
 
 /* AYRAÇ */
 .cizgi {
-    border-top: 0.2mm solid #ccc;
-    margin: 0.5mm 0;
+    border-top: 0.2mm solid #000;
+    margin: 0.3mm 0;
 }
 
 /* MÜŞTERİ */
 .musteri {
-    font-size: 5pt;
-    font-weight: bold;
+    font-size: 6pt;
+    font-weight: 1000 !important;
     line-height: 1.1;
     word-break: break-word;
 }
@@ -94,19 +90,17 @@ html, body {
 @media print {
     body {
         margin: 0;
-        zoom: 0.95;
+        font-weight: 1000 !important;
     }
 }
-
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
     new QRCode(document.getElementById("qrkod"), {
         text: "biltekts://' . ($test ? "0000000000" : addslashes($cihaz->servis_no)) . '",
-        width: 50,
-        height: 50
+        width: 13 * 3.78,  // mm → px
+        height: 13 * 3.78
     });
 
     setTimeout(function(){
@@ -116,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 </head>
-
 <body onafterprint="self.close()">
 
 <div class="etiket">
@@ -127,24 +120,12 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     <div class="alt">
-
         <div id="qrkod" class="qr"></div>
-
         <div class="sag">
-
-            <div>
-                <div class="label">SERVİS NO</div>
-                <div class="servis">' . ($test ? "0000000000" : $cihaz->servis_no) . '</div>
-            </div>
-
+            <div class="servis">' . ($test ? "0000000000" : $cihaz->servis_no) . '</div>
             <div class="cizgi"></div>
-
-            <div class="musteri">
-                ' . htmlspecialchars($test ? "Müşteri Adı" : $cihaz->musteri_adi) . '
-            </div>
-
+            <div class="musteri">' . htmlspecialchars($test ? "Müşteri Adı" : $cihaz->musteri_adi) . '</div>
         </div>
-
     </div>
 
 </div>
