@@ -55,7 +55,11 @@ $ayarlar = $this->Ayarlar_Model->getir();
         }
     </style>
     <script>
+        var qrEnabled = false;
         var sonBarkod = "";
+        function qrGirisAc() {
+            $("#qrGirisModal").modal("show");
+        }
         function barkod_olustur() {
             const array = new Uint8Array(16);
             crypto.getRandomValues(array);
@@ -70,6 +74,8 @@ $ayarlar = $this->Ayarlar_Model->getir();
             });
             sonBarkod = token;
             $("#girisBarkod > img").css({ "margin": "auto", "width": "3cm", "height": "3cm" });
+            $("#girisBarkod").attr("title", "Bu barkodu mobil uygulamanızla okutarak hızlıca giriş yapabilirsiniz");
+            
         }
         function barkod_kontrol() {
             if (sonBarkod.length > 0) {
@@ -93,13 +99,24 @@ $ayarlar = $this->Ayarlar_Model->getir();
                     ayrilmaEngeliIptal();
                 });
             });
-            barkod_olustur();
-            setInterval(function () {
-                $("#girisBarkod").html("");
+            $('.modal').on('show.bs.modal', function (e) {
+                qrEnabled = true;
                 barkod_olustur();
+            })
+
+            $('.modal').on('hide.bs.modal', function (e) {
+                qrEnabled = false;
+            })
+            setInterval(function () {
+                if (qrEnabled) {
+                    $("#girisBarkod").html("");
+                    barkod_olustur();
+                }
             }, 30000);
             setInterval(function () {
-                barkod_kontrol();
+                if (qrEnabled) {
+                    barkod_kontrol();
+                }
             }, 1000);
         });
     </script>
@@ -162,16 +179,9 @@ $ayarlar = $this->Ayarlar_Model->getir();
             </div>
             <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
         </form>
-        <div class="w-100 mt-3 row">
-            <div class="text-center col-12">
-                Mobil uygulamada <div class="fw-bold">Ayarlar > QR ile Hızlı Giriş</div>
-                adımından bu QR kodu okutarak giriş yapabilirsiniz
-            </div>
-            <div class="text-center row col-12">
-                <div class="ms-3 my-2 col-12" id="girisBarkod"></div>
-            </div>
+        <div class="col-12 mt-2">
+            <button onclick="qrGirisAc();" class="btn btn-success btn-block w-100">QR ile Hızlı Giriş</button>
         </div>
-
         <div class="col-12 mt-2">
             <a href="<?= base_url("cihazdurumu"); ?>" class="btn btn-info btn-block w-100 text-white">Cihazımın Durumunu
                 Görüntüle</a>
@@ -197,8 +207,32 @@ $ayarlar = $this->Ayarlar_Model->getir();
         //<p class="mb-1">
 //    <a href="forgot-password.html">Şifremi Unuttum</a>
 //</p>
-        
-        echo '
-</main>
+        ?>
+    </main>
+    <div class="modal fade" id="qrGirisModal" tabindex="-1" aria-labelledby="qrGirisModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrGirisModalLabel">QR ile Hızlı Giriş</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-100 mt-3 row">
+                        <div class="text-center col-12">
+                            Mobil uygulamada <div class="fw-bold">Ayarlar > QR ile Hızlı Giriş</div>
+                            adımından bu QR kodu okutarak giriş yapabilirsiniz
+                        </div>
+                        <div class="text-center row col-12">
+                            <div class="ms-3 my-2 col-12" id="girisBarkod"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-</html>';
+
+</html>
