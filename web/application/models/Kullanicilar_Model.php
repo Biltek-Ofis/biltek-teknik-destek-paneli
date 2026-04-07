@@ -410,6 +410,7 @@ class Kullanicilar_Model extends CI_Model
             "kullanici_id" => $kullanici_id,
             "qr" => $qr,
         );
+        $this->db->reset_query()->where("kullanici_id", $kullanici_id)->delete($this->kullaniciQRTabloAdi());
         return $this->db->reset_query()->insert($this->kullaniciQRTabloAdi(), $veri);
     }
     public function qrCheck($qr, $ekServisNo = "")
