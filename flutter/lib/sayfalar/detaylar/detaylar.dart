@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -350,17 +351,87 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
         return;
       }
       if (await Permission.contacts.request().isGranted) {
-        String? contact = await FlutterContacts.native.showCreator(
-          contact: Contact(
-            phones: [Phone(number: telefon)],
-            name: Name(first: cihaz!.musteriAdi),
-          ),
-        );
-        debugPrint("Kişi: $contact");
-        if (contact != null) {
-          showNotification(body: "Müşteri kaydedildi.");
-        } else {
-          showNotification(body: "Müşteri kaydetme iptal edildi.");
+        if (mounted) {
+          TextEditingController isimController = TextEditingController(
+            text: cihaz!.musteriAdi,
+          );
+          TextEditingController telefonController = TextEditingController(
+            text: telefon,
+          );
+          showModalBottomSheet(
+            context: context,
+            constraints: BoxConstraints(minWidth: double.infinity),
+            builder: (context) {
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 8),
+                      Text(
+                        "Rehbere Ekle",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      BiltekTextField(
+                        label: "İsim",
+                        controller: isimController,
+                      ),
+                      SizedBox(height: 8),
+                      BiltekTextField(
+                        label: "Telefon Numarası",
+                        controller: telefonController,
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              try {
+                                Contact contact = Contact(
+                                  phones: [
+                                    Phone(number: telefonController.text),
+                                  ],
+                                  name: Name(first: isimController.text),
+                                );
+                                FlutterContacts.create(contact);
+                                debugPrint("Kişi: $contact");
+                                showNotification(body: "Müşteri kaydedildi.");
+                              } catch (e) {
+                                debugPrint("Kişi kaydedilirken hata: $e");
+                                showNotification(
+                                  body:
+                                      "Müşteri kaydedilirken bir hata oluştu.",
+                                );
+                              }
+                            },
+                            child: Text("Kaydet"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              showNotification(
+                                body: "Müşteri kaydetme iptal edildi.",
+                              );
+                            },
+                            child: Text("İptal"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         }
       } else {
         kisiIzniUyari();
