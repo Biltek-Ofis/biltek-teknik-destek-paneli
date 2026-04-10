@@ -51,7 +51,7 @@ class Notlar_Model extends CI_Model
         }
         $ekle = $this->db->reset_query()->insert($this->notlarTabloAdi(), $veri);
         if ($ekle) {
-            $this->bildirim("Yeni Not Oluşturuldu", $veri["aciklama"], $this->db->insert_id());
+            $this->bildirim("Yeni Not Oluşturuldu", $veri["aciklama"]);
         }
         return $ekle;
     }
@@ -63,7 +63,7 @@ class Notlar_Model extends CI_Model
         }
         $duzenle = $this->db->reset_query()->where("id", $id)->update($this->notlarTabloAdi(), $veri);
         if ($duzenle) {
-            $this->bildirim("Not Düzenlendi", $veri["aciklama"], $id);
+            $this->bildirim("Not Düzenlendi", $veri["aciklama"]);
         }
         return $duzenle;
     }
@@ -100,14 +100,14 @@ class Notlar_Model extends CI_Model
 
         return $veri;
     }
-    public function bildirim($baslik, $not, $id = 0)
+    public function bildirim($baslik, $not)
     {
         $kullanicilar = $this->Kullanicilar_Model->kullanicilar(array(
             "musteri" => "0",
         ));
 
         foreach ($kullanicilar as $kullanici) {
-            $this->Kullanicilar_Model->bildirimGonder($kullanici->id, $baslik, $not, "not", $id);
+            $this->Kullanicilar_Model->bildirimGonder($kullanici->id, $baslik, $not, "not");
         }
     }
 }
