@@ -195,6 +195,8 @@ class Kullanicilar_Model extends CI_Model
             $query = $this->db->reset_query();
             $query = $query->where(array("kullanici_id" => $id, "fcmToken !="=> ""));
             $query = $query->where("fcmToken IS NOT NULL");
+            $query = $query->where("bitis >= DATE_SUB(NOW(), INTERVAL 1 MONTH)");
+            ;
             $query = $query->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
 
             if ($query->num_rows() > 0) {
