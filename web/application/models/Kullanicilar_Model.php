@@ -192,7 +192,10 @@ class Kullanicilar_Model extends CI_Model
     public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart", $bildirimID = "0")
     {
         if ($this->firebaseAyarlandi()) {
-            $query = $this->db->reset_query()->where(array("kullanici_id" => $id))->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
+            $query = $this->db->reset_query();
+            $query = $query->where(array("kullanici_id" => $id, "fcmToken !="=> ""));
+            $query = $query->where("fcmToken IS NOT NULL");
+            $query = $query->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
 
             if ($query->num_rows() > 0) {
 
