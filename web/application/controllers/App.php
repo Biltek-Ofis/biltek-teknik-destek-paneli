@@ -9,6 +9,7 @@ class App extends CI_Controller
         $this->load->model("Giris_Model");
         $this->load->model("Kullanicilar_Model");
         $this->load->model("Cihazlar_Model");
+        $this->load->model("Notlar_Model");
         $this->load->model("Islemler_Model");
         $this->load->model("Firma_Model");
     }
@@ -894,6 +895,94 @@ class App extends CI_Controller
         $resp = $this->Kullanicilar_Model->qrCheck($qr, $ekServisNo);
         if ($resp != null) {
             echo json_encode(array("sonuc" => 1, "data" => $resp));
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+
+    public function notlar()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $kayitlar = $this->hataMesaji(1);
+                $kayitlar = $this->Notlar_Model->getir();
+                echo json_encode($kayitlar);
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function notEkle()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ekle = $this->Notlar_Model->ekle();
+                if ($ekle) {
+                    echo json_encode(array("sonuc" => 1));
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function notDuzenle()
+    {
+        $this->headerlar();
+        $id = $this->input->post("id");
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($id) && strlen($id)) {
+                    $duzenle = $this->Notlar_Model->duzenle($id);
+                    if ($duzenle) {
+                        echo json_encode(array("sonuc" => 1));
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function notSil()
+    {
+        $this->headerlar();
+        $id = $this->input->post("id");
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                if (isset($id) && strlen($id)) {
+                    $sil = $this->Notlar_Model->sil($id);
+                    if ($sil) {
+                        echo json_encode(array("sonuc" => 1));
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
         } else {
             echo json_encode($this->hataMesaji(1));
         }

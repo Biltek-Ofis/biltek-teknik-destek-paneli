@@ -104,6 +104,12 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
         if($this->Giris_Model->kullaniciGiris()){
         ?>
         <li class="nav-item">
+          <a class="nav-link<?= $aktifSayfa == "notlar" ? ' active" aria-current="page' : ''; ?>"
+            href="<?= base_url("notlar"); ?>">
+            Notlar
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
             href="<?= base_url("malzemeteslimi"); ?>">
             Malzeme Teslimi

@@ -492,6 +492,19 @@ CREATE TABLE `ts1_musteriler` (
   `telefon_numarasi` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=DYNAMIC;
 
+--
+-- Tablo için tablo yapısı `ts1_notlar`
+--
+
+CREATE TABLE `ts1_notlar` (
+  `id` int(11) NOT NULL,
+  `aciklama` text NOT NULL,
+  `olusturan` int(11) NOT NULL,
+  `duzenleyen` int(11) NOT NULL,
+  `tarih` datetime NOT NULL,
+  `son_duzenleme` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -766,6 +779,12 @@ ALTER TABLE `ts1_musteriler`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Tablo için indeksler `ts1_notlar`
+--
+ALTER TABLE `ts1_notlar`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_ozelid`
 --
 ALTER TABLE `ts1_ozelid`
@@ -943,6 +962,12 @@ ALTER TABLE `ts1_medyalar`
 -- Tablo için AUTO_INCREMENT değeri `ts1_musteriler`
 --
 ALTER TABLE `ts1_musteriler`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_notlar`
+--
+ALTER TABLE `ts1_notlar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --

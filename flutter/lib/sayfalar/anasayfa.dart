@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:biltekteknikservis/main.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
+import 'package:biltekteknikservis/sayfalar/notlar/notlar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -80,6 +81,9 @@ class _AnasayfaState extends State<Anasayfa> {
           case "cihazlarim":
             sayfa = CihazlarimSayfasi(kullanici: widget.kullanici);
             break;
+          case "notlar":
+            sayfa = NotlarSayfasi(kullanici: widget.kullanici);
+            break;
           default:
             sayfa = CihazlarSayfasi(
               kullanici: widget.kullanici,
@@ -108,6 +112,7 @@ class _AnasayfaState extends State<Anasayfa> {
             ),
           );
         }
+        break;
       case "cagri":
         if (id.isNotEmpty) {
           int idInt = int.tryParse(id) ?? 0;
@@ -123,6 +128,16 @@ class _AnasayfaState extends State<Anasayfa> {
             );
           }
         }
+        break;
+      case "not":
+        navigatorState.push(
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    Anasayfa(sayfa: "notlar", kullanici: widget.kullanici),
+          ),
+        );
+        break;
     }
   }
 

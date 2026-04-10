@@ -17,6 +17,7 @@ import '../models/lisans/lisans.dart';
 import '../models/lisans/versiyon.dart';
 import '../models/medya.dart';
 import '../models/musteri.dart';
+import '../models/not.dart';
 import 'shared_preferences.dart';
 
 class BiltekPost {
@@ -841,6 +842,94 @@ class BiltekPost {
       "id": id.toString(),
       "qr": qr,
     });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<List<NotModel>> notlariGetir() async {
+    Map<String, String> postData = {};
+
+    var response = await BiltekPost.post(Ayarlar.notlar, postData);
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        List<dynamic> notlar = jsonDecode(resp) as List<dynamic>;
+        return notlar
+            .map((not) => NotModel.fromJson(not as Map<String, dynamic>))
+            .toList();
+      } on Exception catch (e) {
+        debugPrint("Notlar yüklenirken bir hata oluştu.\n${e.toString()}");
+        return [];
+      }
+    } else {
+      debugPrint(
+        "Notlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
+      return [];
+    }
+  }
+
+  static Future<bool> notEkle({
+    required String aciklama,
+    required int kullaniciID,
+  }) async {
+    var response = await BiltekPost.post(Ayarlar.notEkle, {
+      "aciklama": aciklama,
+      "kullanici": kullaniciID.toString(),
+    });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<bool> notDuzenle({
+    required int id,
+    required String aciklama,
+    required int kullaniciID,
+  }) async {
+    var response = await BiltekPost.post(Ayarlar.notDuzenle, {
+      "id": id.toString(),
+      "aciklama": aciklama,
+      "kullanici": kullaniciID.toString(),
+    });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  static Future<bool> notSil({required int id}) async {
+    var response = await BiltekPost.post(Ayarlar.notSil, {"id": id.toString()});
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {

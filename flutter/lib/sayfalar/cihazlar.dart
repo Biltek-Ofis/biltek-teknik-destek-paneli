@@ -811,6 +811,22 @@ Drawer biltekDrawer(
               );
             },
           ),
+        if (kullanici.teknikservis)
+          ListTile(
+            contentPadding: linkPadding,
+            title: const Text("Notlar"),
+            selected: seciliSayfa == "notlar",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder:
+                      (context) =>
+                          Anasayfa(sayfa: "notlar", kullanici: kullanici),
+                ),
+              );
+            },
+          ),
         ListTile(
           contentPadding: linkPadding,
           title: const Text("Çağrı Kayıtları"),
