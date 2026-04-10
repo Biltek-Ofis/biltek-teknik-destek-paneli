@@ -50,7 +50,9 @@ $this->load->view("inc/style_tablo");
         }
         function yeniEkle() {
             var formData = $("#yeniNotForm").serialize();
-            formBaslangic("#yeniNotGirisiBtn");
+            formBaslangic("#yeniNotEkleBtn");
+            formBaslangic("#yeniNotIptalBtn");
+            formBaslangic("#yeniNotKapatBtn");
             $.post('<?= base_url("notlar/ekle"); ?>', formData).done(function (data) {
                 var resp = JSON.parse(data);
                 if (resp.sonuc == 1) {
@@ -62,11 +64,15 @@ $this->load->view("inc/style_tablo");
                     $("#hata-mesaji").html(resp["mesaj"]);
                     $("#statusErrorsModal").modal("show");
                 }
-                formBitis("#yeniNotGirisiBtn");
+                formBitis("#yeniNotEkleBtn");
+                formBitis("#yeniNotIptalBtn");
+                formBitis("#yeniNotKapatBtn");
             }).fail(function (xhr, status, error) {
                 $("#hata-mesaji").html(error);
                 $("#statusErrorsModal").modal("show");
-                formBitis("#yeniNotGirisiBtn");
+                formBitis("#yeniNotEkleBtn");
+                formBitis("#yeniNotIptalBtn");
+                formBitis("#yeniNotKapatBtn");
             });
         }
         function duzenleGoster(id) {
@@ -77,6 +83,8 @@ $this->load->view("inc/style_tablo");
         function duzenle(id) {
             var formData = $("#duzenleNotForm").serialize();
             formBaslangic("#kaydetNotBtn");
+            formBaslangic("#duzenleIptalBtn");
+            formBaslangic("#duzenleNotKapatBtn");
             $.post('<?= base_url("notlar/duzenle"); ?>/' + id, formData).done(function (data) {
                 var resp = JSON.parse(data);
                 $("#notDuzenleModal").modal("hide");
@@ -88,10 +96,14 @@ $this->load->view("inc/style_tablo");
                     $("#statusErrorsModal").modal("show");
                 }
                 formBitis("#kaydetNotBtn");
+                formBitis("#duzenleIptalBtn");
+                formBitis("#duzenleNotKapatBtn");
             }).fail(function (xhr, status, error) {
                 $("#hata-mesaji").html(error);
                 $("#statusErrorsModal").modal("show");
                 formBitis("#kaydetNotBtn");
+                formBitis("#duzenleIptalBtn");
+                formBitis("#duzenleNotKapatBtn");
             });
         }
         function notSil(id) {
@@ -220,7 +232,8 @@ $this->load->view("inc/style_tablo");
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="yeniNotEkleModalTitle">Yeni Not Ekle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="yeniNotKapatBtn" type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <?php $this->load->view("icerikler/not_form_div", array(
@@ -231,7 +244,7 @@ $this->load->view("inc/style_tablo");
             </div>
             <div class="modal-footer">
                 <button type="submit" id="yeniNotEkleBtn" class="btn btn-success" onclick="yeniEkle()">Ekle</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+                <button type="button" id="yeniNotIptalBtn" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
             </div>
         </div>
     </div>
@@ -242,7 +255,7 @@ $this->load->view("inc/style_tablo");
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="notDuzenleModalLabel">Not Düzenle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button id="duzenleNotKapatBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <?php $this->load->view("icerikler/not_form_div", array(
@@ -253,7 +266,7 @@ $this->load->view("inc/style_tablo");
             </div>
             <div class="modal-footer">
                 <button type="submit" id="kaydetNotBtn" class="btn btn-success" onclick="">Kaydet</button>
-                <a id="kapatBtn" href="#" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
+                <button id="duzenleIptalBtn" class="btn btn-danger" data-bs-dismiss="modal">İptal</a>
             </div>
         </div>
     </div>
