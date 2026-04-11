@@ -811,7 +811,7 @@ Drawer biltekDrawer(
               );
             },
           ),
-        if (kullanici.teknikservis)
+        if (!kullanici.musteri)
           ListTile(
             contentPadding: linkPadding,
             title: const Text("Notlar"),

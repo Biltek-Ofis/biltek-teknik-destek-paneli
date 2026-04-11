@@ -54,123 +54,142 @@ class _NotlarSayfasiState extends State<NotlarSayfasi> {
                   onRefresh: () async {
                     await notlariGetir();
                   },
-                  child: ListView.builder(
-                    itemCount: notlar!.length,
-                    itemBuilder: (context, index) {
-                      NotModel not = notlar![index];
-                      Color? renk =
-                          Theme.of(context).textTheme.bodyMedium?.color;
-                      return ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.black, width: 1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        title: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "Not: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renk,
+                  child:
+                      notlar!.isEmpty
+                          ? ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: Center(
+                                  child: Text("Henüz bir not eklenmemiş."),
                                 ),
-                              ),
-                              TextSpan(
-                                text: not.aciklama,
-                                style: TextStyle(color: renk),
-                              ),
-                            ],
-                          ),
-                        ),
-                        subtitle: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "\nOluşturulma Tarihi: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renk,
-                                ),
-                              ),
-                              TextSpan(
-                                text: not.tarih,
-                                style: TextStyle(color: renk),
-                              ),
-                              TextSpan(
-                                text: "\nOluşturan: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renk,
-                                ),
-                              ),
-                              TextSpan(
-                                text: not.olusturan,
-                                style: TextStyle(color: renk),
-                              ),
-                              TextSpan(
-                                text: "\nSon Düzenleme: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renk,
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    not.sonDuzenleme == not.tarih
-                                        ? "-"
-                                        : not.sonDuzenleme,
-                                style: TextStyle(color: renk),
-                              ),
-                              TextSpan(
-                                text: "\nDüzenleyen: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: renk,
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    not.sonDuzenleme == not.tarih
-                                        ? "-"
-                                        : not.duzenleyen,
-                                style: TextStyle(color: renk),
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => NotEkleDuzenleSayfasi(
-                                          kullanici: widget.kullanici,
-                                          not: not,
-                                          notlariYenile: () async {
-                                            await notlariGetir();
-                                          },
-                                        ),
+                              );
+                            },
+                          )
+                          : ListView.builder(
+                            itemCount: notlar!.length,
+                            itemBuilder: (context, index) {
+                              NotModel not = notlar![index];
+                              Color? renk =
+                                  Theme.of(context).textTheme.bodyMedium?.color;
+                              return ListTile(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
                                   ),
-                                );
-                              },
-                              icon: Icon(CupertinoIcons.pen),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _notSil(not.id);
-                              },
-                              icon: Icon(CupertinoIcons.delete),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                title: RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: "Not: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: not.aciklama,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                subtitle: RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: "\nOluşturulma Tarihi: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: not.tarih,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                      TextSpan(
+                                        text: "\nOluşturan: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: not.olusturan,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                      TextSpan(
+                                        text: "\nSon Düzenleme: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            not.sonDuzenleme == not.tarih
+                                                ? "-"
+                                                : not.sonDuzenleme,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                      TextSpan(
+                                        text: "\nDüzenleyen: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            not.sonDuzenleme == not.tarih
+                                                ? "-"
+                                                : not.duzenleyen,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    NotEkleDuzenleSayfasi(
+                                                      kullanici:
+                                                          widget.kullanici,
+                                                      not: not,
+                                                      notlariYenile: () async {
+                                                        await notlariGetir();
+                                                      },
+                                                    ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.pen),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        _notSil(not.id);
+                                      },
+                                      icon: Icon(CupertinoIcons.delete),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                 )
                 : Center(child: CircularProgressIndicator()),
       ),
