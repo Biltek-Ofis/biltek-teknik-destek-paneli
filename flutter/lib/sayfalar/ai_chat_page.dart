@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-import 'package:biltekteknikservis/models/ai_chat.dart';
-import 'package:biltekteknikservis/models/ai_resp.dart';
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
+import '../models/ai_chat.dart';
+import '../models/ai_resp.dart';
 import '../models/cihaz.dart';
+import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/firebase.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
+import '../widgets/input.dart';
 import 'detaylar/detaylar.dart';
 
 class AIChatPage extends StatefulWidget {

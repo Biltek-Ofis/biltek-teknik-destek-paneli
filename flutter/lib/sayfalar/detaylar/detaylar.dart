@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,7 @@ import '../../utils/assets.dart';
 import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
+import '../../widgets/input.dart';
 import '../../widgets/navigators.dart';
 import '../../widgets/overlay_notification.dart';
 import '../imza.dart';

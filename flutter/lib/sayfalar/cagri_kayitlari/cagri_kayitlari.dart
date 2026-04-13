@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:biltekteknikservis/models/cagri_kaydi.dart';
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kaydi_detay.dart';
-import 'package:biltekteknikservis/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../models/cagri_kaydi.dart';
 import '../../models/cihaz.dart';
+import '../../models/kullanici.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
+import '../../utils/extensions.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../utils/shared_preferences.dart';
@@ -20,6 +19,7 @@ import '../cihazlar.dart';
 import '../detaylar/detaylar.dart';
 import '../giris_sayfasi.dart';
 import '../yeni_cihaz.dart';
+import 'cagri_kaydi_detay.dart';
 
 class CagriKayitlariSayfasi extends StatefulWidget {
   const CagriKayitlariSayfasi({super.key, required this.kullanici});

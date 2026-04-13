@@ -1,5 +1,3 @@
-import 'package:biltekteknikservis/utils/post.dart';
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,6 +6,8 @@ import '../../models/lisans/versiyon.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
+import '../../utils/post.dart';
+import '../../widgets/input.dart';
 
 class LisansDuzenlemeSayfasi extends StatefulWidget {
   const LisansDuzenlemeSayfasi({
@@ -67,20 +67,22 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
         aktifDurumu = widget.lisans!.aktif ? 1 : 0;
       }
     });
-    DateTime baslangicTarihi = widget.lisans != null
-        ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.baslangic)
-        : DateTime.now().toLocal();
-    baslangicController.text =
-        DateFormat(Islemler.lisansNormalTarih).format(baslangicTarihi);
-    DateTime bitisTarihi = widget.lisans != null
-        ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.bitis)
-        : baslangicTarihi.add(
-            Duration(
-              days: 365,
-            ),
-          );
-    bitisController.text =
-        DateFormat(Islemler.lisansNormalTarih).format(bitisTarihi);
+    DateTime baslangicTarihi =
+        widget.lisans != null
+            ? DateFormat(
+              Islemler.lisansSQLTarih,
+            ).parse(widget.lisans!.baslangic)
+            : DateTime.now().toLocal();
+    baslangicController.text = DateFormat(
+      Islemler.lisansNormalTarih,
+    ).format(baslangicTarihi);
+    DateTime bitisTarihi =
+        widget.lisans != null
+            ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.bitis)
+            : baslangicTarihi.add(Duration(days: 365));
+    bitisController.text = DateFormat(
+      Islemler.lisansNormalTarih,
+    ).format(bitisTarihi);
     super.initState();
   }
 
@@ -96,8 +98,9 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title:
-              Text(widget.lisans == null ? "Lisans Ekle" : "Lisansı Düzenle"),
+          title: Text(
+            widget.lisans == null ? "Lisans Ekle" : "Lisansı Düzenle",
+          ),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -120,14 +123,13 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                   title: "Versiyon",
                   value: versiyon,
                   items: [
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text("Tüm Versiyonlar"),
-                    ),
+                    DropdownMenuItem(value: 0, child: Text("Tüm Versiyonlar")),
                     if (versiyonlar != null)
-                      for (int versiyonIndex = 0;
-                          versiyonIndex < versiyonlar!.length;
-                          versiyonIndex++)
+                      for (
+                        int versiyonIndex = 0;
+                        versiyonIndex < versiyonlar!.length;
+                        versiyonIndex++
+                      )
                         DropdownMenuItem(
                           value: versiyonlar![versiyonIndex].id,
                           child: Text(versiyonlar![versiyonIndex].versiyon),
@@ -144,14 +146,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                   title: "Süre Durumu",
                   value: sureDurumu,
                   items: [
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text("Süreli"),
-                    ),
-                    DropdownMenuItem(
-                      value: 1,
-                      child: Text("Süresiz"),
-                    ),
+                    DropdownMenuItem(value: 0, child: Text("Süreli")),
+                    DropdownMenuItem(value: 1, child: Text("Süresiz")),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -198,14 +194,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                     title: "Aktif",
                     value: aktifDurumu,
                     items: [
-                      DropdownMenuItem(
-                        value: 1,
-                        child: Text("Evet"),
-                      ),
-                      DropdownMenuItem(
-                        value: 0,
-                        child: Text("Hayır"),
-                      ),
+                      DropdownMenuItem(value: 1, child: Text("Evet")),
+                      DropdownMenuItem(value: 0, child: Text("Hayır")),
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -231,9 +221,7 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                             },
                             text: widget.lisans == null ? "Ekle" : "Kaydet",
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          SizedBox(width: 10),
                           DefaultButton(
                             width: MediaQuery.of(context).size.width / 3,
                             background: Islemler.arkaRenk("bg-secondary"),
@@ -244,9 +232,9 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -284,7 +272,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
           return AlertDialog(
             title: Text("Değişiklikler Kaydedilmedi"),
             content: Text(
-                "Kaydedilmeyen değişiklikleriniz var. Çıkmak istediğinize emin misiniz?"),
+              "Kaydedilmeyen değişiklikleriniz var. Çıkmak istediğinize emin misiniz?",
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -292,9 +281,7 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                 },
                 child: Text(
                   "İptal Et ve Çık",
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
               TextButton(
@@ -322,8 +309,9 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
   }
 
   void baslangicTarihiGuncelle(DateTime tarih) {
-    baslangicController.text =
-        DateFormat(Islemler.lisansNormalTarih).format(tarih);
+    baslangicController.text = DateFormat(
+      Islemler.lisansNormalTarih,
+    ).format(tarih);
   }
 
   void bitisTarihiGuncelle(DateTime tarih) {
@@ -340,13 +328,16 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
         if (sureDurumu == 1 || (sureDurumu == 0 && bitis.isNotEmpty)) {
           yukleniyor(context);
 
-          DateTime baslangicTarihi =
-              DateFormat(Islemler.lisansNormalTarih).parse(baslangic);
-          baslangic =
-              DateFormat(Islemler.lisansSQLTarih).format(baslangicTarihi);
+          DateTime baslangicTarihi = DateFormat(
+            Islemler.lisansNormalTarih,
+          ).parse(baslangic);
+          baslangic = DateFormat(
+            Islemler.lisansSQLTarih,
+          ).format(baslangicTarihi);
 
-          DateTime bitisTarihi =
-              DateFormat(Islemler.lisansNormalTarih).parse(bitis);
+          DateTime bitisTarihi = DateFormat(
+            Islemler.lisansNormalTarih,
+          ).parse(bitis);
           bitis = DateFormat(Islemler.lisansSQLTarih).format(bitisTarihi);
           Map<String, String> postData = {
             "isim": isim,
@@ -355,25 +346,19 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
             "baslangic": baslangic,
           };
           if (sureDurumu == 0) {
-            postData.addAll({
-              "bitis": bitis,
-            });
+            postData.addAll({"bitis": bitis});
           }
           bool? duzenle;
           if (widget.lisans != null) {
             if (sureDurumu == 0) {
-              postData.addAll({
-                "aktif": aktifDurumu.toString(),
-              });
+              postData.addAll({"aktif": aktifDurumu.toString()});
             }
             duzenle = await BiltekPost.lisansDuzenle(
               id: widget.lisans!.id,
               postData: postData,
             );
           } else {
-            duzenle = await BiltekPost.lisansEkle(
-              postData: postData,
-            );
+            duzenle = await BiltekPost.lisansEkle(postData: postData);
           }
           if (duzenle) {
             widget.lisanslariYenile.call();

@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:biltekteknikservis/models/bildirim.dart';
-import 'package:biltekteknikservis/models/cagri_kaydi.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ayarlar.dart';
 import '../models/ayarlar.dart';
+import '../models/bildirim.dart';
+import '../models/cagri_kaydi.dart';
 import '../models/cihaz.dart';
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../models/cihaz_duzenleme/cihaz_turleri.dart';

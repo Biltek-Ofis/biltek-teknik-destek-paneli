@@ -1,15 +1,15 @@
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/sayfalar/cihazlar.dart';
-import 'package:biltekteknikservis/widgets/list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/kullanici.dart';
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/my_notifier.dart';
 import '../../utils/post.dart';
 import '../../utils/shared_preferences.dart';
+import '../../widgets/list.dart';
 import '../../widgets/selector.dart';
+import '../cihazlar.dart';
 import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
 import 'bildirim.dart';

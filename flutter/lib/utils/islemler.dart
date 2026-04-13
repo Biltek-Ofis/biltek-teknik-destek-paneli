@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:android_id/android_id.dart';
-import 'package:biltekteknikservis/models/cihaz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
+
+import '../models/cihaz.dart';
 
 class Islemler {
   static Color? arkaRenk(String renkClass, {double? alpha}) {

@@ -1,10 +1,10 @@
-import 'package:biltekteknikservis/models/islemler_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/cihaz.dart';
 import '../../models/cihaz_duzenleme/cihaz_duzenleme.dart';
+import '../../models/islemler_model.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/desen.dart';

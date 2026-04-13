@@ -1,11 +1,11 @@
-import 'package:biltekteknikservis/models/bildirim.dart';
-import 'package:biltekteknikservis/models/cihaz_duzenleme/cihaz_turleri.dart';
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/utils/post.dart';
-import 'package:biltekteknikservis/widgets/list.dart';
-import 'package:biltekteknikservis/widgets/overlay_notification.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/bildirim.dart';
+import '../../models/cihaz_duzenleme/cihaz_turleri.dart';
+import '../../models/kullanici.dart';
+import '../../utils/post.dart';
+import '../../widgets/list.dart';
+import '../../widgets/overlay_notification.dart';
 import '../../widgets/selector.dart';
 
 class BildirimAyarlari extends StatefulWidget {

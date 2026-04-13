@@ -1,5 +1,4 @@
-import 'package:biltekteknikservis/models/kullanici.dart';
-
+import '../kullanici.dart';
 import 'cihaz_turleri.dart';
 import 'guncel_durumlar.dart';
 import 'tahsilat_sekli.dart';
@@ -35,8 +34,10 @@ class CihazDuzenlemeModel {
           tahsilatSekilleri:
               tahsilatSekilleri.map((e) => TahsilatSekli.fromJson(e)).toList(),
         ),
-      _ => throw const FormatException(
-          "Cihaz Duzenleme getirilirken bir hata oluştu"),
+      _ =>
+        throw const FormatException(
+          "Cihaz Duzenleme getirilirken bir hata oluştu",
+        ),
     };
   }
   factory CihazDuzenlemeModel.bos() {

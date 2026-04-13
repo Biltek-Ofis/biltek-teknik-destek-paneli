@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
@@ -9,6 +8,7 @@ import '../models/cihaz.dart';
 import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/post.dart';
+import '../widgets/input.dart';
 
 class ImzaSayfasi extends StatefulWidget {
   const ImzaSayfasi({

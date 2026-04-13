@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:biltekteknikservis/utils/encryption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'encryption.dart';
 
 class SharedPreference {
   static const darkThemeString = "darkTheme";

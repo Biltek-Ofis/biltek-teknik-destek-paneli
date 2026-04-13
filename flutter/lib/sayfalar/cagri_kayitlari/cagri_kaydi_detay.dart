@@ -1,15 +1,15 @@
-import 'package:biltekteknikservis/models/ayarlar.dart';
-import 'package:biltekteknikservis/models/cagri_kaydi.dart';
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/utils/buttons.dart';
-import 'package:biltekteknikservis/utils/post.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../models/ayarlar.dart';
+import '../../models/cagri_kaydi.dart';
+import '../../models/kullanici.dart';
+import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
+import '../../utils/post.dart';
 
 class CagriKaydiDetaySayfasi extends StatefulWidget {
   const CagriKaydiDetaySayfasi({

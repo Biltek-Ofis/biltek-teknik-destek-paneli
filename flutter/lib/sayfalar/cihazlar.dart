@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:biltekteknikservis/sayfalar/ai_chat_page.dart';
-import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -26,6 +24,8 @@ import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
+import '../widgets/navigators.dart';
+import 'ai_chat_page.dart';
 import 'anasayfa.dart';
 import 'ayarlar/ayarlar.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';

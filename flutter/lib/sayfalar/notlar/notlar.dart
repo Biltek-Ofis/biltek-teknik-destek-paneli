@@ -1,9 +1,10 @@
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/models/not.dart';
-import 'package:biltekteknikservis/sayfalar/notlar/not_ekle_duzenle.dart';
-import 'package:biltekteknikservis/utils/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/kullanici.dart';
+import '../../models/not.dart';
+import '../../utils/post.dart';
+import 'not_ekle_duzenle.dart';
 
 class NotlarSayfasi extends StatefulWidget {
   const NotlarSayfasi({super.key, required this.kullanici});

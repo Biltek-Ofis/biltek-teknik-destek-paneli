@@ -1,11 +1,11 @@
-import 'package:biltekteknikservis/models/kullanici.dart';
-import 'package:biltekteknikservis/models/not.dart';
-import 'package:biltekteknikservis/utils/buttons.dart';
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/kullanici.dart';
+import '../../models/not.dart';
+import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
+import '../../widgets/input.dart';
 
 class NotEkleDuzenleSayfasi extends StatefulWidget {
   const NotEkleDuzenleSayfasi({

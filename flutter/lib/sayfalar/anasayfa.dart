@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
-import 'package:biltekteknikservis/sayfalar/notlar/notlar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,9 +9,11 @@ import '../utils/alerts.dart';
 import '../utils/notification.dart';
 import '../utils/post.dart';
 import 'cagri_kayitlari/cagri_kaydi_detay.dart';
+import 'cagri_kayitlari/cagri_kayitlari.dart';
 import 'cihazlar.dart';
 import 'cihazlarim.dart';
 import 'detaylar/detaylar.dart';
+import 'notlar/notlar.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key, required this.sayfa, required this.kullanici});

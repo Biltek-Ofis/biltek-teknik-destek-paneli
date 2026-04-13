@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:biltekteknikservis/widgets/navigators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +11,7 @@ import '../../ayarlar.dart';
 import '../../models/medya.dart';
 import '../../utils/post.dart';
 import '../../utils/resim_secici.dart';
+import '../../widgets/navigators.dart';
 import 'resim_duzenle.dart';
 
 class DetaylarGaleri extends StatefulWidget {
