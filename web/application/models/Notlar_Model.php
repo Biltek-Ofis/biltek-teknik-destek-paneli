@@ -105,9 +105,14 @@ class Notlar_Model extends CI_Model
         $kullanicilar = $this->Kullanicilar_Model->kullanicilar(array(
             "musteri" => "0",
         ));
-
-        foreach ($kullanicilar as $kullanici) {
-            $this->Kullanicilar_Model->bildirimGonder($kullanici->id, $baslik, $not, "not");
+        if (count($kullanicilar) > 0) {
+            $ids = array();
+            foreach ($kullanicilar as $kullanici) {
+                array_push($ids, $kullanici->id);
+            }
+            if (!empty($ids)) {
+                $this->Kullanicilar_Model->bildirimGonder($ids, $baslik, $not, "not");
+            }
         }
     }
 }

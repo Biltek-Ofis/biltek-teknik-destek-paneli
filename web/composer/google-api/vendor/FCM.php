@@ -20,6 +20,11 @@ class FCM
         $client = new Client();
         $client->send($bearerToken, $projectID, $body);
     }
+    public static function sendParallel(string $bearerToken, $projectID, $tokens, $data): void
+    {
+        $client = new Client();
+        $client->sendParallel($bearerToken, $projectID, $tokens, $data);
+    }
 
     public static function subscribeToTopic(string $bearerToken, string $topic, array $tokens)
     {

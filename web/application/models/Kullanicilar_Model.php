@@ -189,42 +189,63 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("fcmToken", $fcmToken)->update($this->kullaniciAuthTabloAdi(), array("fcmToken" => ""));
     }
-    public function bildirimGonder($id, $baslik = "", $icerik = "", $tip = "standart", $bildirimID = "0")
+    public function bildirimGonder($ids, $baslik = "", $icerik = "", $tip = "standart", $bildirimID = "0")
     {
         if ($this->firebaseAyarlandi()) {
-            $query = $this->db->reset_query();
-            $query = $query->where(array("kullanici_id" => $id, "fcmToken !="=> ""));
-            $query = $query->where("fcmToken IS NOT NULL");
-            $query = $query->where("bitis >= DATE_SUB(NOW(), INTERVAL 1 MONTH)");
-            ;
-            $query = $query->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
-
-            if ($query->num_rows() > 0) {
-
-                $query = $query->result();
-                $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
-                $bearerToken = FCM::getBearerToken($authKeyContent);
-                foreach ($query as $row) {
-                    if (strlen($row->fcmToken) > 0) {
-                        $body = [
-                            'message' => [
-                                'token' => $row->fcmToken,
-                                'data' => [
-                                    'title' => $baslik,
-                                    'body' => $icerik,
-                                    'tip' => $tip,
-                                    'id' => $bildirimID,
-                                ],
-                            ],
-                        ];
-                        try {
-                            FCM::send($bearerToken, FIREBASE_CONFIG["projectId"], $body);
-                        } catch (Exception $e) {
-
-                        }
+            $tokens = array();
+            if (is_array($ids)) {
+                foreach ($ids as $id) {
+                    $token = $this->getFCMTokens($id);
+                    if ($token != null) {
+                        $tokens = array_merge($tokens, $token);
                     }
                 }
+            } else {
+                $token = $this->getFCMTokens($ids);
+                if ($token != null) {
+                    $tokens = array_merge($tokens, $token);
+                }
             }
+            if (empty($tokens)) {
+                return;
+            }
+            $tokens = array_unique($tokens, SORT_REGULAR);
+            $authKeyContent = json_decode(file_get_contents(FCPATH . "assets/biltek-teknik-servis-firebase-adminsdk-blxjr-56f5e63332.json"), true);
+            $bearerToken = FCM::getBearerToken($authKeyContent);
+            $chunks = array_chunk($tokens, 500);
+            foreach ($chunks as $chunk) {
+                $data = [
+                    'title' => $baslik,
+                    'body' => $icerik,
+                    'tip' => $tip,
+                    'id' => $bildirimID,
+                ];
+                try {
+                    FCM::sendParallel($bearerToken, FIREBASE_CONFIG["projectId"], $chunk, $data);
+                } catch (Exception $e) {
+
+                }
+            }
+        }
+    }
+    public function getFCMTokens($id)
+    {
+        $query = $this->db->reset_query();
+        $query = $query->where(array("kullanici_id" => $id, "fcmToken !=" => ""));
+        $query = $query->where("fcmToken IS NOT NULL");
+        $query = $query->where("bitis >= DATE_SUB(NOW(), INTERVAL 1 MONTH)");
+        $query = $query->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
+        if ($query->num_rows() > 0) {
+            $tokens = array_values(array_filter(
+                array_column($query->result_array(), "fcmToken"),
+                fn($t) => strlen($t) > 0
+            ));
+            if (empty($tokens)) {
+                return null;
+            }
+            return $tokens;
+        } else {
+            return null;
         }
     }
     public function bildirimGonderCihaz($id, $cihaz_id)

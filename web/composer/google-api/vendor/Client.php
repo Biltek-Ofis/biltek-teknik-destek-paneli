@@ -3,15 +3,11 @@
 namespace Kedniko\FCM;
 
 use GuzzleHttp;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
 
 class Client
 {
-
-    /**
-     * Docs:
-     * https://developers.google.com/instance-id/reference/server?hl=en
-     * https://github.com/firebase/firebase-admin-node/blob/master/src/messaging/messaging.ts#L766
-     */
     const FCM_SEND_HOST = 'fcm.googleapis.com';
     const FCM_SEND_PATH = '/fcm/send';
     const FCM_TOPIC_MANAGEMENT_HOST = 'iid.googleapis.com';
@@ -33,6 +29,66 @@ class Client
         return $this->post($bearerToken, $url, $body);
     }
 
+    /**
+     * Birden fazla token'a paralel olarak bildirim gönderir.
+     * 
+     * @param string $bearerToken
+     * @param string $projectID
+     * @param array $tokens FCM token listesi
+     * @param array $data Bildirim data payload'ı (title, body, tip, id vb.)
+     * @param int $concurrency Eş zamanlı istek sayısı
+     * @return array ['success' => int, 'failed' => int]
+     */
+    public function sendParallel(
+        string $bearerToken,
+        string $projectID,
+        array $tokens,
+        array $data,
+        int $concurrency = 10
+    ): array {
+        $url     = $this->getUrl($projectID);
+        $results = ['success' => 0, 'failed' => 0];
+
+        $client = new GuzzleHttp\Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . $bearerToken,
+                'Content-Type'  => 'application/json',
+            ],
+            self::HTTP_ERRORS_OPTION => false,
+        ]);
+
+        // Her token için bir Request üret
+        $requests = function () use ($tokens, $url, $data) {
+            foreach ($tokens as $token) {
+                $body = json_encode([
+                    'message' => [
+                        'token' => $token,
+                        'data'  => $data,
+                    ],
+                ]);
+                yield new Request('POST', $url, [], $body);
+            }
+        };
+
+        $pool = new Pool($client, $requests(), [
+            'concurrency' => $concurrency,
+            'fulfilled'   => function ($response) use (&$results) {
+                if ($response->getStatusCode() === 200) {
+                    $results['success']++;
+                } else {
+                    $results['failed']++;
+                }
+            },
+            'rejected'    => function ($reason) use (&$results) {
+                $results['failed']++;
+            },
+        ]);
+
+        $pool->promise()->wait();
+
+        return $results;
+    }
+
     public function post(string $bearerToken, string $url, array $body)
     {
         $config = [
@@ -46,11 +102,11 @@ class Client
         }
 
         $options = [
-            self::CONTENT_TYPE => $body,
+            self::CONTENT_TYPE       => $body,
             self::HTTP_ERRORS_OPTION => false,
         ];
-        // Class name conflict occurs, when used as "Client"
-        $client = new GuzzleHttp\Client($config);
+
+        $client   = new GuzzleHttp\Client($config);
         $response = $client->request('POST', $url, $options);
 
         if ($response->getStatusCode() === 200) {
