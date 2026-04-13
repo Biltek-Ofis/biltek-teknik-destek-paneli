@@ -526,7 +526,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           "Servis No:",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(cihaz!.servisNo.toString()),
+                        SelectableText(cihaz!.servisNo.toString()),
                       ],
                     ),
                     TableRow(
@@ -535,7 +535,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           "Takip No:",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(cihaz!.takipNumarasi.toString()),
+                        SelectableText(cihaz!.takipNumarasi.toString()),
                       ],
                     ),
                     TableRow(
