@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'shared_preferences.dart';
 
@@ -31,6 +31,10 @@ class MyNotifier extends ChangeNotifier {
   set kullanici(SPKullanici? value) {
     _kullanici = value;
     if (value != null) {
+      if (kIsWeb) {
+        value.sifreyiCoz();
+        value.sifre = "";
+      }
       SharedPreference.setString(
         SharedPreference.kullaniciString,
         value.toString(),
