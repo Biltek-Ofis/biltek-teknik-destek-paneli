@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -68,6 +67,9 @@ class BiltekPost {
 
   static Future<bool> guncellemeGerekli() async {
     try {
+      if (kIsWeb) {
+        return false;
+      }
       var response = await BiltekPost.post(Ayarlar.version, {});
       if (response.statusCode == 201) {
         var resp = await response.stream.bytesToString();
