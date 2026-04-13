@@ -78,7 +78,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               sifreController.text = widget.spKullanici!.sifre;
             }*/
           } else {
-            sifreController.text = widget.spKullanici!.sifre;
+            //sifreController.text = widget.spKullanici!.sifre;
           }
         }
       }
@@ -89,10 +89,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
         beniHatirla = beniHatirlaTemp;
       });
       if (mounted) {
-        if (widget.spKullanici != null) {
-          FocusScope.of(context).requestFocus(sifreFocus);
-        } else {
+        if (widget.spKullanici == null) {
           FocusScope.of(context).requestFocus(kullaniciAdiFocus);
+        } else if (!canAuthenticateBio) {
+          FocusScope.of(context).requestFocus(sifreFocus);
         }
         Alerts alerts = Alerts.of(context);
         bool guncelleme = await BiltekPost.guncellemeGerekli();
@@ -200,8 +200,9 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                         text: "Giriş Yap",
                       ),
                     ),
-                    if (canAuthenticateBio) SizedBox(height: 10),
-                    if (canAuthenticateBio)
+                    if (canAuthenticateBio && widget.spKullanici != null)
+                      SizedBox(height: 10),
+                    if (canAuthenticateBio && widget.spKullanici != null)
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: 50,
@@ -402,7 +403,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
           await _girisYap(null);
         }
       } else {
-        sifreController.text = widget.spKullanici!.sifre;
+        //sifreController.text = widget.spKullanici!.sifre;
       }
     } on LocalAuthException catch (e) {
       if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
