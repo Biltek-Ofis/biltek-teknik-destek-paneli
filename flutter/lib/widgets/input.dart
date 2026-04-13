@@ -29,6 +29,7 @@ class BiltekTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.border,
+    this.onEditingComplete,
   });
 
   final TextEditingController? controller;
@@ -51,6 +52,7 @@ class BiltekTextField extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final InputBorder? border;
+  final VoidCallback? onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +85,7 @@ class BiltekTextField extends StatelessWidget {
       style: style,
       readOnly: readOnly,
       onTap: onTap,
+      onEditingComplete: onEditingComplete,
     );
   }
 }
@@ -104,6 +107,7 @@ class BiltekSifre extends StatefulWidget {
     this.style,
     this.readOnly = false,
     this.onTap,
+    this.onEditingComplete,
   });
   final TextEditingController? controller;
   final Iterable<String>? autofillHints;
@@ -119,6 +123,7 @@ class BiltekSifre extends StatefulWidget {
   final TextStyle? style;
   final bool readOnly;
   final VoidCallback? onTap;
+  final VoidCallback? onEditingComplete;
 
   @override
   State<BiltekSifre> createState() => _BiltekSifreState();
@@ -157,6 +162,7 @@ class _BiltekSifreState extends State<BiltekSifre> {
       style: widget.style,
       readOnly: widget.readOnly,
       onTap: widget.onTap,
+      onEditingComplete: widget.onEditingComplete,
     );
   }
 }

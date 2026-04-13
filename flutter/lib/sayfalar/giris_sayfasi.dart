@@ -136,6 +136,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                             controller: kullaniciAdiController,
                             autofillHints: [AutofillHints.username],
                             currentFocus: kullaniciAdiFocus,
+                            textInputAction: TextInputAction.next,
                             nextFocus: sifreFocus,
                             label: "Kullanıcı Adı",
                             errorText: kullaniciAdiError,
@@ -144,6 +145,10 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                                 kullaniciAdiError = null;
                                 hataMesaji = "";
                               });
+                            },
+                            onEditingComplete: () {
+                              kullaniciAdiFocus.unfocus();
+                              FocusScope.of(context).requestFocus(sifreFocus);
                             },
                           ),
                           SizedBox(height: 10),
@@ -160,8 +165,12 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
                               });
                             },
                             onSubmitted: (val) async {
+                              TextInput.finishAutofillContext();
                               await _girisYap(myNotifier);
                             },
+                            textInputAction: TextInputAction.done,
+                            onEditingComplete:
+                                () => TextInput.finishAutofillContext(),
                           ),
                         ],
                       ),
