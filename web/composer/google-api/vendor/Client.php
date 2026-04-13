@@ -46,13 +46,13 @@ class Client
         array $data,
         int $concurrency = 10
     ): array {
-        $url     = $this->getUrl($projectID);
+        $url = $this->getUrl($projectID);
         $results = ['success' => 0, 'failed' => 0];
 
         $client = new GuzzleHttp\Client([
             'headers' => [
                 'Authorization' => 'Bearer ' . $bearerToken,
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             self::HTTP_ERRORS_OPTION => false,
         ]);
@@ -63,7 +63,17 @@ class Client
                 $body = json_encode([
                     'message' => [
                         'token' => $token,
-                        'data'  => $data,
+                        'notification' => [
+                            'title' => $data['title'],
+                            'body' => $data['body'],
+                        ],
+                        'data' => $data,
+                        'android' => [
+                            'priority' => 'high',
+                            'notification' => [
+                                'channel_id' => 'default_channel',
+                            ],
+                        ],
                     ],
                 ]);
                 yield new Request('POST', $url, [], $body);
@@ -72,14 +82,14 @@ class Client
 
         $pool = new Pool($client, $requests(), [
             'concurrency' => $concurrency,
-            'fulfilled'   => function ($response) use (&$results) {
+            'fulfilled' => function ($response) use (&$results) {
                 if ($response->getStatusCode() === 200) {
                     $results['success']++;
                 } else {
                     $results['failed']++;
                 }
             },
-            'rejected'    => function ($reason) use (&$results) {
+            'rejected' => function ($reason) use (&$results) {
                 $results['failed']++;
             },
         ]);
@@ -102,11 +112,11 @@ class Client
         }
 
         $options = [
-            self::CONTENT_TYPE       => $body,
+            self::CONTENT_TYPE => $body,
             self::HTTP_ERRORS_OPTION => false,
         ];
 
-        $client   = new GuzzleHttp\Client($config);
+        $client = new GuzzleHttp\Client($config);
         $response = $client->request('POST', $url, $options);
 
         if ($response->getStatusCode() === 200) {

@@ -13,21 +13,13 @@ import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris_sayfasi.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
-import 'utils/notification.dart';
 import 'utils/post.dart';
 import 'utils/shared_preferences.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
-Map<String, String> bildirimIntent = {};
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  NativeNotification.init((tip, id) {
-    debugPrint("Notification clicked with tip=$tip");
-    bildirimIntent.addAll({"tip": tip, "id": id});
-  });
 
   await FirebaseApi.initialize();
 

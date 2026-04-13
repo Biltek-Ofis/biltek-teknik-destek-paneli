@@ -64,6 +64,10 @@
             </intent-filter>
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
         </activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel" />
+
         <service
             android:name=".BiltekFirebaseMessagingService"
             android:exported="false">

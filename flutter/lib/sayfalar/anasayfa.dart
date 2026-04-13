@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:biltekteknikservis/main.dart';
 import 'package:biltekteknikservis/sayfalar/cagri_kayitlari/cagri_kayitlari.dart';
 import 'package:biltekteknikservis/sayfalar/notlar/notlar.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +26,7 @@ class Anasayfa extends StatefulWidget {
 }
 
 class _AnasayfaState extends State<Anasayfa> {
+  String tip = "standart";
   CihazNo? cihazNoCls;
   StreamSubscription? _deepLinkSubscription;
 
@@ -37,14 +37,10 @@ class _AnasayfaState extends State<Anasayfa> {
     Future.delayed(Duration.zero, () async {
       if (mounted) {
         cihazNoCls = CihazNo.of(context);
-        String tip = bildirimIntent["tip"] ?? "standart";
-        String id = bildirimIntent["id"] ?? "0";
         NativeNotification.init((tip, id) {
-          bildirimIntent.addAll({"tip": tip, "id": id});
           debugPrint("Bildirim tıklandı");
           bildirimTiklamaYonlendir(tip: tip, id: id);
         });
-        bildirimTiklamaYonlendir(tip: tip, id: id);
 
         Alerts alerts = Alerts.of(context);
         bool guncelleme = await BiltekPost.guncellemeGerekli();
@@ -65,7 +61,7 @@ class _AnasayfaState extends State<Anasayfa> {
   @override
   Widget build(BuildContext context) {
     Widget? sayfa;
-    String tip = bildirimIntent["tip"] ?? "standart";
+    String tip = this.tip;
     switch (tip) {
       case "cihaz":
         sayfa = CihazlarimSayfasi(kullanici: widget.kullanici);
@@ -96,6 +92,9 @@ class _AnasayfaState extends State<Anasayfa> {
   }
 
   void bildirimTiklamaYonlendir({required String tip, required String id}) {
+    setState(() {
+      this.tip = tip;
+    });
     NavigatorState navigatorState = Navigator.of(context);
     switch (tip) {
       case "cihaz":
