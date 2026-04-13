@@ -735,7 +735,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                           "Teslim Alınanlar:",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(cihaz!.teslimAlan),
+                        Text(cihaz!.teslimAlinanlar),
                       ],
                     ),
                     TableRow(
