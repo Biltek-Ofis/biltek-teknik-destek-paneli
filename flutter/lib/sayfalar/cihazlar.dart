@@ -416,7 +416,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      DefaultButton(
+                                      PrimaryButton(
                                         onPressed: () {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
@@ -431,7 +431,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                             ),
                                           );
                                         },
-                                        text: "Detaylar",
+                                        label: "Detaylar",
                                       ),
                                     ],
                                   ),

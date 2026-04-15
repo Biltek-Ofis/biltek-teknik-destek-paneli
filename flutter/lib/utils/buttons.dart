@@ -48,6 +48,8 @@ class PrimaryButton extends StatelessWidget {
     this.icon,
     required this.label,
     required this.onPressed,
+    this.width,
+    this.height,
     this.loading = false,
     this.backgroundColor,
     this.textColor = Colors.white,
@@ -58,6 +60,8 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
   final String label;
   final VoidCallback onPressed;
+  final double? width;
+  final double? height;
   final bool loading;
   final Color? backgroundColor;
   final Color textColor;
@@ -66,8 +70,8 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bg = backgroundColor ?? Theme.of(context).colorScheme.primary;
     return SizedBox(
-      width: double.infinity,
-      height: 52,
+      width: width,
+      height: height ?? 40,
       child: OutlinedButton.icon(
         onPressed: loading ? null : onPressed,
         icon:
@@ -100,6 +104,8 @@ class SecondaryButton extends StatelessWidget {
     this.icon,
     required this.label,
     required this.onPressed,
+    this.width,
+    this.height,
     this.loading = false,
     this.backgroundColor = const Color.fromARGB(255, 58, 59, 58),
     this.textColor = Colors.white,
@@ -108,6 +114,8 @@ class SecondaryButton extends StatelessWidget {
   final IconData? icon;
   final String label;
   final VoidCallback onPressed;
+  final double? width;
+  final double? height;
   final bool loading;
   final Color backgroundColor;
   final Color textColor;
@@ -118,6 +126,8 @@ class SecondaryButton extends StatelessWidget {
       icon: icon,
       label: label,
       onPressed: onPressed,
+      width: width,
+      height: height,
       loading: loading,
       backgroundColor: backgroundColor,
       textColor: textColor,

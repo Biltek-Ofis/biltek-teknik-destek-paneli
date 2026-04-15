@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/lisans/versiyon.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
-import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../widgets/input.dart';
 
@@ -72,6 +71,7 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
                       });
                     },
                   ),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       SizedBox(
@@ -81,22 +81,21 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(),
-                            DefaultButton(
+                            PrimaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-primary"),
                               onPressed: () async {
                                 await _duzenle();
                               },
-                              text: widget.versiyon == null ? "Ekle" : "Kaydet",
+                              label:
+                                  widget.versiyon == null ? "Ekle" : "Kaydet",
                             ),
                             SizedBox(width: 10),
-                            DefaultButton(
+                            SecondaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-secondary"),
                               onPressed: () {
                                 cikisKontrol();
                               },
-                              text: "Kapat",
+                              label: "Kapat",
                             ),
                           ],
                         ),

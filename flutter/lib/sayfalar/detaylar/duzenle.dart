@@ -541,19 +541,20 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                 ),
                                               ),
                                             if (sifreTuru == "Desen")
-                                              DefaultButton(
+                                              PrimaryButton(
                                                 width:
                                                     MediaQuery.of(
                                                       context,
                                                     ).size.width /
                                                     2,
-                                                background: Islemler.arkaRenk(
-                                                  "bg-primary",
-                                                ),
+                                                backgroundColor:
+                                                    Islemler.arkaRenk(
+                                                      "bg-primary",
+                                                    ),
                                                 onPressed: () async {
                                                   _desenSec();
                                                 },
-                                                text: "Düzenle",
+                                                label: "Düzenle",
                                               ),
                                           ],
                                         ),
@@ -1287,6 +1288,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 10),
                   sayfaYukleniyor
                       ? SizedBox()
                       : SizedBox(
@@ -1296,22 +1298,20 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(),
-                            DefaultButton(
+                            PrimaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-primary"),
                               onPressed: () async {
                                 await _kaydetGenel();
                               },
-                              text: "Kaydet",
+                              label: "Kaydet",
                             ),
                             SizedBox(width: 10),
-                            DefaultButton(
+                            SecondaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-secondary"),
                               onPressed: () {
                                 cikisKontrol();
                               },
-                              text: "Kapat",
+                              label: "Kapat",
                             ),
                           ],
                         ),

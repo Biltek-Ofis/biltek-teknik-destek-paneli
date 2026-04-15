@@ -514,17 +514,17 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                         ),
                                       ),
                                     if (sifreTuru == "Desen")
-                                      DefaultButton(
+                                      PrimaryButton(
                                         width:
                                             MediaQuery.of(context).size.width /
                                             2,
-                                        background: Islemler.arkaRenk(
+                                        backgroundColor: Islemler.arkaRenk(
                                           "bg-primary",
                                         ),
                                         onPressed: () async {
                                           _desenSec();
                                         },
-                                        text: "Düzenle",
+                                        label: "Düzenle",
                                       ),
                                   ],
                                 ),
@@ -652,13 +652,15 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(),
-                              DefaultButton(
+                              PrimaryButton(
                                 width: MediaQuery.of(context).size.width / 2,
-                                background: Islemler.arkaRenk("bg-primary"),
+                                backgroundColor: Islemler.arkaRenk(
+                                  "bg-primary",
+                                ),
                                 onPressed: () async {
                                   await _cihazEkle();
                                 },
-                                text: "Ekle",
+                                label: "Ekle",
                               ),
                             ],
                           ),

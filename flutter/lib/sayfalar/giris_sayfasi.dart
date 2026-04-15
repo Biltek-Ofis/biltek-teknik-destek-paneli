@@ -254,6 +254,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     return Column(
       children: [
         PrimaryButton(
+          width: double.infinity,
           label: "Giriş Yap",
           loading: _yukleniyor,
           onPressed: () async => await _girisYap(notifier),
@@ -261,6 +262,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         if (_canAuthBio && widget.spKullanici != null) ...[
           const SizedBox(height: 10),
           SecondaryButton(
+            width: double.infinity,
             label: "Biyometrik Giriş",
             icon: Icons.fingerprint_rounded,
             onPressed: () => _biyometricGiris(notifier),
@@ -268,6 +270,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         ],
         const SizedBox(height: 10),
         PrimaryButton(
+          width: double.infinity,
           backgroundColor: const Color(0xFF00E676),
           label: "Cihaz Durumunu Görüntüle",
           icon: Icons.search_rounded,

@@ -209,6 +209,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                         });
                       },
                     ),
+
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       SizedBox(
@@ -218,22 +220,20 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(),
-                            DefaultButton(
+                            PrimaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-primary"),
                               onPressed: () async {
                                 await _duzenle();
                               },
-                              text: widget.lisans == null ? "Ekle" : "Kaydet",
+                              label: widget.lisans == null ? "Ekle" : "Kaydet",
                             ),
                             SizedBox(width: 10),
-                            DefaultButton(
+                            SecondaryButton(
                               width: MediaQuery.of(context).size.width / 3,
-                              background: Islemler.arkaRenk("bg-secondary"),
                               onPressed: () {
                                 cikisKontrol();
                               },
-                              text: "Kapat",
+                              label: "Kapat",
                             ),
                           ],
                         ),

@@ -77,11 +77,11 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
-                    child: DefaultButton(
+                    child: PrimaryButton(
                       onPressed: () async {
                         await _ara();
                       },
-                      text: "Ara",
+                      label: "Ara",
                     ),
                   ),
                   SizedBox(height: 10),

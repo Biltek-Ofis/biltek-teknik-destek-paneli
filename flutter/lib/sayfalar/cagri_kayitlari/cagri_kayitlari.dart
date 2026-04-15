@@ -321,7 +321,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                             crossAxisAlignment:
                                                 WrapCrossAlignment.end,
                                             children: [
-                                              DefaultButton(
+                                              PrimaryButton(
                                                 onPressed: () {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
@@ -337,12 +337,12 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                     ),
                                                   );
                                                 },
-                                                text: "Detaylar",
+                                                label: "Detaylar",
                                               ),
                                             ],
                                           ),
                                         if (!widget.kullanici.musteri)
-                                          DefaultButton(
+                                          PrimaryButton(
                                             onPressed: () {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
@@ -357,14 +357,14 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                 ),
                                               );
                                             },
-                                            text: "Detaylar",
+                                            label: "Detaylar",
                                           ),
                                         if (!widget.kullanici.musteri)
                                           SizedBox(width: 5),
                                         if (cihaz != null &&
                                             !widget.kullanici.musteri)
-                                          DefaultButton(
-                                            background: Islemler.arkaRenk(
+                                          PrimaryButton(
+                                            backgroundColor: Islemler.arkaRenk(
                                               "bg-success",
                                               alpha: 1,
                                             ),
@@ -388,12 +388,12 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                 ),
                                               );
                                             },
-                                            text: "Servis Kaydını Görüntüle",
+                                            label: "Servis Kaydını Görüntüle",
                                           ),
                                         if (cihaz == null &&
                                             !widget.kullanici.musteri)
-                                          DefaultButton(
-                                            background: Islemler.arkaRenk(
+                                          PrimaryButton(
+                                            backgroundColor: Islemler.arkaRenk(
                                               "bg-success",
                                               alpha: 1,
                                             ),
@@ -430,22 +430,22 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                 ),
                                               );
                                             },
-                                            text: "Kayıt Aç",
+                                            label: "Kayıt Aç",
                                           ),
                                         /*SizedBox(width: 5),
-                                                DefaultButton(
-                                                  background: Islemler.arkaRenk(
+                                                PrimaryButton(
+                                                  backgroundColor: Islemler.arkaRenk(
                                                     "bg-info",
                                                     alpha: 1,
                                                   ),
                                                   onPressed: () {},
-                                                  text: "Düzenle",
+                                                  label: "Düzenle",
                                                 ),*/
                                         if (!widget.kullanici.musteri)
                                           SizedBox(width: 5),
                                         if (!widget.kullanici.musteri)
-                                          DefaultButton(
-                                            background: Islemler.arkaRenk(
+                                          PrimaryButton(
+                                            backgroundColor: Islemler.arkaRenk(
                                               "bg-danger",
                                               alpha: 1,
                                             ),
@@ -530,7 +530,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                 },
                                               );
                                             },
-                                            text: "Sil",
+                                            label: "Sil",
                                           ),
                                       ],
                                     ),

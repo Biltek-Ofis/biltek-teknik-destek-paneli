@@ -120,11 +120,11 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    DefaultButton(
+                    PrimaryButton(
                       onPressed: () async {
                         await kaydet(true);
                       },
-                      text: "Kaydet",
+                      label: "Kaydet",
                     ),
                   ],
                 ),

@@ -115,20 +115,23 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    DefaultButton(
+                    PrimaryButton(
                       onPressed: () {
                         _kaydet();
                       },
-                      background: Islemler.arkaRenk("bg-success", alpha: 1),
-                      text: "Kaydet",
+                      backgroundColor: Islemler.arkaRenk(
+                        "bg-success",
+                        alpha: 1,
+                      ),
+                      label: "Kaydet",
                     ),
                     SizedBox(width: 8),
-                    DefaultButton(
+                    PrimaryButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      background: Islemler.arkaRenk("bg-danger", alpha: 1),
-                      text: "İptal",
+                      backgroundColor: Islemler.arkaRenk("bg-danger", alpha: 1),
+                      label: "İptal",
                     ),
                     SizedBox(width: 8),
                   ],

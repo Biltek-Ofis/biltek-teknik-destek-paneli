@@ -161,7 +161,7 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    DefaultButton(
+                                    PrimaryButton(
                                       onPressed: () async {
                                         setState(() {
                                           cagri = null;
@@ -171,13 +171,13 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                         );
                                         await cagriKaydiGetir();
                                       },
-                                      background: Islemler.arkaRenk(
+                                      backgroundColor: Islemler.arkaRenk(
                                         "bg-success",
                                         alpha: 1,
                                       ),
-                                      text: "Fiyatı Onayla",
+                                      label: "Fiyatı Onayla",
                                     ),
-                                    DefaultButton(
+                                    PrimaryButton(
                                       onPressed: () async {
                                         setState(() {
                                           cagri = null;
@@ -187,11 +187,11 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                         );
                                         await cagriKaydiGetir();
                                       },
-                                      background: Islemler.arkaRenk(
+                                      backgroundColor: Islemler.arkaRenk(
                                         "bg-danger",
                                         alpha: 1,
                                       ),
-                                      text: "Fiyatı Reddet",
+                                      label: "Fiyatı Reddet",
                                     ),
                                   ],
                                 ),
