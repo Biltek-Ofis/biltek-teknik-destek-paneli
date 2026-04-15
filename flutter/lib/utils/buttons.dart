@@ -46,7 +46,7 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
     this.icon,
-    required this.label,
+    this.label,
     required this.onPressed,
     this.width,
     this.height,
@@ -58,7 +58,7 @@ class PrimaryButton extends StatelessWidget {
   });
 
   final IconData? icon;
-  final String label;
+  final String? label;
   final VoidCallback onPressed;
   final double? width;
   final double? height;
@@ -72,28 +72,42 @@ class PrimaryButton extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height ?? 40,
-      child: OutlinedButton.icon(
-        onPressed: loading ? null : onPressed,
-        icon:
-            icon != null
-                ? Icon(icon, size: 18, color: textColor)
-                : const SizedBox.shrink(),
-        label: Text(
-          label,
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
-        ),
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          backgroundColor: bg,
-        ),
-      ),
+      child:
+          label != null
+              ? OutlinedButton.icon(
+                onPressed: loading ? null : onPressed,
+                icon:
+                    icon != null
+                        ? Icon(icon, size: 18, color: textColor)
+                        : const SizedBox.shrink(),
+                label: Text(
+                  label!,
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(width: 1.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  backgroundColor: bg,
+                ),
+              )
+              : (icon != null
+                  ? ElevatedButton(
+                    onPressed: onPressed,
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      backgroundColor: bg,
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.center,
+                    ),
+                    child: Center(child: Icon(icon, color: textColor)),
+                  )
+                  : SizedBox()),
     );
   }
 }

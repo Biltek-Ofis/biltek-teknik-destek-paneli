@@ -376,64 +376,75 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                 backgroundColor: Islemler.arkaRenk(
                                   cihaz.guncelDurumRenk,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 0,
+                                  horizontal: 0,
+                                ),
                                 children: [
-                                  InfoTileList(
-                                    label: "Servis No",
-                                    value: cihaz.servisNo.toString(),
-                                    textColor: renkTemp,
-                                  ),
-                                  InfoTileList(
-                                    label: "Müşteri Adı",
-                                    value: cihaz.musteriAdi,
-                                    textColor: renkTemp,
-                                  ),
-                                  InfoTileList(
-                                    label: "Cihaz Tür",
-                                    value: cihaz.cihazTuru,
-                                    textColor: renkTemp,
-                                  ),
-                                  if (widget.sorumlu == null)
-                                    InfoTileList(
-                                      label: "Sorumlu",
-                                      value: cihaz.sorumlu,
-                                      textColor: renkTemp,
+                                  ListTile(
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        InfoTileList(
+                                          label: "Servis No",
+                                          value: cihaz.servisNo.toString(),
+                                          textColor: renkTemp,
+                                        ),
+                                        InfoTileList(
+                                          label: "Müşteri Adı",
+                                          value: cihaz.musteriAdi,
+                                          textColor: renkTemp,
+                                        ),
+                                        InfoTileList(
+                                          label: "Cihaz Tür",
+                                          value: cihaz.cihazTuru,
+                                          textColor: renkTemp,
+                                        ),
+                                        if (widget.sorumlu == null)
+                                          InfoTileList(
+                                            label: "Sorumlu",
+                                            value: cihaz.sorumlu,
+                                            textColor: renkTemp,
+                                          ),
+                                        InfoTileList(
+                                          label: "Cihaz",
+                                          value:
+                                              "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
+                                          textColor: renkTemp,
+                                        ),
+                                        InfoTileList(
+                                          label: "Giriş Tarihi",
+                                          value: cihaz.tarih,
+                                          textColor: renkTemp,
+                                        ),
+                                      ],
                                     ),
-                                  InfoTileList(
-                                    label: "Cihaz",
-                                    value:
-                                        "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
-                                    textColor: renkTemp,
-                                  ),
-                                  InfoTileList(
-                                    label: "Giriş Tarihi",
-                                    value: cihaz.tarih,
-                                    textColor: renkTemp,
-                                  ),
-                                  InfoTileList(
-                                    value: cihaz.guncelDurumText.toString(),
-                                    textColor: renkTemp,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) => DetaylarSayfasi(
-                                                    kullanici: widget.kullanici,
-                                                    no: cihaz.servisNo,
-                                                    cihazlariYenile: () async {
-                                                      await _cihazlariYenile();
-                                                    },
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        label: "Detaylar",
-                                      ),
-                                    ],
+                                    subtitle: Text(
+                                      cihaz.guncelDurumText.toString(),
+                                      style: TextStyle(color: renkTemp),
+                                    ),
+                                    trailing: PrimaryButton(
+                                      width: 40,
+                                      height: 40,
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => DetaylarSayfasi(
+                                                  kullanici: widget.kullanici,
+                                                  no: cihaz.servisNo,
+                                                  cihazlariYenile: () async {
+                                                    await _cihazlariYenile();
+                                                  },
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icons.list_alt,
+                                    ),
                                   ),
                                 ],
                               );
