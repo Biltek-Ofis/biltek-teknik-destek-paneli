@@ -90,7 +90,7 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td style="border:0 !important;" class="align-middle p-2" colspan="14" rowspan="8"><img height="110" src="' . base_url("dist/img/logo.png") . '" /></td>
             </tr>
             <tr>
-                <th style="border:0 !important;" class="text-end h5 fw-bold pr-3" colspan="6">No: ' . ($bilgileri_goster ? $cihaz->servis_no : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"). '</th>
+                <th style="border:0 !important;" class="text-end h5 fw-bold pr-3" colspan="6" style="font-weight: bold">No: ' . ($bilgileri_goster ? $cihaz->servis_no : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"). '</th>
             </tr>
             <tr>
                 <td style="border:0 !important;" colspan="6"></td>
@@ -114,10 +114,10 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td style="border:0 !important;" colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center fw-bold">TEKNİK SERVİS FORMU</td>
+                <td colspan="20" class="text-center fw-bold" style="font-weight: bold">TEKNİK SERVİS FORMU</td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center fw-bold">GENEL BİLGİLER</td>
+                <td colspan="20" class="text-center fw-bold" style="font-weight: bold">GENEL BİLGİLER</td>
             </tr>
             <tr>
                 <td colspan="8" class="fw-bold">MÜŞTERİ ADI SOYADI</th>
@@ -161,7 +161,7 @@ echo '<body onafterprint="'. ($bilgileri_goster ? 'tsFormuYazdir()' : 'tsBosForm
                 <td colspan="10">' . ($bilgileri_goster ? $cihaz->teslim_alinanlar : "") . '</td>
             </tr>
             <tr>
-                <td colspan="20" class="text-center fw-bold">YAPILACAK İŞLEM</td>
+                <td colspan="20" class="text-center fw-bold" style="font-weight: bold">YAPILACAK İŞLEM</td>
             </tr>
             <tr>
                 <td colspan="8" class="fw-bold">' . $this->Islemler_Model->servisTuru(1) . '</td>
@@ -201,11 +201,6 @@ if ($cihaz->servis_turu == 4) {
 echo '</td>
                 
             </tr>
-            <tr style="height: 80px !important;">
-                <td colspan="8">YAPILAN İŞLEM AÇIKLAMASI</td>
-                <td colspan="2" class="text-center">:</td>
-                <td colspan="10">' .($bilgileri_goster ? $cihaz->yapilan_islem_aciklamasi : ""). '</td>
-            </tr>
             <tr>
                 <td colspan="8">YEDEKLİ İŞLEM</td>
                 <td colspan="2" class="text-center align-middle">';
@@ -227,18 +222,65 @@ echo '</td>
             <tr>
             </tr>
             <tr>
-                <td colspan="20" class="text-center fw-bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
-            </tr>';
-$hasarli_durumlar_rowspan = $bilgileri_goster ? (count($cihaz->islemler) > 5 ? count($cihaz->islemler) : 5) : 5;
-
-echo '
+                <td colspan="20" class="text-center fw-bold" style="font-weight: bold">MAKİNA ÜZERİNDE GELEN AKSESUAR VE MAKİNE DURUMU</td>
+            </tr>
+            <tr>  
+                <td colspan="4" class="text-center">ÇİZİK</td>
+                <td colspan="5" class="text-center">KIRIK</td>
+                <td colspan="5" class="text-center">ÇATLAK</td>
+                <td colspan="6" class="text-center">DİĞER</td>
+            </tr>
+            <tr style="height: 30px;">
+                <td colspan="4" class="text-center align-middle">';
+if($bilgileri_goster){
+if ($cihaz->cihazdaki_hasar == 1) {
+    echo '<i class="fas fa-check"></i>';
+}
+}
+echo '</i></td>
+                                <td colspan="5" class="text-center align-middle">';
+if($bilgileri_goster){
+if ($cihaz->cihazdaki_hasar == 2) {
+    echo '<i class="fas fa-check"></i>';
+}
+}
+echo '</td>
+                                <td colspan="5" class="text-center align-middle">';
+if($bilgileri_goster){
+if ($cihaz->cihazdaki_hasar == 3) {
+    echo '<i class="fas fa-check"></i>';
+}
+}
+echo '</td>
+                                <td colspan="6" class="text-center align-middle">';
+if($bilgileri_goster){
+if ($cihaz->cihazdaki_hasar == 4) {
+    echo '<i class="fas fa-check"></i>';
+}
+}
+echo '</td>
+            </tr>
+            
             <tr>
-                <td colspan="10" rowspan="' . ($hasarli_durumlar_rowspan + 3) . '" class="text-center fw-bold">HASARLI DURUMLAR</td>
-                <td colspan="4" class="text-center fw-bold">MALZEME/İŞÇİLİK</td>
-                <td colspan="1" class="text-center fw-bold">MİKTAR</td>
-                <td colspan="1" class="text-center fw-bold">BİRİM FİYATI</td>
-                <td colspan="2" class="text-center fw-bold">TUTAR</td>
-                <td colspan="2" class="text-center fw-bold">KDV</td>
+                <td colspan="20" class="text-center fw-bold" style="font-weight: bold">YAPILAN İŞLEMLER</td>
+            </tr>
+            <tr style="height: 80px !important;">
+                <td colspan="8" style="font-weight: bold">YAPILAN İŞLEM AÇIKLAMASI</td>
+                <td colspan="2" class="text-center">:</td>
+                <td colspan="10">' .($bilgileri_goster ? $cihaz->yapilan_islem_aciklamasi : ""). '</td>
+            </tr>';
+            $col1 = "8";
+            $col2 = "3";
+            $col3 = "3";
+            $col4 = "3";
+            $col5 = "3";
+            echo '
+            <tr>
+                <td colspan="'.$col1.'" class="text-center fw-bold" style="font-weight: bold">MALZEME/İŞÇİLİK</td>
+                <td colspan="'.$col2.'" class="text-center fw-bold" style="font-weight: bold">MİKTAR</td>
+                <td colspan="'.$col3.'" class="text-center fw-bold" style="font-weight: bold">BİRİM FİYATI</td>
+                <td colspan="'.$col4.'" class="text-center fw-bold" style="font-weight: bold">TUTAR</td>
+                <td colspan="'.$col5.'" class="text-center fw-bold" style="font-weight: bold">KDV</td>
             </tr>';
 $toplam = 0;
 $kdv = 0;
@@ -249,11 +291,11 @@ if (count($cihaz->islemler) > 0) {
         $toplam_islem_fiyati_suan =  $islem->miktar * $islem->birim_fiyat;
         $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
         echo '<tr>
-                <td colspan="4">' . $islem->ad  . '</td>
-                <td colspan="1" class="text-center">' . $islem->miktar . '</td>
-                <td colspan="1" class="text-center">' .  $islem->birim_fiyat . '</td>
-                <td colspan="2" class="text-center">' . $toplam_islem_fiyati_suan . '</td>';
-        echo '<td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan : "") . '</td>';
+                <td colspan="'.$col1.'">' . $islem->ad  . '</td>
+                <td colspan="'.$col2.'" class="text-center">' . $islem->miktar . '</td>
+                <td colspan="'.$col3.'" class="text-center">' .  $islem->birim_fiyat . '</td>
+                <td colspan="'.$col4.'" class="text-center">' . $toplam_islem_fiyati_suan . '</td>';
+        echo '<td colspan="'.$col5.'" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan : "") . '</td>';
         //echo '<td colspan="2" class="text-center">' . ($kdv_suan > 0 ? $kdv_suan . ' (' . $islem->kdv . '%)' : "") . '</td>';
         echo '
             </tr>';
@@ -263,11 +305,11 @@ if (count($cihaz->islemler) > 0) {
     if(count($cihaz->islemler) < 5){
         for ($i = 0; $i < (5 - count($cihaz->islemler)); $i++) {
             echo '<tr style="height:20px;">
-                        <td colspan="4"></td>
-                        <td colspan="1" class="text-center"></td>
-                        <td colspan="1" class="text-center"></td>
-                        <td colspan="2" class="text-center"></td>
-                        <td colspan="2" class="text-center"></td>
+                        <td colspan="'.$col1.'"></td>
+                        <td colspan="'.$col2.'" class="text-center"></td>
+                        <td colspan="'.$col3.'" class="text-center"></td>
+                        <td colspan="'.$col4.'" class="text-center"></td>
+                        <td colspan="'.$col5.'" class="text-center"></td>
                     </tr>';
         }
     }
@@ -275,11 +317,11 @@ if (count($cihaz->islemler) > 0) {
 } else {
     for ($i = 0; $i < 5; $i++) {
         echo '<tr style="height:20px;">
-                    <td colspan="4"></td>
-                    <td colspan="1" class="text-center"></td>
-                    <td colspan="1" class="text-center"></td>
-                    <td colspan="2" class="text-center"></td>
-                    <td colspan="2" class="text-center"></td>
+                    <td colspan="'.$col1.'"></td>
+                    <td colspan="'.$col2.'" class="text-center"></td>
+                    <td colspan="'.$col3.'" class="text-center"></td>
+                    <td colspan="'.$col4.'" class="text-center"></td>
+                    <td colspan="'.$col5.'" class="text-center"></td>
                 </tr>';
     }
 }
@@ -287,67 +329,35 @@ if (count($cihaz->islemler) > 0) {
 }else{
     for ($i = 0; $i < 5; $i++) {
         echo '<tr style="height:20px;">
-                    <td colspan="4"></td>
-                    <td colspan="1" class="text-center"></td>
-                    <td colspan="1" class="text-center"></td>
-                    <td colspan="2" class="text-center"></td>
-                    <td colspan="2" class="text-center"></td>
+                    <td colspan="'.$col1.'"></td>
+                    <td colspan="'.$col2.'" class="text-center"></td>
+                    <td colspan="'.$col3.'" class="text-center"></td>
+                    <td colspan="'.$col4.'" class="text-center"></td>
+                    <td colspan="'.$col5.'" class="text-center"></td>
                 </tr>';
     }
 }
-echo '<tr>
-                <td colspan="8">TOPLAM</td>
-                <td colspan="2" class="text-center">' . ($toplam > 0 ? $toplam . " TL" : "") . '</td>
+echo '
+            <tr>
+                <td colspan="5">TOPLAM</td>
+                <td colspan="15" class="text-right">' . ($toplam > 0 ? $toplam . " TL" : "") . '&nbsp;&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="8">KDV</td>
-                <td colspan="2" class="text-center">' . ($kdv > 0 ? $kdv . " TL" : "") . '</td>
-            </tr>
-            <tr>  
-                <td colspan="2" class="text-center">ÇİZİK</td>
-                <td colspan="2" class="text-center">KIRIK</td>
-                <td colspan="2" class="text-center">ÇATLAK</td>
-                <td colspan="4" class="text-center">DİĞER</td>
-                <td colspan="8">GENEL TOPLAM</td>
-                <td colspan="2" class="text-center">' . ($genel_toplam > 0 ? $genel_toplam . " TL" : "") . '</td>
+                <td colspan="5">KDV</td>
+                <td colspan="15" class="text-right">' . ($kdv > 0 ? $kdv . " TL" : "") . '&nbsp;&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center align-middle">';
-if($bilgileri_goster){
-if ($cihaz->cihazdaki_hasar == 1) {
-    echo '<i class="fas fa-check"></i>';
-}
-}
-echo '</i></td>
-                                <td colspan="2" class="text-center align-middle">';
-if($bilgileri_goster){
-if ($cihaz->cihazdaki_hasar == 2) {
-    echo '<i class="fas fa-check"></i>';
-}
-}
-echo '</td>
-                                <td colspan="2" class="text-center align-middle">';
-if($bilgileri_goster){
-if ($cihaz->cihazdaki_hasar == 3) {
-    echo '<i class="fas fa-check"></i>';
-}
-}
-echo '</td>
-                                <td colspan="4" class="text-center align-middle">';
-if($bilgileri_goster){
-if ($cihaz->cihazdaki_hasar == 4) {
-    echo '<i class="fas fa-check"></i>';
-}
-}
-echo '</td>
-            <td colspan="5">TAHSİLAT ŞEKLİ</td>
-            <td colspan="5" class="text-center">' . ($bilgileri_goster ? $cihaz->tahsilat_sekli : "") . '</td>
-
+                <td colspan="5">GENEL TOPLAM</td>
+                <td colspan="15" class="text-right">' . ($genel_toplam > 0 ? $genel_toplam . " TL" : "") . '&nbsp;&nbsp;</td>
+            </tr>
+            <tr>        
+                <td colspan="7">TAHSİLAT ŞEKLİ</td>
+                <td colspan="13" class="text-left">&nbsp;&nbsp;' . ($bilgileri_goster ? $cihaz->tahsilat_sekli : "") . '</td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center fw-bold">TESLİM EDEN</td>
-                <td colspan="7" class="text-center fw-bold">TESLİM ALAN</td>
-                <td colspan="6" class="text-center fw-bold">TEKNİK SORUMLU</td>
+                <td colspan="7" class="text-center fw-bold" style="font-weight: bold">TESLİM EDEN</td>
+                <td colspan="7" class="text-center fw-bold" style="font-weight: bold">TESLİM ALAN</td>
+                <td colspan="6" class="text-center fw-bold" style="font-weight: bold">TEKNİK SORUMLU</td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">ADI SOYADI</td>
