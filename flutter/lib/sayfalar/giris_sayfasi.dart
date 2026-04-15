@@ -436,6 +436,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           ],
         );
         if (ok) {
+          _kullaniciAdiCtrl.text = widget.spKullanici!.kullaniciAdi;
           _sifreCtrl.text = widget.spKullanici!.sifre;
           if (myNotifier != null && !_beniHatirla) {
             myNotifier.kullanici = null;
