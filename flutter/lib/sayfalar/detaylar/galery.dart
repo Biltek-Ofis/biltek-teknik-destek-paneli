@@ -111,39 +111,42 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
           if (widget.duzenle) {}
         },
       ),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child:
-            yukleniyor
-                ? Center(child: CircularProgressIndicator())
-                : (medyalar.isNotEmpty
-                    ? PhotoViewGallery.builder(
-                      itemCount: medyalar.length,
-                      builder: (context, index) {
-                        return PhotoViewGalleryPageOptions(
-                          imageProvider: NetworkImage(
-                            medyalar[index].yerel
-                                ? "${Ayarlar.url}${medyalar[index].konum}"
-                                : medyalar[index].konum,
-                          ),
-                          minScale: PhotoViewComputedScale.contained * 1,
-                          maxScale: PhotoViewComputedScale.contained * 4,
-                          onTapDown: (context, details, value) {},
-                        );
-                      },
-                      scrollDirection: Axis.horizontal,
-                      pageController: pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          suankiResimIndex = index;
-                        });
-                      },
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      backgroundDecoration: BoxDecoration(
-                        color: Theme.of(context).canvasColor,
-                      ),
-                    )
-                    : Center(child: Text("Henüz resim yüklenmemiş"))),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child:
+              yukleniyor
+                  ? Center(child: CircularProgressIndicator())
+                  : (medyalar.isNotEmpty
+                      ? PhotoViewGallery.builder(
+                        itemCount: medyalar.length,
+                        builder: (context, index) {
+                          return PhotoViewGalleryPageOptions(
+                            imageProvider: NetworkImage(
+                              medyalar[index].yerel
+                                  ? "${Ayarlar.url}${medyalar[index].konum}"
+                                  : medyalar[index].konum,
+                            ),
+                            minScale: PhotoViewComputedScale.contained * 1,
+                            maxScale: PhotoViewComputedScale.contained * 4,
+                            onTapDown: (context, details, value) {},
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        pageController: pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            suankiResimIndex = index;
+                          });
+                        },
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        backgroundDecoration: BoxDecoration(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                      )
+                      : Center(child: Text("Henüz resim yüklenmemiş"))),
+        ),
       ),
     );
   }

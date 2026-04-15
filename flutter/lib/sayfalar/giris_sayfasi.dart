@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_links/app_links.dart';
+import 'package:biltekteknikservis/sayfalar/cihazlar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,6 @@ import 'package:provider/provider.dart';
 
 import '../ayarlar.dart';
 import '../models/giris.dart';
-import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
@@ -20,10 +20,10 @@ import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
 import '../utils/shared_preferences.dart';
+import '../widgets/dizayn.dart';
 import '../widgets/input.dart';
 import 'anasayfa.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';
-import 'cihazlar.dart';
 
 class GirisSayfasi extends StatefulWidget {
   const GirisSayfasi({super.key, this.spKullanici});
@@ -34,360 +34,394 @@ class GirisSayfasi extends StatefulWidget {
   State<GirisSayfasi> createState() => _GirisSayfasiState();
 }
 
-class _GirisSayfasiState extends State<GirisSayfasi> {
+class _GirisSayfasiState extends State<GirisSayfasi>
+    with SingleTickerProviderStateMixin {
   CihazNo? cihazNoCls;
   StreamSubscription? _deepLinkSubscription;
 
-  TextEditingController kullaniciAdiController = TextEditingController();
-  FocusNode kullaniciAdiFocus = FocusNode();
-  TextEditingController sifreController = TextEditingController();
-  FocusNode sifreFocus = FocusNode();
-  bool sifreyiGoster = false;
+  final TextEditingController _kullaniciAdiCtrl = TextEditingController();
+  final TextEditingController _sifreCtrl = TextEditingController();
+  final FocusNode _kullaniciAdiFocus = FocusNode();
+  final FocusNode _sifreFocus = FocusNode();
 
-  bool beniHatirla = true;
+  bool _beniHatirla = true;
+  bool _yukleniyor = false;
+  bool _canAuthBio = false;
 
-  String hataMesaji = "";
-  String? kullaniciAdiError;
-  String? sifreError;
+  String? _kullaniciAdiError;
+  String? _sifreError;
+  String _hataMesaji = "";
 
-  final LocalAuthentication localAuth = LocalAuthentication();
-  bool canAuthenticateBio = false;
+  final LocalAuthentication _localAuth = LocalAuthentication();
+
+  late final AnimationController _fadeCtrl;
+  late final Animation<double> _fadeAnim;
+
+  static const _accent = Color(0xFF00E676);
+  static const _textSub = Color(0xFF6B7080);
 
   @override
   void initState() {
     super.initState();
 
+    _fadeCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    );
+    _fadeAnim = CurvedAnimation(parent: _fadeCtrl, curve: Curves.easeOut);
+
     Future.delayed(Duration.zero, () async {
       if (mounted) {
         cihazNoCls = CihazNo.of(context);
-
-        await initUniLinks();
+        await _initDeepLinks();
       }
       if (widget.spKullanici != null) {
-        SPKullanici spKullanici = widget.spKullanici!;
-        spKullanici.sifreyiCoz();
-        kullaniciAdiController.text = spKullanici.kullaniciAdi;
-        if (widget.spKullanici!.sifre.isNotEmpty) {
-          if (!kIsWeb) {
-            final bool canAuthenticateWithBiometrics =
-                await localAuth.canCheckBiometrics;
-            canAuthenticateBio =
-                canAuthenticateWithBiometrics ||
-                await localAuth.isDeviceSupported();
-            /*if (!canAuthenticateBio) {
-              sifreController.text = widget.spKullanici!.sifre;
-            }*/
-          } else {
-            //sifreController.text = widget.spKullanici!.sifre;
-          }
+        final sp = widget.spKullanici!..sifreyiCoz();
+        _kullaniciAdiCtrl.text = sp.kullaniciAdi;
+        if (sp.sifre.isNotEmpty && !kIsWeb) {
+          final canBio = await _localAuth.canCheckBiometrics;
+          _canAuthBio = canBio || await _localAuth.isDeviceSupported();
         }
       }
-      bool beniHatirlaTemp =
+      final hatirla =
           await SharedPreference.getBool(SharedPreference.beniHatirlaString) ??
           true;
-      setState(() {
-        beniHatirla = beniHatirlaTemp;
-      });
       if (mounted) {
+        setState(() => _beniHatirla = hatirla);
+
         if (widget.spKullanici == null) {
-          FocusScope.of(context).requestFocus(kullaniciAdiFocus);
-        } else if (!canAuthenticateBio) {
-          FocusScope.of(context).requestFocus(sifreFocus);
+          FocusScope.of(context).requestFocus(_kullaniciAdiFocus);
+        } else if (!_canAuthBio) {
+          FocusScope.of(context).requestFocus(_sifreFocus);
         }
-        Alerts alerts = Alerts.of(context);
-        bool guncelleme = await BiltekPost.guncellemeGerekli();
-        if (guncelleme) {
-          alerts.guncelleme();
-        }
+
+        final alerts = Alerts.of(context);
+        if (await BiltekPost.guncellemeGerekli()) alerts.guncelleme();
       }
+      _fadeCtrl.forward();
     });
   }
 
   @override
   void dispose() {
     _deepLinkSubscription?.cancel();
+    _fadeCtrl.dispose();
+    _kullaniciAdiCtrl.dispose();
+    _sifreCtrl.dispose();
+    _kullaniciAdiFocus.dispose();
+    _sifreFocus.dispose();
     super.dispose();
   }
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // BUILD
+  // ══════════════════════════════════════════════════════════════════════════
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<MyNotifier>(
-        builder: (context, MyNotifier myNotifier, child) {
-          return Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: SizedBox(
-              width:
-                  MediaQuery.of(context).size.width > 400
-                      ? 400
-                      : MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Image.asset(BiltekAssets.logo),
-                    Text(hataMesaji, style: TextStyle(color: Colors.red)),
-                    SizedBox(height: 10),
-                    AutofillGroup(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Consumer<MyNotifier>(
+          builder: (ctx, notifier, _) {
+            return SafeArea(
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 32,
+                  ),
+                  child: FadeTransition(
+                    opacity: _fadeAnim,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          BiltekTextField(
-                            controller: kullaniciAdiController,
-                            autofillHints: [AutofillHints.username],
-                            currentFocus: kullaniciAdiFocus,
-                            textInputAction: TextInputAction.next,
-                            nextFocus: sifreFocus,
-                            label: "Kullanıcı Adı",
-                            errorText: kullaniciAdiError,
-                            onChanged: (value) {
-                              setState(() {
-                                kullaniciAdiError = null;
-                                hataMesaji = "";
-                              });
-                            },
-                            onEditingComplete: () {
-                              kullaniciAdiFocus.unfocus();
-                              FocusScope.of(context).requestFocus(sifreFocus);
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          BiltekSifre(
-                            controller: sifreController,
-                            autofillHints: [AutofillHints.password],
-                            currentFocus: sifreFocus,
-                            label: "Şifre",
-                            errorText: sifreError,
-                            onChanged: (value) {
-                              setState(() {
-                                sifreError = null;
-                                hataMesaji = "";
-                              });
-                            },
-                            onSubmitted: (val) async {
-                              TextInput.finishAutofillContext();
-                              await _girisYap(myNotifier);
-                            },
-                            textInputAction: TextInputAction.done,
-                            onEditingComplete:
-                                () => TextInput.finishAutofillContext(),
-                          ),
+                          _buildHeader(),
+                          const SizedBox(height: 40),
+                          _buildForm(notifier),
+                          const SizedBox(height: 28),
+                          _buildActions(notifier),
                         ],
                       ),
                     ),
-
-                    SizedBox(height: 10),
-                    BiltekCheckbox(
-                      value: beniHatirla,
-                      label: "Beni Hatırla",
-                      onChanged: (val) {
-                        if (val == null) {
-                          return;
-                        }
-                        setState(() {
-                          beniHatirla = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: DefaultButton(
-                        onPressed: () async {
-                          await _girisYap(myNotifier);
-                        },
-                        text: "Giriş Yap",
-                      ),
-                    ),
-                    if (canAuthenticateBio && widget.spKullanici != null)
-                      SizedBox(height: 10),
-                    if (canAuthenticateBio && widget.spKullanici != null)
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        child: DefaultButton(
-                          background: Islemler.arkaRenk(
-                            "bg-secondary",
-                            alpha: 1,
-                          ),
-                          onPressed: () async {
-                            await _biyometricGiris();
-                          },
-                          text: "Biyometrik Giriş",
-                        ),
-                      ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: DefaultButton(
-                        background: Islemler.arkaRenk("bg-info", alpha: 1),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CihazDurumuGiris(),
-                            ),
-                          );
-                        },
-                        text: "Cihaz Durumunu Görüntüle",
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Image.asset(
+          BiltekAssets.logo,
+          width: MediaQuery.of(context).size.width,
+          height: 100,
+        ),
+        const SizedBox(height: 24),
+        Container(width: 32, height: 2, color: _accent),
+        const SizedBox(height: 14),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              const Text(
+                "Teknik servis paneline hoş geldiniz.",
+                style: TextStyle(fontSize: 13, color: _textSub),
+              ),
+            ],
+          ),
+        ),
+        if (_hataMesaji.isNotEmpty) ...[
+          const SizedBox(height: 14),
+          ErrorBanner(message: _hataMesaji),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildForm(MyNotifier notifier) {
+    return AutofillGroup(
+      child: Column(
+        children: [
+          BiltekTextField(
+            controller: _kullaniciAdiCtrl,
+            currentFocus: _kullaniciAdiFocus,
+            nextFocus: _sifreFocus,
+            label: "Kullanıcı Adı",
+            prefixIcon: Icons.person_outline_rounded,
+            autofillHints: const [AutofillHints.username],
+            errorText: _kullaniciAdiError,
+            textInputAction: TextInputAction.next,
+            onChanged:
+                (_) => setState(() {
+                  _kullaniciAdiError = null;
+                  _hataMesaji = "";
+                }),
+            onEditingComplete:
+                () => FocusScope.of(context).requestFocus(_sifreFocus),
+          ),
+          const SizedBox(height: 16),
+          BiltekSifre(
+            controller: _sifreCtrl,
+            currentFocus: _sifreFocus,
+            label: "Şifre",
+            prefixIcon: Icons.lock_outline_rounded,
+            autofillHints: const [AutofillHints.password],
+            errorText: _sifreError,
+            textInputAction: TextInputAction.done,
+            onChanged:
+                (_) => setState(() {
+                  _sifreError = null;
+                  _hataMesaji = "";
+                }),
+            onSubmitted: (_) async {
+              TextInput.finishAutofillContext();
+              await _girisYap(notifier);
+            },
+            onEditingComplete: () => TextInput.finishAutofillContext(),
+          ),
+          const SizedBox(height: 14),
+          GestureDetector(
+            onTap: () => setState(() => _beniHatirla = !_beniHatirla),
+            child: Row(
+              children: [
+                AnimatedCheckbox(
+                  value: _beniHatirla,
+                  onChanged: (v) => setState(() => _beniHatirla = v),
+                ),
+                const SizedBox(width: 10),
+                const Text(
+                  "Beni Hatırla",
+                  style: TextStyle(color: _textSub, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActions(MyNotifier notifier) {
+    return Column(
+      children: [
+        PrimaryButton(
+          label: "Giriş Yap",
+          loading: _yukleniyor,
+          onPressed: () async => await _girisYap(notifier),
+        ),
+        if (_canAuthBio && widget.spKullanici != null) ...[
+          const SizedBox(height: 10),
+          SecondaryButton(
+            label: "Biyometrik Giriş",
+            icon: Icons.fingerprint_rounded,
+            onPressed: () => _biyometricGiris(notifier),
+          ),
+        ],
+        const SizedBox(height: 10),
+        PrimaryButton(
+          backgroundColor: const Color(0xFF00E676),
+          label: "Cihaz Durumunu Görüntüle",
+          icon: Icons.search_rounded,
+          onPressed:
+              () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => CihazDurumuGiris())),
+        ),
+      ],
     );
   }
 
   Future<void> _girisYap(MyNotifier? myNotifier) async {
     setState(() {
-      kullaniciAdiError = null;
-      sifreError = null;
-      hataMesaji = "";
+      _kullaniciAdiError = null;
+      _sifreError = null;
+      _hataMesaji = "";
+      _yukleniyor = true;
     });
-    NavigatorState navigatorState = Navigator.of(context);
-    yukleniyor(context);
+
+    final nav = Navigator.of(context);
     bool kapatildi = false;
-    String kullaniciAdi = kullaniciAdiController.text;
-    String sifre = sifreController.text;
+    final kullaniciAdi = _kullaniciAdiCtrl.text;
+    final sifre = _sifreCtrl.text;
+
     if (kullaniciAdi.isEmpty && sifre.isEmpty) {
       setState(() {
-        kullaniciAdiError = "Kullanıcı Adı boş olamaz!";
-        sifreError = "Şifre boş olamaz!";
+        _kullaniciAdiError = "Kullanıcı Adı boş olamaz!";
+        _sifreError = "Şifre boş olamaz!";
+        _yukleniyor = false;
       });
       return;
     }
-    if (kullaniciAdi.isNotEmpty) {
-      if (sifre.isNotEmpty) {
-        Map<String, String> postData = {
-          "kullaniciAdi": kullaniciAdi,
-          "sifre": sifre,
-        };
-        String? cihazID = await Islemler.getId();
-        if (cihazID == null) {
-          setState(() {
-            hataMesaji = "Uygulama şuanda bu platforda desteklenmiyor.";
-          });
-          return;
-        }
+    if (kullaniciAdi.isEmpty) {
+      setState(() {
+        _kullaniciAdiError = "Kullanıcı Adı boş olamaz!";
+        _yukleniyor = false;
+      });
+      return;
+    }
+    if (sifre.isEmpty) {
+      setState(() {
+        _sifreError = "Şifre boş olamaz!";
+        _yukleniyor = false;
+      });
+      return;
+    }
 
-        postData["cihazID"] = cihazID;
+    final cihazID = await Islemler.getId();
+    if (cihazID == null) {
+      setState(() {
+        _hataMesaji = "Uygulama şuanda bu platformda desteklenmiyor.";
+        _yukleniyor = false;
+      });
+      return;
+    }
 
-        String? fcmToken = await SharedPreference.getString(
-          SharedPreference.fcmTokenString,
+    final postData = <String, String>{
+      "kullaniciAdi": kullaniciAdi,
+      "sifre": sifre,
+      "cihazID": cihazID,
+    };
+    final fcmToken = await SharedPreference.getString(
+      SharedPreference.fcmTokenString,
+    );
+    if (fcmToken != null) postData["fcmToken"] = fcmToken;
+
+    final response = await BiltekPost.post(Ayarlar.girisYap, postData);
+
+    if (response.statusCode == 201) {
+      final resp = await response.stream.bytesToString();
+      try {
+        final girisDurumu = GirisDurumu.fromJson(
+          jsonDecode(resp) as Map<String, dynamic>,
         );
-        if (fcmToken != null) {
-          postData["fcmToken"];
-        }
-        var response = await BiltekPost.post(Ayarlar.girisYap, postData);
-        if (response.statusCode == 201) {
-          var resp = await response.stream.bytesToString();
-          try {
-            GirisDurumu girisDurumu = GirisDurumu.fromJson(
-              jsonDecode(resp) as Map<String, dynamic>,
+        if (girisDurumu.durum && girisDurumu.auth.isNotEmpty) {
+          await SharedPreference.setString(
+            SharedPreference.authString,
+            girisDurumu.auth,
+          );
+          final kullaniciModel = await BiltekPost.kullaniciGetir(
+            girisDurumu.auth,
+          );
+          if (kullaniciModel != null) {
+            kapatildi = true;
+            if (myNotifier != null) {
+              myNotifier.kullanici =
+                  _beniHatirla
+                      ? SPKullanici.create(
+                        isim: kullaniciModel.adSoyad,
+                        kullaniciAdi: kullaniciAdi,
+                        sifre: sifre,
+                      )
+                      : null;
+            }
+            await SharedPreference.setBool(
+              SharedPreference.beniHatirlaString,
+              _beniHatirla,
             );
-            if (girisDurumu.durum && girisDurumu.auth.isNotEmpty) {
-              await SharedPreference.setString(
-                SharedPreference.authString,
-                girisDurumu.auth,
-              );
-              KullaniciAuthModel? kullaniciModel =
-                  await BiltekPost.kullaniciGetir(girisDurumu.auth);
-              if (kullaniciModel != null) {
-                kapatildi = true;
-                if (myNotifier != null) {
-                  if (beniHatirla) {
-                    SPKullanici spKullanici = SPKullanici.create(
-                      isim: kullaniciModel.adSoyad,
-                      kullaniciAdi: kullaniciAdi,
-                      sifre: sifre,
-                    );
-                    myNotifier.kullanici = spKullanici;
-                  } else {
-                    myNotifier.kullanici = null;
-                  }
-                }
-                await SharedPreference.setBool(
-                  SharedPreference.beniHatirlaString,
-                  beniHatirla,
-                );
-                navigatorState.pop();
-                navigatorState.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder:
-                        (context) => Anasayfa(
-                          sayfa:
-                              kullaniciModel.musteri
-                                  ? "cagri"
-                                  : (kullaniciModel.teknikservis
-                                      ? "cihazlarim"
-                                      : "anasayfa"),
-                          kullanici: kullaniciModel,
-                        ),
-                  ),
-                  (Route<dynamic> route) => false,
-                );
-              } else {
-                setState(() {
-                  hataMesaji =
-                      "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
-                });
-              }
-            } else {
-              setState(() {
-                hataMesaji = "Kullanıcı adı veya şifre yanlış";
-              });
-            }
-          } on Exception {
-            try {
-              HataDurumu hataDurumu = HataDurumu.fromJson(
-                jsonDecode(resp) as Map<String, dynamic>,
-              );
-              setState(() {
-                hataMesaji = hataDurumu.mesaj;
-              });
-            } on Exception {
-              setState(() {
-                hataMesaji =
-                    "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
-              });
-            }
+            nav.pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder:
+                    (_) => Anasayfa(
+                      sayfa:
+                          kullaniciModel.musteri
+                              ? "cagri"
+                              : (kullaniciModel.teknikservis
+                                  ? "cihazlarim"
+                                  : "anasayfa"),
+                      kullanici: kullaniciModel,
+                    ),
+              ),
+              (_) => false,
+            );
+          } else {
+            setState(
+              () =>
+                  _hataMesaji =
+                      "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+            );
           }
         } else {
-          // If the server did not return a 201 CREATED response,
-          // then throw an exception.
-          setState(() {
-            hataMesaji = "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
-          });
+          setState(() => _hataMesaji = "Kullanıcı adı veya şifre yanlış.");
         }
-      } else {
-        setState(() {
-          sifreError = "Şifre boş olamaz!";
-        });
+      } on Exception {
+        try {
+          final hata = HataDurumu.fromJson(
+            jsonDecode(resp) as Map<String, dynamic>,
+          );
+          setState(() => _hataMesaji = hata.mesaj);
+        } on Exception {
+          setState(
+            () =>
+                _hataMesaji =
+                    "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+          );
+        }
       }
     } else {
-      setState(() {
-        kullaniciAdiError = "Kullanıcı Adı boş olamaz!";
-      });
+      setState(
+        () =>
+            _hataMesaji = "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+      );
     }
-    if (!kapatildi) {
-      navigatorState.pop();
-    }
+
+    if (!kapatildi) setState(() => _yukleniyor = false);
   }
 
-  Future<void> _biyometricGiris() async {
+  Future<void> _biyometricGiris(MyNotifier? myNotifier) async {
     try {
-      final bool canAuthenticateWithBiometrics =
-          await localAuth.canCheckBiometrics;
-      final bool canAuthenticate =
-          canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
-      if (canAuthenticate) {
-        final bool didAuthenticate = await localAuth.authenticate(
+      final canBio = await _localAuth.canCheckBiometrics;
+      final canAuth = canBio || await _localAuth.isDeviceSupported();
+      if (canAuth) {
+        final ok = await _localAuth.authenticate(
           localizedReason:
               'Daha önce giriş yapılmış bir hesabınız bulunuyor. Biyometrik kimliğinizi doğrulayarak tekrar giriş yapabilirsiniz.',
           authMessages: const <AuthMessages>[
@@ -398,38 +432,27 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             IOSAuthMessages(cancelButton: 'Hayır Teşekkürler'),
           ],
         );
-        if (didAuthenticate) {
-          sifreController.text = widget.spKullanici!.sifre;
+        if (ok) {
+          _sifreCtrl.text = widget.spKullanici!.sifre;
+          if (myNotifier != null && !_beniHatirla) {
+            myNotifier.kullanici = null;
+          }
           await _girisYap(null);
         }
-      } else {
-        //sifreController.text = widget.spKullanici!.sifre;
       }
     } on LocalAuthException catch (e) {
-      if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
-        // Add handling of no hardware here.
-      } else if (e.code == LocalAuthExceptionCode.temporaryLockout ||
-          e.code == LocalAuthExceptionCode.biometricLockout) {
-        // ...
-      } else {
-        // ...
-      }
+      debugPrint("LocalAuth Hatası.\n${e.description}");
     }
   }
 
-  Future<void> initUniLinks() async {
-    // Platform messages may fail, so we use a try/catch PlatformException.
+  Future<void> _initDeepLinks() async {
     try {
-      final appLinks = AppLinks(); // AppLinks is singleton
-
-      // Subscribe to all events (initial link and further)
+      final appLinks = AppLinks();
       _deepLinkSubscription = appLinks.uriLinkStream.listen((uri) {
-        if (cihazNoCls != null) {
-          cihazNoCls!.qrAcMusteri(qr: uri.toString());
-        }
+        cihazNoCls?.qrAcMusteri(qr: uri.toString());
       });
     } on PlatformException catch (e) {
-      debugPrint("Failed to get initial link.\n$e");
+      debugPrint("Deep link hatası: $e");
     }
   }
 }

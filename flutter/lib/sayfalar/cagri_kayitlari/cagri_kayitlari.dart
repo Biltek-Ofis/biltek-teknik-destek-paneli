@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:biltekteknikservis/widgets/dizayn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -188,393 +189,160 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
             }
           },
         ),
-        body:
-            cagriKayitlari == null
-                ? Center(child: CircularProgressIndicator())
-                : Column(
-                  children: [
-                    if (!widget.kullanici.musteri &&
-                        cagriKayitlari != null &&
-                        cagriKayitlari!
-                                .where(
-                                  (c) =>
-                                      c.cihazBilgileri != null &&
-                                      c.cihazBilgileri!.guncelDurumText
-                                              .toString() ==
-                                          "Teslim Edildi / Ödeme Alınmadı",
-                                )
-                                .fold(
-                                  0.0,
-                                  (toplam, c) => toplam + c.toplamUcret,
-                                ) >
-                            0)
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(color: Colors.red.shade400),
-                        child: Text(
-                          "Teslim Edilip Ödeme Alınmayan Toplam Ücret: ${cagriKayitlari!.where((c) => c.cihazBilgileri != null && c.cihazBilgileri!.guncelDurumText.toString() == "Teslim Edildi / Ödeme Alınmadı").fold(0.0, (toplam, c) => toplam + c.toplamUcret).toUcret()} TL",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+        body: SafeArea(
+          child: Container(
+            decoration: BoxDecoration(color: Colors.white),
+            child:
+                cagriKayitlari == null
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                      children: [
+                        if (!widget.kullanici.musteri &&
+                            cagriKayitlari != null &&
+                            cagriKayitlari!
+                                    .where(
+                                      (c) =>
+                                          c.cihazBilgileri != null &&
+                                          c.cihazBilgileri!.guncelDurumText
+                                                  .toString() ==
+                                              "Teslim Edildi / Ödeme Alınmadı",
+                                    )
+                                    .fold(
+                                      0.0,
+                                      (toplam, c) => toplam + c.toplamUcret,
+                                    ) >
+                                0)
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade400,
+                            ),
+                            child: Text(
+                              "Teslim Edilip Ödeme Alınmayan Toplam Ücret: ${cagriKayitlari!.where((c) => c.cihazBilgileri != null && c.cihazBilgileri!.guncelDurumText.toString() == "Teslim Edildi / Ödeme Alınmadı").fold(0.0, (toplam, c) => toplam + c.toplamUcret).toUcret()} TL",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          await cagriKayitlariniGetir();
-                        },
-                        child: ListView.builder(
-                          itemCount: cagriKayitlari!.length,
-                          controller: scrollController,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            CagriKaydiModel cagrikaydi = cagriKayitlari![index];
-                            Cihaz? cihaz = cagrikaydi.cihazBilgileri;
-                            String renk =
-                                cihaz != null
-                                    ? cihaz.guncelDurumRenk
-                                    : "bg-warning";
-                            debugPrint("Guncel Durum Renk $renk");
-                            Color? renkTemp = Islemler.yaziRengi(renk);
-                            return Container(
-                              decoration: BoxDecoration(color: Colors.white),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Islemler.arkaRenk(renk),
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: ListTile(
-                                  textColor: renkTemp,
-                                  title: RichText(
-                                    text: TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: "Çağrı Kodu: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: renkTemp,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: cagrikaydi.id.toString(),
-                                          style: TextStyle(color: renkTemp),
-                                        ),
-                                        if (!widget.kullanici.musteri)
-                                          TextSpan(
-                                            text: "\nMüşteri: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renkTemp,
-                                            ),
-                                          ),
-                                        if (!widget.kullanici.musteri)
-                                          TextSpan(
-                                            text:
-                                                "${cagrikaydi.bolge} ${cagrikaydi.birim}",
-                                            style: TextStyle(color: renkTemp),
-                                          ),
-                                        if (cihaz != null)
-                                          TextSpan(
-                                            text: "\nServis No: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renkTemp,
-                                            ),
-                                          ),
-                                        if (cihaz != null)
-                                          TextSpan(
-                                            text: cihaz.servisNo.toString(),
-                                            style: TextStyle(color: renkTemp),
-                                          ),
-                                        TextSpan(
-                                          text: "\nCihaz Türü: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: renkTemp,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              cihaz != null
-                                                  ? cihaz.cihazTuru
-                                                  : cagrikaydi.cihazTuru,
-                                          style: TextStyle(color: renkTemp),
-                                        ),
-                                        TextSpan(
-                                          text: "\nCihaz Marka - Model: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: renkTemp,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              cihaz != null
-                                                  ? "${cihaz.cihaz}${cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : ""}"
-                                                  : "${cagrikaydi.cihaz}${cagrikaydi.cihazModeli.isNotEmpty ? " ${cagrikaydi.cihazModeli}" : ""}",
-                                          style: TextStyle(color: renkTemp),
-                                        ),
-                                        TextSpan(
-                                          text: "\nKayıt Tarihi: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: renkTemp,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: Islemler.tarihGoruntule(
-                                            cagrikaydi.tarih,
-                                            Islemler.tarihSQLFormat,
-                                            Islemler.tarihFormat,
-                                          ),
-                                          style: TextStyle(color: renkTemp),
-                                        ),
-                                        TextSpan(
-                                          text: "\nDurum: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: renkTemp,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              cihaz != null
-                                                  ? cihaz.guncelDurumText
-                                                      .toString()
-                                                  : "İşlem Bekleniyor",
-                                          style: TextStyle(color: renkTemp),
-                                        ),
-                                        if (!widget.kullanici.musteri)
-                                          TextSpan(
-                                            text: "\nToplam Ücret: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renkTemp,
-                                            ),
-                                          ),
-                                        if (!widget.kullanici.musteri)
-                                          TextSpan(
-                                            text:
-                                                cagrikaydi.toplamUcret > 0
-                                                    ? "${cagrikaydi.toplamUcret.toUcret()} TL"
-                                                    : "-",
-                                            style: TextStyle(color: renkTemp),
-                                          ),
-                                      ],
+                        Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await cagriKayitlariniGetir();
+                            },
+                            child: ListView.builder(
+                              itemCount: cagriKayitlari!.length,
+                              controller: scrollController,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                CagriKaydiModel cagrikaydi =
+                                    cagriKayitlari![index];
+                                Cihaz? cihaz = cagrikaydi.cihazBilgileri;
+                                String renk =
+                                    cihaz != null
+                                        ? cihaz.guncelDurumRenk
+                                        : "bg-warning";
+                                debugPrint("Guncel Durum Renk $renk");
+                                Color? renkTemp = Islemler.yaziRengi(renk);
+                                return SectionCard(
+                                  backgroundColor: Islemler.arkaRenk(renk),
+                                  darkTheme: false,
+                                  children: [
+                                    InfoTileList(
+                                      label: "Çağrı Kodu",
+                                      value: cagrikaydi.id.toString(),
+                                      textColor: renkTemp,
                                     ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (!widget.kullanici.musteri)
-                                        Wrap(
-                                          children: [
-                                            DefaultButton(
-                                              onPressed: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder:
-                                                        (context) =>
-                                                            CagriKaydiDetaySayfasi(
-                                                              kullanici:
-                                                                  widget
-                                                                      .kullanici,
-                                                              id: cagrikaydi.id,
-                                                            ),
-                                                  ),
-                                                );
-                                              },
-                                              text: "Detaylar",
-                                            ),
-                                            SizedBox(width: 5),
-                                            if (cihaz != null)
+                                    if (!widget.kullanici.musteri)
+                                      InfoTileList(
+                                        label: "Müşteri",
+                                        value:
+                                            "${cagrikaydi.bolge} ${cagrikaydi.birim}",
+                                        textColor: renkTemp,
+                                      ),
+                                    if (cihaz != null)
+                                      InfoTileList(
+                                        label: "Servis No",
+                                        value: cihaz.servisNo.toString(),
+                                        textColor: renkTemp,
+                                      ),
+                                    InfoTileList(
+                                      label: "Cihaz Türü",
+                                      value:
+                                          cihaz != null
+                                              ? cihaz.cihazTuru
+                                              : cagrikaydi.cihazTuru,
+                                      textColor: renkTemp,
+                                    ),
+                                    InfoTileList(
+                                      label: "Cihaz Marka - Model",
+                                      value:
+                                          cihaz != null
+                                              ? "${cihaz.cihaz}${cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : ""}"
+                                              : "${cagrikaydi.cihaz}${cagrikaydi.cihazModeli.isNotEmpty ? " ${cagrikaydi.cihazModeli}" : ""}",
+                                      textColor: renkTemp,
+                                    ),
+                                    InfoTileList(
+                                      label: "Kayıt Tarihi",
+                                      value: Islemler.tarihGoruntule(
+                                        cagrikaydi.tarih,
+                                        Islemler.tarihSQLFormat,
+                                        Islemler.tarihFormat,
+                                      ),
+                                      textColor: renkTemp,
+                                    ),
+                                    InfoTileList(
+                                      label: "Durum",
+                                      value:
+                                          cihaz != null
+                                              ? cihaz.guncelDurumText.toString()
+                                              : "İşlem Bekleniyor",
+                                      textColor: renkTemp,
+                                    ),
+
+                                    if (!widget.kullanici.musteri)
+                                      InfoTileList(
+                                        label: "Toplam Ücret",
+                                        value:
+                                            cagrikaydi.toplamUcret > 0
+                                                ? "${cagrikaydi.toplamUcret.toUcret()} TL"
+                                                : "-",
+                                        textColor: renkTemp,
+                                      ),
+
+                                    Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.start,
+                                      alignment: WrapAlignment.start,
+                                      children: [
+                                        if (widget.kullanici.musteri)
+                                          Wrap(
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.end,
+                                            children: [
                                               DefaultButton(
-                                                background: Islemler.arkaRenk(
-                                                  "bg-success",
-                                                  alpha: 1,
-                                                ),
                                                 onPressed: () {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                       builder:
                                                           (
                                                             context,
-                                                          ) => DetaylarSayfasi(
+                                                          ) => CagriKaydiDetaySayfasi(
                                                             kullanici:
                                                                 widget
                                                                     .kullanici,
-                                                            no:
-                                                                cagrikaydi
-                                                                    .cihazBilgileri!
-                                                                    .servisNo,
-                                                            cihazlariYenile:
-                                                                () async {
-                                                                  await cagriKayitlariniGetir();
-                                                                },
+                                                            id: cagrikaydi.id,
                                                           ),
                                                     ),
                                                   );
                                                 },
-                                                text:
-                                                    "Servis Kaydını Görüntüle",
+                                                text: "Detaylar",
                                               ),
-                                            if (cihaz == null)
-                                              DefaultButton(
-                                                background: Islemler.arkaRenk(
-                                                  "bg-success",
-                                                  alpha: 1,
-                                                ),
-                                                onPressed: () {
-                                                  Cihaz cihaz = Cihaz.create(
-                                                    kullID: cagrikaydi.kullID,
-                                                    musteriAdi:
-                                                        "${cagrikaydi.bolge}${cagrikaydi.birim.isNotEmpty ? " ${cagrikaydi.birim}" : ""}",
-                                                    telefonNumarasi:
-                                                        cagrikaydi
-                                                            .telefonNumarasi,
-                                                    cagriID: cagrikaydi.id,
-                                                    cihazTuruVal:
-                                                        cagrikaydi.cihazTuruVal,
-                                                    cihazTuru:
-                                                        cagrikaydi.cihazTuru,
-                                                    cihaz: cagrikaydi.cihaz,
-                                                    cihazModeli:
-                                                        cagrikaydi.cihazModeli,
-                                                    seriNo: cagrikaydi.seriNo,
-                                                    arizaAciklamasi:
-                                                        cagrikaydi
-                                                            .arizaAciklamasi,
-                                                  );
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder:
-                                                          (
-                                                            context,
-                                                          ) => YeniCihazSayfasi(
-                                                            initialCihaz: cihaz,
-                                                            cihazlariYenile:
-                                                                () async {
-                                                                  await cagriKayitlariniGetir();
-                                                                },
-                                                          ),
-                                                    ),
-                                                  );
-                                                },
-                                                text: "Kayıt Aç",
-                                              ),
-                                            /*SizedBox(width: 5),
-                                            DefaultButton(
-                                              background: Islemler.arkaRenk(
-                                                "bg-info",
-                                                alpha: 1,
-                                              ),
-                                              onPressed: () {},
-                                              text: "Düzenle",
-                                            ),*/
-                                            SizedBox(width: 5),
-                                            DefaultButton(
-                                              background: Islemler.arkaRenk(
-                                                "bg-danger",
-                                                alpha: 1,
-                                              ),
-                                              onPressed: () async {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                        "Çağrı Kaydını Sil",
-                                                      ),
-                                                      content: Text(
-                                                        "${cagrikaydi.id} kodlu çağrı kaydını silmek istediğinize emin misiniz?",
-                                                      ),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.pop(
-                                                              context,
-                                                            );
-                                                            _yukleniyorGoster();
-                                                            bool sonuc =
-                                                                await BiltekPost.cagriKaydiSil(
-                                                                  id:
-                                                                      cagrikaydi
-                                                                          .id,
-                                                                );
-                                                            if (sonuc) {
-                                                              await cagriKayitlariniGetir();
-                                                              _yukleniyorGizle();
-                                                            } else {
-                                                              _yukleniyorGizle();
-                                                              if (context
-                                                                  .mounted) {
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (
-                                                                        context,
-                                                                      ) => AlertDialog(
-                                                                        title: Text(
-                                                                          "Silinemedi",
-                                                                        ),
-                                                                        content:
-                                                                            Text(
-                                                                              "Çağrı kaydı silinirken bir hata oluştu",
-                                                                            ),
-                                                                        actions: [
-                                                                          TextButton(
-                                                                            onPressed: () {
-                                                                              Navigator.pop(
-                                                                                context,
-                                                                              );
-                                                                            },
-                                                                            child: Text(
-                                                                              "Tamam",
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                );
-                                                              }
-                                                            }
-                                                          },
-                                                          child: Text(
-                                                            "Evet",
-                                                            style: TextStyle(
-                                                              color: Colors.red,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                              context,
-                                                            );
-                                                          },
-                                                          child: Text("Hayır"),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              text: "Sil",
-                                            ),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                  trailing:
-                                      widget.kullanici.musteri
-                                          ? DefaultButton(
+                                            ],
+                                          ),
+                                        if (!widget.kullanici.musteri)
+                                          DefaultButton(
                                             onPressed: () {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
@@ -590,17 +358,192 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                               );
                                             },
                                             text: "Detaylar",
-                                          )
-                                          : null,
-                                ),
-                              ),
-                            );
-                          },
+                                          ),
+                                        if (!widget.kullanici.musteri)
+                                          SizedBox(width: 5),
+                                        if (cihaz != null &&
+                                            !widget.kullanici.musteri)
+                                          DefaultButton(
+                                            background: Islemler.arkaRenk(
+                                              "bg-success",
+                                              alpha: 1,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (
+                                                        context,
+                                                      ) => DetaylarSayfasi(
+                                                        kullanici:
+                                                            widget.kullanici,
+                                                        no:
+                                                            cagrikaydi
+                                                                .cihazBilgileri!
+                                                                .servisNo,
+                                                        cihazlariYenile: () async {
+                                                          await cagriKayitlariniGetir();
+                                                        },
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            text: "Servis Kaydını Görüntüle",
+                                          ),
+                                        if (cihaz == null &&
+                                            !widget.kullanici.musteri)
+                                          DefaultButton(
+                                            background: Islemler.arkaRenk(
+                                              "bg-success",
+                                              alpha: 1,
+                                            ),
+                                            onPressed: () {
+                                              Cihaz cihaz = Cihaz.create(
+                                                kullID: cagrikaydi.kullID,
+                                                musteriAdi:
+                                                    "${cagrikaydi.bolge}${cagrikaydi.birim.isNotEmpty ? " ${cagrikaydi.birim}" : ""}",
+                                                telefonNumarasi:
+                                                    cagrikaydi.telefonNumarasi,
+                                                cagriID: cagrikaydi.id,
+                                                cihazTuruVal:
+                                                    cagrikaydi.cihazTuruVal,
+                                                cihazTuru: cagrikaydi.cihazTuru,
+                                                cihaz: cagrikaydi.cihaz,
+                                                cihazModeli:
+                                                    cagrikaydi.cihazModeli,
+                                                seriNo: cagrikaydi.seriNo,
+                                                arizaAciklamasi:
+                                                    cagrikaydi.arizaAciklamasi,
+                                              );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (
+                                                        context,
+                                                      ) => YeniCihazSayfasi(
+                                                        initialCihaz: cihaz,
+                                                        cihazlariYenile: () async {
+                                                          await cagriKayitlariniGetir();
+                                                        },
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            text: "Kayıt Aç",
+                                          ),
+                                        /*SizedBox(width: 5),
+                                                DefaultButton(
+                                                  background: Islemler.arkaRenk(
+                                                    "bg-info",
+                                                    alpha: 1,
+                                                  ),
+                                                  onPressed: () {},
+                                                  text: "Düzenle",
+                                                ),*/
+                                        if (!widget.kullanici.musteri)
+                                          SizedBox(width: 5),
+                                        if (!widget.kullanici.musteri)
+                                          DefaultButton(
+                                            background: Islemler.arkaRenk(
+                                              "bg-danger",
+                                              alpha: 1,
+                                            ),
+                                            onPressed: () async {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      "Çağrı Kaydını Sil",
+                                                    ),
+                                                    content: Text(
+                                                      "${cagrikaydi.id} kodlu çağrı kaydını silmek istediğinize emin misiniz?",
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          Navigator.pop(
+                                                            context,
+                                                          );
+                                                          _yukleniyorGoster();
+                                                          bool sonuc =
+                                                              await BiltekPost.cagriKaydiSil(
+                                                                id:
+                                                                    cagrikaydi
+                                                                        .id,
+                                                              );
+                                                          if (sonuc) {
+                                                            await cagriKayitlariniGetir();
+                                                            _yukleniyorGizle();
+                                                          } else {
+                                                            _yukleniyorGizle();
+                                                            if (context
+                                                                .mounted) {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (
+                                                                      context,
+                                                                    ) => AlertDialog(
+                                                                      title: Text(
+                                                                        "Silinemedi",
+                                                                      ),
+                                                                      content: Text(
+                                                                        "Çağrı kaydı silinirken bir hata oluştu",
+                                                                      ),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed: () {
+                                                                            Navigator.pop(
+                                                                              context,
+                                                                            );
+                                                                          },
+                                                                          child: Text(
+                                                                            "Tamam",
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                              );
+                                                            }
+                                                          }
+                                                        },
+                                                        child: Text(
+                                                          "Evet",
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                            context,
+                                                          );
+                                                        },
+                                                        child: Text("Hayır"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            text: "Sil",
+                                          ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+          ),
+        ),
       ),
     );
   }

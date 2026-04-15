@@ -20,29 +20,31 @@ void showSelector<T>(
     context: context,
     constraints: BoxConstraints(minWidth: double.infinity),
     builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (int i = 0; i < items.length; i++)
-              ListTile(
-                title: Text(items[i].text),
-                leading: RadioGroup(
-                  groupValue: currentValue,
-                  onChanged: (val) {
-                    onSelect?.call(val);
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (int i = 0; i < items.length; i++)
+                ListTile(
+                  title: Text(items[i].text),
+                  leading: RadioGroup(
+                    groupValue: currentValue,
+                    onChanged: (val) {
+                      onSelect?.call(val);
+                    },
+                    child: Radio(value: items[i].value),
+                  ),
+                  onTap: () {
+                    currentValue = items[i].value;
+                    onSelect?.call(items[i].value);
                   },
-                  child: Radio(value: items[i].value),
                 ),
-                onTap: () {
-                  currentValue = items[i].value;
-                  onSelect?.call(items[i].value);
-                },
-              ),
-          ],
+            ],
+          ),
         ),
       );
     },
@@ -75,61 +77,63 @@ class SelectorCheck extends StatefulWidget {
 class _SelectorCheckState<T> extends State<SelectorCheck> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (int i = 0; i < widget.items.length; i++)
-                    ListTile(
-                      title: Text(widget.items[i].text),
-                      leading: Checkbox(
-                        value: widget.items[i].value,
-                        onChanged: (val) {
-                          if (val == null) {
-                            return;
-                          }
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (int i = 0; i < widget.items.length; i++)
+                      ListTile(
+                        title: Text(widget.items[i].text),
+                        leading: Checkbox(
+                          value: widget.items[i].value,
+                          onChanged: (val) {
+                            if (val == null) {
+                              return;
+                            }
+                            setState(() {
+                              widget.items[i].value = val;
+                            });
+                          },
+                        ),
+                        onTap: () {
                           setState(() {
-                            widget.items[i].value = val;
+                            widget.items[i].value = !widget.items[i].value;
                           });
                         },
                       ),
-                      onTap: () {
-                        setState(() {
-                          widget.items[i].value = !widget.items[i].value;
-                        });
-                      },
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("İptal"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  widget.onSaveItems?.call(widget.items);
-                },
-                child: Text("Kaydet"),
-              ),
-            ],
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("İptal"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    widget.onSaveItems?.call(widget.items);
+                  },
+                  child: Text("Kaydet"),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

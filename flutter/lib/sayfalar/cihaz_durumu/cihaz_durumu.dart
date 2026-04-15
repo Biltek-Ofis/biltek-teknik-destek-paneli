@@ -15,7 +15,6 @@ class CihazDurumu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Cihaz Durumu")),
       resizeToAvoidBottomInset: false,
-
       body: SafeArea(
         child: Consumer<MyNotifier>(
           builder: (context, MyNotifier myNotifier, child) {

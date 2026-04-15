@@ -42,116 +42,123 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Ayarlar")),
-      body: Consumer<MyNotifier>(
-        builder: (context, MyNotifier myNotifier, child) {
-          return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-              children: [
-                /*ListTile(
-                  title: Text("Barkod Okuyucu Ayarları"),
-                  subtitle: barkodOkuyucu != null
-                      ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
-                      : null,
-                  subtitleTextStyle: TextStyle(
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.color
-                          ?.withAlpha(200)),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => BarkodOkuyucuAyarlari(
-                          onBOKaydet: (durum, elle) {
-                            barkodOkuyucuAyarlariDurumu(
-                              durum,
-                              elle,
-                              kaydedildi: () async {
-                                await barkodOkuyucuYenile();
-                              },
-                              pcYenile: widget.pcYenile,
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),*/
-                BiltekListTile(
-                  title: "Tema",
-                  subtitle:
-                      myNotifier.isDark == null
-                          ? "Sistem Varsayılanı"
-                          : (myNotifier.isDark == true
-                              ? "Karanlık"
-                              : "Aydınlık"),
-                  onTap: () {
-                    showSelector<bool?>(
-                      context,
-                      items: [
-                        SelectorItem(text: "Sistem Varsayılanı", value: null),
-                        SelectorItem(text: "Aydınlık", value: false),
-                        SelectorItem(text: "Karanlık", value: true),
-                      ],
-                      currentValue: myNotifier.isDark,
-                      onSelect: (value) {
-                        myNotifier.isDark = value;
-                      },
-                    );
-                  },
-                ),
-                if (!widget.kullanici.musteri)
-                  BiltekListTile(
-                    title: "Bildirimler",
-                    subtitle: "Bildirim ayarlarınızı özelleştirin.",
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Consumer<MyNotifier>(
+          builder: (context, MyNotifier myNotifier, child) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ListView(
+                children: [
+                  /*ListTile(
+                    title: Text("Barkod Okuyucu Ayarları"),
+                    subtitle: barkodOkuyucu != null
+                        ? Text("${barkodOkuyucu!.ip}:${barkodOkuyucu!.port}")
+                        : null,
+                    subtitleTextStyle: TextStyle(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.color
+                            ?.withAlpha(200)),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  BildirimAyarlari(kullanici: widget.kullanici),
+                          builder: (context) => BarkodOkuyucuAyarlari(
+                            onBOKaydet: (durum, elle) {
+                              barkodOkuyucuAyarlariDurumu(
+                                durum,
+                                elle,
+                                kaydedildi: () async {
+                                  await barkodOkuyucuYenile();
+                                },
+                                pcYenile: widget.pcYenile,
+                              );
+                            },
+                          ),
                         ),
                       );
                     },
+                  ),*/
+                  BiltekListTile(
+                    title: "Tema",
+                    subtitle:
+                        myNotifier.isDark == null
+                            ? "Sistem Varsayılanı"
+                            : (myNotifier.isDark == true
+                                ? "Karanlık"
+                                : "Aydınlık"),
+                    onTap: () {
+                      showSelector<bool?>(
+                        context,
+                        items: [
+                          SelectorItem(text: "Sistem Varsayılanı", value: null),
+                          SelectorItem(text: "Aydınlık", value: false),
+                          SelectorItem(text: "Karanlık", value: true),
+                        ],
+                        currentValue: myNotifier.isDark,
+                        onSelect: (value) {
+                          myNotifier.isDark = value;
+                        },
+                      );
+                    },
                   ),
-                BiltekListTile(
-                  leading: Icon(CupertinoIcons.qrcode),
-                  title: "QR ile Hızlı Giriş",
-                  onTap: () async {
-                    await barkodTara(
-                      context,
-                      kullanici: widget.kullanici,
-                      cihazlariYenile: () {},
-                      pcYenile: () {},
-                      sadeceGiris: true,
-                    );
-                  },
-                ),
-                BiltekListTile(
-                  leading: Icon(CupertinoIcons.square_arrow_left),
-                  title: "Çıkış Yap",
-                  onTap: () async {
-                    NavigatorState navigatorState = Navigator.of(context);
-                    await SharedPreference.remove(SharedPreference.authString);
-                    String? fcmToken = await SharedPreference.getString(
-                      SharedPreference.fcmTokenString,
-                    );
-                    await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
-                    navigatorState.pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                GirisSayfasi(spKullanici: myNotifier.kullanici),
-                      ),
-                      (route) => false,
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+                  if (!widget.kullanici.musteri)
+                    BiltekListTile(
+                      title: "Bildirimler",
+                      subtitle: "Bildirim ayarlarınızı özelleştirin.",
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (context) => BildirimAyarlari(
+                                  kullanici: widget.kullanici,
+                                ),
+                          ),
+                        );
+                      },
+                    ),
+                  BiltekListTile(
+                    leading: Icon(CupertinoIcons.qrcode),
+                    title: "QR ile Hızlı Giriş",
+                    onTap: () async {
+                      await barkodTara(
+                        context,
+                        kullanici: widget.kullanici,
+                        cihazlariYenile: () {},
+                        pcYenile: () {},
+                        sadeceGiris: true,
+                      );
+                    },
+                  ),
+                  BiltekListTile(
+                    leading: Icon(CupertinoIcons.square_arrow_left),
+                    title: "Çıkış Yap",
+                    onTap: () async {
+                      NavigatorState navigatorState = Navigator.of(context);
+                      await SharedPreference.remove(
+                        SharedPreference.authString,
+                      );
+                      String? fcmToken = await SharedPreference.getString(
+                        SharedPreference.fcmTokenString,
+                      );
+                      await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+                      navigatorState.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder:
+                              (context) => GirisSayfasi(
+                                spKullanici: myNotifier.kullanici,
+                              ),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

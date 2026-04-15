@@ -10,6 +10,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:universal_io/io.dart';
 
 import '../models/cihaz.dart';
+import '../widgets/dizayn.dart';
 
 class Islemler {
   static Color? arkaRenk(String renkClass, {double? alpha}) {
@@ -211,11 +212,7 @@ class _IslemlerListeState extends State<_IslemlerListe> {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsetsGeometry padding = EdgeInsets.all(1);
-    TableBorder tableBorder = TableBorder.all(
-      color: Colors.yellow.withAlpha(100),
-    );
-    List<TableRow> fiyatlarTemp = [];
+    List<Widget> fiyatlarTemp = [];
     double maliyetToplamTemp = 0;
     double kdvsizToplamTemp = 0;
     double kdvToplamTemp = 0;
@@ -228,41 +225,62 @@ class _IslemlerListeState extends State<_IslemlerListe> {
         maliyetToplamTemp += islem.maliyet;
         kdvsizToplamTemp += kdvsiz;
         kdvToplamTemp += kdv;
-        fiyatlarTemp.add(
-          TableRow(
+        Widget item = Container(
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.topLeft,
+          child: Column(
             children: [
-              Container(padding: padding, child: Text(islem.ad)),
-              Container(padding: padding, child: Text(islem.miktar.toString())),
+              if (fiyatlarTemp.isEmpty)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Divider(),
+                ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Malzeme/İşçilik: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(islem.ad),
+                  ],
+                ),
+              ),
+              buildRow("Miktar", islem.miktar.toString()),
               if (maliyetGoster && widget.maliyetGosterButon)
-                Container(padding: padding, child: Text("${islem.maliyet} TL")),
-              Container(
-                padding: padding,
-                child: Text("${islem.birimFiyati} TL"),
+                buildRow("Maliyet", "${islem.maliyet} TL"),
+              buildRow("Birim Fiyatı", "${islem.birimFiyati} TL"),
+              buildRow("KDV", "${islem.kdv} ($kdv TL)"),
+              buildRow("Tutar (KDV'siz)", "$kdvsiz TL"),
+              buildRow("Toplam", "$kdvli TL"),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Divider(),
               ),
-              Container(
-                padding: padding,
-                child: Text("${islem.kdv} ($kdv TL)"),
-              ),
-              Container(padding: padding, child: Text("$kdvsiz TL")),
-              Container(padding: padding, child: Text("$kdvli TL")),
             ],
           ),
         );
+        fiyatlarTemp.add(item);
       }
     }
 
     double maliyetToplam = maliyetToplamTemp;
     double kdvsizToplam = kdvsizToplamTemp;
     double kdvToplam = kdvToplamTemp;
-    List<TableRow> fiyatlar = fiyatlarTemp;
-    return Builder(
-      builder: (context) {
-        EdgeInsetsGeometry padding = EdgeInsets.all(1);
-        double genelToplam = kdvsizToplam + kdvToplam;
-        double kar = kdvsizToplam - maliyetToplam;
-        return Column(
+
+    double genelToplam = kdvsizToplam + kdvToplam;
+    //double kar = kdvsizToplam - maliyetToplam;
+    List<Widget> fiyatlar = fiyatlarTemp;
+    return Column(
+      children: [
+        SectionCard(
+          icon: Icons.price_check,
+          title: "Yapılan İşlemler",
           children: [
-            if (widget.maliyetGosterButon)
+            if (fiyatlar.isNotEmpty && widget.maliyetGosterButon)
               Container(
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.centerLeft,
@@ -279,134 +297,39 @@ class _IslemlerListeState extends State<_IslemlerListe> {
                   ),
                 ),
               ),
-            Table(
-              border: tableBorder,
-              children: [
-                TableRow(
-                  children: [
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "Malzeme/İşçilik",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "Miktar",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    if (maliyetGoster)
-                      Container(
-                        padding: padding,
-                        child: Text(
-                          "Maliyet",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "Birim Fiyatı",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "KDV",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "Tutar (KDV'siz)",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: padding,
-                      child: Text(
-                        "Toplam",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
 
-                ...fiyatlar,
-              ],
-            ),
+            if (fiyatlar.isNotEmpty) ...fiyatlar,
             if (fiyatlar.isEmpty)
-              Container(
-                padding: EdgeInsets.only(top: 5),
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  "Şuanda yapılmış bir işlem yok.",
-                  textAlign: TextAlign.center,
-                ),
+              Text(
+                "Şuanda yapılmış bir işlem yok.",
+                textAlign: TextAlign.center,
               ),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Table(
-                border: tableBorder,
-                children: [
-                  if (maliyetGoster)
-                    TableRow(
-                      children: [
-                        Text(
-                          "Maliyet:",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text("${maliyetToplam.toStringAsFixed(2)} TL"),
-                      ],
-                    ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "Toplam:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text("${kdvsizToplam.toStringAsFixed(2)} TL"),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "KDV:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text("${kdvToplam.toStringAsFixed(2)} TL"),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "Genel Toplam:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text("${genelToplam.toStringAsFixed(2)} TL"),
-                    ],
-                  ),
-                  if (maliyetGoster)
-                    TableRow(
-                      children: [
-                        Text(
-                          "Kar:",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text("${kar.toStringAsFixed(2)} TL"),
-                      ],
-                    ),
-                ],
-              ),
-            ),
           ],
-        );
-      },
+        ),
+        SectionCard(
+          icon: Icons.price_change,
+          title: "Toplam Tutarlar",
+          children: [
+            if (maliyetGoster && widget.maliyetGosterButon)
+              buildRow("Maliyet", "${maliyetToplam.toStringAsFixed(2)} TL"),
+            buildRow("Toplam", "${kdvsizToplam.toStringAsFixed(2)} TL"),
+            buildRow("KDV", "${kdvToplam.toStringAsFixed(2)} TL"),
+            buildRow("Genel Toplam", "${genelToplam.toStringAsFixed(2)} TL"),
+            //if (maliyetGoster && widget.maliyetGosterButon)
+            //  buildRow("Kar", "${kar.toStringAsFixed(2)} TL"),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildRow(String title, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("$title: ", style: TextStyle(fontWeight: FontWeight.bold)),
+        Expanded(child: Text(value)),
+      ],
     );
   }
 }

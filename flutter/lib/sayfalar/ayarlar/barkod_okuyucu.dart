@@ -93,40 +93,43 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
           ),
         ],
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BiltekTextField(
-                controller: ipController,
-                label: "IP",
-                currentFocus: ipFocus,
-                nextFocus: portFocus,
-              ),
-              BiltekTextField(
-                controller: portController,
-                label: "PORT",
-                currentFocus: portFocus,
-                keyboardType: TextInputType.number,
-                onSubmitted: (value) async {
-                  await kaydet(true);
-                },
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  DefaultButton(
-                    onPressed: () async {
-                      await kaydet(true);
-                    },
-                    text: "Kaydet",
-                  ),
-                ],
-              ),
-            ],
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                BiltekTextField(
+                  controller: ipController,
+                  label: "IP",
+                  currentFocus: ipFocus,
+                  nextFocus: portFocus,
+                ),
+                BiltekTextField(
+                  controller: portController,
+                  label: "PORT",
+                  currentFocus: portFocus,
+                  keyboardType: TextInputType.number,
+                  onSubmitted: (value) async {
+                    await kaydet(true);
+                  },
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    DefaultButton(
+                      onPressed: () async {
+                        await kaydet(true);
+                      },
+                      text: "Kaydet",
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

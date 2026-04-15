@@ -50,59 +50,61 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-              widget.versiyon == null ? "Versiyon Ekle" : "Versiyonu Düzenle"),
+            widget.versiyon == null ? "Versiyon Ekle" : "Versiyonu Düzenle",
+          ),
         ),
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              children: [
-                BiltekTextField(
-                  controller: versiyonController,
-                  label: "Versiyon *",
-                  errorText: versiyonHata,
-                  onChanged: (value) {
-                    setState(() {
-                      girildi = true;
-                      versiyonHata = null;
-                    });
-                  },
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(),
-                          DefaultButton(
-                            width: MediaQuery.of(context).size.width / 3,
-                            background: Islemler.arkaRenk("bg-primary"),
-                            onPressed: () async {
-                              await _duzenle();
-                            },
-                            text: widget.versiyon == null ? "Ekle" : "Kaydet",
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          DefaultButton(
-                            width: MediaQuery.of(context).size.width / 3,
-                            background: Islemler.arkaRenk("bg-secondary"),
-                            onPressed: () {
-                              cikisKontrol();
-                            },
-                            text: "Kapat",
-                          ),
-                        ],
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  BiltekTextField(
+                    controller: versiyonController,
+                    label: "Versiyon *",
+                    errorText: versiyonHata,
+                    onChanged: (value) {
+                      setState(() {
+                        girildi = true;
+                        versiyonHata = null;
+                      });
+                    },
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(),
+                            DefaultButton(
+                              width: MediaQuery.of(context).size.width / 3,
+                              background: Islemler.arkaRenk("bg-primary"),
+                              onPressed: () async {
+                                await _duzenle();
+                              },
+                              text: widget.versiyon == null ? "Ekle" : "Kaydet",
+                            ),
+                            SizedBox(width: 10),
+                            DefaultButton(
+                              width: MediaQuery.of(context).size.width / 3,
+                              background: Islemler.arkaRenk("bg-secondary"),
+                              onPressed: () {
+                                cikisKontrol();
+                              },
+                              text: "Kapat",
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
-                )
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -139,7 +141,8 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
           return AlertDialog(
             title: Text("Değişiklikler Kaydedilmedi"),
             content: Text(
-                "Kaydedilmeyen değişiklikleriniz var. Çıkmak istediğinize emin misiniz?"),
+              "Kaydedilmeyen değişiklikleriniz var. Çıkmak istediğinize emin misiniz?",
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -147,9 +150,7 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
                 },
                 child: Text(
                   "İptal Et ve Çık",
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
               TextButton(
@@ -182,9 +183,7 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
     if (versiyon.isNotEmpty) {
       yukleniyor(context);
 
-      Map<String, String> postData = {
-        "versiyon": versiyon,
-      };
+      Map<String, String> postData = {"versiyon": versiyon};
       bool? duzenle;
       if (widget.versiyon != null) {
         duzenle = await BiltekPost.versiyonDuzenle(
@@ -192,9 +191,7 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
           postData: postData,
         );
       } else {
-        duzenle = await BiltekPost.versiyonEkle(
-          postData: postData,
-        );
+        duzenle = await BiltekPost.versiyonEkle(postData: postData);
       }
       if (duzenle) {
         widget.versiyonlariYenile.call();

@@ -68,6 +68,7 @@ class _WebviewPageState extends State<WebviewPage> {
           ),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [

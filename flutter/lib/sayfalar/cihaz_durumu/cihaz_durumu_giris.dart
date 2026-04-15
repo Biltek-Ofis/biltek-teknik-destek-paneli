@@ -40,50 +40,53 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Cihaz Durumu Görüntüle")),
-      body: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(10),
-        child: SizedBox(
-          width:
-              MediaQuery.of(context).size.width > 400
-                  ? 400
-                  : MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(BiltekAssets.logo),
-                TextField(
-                  controller: takipNoController,
-                  focusNode: takipNoFocus,
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (val) async {
-                    await _ara();
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      cihazDurumuError = null;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    label: Text("Takip Numarası"),
-                    errorText: cihazDurumuError,
-                  ),
-                ),
-                SizedBox(height: 10),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: DefaultButton(
-                    onPressed: () async {
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(10),
+          child: SizedBox(
+            width:
+                MediaQuery.of(context).size.width > 400
+                    ? 400
+                    : MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.asset(BiltekAssets.logo),
+                  TextField(
+                    controller: takipNoController,
+                    focusNode: takipNoFocus,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (val) async {
                       await _ara();
                     },
-                    text: "Ara",
+                    onChanged: (value) {
+                      setState(() {
+                        cihazDurumuError = null;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      label: Text("Takip Numarası"),
+                      errorText: cihazDurumuError,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-              ],
+                  SizedBox(height: 10),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: DefaultButton(
+                      onPressed: () async {
+                        await _ara();
+                      },
+                      text: "Ara",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ),

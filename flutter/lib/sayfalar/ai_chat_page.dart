@@ -155,125 +155,130 @@ class _AIChatPageState extends State<AIChatPage> {
             ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount:
-                    botYaziyor ? aiChatList.length + 1 : aiChatList.length,
-                itemBuilder: (context, index) {
-                  if (index == aiChatList.length && botYaziyor) {
-                    return mesaj(
-                      AiChatModel(
-                        id: "",
-                        mesaj: "Yazıyor...",
-                        tarih: null,
-                        isUser: false,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount:
+                      botYaziyor ? aiChatList.length + 1 : aiChatList.length,
+                  itemBuilder: (context, index) {
+                    if (index == aiChatList.length && botYaziyor) {
+                      return mesaj(
+                        AiChatModel(
+                          id: "",
+                          mesaj: "Yazıyor...",
+                          tarih: null,
+                          isUser: false,
+                        ),
+                        icon: const CircularProgressIndicator(),
+                      );
+                    }
+                    return mesaj(aiChatList[index]);
+                  },
+                ),
+              ),
+              Container(
+                height: 80,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: BiltekTextField(
+                        controller: mesajController,
+                        onChanged:
+                            (value) => setState(() {
+                              mesajError = null;
+                            }),
+                        onSubmitted: (message) async {
+                          await _mesajControl(message);
+                        },
+                        errorText: mesajError,
+                        hint: 'Mesajınızı yazın',
                       ),
-                      icon: const CircularProgressIndicator(),
-                    );
-                  }
-                  return mesaj(aiChatList[index]);
-                },
-              ),
-            ),
-            Container(
-              height: 80,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: BiltekTextField(
-                      controller: mesajController,
-                      onChanged:
-                          (value) => setState(() {
-                            mesajError = null;
-                          }),
-                      onSubmitted: (message) async {
-                        await _mesajControl(message);
-                      },
-                      errorText: mesajError,
-                      hint: 'Mesajınızı yazın',
                     ),
-                  ),
 
-                  if (sttAvailable)
+                    if (sttAvailable)
+                      InkWell(
+                        onTap:
+                            mesajReadOnly
+                                ? null
+                                : () async {
+                                  if (!dinliyor) {
+                                    speech.listen(
+                                      onResult: (result) {
+                                        debugPrint(
+                                          "SpeechToText Result: ${result.recognizedWords}",
+                                        );
+
+                                        _insertText(result.recognizedWords);
+                                        if (result.finalResult) {
+                                          setState(() {
+                                            dinliyor = false;
+                                          });
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    speech.stop();
+                                    speech.cancel();
+                                  }
+                                },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                            color: mesajReadOnly ? Colors.grey : Colors.blue,
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            dinliyor
+                                ? CupertinoIcons.mic
+                                : CupertinoIcons.mic_off,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    if (sttAvailable) SizedBox(width: 8),
                     InkWell(
                       onTap:
-                          mesajReadOnly
+                          mesajReadOnly || dinliyor
                               ? null
                               : () async {
-                                if (!dinliyor) {
-                                  speech.listen(
-                                    onResult: (result) {
-                                      debugPrint(
-                                        "SpeechToText Result: ${result.recognizedWords}",
-                                      );
-
-                                      _insertText(result.recognizedWords);
-                                      if (result.finalResult) {
-                                        setState(() {
-                                          dinliyor = false;
-                                        });
-                                      }
-                                    },
-                                  );
-                                } else {
-                                  speech.stop();
-                                  speech.cancel();
-                                }
+                                await _mesajControl(mesajController.text);
                               },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(100)),
-                          color: mesajReadOnly ? Colors.grey : Colors.blue,
+                          color:
+                              mesajReadOnly || dinliyor
+                                  ? Colors.grey
+                                  : Colors.blue,
                         ),
                         width: 40,
                         height: 40,
                         child: Icon(
-                          dinliyor
-                              ? CupertinoIcons.mic
-                              : CupertinoIcons.mic_off,
+                          CupertinoIcons.paperplane_fill,
                           color: Colors.white,
                           size: 20,
                         ),
                       ),
                     ),
-                  if (sttAvailable) SizedBox(width: 8),
-                  InkWell(
-                    onTap:
-                        mesajReadOnly || dinliyor
-                            ? null
-                            : () async {
-                              await _mesajControl(mesajController.text);
-                            },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
-                        color:
-                            mesajReadOnly || dinliyor
-                                ? Colors.grey
-                                : Colors.blue,
-                      ),
-                      width: 40,
-                      height: 40,
-                      child: Icon(
-                        CupertinoIcons.paperplane_fill,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
