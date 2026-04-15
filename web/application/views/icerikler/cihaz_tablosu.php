@@ -786,6 +786,8 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold"><span class="fw-bold">Arıza Açıklaması:</span></span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ArizaAciklamasi"></li>
               </ul>
+            </div>
+            <div class="col-12">
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Servis Türü:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="ServisTuru"></li>
@@ -794,8 +796,6 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Yedek Alınacak mı?:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="YedekDurumu"></li>
               </ul>
-            </div>
-            <div class="col-12">
               <!-- Yapılan İşlemler Göster -->
               <ul class="list-group list-group-horizontal">
                 <li class="list-group-item" style="width:100%;"><h3>Yapılan İşlemler</h3></li>
@@ -934,14 +934,6 @@ $(document).ready(function(){
                             <th class="align-middle">Teslim Alınanlar:</th>
                             <td class="align-middle">' . $this->load->view("ogeler/teslim_alinanlar", array("sifirla" => true), true) . '</td>
                         </tr>
-                        <tr>
-                            <th class="align-middle">Servis Türü:</th>
-                            <td class="align-middle">' . $this->load->view("ogeler/servis_turu", array("sifirla" => true), true) . '</td>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">Yedek Alınacak mı?:</th>
-                            <td class="align-middle">' . $this->load->view("ogeler/yedek", array("sifirla" => true), true) . '</td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -984,6 +976,14 @@ $(document).ready(function(){
                             <th class="align-middle" colspan="2">Fatura Durumu:</th>
                             <td id="fatura_durumu_td" class="align-middle" colspan="2">' . $this->load->view("ogeler/fatura_durumu", array("sifirla" => true), true) . '</td>
                             <td id="fis_no_td" class="align-middle" style="display:none;" colspan="0">' . $this->load->view("ogeler/fis_no", array("sifirla" => true), true) . '</td>
+                          </tr>
+                          <tr>
+                              <th class="align-middle" colspan="2">Servis Türü:</th>
+                              <td class="align-middle" colspan="2">' . $this->load->view("ogeler/servis_turu", array("sifirla" => true), true) . '</td>
+                          </tr>
+                          <tr>
+                              <th class="align-middle" colspan="2">Yedek Alınacak mı?:</th>
+                              <td class="align-middle" colspan="2">' . $this->load->view("ogeler/yedek", array("sifirla" => true), true) . '</td>
                           </tr>
                     </tbody>
                     </table>

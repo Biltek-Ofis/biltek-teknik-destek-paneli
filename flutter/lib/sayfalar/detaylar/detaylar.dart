@@ -490,6 +490,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             icon: CupertinoIcons.wrench_fill,
             title: "Servis Detayları",
             children: [
+              InfoTile(label: "Güncel Durum", value: cihaz!.guncelDurumText),
+              InfoTile(label: "Bildirim Tarihi", value: cihaz!.bildirimTarihi),
+              InfoTile(
+                label: "Sorumlu Personel",
+                value: cihaz!.sorumlu,
+                icon: CupertinoIcons.person_fill,
+              ),
               InfoTile(
                 label: "Servis Türü",
                 value: Islemler.servisTuru(cihaz!.servisTuru),
@@ -505,13 +512,6 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                         ? CupertinoIcons.checkmark_circle_fill
                         : CupertinoIcons.xmark_circle_fill,
                 iconColor: cihaz!.yedekDurumu == 1 ? Colors.green : Colors.red,
-              ),
-              InfoTile(label: "Güncel Durum", value: cihaz!.guncelDurumText),
-              InfoTile(label: "Bildirim Tarihi", value: cihaz!.bildirimTarihi),
-              InfoTile(
-                label: "Sorumlu Personel",
-                value: cihaz!.sorumlu,
-                icon: CupertinoIcons.person_fill,
               ),
               InfoTile(
                 label: "Yapılan İşlem",

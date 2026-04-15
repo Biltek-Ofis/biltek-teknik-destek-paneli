@@ -780,9 +780,16 @@ class Cihazlar_Model extends CI_Model
             "cihazdaki_hasar" => $this->input->post("cihazdaki_hasar"),
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
             "teslim_alinanlar" => $this->input->post("teslim_alinanlar"),
-            "servis_turu" => $this->input->post("servis_turu"),
-            "yedek_durumu" => $this->input->post("yedek_durumu"),
         );
+        
+        $servis_turu = $this->input->post("servis_turu");
+        if(isset($servis_turu)){
+            $veri["servis_turu"] = $servis_turu;
+        }
+        $yedek_durumu = $this->input->post("yedek_durumu");
+        if(isset($yedek_durumu)){
+            $veri["yedek_durumu"] = $yedek_durumu;
+        }
         $cagri_id = $this->input->post("cagri_id");
         if (isset($cagri_id)) {
             $veri["cagri_id"] = $cagri_id;

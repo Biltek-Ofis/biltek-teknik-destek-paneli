@@ -65,6 +65,7 @@ class Cihaz extends Varsayilancontroller
             $tahsilat_sekli = $this->input->post("tahsilat_sekli");
             $fatura_durumu = $this->input->post("fatura_durumu");
             $fis_no = $this->input->post("fis_no");
+
             $cihaz_verileri = array(
                 "yapilan_islem_aciklamasi" => $this->input->post("yapilan_islem_aciklamasi"),
                 "guncel_durum" => $guncel_durum,
@@ -72,6 +73,14 @@ class Cihaz extends Varsayilancontroller
                 "fatura_durumu" => $fatura_durumu,
                 "fis_no" => $fis_no
             );
+            $servis_turu = $this->input->post("servis_turu");
+            if(isset($servis_turu)){
+                $cihaz_verileri["servis_turu"] = $servis_turu;
+            }
+            $yedek_durumu = $this->input->post("yedek_durumu");
+            if(isset($yedek_durumu)){
+                $cihaz_verileri["yedek_durumu"] = $yedek_durumu;
+            }
             $notlar = $this->input->post("notlar");
             if (!isset($notlar)) {
                 $notlar = "";

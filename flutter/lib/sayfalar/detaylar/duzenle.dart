@@ -626,58 +626,6 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                             });
                                           },
                                         ),
-                                        BiltekSelect<int>(
-                                          title: "Servis Türü",
-                                          value: servisTuru,
-                                          items: [
-                                            for (
-                                              int i = 0;
-                                              i < Islemler.servisTurleri.length;
-                                              i++
-                                            )
-                                              DropdownMenuItem<int>(
-                                                value: i,
-                                                child: Text(
-                                                  i == 0
-                                                      ? "Belirtilmemiş"
-                                                      : Islemler
-                                                          .servisTurleri[i],
-                                                ),
-                                              ),
-                                          ],
-                                          onChanged: (value) {
-                                            setState(() {
-                                              servisTuru = value!;
-                                              girildi = true;
-                                            });
-                                          },
-                                        ),
-                                        BiltekSelect<int>(
-                                          title: "Yedek alınacak mı?",
-                                          value: yedekDurumu,
-                                          items: [
-                                            for (
-                                              int i = 0;
-                                              i < Islemler.evetHayirlar.length;
-                                              i++
-                                            )
-                                              DropdownMenuItem<int>(
-                                                value: i,
-                                                child: Text(
-                                                  i == 0
-                                                      ? "Belirtilmemiş"
-                                                      : Islemler
-                                                          .evetHayirlar[i],
-                                                ),
-                                              ),
-                                          ],
-                                          onChanged: (value) {
-                                            setState(() {
-                                              yedekDurumu = value!;
-                                              girildi = true;
-                                            });
-                                          },
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -851,6 +799,58 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                 ),
                                               ),
                                           ],
+                                        ),
+                                        BiltekSelect<int>(
+                                          title: "Servis Türü",
+                                          value: servisTuru,
+                                          items: [
+                                            for (
+                                              int i = 0;
+                                              i < Islemler.servisTurleri.length;
+                                              i++
+                                            )
+                                              DropdownMenuItem<int>(
+                                                value: i,
+                                                child: Text(
+                                                  i == 0
+                                                      ? "Belirtilmemiş"
+                                                      : Islemler
+                                                          .servisTurleri[i],
+                                                ),
+                                              ),
+                                          ],
+                                          onChanged: (value) {
+                                            setState(() {
+                                              servisTuru = value!;
+                                              girildi = true;
+                                            });
+                                          },
+                                        ),
+                                        BiltekSelect<int>(
+                                          title: "Yedek alınacak mı?",
+                                          value: yedekDurumu,
+                                          items: [
+                                            for (
+                                              int i = 0;
+                                              i < Islemler.evetHayirlar.length;
+                                              i++
+                                            )
+                                              DropdownMenuItem<int>(
+                                                value: i,
+                                                child: Text(
+                                                  i == 0
+                                                      ? "Belirtilmemiş"
+                                                      : Islemler
+                                                          .evetHayirlar[i],
+                                                ),
+                                              ),
+                                          ],
+                                          onChanged: (value) {
+                                            setState(() {
+                                              yedekDurumu = value!;
+                                              girildi = true;
+                                            });
+                                          },
                                         ),
                                         Text(
                                           "Yapılan İşlemler",
