@@ -1,7 +1,7 @@
 name: biltekteknikservis
 description: "Teknik servis uygulamasi"
 publish_to: 'none'
-version: 1.4.3+143
+version: 2.0.0+200
 
 environment:
   sdk: ^3.7.2
