@@ -30,5 +30,10 @@ if (isset($servis_turu_value) && $servis_turu_value == 4) {
     echo " selected";
 }
 echo '>' . $this->Islemler_Model->servisTuru(4) . '</option>
+        <option value="5"';
+if (isset($servis_turu_value) && $servis_turu_value == 5) {
+    echo " selected";
+}
+echo '>' . $this->Islemler_Model->servisTuru(5) . '</option>
     </select>
 </div>';

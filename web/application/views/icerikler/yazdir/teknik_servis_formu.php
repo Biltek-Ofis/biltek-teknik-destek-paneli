@@ -202,19 +202,24 @@ echo '</td>
                 
             </tr>
             <tr>
-                <td colspan="8">YEDEKLİ İŞLEM</td>
+                <td colspan="8">' . $this->Islemler_Model->servisTuru(5) . '</td>
                 <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
-if ($cihaz->yedek_durumu == 1) {
+if ($cihaz->servis_turu == 5) {
     echo '<i class="fas fa-check"></i>';
 }
 }
 echo '</td>
-                <td colspan="8">YEDEKSİZ İŞLEM</td>
+                <td colspan="8">YEDEK DURUMU</td>
                 <td colspan="2" class="text-center align-middle">';
 if($bilgileri_goster){
-if ($cihaz->yedek_durumu == 2) {
-    echo '<i class="fas fa-check"></i>';
+if ($cihaz->yedek_durumu == 1) {
+    echo 'Var';
+}
+else if ($cihaz->yedek_durumu == 2) {
+    echo 'Yok';
+}else{
+    echo 'Belirtilmedi';
 }
 }
 echo '</td>

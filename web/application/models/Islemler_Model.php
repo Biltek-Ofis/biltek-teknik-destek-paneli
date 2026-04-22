@@ -116,6 +116,8 @@ class Islemler_Model extends CI_Model
                 return "ÜCRETLİ BAKIM/ONARIM";
             case 4:
                 return "ÜCRETLİ ARIZA TESPİTİ";
+            case 5:
+                return "MAKİNE KURULUMU";
             default:
                 return "Belirtilmemiş";
         }

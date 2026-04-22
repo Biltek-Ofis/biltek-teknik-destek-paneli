@@ -106,6 +106,7 @@ class Islemler {
     "ANLAŞMALI BAKIM/ONARIM",
     "ÜCRETLİ BAKIM/ONARIM",
     "ÜCRETLİ ARIZA TESPİTİ",
+    "MAKİNE KURULUMU",
   ];
   static String servisTuru(int index) {
     return _listGetir(servisTurleri, index);
