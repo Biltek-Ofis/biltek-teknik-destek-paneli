@@ -12,18 +12,18 @@ echo '<div class="content-wrapper">';
 
 $this->load->view("inc/content_header", array(
     "contentHeader" => array(
-        "baslik"=> "Rapor",
-        "items"=> array(
+        "baslik" => "Rapor",
+        "items" => array(
             array(
-                "link"=> base_url(),
-                "text"=> "Anasayfa",
+                "link" => base_url(),
+                "text" => "Anasayfa",
             ),
             array(
-                "text"=> "Yonetim",
+                "text" => "Yonetim",
             ),
             array(
-                "active"=> TRUE,
-                "text"=> "Rapor",
+                "active" => TRUE,
+                "text" => "Rapor",
             ),
         ),
     ),
@@ -51,97 +51,116 @@ echo '<section class="content">
             var sayfaSayisiKonumu = "1";
             var ucretInput = "#ucret_goster";
             var ucretGoster = true;
+            function normalizeStr(str) {
+                return str
+                    .toLocaleUpperCase("tr-TR")
+                    .replace(/Ö/g, "O")
+                    .replace(/Ü/g, "U")
+                    .replace(/Ş/g, "S")
+                    .replace(/İ/g, "I")
+                    .replace(/Ğ/g, "G")
+                    .replace(/Ç/g, "C");
+            }
+
+            function filtrele(fonksiyon, sira){
+                var filterKey = tabloDiv + "_col_" + sira;
+
+                $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(function(fn) {
+                    return fn._filterKey !== filterKey;
+                });
+                var filterFn = function(settings, searchData, index, rowData, counter) {
+                    return fonksiyon(settings, searchData, index, rowData, counter);
+                };
+
+                filterFn._filterKey = filterKey;
+
+                $.fn.dataTable.ext.search.push(filterFn);
+            }
             function filtreText(input, sira){
-                $.fn.dataTable.ext.search.push(
-                    function( settings, searchData, index, rowData, counter ) {
-                        if (settings.nTable.id !== tabloDiv){
-                            return true;
-                        }
-                        var input_val = $(input).val().toLocaleUpperCase("tr-TR");
-                        var input_val_tablo = searchData[sira].toLocaleUpperCase("tr-TR").includes(input_val);
-                        var input_val_goster = (!input_val || (input_val && input_val_tablo))
-    
-                        if (input_val_goster)
-                        {
-                            return true;
-                        }
-                        return false;
+                filtrele(function(settings, searchData, index, rowData, counter){
+                    if (settings.nTable.id !== tabloDiv){
+                        return true;
                     }
-                );
+                    var input_val = $(input).val();
+                    var input_val_tablo = normalizeStr(searchData[sira]).includes(normalizeStr(input_val));
+                    var input_val_goster = (!input_val || (input_val && input_val_tablo))
+
+                    if (input_val_goster)
+                    {
+                        return true;
+                    }
+                    return false;
+                }, sira);
             }
             function filtreBirebir(input, sira){
-                $.fn.dataTable.ext.search.push(
-                    function( settings, searchData, index, rowData, counter ) {
-                        if (settings.nTable.id !== tabloDiv){
-                            return true;
-                        }
-                        var input_val = $(input).val().toLocaleUpperCase("tr-TR");
-                        var input_val_tablo = searchData[sira].toLocaleUpperCase("tr-TR") == input_val;
-                        var input_val_goster = (!input_val || (input_val && input_val_tablo))
-    
-                        if (input_val_goster)
-                        {
-                            return true;
-                        }
-                        return false;
+                filtrele(function(settings, searchData, index, rowData, counter){
+                    if (settings.nTable.id !== tabloDiv) {
+                        return true;
                     }
-                );
+
+                    var input_val = $(input).val().trim();
+                    var input_val_tablo = normalizeStr(searchData[sira].trim()) === normalizeStr(input_val);
+
+                    var input_val_goster = (!input_val || (input_val && input_val_tablo))
+
+                    if (input_val_goster)
+                    {
+                        return true;
+                    }
+                    return false;
+                }, sira);
             }
             function filtreStartsWith(input, sira){
-                $.fn.dataTable.ext.search.push(
-                    function( settings, searchData, index, rowData, counter ) {
-                        if (settings.nTable.id !== tabloDiv){
-                            return true;
-                        }
-                        var input_val = $(input).val()
-                        var input_val_tablo = searchData[sira].startsWith(input_val);
-                        var input_val_goster = (!input_val || (input_val && input_val_tablo))
-    
-                        if (input_val_goster)
-                        {
-                            return true;
-                        }
-                        return false;
+                filtrele(function(settings, searchData, index, rowData, counter){
+                    if (settings.nTable.id !== tabloDiv){
+                        return true;
                     }
-                );
+                    var input_val = $(input).val();
+                    var input_val_tablo = normalizeStr(searchData[sira]).startsWith(normalizeStr(input_val));
+                    var input_val_goster = (!input_val || (input_val && input_val_tablo))
+
+                    if (input_val_goster)
+                    {
+                        return true;
+                    }
+                    return false;
+                }, sira);
             }
             function filtreTarih(input1, input2, sira){
-                $.fn.dataTable.ext.search.push(
-                    function( settings, searchData, index, rowData, counter ) {
-                        if (settings.nTable.id !== tabloDiv){
-                            return true;
-                        }
-                        var min = girisTarBas.val();
-                        var max = girisTarBit.val();
-                        
-                        var date = new Date( searchData[5] );
-                        if(searchData[5].length > 0){
-                            var tarih = searchData[5].split(".");
-                            var gun = tarih[0];
-                            var ay = tarih[1];
-                            var yil = tarih[2].split(" ")[0];
-                            date = new Date(+yil, ay - 1, +gun); 
-                        }
-                        if(min !== null){
-                            min.setHours(0, 0, 0);
-                        }
-                        if(max !== null){
-                            max.setHours(23, 59, 59);
-                        }
-                        if(date !== null){
-                            date.setHours(12, 0, 0);
-                        }
-                        if (
-                            ( min === null && max === null ) ||
-                            ( min !== null && min <= date && max === null ) ||
-                            ( max !== null && min === null && date <= max ) ||
-                            ( min !== null && max !== null && min <= date   && date <= max )
-                        ) {
-                            return true;
-                        }
-                        return false;
+                filtrele(function(settings, searchData, index, rowData, counter){
+                    if (settings.nTable.id !== tabloDiv){
+                        return true;
                     }
-                );
+                    var min = girisTarBas.val();
+                    var max = girisTarBit.val();
+                    
+                    var date = new Date( searchData[5] );
+                    if(searchData[5].length > 0){
+                        var tarih = searchData[5].split(".");
+                        var gun = tarih[0];
+                        var ay = tarih[1];
+                        var yil = tarih[2].split(" ")[0];
+                        date = new Date(+yil, ay - 1, +gun); 
+                    }
+                    if(min !== null){
+                        min.setHours(0, 0, 0);
+                    }
+                    if(max !== null){
+                        max.setHours(23, 59, 59);
+                    }
+                    if(date !== null){
+                        date.setHours(12, 0, 0);
+                    }
+                    if (
+                        ( min === null && max === null ) ||
+                        ( min !== null && min <= date && max === null ) ||
+                        ( max !== null && min === null && date <= max ) ||
+                        ( min !== null && max !== null && min <= date   && date <= max )
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }, sira);
             }
             function topla(){
                 $.fn.dataTable.Api.register( "sum()", function () {
@@ -267,10 +286,6 @@ echo '<section class="content">
                 kdvHtml();
                 genelToplamHtml();
                 cihazSayisiHtml();', TRUE) . ');
-                filtreStartsWith(yilInput, 0)
-                filtreText(musteriInput,1);
-                filtreText(cihazMarkaInput,2);
-                filtreText(cihazModelInput,3);
                 girisTarBas = new DateTime($(girisTarihiInput1), {
                     format: "YYYY-MM-DD",
                     locale: "tr"
@@ -279,11 +294,32 @@ echo '<section class="content">
                     format: "YYYY-MM-DD",
                     locale: "tr"
                 });
-                filtreTarih(girisTarihiInput1, girisTarihiInput2, 5);
-                filtreBirebir(cihazTuruInput, 4);
-                filtreBirebir(personelInput, 10);
-                filtreBirebir(cihazDurumuInput, 11);
-                $(musteriInput + ", " + cihazMarkaInput + ", " + cihazModelInput + ", " + girisTarihiInput1 + ", " + girisTarihiInput2 + ", " + yilInput + ", " + cihazTuruInput).on("keyup change", function(){
+                if (!$.fn.dataTable._customFilters) {
+                    $.fn.dataTable._customFilters = {};
+                }
+                $(yilInput).on("keyup change", function(){
+                    filtreStartsWith(yilInput, 0);
+                    cihazlarTablosu.draw();
+                });
+                $(musteriInput).on("keyup change", function(){
+                    filtreText(musteriInput,1);
+                    cihazlarTablosu.draw();
+                });
+                $(cihazMarkaInput).on("keyup change", function(){
+                    filtreText(cihazMarkaInput,2);
+                    cihazlarTablosu.draw();
+                });
+                $(cihazModelInput).on("keyup change", function(){
+                    filtreText(cihazModelInput,3);
+                    cihazlarTablosu.draw();
+                });
+                $(girisTarihiInput1 + ", " + girisTarihiInput2).on("keyup change", function(){
+                    filtreTarih(girisTarihiInput1, girisTarihiInput2, 5);
+                    cihazlarTablosu.draw();
+                });
+                
+                $(cihazTuruInput).change(function() {
+                    filtreBirebir(cihazTuruInput, 4);
                     cihazlarTablosu.draw();
                 });
                 $(personelInput).change(function() {
@@ -292,6 +328,7 @@ echo '<section class="content">
                     }else{
                         seciliPersonel = "Tümü";
                     }
+                    filtreBirebir(personelInput, 10);
                     cihazlarTablosu.draw();
                 });
                 $(cihazDurumuInput).change(function() {
@@ -300,6 +337,7 @@ echo '<section class="content">
                     }else{
                         seciliCihazDurumu = "Hepsi";
                     }
+                    filtreBirebir(cihazDurumuInput, 11);
                     cihazlarTablosu.draw();
                 });
                 $(sayfaSayisiInput).change(function() {
@@ -379,7 +417,7 @@ echo '<tr>
                 <option value="">Hepsi</option>';
 $cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 foreach ($cihazDurumlari as $cihazDurumu) {
-    echo '<option value="' . $cihazDurumu->durum . '">' . $cihazDurumu->durum. '</option>';
+    echo '<option value="' . $cihazDurumu->durum . '">' . $cihazDurumu->durum . '</option>';
 }
 echo '<option value="Belirtilmemiş">Belirtilmemiş</option>';
 echo '</select>
@@ -536,8 +574,8 @@ foreach ($cihazlar as $cihaz) {
     $kdv = 0;
     $genel_toplam = 0;
     if (count($cihaz->islemler) > 0) {
-        foreach($cihaz->islemler as $islem){
-            $toplam_islem_fiyati_suan =  $islem->miktar * $islem->birim_fiyat;
+        foreach ($cihaz->islemler as $islem) {
+            $toplam_islem_fiyati_suan = $islem->miktar * $islem->birim_fiyat;
             $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
             $toplam = $toplam + $toplam_islem_fiyati_suan;
             $kdv = $kdv + $kdv_suan;
@@ -549,9 +587,9 @@ foreach ($cihazlar as $cihaz) {
     echo '<td>' . $cihaz->sorumlu . '</td>';
     $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
     echo '<td>';
-    if($cDurum->num_rows() > 0){
+    if ($cDurum->num_rows() > 0) {
         echo $cDurum->result()[0]->durum;
-    }else{
+    } else {
         echo "Belirtilmemiş";
     }
     echo '</td>';
