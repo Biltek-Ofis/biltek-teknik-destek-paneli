@@ -18,9 +18,17 @@ class Malzeme_Teslimi_Model extends CI_Model
     {
         return DB_ON_EK_STR . "malzeme_teslimi_islemler";
     }
-    public function malzemeteslimleri()
+    public function malzemeteslimleri($arama = "", $sira = -1, $limit = -1)
     {
-        $malzemeTeslimleri = $this->db->reset_query()->get($this->tabloAdi())->result_array();
+        $malzemeTeslimleri = $this->db->reset_query();
+        if(strlen($arama)){
+            $malzemeTeslimleri = $malzemeTeslimleri->like("firma", $arama);
+        }
+        if($limit >= 0 && $sira >= 0){
+            $malzemeTeslimleri = $malzemeTeslimleri->limit($limit)->offset($sira);
+        }
+        $malzemeTeslimleri = $malzemeTeslimleri->order_by("odeme_durumu ASC, id DESC");
+        $malzemeTeslimleri = $malzemeTeslimleri->get($this->tabloAdi())->result_array();
         for ($i = 0; $i < count($malzemeTeslimleri); $i++) {
             $malzemeTeslimleri[$i] = $this->malzemeteslimiDonustur($malzemeTeslimleri[$i]);
         }
@@ -43,6 +51,24 @@ class Malzeme_Teslimi_Model extends CI_Model
         $malzemeTeslimi["teslim_tarihi"] = $malzemeTeslimi["teslim_tarihi"] == '0000-00-00' ? "Belirtilmemiş" : $this->Islemler_Model->tarihDonustur($malzemeTeslimi["teslim_tarihi"], FALSE);
         $malzemeTeslimi["vade_tarihi"] = $malzemeTeslimi["vade_tarihi"] == '0000-00-00' ? "Belirtilmemiş" : $this->Islemler_Model->tarihDonustur($malzemeTeslimi["vade_tarihi"], FALSE);
         $malzemeTeslimi["vade_durumu"] = $malzemeTeslimi["vade_tarihi"] == "Belirtilmemiş" ? FALSE : strtotime(date("d.m.Y")) > strtotime($malzemeTeslimi["vade_tarihi"]);
+        $vade_yazisi = "";
+        if ($malzemeTeslimi["odendi"]) {
+            $vade_yazisi = "Ödendi";
+        } else {
+            if (strlen($malzemeTeslimi["vade_tarihi"]) > 0 && $malzemeTeslimi["vade_tarihi"] != "Belirtilmemiş") {
+                $vade_suresi = $this->Islemler_Model->gunFarkiHesapla($malzemeTeslimi["vade_tarihi"]);
+                if ($vade_suresi < 0) {
+                    $vade_yazisi = "Ödenmedi (Vadesi " . str_replace("-", "", $vade_suresi) . " Gün Geçmiş)";
+                } else if ($vade_suresi > 0) {
+                    $vade_yazisi = "Ödenmedi (Vadesine " . str_replace("-", "", $vade_suresi) . " Gün Kalmış)";
+                } else {
+                    $vade_yazisi = "Ödenmedi (Vadesi Bugün)";
+                }
+            } else {
+                $vade_yazisi = "Ödenmedi";
+            }
+        }
+        $malzemeTeslimi["vade_str"] = $vade_yazisi;
         $malzemeTeslimi["islemler"] = $this->Malzeme_Teslimi_Model->malzemeteslimiIslemleri($malzemeTeslimi["id"]);
         return $malzemeTeslimi;
     }

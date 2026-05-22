@@ -14,6 +14,7 @@ import '../models/cihaz_duzenleme/cihaz_turleri.dart';
 import '../models/kullanici.dart';
 import '../models/lisans/lisans.dart';
 import '../models/lisans/versiyon.dart';
+import '../models/malzeme_teslimi_model.dart';
 import '../models/medya.dart';
 import '../models/musteri.dart';
 import '../models/not.dart';
@@ -857,6 +858,43 @@ class BiltekPost {
       }
     }
     return false;
+  }
+
+  static Future<List<MalzemeTeslimiModel>> malzemeTeslimleriGetir({
+    String? arama,
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    Map<String, String> postData = {
+      "sira": offset.toString(),
+      "limit": limit.toString(),
+    };
+    if (arama != null) {
+      postData.addAll({"arama": arama});
+    }
+    var response = await BiltekPost.post(Ayarlar.malzemeTeslimleri, postData);
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        List<dynamic> malzemeTeslimleri = jsonDecode(resp) as List<dynamic>;
+        return malzemeTeslimleri
+            .map(
+              (not) =>
+                  MalzemeTeslimiModel.fromJson(not as Map<String, dynamic>),
+            )
+            .toList();
+      } on Exception catch (e) {
+        debugPrint(
+          "Malzeme Teslimleri yüklenirken bir hata oluştu.\n${e.toString()}",
+        );
+        return [];
+      }
+    } else {
+      debugPrint(
+        "Malzeme Teslimleri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
+      return [];
+    }
   }
 
   static Future<List<NotModel>> notlariGetir() async {

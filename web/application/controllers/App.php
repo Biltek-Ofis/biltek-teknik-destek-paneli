@@ -9,6 +9,7 @@ class App extends CI_Controller
         $this->load->model("Giris_Model");
         $this->load->model("Kullanicilar_Model");
         $this->load->model("Cihazlar_Model");
+        $this->load->model("Malzeme_Teslimi_Model");
         $this->load->model("Notlar_Model");
         $this->load->model("Islemler_Model");
         $this->load->model("Firma_Model");
@@ -895,6 +896,34 @@ class App extends CI_Controller
         $resp = $this->Kullanicilar_Model->qrCheck($qr, $ekServisNo);
         if ($resp != null) {
             echo json_encode(array("sonuc" => 1, "data" => $resp));
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+
+    public function malzemeTeslimleri()
+    {
+        $arama = $this->input->post("arama");
+        $sira = $this->input->post("sira");
+        $limit = $this->input->post("limit");
+        if (!isset($arama)) {
+            $arama = "";
+        }
+        if (!isset($sira)) {
+            $sira = 0;
+        }
+        if (!isset($limit)) {
+            $limit = 50;
+        }
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $kayitlar = $this->Malzeme_Teslimi_Model->malzemeteslimleri($arama, $sira, $limit);
+                echo json_encode($kayitlar);
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
         } else {
             echo json_encode($this->hataMesaji(1));
         }

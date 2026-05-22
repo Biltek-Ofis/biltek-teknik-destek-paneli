@@ -40,23 +40,6 @@ $this->load->view("inc/style_tablo");
                 'status=1,width=' + screen.availWidth + ',height=' + screen.availHeight
             );
         }
-        function gunFarkiHesapla(tarihStr) {
-            // Tarih stringini parçala
-            const [gun, ay, yil] = tarihStr.split(".").map(Number);
-
-            // JavaScript'te aylar 0'dan başlar (0 = Ocak)
-            const hedefTarih = new Date(yil, ay - 1, gun);
-
-            // Bugünün tarihi (sadece yıl-ay-gün bazında)
-            const bugun = new Date();
-            bugun.setHours(0, 0, 0, 0); // Saat bilgilerini sıfırla
-
-            // Farkı milisaniye cinsinden al, güne çevir
-            const farkMs = hedefTarih - bugun;
-            const farkGun = Math.floor(farkMs / (1000 * 60 * 60 * 24));
-
-            return farkGun; // Negatifse geçmişte, pozitifse gelecekte
-        }
         function tutarHesapla(adetVal, fiyatVal, kdvVal) {
 
             const orjAdetVal = adetVal;
@@ -221,25 +204,7 @@ $this->load->view("inc/style_tablo");
                     tablo += '<td>' + value.teslim_tarihi + '</td>';
                     tablo += '<td>' + value.vade_tarihi + '</td>';
                     tablo += '<td>';
-                    var vade_yazisi = "";
-                    if (value.odendi) {
-                        vade_yazisi = "Ödendi";
-                    } else {
-                        if (value.vade_tarihi.length > 0 && value.vade_tarihi != "Belirtilmemiş") {
-                            var vade_suresi = gunFarkiHesapla(value.vade_tarihi);
-                            if (vade_suresi < 0) {
-                                vade_yazisi = "Ödenmedi (Vadesi " + vade_suresi.toString().replaceAll("-", "") + " Gün Geçmiş)";
-                            } else if (vade_suresi > 0) {
-                                vade_yazisi = "Ödenmedi (Vadesine " + vade_suresi.toString().replaceAll("-", "") + " Gün Kalmış)";
-                            } else {
-                                vade_yazisi = "Ödenmedi (Vadesi Bugün)";
-                                console.log("Vade: " + value.vade_tarihi);
-                            }
-                        } else {
-                            vade_yazisi = "Ödenmedi";
-                        }
-                    }
-                    tablo += vade_yazisi;
+                    tablo += value.vade_str;
                     tablo += '</td>';
                     tablo += '<td class="text-center"><button class="btn btn-info text-white" onclick="detayHandle(\'' + value.id + '\')">Detaylar</button>';
                     tablo += '</td>';

@@ -6,7 +6,7 @@ class Islemler_Model extends CI_Model
     {
         parent::__construct();
     }
-    public function tasarimArray($baslik, $icerik, $icerik_array = array(),  $ek_css = "", $ekArray = array())
+    public function tasarimArray($baslik, $icerik, $icerik_array = array(), $ek_css = "", $ekArray = array())
     {
         $arr = array(
             "baslik" => $baslik,
@@ -14,10 +14,10 @@ class Islemler_Model extends CI_Model
             "icerik_array" => $icerik_array,
             "ek_css" => $ek_css
         );
-        foreach($ekArray as $key => $value){
+        foreach ($ekArray as $key => $value) {
             $arr[$key] = $value;
         }
-        return $arr; 
+        return $arr;
     }
     public $sqlTarihFormati = "Y-m-d H:i:s.v";
     public function tarih()
@@ -53,6 +53,19 @@ class Islemler_Model extends CI_Model
     {
         $tarih_Str = $saat_dahil ? "Y-m-d\TH:i" : "Y-m-d";
         return $tarih == "" ? "" : date($tarih_Str, strtotime($tarih));
+    }
+    public function gunFarkiHesapla($tarihStr)
+    {
+        [$gun, $ay, $yil] = explode('.', $tarihStr);
+
+        $hedefTarih = mktime(0, 0, 0, (int) $ay, (int) $gun, (int) $yil);
+
+        $bugun = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+
+        $farkSaniye = $hedefTarih - $bugun;
+        $farkGun = (int) floor($farkSaniye / (60 * 60 * 24));
+
+        return $farkGun;
     }
     public function trimle($str)
     {
@@ -231,8 +244,8 @@ class Islemler_Model extends CI_Model
         $ayar .= '
             "paging": ' . $paging . ',
             "lengthChange": false,
-            "pageLength": ' . $ayarlar->tablo_oge. ',
-            "searching": '.($arama ? "true": "false").',
+            "pageLength": ' . $ayarlar->tablo_oge . ',
+            "searching": ' . ($arama ? "true" : "false") . ',
             "ordering": true,
             order: ' . $siralama . ',
             "info": true,
@@ -251,11 +264,11 @@ class Islemler_Model extends CI_Model
                 "orderSequence": [ "asc", "desc" ]
                 }
                 ';
-                foreach($columnDefs as $columnDef){
-                    $ayar .= ",";
-                    $ayar .= $columnDef;
-                }
-        $ayar .='
+        foreach ($columnDefs as $columnDef) {
+            $ayar .= ",";
+            $ayar .= $columnDef;
+        }
+        $ayar .= '
             ]';
         $ayar .= '
     }';
@@ -265,7 +278,8 @@ class Islemler_Model extends CI_Model
     {
         return password_hash($sifre, PASSWORD_DEFAULT);
     }
-    public function sifreKontrol($yeni_sifre, $eski_sifre_hash){
+    public function sifreKontrol($yeni_sifre, $eski_sifre_hash)
+    {
         return password_verify($yeni_sifre, $eski_sifre_hash);
     }
     public $bozukHarfler = array(
@@ -313,7 +327,7 @@ class Islemler_Model extends CI_Model
     }
     public function tutarGetir($numara)
     {
-        return number_format((float)$numara, 2, '.', '');
+        return number_format((float) $numara, 2, '.', '');
     }
     public function sozcukBul($str, $ara)
     {
@@ -325,44 +339,47 @@ class Islemler_Model extends CI_Model
         }
         return str_contains($str, $ara);
     }
-    public function rastgele_yazi(){
+    public function rastgele_yazi()
+    {
         return strtolower(random_string('alpha', 16));
     }
 
-    public function asset_indir($dosya_adi, $yeni_ad = ""){
+    public function asset_indir($dosya_adi, $yeni_ad = "")
+    {
 
         $orjinal_dosya = FCPATH . "assets/" . $dosya_adi;
 
-        if(file_exists($orjinal_dosya)){
-            if(strlen($yeni_ad) == 0){
+        if (file_exists($orjinal_dosya)) {
+            if (strlen($yeni_ad) == 0) {
                 $yeni_ad = $dosya_adi;
             }
-            
+
             header('Content-Type: application/octet-stream');
-            header("Content-Transfer-Encoding: Binary"); 
-            header("Content-disposition: attachment; filename=\"" . $yeni_ad . "\""); 
-            
-            readfile($orjinal_dosya); 
-        }else{
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=\"" . $yeni_ad . "\"");
+
+            readfile($orjinal_dosya);
+        } else {
             show_404();
         }
     }
-    public function app_version(){
+    public function app_version()
+    {
         $this->load->model("Ayarlar_Model");
         $ayarlar = $this->Ayarlar_Model->getir();
         return $ayarlar->app_version;
     }
-    
-    public function dosyaAdiOlustur($konum, $dosya_adi) {
+
+    public function dosyaAdiOlustur($konum, $dosya_adi)
+    {
         //"$dosyaKonumu" . rand(1000, 9999) . "_" . $_FILES["yuklenecekDosya"]["name"];
         $yeni_dosya_adi = $konum . rand(1000, 9999) . "_" . $dosya_adi;
-        if(!file_exists($konum . $yeni_dosya_adi)){
+        if (!file_exists($konum . $yeni_dosya_adi)) {
             if (!is_dir($konum)) {
                 mkdir($konum, 0777, TRUE);
             }
             return $yeni_dosya_adi;
-        }
-        else{
+        } else {
             return $this->dosyaAdiOlustur($konum, $dosya_adi);
         }
     }

@@ -718,6 +718,8 @@ class _AramaAppBarState extends State<AramaAppBar> {
   }
 }
 
+bool malzemeTeslimiAktif =
+    false; // TODO: Malzeme teslim sayfası aktif edilince burası kaldırılacak
 Drawer biltekDrawer(
   BuildContext context, {
   required KullaniciAuthModel kullanici,
@@ -798,6 +800,24 @@ Drawer biltekDrawer(
                   builder:
                       (context) =>
                           Anasayfa(sayfa: "notlar", kullanici: kullanici),
+                ),
+              );
+            },
+          ),
+        if (!kullanici.musteri && malzemeTeslimiAktif)
+          ListTile(
+            contentPadding: linkPadding,
+            title: const Text("Malzeme Teslimi"),
+            selected: seciliSayfa == "malzeme_teslimi",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder:
+                      (context) => Anasayfa(
+                        sayfa: "malzeme_teslimi",
+                        kullanici: kullanici,
+                      ),
                 ),
               );
             },

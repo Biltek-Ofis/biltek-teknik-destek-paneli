@@ -53,6 +53,8 @@ class Ayarlar {
   static String get imzaYukle => "${appUrl}imzaYukle/";
   static String get imzaSil => "${appUrl}imzaSil/";
 
+  static String get malzemeTeslimleri => "${appUrl}malzemeTeslimleri/";
+
   static String get notlar => "${appUrl}notlar/";
   static String get notEkle => "${appUrl}notEkle/";
   static String get notDuzenle => "${appUrl}notDuzenle/";

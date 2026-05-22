@@ -13,6 +13,7 @@ import 'cagri_kayitlari/cagri_kayitlari.dart';
 import 'cihazlar.dart';
 import 'cihazlarim.dart';
 import 'detaylar/detaylar.dart';
+import 'malzeme_teslimi/malzeme_teslimi.dart';
 import 'notlar/notlar.dart';
 
 class Anasayfa extends StatefulWidget {
@@ -79,6 +80,12 @@ class _AnasayfaState extends State<Anasayfa> {
             break;
           case "notlar":
             sayfa = NotlarSayfasi(kullanici: widget.kullanici);
+            break;
+          case "malzeme_teslimi":
+            sayfa = MalzemeTeslimiSayfasi(
+              kullanici: widget.kullanici,
+              seciliSayfa: "malzeme_teslimi",
+            );
             break;
           default:
             sayfa = CihazlarSayfasi(
