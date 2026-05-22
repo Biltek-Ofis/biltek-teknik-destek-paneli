@@ -31,7 +31,6 @@ class DetaylarGaleri extends StatefulWidget {
 }
 
 class _DetaylarGaleriState extends State<DetaylarGaleri> {
-  final ImagePicker picker = ImagePicker();
   PageController pageController = PageController();
   List<MedyaModel> medyalar = [];
   int suankiResimIndex = 0;
