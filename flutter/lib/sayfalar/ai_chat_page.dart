@@ -320,10 +320,7 @@ class _AIChatPageState extends State<AIChatPage> {
     _altaKaydir();
     final generationConfig = GenerationConfig(responseMimeType: 'text/plain');
 
-    final ai = FirebaseAI.googleAI(
-      app: FirebaseApi.instance,
-      appCheck: FirebaseApi.appCheck,
-    );
+    final ai = FirebaseAI.googleAI(app: FirebaseApi.instance);
 
     final model = ai.generativeModel(
       model: 'gemma-3-27b-it',
