@@ -295,6 +295,43 @@ class Kullanicilar_Model extends CI_Model
             }
         }
     }
+    public function bildirimGonderMusteriCagriServis($id, $cagri_id, $tur, $baslik = "Yeni çağrı kaydı eklendi")
+    {
+        $bildirimler = $this->bildirimleriGetirKullaniciTur($id, $tur);
+
+        $cagri = $this->Cihazlar_Model->cagriKaydiGetir($cagri_id);
+        if ($cagri != null) {
+            $cagri = $cagri->result()[0];
+            $mesaj = $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
+            if (count($bildirimler) > 0) {
+                $bildirim = $bildirimler[0];
+                if (strval($bildirim->durum) == "1") {
+                    $this->bildirimGonder($id, $baslik, $mesaj, $tur, $cagri->id);
+                }
+            } else {
+                $this->bildirimGonder($id, $baslik, $mesaj, $tur, $cagri->id);
+            }
+        }
+    }
+    public function bildirimGonderMusteriServis($id, $cagri_id)
+    {
+        $bildirimler = $this->bildirimleriGetirKullaniciTur($id, "cagri_kaydi_musteri");
+
+        $cagri = $this->Cihazlar_Model->cagriKaydiGetir($cagri_id);
+        if ($cagri != null) {
+            $cagri = $cagri->result()[0];
+            $baslik = 'Yeni çağrı kaydı eklend.';
+            $mesaj = $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
+            if (count($bildirimler) > 0) {
+                $bildirim = $bildirimler[0];
+                if (strval($bildirim->durum) == "1") {
+                    $this->bildirimGonder($id, $baslik, $mesaj, "cagri_kaydi_musteri", $cagri->id);
+                }
+            } else {
+                $this->bildirimGonder($id, $baslik, $mesaj, "cagri_kaydi_musteri", $cagri->id);
+            }
+        }
+    }
     public function girisDurumuAuth($auth)
     {
         $query = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());

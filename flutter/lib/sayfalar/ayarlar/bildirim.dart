@@ -40,95 +40,183 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
           width: MediaQuery.of(context).size.width,
           child: ListView(
             children: [
-              BiltekListTile(
-                title: "Cihaz Bildirimleri",
-                subtitle:
-                    "Sorumlu personel olarak seçildiğiniz cihazlarla ilgili bildirimler.",
-                trailing: Text(
-                  yuklendi
-                      ? (bildirimBul("cihaz", varsayilan: true).durum
-                          ? "Açık"
-                          : "Kapalı")
-                      : "",
-                ),
-                onTap: () {
-                  showSelector<bool>(
-                    context,
-                    items: [
-                      SelectorItem(text: "Açık", value: true),
-                      SelectorItem(text: "Kapalı", value: false),
-                    ],
-                    currentValue: bildirimBul("cihaz", varsayilan: true).durum,
-                    onSelect: (value) async {
-                      NavigatorState navigatorState = Navigator.of(context);
-                      ScaffoldMessengerState scaffoldMessengerState =
-                          ScaffoldMessenger.of(context);
-                      bool durum = await BiltekPost.bildirimAyarla(
-                        widget.kullanici.id,
-                        "cihaz",
-                        !bildirimBul("cihaz", varsayilan: true).durum,
-                      );
-                      if (durum) {
-                        navigatorState.pop();
-                        bildirimleriGetir();
-                      } else {
-                        navigatorState.pop();
-                        toast(
-                          "Bildirim ayarı güncellenemedi. Daha sonra tekrar deneyin",
-                          scaffoldMessenger: scaffoldMessengerState,
+              if (!widget.kullanici.musteri)
+                BiltekListTile(
+                  title: "Cihaz Bildirimleri",
+                  subtitle:
+                      "Sorumlu personel olarak seçildiğiniz cihazlarla ilgili bildirimler.",
+                  trailing: Text(
+                    yuklendi
+                        ? (bildirimBul("cihaz", varsayilan: true).durum
+                            ? "Açık"
+                            : "Kapalı")
+                        : "",
+                  ),
+                  onTap: () {
+                    showSelector<bool>(
+                      context,
+                      items: [
+                        SelectorItem(text: "Açık", value: true),
+                        SelectorItem(text: "Kapalı", value: false),
+                      ],
+                      currentValue:
+                          bildirimBul("cihaz", varsayilan: true).durum,
+                      onSelect: (value) async {
+                        NavigatorState navigatorState = Navigator.of(context);
+                        ScaffoldMessengerState scaffoldMessengerState =
+                            ScaffoldMessenger.of(context);
+                        bool durum = await BiltekPost.bildirimAyarla(
+                          widget.kullanici.id,
+                          "cihaz",
+                          !bildirimBul("cihaz", varsayilan: true).durum,
                         );
-                      }
-                    },
-                  );
-                },
-              ),
-              BiltekListTile(
-                title: "Çağrı Kaydı Bildirimleri",
-                subtitle:
-                    "Müşteriler çağrı kaydı açtığında alınacak bildirimleri düzenleyin",
-                onTap: () {
-                  showCheckSelector(
-                    context,
-                    items:
-                        cihazTurleri.map((ct) {
-                          return SelectorItem(
-                            key: "${BildirimModel.cagriKey}-${ct.id}",
-                            text: ct.isim,
-                            value:
-                                bildirimBul(
-                                  "${BildirimModel.cagriKey}-${ct.id}",
-                                  varsayilan: false,
-                                ).durum,
+                        if (durum) {
+                          navigatorState.pop();
+                          bildirimleriGetir();
+                        } else {
+                          navigatorState.pop();
+                          toast(
+                            "Bildirim ayarı güncellenemedi. Daha sonra tekrar deneyin",
+                            scaffoldMessenger: scaffoldMessengerState,
                           );
-                        }).toList(),
-                    onSaveItems: (items) async {
-                      ScaffoldMessengerState scaffoldMessengerState =
-                          ScaffoldMessenger.of(context);
-                      List<BildirimModel> bildirimlerTemp = [];
-                      for (var i = 0; i < items.length; i++) {
-                        bildirimlerTemp.add(
-                          BildirimModel.create(
-                            tur: items[i].key!,
-                            durum: items[i].value,
-                          ),
+                        }
+                      },
+                    );
+                  },
+                ),
+              if (!widget.kullanici.musteri)
+                BiltekListTile(
+                  title: "Çağrı Kaydı Bildirimleri",
+                  subtitle:
+                      "Müşteriler çağrı kaydı açtığında alınacak bildirimleri düzenleyin",
+                  onTap: () {
+                    showCheckSelector(
+                      context,
+                      items:
+                          cihazTurleri.map((ct) {
+                            return SelectorItem(
+                              key: "${BildirimModel.cagriKey}-${ct.id}",
+                              text: ct.isim,
+                              value:
+                                  bildirimBul(
+                                    "${BildirimModel.cagriKey}-${ct.id}",
+                                    varsayilan: false,
+                                  ).durum,
+                            );
+                          }).toList(),
+                      onSaveItems: (items) async {
+                        ScaffoldMessengerState scaffoldMessengerState =
+                            ScaffoldMessenger.of(context);
+                        List<BildirimModel> bildirimlerTemp = [];
+                        for (var i = 0; i < items.length; i++) {
+                          bildirimlerTemp.add(
+                            BildirimModel.create(
+                              tur: items[i].key!,
+                              durum: items[i].value,
+                            ),
+                          );
+                        }
+                        bool sonuc = await BiltekPost.bildirimAyarlaToplu(
+                          widget.kullanici.id,
+                          bildirimlerTemp,
                         );
-                      }
-                      bool sonuc = await BiltekPost.bildirimAyarlaToplu(
-                        widget.kullanici.id,
-                        bildirimlerTemp,
-                      );
-                      if (sonuc) {
-                        await bildirimleriGetir();
-                      } else {
-                        toast(
-                          "Bildirim ayarları güncellenemedi. Daha sonra tekrar deneyin.",
-                          scaffoldMessenger: scaffoldMessengerState,
+                        if (sonuc) {
+                          await bildirimleriGetir();
+                        } else {
+                          toast(
+                            "Bildirim ayarları güncellenemedi. Daha sonra tekrar deneyin.",
+                            scaffoldMessenger: scaffoldMessengerState,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              if (widget.kullanici.musteri)
+                BiltekListTile(
+                  title: "Çağrı Kaydı Bildirimleri",
+                  subtitle: "Hesabınıza çağrı kaydı açıldığında bildirim alın",
+                  onTap: () {
+                    showSelector<bool>(
+                      context,
+                      items: [
+                        SelectorItem(text: "Açık", value: true),
+                        SelectorItem(text: "Kapalı", value: false),
+                      ],
+                      currentValue:
+                          bildirimBul(
+                            "cagri_kaydi_musteri",
+                            varsayilan: true,
+                          ).durum,
+                      onSelect: (value) async {
+                        NavigatorState navigatorState = Navigator.of(context);
+                        ScaffoldMessengerState scaffoldMessengerState =
+                            ScaffoldMessenger.of(context);
+                        bool durum = await BiltekPost.bildirimAyarla(
+                          widget.kullanici.id,
+                          "cagri_kaydi_musteri",
+                          !bildirimBul(
+                            "cagri_kaydi_musteri",
+                            varsayilan: true,
+                          ).durum,
                         );
-                      }
-                    },
-                  );
-                },
-              ),
+                        if (durum) {
+                          navigatorState.pop();
+                          bildirimleriGetir();
+                        } else {
+                          navigatorState.pop();
+                          toast(
+                            "Bildirim ayarı güncellenemedi. Daha sonra tekrar deneyin",
+                            scaffoldMessenger: scaffoldMessengerState,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              if (widget.kullanici.musteri)
+                BiltekListTile(
+                  title: "Servis Kaydı Bildirimleri",
+                  subtitle:
+                      "Çağrı kaydınıza bir servis kaydı açıldığında ve bu servis kaydı güncellendiğinde bildirim alın",
+                  onTap: () {
+                    showSelector<bool>(
+                      context,
+                      items: [
+                        SelectorItem(text: "Açık", value: true),
+                        SelectorItem(text: "Kapalı", value: false),
+                      ],
+                      currentValue:
+                          bildirimBul(
+                            "servis_kaydi_musteri",
+                            varsayilan: true,
+                          ).durum,
+                      onSelect: (value) async {
+                        NavigatorState navigatorState = Navigator.of(context);
+                        ScaffoldMessengerState scaffoldMessengerState =
+                            ScaffoldMessenger.of(context);
+                        bool durum = await BiltekPost.bildirimAyarla(
+                          widget.kullanici.id,
+                          "servis_kaydi_musteri",
+                          !bildirimBul(
+                            "servis_kaydi_musteri",
+                            varsayilan: true,
+                          ).durum,
+                        );
+                        if (durum) {
+                          navigatorState.pop();
+                          bildirimleriGetir();
+                        } else {
+                          navigatorState.pop();
+                          toast(
+                            "Bildirim ayarı güncellenemedi. Daha sonra tekrar deneyin",
+                            scaffoldMessenger: scaffoldMessengerState,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
             ],
           ),
         ),

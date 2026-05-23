@@ -491,6 +491,13 @@ class App extends CI_Controller
                     }
                     $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri);
                     if ($duzenle) {
+                        $cihaz = $this->Cihazlar_Model->cihazBul($id);
+                        if (count($cihaz) > 0) {
+                            $cihaz = $cihaz[0];
+                            if (isset($cihaz["kull_id"]) && isset($cihaz["cagri_id"])) {
+                                $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($cihaz["kull_id"], $cihaz["cagri_id"], "servis_kaydi_musteri", "Servis kaydınızdaki bilgiler güncellendi");
+                            }
+                        }
                         echo json_encode(array("mesaj" => "", "sonuc" => 1));
                     } else {
                         echo json_encode(array("mesaj" => "Düzenleme işlemi gerçekleştirilemedi.<br>" . $this->db->error()["message"], "sonuc" => 0));

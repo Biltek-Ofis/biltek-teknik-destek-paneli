@@ -104,21 +104,19 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       );
                     },
                   ),
-                  if (!widget.kullanici.musteri)
-                    BiltekListTile(
-                      title: "Bildirimler",
-                      subtitle: "Bildirim ayarlarınızı özelleştirin.",
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder:
-                                (context) => BildirimAyarlari(
-                                  kullanici: widget.kullanici,
-                                ),
-                          ),
-                        );
-                      },
-                    ),
+                  BiltekListTile(
+                    title: "Bildirimler",
+                    subtitle: "Bildirim ayarlarınızı özelleştirin.",
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  BildirimAyarlari(kullanici: widget.kullanici),
+                        ),
+                      );
+                    },
+                  ),
                   BiltekListTile(
                     leading: Icon(CupertinoIcons.qrcode),
                     title: "QR ile Hızlı Giriş",

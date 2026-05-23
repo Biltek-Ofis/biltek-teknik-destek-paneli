@@ -902,6 +902,9 @@ class Cihazlar_Model extends CI_Model
                 if ($kullanici != null) {
                     $this->Log_Model->ekle($cihaz_id, $kullanici->ad_soyad . " adlı kullanıcı tarafından kayıt yapıldı.");
                 }
+                if(isset($veri["kull_id"]) && isset($veri["cagri_id"])){
+                    $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($veri["kull_id"], $veri["cagri_id"], "servis_kaydi_musteri", "Çağrı kaydınıza bir servis kaydı oluşturuldu");
+                }
                 if ($tur == "POST" || $tur == "post") {
                     return array("mesaj" => "", "sonuc" => 1, "id" => $cihaz_id);
                 } else {
@@ -1348,6 +1351,7 @@ class Cihazlar_Model extends CI_Model
                     "kull_id" => $veri["kull_id"],
                 ));
             }
+            $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($veri["kull_id"], $this->db->insert_id(), "cagri_kaydi_musteri");
             $this->Kullanicilar_Model->bildirimGonderCagri($veri["cihaz_turu"], $this->db->insert_id(), "eklendi");
             return $ekle;
         }
