@@ -60,9 +60,11 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   List<Cihaz>? cihazlar;
 
   ScrollController scrollController = ScrollController();
+  bool cihazlarYukleniyor = false;
   int suankiIndex = 0;
 
   bool aramaEtkin = false;
+  Timer? debounce;
 
   AramaAppBar? aramaAppBar;
 
@@ -110,9 +112,13 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           scrollController.position.maxScrollExtent) {
         debugPrint("Max scroll");
         setState(() {
+          cihazlarYukleniyor = true;
           suankiIndex += 1;
         });
         await _cihazlariYenile(sifirla: false);
+        setState(() {
+          cihazlarYukleniyor = false;
+        });
       }
     });
     Future.delayed(Duration.zero, () async {
@@ -139,6 +145,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     keyboardSubscription?.cancel();
     scrollController.dispose();
     fcmStream?.cancel();
+    debounce?.cancel();
     super.dispose();
   }
 
@@ -147,10 +154,13 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     aramaAppBar = AramaAppBar(
       searchbarFocus: searchbarFocus,
       aramaText: (value) async {
-        setState(() {
-          arama = value;
+        debounce?.cancel();
+        debounce = Timer(const Duration(milliseconds: 400), () async {
+          setState(() {
+            arama = value;
+          });
+          await _cihazlariYenile();
         });
-        await _cihazlariYenile();
       },
       aramaDurumu: (durum) {
         _aramaDurumuDuzenle(durum);

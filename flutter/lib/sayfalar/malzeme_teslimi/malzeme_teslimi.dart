@@ -37,6 +37,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
   List<MalzemeTeslimiModel>? malzemeTeslimleri;
 
   ScrollController scrollController = ScrollController();
+  bool malzemeTeslimleriYukleniyor = false;
   int suankiIndex = 0;
 
   bool yukariKaydir = false;
@@ -76,7 +77,14 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
         setState(() {
           suankiIndex += 1;
         });
+        setState(() {
+          malzemeTeslimleriYukleniyor = true;
+          suankiIndex += 1;
+        });
         await _malzemeTeslimleriiYenile(sifirla: false);
+        setState(() {
+          malzemeTeslimleriYukleniyor = false;
+        });
       }
     });
     Future.delayed(Duration.zero, () async {

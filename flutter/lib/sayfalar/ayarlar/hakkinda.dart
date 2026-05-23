@@ -15,7 +15,7 @@ class _HakkindaSayfasiState extends State<HakkindaSayfasi> {
   String versiyon = "";
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/musteri.dart';
@@ -68,6 +70,9 @@ class MusteriSec extends StatefulWidget {
 
 class _MusteriSecState extends State<MusteriSec> {
   List<MusteriModel> musteriler = [];
+
+  Timer? debounce;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -84,6 +89,12 @@ class _MusteriSecState extends State<MusteriSec> {
   }
 
   @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -91,10 +102,13 @@ class _MusteriSecState extends State<MusteriSec> {
           controller: widget.musteriAdiController,
           currentFocus: widget.musteriAdiFocus,
           onChanged: (value) async {
-            List<MusteriModel> tempMusteriler =
-                await BiltekPost.musteriBilgileriGetir(value);
-            setState(() {
-              musteriler = tempMusteriler;
+            debounce?.cancel();
+            debounce = Timer(const Duration(milliseconds: 400), () async {
+              List<MusteriModel> tempMusteriler =
+                  await BiltekPost.musteriBilgileriGetir(value);
+              setState(() {
+                musteriler = tempMusteriler;
+              });
             });
           },
         ),
