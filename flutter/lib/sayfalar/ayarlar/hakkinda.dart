@@ -14,6 +14,7 @@ class HakkindaSayfasi extends StatefulWidget {
 class _HakkindaSayfasiState extends State<HakkindaSayfasi> {
   String versiyon = "";
 
+  @override
   initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
