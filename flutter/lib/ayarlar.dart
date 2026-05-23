@@ -73,13 +73,10 @@ class Ayarlar {
     return "${url}cihaz/teknik_servis_formu/$cihazID?auth=$auth&inApp=1";
   }
 
-  static bool get lisansEtkin {
-    return const String.fromEnvironment('LISANS_ETKIN').toLowerCase() == "true";
-  }
+  static const String _lisansEtkin = String.fromEnvironment('LISANS_ETKIN');
+  static bool get lisansEtkin => _lisansEtkin.toLowerCase() == "true";
 
-  static String get _urlLisans {
-    return const String.fromEnvironment('LISANS_URL');
-  }
+  static const String _urlLisans = String.fromEnvironment('LISANS_URL');
 
   static String get urlLisans {
     if (_url.endsWith("/")) {
@@ -99,28 +96,54 @@ class Ayarlar {
   static String get versiyonDuzenle => "${appUrlLisans}versiyon_duzenle/";
   static String get versiyonSil => "${appUrlLisans}versiyon_sil/";
 
-  static String get token => const String.fromEnvironment('TOKEN');
+  static const String token = String.fromEnvironment('TOKEN');
 
-  static String get derlemeTarihi =>
-      const String.fromEnvironment('DERLEME_TARIHI');
+  static const String derlemeTarihi = String.fromEnvironment('DERLEME_TARIHI');
 
   static FirebaseAyarlari get firebase => FirebaseAyarlari();
 }
 
 class FirebaseAyarlari {
-  String get projectID => const String.fromEnvironment('FIREBASE_PROJECT_ID');
-  String get storageBucket =>
-      const String.fromEnvironment('FIREBASE_STORAGE_BUCKET');
-  String get messagingSenderId =>
-      const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID');
-  String get authDomain => const String.fromEnvironment('FIREBASE_AUTH_DOMAIN');
+  static const String _projectID = String.fromEnvironment(
+    'FIREBASE_PROJECT_ID',
+  );
+  String get projectID => _projectID;
 
-  String get androidApiKey =>
-      const String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
-  String get androidAppID =>
-      const String.fromEnvironment('FIREBASE_ANDROID_APP_ID');
-  String get webApiKey => const String.fromEnvironment('FIREBASE_WEB_API_KEY');
-  String get webAppID => const String.fromEnvironment('FIREBASE_WEB_APP_ID');
-  String get recaptchaSiteKey =>
-      const String.fromEnvironment('RECAPTCHA_SITE_KEY');
+  static const String _storageBucket = String.fromEnvironment(
+    'FIREBASE_STORAGE_BUCKET',
+  );
+  String get storageBucket => _storageBucket;
+
+  static const String _messagingSenderId = String.fromEnvironment(
+    'FIREBASE_MESSAGING_SENDER_ID',
+  );
+  String get messagingSenderId => _messagingSenderId;
+
+  static const String _authDomain = String.fromEnvironment(
+    'FIREBASE_AUTH_DOMAIN',
+  );
+  String get authDomain => _authDomain;
+
+  static const String _androidApiKey = String.fromEnvironment(
+    'FIREBASE_ANDROID_API_KEY',
+  );
+  String get androidApiKey => _androidApiKey;
+
+  static const String _androidAppID = String.fromEnvironment(
+    'FIREBASE_ANDROID_APP_ID',
+  );
+  String get androidAppID => _androidAppID;
+
+  static const String _webApiKey = String.fromEnvironment(
+    'FIREBASE_WEB_API_KEY',
+  );
+  String get webApiKey => _webApiKey;
+
+  static const String _webAppID = String.fromEnvironment('FIREBASE_WEB_APP_ID');
+  String get webAppID => _webAppID;
+
+  static const String _recaptchaSiteKey = String.fromEnvironment(
+    'RECAPTCHA_SITE_KEY',
+  );
+  String get recaptchaSiteKey => _recaptchaSiteKey;
 }
