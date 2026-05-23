@@ -13,6 +13,7 @@ import '../cihazlar.dart';
 import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
 import 'bildirim.dart';
+import 'hakkinda.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({
@@ -128,6 +129,17 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                         cihazlariYenile: () {},
                         pcYenile: () {},
                         sadeceGiris: true,
+                      );
+                    },
+                  ),
+                  BiltekListTile(
+                    leading: Icon(CupertinoIcons.square_arrow_left),
+                    title: "Hakkında",
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => HakkindaSayfasi(),
+                        ),
                       );
                     },
                   ),

@@ -3,9 +3,37 @@
 import os
 import sys
 import argparse
+import re
 from dotenv import load_dotenv
+from datetime import date
+from pathlib import Path
+
 
 load_dotenv()
+
+ENV_DOSYASI = ".env"
+def update_build_date(file_path: str = ENV_DOSYASI) -> None:
+    path = Path(file_path)
+ 
+    if not path.exists():
+        raise FileNotFoundError(f"'{file_path}' bulunamadı.")
+ 
+    today = date.today().strftime("%Y-%m-%d")
+    content = path.read_text(encoding="utf-8")
+ 
+    new_content, update_count = re.subn(
+        r'^(DERLEME_TARIHI=").*?(")',
+        rf'\g<1>{today}\g<2>',
+        content,
+        flags=re.MULTILINE,
+    )
+ 
+    if update_count == 0:
+        print("DERLEME_TARIHI anahtarı .env dosyasında bulunamadı. Yenisi oluşturulacak.")
+        path.write_text(f"{content}\nDERLEME_TARIHI=\"{today}\"", encoding="utf-8")
+    else:
+        path.write_text(new_content, encoding="utf-8")
+    print(f"DERLEME_TARIHI '{today}' olarak güncellendi.")
 
 def system2(cmd):
     exit_code = os.system(cmd)
@@ -61,12 +89,15 @@ def main():
         args.web = True
     if args.apk:
         print("APK derleniyor...")
+        update_build_date()
         system2("flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.bundle:
         print("Play Store için Bundle derleniyor...")
+        update_build_date()
         system2("flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.web:
         print("Web versionu derleniyor...")
+        update_build_date()
         system2(f"flutter build web --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
 
 if __name__ == "__main__":
