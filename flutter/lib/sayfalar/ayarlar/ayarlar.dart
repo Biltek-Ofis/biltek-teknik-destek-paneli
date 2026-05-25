@@ -6,7 +6,7 @@ import '../../models/kullanici.dart';
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/my_notifier.dart';
 import '../../utils/post.dart';
-import '../../utils/shared_preferences.dart';
+import '../../utils/secure_storage.dart';
 import '../../widgets/list.dart';
 import '../../widgets/selector.dart';
 import '../cihazlar.dart';
@@ -146,11 +146,9 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     title: "Çıkış Yap",
                     onTap: () async {
                       NavigatorState navigatorState = Navigator.of(context);
-                      await SharedPreference.remove(
-                        SharedPreference.authString,
-                      );
-                      String? fcmToken = await SharedPreference.getString(
-                        SharedPreference.fcmTokenString,
+                      await SecureStorage.delete(SecureStorage.authString);
+                      String? fcmToken = await SecureStorage.getString(
+                        SecureStorage.fcmTokenString,
                       );
                       await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
                       navigatorState.pushAndRemoveUntil(

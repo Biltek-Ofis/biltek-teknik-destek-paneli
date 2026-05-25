@@ -14,12 +14,14 @@ import 'sayfalar/giris_sayfasi.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
-import 'utils/shared_preferences.dart';
+import 'utils/secure_storage.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SecureStorage.init();
 
   await FirebaseApi.initialize();
 
@@ -86,7 +88,7 @@ class MainPage extends StatelessWidget {
       body: Consumer<MyNotifier>(
         builder: (context, MyNotifier myNotifier, child) {
           return FutureBuilder<String?>(
-            future: SharedPreference.getString(SharedPreference.authString),
+            future: SecureStorage.getString(SecureStorage.authString),
             builder: (context, AsyncSnapshot<String?> authSnapshot) {
               if (authSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());

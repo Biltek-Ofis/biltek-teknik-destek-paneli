@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart';
 
-import 'shared_preferences.dart';
+import 'secure_storage.dart';
 
 class BarkodOkuyucu {
   final String ip;
@@ -14,8 +14,8 @@ class BarkodOkuyucu {
   BarkodOkuyucu._(this.ip, {this.port = varsayilanPort});
 
   static Future<BarkodOkuyucu?> getir() async {
-    String? ip = await SharedPreference.getString(SharedPreference.barkodIP);
-    int? port = await SharedPreference.getInt(SharedPreference.barkodPort);
+    String? ip = await SecureStorage.getStringNullable(SecureStorage.barkodIP);
+    int? port = await SecureStorage.getIntNullable(SecureStorage.barkodPort);
     if (ip != null && ip.isNotEmpty) {
       if (port != null && port > 0) {
         return BarkodOkuyucu._(ip, port: port);
@@ -50,8 +50,10 @@ class BarkodOkuyucu {
 
     Socket? socket;
     try {
-      String? ip = await SharedPreference.getString(SharedPreference.barkodIP);
-      int? port = await SharedPreference.getInt(SharedPreference.barkodPort);
+      String? ip = await SecureStorage.getStringNullable(
+        SecureStorage.barkodIP,
+      );
+      int? port = await SecureStorage.getIntNullable(SecureStorage.barkodPort);
       if (ip != null && port != null) {
         socket = await Socket.connect(ip, port);
         debugPrint('connected');

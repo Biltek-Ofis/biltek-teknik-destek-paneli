@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_links/app_links.dart';
-import 'package:biltekteknikservis/sayfalar/cihazlar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,22 +12,24 @@ import 'package:provider/provider.dart';
 
 import '../ayarlar.dart';
 import '../models/giris.dart';
+import '../models/secure_storage_kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
 import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
-import '../utils/shared_preferences.dart';
+import '../utils/secure_storage.dart';
 import '../widgets/dizayn.dart';
 import '../widgets/input.dart';
 import 'anasayfa.dart';
 import 'cihaz_durumu/cihaz_durumu_giris.dart';
+import 'cihazlar.dart';
 
 class GirisSayfasi extends StatefulWidget {
   const GirisSayfasi({super.key, this.spKullanici});
 
-  final SPKullanici? spKullanici;
+  final SecureStorageKullanici? spKullanici;
 
   @override
   State<GirisSayfasi> createState() => _GirisSayfasiState();
@@ -84,7 +85,9 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         }
       }
       final hatirla =
-          await SharedPreference.getBool(SharedPreference.beniHatirlaString) ??
+          await SecureStorage.getBoolNullable(
+            SecureStorage.beniHatirlaString,
+          ) ??
           true;
       if (mounted) {
         setState(() => _beniHatirla = hatirla);
@@ -333,8 +336,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       "sifre": sifre,
       "cihazID": cihazID,
     };
-    final fcmToken = await SharedPreference.getString(
-      SharedPreference.fcmTokenString,
+    final fcmToken = await SecureStorage.getStringNullable(
+      SecureStorage.fcmTokenString,
     );
     if (fcmToken != null) postData["fcmToken"] = fcmToken;
 
@@ -347,8 +350,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           jsonDecode(resp) as Map<String, dynamic>,
         );
         if (girisDurumu.durum && girisDurumu.auth.isNotEmpty) {
-          await SharedPreference.setString(
-            SharedPreference.authString,
+          await SecureStorage.setString(
+            SecureStorage.authString,
             girisDurumu.auth,
           );
           final kullaniciModel = await BiltekPost.kullaniciGetir(
@@ -359,15 +362,15 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             if (myNotifier != null) {
               myNotifier.kullanici =
                   _beniHatirla
-                      ? SPKullanici.create(
+                      ? SecureStorageKullanici.create(
                         isim: kullaniciModel.adSoyad,
                         kullaniciAdi: kullaniciAdi,
                         sifre: sifre,
                       )
                       : null;
             }
-            await SharedPreference.setBool(
-              SharedPreference.beniHatirlaString,
+            await SecureStorage.setBool(
+              SecureStorage.beniHatirlaString,
               _beniHatirla,
             );
             nav.pushAndRemoveUntil(

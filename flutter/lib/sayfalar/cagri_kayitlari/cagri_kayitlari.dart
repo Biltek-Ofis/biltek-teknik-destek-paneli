@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:biltekteknikservis/widgets/dizayn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,12 +7,14 @@ import 'package:flutter/services.dart';
 import '../../models/cagri_kaydi.dart';
 import '../../models/cihaz.dart';
 import '../../models/kullanici.dart';
+import '../../models/secure_storage_kullanici.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/extensions.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
-import '../../utils/shared_preferences.dart';
+import '../../utils/secure_storage.dart';
+import '../../widgets/dizayn.dart';
 import '../../widgets/navigators.dart';
 import '../ayarlar/ayarlar.dart';
 import '../cihazlar.dart';
@@ -97,24 +98,22 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                     PopupMenuItem(
                       onTap: () async {
                         NavigatorState navigatorState = Navigator.of(context);
-                        await SharedPreference.remove(
-                          SharedPreference.authString,
-                        );
-                        String? fcmToken = await SharedPreference.getString(
-                          SharedPreference.fcmTokenString,
+                        await SecureStorage.delete(SecureStorage.authString);
+                        String? fcmToken = await SecureStorage.getString(
+                          SecureStorage.fcmTokenString,
                         );
                         await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
                         String? kullaniciString =
-                            await SharedPreference.getString(
-                              SharedPreference.kullaniciString,
+                            await SecureStorage.getStringNullable(
+                              SecureStorage.kullaniciString,
                             );
-                        SPKullanici spKullanici =
+                        SecureStorageKullanici spKullanici =
                             kullaniciString != null
-                                ? SPKullanici.fromJson(
+                                ? SecureStorageKullanici.fromJson(
                                   jsonDecode(kullaniciString)
                                       as Map<String, dynamic>,
                                 )
-                                : SPKullanici.create(
+                                : SecureStorageKullanici.create(
                                   isim: "",
                                   kullaniciAdi: "",
                                   sifre: "",

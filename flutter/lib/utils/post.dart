@@ -18,7 +18,7 @@ import '../models/malzeme_teslimi_model.dart';
 import '../models/medya.dart';
 import '../models/musteri.dart';
 import '../models/not.dart';
-import 'shared_preferences.dart';
+import 'secure_storage.dart';
 
 class BiltekPost {
   static Future<http.StreamedResponse> postMultiPart(
@@ -204,10 +204,7 @@ class BiltekPost {
 
   static Future<void> fcmTokenGuncelle(String auth, String? fcmToken) async {
     if (fcmToken != null) {
-      await SharedPreference.setString(
-        SharedPreference.fcmTokenString,
-        fcmToken,
-      );
+      await SecureStorage.setString(SecureStorage.fcmTokenString, fcmToken);
       await BiltekPost.fcmToken(auth: auth, fcmToken: fcmToken);
     }
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:biltekteknikservis/widgets/dizayn.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +23,8 @@ import '../utils/buttons.dart';
 import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
-import '../utils/shared_preferences.dart';
+import '../utils/secure_storage.dart';
+import '../widgets/dizayn.dart';
 import '../widgets/navigators.dart';
 import 'ai_chat_page.dart';
 import 'anasayfa.dart';
@@ -1024,12 +1024,12 @@ Future<void> barkodTara(
                     default:
                       if ('.'.allMatches(splt[0]).length == 3) {
                         try {
-                          await SharedPreference.setString(
-                            SharedPreference.barkodIP,
+                          await SecureStorage.setString(
+                            SecureStorage.barkodIP,
                             splt[0],
                           );
-                          await SharedPreference.setInt(
-                            SharedPreference.barkodPort,
+                          await SecureStorage.setInt(
+                            SecureStorage.barkodPort,
                             int.parse(splt[1]),
                           );
                           pcYenile.call();

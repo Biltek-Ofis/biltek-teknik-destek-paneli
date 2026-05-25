@@ -16,7 +16,7 @@ import '../utils/assets.dart';
 import '../utils/firebase.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
-import '../utils/shared_preferences.dart';
+import '../utils/secure_storage.dart';
 import '../widgets/input.dart';
 import 'detaylar/detaylar.dart';
 
@@ -60,7 +60,7 @@ class _AIChatPageState extends State<AIChatPage> {
     super.initState();
     Future.delayed(const Duration(seconds: 1), () async {
       _yukleniyorGoster();
-      final aiChatHistoryString = await SharedPreference.getStringList(
+      final aiChatHistoryString = await SecureStorage.getStringList(
         'ai_chat_history',
       );
       aiChatList =
@@ -131,7 +131,7 @@ class _AIChatPageState extends State<AIChatPage> {
                               );
                               seciliMesajlar.clear();
                               aiChatHistory = _aiChatHistory(aiChatList);
-                              SharedPreference.setStringList(
+                              SecureStorage.setStringList(
                                 'ai_chat_history',
                                 aiChatList
                                     .map((e) => jsonEncode(e.toJson()))
@@ -411,7 +411,7 @@ class _AIChatPageState extends State<AIChatPage> {
       botYaziyor = false;
       mesajError = null;
     });
-    await SharedPreference.setStringList(
+    await SecureStorage.setStringList(
       'ai_chat_history',
       aiChatList.map((e) => jsonEncode(e.toJson())).toList(),
     );

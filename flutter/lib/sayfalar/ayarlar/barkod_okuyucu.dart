@@ -4,7 +4,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/buttons.dart';
-import '../../utils/shared_preferences.dart';
+import '../../utils/secure_storage.dart';
 import '../../widgets/input.dart';
 
 typedef OnBOKaydet = Function(bool durum, bool elle);
@@ -139,12 +139,9 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
   Future<void> kaydet(bool elle) async {
     NavigatorState navigatorState = Navigator.of(context);
     try {
-      await SharedPreference.setString(
-        SharedPreference.barkodIP,
-        ipController.text,
-      );
-      await SharedPreference.setInt(
-        SharedPreference.barkodPort,
+      await SecureStorage.setString(SecureStorage.barkodIP, ipController.text);
+      await SecureStorage.setInt(
+        SecureStorage.barkodPort,
         int.parse(portController.text),
       );
 

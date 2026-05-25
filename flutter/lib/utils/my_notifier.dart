@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'shared_preferences.dart';
+import '../models/secure_storage_kullanici.dart';
+import 'secure_storage.dart';
 
 class MyNotifier extends ChangeNotifier {
   late bool? _isDark;
   bool? get isDark => _isDark;
 
-  late SPKullanici? _kullanici;
-  SPKullanici? get kullanici => _kullanici;
+  late SecureStorageKullanici? _kullanici;
+  SecureStorageKullanici? get kullanici => _kullanici;
 
   MyNotifier() {
     _isDark = false;
@@ -21,37 +22,34 @@ class MyNotifier extends ChangeNotifier {
   set isDark(bool? value) {
     _isDark = value;
     if (value != null) {
-      SharedPreference.setBool(SharedPreference.darkThemeString, value);
+      SecureStorage.setBool(SecureStorage.darkThemeString, value);
     } else {
-      SharedPreference.remove(SharedPreference.darkThemeString);
+      SecureStorage.delete(SecureStorage.darkThemeString);
     }
     notifyListeners();
   }
 
-  set kullanici(SPKullanici? value) {
+  set kullanici(SecureStorageKullanici? value) {
     _kullanici = value;
     if (value != null) {
       if (kIsWeb) {
         value.sifreyiCoz();
         value.sifre = "";
       }
-      SharedPreference.setString(
-        SharedPreference.kullaniciString,
-        value.toString(),
-      );
+      SecureStorage.setString(SecureStorage.kullaniciString, value.toString());
     } else {
-      SharedPreference.remove(SharedPreference.kullaniciString);
+      SecureStorage.delete(SecureStorage.kullaniciString);
     }
     notifyListeners();
   }
 
   void getPreferences() async {
-    _isDark = await SharedPreference.getBool(SharedPreference.darkThemeString);
-    String? kullaniciString = await SharedPreference.getString(
-      SharedPreference.kullaniciString,
+    _isDark = await SecureStorage.getBool(SecureStorage.darkThemeString);
+    String? kullaniciString = await SecureStorage.getStringNullable(
+      SecureStorage.kullaniciString,
     );
     if (kullaniciString != null) {
-      _kullanici = SPKullanici.fromJson(
+      _kullanici = SecureStorageKullanici.fromJson(
         jsonDecode(kullaniciString) as Map<String, dynamic>,
       );
     }
