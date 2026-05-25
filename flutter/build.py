@@ -74,31 +74,52 @@ def make_parser():
     parser.add_argument(
         '--run',
         type=str,
-        default='',
+        nargs='?',
+        const='default',
+        default=None,
         help='Belirtilen cihazda uygulamayı çalıştır. (Örneğin: --run windows, --run chrome)'
-        '\nBoş değer verilirse varsayılan cihazda çalıştırır.')
+            '\nBoş değer verilirse varsayılan cihazda çalıştırır.'
+    )
     return parser
     
 
 def main():
     parser = make_parser()
     args = parser.parse_args()
+    calisti = False
     if args.all:
         args.apk = True
         args.bundle = True
         args.web = True
     if args.apk:
+        calisti = True
         print("APK derleniyor...")
         update_build_date()
         system2("flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.bundle:
+        calisti = True
         print("Play Store için Bundle derleniyor...")
         update_build_date()
         system2("flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.web:
+        calisti = True
         print("Web versionu derleniyor...")
         update_build_date()
         system2(f"flutter build web --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
-
+    if args.run is not None:
+        calisti = True
+        run_cmd = f"flutter run"
+        if args.run == "default":
+            print("Uygulama varsayılan cihazda çalıştırılıyor...")
+        else:
+            print(f"Uygulama '{args.run}' cihazında çalıştırılıyor...")
+            run_cmd += f" -d \"{args.run}\""
+        run_cmd += " --dart-define-from-file=.env"
+        system2(run_cmd)
+    if calisti:
+        print("İşlem tamamlandı.")
+    else:
+        print("Hiçbir işlem seçilmedi. Lütfen en az bir seçenek belirtin. Yardım için --help kullanın.")
+        system2("python build.py --help")
 if __name__ == "__main__":
     main() 
