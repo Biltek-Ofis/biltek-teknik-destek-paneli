@@ -37,8 +37,8 @@ class _HakkindaSayfasiState extends State<HakkindaSayfasi> {
             children: [
               BiltekListTile(title: "Versiyon", subtitle: versiyon),
               BiltekListTile(
-                title: "Derleme Tarihi",
-                subtitle: Ayarlar.derlemeTarihi,
+                title: "Sürüm Tarihi (Yıl-Ay-Gün)",
+                subtitle: Ayarlar.surumTarihi,
               ),
             ],
           ),

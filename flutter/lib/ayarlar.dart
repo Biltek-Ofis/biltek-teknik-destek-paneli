@@ -98,7 +98,7 @@ class Ayarlar {
 
   static const String token = String.fromEnvironment('TOKEN');
 
-  static const String derlemeTarihi = String.fromEnvironment('DERLEME_TARIHI');
+  static const String surumTarihi = String.fromEnvironment('SURUM_TARIHI');
 
   static FirebaseAyarlari get firebase => FirebaseAyarlari();
 }

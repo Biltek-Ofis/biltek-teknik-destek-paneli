@@ -22,18 +22,18 @@ def update_build_date(file_path: str = ENV_DOSYASI) -> None:
     content = path.read_text(encoding="utf-8")
  
     new_content, update_count = re.subn(
-        r'^(DERLEME_TARIHI=").*?(")',
+        r'^(SURUM_TARIHI=").*?(")',
         rf'\g<1>{today}\g<2>',
         content,
         flags=re.MULTILINE,
     )
  
     if update_count == 0:
-        print("DERLEME_TARIHI anahtarı .env dosyasında bulunamadı. Yenisi oluşturulacak.")
-        path.write_text(f"{content}\nDERLEME_TARIHI=\"{today}\"", encoding="utf-8")
+        print("SURUM_TARIHI anahtarı .env dosyasında bulunamadı. Yenisi oluşturulacak.")
+        path.write_text(f"{content}\nSURUM_TARIHI=\"{today}\"", encoding="utf-8")
     else:
         path.write_text(new_content, encoding="utf-8")
-    print(f"DERLEME_TARIHI '{today}' olarak güncellendi.")
+    print(f"SURUM_TARIHI '{today}' olarak güncellendi.")
 
 def system2(cmd):
     exit_code = os.system(cmd)
@@ -115,6 +115,7 @@ def main():
             print(f"Uygulama '{args.run}' cihazında çalıştırılıyor...")
             run_cmd += f" -d \"{args.run}\""
         run_cmd += " --dart-define-from-file=.env"
+        update_build_date()
         system2(run_cmd)
     if calisti:
         print("İşlem tamamlandı.")
