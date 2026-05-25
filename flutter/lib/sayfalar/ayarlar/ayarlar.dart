@@ -82,6 +82,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     },
                   ),*/
                   BiltekListTile(
+                    leading: Icon(CupertinoIcons.moon_stars),
                     title: "Tema",
                     subtitle:
                         myNotifier.isDark == null
@@ -105,6 +106,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     },
                   ),
                   BiltekListTile(
+                    leading: Icon(CupertinoIcons.bell),
                     title: "Bildirimler",
                     subtitle: "Bildirim ayarlarınızı özelleştirin.",
                     onTap: () {
@@ -131,7 +133,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     },
                   ),
                   BiltekListTile(
-                    leading: Icon(CupertinoIcons.square_arrow_left),
+                    leading: Icon(CupertinoIcons.info_circle),
                     title: "Hakkında",
                     onTap: () {
                       Navigator.of(context).push(
