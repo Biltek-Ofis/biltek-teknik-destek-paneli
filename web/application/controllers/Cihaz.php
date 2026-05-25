@@ -37,10 +37,10 @@ class Cihaz extends Varsayilancontroller
             if ($tur == "post" || $tur == "POST") {
                 if ($duzenle) {
                     $cihaz = $this->Cihazlar_Model->cihazBul($id);
-                    if (count($cihaz) > 0) {
-                        $cihaz = $cihaz[0];
-                        if (isset($cihaz["kull_id"]) && isset($cihaz["cagri_id"])) {
-                            $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($cihaz["kull_id"], $cihaz["cagri_id"], "servis_kaydi_musteri", "Servis kaydınızdaki bilgiler güncellendi");
+                    if ($cihaz->num_rows() > 0) {
+                        $cihaz = $cihaz->result()[0];
+                        if (strlen($cihaz->kull_id) > 0 && strlen($cihaz->cagri_id) > 0) {
+                            $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($cihaz->kull_id, $cihaz->cagri_id, "servis_kaydi_musteri", "Servis kaydınızdaki bilgiler güncellendi");
                         }
                     }
                     echo json_encode(array("mesaj" => "", "sonuc" => 1));
