@@ -72,6 +72,11 @@ def make_parser():
         help='Tüm desteklenen platformlar için derleme yapar.'
     )
     parser.add_argument(
+        '--release',
+        action='store_true',
+        help='Tüm desteklenen platformlar için derleme yapar.'
+    )
+    parser.add_argument(
         '--run',
         type=str,
         nargs='?',
@@ -91,6 +96,15 @@ def main():
         args.apk = True
         args.bundle = True
         args.web = True
+    
+    if args.release:
+        args.apk = False
+        args.bundle = True
+        args.web = True
+
+    if args.all and args.release:
+        print("Not: --all ve --release seçenekleri birlikte kullanıldığında sadece Play Store için Bundle ve Web derlemesi yapılır. APK derlemesi yapılmaz.")
+
     if args.apk:
         if not calisti:
             update_build_date()

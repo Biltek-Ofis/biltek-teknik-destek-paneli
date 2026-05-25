@@ -51,3 +51,9 @@ python build.py --web --base-href "/"
 ```
 python build.py --all --base-href "/"
 ```
+
+- Sadece release için (Google Play ve Web)
+
+```
+python build.py --release --base-href "/"
+```
