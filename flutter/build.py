@@ -92,21 +92,26 @@ def main():
         args.bundle = True
         args.web = True
     if args.apk:
+        if not calisti:
+            update_build_date()
         calisti = True
         print("APK derleniyor...")
-        update_build_date()
         system2("flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.bundle:
+        if not calisti:
+            update_build_date()
         calisti = True
         print("Play Store için Bundle derleniyor...")
-        update_build_date()
         system2("flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.web:
+        if not calisti:
+            update_build_date()
         calisti = True
         print("Web versionu derleniyor...")
-        update_build_date()
         system2(f"flutter build web --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
     if args.run is not None:
+        if not calisti:
+            update_build_date()
         calisti = True
         run_cmd = f"flutter run"
         if args.run == "default":
@@ -115,7 +120,6 @@ def main():
             print(f"Uygulama '{args.run}' cihazında çalıştırılıyor...")
             run_cmd += f" -d \"{args.run}\""
         run_cmd += " --dart-define-from-file=.env"
-        update_build_date()
         system2(run_cmd)
     if calisti:
         print("İşlem tamamlandı.")
