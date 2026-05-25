@@ -14,6 +14,17 @@ Teknik servis uygulamasi
 pip install -r requirements.txt
 ```
 
+- Çalıştır (Varsayılan Cihaz)
+
+```
+python build.py --run
+```
+
+- Belirli cihazda çalıştırma
+```
+python build.py --run "CihazAdi"
+```
+
 - Android Apk Buildi
 
 ```
@@ -33,4 +44,10 @@ python build.py --bundle
 
 ```
 python build.py --web --base-href "/"
+```
+
+- Hepsini build etmek için
+
+```
+python build.py --all --base-href "/"
 ```
