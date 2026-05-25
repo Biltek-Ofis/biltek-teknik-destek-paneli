@@ -273,16 +273,18 @@ echo '
 		});
 
 		$(document).on("shown.bs.modal", ".modal", function () {
-			const visibleModals = $(".modal:visible");
+			const currentModal = $(this);
 
-			visibleModals.each(function (index) {
-				const zIndex = 1040 + (index + 1) * 10;
-				$(this).css("z-index", zIndex + 1);
+			let maxZIndex = 1040;
+			$(".modal:visible").not(currentModal).each(function () {
+				const z = parseInt($(this).css("z-index")) || 0;
+				if (z > maxZIndex) maxZIndex = z;
 			});
 
-			$(".modal-backdrop").not(".modal-stack").each(function (index) {
-				const zIndex = 1040 + (index + 1) * 10;
-				$(this).css("z-index", zIndex).addClass("modal-stack");
+			currentModal.css("z-index", maxZIndex + 10);
+
+			$(".modal-backdrop").not(".modal-stack").each(function () {
+				$(this).css("z-index", maxZIndex + 9).addClass("modal-stack");
 			});
 		});
 
