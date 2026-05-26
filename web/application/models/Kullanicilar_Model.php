@@ -129,6 +129,52 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where("id", $id)->update($this->kullanicilarTabloAdi(), $veri);
     }
+
+    public function guncelle($id)
+    {
+        $veri = $this->kullaniciPost(false);
+        $kullanici = $this->kullaniciGetir($id);
+        if (count($kullanici) > 0) {
+            $kullanici = $kullanici[0];
+            if (strlen($veri["kullanici_adi"]) >= 3) {
+                if ($this->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj")) {
+                    $eski_sifre = $this->input->post("eski_sifre");
+                    if ($this->Islemler_Model->sifreKontrol($eski_sifre, $kullanici->sifre)) {
+                        $eski_sifre = $this->Islemler_Model->sifrele($eski_sifre);
+                        $yeni_sifre = $this->input->post("yeni_sifre");
+                        $yeni_sifre_tekrar = $this->input->post("yeni_sifre_tekrar");
+                        if (!isset($yeni_sifre) || (isset($yeni_sifre) && strlen($yeni_sifre) == 0)) {
+                            unset($veri["sifre"]);
+                        } else if (isset($yeni_sifre) && strlen($yeni_sifre) > 0) {
+                            if (strlen($yeni_sifre) >= 6) {
+                                if ($yeni_sifre == $yeni_sifre_tekrar) {
+                                    $veri["sifre"] = $this->Islemler_Model->sifrele($yeni_sifre);
+                                } else {
+                                    return "Yeni şifre ve tekrarı eşleşmiyor.";
+                                }
+                            } else {
+                                return "Şifreniz en az 6 karakter olmalıdır.";
+                            }
+                        }
+                        $duzenle = $this->duzenle($kullanici->id, $veri);
+                        if ($duzenle) {
+                            return null;
+                        } else {
+                            return "Bilgileriniz güncellenemedi lütfen daha sonra tekrar deneyin";
+                        }
+                    } else {
+                        return "Eski şifreniz uyuşmuyor lütfen tekrar deneyin.";
+                    }
+                } else {
+                    return "Bu kullanıcı adı zaten mevcut.";
+                }
+            } else {
+                return "Kullanıcı adınız en az 3 karakter olmalıdır.";
+            }
+        } else {
+            return "Kullanıcı bulunamadı.";
+        }
+    }
     public function sil($id)
     {
         return $this->db->reset_query()->where("id", $id)->delete($this->kullanicilarTabloAdi());
@@ -137,18 +183,18 @@ class Kullanicilar_Model extends CI_Model
     {
 
         ///2024-12-22 10:46:21.00000
-        $bitis = time() + $this->Kullanicilar_Model->bitisZamani;
+        $bitis = time() + $this->bitisZamani;
         $veri = array(
             "kullanici_id" => $kullaniciBilgileri->id,
             "auth" => $auth,
-            "bitis" => date($this->Kullanicilar_Model->format, $bitis),
+            "bitis" => date($this->format, $bitis),
             "cihazID" => $cihazID,
         );
         if (isset($fcmToken)) {
-            $this->Kullanicilar_Model->fcmTokenSifirla($fcmToken);
+            $this->fcmTokenSifirla($fcmToken);
             $veri["fcmToken"] = $fcmToken;
         }
-        $this->Kullanicilar_Model->authEkle($veri);
+        $this->authEkle($veri);
     }
     public function authEkle($veri)
     {
@@ -234,7 +280,7 @@ class Kullanicilar_Model extends CI_Model
         $query = $query->where(array("kullanici_id" => $id, "fcmToken !=" => ""));
         $query = $query->where("fcmToken IS NOT NULL");
         $query = $query->where("bitis >= DATE_SUB(NOW(), INTERVAL 1 MONTH)");
-        $query = $query->get($this->Kullanicilar_Model->kullaniciAuthTabloAdi());
+        $query = $query->get($this->kullaniciAuthTabloAdi());
         if ($query->num_rows() > 0) {
             $tokens = array_values(array_filter(
                 array_column($query->result_array(), "fcmToken"),
@@ -352,13 +398,10 @@ class Kullanicilar_Model extends CI_Model
             "kullanici_adi" => $this->input->post("kullanici_adi"),
             "ad_soyad" => $this->input->post("ad_soyad"),
             "sifre" => $this->input->post("sifre"),
-            "urunduzenleme" => 0,
-            "teknikservis" => 0,
-            "yonetici" => 0,
-            "musteri" => 0,
         );
         $teknikservis = $this->input->post("teknikservis");
         $urunduzenleme = $this->input->post("urunduzenleme");
+        $musteri = $this->input->post("musteri");
         if (isset($teknikservis)) {
             $veri["teknikservis"] = $teknikservis;
         }
@@ -368,6 +411,9 @@ class Kullanicilar_Model extends CI_Model
         $yonetici = $this->input->post("yonetici");
         if ($yonetici_dahil && isset($yonetici)) {
             $veri["yonetici"] = $yonetici;
+        }
+        if (isset($musteri)) {
+            $veri["musteri"] = $musteri;
         }
         return $veri;
     }

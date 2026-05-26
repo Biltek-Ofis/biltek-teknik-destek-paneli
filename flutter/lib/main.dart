@@ -15,6 +15,7 @@ import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
 import 'utils/secure_storage.dart';
+import 'widgets/restart.dart';
 
 WebViewEnvironment? webViewEnvironment;
 
@@ -32,7 +33,7 @@ void main() async {
   if (!kIsWeb) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
-  runApp(const MyApp());
+  runApp(RestartWidget(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

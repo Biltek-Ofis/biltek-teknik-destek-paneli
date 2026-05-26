@@ -30,12 +30,12 @@ echo '<section class="content">
         <div class="card">
             <div class="card-body">
                 <form autocomplete="off" method="post" action="' . (DEMO ? "" : base_url("kullanici/guncelle")) . '">
-                    <div class="row">';
-$this->load->view("ogeler/kullanici_ad", array("value" => $kullanici["ad_soyad"]));
-echo '</div>
                     <div class="row">
                         <input type="hidden" name="kullanici_adi_orj" value="' . $kullanici["kullanici_adi"] . '">';
 $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici["kullanici_adi"]));
+echo '</div>
+                    <div class="row">';
+$this->load->view("ogeler/kullanici_ad", array("value" => $kullanici["ad_soyad"]));
 echo '</div>
                     <input type="hidden" name="sifre" value="">
                     <div class="row">';

@@ -121,6 +121,45 @@ class BiltekPost {
     }
   }
 
+  static Future<String?> kullaniciDuzenle({
+    required int id,
+    required String adSoyad,
+    required String kullaniciAdiOrjinal,
+    required String kullaniciAdi,
+    required String eskiSifre,
+    required String yeniSifre,
+    required String yeniSifreTekrar,
+  }) async {
+    Map<String, String> postData = {
+      "id": id.toString(),
+      "ad_soyad": adSoyad,
+      "kullanici_adi_orj": kullaniciAdiOrjinal,
+      "kullanici_adi": kullaniciAdi,
+      "eski_sifre": eskiSifre,
+      "yeni_sifre": yeniSifre,
+      "yeni_sifre_tekrar": yeniSifreTekrar,
+    };
+
+    var response = await BiltekPost.post(Ayarlar.kullaniciGuncelle, postData);
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc")) {
+          if (map["sonuc"].toString() == "1") {
+            return null;
+          } else {
+            return map["mesaj"]?.toString() ?? "Güncelleme başarısız oldu";
+          }
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return "Güncelleme başarısız oldu";
+  }
+
   static Future<List<Cihaz>> cihazlariGetir({
     int? sorumlu,
     String? arama,

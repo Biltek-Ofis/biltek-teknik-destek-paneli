@@ -21,45 +21,11 @@ class Kullanici extends Varsayilancontroller
 	public function guncelle()
 	{
 		if ($this->Giris_Model->kullaniciGiris()) {
-
-			$veri = $this->Kullanicilar_Model->kullaniciPost(false);
-			$kullanici = $this->Kullanicilar_Model->kullaniciBilgileri();
-			if (strlen($veri["kullanici_adi"]) >= 3) {
-				if ($this->Kullanicilar_Model->kullaniciAdiKontrol($veri["kullanici_adi"]) || $veri["kullanici_adi"] == $this->input->post("kullanici_adi_orj")) {
-					$eski_sifre = $this->input->post("eski_sifre");
-					if ($this->Islemler_Model->sifreKontrol($eski_sifre, $kullanici["sifre"])) {
-						$eski_sifre = $this->Islemler_Model->sifrele($eski_sifre);
-						$yeni_sifre = $this->input->post("yeni_sifre");
-						$yeni_sifre_tekrar = $this->input->post("yeni_sifre_tekrar");
-						if (isset($yeni_sifre) && strlen($yeni_sifre) == 0) {
-							unset($veri["sifre"]);
-						} else if (isset($yeni_sifre) && strlen($yeni_sifre) > 0) {
-							if (strlen($yeni_sifre) >= 6) {
-								if ($yeni_sifre == $yeni_sifre_tekrar) {
-									$veri["sifre"] = $this->Islemler_Model->sifrele($yeni_sifre);
-								} else {
-									$this->Kullanicilar_Model->girisUyari("kullanici", "Yeni şifre ve tekrarı eşleşmiyor.");
-									return;
-								}
-							} else {
-								$this->Kullanicilar_Model->girisUyari("kullanici", "Şifreniz en az 6 karakter olmalıdır.");
-								return;
-							}
-						}
-						$duzenle = $this->Kullanicilar_Model->duzenle($kullanici["id"], $veri);
-						if ($duzenle) {
-							redirect(base_url("kullanici"));
-						} else {
-							$this->Kullanicilar_Model->girisUyari("kullanici", "Bilgileriniz güncellenemedi lütfen daha sonra tekrar deneyin");
-						}
-					} else {
-						$this->Kullanicilar_Model->girisUyari("kullanici", "Eski şifreniz uyuşmuyor lütfen tekrar deneyin.");
-					}
-				} else {
-					$this->Kullanicilar_Model->girisUyari("kullanici", "Bu kullanıcı adı zaten mevcut.");
-				}
-			} else {
-				$this->Kullanicilar_Model->girisUyari("kullanici", "Kullanıcı adınız en az 3 karakter olmalıdır.");
+			$guncelle = $this->Kullanicilar_Model->guncelle($_SESSION["KULLANICI_ID"]);
+			if($guncelle == null){
+				redirect(base_url("kullanici"));
+			}else{
+				$this->Kullanicilar_Model->girisUyari("kullanici", $guncelle);
 			}
 		} else {
 			$this->Kullanicilar_Model->girisUyari("cikis");

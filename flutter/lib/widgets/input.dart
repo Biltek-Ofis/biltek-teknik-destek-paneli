@@ -221,6 +221,8 @@ class BiltekSifre extends StatefulWidget {
     this.errorText,
     this.onChanged,
     this.onSubmitted,
+    this.sifreDurumu,
+    this.sifreGoster,
     this.keyboardType,
     this.style,
     this.readOnly = false,
@@ -238,6 +240,8 @@ class BiltekSifre extends StatefulWidget {
   final String? errorText;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
+  final Function(bool)? sifreDurumu;
+  final bool? sifreGoster;
   final TextInputType? keyboardType;
   final TextStyle? style;
   final bool readOnly;
@@ -250,6 +254,12 @@ class BiltekSifre extends StatefulWidget {
 
 class _BiltekSifreState extends State<BiltekSifre> {
   bool sifreyiGoster = false;
+
+  @override
+  void initState() {
+    super.initState();
+    sifreyiGoster = widget.sifreGoster ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -270,21 +280,24 @@ class _BiltekSifreState extends State<BiltekSifre> {
       onSubmitted: widget.onSubmitted,
       suffix: IconButton(
         onPressed: () {
+          widget.sifreDurumu?.call(!sifreyiGoster);
           setState(() {
             sifreyiGoster = !sifreyiGoster;
           });
         },
         icon: Icon(
-          sifreyiGoster ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+          (widget.sifreGoster ?? sifreyiGoster)
+              ? CupertinoIcons.eye
+              : CupertinoIcons.eye_slash,
           color:
               focused
                   ? BiltekTextFieldState._accent.withAlpha(180)
                   : Theme.of(context).colorScheme.primary,
         ),
       ),
-      obscureText: !sifreyiGoster,
-      enableSuggestions: sifreyiGoster,
-      autocorrect: sifreyiGoster,
+      obscureText: !(widget.sifreGoster ?? sifreyiGoster),
+      enableSuggestions: (widget.sifreGoster ?? sifreyiGoster),
+      autocorrect: (widget.sifreGoster ?? sifreyiGoster),
       keyboardType: widget.keyboardType,
       style: widget.style,
       readOnly: widget.readOnly,

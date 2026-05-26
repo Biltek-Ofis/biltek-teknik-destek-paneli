@@ -26,6 +26,7 @@ class Ayarlar {
 
   static String get girisYap => "${appUrl}girisyap/";
   static String get kullaniciGetir => "${appUrl}kullaniciGetir/";
+  static String get kullaniciGuncelle => "${appUrl}kullaniciGuncelle/";
   static String get cihazlarTumu => "${appUrl}cihazlarTumu/";
   static String get tekCihaz => "${appUrl}tekCihaz/";
   static String get version => "${appUrl}version/";

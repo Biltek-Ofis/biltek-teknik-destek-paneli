@@ -14,6 +14,7 @@ import '../giris_sayfasi.dart';
 import 'barkod_okuyucu.dart';
 import 'bildirim.dart';
 import 'hakkinda.dart';
+import 'kullanici_duzenle.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({
@@ -102,6 +103,22 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                         onSelect: (value) {
                           myNotifier.isDark = value;
                         },
+                      );
+                    },
+                  ),
+                  BiltekListTile(
+                    leading: Icon(CupertinoIcons.person),
+                    title: "Profil Düzenle",
+                    subtitle:
+                        "Ad Soyad, Kullanıcı Adı ve Şifre bilgilerinizi düzenleyin",
+                    onTap: () async {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (context) => KullaniciDuzenleSayfasi(
+                                kullanici: widget.kullanici,
+                              ),
+                        ),
                       );
                     },
                   ),

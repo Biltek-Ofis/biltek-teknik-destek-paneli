@@ -216,6 +216,41 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(2));
         }
     }
+    public function kullaniciGuncelle()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        $id = $this->input->post("id");
+        $sonuc = array(
+            "sonuc" => 0,
+            "mesaj" => "",
+        );
+        if (isset($id)) {
+            if (isset($token)) {
+                if ($this->token($token)) {
+                    $kullanici = $this->Kullanicilar_Model->guncelle($id);
+                    if ($kullanici == null) {
+                        $sonuc = array(
+                            "sonuc" => 1,
+                            "mesaj" => "",
+                        );
+                    } else {
+                        $sonuc = array(
+                            "sonuc" => 0,
+                            "mesaj" => $kullanici,
+                        );
+                    }
+                    echo json_encode($sonuc);
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
     public function kullaniciGetir()
     {
         $this->headerlar();
