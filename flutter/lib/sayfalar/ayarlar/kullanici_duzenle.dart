@@ -289,7 +289,7 @@ class _KullaniciDuzenleSayfasiState extends State<KullaniciDuzenleSayfasi> {
       succes = null;
     });
     String? duzenle = await BiltekPost.kullaniciDuzenle(
-      id: widget.kullanici.id,
+      auth: widget.kullanici.auth,
       adSoyad: adSoyad,
       kullaniciAdiOrjinal: widget.kullanici.kullaniciAdi,
       kullaniciAdi: kullaniciAdi,

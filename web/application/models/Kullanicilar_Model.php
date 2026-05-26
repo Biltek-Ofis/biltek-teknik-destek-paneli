@@ -72,6 +72,18 @@ class Kullanicilar_Model extends CI_Model
     {
         return $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi())->result();
     }
+    public function kullaniciGetirAuth($auth = "")
+    {
+        if (strlen($auth) == 0) {
+            return array();
+        }
+        $at = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
+        if ($at->num_rows() > 0) {
+            $authBilgileri = $at->result()[0];
+            return $this->kullaniciGetir($authBilgileri->kullanici_id);
+        }
+        return array();
+    }
     public function kullanicilar($where = array())
     {
         $kullanici_adi_var = False;

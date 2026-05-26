@@ -122,7 +122,7 @@ class BiltekPost {
   }
 
   static Future<String?> kullaniciDuzenle({
-    required int id,
+    required String auth,
     required String adSoyad,
     required String kullaniciAdiOrjinal,
     required String kullaniciAdi,
@@ -131,7 +131,7 @@ class BiltekPost {
     required String yeniSifreTekrar,
   }) async {
     Map<String, String> postData = {
-      "id": id.toString(),
+      "auth": auth,
       "ad_soyad": adSoyad,
       "kullanici_adi_orj": kullaniciAdiOrjinal,
       "kullanici_adi": kullaniciAdi,

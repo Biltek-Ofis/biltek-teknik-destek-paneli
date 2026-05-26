@@ -116,8 +116,6 @@ class App extends CI_Controller
     public function ayarlar()
     {
         $this->headerlar();
-        $auth = $this->input->post("auth");
-        $fcmToken = $this->input->post("fcmToken");
         $token = $this->tokenPost();
         if (isset($token)) {
             if ($this->token($token)) {
@@ -220,27 +218,33 @@ class App extends CI_Controller
     {
         $this->headerlar();
         $token = $this->tokenPost();
-        $id = $this->input->post("id");
+        $auth = $this->input->post("auth");
         $sonuc = array(
             "sonuc" => 0,
             "mesaj" => "",
         );
-        if (isset($id)) {
+        if (isset($auth)) {
             if (isset($token)) {
                 if ($this->token($token)) {
-                    $kullanici = $this->Kullanicilar_Model->guncelle($id);
-                    if ($kullanici == null) {
-                        $sonuc = array(
-                            "sonuc" => 1,
-                            "mesaj" => "",
-                        );
+                    $at = $this->Kullanicilar_Model->kullaniciGetirAuth($auth);
+                    if (count($at) > 0) {
+                        $kullanici = $this->Kullanicilar_Model->guncelle($at[0]->id);
+                        if ($kullanici == null) {
+                            $sonuc = array(
+                                "sonuc" => 1,
+                                "mesaj" => "",
+                            );
+                        } else {
+                            $sonuc = array(
+                                "sonuc" => 0,
+                                "mesaj" => $kullanici,
+                            );
+                        }
+                        echo json_encode($sonuc);
                     } else {
-                        $sonuc = array(
-                            "sonuc" => 0,
-                            "mesaj" => $kullanici,
-                        );
+                        echo json_encode($this->hataMesaji(1));
+                        return;
                     }
-                    echo json_encode($sonuc);
                 } else {
                     echo json_encode($this->hataMesaji(1));
                 }
