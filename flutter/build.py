@@ -44,6 +44,12 @@ def system2(cmd):
 def make_parser():
     parser = argparse.ArgumentParser(description='Build script.')
     parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        help='Derleme loglarını detaylı gösterir'
+    )
+    parser.add_argument(
         '--apk',
         action='store_true',
         help='APK Derle'
@@ -104,25 +110,27 @@ def main():
 
     if args.all and args.release:
         print("Not: --all ve --release seçenekleri birlikte kullanıldığında sadece Play Store için Bundle ve Web derlemesi yapılır. APK derlemesi yapılmaz.")
-
+    ekArgs = ""
+    if args.verbose:
+        ekArgs += " -v"
     if args.apk:
         if not calisti:
             update_build_date()
         calisti = True
         print("APK derleniyor...")
-        system2("flutter build apk --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
+        system2(f"flutter build apk{ekArgs} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.bundle:
         if not calisti:
             update_build_date()
         calisti = True
         print("Play Store için Bundle derleniyor...")
-        system2("flutter build appbundle --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
+        system2(f"flutter build appbundle{ekArgs} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.web:
         if not calisti:
             update_build_date()
         calisti = True
         print("Web versionu derleniyor...")
-        system2(f"flutter build web --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
+        system2(f"flutter build web{ekArgs} --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
     if args.run is not None:
         if not calisti:
             update_build_date()
@@ -134,6 +142,7 @@ def main():
             print(f"Uygulama '{args.run}' cihazında çalıştırılıyor...")
             run_cmd += f" -d \"{args.run}\""
         run_cmd += " --dart-define-from-file=.env"
+        run_cmd += ekArgs
         system2(run_cmd)
     if calisti:
         print("İşlem tamamlandı.")
