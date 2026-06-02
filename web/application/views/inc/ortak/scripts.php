@@ -283,25 +283,34 @@ echo '
 
 			currentModal.css("z-index", maxZIndex + 10);
 
-			$(".modal-backdrop").not(".modal-stack").each(function () {
-				$(this).css("z-index", maxZIndex + 9).addClass("modal-stack");
-			});
+			// .not(".modal-stack") kaldırıldı — her açılışta backdrop güncellenir
+			$(".modal-backdrop").last().css("z-index", maxZIndex + 9).addClass("modal-stack");
 		});
 
 		$(document).on("hidden.bs.modal", ".modal", function () {
-			if ($(".modal:visible").length > 0) {
-				$("body").addClass("modal-open");
+			const visibleModals = $(".modal:visible");
+
+			if (visibleModals.length === 0) {
+				$(".modal-backdrop").remove();
+				$("body").removeClass("modal-open").css("padding-right", "");
+				// modal-stack class'ını temizle — bir sonraki açılış için sıfırla
+				$(".modal-stack").removeClass("modal-stack");
+				return;
 			}
 
-			$(".modal-stack").each(function (index) {
-				const zIndex = 1040 + (index + 1) * 10;
-				$(this).css("z-index", zIndex);
+			$("body").addClass("modal-open");
+
+			const backdrops = $(".modal-backdrop");
+
+			visibleModals.each(function (index) {
+				const base = 1040 + (index + 1) * 10;
+				backdrops.eq(index).css("z-index", base).addClass("modal-stack");
+				$(this).css("z-index", base + 1);
 			});
 
-			$(".modal:visible").each(function (index) {
-				const zIndex = 1040 + (index + 1) * 10;
-				$(this).css("z-index", zIndex + 1);
-			});
+			if (backdrops.length > visibleModals.length) {
+				backdrops.slice(visibleModals.length).remove();
+			}
 		});
 	});
 </script>
