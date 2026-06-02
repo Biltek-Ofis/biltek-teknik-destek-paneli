@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from datetime import date
 from pathlib import Path
 
+skip_android_dependency_validation = True
 
 load_dotenv()
 
@@ -113,18 +114,21 @@ def main():
     ekArgs = ""
     if args.verbose:
         ekArgs += " -v"
+    ekArgsAndroid = ekArgs
+    if skip_android_dependency_validation:
+        ekArgsAndroid += " --android-skip-build-dependency-validation"
     if args.apk:
         if not calisti:
             update_build_date()
         calisti = True
         print("APK derleniyor...")
-        system2(f"flutter build apk{ekArgs} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
+        system2(f"flutter build apk{ekArgsAndroid} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.bundle:
         if not calisti:
             update_build_date()
         calisti = True
         print("Play Store için Bundle derleniyor...")
-        system2(f"flutter build appbundle{ekArgs} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
+        system2(f"flutter build appbundle{ekArgsAndroid} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
     if args.web:
         if not calisti:
             update_build_date()
@@ -136,13 +140,13 @@ def main():
             update_build_date()
         calisti = True
         run_cmd = f"flutter run"
+        run_cmd += ekArgsAndroid
         if args.run == "default":
             print("Uygulama varsayılan cihazda çalıştırılıyor...")
         else:
             print(f"Uygulama '{args.run}' cihazında çalıştırılıyor...")
             run_cmd += f" -d \"{args.run}\""
         run_cmd += " --dart-define-from-file=.env"
-        run_cmd += ekArgs
         system2(run_cmd)
     if calisti:
         print("İşlem tamamlandı.")
