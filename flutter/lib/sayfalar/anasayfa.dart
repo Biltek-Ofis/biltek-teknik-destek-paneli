@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/notification.dart';
-import '../utils/post.dart';
 import 'cagri_kayitlari/cagri_kaydi_detay.dart';
 import 'cagri_kayitlari/cagri_kayitlari.dart';
 import 'cihazlar.dart';
@@ -44,10 +43,7 @@ class _AnasayfaState extends State<Anasayfa> {
         });
 
         Alerts alerts = Alerts.of(context);
-        bool guncelleme = await BiltekPost.guncellemeGerekli();
-        if (guncelleme) {
-          alerts.guncelleme();
-        }
+        await alerts.guncelleme();
         await initUniLinks();
       }
     });

@@ -99,7 +99,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         }
 
         final alerts = Alerts.of(context);
-        if (await BiltekPost.guncellemeGerekli()) alerts.guncelleme();
+        await alerts.guncelleme();
       }
       _fadeCtrl.forward();
     });
