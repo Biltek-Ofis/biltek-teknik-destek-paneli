@@ -518,9 +518,6 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                         width:
                                             MediaQuery.of(context).size.width /
                                             2,
-                                        backgroundColor: Islemler.arkaRenk(
-                                          "bg-primary",
-                                        ),
                                         onPressed: () async {
                                           _desenSec();
                                         },
@@ -654,9 +651,6 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                               SizedBox(),
                               PrimaryButton(
                                 width: MediaQuery.of(context).size.width / 2,
-                                backgroundColor: Islemler.arkaRenk(
-                                  "bg-primary",
-                                ),
                                 onPressed: () async {
                                   await _cihazEkle();
                                 },

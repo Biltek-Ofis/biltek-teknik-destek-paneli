@@ -49,65 +49,171 @@ class PrimaryButton extends StatelessWidget {
     this.label,
     required this.onPressed,
     this.width,
-    this.height,
+    this.height = 40,
     this.loading = false,
     this.backgroundColor,
     this.textColor = Colors.white,
-    // this.backgroundColor1 = const Color(0xFF00E676),
-    //this.backgroundColor2 = const Color(0xFF00C853),
   });
 
   final IconData? icon;
   final String? label;
   final VoidCallback onPressed;
   final double? width;
-  final double? height;
+  final double height;
   final bool loading;
   final Color? backgroundColor;
   final Color textColor;
 
   @override
   Widget build(BuildContext context) {
-    Color bg = backgroundColor ?? Theme.of(context).colorScheme.primary;
+    final Color bg = backgroundColor ?? Theme.of(context).colorScheme.primary;
+
+    if (label != null) {
+      return _LabelButton(
+        icon: icon,
+        label: label!,
+        onPressed: loading ? null : onPressed,
+        width: width,
+        height: height,
+        bg: bg,
+        textColor: textColor,
+        loading: loading,
+      );
+    }
+
+    if (icon != null) {
+      return _IconButton(
+        icon: icon!,
+        onPressed: onPressed,
+        size: height,
+        bg: bg,
+        textColor: textColor,
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+}
+
+class _LabelButton extends StatelessWidget {
+  const _LabelButton({
+    required this.label,
+    required this.onPressed,
+    required this.bg,
+    required this.textColor,
+    required this.loading,
+    required this.height,
+    this.icon,
+    this.width,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final Color bg;
+  final Color textColor;
+  final bool loading;
+  final double height;
+  final IconData? icon;
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: height ?? 40,
-      child:
-          label != null
-              ? OutlinedButton.icon(
-                onPressed: loading ? null : onPressed,
-                icon:
-                    icon != null
-                        ? Icon(icon, size: 18, color: textColor)
-                        : const SizedBox.shrink(),
-                label: Text(
-                  label!,
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
+      height: height,
+      child: FilledButton(
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: bg,
+          disabledBackgroundColor: bg.withValues(alpha: 0.55),
+          foregroundColor: textColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          elevation: 0,
+          animationDuration: const Duration(milliseconds: 150),
+        ),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          child:
+              loading
+                  ? _LoadingIndicator(color: textColor)
+                  : Row(
+                    key: const ValueKey('content'),
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (icon != null) ...[
+                        Icon(icon, size: 16, color: textColor),
+                        const SizedBox(width: 7),
+                      ],
+                      Text(
+                        label,
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13.5,
+                          letterSpacing: 0.1,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(width: 1.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: bg,
-                ),
-              )
-              : (icon != null
-                  ? ElevatedButton(
-                    onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      backgroundColor: bg,
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.center,
-                    ),
-                    child: Center(child: Icon(icon, color: textColor)),
-                  )
-                  : SizedBox()),
+        ),
+      ),
+    );
+  }
+}
+
+class _IconButton extends StatelessWidget {
+  const _IconButton({
+    required this.icon,
+    required this.onPressed,
+    required this.bg,
+    required this.textColor,
+    required this.size,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final Color bg;
+  final Color textColor;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: FilledButton(
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: bg,
+          foregroundColor: textColor,
+          shape: const CircleBorder(),
+          padding: EdgeInsets.zero,
+          elevation: 0,
+          animationDuration: const Duration(milliseconds: 120),
+        ),
+        child: Icon(icon, size: 18, color: textColor),
+      ),
+    );
+  }
+}
+
+class _LoadingIndicator extends StatelessWidget {
+  const _LoadingIndicator({required this.color});
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      key: const ValueKey('loading'),
+      width: 16,
+      height: 16,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        color: color.withValues(alpha: 0.8),
+      ),
     );
   }
 }
@@ -119,7 +225,7 @@ class SecondaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.width,
-    this.height,
+    this.height = 40,
     this.loading = false,
     this.backgroundColor = const Color.fromARGB(255, 58, 59, 58),
     this.textColor = Colors.white,
@@ -129,7 +235,7 @@ class SecondaryButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final double? width;
-  final double? height;
+  final double height;
   final bool loading;
   final Color backgroundColor;
   final Color textColor;

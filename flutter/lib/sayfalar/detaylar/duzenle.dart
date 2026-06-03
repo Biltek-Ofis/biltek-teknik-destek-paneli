@@ -547,10 +547,6 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                       context,
                                                     ).size.width /
                                                     2,
-                                                backgroundColor:
-                                                    Islemler.arkaRenk(
-                                                      "bg-primary",
-                                                    ),
                                                 onPressed: () async {
                                                   _desenSec();
                                                 },
