@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../models/kullanici.dart';
-import '../utils/alerts.dart';
 import '../utils/notification.dart';
 import 'cagri_kayitlari/cagri_kaydi_detay.dart';
 import 'cagri_kayitlari/cagri_kayitlari.dart';
@@ -41,9 +40,6 @@ class _AnasayfaState extends State<Anasayfa> {
           debugPrint("Bildirim tıklandı");
           bildirimTiklamaYonlendir(tip: tip, id: id);
         });
-
-        Alerts alerts = Alerts.of(context);
-        await alerts.guncelleme();
         await initUniLinks();
       }
     });

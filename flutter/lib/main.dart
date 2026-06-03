@@ -11,6 +11,7 @@ import 'models/kullanici.dart';
 import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris_sayfasi.dart';
+import 'sayfalar/guncelleme.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
@@ -88,34 +89,60 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       body: Consumer<MyNotifier>(
         builder: (context, MyNotifier myNotifier, child) {
-          return FutureBuilder<String?>(
-            future: SecureStorage.getString(SecureStorage.authString),
-            builder: (context, AsyncSnapshot<String?> authSnapshot) {
-              if (authSnapshot.connectionState == ConnectionState.waiting) {
+          return FutureBuilder<bool>(
+            future: BiltekPost.guncellemeGerekli(),
+            builder: (context, AsyncSnapshot<bool> guncellemeSnapshot) {
+              if (guncellemeSnapshot.connectionState ==
+                  ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else {
-                if (authSnapshot.hasData && authSnapshot.data != null) {
-                  return FutureBuilder<KullaniciAuthModel?>(
-                    future: BiltekPost.kullaniciGetir(authSnapshot.data!),
-                    builder: (
-                      context,
-                      AsyncSnapshot<KullaniciAuthModel?> kullaniciSnapshot,
-                    ) {
-                      if (kullaniciSnapshot.connectionState ==
+                if (guncellemeSnapshot.data == true) {
+                  return GuncellemeSayfasi();
+                } else {
+                  return FutureBuilder<String?>(
+                    future: SecureStorage.getString(SecureStorage.authString),
+                    builder: (context, AsyncSnapshot<String?> authSnapshot) {
+                      if (authSnapshot.connectionState ==
                           ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else {
-                        if (kullaniciSnapshot.hasData &&
-                            kullaniciSnapshot.data != null &&
-                            kullaniciSnapshot.data!.id != 0) {
-                          return Anasayfa(
-                            sayfa:
-                                kullaniciSnapshot.data!.musteri
-                                    ? "cagri"
-                                    : (kullaniciSnapshot.data!.teknikservis
-                                        ? "cihazlarim"
-                                        : "anasayfa"),
-                            kullanici: kullaniciSnapshot.data!,
+                        if (authSnapshot.hasData && authSnapshot.data != null) {
+                          return FutureBuilder<KullaniciAuthModel?>(
+                            future: BiltekPost.kullaniciGetir(
+                              authSnapshot.data!,
+                            ),
+                            builder: (
+                              context,
+                              AsyncSnapshot<KullaniciAuthModel?>
+                              kullaniciSnapshot,
+                            ) {
+                              if (kullaniciSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                if (kullaniciSnapshot.hasData &&
+                                    kullaniciSnapshot.data != null &&
+                                    kullaniciSnapshot.data!.id != 0) {
+                                  return Anasayfa(
+                                    sayfa:
+                                        kullaniciSnapshot.data!.musteri
+                                            ? "cagri"
+                                            : (kullaniciSnapshot
+                                                    .data!
+                                                    .teknikservis
+                                                ? "cihazlarim"
+                                                : "anasayfa"),
+                                    kullanici: kullaniciSnapshot.data!,
+                                  );
+                                } else {
+                                  return GirisSayfasi(
+                                    spKullanici: myNotifier.kullanici,
+                                  );
+                                }
+                              }
+                            },
                           );
                         } else {
                           return GirisSayfasi(
@@ -125,8 +152,6 @@ class MainPage extends StatelessWidget {
                       }
                     },
                   );
-                } else {
-                  return GirisSayfasi(spKullanici: myNotifier.kullanici);
                 }
               }
             },

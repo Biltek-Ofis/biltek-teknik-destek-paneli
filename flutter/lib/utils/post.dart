@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:in_app_update/in_app_update.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:universal_io/universal_io.dart';
 
 import '../ayarlar.dart';
 import '../models/ayarlar.dart';
@@ -71,17 +73,25 @@ class BiltekPost {
       if (kIsWeb) {
         return false;
       }
-      var response = await BiltekPost.post(Ayarlar.version, {});
-      if (response.statusCode == 201) {
-        var resp = await response.stream.bytesToString();
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        debugPrint("Current version: ${packageInfo.buildNumber}");
-        int currentVersion = int.parse(packageInfo.buildNumber);
-        int updatedVersion = int.parse(resp);
-        return currentVersion < updatedVersion;
+      bool guncelle;
+      if (Platform.isAndroid) {
+        AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+        guncelle =
+            updateInfo.updateAvailability == UpdateAvailability.updateAvailable;
       } else {
-        return false;
+        var response = await BiltekPost.post(Ayarlar.version, {});
+        if (response.statusCode == 201) {
+          var resp = await response.stream.bytesToString();
+          PackageInfo packageInfo = await PackageInfo.fromPlatform();
+          debugPrint("Current version: ${packageInfo.buildNumber}");
+          int currentVersion = int.parse(packageInfo.buildNumber);
+          int updatedVersion = int.parse(resp);
+          guncelle = currentVersion < updatedVersion;
+        } else {
+          guncelle = false;
+        }
       }
+      return guncelle;
     } on Exception {
       return false;
     }

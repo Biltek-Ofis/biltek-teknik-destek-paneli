@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import '../ayarlar.dart';
 import '../models/giris.dart';
 import '../models/secure_storage_kullanici.dart';
-import '../utils/alerts.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
 import '../utils/islemler.dart';
@@ -97,9 +96,6 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         } else if (!_canAuthBio) {
           FocusScope.of(context).requestFocus(_sifreFocus);
         }
-
-        final alerts = Alerts.of(context);
-        await alerts.guncelleme();
       }
       _fadeCtrl.forward();
     });
