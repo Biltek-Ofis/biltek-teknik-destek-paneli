@@ -23,6 +23,8 @@ WebViewEnvironment? webViewEnvironment;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   await SecureStorage.init();
 
   await FirebaseApi.initialize();
