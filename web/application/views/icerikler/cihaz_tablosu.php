@@ -900,7 +900,7 @@ $(document).ready(function(){
                         </tr>
                         <tr>
                             <th class="align-middle">Sorumlu Personel:</th>
-                            <td id="dz-sorumlu-personel" class="align-middle">' . ($this->Kullanicilar_Model->yonetici() ? $this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) : "") . '</td>
+                            <td id="dz-sorumlu-personel" class="align-middle">' . $this->load->view("ogeler/sorumlu_select", array("sifirla" => true), true) . '</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Markası:</th>
@@ -1617,11 +1617,8 @@ echo '
               $("#dt_duzenle input#telefon_numarasi").val("+90");
             }
             $("#dt_duzenle select#cihaz_turu").val(value.cihaz_turu_val).change();
-            if(yonetici){
-              $("#dt_duzenle select#sorumlu").val(value.sorumlu_val).change();
-            }else{
-              $("#dt_duzenle #dz-sorumlu-personel").html(value.sorumlu);
-            }
+            $("#dt_duzenle select#sorumlu").val(value.sorumlu_val).change();
+            // $("#dt_duzenle #dz-sorumlu-personel").html(value.sorumlu);
             $("#dt_duzenle input#cihaz").val(value.cihaz);
             $("#dt_duzenle input#cihaz_modeli").val(value.cihaz_modeli);
             $("#dt_duzenle input#seri_no").val(value.seri_no);
