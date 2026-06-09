@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/kullanici.dart';
 import '../../models/lisans/lisans.dart';
 import '../../models/lisans/versiyon.dart';
 import '../../utils/alerts.dart';
@@ -12,10 +13,12 @@ import '../../widgets/input.dart';
 class LisansDuzenlemeSayfasi extends StatefulWidget {
   const LisansDuzenlemeSayfasi({
     super.key,
+    required this.kullanici,
     required this.lisanslariYenile,
     this.lisans,
   });
 
+  final KullaniciAuthModel kullanici;
   final VoidCallback lisanslariYenile;
   final Lisans? lisans;
 
@@ -47,7 +50,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      List<Versiyon> versiyonlarTemp = await BiltekPost.versiyonlariGetir();
+      List<Versiyon> versiyonlarTemp =
+          await BiltekPost.of(widget.kullanici.auth).versiyonlariGetir();
       if (mounted) {
         setState(() {
           versiyonlar = versiyonlarTemp;
@@ -359,12 +363,13 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
             if (sureDurumu == 0) {
               postData.addAll({"aktif": aktifDurumu.toString()});
             }
-            duzenle = await BiltekPost.lisansDuzenle(
-              id: widget.lisans!.id,
-              postData: postData,
-            );
+            duzenle = await BiltekPost.of(
+              widget.kullanici.auth,
+            ).lisansDuzenle(id: widget.lisans!.id, postData: postData);
           } else {
-            duzenle = await BiltekPost.lisansEkle(postData: postData);
+            duzenle = await BiltekPost.of(
+              widget.kullanici.auth,
+            ).lisansEkle(postData: postData);
           }
           if (duzenle) {
             widget.lisanslariYenile.call();

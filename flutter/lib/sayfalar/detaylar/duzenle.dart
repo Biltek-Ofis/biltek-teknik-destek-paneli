@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../models/cihaz.dart';
 import '../../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../../models/islemler_model.dart';
+import '../../models/kullanici.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
 import '../../utils/desen.dart';
@@ -16,10 +17,12 @@ import '../../widgets/musteri_sec.dart';
 class DetayDuzenle extends StatefulWidget {
   const DetayDuzenle({
     super.key,
+    required this.kullanici,
     required this.cihaz,
     required this.cihazlariYenile,
   });
 
+  final KullaniciAuthModel kullanici;
   final Cihaz cihaz;
   final VoidCallback cihazlariYenile;
 
@@ -317,6 +320,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                           onTap: () async {
                                             MusteriSec.show(
                                               context,
+                                              kullanici: widget.kullanici,
                                               musteriAdiController:
                                                   musteriAdiController,
                                               musteriAdiFocus:
@@ -1368,7 +1372,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
 
   Future<void> _cihazDuzenlemeGetir() async {
     CihazDuzenlemeModel cihazDuzenlemeTemp =
-        await BiltekPost.cihazDuzenlemeGetir();
+        await BiltekPost.of(widget.kullanici.auth).cihazDuzenlemeGetir();
     setState(() {
       cihazDuzenleme = cihazDuzenlemeTemp;
     });
@@ -1599,10 +1603,9 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
           "kdv_${(i + 1)}": islemler[i].kdv,
         });
       }
-      bool sonuc = await BiltekPost.cihazDuzenle(
-        id: widget.cihaz.id,
-        postData: postData,
-      );
+      bool sonuc = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).cihazDuzenle(id: widget.cihaz.id, postData: postData);
       if (sonuc) {
         widget.cihazlariYenile.call();
         navigatorState.pop();

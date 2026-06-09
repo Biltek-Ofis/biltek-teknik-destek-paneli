@@ -91,13 +91,23 @@ class Cagrikayitlari extends Varsayilancontroller
     }
     public function fiyationayla($id)
     {
-        $this->Cihazlar_Model->cagriDurumGuncelle($id, "Fiyat Onaylandı", "fiyatonay");
-        redirect(base_url("cagrikayitlari/detay/" . $id));
+        if ($this->Giris_Model->kullaniciGiris(TRUE)) {
+            $kullanici_id = $this->Kullanicilar_Model->kullaniciBilgileri()["id"];
+            $this->Cihazlar_Model->cagriDurumGuncelle($kullanici_id, $id, "Fiyat Onaylandı", "fiyatonay");
+            redirect(base_url("cagrikayitlari/detay/" . $id));
+        } else {
+            redirect(base_url());
+        }
     }
     public function fiyatireddet($id)
     {
-        $this->Cihazlar_Model->cagriDurumGuncelle($id, "Fiyat Onaylanmadı", "fiyatret");
-        redirect(base_url("cagrikayitlari/detay/" . $id));
+        if ($this->Giris_Model->kullaniciGiris(TRUE)) {
+            $kullanici_id = $this->Kullanicilar_Model->kullaniciBilgileri()["id"];
+            $this->Cihazlar_Model->cagriDurumGuncelle($kullanici_id, $id, "Fiyat Onaylanmadı", "fiyatret");
+            redirect(base_url("cagrikayitlari/detay/" . $id));
+        } else {
+            redirect(base_url());
+        }
     }
 }
 

@@ -259,7 +259,7 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
               format: ui.ImageByteFormat.png,
             );
             if (byteData != null) {
-              yuklendi = await BiltekPost.imzaYukle(
+              yuklendi = await BiltekPost.of(widget.kullanici.auth).imzaYukle(
                 id: widget.id,
                 medya: byteData.buffer.asUint8List(),
                 points: Cihaz.imzaPointsToJson(_controller.points),
@@ -278,7 +278,7 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
       } else {
         if (widget.points.isNotEmpty ||
             teslimAlanController.text.trim() != widget.teslimAlan) {
-          yuklendi = await BiltekPost.imzaSil(
+          yuklendi = await BiltekPost.of(widget.kullanici.auth).imzaSil(
             id: widget.id,
             kullaniciID: widget.kullanici.id,
             teslimAlan: teslimAlanController.text.trim(),

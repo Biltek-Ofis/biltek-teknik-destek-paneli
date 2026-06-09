@@ -87,14 +87,18 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       fcmStream = FirebaseMessaging.instance.onTokenRefresh.listen((
         fcmToken,
       ) async {
-        BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
+        BiltekPost.of(
+          widget.kullanici.auth,
+        ).fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
       });
       fcmStream?.onError((err) {
         debugPrint("Failed to get fcm token");
       });
       String? token = await FirebaseMessaging.instance.getToken();
 
-      BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
+      BiltekPost.of(
+        widget.kullanici.auth,
+      ).fcmTokenGuncelle(widget.kullanici.auth, token);
 
       await pcYenile();
     });
@@ -223,6 +227,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                 MaterialPageRoute(
                                   builder:
                                       (context) => YeniCihazSayfasi(
+                                        kullanici: widget.kullanici,
                                         cihazlariYenile: () async {
                                           await _cihazlariYenile();
                                         },
@@ -337,6 +342,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                                 MaterialPageRoute(
                                   builder:
                                       (context) => YeniCihazSayfasi(
+                                        kullanici: widget.kullanici,
                                         cihazlariYenile: () async {
                                           await _cihazlariYenile();
                                         },
@@ -475,7 +481,9 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         suankiIndex = 0;
       });
     }
-    List<Cihaz> cihazlarTemp = await BiltekPost.cihazlariGetir(
+    List<Cihaz> cihazlarTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).cihazlariGetir(
       sorumlu: widget.sorumlu,
       arama: arama.isNotEmpty ? arama : null,
       offset: suankiIndex * 50,
@@ -946,10 +954,9 @@ Future<void> barkodTara(
                   if (res.isNotEmpty && res.startsWith("giris:")) {
                     var splt = res.split(":");
                     if (splt.length == 2) {
-                      bool sonuc = await BiltekPost.barkodGiris(
-                        id: kullanici.id,
-                        qr: splt[1],
-                      );
+                      bool sonuc = await BiltekPost.of(
+                        kullanici.auth,
+                      ).barkodGiris(id: kullanici.id, qr: splt[1]);
                       if (sonuc) {
                         if (context.mounted) {
                           showDialog(

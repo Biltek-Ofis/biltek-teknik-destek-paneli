@@ -153,16 +153,15 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
       NavigatorState navigatorState = Navigator.of(context);
       bool duzenle = false;
       if (widget.not != null) {
-        duzenle = await BiltekPost.notDuzenle(
+        duzenle = await BiltekPost.of(widget.kullanici.auth).notDuzenle(
           id: widget.not!.id,
           aciklama: aciklama,
           kullaniciID: widget.kullanici.id,
         );
       } else {
-        duzenle = await BiltekPost.notEkle(
-          aciklama: aciklama,
-          kullaniciID: widget.kullanici.id,
-        );
+        duzenle = await BiltekPost.of(
+          widget.kullanici.auth,
+        ).notEkle(aciklama: aciklama, kullaniciID: widget.kullanici.id);
       }
       if (duzenle) {
         widget.notlariYenile?.call();

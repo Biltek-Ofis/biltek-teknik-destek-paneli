@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../models/kullanici.dart';
 import '../models/musteri.dart';
 import '../utils/post.dart';
 import 'input.dart';
@@ -11,17 +12,20 @@ typedef MusteriSecCallback = void Function(MusteriModel musteri);
 class MusteriSec extends StatefulWidget {
   const MusteriSec({
     super.key,
+    required this.kullanici,
     this.musteriAdiController,
     this.musteriAdiFocus,
     this.onMusteriSec,
   });
 
+  final KullaniciAuthModel kullanici;
   final TextEditingController? musteriAdiController;
   final FocusNode? musteriAdiFocus;
   final MusteriSecCallback? onMusteriSec;
 
   static void show(
     BuildContext context, {
+    required KullaniciAuthModel kullanici,
     TextEditingController? musteriAdiController,
     FocusNode? musteriAdiFocus,
     required MusteriSecCallback onMusteriSec,
@@ -36,6 +40,7 @@ class MusteriSec extends StatefulWidget {
             width: MediaQuery.of(context).size.width,
             height: 300,
             child: MusteriSec(
+              kullanici: kullanici,
               musteriAdiController: musteriAdiController,
               musteriAdiFocus: musteriAdiFocus,
               onMusteriSec: (musteri) {
@@ -76,10 +81,9 @@ class _MusteriSecState extends State<MusteriSec> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      List<MusteriModel> tempMusteriler =
-          await BiltekPost.musteriBilgileriGetir(
-            widget.musteriAdiController?.text ?? "",
-          );
+      List<MusteriModel> tempMusteriler = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).musteriBilgileriGetir(widget.musteriAdiController?.text ?? "");
       setState(() {
         musteriler = tempMusteriler;
       });
@@ -104,8 +108,9 @@ class _MusteriSecState extends State<MusteriSec> {
           onChanged: (value) async {
             debounce?.cancel();
             debounce = Timer(const Duration(milliseconds: 400), () async {
-              List<MusteriModel> tempMusteriler =
-                  await BiltekPost.musteriBilgileriGetir(value);
+              List<MusteriModel> tempMusteriler = await BiltekPost.of(
+                widget.kullanici.auth,
+              ).musteriBilgileriGetir(value);
               setState(() {
                 musteriler = tempMusteriler;
               });

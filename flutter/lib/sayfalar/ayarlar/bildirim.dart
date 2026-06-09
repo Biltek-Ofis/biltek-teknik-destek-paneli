@@ -65,7 +65,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.bildirimAyarla(
+                        bool durum = await BiltekPost.of(
+                          widget.kullanici.auth,
+                        ).bildirimAyarla(
                           widget.kullanici.id,
                           "cihaz",
                           !bildirimBul("cihaz", varsayilan: true).durum,
@@ -116,7 +118,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                             ),
                           );
                         }
-                        bool sonuc = await BiltekPost.bildirimAyarlaToplu(
+                        bool sonuc = await BiltekPost.of(
+                          widget.kullanici.auth,
+                        ).bildirimAyarlaToplu(
                           widget.kullanici.id,
                           bildirimlerTemp,
                         );
@@ -152,7 +156,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.bildirimAyarla(
+                        bool durum = await BiltekPost.of(
+                          widget.kullanici.auth,
+                        ).bildirimAyarla(
                           widget.kullanici.id,
                           "cagri_kaydi_musteri",
                           !bildirimBul(
@@ -195,7 +201,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.bildirimAyarla(
+                        bool durum = await BiltekPost.of(
+                          widget.kullanici.auth,
+                        ).bildirimAyarla(
                           widget.kullanici.id,
                           "servis_kaydi_musteri",
                           !bildirimBul(
@@ -225,9 +233,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
   }
 
   Future<void> bildirimleriGetir() async {
-    var bildirimlerTemp = await BiltekPost.bildirimleriGetir(
-      widget.kullanici.id,
-    );
+    var bildirimlerTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).bildirimleriGetir(widget.kullanici.id);
     setState(() {
       bildirimler = bildirimlerTemp;
       yuklendi = true;
@@ -242,7 +250,8 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
   }
 
   Future<void> cihazTurleriniGetir() async {
-    List<CihazTurleriModel> cihazTurleriTemp = await BiltekPost.cihazTurleri();
+    List<CihazTurleriModel> cihazTurleriTemp =
+        await BiltekPost.of(widget.kullanici.auth).cihazTurleri();
     setState(() {
       cihazTurleri = cihazTurleriTemp;
     });

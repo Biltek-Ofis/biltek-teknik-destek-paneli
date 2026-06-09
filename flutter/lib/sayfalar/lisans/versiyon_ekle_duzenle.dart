@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/kullanici.dart';
 import '../../models/lisans/versiyon.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
@@ -9,10 +10,12 @@ import '../../widgets/input.dart';
 class VersiyonDuzenlemeSayfasi extends StatefulWidget {
   const VersiyonDuzenlemeSayfasi({
     super.key,
+    required this.kullanici,
     required this.versiyonlariYenile,
     this.versiyon,
   });
 
+  final KullaniciAuthModel kullanici;
   final VoidCallback versiyonlariYenile;
   final Versiyon? versiyon;
 
@@ -185,12 +188,13 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
       Map<String, String> postData = {"versiyon": versiyon};
       bool? duzenle;
       if (widget.versiyon != null) {
-        duzenle = await BiltekPost.versiyonDuzenle(
-          id: widget.versiyon!.id,
-          postData: postData,
-        );
+        duzenle = await BiltekPost.of(
+          widget.kullanici.auth,
+        ).versiyonDuzenle(id: widget.versiyon!.id, postData: postData);
       } else {
-        duzenle = await BiltekPost.versiyonEkle(postData: postData);
+        duzenle = await BiltekPost.of(
+          widget.kullanici.auth,
+        ).versiyonEkle(postData: postData);
       }
       if (duzenle) {
         widget.versiyonlariYenile.call();

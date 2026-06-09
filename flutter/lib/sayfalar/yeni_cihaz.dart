@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../models/cihaz.dart';
 import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
+import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/buttons.dart';
 import '../utils/desen.dart';
@@ -15,10 +16,12 @@ import '../widgets/takvim/dialog.dart';
 class YeniCihazSayfasi extends StatefulWidget {
   const YeniCihazSayfasi({
     super.key,
+    required this.kullanici,
     required this.cihazlariYenile,
     this.initialCihaz,
   });
 
+  final KullaniciAuthModel kullanici;
   final VoidCallback cihazlariYenile;
 
   final Cihaz? initialCihaz;
@@ -301,6 +304,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
                                   onTap: () {
                                     MusteriSec.show(
                                       context,
+                                      kullanici: widget.kullanici,
                                       musteriAdiController:
                                           musteriAdiController,
                                       musteriAdiFocus: musteriAdiDialogFocus,
@@ -769,7 +773,9 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
         postData.addAll({"telefon_numarasi": gsm});
       }
 
-      bool sonuc = await BiltekPost.cihazEkle(postData: postData);
+      bool sonuc = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).cihazEkle(postData: postData);
       if (sonuc) {
         widget.cihazlariYenile.call();
         navigatorState.pop();
@@ -805,7 +811,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
 
   Future<void> _cihazDuzenlemeGetir() async {
     CihazDuzenlemeModel cihazDuzenlemeTemp =
-        await BiltekPost.cihazDuzenlemeGetir();
+        await BiltekPost.of(widget.kullanici.auth).cihazDuzenlemeGetir();
     setState(() {
       cihazDuzenleme = cihazDuzenlemeTemp;
     });

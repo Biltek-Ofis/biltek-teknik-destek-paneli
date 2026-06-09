@@ -100,7 +100,7 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
     });
     NavigatorState navigatorState = Navigator.of(context);
     yukleniyor(context);
-    Cihaz? cihazTemp = await BiltekPost.cihazGetir(
+    Cihaz? cihazTemp = await BiltekPost.cihazGetirNoAuth(
       no: int.tryParse(takipNoController.text) ?? 0,
     );
     navigatorState.pop();

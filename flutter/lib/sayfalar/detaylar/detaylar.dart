@@ -154,6 +154,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                       MaterialPageRoute(
                         builder:
                             (context) => DetayDuzenle(
+                              kullanici: widget.kullanici,
                               cihaz: cihaz!,
                               cihazlariYenile: () async {
                                 await _cihaziYenile();
@@ -550,7 +551,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   Future<void> _cihaziYenile() async {
     _yukleniyorGoster();
-    Cihaz? cihazTemp = await BiltekPost.cihazGetir(no: widget.no);
+    Cihaz? cihazTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).cihazGetir(no: widget.no);
     if (mounted) {
       setState(() => cihaz = cihazTemp);
     } else {
@@ -759,7 +762,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   bool telefonGecerli(String t) => t.isNotEmpty && t != "+90" && t != "+9";
 
   Future<void> _cihazDuzenlemeGetir() async {
-    final tmp = await BiltekPost.cihazDuzenlemeGetir();
+    final tmp =
+        await BiltekPost.of(widget.kullanici.auth).cihazDuzenlemeGetir();
     setState(() => cihazDuzenleme = tmp);
   }
 
@@ -776,6 +780,7 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       MaterialPageRoute(
         builder:
             (context) => DetaylarGaleri(
+              kullanici: widget.kullanici,
               duzenle: duzenlenebilir(),
               id: cihaz!.id,
               servisNo: cihaz!.servisNo,

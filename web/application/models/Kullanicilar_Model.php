@@ -74,7 +74,7 @@ class Kullanicilar_Model extends CI_Model
     }
     public function kullaniciGetirAuth($auth = "")
     {
-        if (strlen($auth) == 0) {
+        if (strlen(trim($auth)) == 0) {
             return array();
         }
         $at = $this->db->reset_query()->where(array("auth" => $auth))->get($this->kullaniciAuthTabloAdi());
@@ -83,6 +83,21 @@ class Kullanicilar_Model extends CI_Model
             return $this->kullaniciGetir($authBilgileri->kullanici_id);
         }
         return array();
+    }
+    public function kullaniciKontrol(){
+        $auth = $this->input->post("authM");
+        if(!isset($auth)){
+            return null;
+        }
+        if(strlen(trim($auth)) == 0){
+            return null;
+        }
+        $kullanici = $this->kullaniciGetirAuth($auth);
+        if(count($kullanici) > 0){
+            return $kullanici[0];
+        }else{
+            return null;
+        }
     }
     public function kullanicilar($where = array())
     {
@@ -359,7 +374,6 @@ class Kullanicilar_Model extends CI_Model
 
         $cagri = $this->Cihazlar_Model->cagriKaydiGetir($cagri_id);
         if ($cagri != null) {
-            $cagri = $cagri->result()[0];
             $mesaj = $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
             if (count($bildirimler) > 0) {
                 $bildirim = $bildirimler[0];
@@ -377,7 +391,6 @@ class Kullanicilar_Model extends CI_Model
 
         $cagri = $this->Cihazlar_Model->cagriKaydiGetir($cagri_id);
         if ($cagri != null) {
-            $cagri = $cagri->result()[0];
             $baslik = 'Yeni çağrı kaydı eklend.';
             $mesaj = $cagri->bolge . " " . $cagri->birim . " - " . $cagri->cihaz . (strlen($cagri->cihaz_modeli) > 0 ? " " . $cagri->cihaz_modeli : "") . " - " . $cagri->ariza_aciklamasi;
             if (count($bildirimler) > 0) {

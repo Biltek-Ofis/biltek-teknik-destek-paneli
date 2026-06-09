@@ -337,7 +337,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
     if (fcmToken != null) postData["fcmToken"] = fcmToken;
 
-    final response = await BiltekPost.post(Ayarlar.girisYap, postData);
+    final response = await BiltekPost.of("").post(Ayarlar.girisYap, postData);
 
     if (response.statusCode == 201) {
       final resp = await response.stream.bytesToString();

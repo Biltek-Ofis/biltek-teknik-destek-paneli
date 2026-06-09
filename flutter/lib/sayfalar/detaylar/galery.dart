@@ -8,6 +8,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../ayarlar.dart';
+import '../../models/kullanici.dart';
 import '../../models/medya.dart';
 import '../../utils/post.dart';
 import '../../utils/resim_secici.dart';
@@ -17,11 +18,13 @@ import 'resim_duzenle.dart';
 class DetaylarGaleri extends StatefulWidget {
   const DetaylarGaleri({
     super.key,
+    required this.kullanici,
     required this.duzenle,
     required this.id,
     required this.servisNo,
   });
 
+  final KullaniciAuthModel kullanici;
   final bool duzenle;
   final int id;
   final int servisNo;
@@ -179,9 +182,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
         yukleniyor = true;
       });
     }
-    List<MedyaModel> medyalarTemp = await BiltekPost.medyalariGetir(
-      id: widget.id,
-    );
+    List<MedyaModel> medyalarTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).medyalariGetir(id: widget.id);
     if (mounted) {
       setState(() {
         medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
@@ -256,10 +259,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                 NavigatorState navigatorState = Navigator.of(context);
                 _yukleniyorDialog();
 
-                bool resimYuklendi = await BiltekPost.medyaYukle(
-                  id: widget.id,
-                  medya: bytes,
-                );
+                bool resimYuklendi = await BiltekPost.of(
+                  widget.kullanici.auth,
+                ).medyaYukle(id: widget.id, medya: bytes);
                 navigatorState.pop();
                 if (resimYuklendi) {
                   navigatorState.pop();
@@ -324,9 +326,9 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     if (medyalar.isNotEmpty) {
       NavigatorState navigatorState = Navigator.of(context);
       _yukleniyorDialog();
-      bool silindi = await BiltekPost.medyaSil(
-        id: medyalar[suankiResimIndex].id,
-      );
+      bool silindi = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).medyaSil(id: medyalar[suankiResimIndex].id);
       navigatorState.pop();
       if (silindi) {
         await _medyalariYenile();

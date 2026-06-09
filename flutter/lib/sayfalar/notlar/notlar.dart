@@ -206,7 +206,8 @@ class _NotlarSayfasiState extends State<NotlarSayfasi> {
     setState(() {
       notlar = null;
     });
-    List<NotModel> notlarTemp = await BiltekPost.notlariGetir();
+    List<NotModel> notlarTemp =
+        await BiltekPost.of(widget.kullanici.auth).notlariGetir();
 
     setState(() {
       notlar = notlarTemp;
@@ -225,7 +226,9 @@ class _NotlarSayfasiState extends State<NotlarSayfasi> {
               onPressed: () async {
                 NavigatorState navigatorState = Navigator.of(context);
                 navigatorState.pop();
-                bool sil = await BiltekPost.notSil(id: id);
+                bool sil = await BiltekPost.of(
+                  widget.kullanici.auth,
+                ).notSil(id: id);
                 if (sil) {
                   await notlariGetir();
                 } else {

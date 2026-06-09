@@ -682,7 +682,7 @@ class Cihazlar_Model extends CI_Model
         $result = $result->limit($limit)->offset($sira);
         $result = $result->get($this->cihazlarTabloAdi())->result();
         //return  $this->db->last_query();
-        return $this->cihazVerileriniDonustur($result, TRUE); 
+        return $this->cihazVerileriniDonustur($result, TRUE);
     }
     public function tekCihazApp($no = "")
     {
@@ -781,13 +781,13 @@ class Cihazlar_Model extends CI_Model
             "ariza_aciklamasi" => $this->input->post("ariza_aciklamasi"),
             "teslim_alinanlar" => $this->input->post("teslim_alinanlar"),
         );
-        
+
         $servis_turu = $this->input->post("servis_turu");
-        if(isset($servis_turu)){
+        if (isset($servis_turu)) {
             $veri["servis_turu"] = $servis_turu;
         }
         $yedek_durumu = $this->input->post("yedek_durumu");
-        if(isset($yedek_durumu)){
+        if (isset($yedek_durumu)) {
             $veri["yedek_durumu"] = $yedek_durumu;
         }
         $cagri_id = $this->input->post("cagri_id");
@@ -902,7 +902,7 @@ class Cihazlar_Model extends CI_Model
                 if ($kullanici != null) {
                     $this->Log_Model->ekle($cihaz_id, $kullanici->ad_soyad . " adlı kullanıcı tarafından kayıt yapıldı.");
                 }
-                if(isset($veri["kull_id"]) && isset($veri["cagri_id"])){
+                if (isset($veri["kull_id"]) && isset($veri["cagri_id"])) {
                     $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($veri["kull_id"], $veri["cagri_id"], "servis_kaydi_musteri", "Çağrı kaydınıza bir servis kaydı oluşturuldu");
                 }
                 if ($tur == "POST" || $tur == "post") {
@@ -1402,21 +1402,23 @@ class Cihazlar_Model extends CI_Model
         return $veri;
     }
 
-    public function cagriDurumGuncelle($id, $durum, $bildirim_turu = "")
+    public function cagriDurumGuncelle($kullanici_id, $id, $durum, $bildirim_turu = "")
     {
         $yeniDurum = $this->cihazDurumuBulIsimden($durum);
         if ($yeniDurum != null) {
             $cagri = $this->cagriKaydiGetir($id);
             if ($cagri != null) {
-                $cihaz = $this->cagriCihazi($cagri->id);
-                if ($cihaz != null) {
-                    $durum = $this->cihazDuzenle($cihaz->id, array(
-                        "guncel_durum" => $yeniDurum->id,
-                    ), 0, FALSE);
-                    if ($durum && strlen($bildirim_turu) > 0) {
-                        $this->Kullanicilar_Model->bildirimGonderCagri($cagri->cihaz_turu, $cagri->id, $bildirim_turu);
+                if ($cagri->kull_id == $kullanici_id) {
+                    $cihaz = $this->cagriCihazi($cagri->id);
+                    if ($cihaz != null) {
+                        $durum = $this->cihazDuzenle($cihaz->id, array(
+                            "guncel_durum" => $yeniDurum->id,
+                        ), 0, FALSE);
+                        if ($durum && strlen($bildirim_turu) > 0) {
+                            $this->Kullanicilar_Model->bildirimGonderCagri($cagri->cihaz_turu, $cagri->id, $bildirim_turu);
+                        }
+                        return $durum;
                     }
-                    return $durum;
                 }
             }
         }

@@ -343,10 +343,9 @@ class _AIChatPageState extends State<AIChatPage> {
         );
         switch (aiResponseModel.type) {
           case "cihazAra":
-            List<Cihaz> cihazlarTemp = await BiltekPost.cihazlariGetir(
-              arama: aiResponseModel.query,
-              limit: 10,
-            );
+            List<Cihaz> cihazlarTemp = await BiltekPost.of(
+              widget.kullanici.auth,
+            ).cihazlariGetir(arama: aiResponseModel.query, limit: 10);
             if (cihazlarTemp.isEmpty) {
               aiChatList.add(
                 AiChatModel.create(

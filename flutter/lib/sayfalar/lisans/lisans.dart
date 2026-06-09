@@ -89,6 +89,7 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                       MaterialPageRoute(
                         builder:
                             (context) => LisansDuzenlemeSayfasi(
+                              kullanici: widget.kullanici,
                               lisanslariYenile: () async {
                                 await _lisanslariYenile();
                               },
@@ -177,6 +178,8 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                                                     (
                                                       context,
                                                     ) => LisansDuzenlemeSayfasi(
+                                                      kullanici:
+                                                          widget.kullanici,
                                                       lisans: lisans,
                                                       lisanslariYenile: () async {
                                                         await _lisanslariYenile();
@@ -233,7 +236,8 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
     } else {
       lisanslar = null;
     }
-    List<Lisans> lisanslarTemp = await BiltekPost.lisanslariGetir();
+    List<Lisans> lisanslarTemp =
+        await BiltekPost.of(widget.kullanici.auth).lisanslariGetir();
 
     if (mounted) {
       setState(() {
@@ -259,7 +263,9 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                 setState(() {
                   lisanslar = null;
                 });
-                bool durum = await BiltekPost.lisansSil(id);
+                bool durum = await BiltekPost.of(
+                  widget.kullanici.auth,
+                ).lisansSil(id);
                 await _lisanslariYenile();
                 if (!durum && context.mounted) {
                   _hataMesaji("Lisans silinirken bir hata oluştu.");

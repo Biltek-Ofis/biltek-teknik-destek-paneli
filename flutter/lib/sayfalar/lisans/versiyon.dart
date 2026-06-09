@@ -88,6 +88,7 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
                       MaterialPageRoute(
                         builder:
                             (context) => VersiyonDuzenlemeSayfasi(
+                              kullanici: widget.kullanici,
                               versiyonlariYenile: () async {
                                 await _versiyonlariYenile();
                               },
@@ -134,6 +135,8 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
                                                     (
                                                       context,
                                                     ) => VersiyonDuzenlemeSayfasi(
+                                                      kullanici:
+                                                          widget.kullanici,
                                                       versiyon: versiyon,
                                                       versiyonlariYenile: () async {
                                                         await _versiyonlariYenile();
@@ -193,7 +196,8 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
     } else {
       versiyonlar = null;
     }
-    List<Versiyon> versiyonlarTemp = await BiltekPost.versiyonlariGetir();
+    List<Versiyon> versiyonlarTemp =
+        await BiltekPost.of(widget.kullanici.auth).versiyonlariGetir();
 
     if (mounted) {
       setState(() {
@@ -221,7 +225,9 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
                 setState(() {
                   versiyonlar = null;
                 });
-                bool durum = await BiltekPost.versiyonSil(id);
+                bool durum = await BiltekPost.of(
+                  widget.kullanici.auth,
+                ).versiyonSil(id);
                 await _versiyonlariYenile();
                 if (!durum && context.mounted) {
                   _hataMesaji("Versiyon silinirken bir hata oluştu.");

@@ -102,7 +102,9 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                         String? fcmToken = await SecureStorage.getString(
                           SecureStorage.fcmTokenString,
                         );
-                        await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+                        await BiltekPost.of(
+                          widget.kullanici.auth,
+                        ).fcmTokenSifirla(fcmToken: fcmToken);
                         String? kullaniciString =
                             await SecureStorage.getStringNullable(
                               SecureStorage.kullaniciString,
@@ -421,6 +423,8 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                       (
                                                         context,
                                                       ) => YeniCihazSayfasi(
+                                                        kullanici:
+                                                            widget.kullanici,
                                                         initialCihaz: cihaz,
                                                         cihazlariYenile: () async {
                                                           await cagriKayitlariniGetir();
@@ -467,7 +471,11 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                                                           );
                                                           _yukleniyorGoster();
                                                           bool sonuc =
-                                                              await BiltekPost.cagriKaydiSil(
+                                                              await BiltekPost.of(
+                                                                widget
+                                                                    .kullanici
+                                                                    .auth,
+                                                              ).cagriKaydiSil(
                                                                 id:
                                                                     cagrikaydi
                                                                         .id,
@@ -548,7 +556,9 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
   }
 
   Future<void> cagriKayitlariniGetir() async {
-    List<CagriKaydiModel> cagriKayitlariTemp = await BiltekPost.cagriKayitlari(
+    List<CagriKaydiModel> cagriKayitlariTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).cagriKayitlari(
       kullaniciID: widget.kullanici.musteri ? widget.kullanici.id : 0,
     );
     setState(() {

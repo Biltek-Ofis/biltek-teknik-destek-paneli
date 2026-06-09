@@ -52,14 +52,18 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
       fcmStream = FirebaseMessaging.instance.onTokenRefresh.listen((
         fcmToken,
       ) async {
-        BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
+        BiltekPost.of(
+          widget.kullanici.auth,
+        ).fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
       });
       fcmStream?.onError((err) {
         debugPrint("Failed to get fcm token");
       });
       String? token = await FirebaseMessaging.instance.getToken();
 
-      BiltekPost.fcmTokenGuncelle(widget.kullanici.auth, token);
+      BiltekPost.of(
+        widget.kullanici.auth,
+      ).fcmTokenGuncelle(widget.kullanici.auth, token);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels > 50) {
@@ -311,11 +315,9 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
         suankiIndex = 0;
       });
     }
-    List<MalzemeTeslimiModel> malzemeTeslimleriTemp =
-        await BiltekPost.malzemeTeslimleriGetir(
-          arama: null,
-          offset: suankiIndex * 50,
-        );
+    List<MalzemeTeslimiModel> malzemeTeslimleriTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).malzemeTeslimleriGetir(arama: null, offset: suankiIndex * 50);
     if (mounted) {
       setState(() {
         if (sifirla) {

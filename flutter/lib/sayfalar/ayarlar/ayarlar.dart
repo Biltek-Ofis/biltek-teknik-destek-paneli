@@ -169,7 +169,9 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       String? fcmToken = await SecureStorage.getString(
                         SecureStorage.fcmTokenString,
                       );
-                      await BiltekPost.fcmTokenSifirla(fcmToken: fcmToken);
+                      await BiltekPost.of(
+                        widget.kullanici.auth,
+                      ).fcmTokenSifirla(fcmToken: fcmToken);
                       navigatorState.pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder:

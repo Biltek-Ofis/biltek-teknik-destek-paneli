@@ -32,7 +32,8 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      AyarlarModel? ayarlarModelTemp = await BiltekPost.ayarlar();
+      AyarlarModel? ayarlarModelTemp =
+          await BiltekPost.of(widget.kullanici.auth).ayarlar();
       setState(() {
         ayarlarModel = ayarlarModelTemp;
       });
@@ -166,9 +167,9 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                         setState(() {
                                           cagri = null;
                                         });
-                                        await BiltekPost.fiyatiOnayla(
-                                          id: widget.id,
-                                        );
+                                        await BiltekPost.of(
+                                          widget.kullanici.auth,
+                                        ).fiyatiOnayla(id: widget.id);
                                         await cagriKaydiGetir();
                                       },
                                       backgroundColor: Islemler.arkaRenk(
@@ -182,9 +183,9 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
                                         setState(() {
                                           cagri = null;
                                         });
-                                        await BiltekPost.fiyatiReddet(
-                                          id: widget.id,
-                                        );
+                                        await BiltekPost.of(
+                                          widget.kullanici.auth,
+                                        ).fiyatiReddet(id: widget.id);
                                         await cagriKaydiGetir();
                                       },
                                       backgroundColor: Islemler.arkaRenk(
@@ -320,9 +321,9 @@ class _CagriKaydiDetaySayfasiState extends State<CagriKaydiDetaySayfasi> {
   }
 
   Future<void> cagriKaydiGetir() async {
-    CagriKaydiModel? cagriKaydiModel = await BiltekPost.cagriKaydi(
-      id: widget.id,
-    );
+    CagriKaydiModel? cagriKaydiModel = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).cagriKaydi(id: widget.id);
 
     setState(() {
       cagri = cagriKaydiModel;
