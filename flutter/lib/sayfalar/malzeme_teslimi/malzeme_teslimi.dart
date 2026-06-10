@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:biltekteknikservis/widgets/dizayn.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
 import '../../utils/my_notifier.dart';
 import '../../utils/post.dart';
+import '../../widgets/dizayn.dart';
 import '../../widgets/navigators.dart';
 import '../ayarlar/ayarlar.dart';
 import '../cihazlar.dart';

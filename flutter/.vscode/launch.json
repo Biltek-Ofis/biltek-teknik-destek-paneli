@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "teknikservis",
+            "name": "biltekteknikservis",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -14,7 +14,7 @@
             ],
         },
         {
-            "name": "teknikservis (profile mode)",
+            "name": "biltekteknikservis (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
@@ -24,7 +24,7 @@
             ],
         },
         {
-            "name": "teknikservis (release mode)",
+            "name": "biltekteknikservis (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",

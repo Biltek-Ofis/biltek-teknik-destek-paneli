@@ -8,7 +8,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterFragmentActivity(){
-    private val CHANNEL = "teknikservis/notifications"
+    private val CHANNEL = "biltekteknikservis/notifications"
     private var methodChannel: MethodChannel? = null
     private var pendingNotificationData: Map<String, String?>? = null
 

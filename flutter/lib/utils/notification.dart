@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
 class NativeNotification {
-  static const _channel = MethodChannel("teknikservis/notifications");
+  static const _channel = MethodChannel("biltekteknikservis/notifications");
 
   static void init(Function(String tip, String id) onClick) {
     _channel.setMethodCallHandler((call) async {

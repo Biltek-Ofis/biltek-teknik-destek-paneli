@@ -1,4 +1,3 @@
-import 'package:biltekteknikservis/widgets/dizayn.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +10,7 @@ import '../../models/kullanici.dart';
 import '../../utils/buttons.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
+import '../../widgets/dizayn.dart';
 
 class CagriKaydiDetaySayfasi extends StatefulWidget {
   const CagriKaydiDetaySayfasi({
