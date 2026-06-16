@@ -1,39 +1,25 @@
 package tr.com.biltekbilgisayar.teknikservis
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
-import org.json.JSONObject
 
-class MainActivity : FlutterFragmentActivity(){
+class PrinterSettingsActivity : FlutterActivity() {
 
-    private val NOTIFICATION_CHANNEL = "biltekteknikservis/notifications"
-    private var notificationMethodChannel: MethodChannel? = null
-    private var pendingNotificationData: Map<String, String?>? = null
-
-    private val TAG = "MainActivity"
-
-    private val PRINT_CHANNEL = "biltekteknikservis/printer"
+    companion object {
+        private const val CHANNEL = "biltekteknikservis/printer"
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        notificationMethodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, NOTIFICATION_CHANNEL)
-        pendingNotificationData?.let {
-            notificationMethodChannel?.invokeMethod("notificationClicked", it)
-            pendingNotificationData = null
-        }
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PRINT_CHANNEL)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
             .setMethodCallHandler { call, result ->
                 when (call.method) {
+                    "getInitialRoute" -> result.success("yazici_ayarlari")
 
-                    // Tek yazıcı ekle / güncelle
                     "registerPrinter" -> {
                         val ip = call.argument<String>("ip")
                         val port = call.argument<Int>("port") ?: 9100
@@ -61,7 +47,6 @@ class MainActivity : FlutterFragmentActivity(){
                         result.success(true)
                     }
 
-                    // Tek yazıcı sil
                     "removePrinter" -> {
                         val id = call.argument<String>("id")
                         if (id != null) {
@@ -72,7 +57,6 @@ class MainActivity : FlutterFragmentActivity(){
                         result.success(true)
                     }
 
-                    // Tüm yazıcıları sil
                     "clearPrinters" -> {
                         NetworkPrintService.clearPrinters()
                         // SharedPreferences'ı da temizle
@@ -80,7 +64,6 @@ class MainActivity : FlutterFragmentActivity(){
                         result.success(true)
                     }
 
-                    // Kayıtlı yazıcıları listele
                     "getPrinters" -> {
                         // companion object boş olabilir, SharedPreferences'tan oku
                         val saved = PrinterRepository.loadPrinters(applicationContext)
@@ -94,39 +77,11 @@ class MainActivity : FlutterFragmentActivity(){
                     }
 
                     "openPrintSettings" -> {
-                        startActivity(Intent(Settings.ACTION_PRINT_SETTINGS))
                         result.success(true)
                     }
 
                     else -> result.notImplemented()
                 }
             }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        handleIntent(intent)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        val tip = intent.getStringExtra("tip")
-        val id = intent.getStringExtra("id")
-        if (tip != null) {
-            // FlutterEngine hazır değilse intent'i sakla
-            val data = mapOf("tip" to tip, "id" to id)
-            if (notificationMethodChannel != null) {
-                notificationMethodChannel?.invokeMethod("notificationClicked", data)
-            } else {
-                // FlutterEngine hazır olunca çağırılacak şekilde sakla
-                pendingNotificationData = data
-            }
-        }
     }
 }

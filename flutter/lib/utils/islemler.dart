@@ -134,6 +134,11 @@ class Islemler {
     filter: {"#": RegExp(r'[0-9]')},
   );
 
+  static MaskTextInputFormatter ipFormatter = MaskTextInputFormatter(
+    mask: "###.###.###.###",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
   static String telNo(String telefon) {
     return telefon
         .replaceAll("_", "")

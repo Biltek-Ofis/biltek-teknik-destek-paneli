@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 import '../../models/kullanici.dart';
 import '../../utils/barkod_okuyucu.dart';
@@ -15,6 +17,7 @@ import 'barkod_okuyucu.dart';
 import 'bildirim.dart';
 import 'hakkinda.dart';
 import 'kullanici_duzenle.dart';
+import 'yazici.dart';
 
 class AyarlarSayfasi extends StatefulWidget {
   const AyarlarSayfasi({
@@ -136,6 +139,20 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       );
                     },
                   ),
+                  if (!widget.kullanici.musteri &&
+                      !kIsWeb &&
+                      Platform.isAndroid)
+                    BiltekListTile(
+                      leading: Icon(CupertinoIcons.printer),
+                      title: "Yazıcı Ayarları",
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => YaziciAyarlari(),
+                          ),
+                        );
+                      },
+                    ),
                   BiltekListTile(
                     leading: Icon(CupertinoIcons.qrcode),
                     title: "QR ile Hızlı Giriş",
