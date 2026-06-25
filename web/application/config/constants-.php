@@ -97,6 +97,7 @@ defined('DB_PASSWORD')         or define('DB_PASSWORD', 'sifre');
 
 // Veritabani son
 
+defined('ENCRYPTION_KEY_TS')   or define('ENCRYPTION_KEY_TS', "ŞİFRELEMEANAHTARI");
 defined('TEKNIK_SERVIS_URL')   or define('TEKNIK_SERVIS_URL', "http://localhost/");
 
 defined('MOBIL_SURUM_URL')     or define('MOBIL_SURUM_URL', ""); // Flutter'dan build ettiğiniz mobil sürümün web urlsi. 

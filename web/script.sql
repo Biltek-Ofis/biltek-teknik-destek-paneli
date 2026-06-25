@@ -553,6 +553,24 @@ CREATE TABLE `ts1_sessions_l` (
 -- --------------------------------------------------------
 
 --
+-- Tablo için tablo yapısı `ts1_sifreler`
+--
+
+CREATE TABLE `ts1_sifreler` (
+  `id` int(11) NOT NULL,
+  `musteri_adi` varchar(255) NOT NULL DEFAULT '',
+  `aciklama` varchar(255) NOT NULL DEFAULT '',
+  `k_adi` VARCHAR(255) NOT NULL DEFAULT ''
+  `sifre` text NOT NULL DEFAULT '',
+  `olusturan` int(11) NOT NULL,
+  `duzenleyen` int(11) NOT NULL,
+  `tarih` datetime NOT NULL,
+  `son_duzenleme` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tablo için tablo yapısı `ts1_silinencihazlar`
 --
 
@@ -805,6 +823,12 @@ ALTER TABLE `ts1_sessions_l`
   ADD KEY `ts1_sessions_l_timestamp` (`timestamp`);
 
 --
+-- Tablo için indeksler `ts1_sifreler`
+--
+ALTER TABLE `ts1_sifreler`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Tablo için indeksler `ts1_silinencihazlar`
 --
 ALTER TABLE `ts1_silinencihazlar`
@@ -968,6 +992,12 @@ ALTER TABLE `ts1_musteriler`
 -- Tablo için AUTO_INCREMENT değeri `ts1_notlar`
 --
 ALTER TABLE `ts1_notlar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `ts1_sifreler`
+--
+ALTER TABLE `ts1_sifreler`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --

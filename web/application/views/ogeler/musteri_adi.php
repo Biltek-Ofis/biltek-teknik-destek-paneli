@@ -27,12 +27,24 @@ if (isset($sifirla)) {
     echo " p-0 m-0";
 }
 echo '">
-    <input id="musteri_kod" name="musteri_kod" type="hidden" value="';
+    <input id="musteri_kod';
+if (isset($musteri_adi_sayi)) {
+    echo $musteri_adi_sayi;
+}
+echo '" name="musteri_kod" type="hidden" value="';
 if (isset($musteri_kod_value)) {
     echo $musteri_kod_value;
 }
 echo '">
-    <input id="musteri_adi' . $musteri_adi_sayi . '" data-mainform="' . $musteri_adi_form . '" data-oto="' . ($musteri_adi_oto ? "true" : "false") . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" class="form-control musteri_adi" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
+    <input id="musteri_adi';
+if (isset($musteri_adi_sayi)) {
+    echo $musteri_adi_sayi;
+}
+echo '"';
+if (isset($musteri_adi_form)) {
+    echo ' data-mainform="' . $musteri_adi_form . '"';
+}
+echo ' data-oto="' . (isset($musteri_adi_form) && $musteri_adi_oto ? "true" : "false") . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" class="form-control musteri_adi" type="text" name="musteri_adi" placeholder="Müşteri Adı Soyadı *" value="';
 if (isset($musteri_adi_value)) {
     echo $musteri_adi_value;
 }

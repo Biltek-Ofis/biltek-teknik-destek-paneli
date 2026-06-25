@@ -90,6 +90,9 @@ if (!DEMO) {
         echo '</div>
                                     <div class="row">';
         $this->load->view("ogeler/kullanici_urun_duzenleme");
+        echo '</div><
+                                    div class="row">';
+        $this->load->view("ogeler/kullanici_sifreler");
         echo '</div>';
     }
     echo '
@@ -115,7 +118,8 @@ echo '
 if ($kullaniciTuru != 2) {
     echo '
                                 <th>Teknik Servis Elemanı</th>
-                                <th>Ürün Düzenleme</th>';
+                                <th>Ürün Düzenleme</th>
+                                <th>Müşteri Şifreleri</th>';
 }
 echo '
                                 <th>İşlemler</th>
@@ -142,6 +146,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
                                     </td>
                                     <td>
                                         ' . (($kullanici->urunduzenleme == 1 || $kullanici->yonetici) ? "Evet" : "Hayır") . '
+                                    </td>
+                                    <td>
+                                        ' . (($kullanici->sifreler == 1 || $kullanici->yonetici) ? "Evet" : "Hayır") . '
                                     </td>';
     }
     echo '
@@ -209,6 +216,9 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
             echo '</div>
                                                         <div class="row">';
             $this->load->view("ogeler/kullanici_urun_duzenleme", array("value" => $kullanici->urunduzenleme, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
+            echo '</div>
+                                                        <div class="row">';
+            $this->load->view("ogeler/kullanici_sifreler", array("value" => $kullanici->sifreler, "id" => $kullanici->id, "yonetici" => $kullanici->yonetici));
             echo '</div>';
         }
         echo '

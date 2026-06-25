@@ -9,7 +9,7 @@ $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
 
   var maliyetiGoster = false;
   var maliyetBoyutFonksiyon = null;
-  
+
   function maliyetGoster(durum) {
     maliyetiGoster = durum;
     maliyetDurumuGuncelle();
@@ -24,7 +24,7 @@ $kullanicibilgileri123 = $this->Kullanicilar_Model->kullaniciBilgileri();
       $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").removeClass("fa-eye");
       $("#maliyetGosterButon1Icon, #maliyetGosterButon2Icon").addClass("fa-eye-slash");
     }
-    if(maliyetBoyutFonksiyon != null){
+    if (maliyetBoyutFonksiyon != null) {
       maliyetBoyutFonksiyon();
     }
   }
@@ -62,15 +62,15 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
   <div class="w-100 bg-success text-center">
     <a href="<?= base_url("app/android"); ?>" target="_blank"><img style="width:calc(100% / 3)"
         src="<?= base_url("dist/img/app/google-play.png"); ?>" /></a><?php
-        
-        
-  if(strlen(MOBIL_SURUM_URL) > 0){
-    ?>
-    veya <a href="<?= base_url("m"); ?>">Mobil Sürüme Geç</a>
-    <?php
-  }
-  ?>
-        
+
+
+          if (strlen(MOBIL_SURUM_URL) > 0) {
+            ?>
+      veya <a href="<?= base_url("m"); ?>">Mobil Sürüme Geç</a>
+      <?php
+          }
+          ?>
+
   </div>
   <?php
 }
@@ -101,27 +101,39 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <?php
         }
-        if($this->Giris_Model->kullaniciGiris()){
-        ?>
-        <li class="nav-item">
-          <a class="nav-link<?= $aktifSayfa == "notlar" ? ' active" aria-current="page' : ''; ?>"
-            href="<?= base_url("notlar"); ?>">
-            Notlar
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
-            href="<?= base_url("malzemeteslimi"); ?>">
-            Malzeme Teslimi
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link<?= $aktifSayfa == "cagri_kaydi" || $aktifSayfa == "cagri_kaydi_detay" ? ' active" aria-current="page' : ''; ?>"
-            href="<?= base_url("cagrikayitlari"); ?>">
-            Çağrı Kayıtları
-          </a>
-        </li>
-        <?php
+        if ($this->Giris_Model->kullaniciGiris()) {
+          ?>
+          <li class="nav-item">
+            <a class="nav-link<?= $aktifSayfa == "notlar" ? ' active" aria-current="page' : ''; ?>"
+              href="<?= base_url("notlar"); ?>">
+              Notlar
+            </a>
+          </li>
+          <?php
+          if ($kullanicibilgileri123["sifreler"] == 1 || $kullanicibilgileri123["yonetici"] == 1) {
+            ?>
+            <li class="nav-item">
+              <a class="nav-link<?= $aktifSayfa == "sifreler" ? ' active" aria-current="page' : ''; ?>"
+                href="<?= base_url("sifreler"); ?>">
+                Müşteri Şifreleri
+              </a>
+            </li>
+            <?php
+          }
+          ?>
+          <li class="nav-item">
+            <a class="nav-link<?= $aktifSayfa == "malzemeteslimi" ? ' active" aria-current="page' : ''; ?>"
+              href="<?= base_url("malzemeteslimi"); ?>">
+              Malzeme Teslimi
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?= $aktifSayfa == "cagri_kaydi" || $aktifSayfa == "cagri_kaydi_detay" ? ' active" aria-current="page' : ''; ?>"
+              href="<?= base_url("cagrikayitlari"); ?>">
+              Çağrı Kayıtları
+            </a>
+          </li>
+          <?php
         }
         if ($kullanicibilgileri123["yonetici"] == 1) {
           ?>
@@ -206,14 +218,14 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <?php
         }
-        if($this->Giris_Model->kullaniciGiris()){
-        ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            İşlemler
-          </a>
-          <ul class="dropdown-menu">
-            <!--<li>
+        if ($this->Giris_Model->kullaniciGiris()) {
+          ?>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              İşlemler
+            </a>
+            <ul class="dropdown-menu">
+              <!--<li>
               <a class="dropdown-item" href="https://github.com/ozayakcan/biltek-teknik-destek-paneli/releases"
                 target="_blank">
                 Barkod Okuyucu Programı İndir
@@ -224,43 +236,43 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
                 Komisyon Oranlarını İndir
               </a>
             </li>-->
-            
-            <li>
-              <a class="dropdown-item<?= $aktifSayfa == "yonetim/ucretler" ? ' active" aria-current="page' : ""; ?>"
-                href="<?= base_url("yonetim/ucretler"); ?>">
-                İşlem Ücretleri
-              </a>
-            </li>
-            <?php
-            if(BILTEKDESK){
-              ?>
+
               <li>
-                <a class="dropdown-item" target="_blank" href="<?=base_url("app/biltekdesk");?>">
-                  BiltekDesk Programını İndir
+                <a class="dropdown-item<?= $aktifSayfa == "yonetim/ucretler" ? ' active" aria-current="page' : ""; ?>"
+                  href="<?= base_url("yonetim/ucretler"); ?>">
+                  İşlem Ücretleri
                 </a>
               </li>
               <?php
-            }
-            ?>
-            <li>
-              <a class="dropdown-item" href="#" onclick="ozelBarkodYazdirPencere();">
-                Özel Barkod Yazdır
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" onclick="bosTeknikServisFormuYazdir();">
-                Boş Teknik Servis Formu Yazdır
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" onclick="bosMalzemeTeslimiFormuYazdir();">
-                Boş Malzeme Teslimi Formu Yazdır
-              </a>
-            </li>
-          </ul>
-        </li>
-        
-        <?php
+              if (BILTEKDESK) {
+                ?>
+                <li>
+                  <a class="dropdown-item" target="_blank" href="<?= base_url("app/biltekdesk"); ?>">
+                    BiltekDesk Programını İndir
+                  </a>
+                </li>
+                <?php
+              }
+              ?>
+              <li>
+                <a class="dropdown-item" href="#" onclick="ozelBarkodYazdirPencere();">
+                  Özel Barkod Yazdır
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" onclick="bosTeknikServisFormuYazdir();">
+                  Boş Teknik Servis Formu Yazdır
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" onclick="bosMalzemeTeslimiFormuYazdir();">
+                  Boş Malzeme Teslimi Formu Yazdır
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <?php
         }
         ?>
       </ul>
@@ -272,19 +284,19 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
           </li>
           <li class="nav-item align-items-center d-flex">
             <i class="fas fa-sun"></i>
-              <!-- Default switch -->
-              <div class="ms-2 form-check form-switch">
-                <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
-              </div>
+            <!-- Default switch -->
+            <div class="ms-2 form-check form-switch">
+              <input id="karanlikTema" class="form-check-input" type="checkbox" role="switch" />
+            </div>
             <i class="fas fa-moon"></i>
           </li>
-           &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
           <li class="nav-item align-items-center d-flex" style="<?= KIS_MODU ? "" : "display:none !important; "; ?>">
             <i class="far fa-sun"></i>
-              <!-- Default switch -->
-              <div class="ms-2 form-check form-switch">
-                <input id="kisModu" class="form-check-input" type="checkbox" role="switch" />
-              </div>
+            <!-- Default switch -->
+            <div class="ms-2 form-check form-switch">
+              <input id="kisModu" class="form-check-input" type="checkbox" role="switch" />
+            </div>
             <i class="fas fa-snowflake"></i>
           </li>
           <!--<li class="nav-item">

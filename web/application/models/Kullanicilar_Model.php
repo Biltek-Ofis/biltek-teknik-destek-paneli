@@ -35,7 +35,7 @@ class Kullanicilar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "kullanici_qr";
     }
-    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $musteri = 0, $tema = "oto")
+    public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $sifreler = 0, $musteri = 0, $tema = "oto")
     {
         return array(
             "id" => $id,
@@ -45,6 +45,7 @@ class Kullanicilar_Model extends CI_Model
             "yonetici" => $yonetici,
             "teknikservis" => $teknikservis,
             "urunduzenleme" => $urunduzenleme,
+            "sifreler" => $sifreler,
             "musteri" => $musteri,
             "tema" => $tema,
         );
@@ -56,7 +57,7 @@ class Kullanicilar_Model extends CI_Model
             $kullaniciTablo = $this->db->reset_query()->where("id", $_SESSION["KULLANICI_ID"])->get($this->kullanicilarTabloAdi());
             if ($kullaniciTablo->num_rows() > 0) {
                 $kullanici = $kullaniciTablo->result()[0];
-                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis, $kullanici->urunduzenleme, $kullanici->musteri, $kullanici->tema);
+                return $this->kullaniciTablosu($kullanici->id, $kullanici->kullanici_adi, $kullanici->ad_soyad, $kullanici->sifre, $kullanici->yonetici, $kullanici->teknikservis, $kullanici->urunduzenleme, $kullanici->sifreler, $kullanici->musteri, $kullanici->tema);
             } else {
                 return $this->kullaniciTablosu();
             }
@@ -426,12 +427,16 @@ class Kullanicilar_Model extends CI_Model
         );
         $teknikservis = $this->input->post("teknikservis");
         $urunduzenleme = $this->input->post("urunduzenleme");
+        $sifreler = $this->input->post("sifreler");
         $musteri = $this->input->post("musteri");
         if (isset($teknikservis)) {
             $veri["teknikservis"] = $teknikservis;
         }
         if (isset($urunduzenleme)) {
             $veri["urunduzenleme"] = $urunduzenleme;
+        }
+        if (isset($sifreler)) {
+            $veri["sifreler"] = $sifreler;
         }
         $yonetici = $this->input->post("yonetici");
         if ($yonetici_dahil && isset($yonetici)) {
