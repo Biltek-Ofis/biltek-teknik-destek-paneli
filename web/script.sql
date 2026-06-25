@@ -356,7 +356,7 @@ CREATE TABLE `ts1_kullanicilar` (
 --
 
 INSERT INTO `ts1_kullanicilar` (`id`, `kullanici_adi`, `ad_soyad`, `sifre`, `urunduzenleme`, `teknikservis`, `yonetici`, `musteri`, `tema`) VALUES
-(12, 'OZAY', 'Özay AKCAN', '$2y$10$IaMlNPqlnmbweO7oqhjBe.HZTYnq6VnUiv1Aum7X4pmV4zYZoUMZe', 0, 1, 1, 0, 0),
+(12, 'OZAY', 'Özay AKCAN', '$2y$10$IaMlNPqlnmbweO7oqhjBe.HZTYnq6VnUiv1Aum7X4pmV4zYZoUMZe', 0, 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -560,7 +560,7 @@ CREATE TABLE `ts1_sifreler` (
   `id` int(11) NOT NULL,
   `musteri_adi` varchar(255) NOT NULL DEFAULT '',
   `aciklama` varchar(255) NOT NULL DEFAULT '',
-  `k_adi` VARCHAR(255) NOT NULL DEFAULT ''
+  `k_adi` VARCHAR(255) NOT NULL DEFAULT '',
   `sifre` text NOT NULL DEFAULT '',
   `olusturan` int(11) NOT NULL,
   `duzenleyen` int(11) NOT NULL,
@@ -956,7 +956,7 @@ ALTER TABLE `ts1_kullanici_bildirimleri`
 -- Tablo için AUTO_INCREMENT değeri `ts1_kullanici_qr`
 --
 ALTER TABLE `ts1_kullanici_qr`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_loglar`
@@ -968,7 +968,7 @@ ALTER TABLE `ts1_loglar`
 -- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi`
 --
 ALTER TABLE `ts1_malzeme_teslimi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `ts1_malzeme_teslimi_islemler`
