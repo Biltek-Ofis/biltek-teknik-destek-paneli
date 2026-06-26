@@ -6,10 +6,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <script>
-	$(document).ready(function(){
-		$('input, textarea').on("keyup change", function(){
+	function kopyala(text) {
+		try {
+			navigator.clipboard.writeText(text);
+			$("#basarili-mesaji").html("BAŞARIYLA KOPYALANDI");
+			$("#statusSuccessModal").modal("show");
+		} catch {
+			$("#hata-mesaji").html("KOPYALAMA BAŞARISIZ");
+			$("#statusErrorsModal").modal("show");
+		}
+	}
+	$(document).ready(function () {
+		$('input, textarea').on("keyup change", function () {
 			var val = $(this).val();
-			var corrected = val.replace(/sarz|şarz/gi, function(match) {
+			var corrected = val.replace(/sarz|şarz/gi, function (match) {
 				return match === match.toUpperCase() ? "ŞARJ" : "şarj";
 			});
 			if (corrected !== val) {

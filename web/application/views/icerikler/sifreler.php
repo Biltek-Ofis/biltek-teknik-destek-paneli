@@ -29,6 +29,13 @@ $this->load->view("inc/style_tablo");
     ));
     ?>
     <script>
+        function donusturOnclick(oge) {
+            if (oge) {
+                return oge.replaceAll(/(?:\r\n|\r|\n)/g, "<br>").replaceAll("'", "\\'");
+            } else {
+                return "";
+            }
+        }
         var sifrelerTablosu = null;
         var sifreler = [];
         function spaniSil(veri) {
@@ -139,8 +146,8 @@ $this->load->view("inc/style_tablo");
                         var tablo = '<tr>';
                         tablo += '<td>' + value.musteri_adi + '</td>';
                         tablo += '<td>' + value.aciklama + '</td>';
-                        tablo += '<td>' + value.k_adi + '</td>';
-                        tablo += '<td><input id="sifreInput' + value.id + '" type="password" value="' + value.sifre + '" readonly><button class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifreInput' + value.id + '\')">Göster</button></td>';
+                        tablo += '<td>' + value.k_adi + '<button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.k_adi) + '\')"><i class="fa-solid fa-copy"></i></button></td>';
+                        tablo += '<td><input id="sifreInput' + value.id + '" type="password" value="' + value.sifre + '" readonly><button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.sifre) + '\')"><i class="fa-solid fa-copy"></i></button><button class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifreInput' + value.id + '\')">Göster</button></td>';
                         tablo += '<td>' + value.olusturan + '</td>';
                         tablo += '<td>' + (value.son_duzenleme == value.tarih ? "-" : value.duzenleyen) + '</td>';
                         tablo += '<td class="text-center">';
@@ -253,7 +260,7 @@ $this->load->view("inc/style_tablo");
                 <?php $this->load->view("icerikler/sifre_form_div", array(
                     "form_ad" => "yeni",
                     "form_id" => "1",
-                    "musteri_adi_value" => "",
+                    "sifre_musteri_value" => "",
                     "sifre_aciklama_value" => "",
                     "k_adi_value" => "",
                     "sifre_value" => "",
@@ -279,7 +286,7 @@ $this->load->view("inc/style_tablo");
                 <?php $this->load->view("icerikler/sifre_form_div", array(
                     "form_ad" => "duzenle",
                     "form_id" => "2",
-                    "musteri_adi_value" => "",
+                    "sifre_musteri_value" => "",
                     "sifre_aciklama_value" => "",
                     "k_adi_value" => "",
                     "sifre_value" => "",
