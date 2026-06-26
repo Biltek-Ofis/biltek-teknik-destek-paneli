@@ -345,6 +345,7 @@ CREATE TABLE `ts1_kullanicilar` (
   `ad_soyad` varchar(100) DEFAULT NULL,
   `sifre` varchar(255) NOT NULL,
   `urunduzenleme` int(1) NOT NULL DEFAULT 0,
+  `sifreler` int(1) NOT NULL DEFAULT 0,
   `teknikservis` int(1) NOT NULL DEFAULT 0,
   `yonetici` int(1) NOT NULL DEFAULT 0,
   `musteri` int(1) NOT NULL DEFAULT 0,
@@ -355,8 +356,8 @@ CREATE TABLE `ts1_kullanicilar` (
 -- Tablo döküm verisi `ts1_kullanicilar`
 --
 
-INSERT INTO `ts1_kullanicilar` (`id`, `kullanici_adi`, `ad_soyad`, `sifre`, `urunduzenleme`, `teknikservis`, `yonetici`, `musteri`, `tema`) VALUES
-(12, 'OZAY', 'Özay AKCAN', '$2y$10$IaMlNPqlnmbweO7oqhjBe.HZTYnq6VnUiv1Aum7X4pmV4zYZoUMZe', 0, 1, 1, 0, 0);
+INSERT INTO `ts1_kullanicilar` (`id`, `kullanici_adi`, `ad_soyad`, `sifre`, `urunduzenleme`, `urunduzenleme`, `teknikservis`, `yonetici`, `musteri`, `tema`) VALUES
+(12, 'OZAY', 'Özay AKCAN', '$2y$10$IaMlNPqlnmbweO7oqhjBe.HZTYnq6VnUiv1Aum7X4pmV4zYZoUMZe', 0, 1, 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 
