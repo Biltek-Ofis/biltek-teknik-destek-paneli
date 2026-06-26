@@ -9,6 +9,10 @@ $(document).ready(function(){
             ayrilmaEngeliIptal();
         });
     });
+    setTimeout(function () {
+        $("input[name=\'sifre\'], #kullanici_sifre").attr("type", "password");
+    }, 1000);
+    
 });
 </script>';
 echo '<script>
@@ -78,7 +82,7 @@ if (!DEMO) {
     $this->load->view("ogeler/kullanici_adi", array("doldurma" => FALSE));
     echo '</div>
                                     <div class="row">';
-    $this->load->view("ogeler/kullanici_sifre", array("doldurma" => FALSE));
+    $this->load->view("ogeler/kullanici_sifre", array("sifre_type" => "text"));
     echo '</div>';
     if ($kullaniciTuru != 2) {
         echo '
@@ -204,7 +208,7 @@ foreach ($this->Kullanicilar_Model->kullanicilar(array("yonetici" => $kullaniciT
         $this->load->view("ogeler/kullanici_adi", array("value" => $kullanici->kullanici_adi, "id" => $kullanici->id, "doldurma" => FALSE));
         echo '</div>
                                                         <div class="row">';
-        $this->load->view("ogeler/kullanici_sifre", array("value" => "", "id" => $kullanici->id, "doldurma" => FALSE));
+        $this->load->view("ogeler/kullanici_sifre", array("value" => "", "id" => $kullanici->id, "sifre_type" => "text"));
         echo '</div>';
         if ($kullaniciTuru != 2) {
             echo '

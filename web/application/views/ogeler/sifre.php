@@ -15,7 +15,13 @@ echo '
 if (isset($id)) {
     echo $id;
 }
-echo '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-control" type="password" name="sifre" placeholder="Şifre" value="';
+echo '" autocomplete="new-password" class="form-control" type="';
+if(isset($sifre_type) && strlen($sifre_type) > 0){
+    echo $sifre_type;
+}else{
+    echo "password";
+}
+echo '" name="sifre" placeholder="Şifre" value="';
 if (isset($sifre_value)) {
     echo $sifre_value;
 }

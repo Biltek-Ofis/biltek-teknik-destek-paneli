@@ -167,6 +167,9 @@ $this->load->view("inc/style_tablo");
         }
 
         $(document).ready(function () {
+            setTimeout(function () {
+                $("#sifre1, #sifre2").attr("type", "password");
+            }, 1000);
             $(document).on("show.bs.modal", ".modal", function () {
                 ayrilmaEngeliIptal();
                 const zIndex = 1040 + 10 * $(".modal:visible").length;

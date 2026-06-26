@@ -19,13 +19,13 @@ echo '</label>
 if (isset($id)) {
     echo $id;
 }
-echo '"';
-if(isset($doldurma)){
-    if($doldurma == FALSE){
-        echo ' autocomplete="'.$this->Islemler_Model->rastgele_yazi().'"';
-    }
+echo '" class="form-control" type="';
+if(isset($sifre_type) && strlen($sifre_type) > 0){
+    echo $sifre_type;
+}else{
+    echo "password";
 }
-echo ' class="form-control" type="password" name="';
+echo '" name="';
 if(isset($name)){
     echo $name;
 }else{

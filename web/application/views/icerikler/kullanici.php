@@ -8,6 +8,9 @@ $(document).ready(function(){
             ayrilmaEngeliIptal();
         });
     });
+    setTimeout(function () {
+        $("input[name=\'eski_sifre\'], input[name=\'yeni_sifre\'], input[name=\'yeni_sifre_tekrar\']").attr("type", "password");
+    }, 1000);
 });
 </script>';
 echo '<div class="content-wrapper">';
@@ -43,6 +46,7 @@ $this->load->view("ogeler/kullanici_sifre", array(
     "value" => "",
     "label" => "Eski Şifre",
     "name" => "eski_sifre",
+    "sifre_type" => "text",
 ));
 echo '</div>
                     <div class="row">';
@@ -51,6 +55,7 @@ $this->load->view("ogeler/kullanici_sifre", array(
     "label" => "Yeni Şifre",
     "name" => "yeni_sifre",
     "required" => FALSE,
+    "sifre_type" => "text",
 ));
 echo '</div>
                     <div class="row">';
@@ -59,6 +64,7 @@ $this->load->view("ogeler/kullanici_sifre", array(
     "label" => "Yeni Şifre Tekrar",
     "name" => "yeni_sifre_tekrar",
     "required" => FALSE,
+    "sifre_type" => "text",
 ));
 echo '</div>
                     <div class="row w-100">

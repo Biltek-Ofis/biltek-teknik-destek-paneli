@@ -32,6 +32,7 @@
             "id" => $form_id,
             "sifre_label" => TRUE,
             "sifre_value" => $sifre_value,
+            "sifre_type"=> "text",
         ));
         ?>
     </div>
