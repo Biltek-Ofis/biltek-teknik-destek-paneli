@@ -286,7 +286,8 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
           ),
           resizeToAvoidBottomInset: false,
           body: SafeArea(
-            child: SizedBox(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Column(

@@ -156,7 +156,10 @@ class BiltekTextFieldState extends State<BiltekTextField>
                       fontSize: 13,
                     ),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 16,
+                    ),
                   ),
                   onChanged: widget.onChanged,
                   cursorColor: _accent,

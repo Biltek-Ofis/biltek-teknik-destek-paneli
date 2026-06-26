@@ -104,102 +104,108 @@ class _SifreEkleDuzenleSayfasiState extends State<SifreEkleDuzenleSayfasi> {
         ),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    BiltekTextField(
-                      label: "Müşteri İsmi",
-                      controller: musteriAdiTextEditingController,
-                      currentFocus: musteriAdiFocusNode,
-                      textInputAction: TextInputAction.next,
-                      nextFocus: aciklamaFocusNode,
-                      errorText: musteriAdierror,
-                      onChanged: (v) {
-                        setState(() {
-                          musteriAdierror = null;
-                          girildi = true;
-                        });
-                      },
-                    ),
-                    BiltekTextField(
-                      label: "Açıklama",
-                      controller: aciklamaTextEditingController,
-                      currentFocus: aciklamaFocusNode,
-                      textInputAction: TextInputAction.next,
-                      nextFocus: kAdiFocusNode,
-                      errorText: aciklamaError,
-                      onChanged: (v) {
-                        setState(() {
-                          aciklamaError = null;
-                          girildi = true;
-                        });
-                      },
-                    ),
-                    BiltekTextField(
-                      label: "Kullanıcı Adı",
-                      controller: kAdiTextEditingController,
-                      currentFocus: kAdiFocusNode,
-                      textInputAction: TextInputAction.next,
-                      nextFocus: sifreFocusNode,
-                      errorText: kAdiError,
-                      onChanged: (v) {
-                        setState(() {
-                          kAdiError = null;
-                          girildi = true;
-                        });
-                      },
-                    ),
-                    BiltekSifre(
-                      label: "Şifre",
-                      controller: sifreTextEditingController,
-                      currentFocus: sifreFocusNode,
-                      textInputAction: TextInputAction.done,
-                      errorText: sifreError,
-                      onChanged: (v) {
-                        setState(() {
-                          sifreError = null;
-                          girildi = true;
-                        });
-                      },
-                      onSubmitted: (v) {
-                        _kaydet();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 80,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    PrimaryButton(
-                      onPressed: () {
-                        _kaydet();
-                      },
-                      backgroundColor: Islemler.arkaRenk(
-                        "bg-success",
-                        alpha: 1,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      BiltekTextField(
+                        label: "Müşteri İsmi",
+                        controller: musteriAdiTextEditingController,
+                        currentFocus: musteriAdiFocusNode,
+                        textInputAction: TextInputAction.next,
+                        nextFocus: aciklamaFocusNode,
+                        errorText: musteriAdierror,
+                        onChanged: (v) {
+                          setState(() {
+                            musteriAdierror = null;
+                            girildi = true;
+                          });
+                        },
                       ),
-                      label: "Kaydet",
-                    ),
-                    SizedBox(width: 8),
-                    PrimaryButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      backgroundColor: Islemler.arkaRenk("bg-danger", alpha: 1),
-                      label: "İptal",
-                    ),
-                    SizedBox(width: 8),
-                  ],
+                      BiltekTextField(
+                        label: "Açıklama",
+                        controller: aciklamaTextEditingController,
+                        currentFocus: aciklamaFocusNode,
+                        textInputAction: TextInputAction.next,
+                        nextFocus: kAdiFocusNode,
+                        errorText: aciklamaError,
+                        onChanged: (v) {
+                          setState(() {
+                            aciklamaError = null;
+                            girildi = true;
+                          });
+                        },
+                      ),
+                      BiltekTextField(
+                        label: "Kullanıcı Adı",
+                        controller: kAdiTextEditingController,
+                        currentFocus: kAdiFocusNode,
+                        textInputAction: TextInputAction.next,
+                        nextFocus: sifreFocusNode,
+                        errorText: kAdiError,
+                        onChanged: (v) {
+                          setState(() {
+                            kAdiError = null;
+                            girildi = true;
+                          });
+                        },
+                      ),
+                      BiltekSifre(
+                        label: "Şifre",
+                        controller: sifreTextEditingController,
+                        currentFocus: sifreFocusNode,
+                        textInputAction: TextInputAction.done,
+                        errorText: sifreError,
+                        onChanged: (v) {
+                          setState(() {
+                            sifreError = null;
+                            girildi = true;
+                          });
+                        },
+                        onSubmitted: (v) {
+                          _kaydet();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 80,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      PrimaryButton(
+                        onPressed: () {
+                          _kaydet();
+                        },
+                        backgroundColor: Islemler.arkaRenk(
+                          "bg-success",
+                          alpha: 1,
+                        ),
+                        label: "Kaydet",
+                      ),
+                      SizedBox(width: 8),
+                      PrimaryButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        backgroundColor: Islemler.arkaRenk(
+                          "bg-danger",
+                          alpha: 1,
+                        ),
+                        label: "İptal",
+                      ),
+                      SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

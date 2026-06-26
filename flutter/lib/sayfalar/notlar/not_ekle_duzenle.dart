@@ -93,51 +93,57 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
         ),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: BiltekTextField(
-                  controller: textEditingController,
-                  currentFocus: focusNode,
-                  errorText: error,
-                  onChanged: (v) {
-                    setState(() {
-                      error = null;
-                      girildi = true;
-                    });
-                  },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              children: [
+                Expanded(
+                  child: BiltekTextField(
+                    controller: textEditingController,
+                    currentFocus: focusNode,
+                    errorText: error,
+                    onChanged: (v) {
+                      setState(() {
+                        error = null;
+                        girildi = true;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 80,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    PrimaryButton(
-                      onPressed: () {
-                        _kaydet();
-                      },
-                      backgroundColor: Islemler.arkaRenk(
-                        "bg-success",
-                        alpha: 1,
+                SizedBox(
+                  height: 80,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      PrimaryButton(
+                        onPressed: () {
+                          _kaydet();
+                        },
+                        backgroundColor: Islemler.arkaRenk(
+                          "bg-success",
+                          alpha: 1,
+                        ),
+                        label: "Kaydet",
                       ),
-                      label: "Kaydet",
-                    ),
-                    SizedBox(width: 8),
-                    PrimaryButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      backgroundColor: Islemler.arkaRenk("bg-danger", alpha: 1),
-                      label: "İptal",
-                    ),
-                    SizedBox(width: 8),
-                  ],
+                      SizedBox(width: 8),
+                      PrimaryButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        backgroundColor: Islemler.arkaRenk(
+                          "bg-danger",
+                          alpha: 1,
+                        ),
+                        label: "İptal",
+                      ),
+                      SizedBox(width: 8),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
