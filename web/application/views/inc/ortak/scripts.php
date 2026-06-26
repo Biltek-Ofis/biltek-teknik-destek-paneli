@@ -97,6 +97,9 @@ echo '
 				"karanlikTema",
 				"kisModu"
 			]
+			const ignoreInpClasses = [
+				"musteriSifresi",
+			]
 			const ignoreInpTypes = [
 				"search"
 			]
@@ -105,6 +108,13 @@ echo '
 
 			if (ignoreInpIds.includes(id) || ignoreInpTypes.includes(type)) {
 				engellenebilir = false;
+			}
+			for (let iClass = 0; iClass < ignoreInpClasses.length; iClass++) {
+				const elClass = array[iClass];
+				if ($(this).hasClass(elClass)) {
+					engellenebilir = false;
+					break;
+				}
 			}
 
 			if (engellenebilir) {

@@ -192,131 +192,124 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         builder: (context, MyNotifier myNotifier, child) {
           return Scaffold(
             key: scaffoldKey,
-            drawer:
-                aramaEtkin
-                    ? null
-                    : biltekDrawer(
-                      context,
-                      kullanici: widget.kullanici,
-                      seciliSayfa: widget.seciliSayfa,
+            drawer: aramaEtkin
+                ? null
+                : biltekDrawer(
+                    context,
+                    kullanici: widget.kullanici,
+                    seciliSayfa: widget.seciliSayfa,
+                  ),
+            appBar: aramaEtkin
+                ? AppBar(flexibleSpace: aramaAppBar)
+                : AppBar(
+                    automaticallyImplyLeading: false,
+                    title: Text(
+                      arama.isNotEmpty
+                          ? "\"$arama\" Arama Sonuçları"
+                          : widget.seciliSayfa == "Anasayfa"
+                          ? "Biltek Teknik Servis"
+                          : widget.seciliSayfa,
                     ),
-            appBar:
-                aramaEtkin
-                    ? AppBar(flexibleSpace: aramaAppBar)
-                    : AppBar(
-                      automaticallyImplyLeading: false,
-                      title: Text(
-                        arama.isNotEmpty
-                            ? "\"$arama\" Arama Sonuçları"
-                            : widget.seciliSayfa == "Anasayfa"
-                            ? "Biltek Teknik Servis"
-                            : widget.seciliSayfa,
+                    actions: [
+                      IconButton(
+                        icon: Icon(CupertinoIcons.search),
+                        onPressed: () {
+                          _aramaDurumuDuzenle(true);
+                        },
                       ),
-                      actions: [
+                      if (chatEnabled)
                         IconButton(
-                          icon: Icon(CupertinoIcons.search),
                           onPressed: () {
-                            _aramaDurumuDuzenle(true);
-                          },
-                        ),
-                        if (chatEnabled)
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => YeniCihazSayfasi(
-                                        kullanici: widget.kullanici,
-                                        cihazlariYenile: () async {
-                                          await _cihazlariYenile();
-                                        },
-                                      ),
-                                ),
-                              );
-                            },
-                            icon: Icon(CupertinoIcons.add),
-                          ),
-                      ],
-                    ),
-            resizeToAvoidBottomInset: false,
-            bottomNavigationBar:
-                klavyeAcik
-                    ? null
-                    : BiltekBottomNavigationBar(
-                      items: [
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.line_horizontal_3),
-                          label: "Menü",
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.qrcode),
-                          label: "Barkod Tara",
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.search),
-                          label: "Cihaz Ara",
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.gear),
-                          label: "Ayarlar",
-                        ),
-                      ],
-                      selectedItemColor:
-                          Theme.of(context).appBarTheme.iconTheme?.color,
-                      onTap: (index) async {
-                        debugPrint("Index: $index");
-                        switch (index) {
-                          case 0:
-                            debugPrint("Index burasi $aramaEtkin");
-                            scaffoldKey.currentState?.openDrawer();
-                            break;
-                          case 1:
-                            await barkodTara(
+                            Navigator.push(
                               context,
-                              kullanici: widget.kullanici,
-                              cihazlariYenile: () async {
-                                await _cihazlariYenile();
-                              },
-                              pcYenile: () async {
-                                await pcYenile();
-                              },
-                            );
-                            break;
-                          case 2:
-                            _aramaDurumuDuzenle(true);
-                            break;
-                          case 3:
-                            Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder:
-                                    (context) => AyarlarSayfasi(
-                                      pcYenile: pcYenile,
-                                      kullanici: widget.kullanici,
-                                    ),
+                                builder: (context) => YeniCihazSayfasi(
+                                  kullanici: widget.kullanici,
+                                  cihazlariYenile: () async {
+                                    await _cihazlariYenile();
+                                  },
+                                ),
                               ),
                             );
-                            break;
-                        }
-                      },
-                    ),
-            floatingActionButtonLocation:
-                chatEnabled
-                    ? FloatingActionButtonLocation.endFloat
-                    : FloatingActionButtonLocation.centerDocked,
+                          },
+                          icon: Icon(CupertinoIcons.add),
+                        ),
+                    ],
+                  ),
+            resizeToAvoidBottomInset: false,
+            bottomNavigationBar: klavyeAcik
+                ? null
+                : BiltekBottomNavigationBar(
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.line_horizontal_3),
+                        label: "Menü",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.qrcode),
+                        label: "Barkod Tara",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.search),
+                        label: "Cihaz Ara",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.gear),
+                        label: "Ayarlar",
+                      ),
+                    ],
+                    selectedItemColor: Theme.of(
+                      context,
+                    ).appBarTheme.iconTheme?.color,
+                    onTap: (index) async {
+                      debugPrint("Index: $index");
+                      switch (index) {
+                        case 0:
+                          debugPrint("Index burasi $aramaEtkin");
+                          scaffoldKey.currentState?.openDrawer();
+                          break;
+                        case 1:
+                          await barkodTara(
+                            context,
+                            kullanici: widget.kullanici,
+                            cihazlariYenile: () async {
+                              await _cihazlariYenile();
+                            },
+                            pcYenile: () async {
+                              await pcYenile();
+                            },
+                          );
+                          break;
+                        case 2:
+                          _aramaDurumuDuzenle(true);
+                          break;
+                        case 3:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AyarlarSayfasi(
+                                pcYenile: pcYenile,
+                                kullanici: widget.kullanici,
+                              ),
+                            ),
+                          );
+                          break;
+                      }
+                    },
+                  ),
+            floatingActionButtonLocation: chatEnabled
+                ? FloatingActionButtonLocation.endFloat
+                : FloatingActionButtonLocation.centerDocked,
             extendBody: true,
-            floatingActionButton:
-                klavyeAcik
-                    ? null
-                    : (chatEnabled
-                        ? FloatingActionButton(
+            floatingActionButton: klavyeAcik
+                ? null
+                : (chatEnabled
+                      ? FloatingActionButton(
                           heroTag: "chat${Random().nextInt(1000)}",
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        AIChatPage(kullanici: widget.kullanici),
+                                builder: (context) =>
+                                    AIChatPage(kullanici: widget.kullanici),
                               ),
                             );
                           },
@@ -327,7 +320,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                             color: Colors.white,
                           ),
                         )
-                        : FloatingActionButton(
+                      : FloatingActionButton(
                           shape: const CircleBorder(),
                           onPressed: () {
                             if (yukariKaydir) {
@@ -340,19 +333,19 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder:
-                                      (context) => YeniCihazSayfasi(
-                                        kullanici: widget.kullanici,
-                                        cihazlariYenile: () async {
-                                          await _cihazlariYenile();
-                                        },
-                                      ),
+                                  builder: (context) => YeniCihazSayfasi(
+                                    kullanici: widget.kullanici,
+                                    cihazlariYenile: () async {
+                                      await _cihazlariYenile();
+                                    },
+                                  ),
                                 ),
                               );
                             }
                           },
-                          backgroundColor:
-                              Theme.of(context).appBarTheme.backgroundColor,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).appBarTheme.backgroundColor,
                           child: Icon(
                             yukariKaydir
                                 ? CupertinoIcons.arrow_up
@@ -368,105 +361,102 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
               child: Container(
                 decoration: BoxDecoration(color: Colors.white),
                 width: MediaQuery.of(context).size.width,
-                child:
-                    cihazlar == null
-                        ? Center(child: CircularProgressIndicator())
-                        : RefreshIndicator(
-                          onRefresh: () async {
-                            setState(() {
-                              arama = "";
-                            });
-                            await _cihazlariYenile();
-                          },
-                          child: ListView.builder(
-                            itemCount: cihazlar!.length,
-                            controller: scrollController,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              Cihaz cihaz = cihazlar![index];
-                              Color? renkTemp = Islemler.yaziRengi(
+                child: cihazlar == null
+                    ? Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            arama = "";
+                          });
+                          await _cihazlariYenile();
+                        },
+                        child: ListView.builder(
+                          itemCount: cihazlar!.length,
+                          controller: scrollController,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            Cihaz cihaz = cihazlar![index];
+                            Color? renkTemp = Islemler.yaziRengi(
+                              cihaz.guncelDurumRenk,
+                            );
+                            return SectionCard(
+                              darkTheme: false,
+                              backgroundColor: Islemler.arkaRenk(
                                 cihaz.guncelDurumRenk,
-                              );
-                              return SectionCard(
-                                darkTheme: false,
-                                backgroundColor: Islemler.arkaRenk(
-                                  cihaz.guncelDurumRenk,
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 0,
-                                  horizontal: 0,
-                                ),
-                                children: [
-                                  ListTile(
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 0,
+                              ),
+                              children: [
+                                ListTile(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      InfoTileList(
+                                        label: "Servis No",
+                                        value: cihaz.servisNo.toString(),
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Müşteri Adı",
+                                        value: cihaz.musteriAdi,
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Cihaz Tür",
+                                        value: cihaz.cihazTuru,
+                                        textColor: renkTemp,
+                                      ),
+                                      if (widget.sorumlu == null)
                                         InfoTileList(
-                                          label: "Servis No",
-                                          value: cihaz.servisNo.toString(),
+                                          label: "Sorumlu",
+                                          value: cihaz.sorumlu,
                                           textColor: renkTemp,
                                         ),
-                                        InfoTileList(
-                                          label: "Müşteri Adı",
-                                          value: cihaz.musteriAdi,
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Cihaz Tür",
-                                          value: cihaz.cihazTuru,
-                                          textColor: renkTemp,
-                                        ),
-                                        if (widget.sorumlu == null)
-                                          InfoTileList(
-                                            label: "Sorumlu",
-                                            value: cihaz.sorumlu,
-                                            textColor: renkTemp,
-                                          ),
-                                        InfoTileList(
-                                          label: "Cihaz",
-                                          value:
-                                              "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Giriş Tarihi",
-                                          value: cihaz.tarih,
-                                          textColor: renkTemp,
-                                        ),
-                                      ],
-                                    ),
-                                    subtitle: Text(
-                                      cihaz.guncelDurumText.toString(),
-                                      style: TextStyle(color: renkTemp),
-                                    ),
-                                    trailing: PrimaryButton(
-                                      width: 40,
-                                      height: 40,
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) => DetaylarSayfasi(
-                                                  kullanici: widget.kullanici,
-                                                  no: cihaz.servisNo,
-                                                  cihazlariYenile: () async {
-                                                    await _cihazlariYenile();
-                                                  },
-                                                ),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icons.list_alt,
-                                    ),
+                                      InfoTileList(
+                                        label: "Cihaz",
+                                        value:
+                                            "${cihaz.cihaz}${(cihaz.cihazModeli.isNotEmpty ? " ${cihaz.cihazModeli}" : "")}",
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Giriş Tarihi",
+                                        value: cihaz.tarih,
+                                        textColor: renkTemp,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              );
-                            },
-                          ),
+                                  subtitle: Text(
+                                    cihaz.guncelDurumText.toString(),
+                                    style: TextStyle(color: renkTemp),
+                                  ),
+                                  trailing: PrimaryButton(
+                                    width: 40,
+                                    height: 40,
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => DetaylarSayfasi(
+                                            kullanici: widget.kullanici,
+                                            no: cihaz.servisNo,
+                                            cihazlariYenile: () async {
+                                              await _cihazlariYenile();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icons.list_alt,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
+                      ),
               ),
             ),
           );
@@ -481,13 +471,12 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
         suankiIndex = 0;
       });
     }
-    List<Cihaz> cihazlarTemp = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).cihazlariGetir(
-      sorumlu: widget.sorumlu,
-      arama: arama.isNotEmpty ? arama : null,
-      offset: suankiIndex * 50,
-    );
+    List<Cihaz> cihazlarTemp = await BiltekPost.of(widget.kullanici.auth)
+        .cihazlariGetir(
+          sorumlu: widget.sorumlu,
+          arama: arama.isNotEmpty ? arama : null,
+          offset: suankiIndex * 50,
+        );
     if (mounted) {
       setState(() {
         if (sifirla) {
@@ -569,14 +558,13 @@ class CihazNo {
     }
     navigatorState.push(
       MaterialPageRoute(
-        builder:
-            (context) => DetaylarSayfasi(
-              kullanici: kullanici,
-              no: no,
-              cihazlariYenile: () {
-                cihazlariYenile.call();
-              },
-            ),
+        builder: (context) => DetaylarSayfasi(
+          kullanici: kullanici,
+          no: no,
+          cihazlariYenile: () {
+            cihazlariYenile.call();
+          },
+        ),
       ),
     );
     if (bilgisayardaAc) {
@@ -781,9 +769,8 @@ Drawer biltekDrawer(
             Navigator.pop(context);
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder:
-                    (context) =>
-                        Anasayfa(sayfa: "anasayfa", kullanici: kullanici),
+                builder: (context) =>
+                    Anasayfa(sayfa: "anasayfa", kullanici: kullanici),
               ),
               (route) => false,
             );
@@ -798,9 +785,8 @@ Drawer biltekDrawer(
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder:
-                      (context) =>
-                          Anasayfa(sayfa: "cihazlarim", kullanici: kullanici),
+                  builder: (context) =>
+                      Anasayfa(sayfa: "cihazlarim", kullanici: kullanici),
                 ),
                 (route) => false,
               );
@@ -815,9 +801,23 @@ Drawer biltekDrawer(
               Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder:
-                      (context) =>
-                          Anasayfa(sayfa: "notlar", kullanici: kullanici),
+                  builder: (context) =>
+                      Anasayfa(sayfa: "notlar", kullanici: kullanici),
+                ),
+              );
+            },
+          ),
+        if (!kullanici.musteri && (kullanici.yonetici || kullanici.sifreler))
+          ListTile(
+            contentPadding: linkPadding,
+            title: const Text("Müşteri Şifreleri"),
+            selected: seciliSayfa == "sifreler",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Anasayfa(sayfa: "sifreler", kullanici: kullanici),
                 ),
               );
             },
@@ -831,11 +831,8 @@ Drawer biltekDrawer(
               Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder:
-                      (context) => Anasayfa(
-                        sayfa: "malzeme_teslimi",
-                        kullanici: kullanici,
-                      ),
+                  builder: (context) =>
+                      Anasayfa(sayfa: "malzeme_teslimi", kullanici: kullanici),
                 ),
               );
             },
@@ -848,8 +845,8 @@ Drawer biltekDrawer(
             Navigator.pop(context);
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder:
-                    (context) => Anasayfa(sayfa: "cagri", kullanici: kullanici),
+                builder: (context) =>
+                    Anasayfa(sayfa: "cagri", kullanici: kullanici),
               ),
               (route) => false,
             );
@@ -868,39 +865,36 @@ Drawer biltekDrawer(
             contentPadding: linkPadding,
             title: const Text("Lisansları Yönet"),
             selected: seciliSayfa == "Lisanslar",
-            onTap:
-                seciliSayfa != "Lisanslar"
-                    ? () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder:
-                              (context) => LisansSayfasi(kullanici: kullanici),
-                        ),
-                        (route) => false,
-                      );
-                    }
-                    : null,
+            onTap: seciliSayfa != "Lisanslar"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            LisansSayfasi(kullanici: kullanici),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
           ),
         if (kullanici.yonetici && Ayarlar.lisansEtkin)
           ListTile(
             contentPadding: linkPadding,
             title: const Text("Versiyonları Yönet"),
             selected: seciliSayfa == "Versiyonlar",
-            onTap:
-                seciliSayfa != "Versiyonlar"
-                    ? () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  VersiyonSayfasi(kullanici: kullanici),
-                        ),
-                        (route) => false,
-                      );
-                    }
-                    : null,
+            onTap: seciliSayfa != "Versiyonlar"
+                ? () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            VersiyonSayfasi(kullanici: kullanici),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
           ),
       ],
     ),
@@ -919,74 +913,150 @@ Future<void> barkodTara(
   Navigator.push<String>(
     context,
     MaterialPageRoute(
-      builder:
-          (context) => BarcodeScanner(
-            lineColor: "#ff6666",
-            cancelButtonText: "İptal",
-            isShowFlashIcon: true,
-            scanType: ScanType.barcode,
-            cameraFace: CameraFace.back,
-            barcodeAppBar: const BarcodeAppBar(
-              appBarTitle: 'Barkod Tara',
-              centerTitle: false,
-              enableBackButton: true,
-              backButtonIcon: Icon(CupertinoIcons.arrow_left),
-            ),
-            delayMillis: 2000,
-            scanFormat: ScanFormat.ALL_FORMATS,
-            onScanned: (res) async {
-              NavigatorState navigatorState = Navigator.of(context);
-              if (!kIsWeb &&
-                  (Platform.isAndroid || Platform.isIOS) &&
-                  !sadeceGiris) {
-                await FlutterRingtonePlayer().play(
-                  fromAsset: BiltekAssets.barkod,
-                  looping: false,
-                  asAlarm: false,
-                  volume: 0.5,
-                );
-              }
-              Future.delayed(Duration(seconds: 1), () async {
-                navigatorState.pop();
-                debugPrint("Sonuc: $res");
-                if (sadeceGiris) {
-                  debugPrint("Giriş sadece modunda tarandı: $res");
-                  if (res.isNotEmpty && res.startsWith("giris:")) {
-                    var splt = res.split(":");
-                    if (splt.length == 2) {
-                      bool sonuc = await BiltekPost.of(
-                        kullanici.auth,
-                      ).barkodGiris(id: kullanici.id, qr: splt[1]);
-                      if (sonuc) {
-                        if (context.mounted) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text("Giriş Başarılı"),
-                                content: Icon(
-                                  CupertinoIcons.check_mark_circled,
-                                  color: Colors.green,
-                                  size: 50,
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Tamam"),
-                                  ),
-                                ],
-                              );
-                            },
+      builder: (context) => BarcodeScanner(
+        lineColor: "#ff6666",
+        cancelButtonText: "İptal",
+        isShowFlashIcon: true,
+        scanType: ScanType.barcode,
+        cameraFace: CameraFace.back,
+        barcodeAppBar: const BarcodeAppBar(
+          appBarTitle: 'Barkod Tara',
+          centerTitle: false,
+          enableBackButton: true,
+          backButtonIcon: Icon(CupertinoIcons.arrow_left),
+        ),
+        delayMillis: 2000,
+        scanFormat: ScanFormat.ALL_FORMATS,
+        onScanned: (res) async {
+          NavigatorState navigatorState = Navigator.of(context);
+          if (!kIsWeb &&
+              (Platform.isAndroid || Platform.isIOS) &&
+              !sadeceGiris) {
+            await FlutterRingtonePlayer().play(
+              fromAsset: BiltekAssets.barkod,
+              looping: false,
+              asAlarm: false,
+              volume: 0.5,
+            );
+          }
+          Future.delayed(Duration(seconds: 1), () async {
+            navigatorState.pop();
+            debugPrint("Sonuc: $res");
+            if (sadeceGiris) {
+              debugPrint("Giriş sadece modunda tarandı: $res");
+              if (res.isNotEmpty && res.startsWith("giris:")) {
+                var splt = res.split(":");
+                if (splt.length == 2) {
+                  bool sonuc = await BiltekPost.of(
+                    kullanici.auth,
+                  ).barkodGiris(id: kullanici.id, qr: splt[1]);
+                  if (sonuc) {
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Giriş Başarılı"),
+                            content: Icon(
+                              CupertinoIcons.check_mark_circled,
+                              color: Colors.green,
+                              size: 50,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Tamam"),
+                              ),
+                            ],
                           );
-                        }
-                      } else {
-                        if (context.mounted) {
-                          barkodGecersiz(context);
-                        }
+                        },
+                      );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      barkodGecersiz(context);
+                    }
+                  }
+                } else {
+                  if (context.mounted) {
+                    barkodGecersiz(context);
+                  }
+                }
+              } else {
+                if (context.mounted) {
+                  barkodGecersiz(context);
+                }
+              }
+              return;
+            }
+            if (res.isNotEmpty && res != "-1" && cihazNoCls.isValidCihaz(res)) {
+              cihazNoCls.qrAc(
+                qr: res,
+                kullanici: kullanici,
+                cihazlariYenile: cihazlariYenile,
+              );
+            } else if (res.isNotEmpty &&
+                res != "-1" &&
+                res.split(":").length == 2) {
+              var splt = res.split(":");
+              switch (splt[0]) {
+                case "servisNo":
+                case "no":
+                  try {
+                    int no = int.parse(splt[1]);
+                    await cihazNoCls.ac(
+                      no: no,
+                      kullanici: kullanici,
+                      cihazlariYenile: cihazlariYenile,
+                      bilgisayardaAc: false,
+                    );
+                  } on Exception catch (e) {
+                    debugPrint(e.toString());
+                    if (context.mounted) {
+                      barkodGecersiz(context);
+                    }
+                  }
+                  break;
+                default:
+                  if ('.'.allMatches(splt[0]).length == 3) {
+                    try {
+                      await SecureStorage.setString(
+                        SecureStorage.barkodIP,
+                        splt[0],
+                      );
+                      await SecureStorage.setInt(
+                        SecureStorage.barkodPort,
+                        int.parse(splt[1]),
+                      );
+                      pcYenile.call();
+                      if (context.mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Eşleştirme"),
+                              content: Text(
+                                "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir.",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Tamam"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
-                    } else {
+                      BarkodOkuyucu? barkodOkuyucu =
+                          await BarkodOkuyucu.getir();
+                      await barkodOkuyucu?.eslestir();
+                    } on Exception catch (e) {
+                      debugPrint(e.toString());
                       if (context.mounted) {
                         barkodGecersiz(context);
                       }
@@ -996,93 +1066,14 @@ Future<void> barkodTara(
                       barkodGecersiz(context);
                     }
                   }
-                  return;
-                }
-                if (res.isNotEmpty &&
-                    res != "-1" &&
-                    cihazNoCls.isValidCihaz(res)) {
-                  cihazNoCls.qrAc(
-                    qr: res,
-                    kullanici: kullanici,
-                    cihazlariYenile: cihazlariYenile,
-                  );
-                } else if (res.isNotEmpty &&
-                    res != "-1" &&
-                    res.split(":").length == 2) {
-                  var splt = res.split(":");
-                  switch (splt[0]) {
-                    case "servisNo":
-                    case "no":
-                      try {
-                        int no = int.parse(splt[1]);
-                        await cihazNoCls.ac(
-                          no: no,
-                          kullanici: kullanici,
-                          cihazlariYenile: cihazlariYenile,
-                          bilgisayardaAc: false,
-                        );
-                      } on Exception catch (e) {
-                        debugPrint(e.toString());
-                        if (context.mounted) {
-                          barkodGecersiz(context);
-                        }
-                      }
-                      break;
-                    default:
-                      if ('.'.allMatches(splt[0]).length == 3) {
-                        try {
-                          await SecureStorage.setString(
-                            SecureStorage.barkodIP,
-                            splt[0],
-                          );
-                          await SecureStorage.setInt(
-                            SecureStorage.barkodPort,
-                            int.parse(splt[1]),
-                          );
-                          pcYenile.call();
-                          if (context.mounted) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Eşleştirme"),
-                                  content: Text(
-                                    "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir.",
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text("Tamam"),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                          BarkodOkuyucu? barkodOkuyucu =
-                              await BarkodOkuyucu.getir();
-                          await barkodOkuyucu?.eslestir();
-                        } on Exception catch (e) {
-                          debugPrint(e.toString());
-                          if (context.mounted) {
-                            barkodGecersiz(context);
-                          }
-                        }
-                      } else {
-                        if (context.mounted) {
-                          barkodGecersiz(context);
-                        }
-                      }
-                      break;
-                  }
-                } else {
-                  if (context.mounted) {
-                    barkodGecersiz(context);
-                  }
-                }
-                /*if (kDebugMode) {
+                  break;
+              }
+            } else {
+              if (context.mounted) {
+                barkodGecersiz(context);
+              }
+            }
+            /*if (kDebugMode) {
             int servisNo2 = 2025000007;
             await BiltekPost.bilgisayardaAc(
               kullaniciID: kullanici.id,
@@ -1090,9 +1081,9 @@ Future<void> barkodTara(
             );
             await Islemler.barkodOkuyucuAc(servisNo2.toString());
           }*/
-              });
-            },
-          ),
+          });
+        },
+      ),
     ),
   );
 }

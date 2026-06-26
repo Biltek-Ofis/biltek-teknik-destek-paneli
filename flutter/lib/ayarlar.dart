@@ -62,6 +62,11 @@ class Ayarlar {
   static String get notDuzenle => "${appUrl}notDuzenle/";
   static String get notSil => "${appUrl}notSil/";
 
+  static String get sifreler => "${appUrl}sifreler/";
+  static String get sifreEkle => "${appUrl}sifreEkle/";
+  static String get sifreDuzenle => "${appUrl}sifreDuzenle/";
+  static String get sifreSil => "${appUrl}sifreSil/";
+
   static String get qrEkle => "${appUrl}qrEkle/";
 
   // Deeplinks

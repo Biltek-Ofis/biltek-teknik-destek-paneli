@@ -27,6 +27,7 @@ class KullaniciAuthModel extends KullaniciModel {
     required super.kullaniciAdi,
     required super.adSoyad,
     required super.urunduzenleme,
+    required super.sifreler,
     required super.teknikservis,
     required super.yonetici,
     required super.musteri,
@@ -40,6 +41,7 @@ class KullaniciAuthModel extends KullaniciModel {
         'kullanici_adi': String kullaniciAdi,
         'ad_soyad': String adSoyad,
         'urunduzenleme': String urunduzenleme,
+        'sifreler': String sifreler,
         'teknikservis': String teknikservis,
         'yonetici': String yonetici,
         'musteri': String musteri,
@@ -50,6 +52,7 @@ class KullaniciAuthModel extends KullaniciModel {
           kullaniciAdi: kullaniciAdi,
           adSoyad: adSoyad,
           urunduzenleme: urunduzenleme == "1",
+          sifreler: sifreler == "1",
           teknikservis: teknikservis == "1",
           yonetici: yonetici == "1",
           musteri: musteri == "1",
@@ -60,6 +63,7 @@ class KullaniciAuthModel extends KullaniciModel {
         kullaniciAdi: "",
         adSoyad: "",
         urunduzenleme: false,
+        sifreler: false,
         teknikservis: false,
         yonetici: false,
         musteri: true,
@@ -74,6 +78,7 @@ class KullaniciModel {
   final String kullaniciAdi;
   final String adSoyad;
   final bool urunduzenleme;
+  final bool sifreler;
   final bool teknikservis;
   final bool yonetici;
   final bool musteri;
@@ -83,6 +88,7 @@ class KullaniciModel {
     required this.kullaniciAdi,
     required this.adSoyad,
     required this.urunduzenleme,
+    required this.sifreler,
     required this.teknikservis,
     required this.yonetici,
     required this.musteri,
@@ -95,6 +101,7 @@ class KullaniciModel {
         'kullanici_adi': String kullaniciAdi,
         'ad_soyad': String adSoyad,
         'urunduzenleme': String urunduzenleme,
+        'sifreler': String sifreler,
         'teknikservis': String teknikservis,
         'yonetici': String yonetici,
         'musteri': String musteri,
@@ -104,6 +111,7 @@ class KullaniciModel {
           kullaniciAdi: kullaniciAdi,
           adSoyad: adSoyad,
           urunduzenleme: urunduzenleme == "1",
+          sifreler: sifreler == "1",
           teknikservis: teknikservis == "1",
           yonetici: yonetici == "1",
           musteri: musteri == "1",
@@ -113,6 +121,7 @@ class KullaniciModel {
         kullaniciAdi: "",
         adSoyad: "",
         urunduzenleme: false,
+        sifreler: false,
         teknikservis: false,
         yonetici: false,
         musteri: true,

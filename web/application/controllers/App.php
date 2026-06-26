@@ -1370,7 +1370,7 @@ class App extends CI_Controller
             if ($this->token($token)) {
                 $ku = $this->Kullanicilar_Model->kullaniciKontrol();
                 if ($ku != null) {
-                    if ($ku->musteri != 1 && ($$ku->yonetici == 1 || $ku->sifreler == 1)) {
+                    if ($ku->musteri != 1 && ($ku->yonetici == 1 || $ku->sifreler == 1)) {
                         $id = $this->input->post("id");
                         if (isset($id) && strlen($id) > 0) {
                             $duzenle = $this->Sifreler_Model->duzenle($id);

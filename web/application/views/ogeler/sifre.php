@@ -19,7 +19,7 @@ echo '" autocomplete="'.$this->Islemler_Model->rastgele_yazi().'" class="form-co
 if (isset($sifre_value)) {
     echo $sifre_value;
 }
-echo '"'.(isset($sifre_readonly) ? ($sifre_readonly ? " readonly" : "") : "").'> <a href="#" class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifre';
+echo '"'.(isset($sifre_readonly) ? ($sifre_readonly ? " readonly" : "") : "").' required> <a href="#" class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifre';
 if (isset($id)) {
     echo $id;
 }

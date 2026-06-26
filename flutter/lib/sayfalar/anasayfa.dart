@@ -13,6 +13,7 @@ import 'cihazlarim.dart';
 import 'detaylar/detaylar.dart';
 import 'malzeme_teslimi/malzeme_teslimi.dart';
 import 'notlar/notlar.dart';
+import 'sifreler/sifreler.dart';
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key, required this.sayfa, required this.kullanici});
@@ -72,6 +73,9 @@ class _AnasayfaState extends State<Anasayfa> {
             break;
           case "notlar":
             sayfa = NotlarSayfasi(kullanici: widget.kullanici);
+            break;
+          case "sifreler":
+            sayfa = SifrelerSayfasi(kullanici: widget.kullanici);
             break;
           case "malzeme_teslimi":
             sayfa = MalzemeTeslimiSayfasi(

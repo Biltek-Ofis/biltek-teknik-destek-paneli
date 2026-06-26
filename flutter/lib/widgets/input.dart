@@ -226,6 +226,7 @@ class BiltekSifre extends StatefulWidget {
     this.keyboardType,
     this.style,
     this.readOnly = false,
+    this.canCopy = false,
     this.onTap,
     this.onEditingComplete,
   });
@@ -245,6 +246,7 @@ class BiltekSifre extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextStyle? style;
   final bool readOnly;
+  final bool canCopy;
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
 
@@ -278,22 +280,41 @@ class _BiltekSifreState extends State<BiltekSifre> {
       errorText: widget.errorText,
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
-      suffix: IconButton(
-        onPressed: () {
-          widget.sifreDurumu?.call(!sifreyiGoster);
-          setState(() {
-            sifreyiGoster = !sifreyiGoster;
-          });
-        },
-        icon: Icon(
-          (widget.sifreGoster ?? sifreyiGoster)
-              ? CupertinoIcons.eye
-              : CupertinoIcons.eye_slash,
-          color:
-              focused
-                  ? BiltekTextFieldState._accent.withAlpha(180)
-                  : Theme.of(context).colorScheme.primary,
-        ),
+      suffix: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              widget.sifreDurumu?.call(!sifreyiGoster);
+              setState(() {
+                sifreyiGoster = !sifreyiGoster;
+              });
+            },
+            icon: Icon(
+              (widget.sifreGoster ?? sifreyiGoster)
+                  ? CupertinoIcons.eye
+                  : CupertinoIcons.eye_slash,
+              color:
+                  focused
+                      ? BiltekTextFieldState._accent.withAlpha(180)
+                      : Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          if (widget.controller != null &&
+              (widget.sifreGoster ?? sifreyiGoster))
+            IconButton(
+              onPressed: () async {
+                await Clipboard.setData(
+                  ClipboardData(text: widget.controller!.text),
+                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Kopyalandı!')));
+                }
+              },
+              icon: Icon(Icons.copy, color: Colors.green),
+            ),
+        ],
       ),
       obscureText: !(widget.sifreGoster ?? sifreyiGoster),
       enableSuggestions: (widget.sifreGoster ?? sifreyiGoster),

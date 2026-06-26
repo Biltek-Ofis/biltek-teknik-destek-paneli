@@ -20,6 +20,7 @@ import '../models/malzeme_teslimi_model.dart';
 import '../models/medya.dart';
 import '../models/musteri.dart';
 import '../models/not.dart';
+import '../models/sifre.dart';
 import 'secure_storage.dart';
 
 class BiltekPost {
@@ -1059,6 +1060,106 @@ class BiltekPost {
 
   Future<bool> notSil({required int id}) async {
     var response = await post(Ayarlar.notSil, {"id": id.toString()});
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  Future<List<SifreModel>> sifreleriGetir() async {
+    Map<String, String> postData = {};
+
+    var response = await post(Ayarlar.sifreler, postData);
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        List<dynamic> sifreler = jsonDecode(resp) as List<dynamic>;
+        return sifreler
+            .map((sifre) => SifreModel.fromJson(sifre as Map<String, dynamic>))
+            .toList();
+      } on Exception catch (e) {
+        debugPrint("Şifreler yüklenirken bir hata oluştu.\n${e.toString()}");
+        return [];
+      }
+    } else {
+      debugPrint(
+        "Şifreler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
+      );
+      return [];
+    }
+  }
+
+  Future<bool> sifreEkle({
+    required String musteriAdi,
+    required String aciklama,
+    required String kAdi,
+    required String sifre,
+    required int kullaniciID,
+  }) async {
+    var response = await post(Ayarlar.sifreEkle, {
+      "musteri_adi": musteriAdi,
+      "aciklama": aciklama,
+      "k_adi": kAdi,
+      "sifre": sifre,
+      "kullanici": kullaniciID.toString(),
+    });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  Future<bool> sifreDuzenle({
+    required int id,
+    required String musteriAdi,
+    required String aciklama,
+    required String kAdi,
+    required String sifre,
+    required int kullaniciID,
+  }) async {
+    var response = await post(Ayarlar.sifreDuzenle, {
+      "id": id.toString(),
+      "musteri_adi": musteriAdi,
+      "aciklama": aciklama,
+      "k_adi": kAdi,
+      "sifre": sifre,
+      "kullanici": kullaniciID.toString(),
+    });
+    var resp = await response.stream.bytesToString();
+    if (response.statusCode == 201) {
+      try {
+        Map<String, dynamic> map =
+            jsonDecode("${resp.split("}")[0]}}") as Map<String, dynamic>;
+        if (map.containsKey("sonuc") && map["sonuc"].toString() == "1") {
+          return true;
+        }
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return false;
+  }
+
+  Future<bool> sifreSil({required int id}) async {
+    var response = await post(Ayarlar.sifreSil, {"id": id.toString()});
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
