@@ -13,6 +13,7 @@ class App extends CI_Controller
         $this->load->model("Notlar_Model");
         $this->load->model("Islemler_Model");
         $this->load->model("Firma_Model");
+        $this->load->model("Sifreler_Model");
     }
     public function index()
     {
@@ -1286,6 +1287,126 @@ class App extends CI_Controller
                         $id = $this->input->post("id");
                         if (isset($id) && strlen($id) > 0) {
                             $sil = $this->Notlar_Model->sil($id);
+                            if ($sil) {
+                                echo json_encode(array("sonuc" => 1));
+                            } else {
+                                echo json_encode($this->hataMesaji(1));
+                            }
+                        } else {
+                            echo json_encode($this->hataMesaji(1));
+                        }
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+
+    public function sifreler()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ku = $this->Kullanicilar_Model->kullaniciKontrol();
+                if ($ku != null) {
+                    if ($ku->musteri != 1 && ($ku->yonetici == 1 || $ku->sifreler == 1)) {
+                        $kayitlar = $this->hataMesaji(1);
+                        $kayitlar = $this->Sifreler_Model->getir();
+                        echo json_encode($kayitlar);
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function sifreEkle()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ku = $this->Kullanicilar_Model->kullaniciKontrol();
+                if ($ku != null) {
+                    if ($ku->musteri != 1 && ($ku->yonetici == 1 || $ku->sifreler == 1)) {
+                        $ekle = $this->Sifreler_Model->ekle();
+                        if ($ekle) {
+                            echo json_encode(array("sonuc" => 1));
+                        } else {
+                            echo json_encode($this->hataMesaji(1));
+                        }
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function sifreDuzenle()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ku = $this->Kullanicilar_Model->kullaniciKontrol();
+                if ($ku != null) {
+                    if ($ku->musteri != 1 && ($$ku->yonetici == 1 || $ku->sifreler == 1)) {
+                        $id = $this->input->post("id");
+                        if (isset($id) && strlen($id) > 0) {
+                            $duzenle = $this->Sifreler_Model->duzenle($id);
+                            if ($duzenle) {
+                                echo json_encode(array("sonuc" => 1));
+                            } else {
+                                echo json_encode($this->hataMesaji(1));
+                            }
+                        } else {
+                            echo json_encode($this->hataMesaji(1));
+                        }
+                    } else {
+                        echo json_encode($this->hataMesaji(1));
+                    }
+                } else {
+                    echo json_encode($this->hataMesaji(1));
+                }
+            } else {
+                echo json_encode($this->hataMesaji(1));
+            }
+        } else {
+            echo json_encode($this->hataMesaji(1));
+        }
+    }
+    public function sifreSil()
+    {
+        $this->headerlar();
+        $token = $this->tokenPost();
+        if (isset($token)) {
+            if ($this->token($token)) {
+                $ku = $this->Kullanicilar_Model->kullaniciKontrol();
+                if ($ku != null) {
+                    if ($ku->musteri != 1 && ($ku->yonetici == 1 || $ku->sifreler == 1)) {
+                        $id = $this->input->post("id");
+                        if (isset($id) && strlen($id) > 0) {
+                            $sil = $this->Sifreler_Model->sil($id);
                             if ($sil) {
                                 echo json_encode(array("sonuc" => 1));
                             } else {
