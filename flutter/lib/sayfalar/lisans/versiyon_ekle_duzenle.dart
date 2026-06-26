@@ -55,59 +55,63 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
             widget.versiyon == null ? "Versiyon Ekle" : "Versiyonu Düzenle",
           ),
         ),
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(5),
             width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                children: [
-                  BiltekTextField(
-                    controller: versiyonController,
-                    label: "Versiyon *",
-                    errorText: versiyonHata,
-                    onChanged: (value) {
-                      setState(() {
-                        girildi = true;
-                        versiyonHata = null;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(),
-                            PrimaryButton(
-                              width: MediaQuery.of(context).size.width / 3,
-                              onPressed: () async {
-                                await _duzenle();
-                              },
-                              label:
-                                  widget.versiyon == null ? "Ekle" : "Kaydet",
-                            ),
-                            SizedBox(width: 10),
-                            SecondaryButton(
-                              width: MediaQuery.of(context).size.width / 3,
-                              onPressed: () {
-                                cikisKontrol();
-                              },
-                              label: "Kapat",
-                            ),
-                          ],
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      children: [
+                        BiltekTextField(
+                          controller: versiyonController,
+                          label: "Versiyon *",
+                          errorText: versiyonHata,
+                          onChanged: (value) {
+                            setState(() {
+                              girildi = true;
+                              versiyonHata = null;
+                            });
+                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 10,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(),
+                          PrimaryButton(
+                            width: MediaQuery.of(context).size.width / 3,
+                            onPressed: () async {
+                              await _duzenle();
+                            },
+                            label: widget.versiyon == null ? "Ekle" : "Kaydet",
+                          ),
+                          SizedBox(width: 10),
+                          SecondaryButton(
+                            width: MediaQuery.of(context).size.width / 3,
+                            onPressed: () {
+                              cikisKontrol();
+                            },
+                            label: "Kapat",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

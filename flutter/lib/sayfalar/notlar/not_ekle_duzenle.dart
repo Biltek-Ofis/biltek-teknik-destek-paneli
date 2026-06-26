@@ -91,10 +91,9 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
         appBar: AppBar(
           title: Text(widget.not != null ? "Not Düzenle" : "Not Ekle"),
         ),
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(5),
             child: Column(
               children: [
                 Expanded(

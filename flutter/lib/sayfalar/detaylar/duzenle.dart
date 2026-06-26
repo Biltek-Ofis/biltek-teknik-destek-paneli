@@ -284,10 +284,9 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
               tabs: [Tab(text: "Genel"), Tab(text: "Yapılan İşlemler")],
             ),
           ),
-          resizeToAvoidBottomInset: false,
           body: SafeArea(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
+              padding: EdgeInsets.all(5),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Column(

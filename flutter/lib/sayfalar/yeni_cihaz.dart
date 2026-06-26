@@ -229,10 +229,9 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
       },
       child: Scaffold(
         appBar: AppBar(title: Text("Yeni Cihaz Girişi")),
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(5),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child:

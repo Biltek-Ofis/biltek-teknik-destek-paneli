@@ -106,147 +106,153 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
             widget.lisans == null ? "Lisans Ekle" : "Lisansı Düzenle",
           ),
         ),
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(5),
             width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                children: [
-                  BiltekTextField(
-                    controller: isimController,
-                    label: "İsim *",
-                    errorText: isimHata,
-                    onChanged: (value) {
-                      setState(() {
-                        girildi = true;
-                        isimHata = null;
-                      });
-                    },
-                  ),
-                  BiltekSelect<int>(
-                    title: "Versiyon",
-                    value: versiyon,
-                    items: [
-                      DropdownMenuItem(
-                        value: 0,
-                        child: Text("Tüm Versiyonlar"),
-                      ),
-                      if (versiyonlar != null)
-                        for (
-                          int versiyonIndex = 0;
-                          versiyonIndex < versiyonlar!.length;
-                          versiyonIndex++
-                        )
-                          DropdownMenuItem(
-                            value: versiyonlar![versiyonIndex].id,
-                            child: Text(versiyonlar![versiyonIndex].versiyon),
-                          ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        girildi = true;
-                        versiyon = value!;
-                      });
-                    },
-                  ),
-                  BiltekSelect<int>(
-                    title: "Süre Durumu",
-                    value: sureDurumu,
-                    items: [
-                      DropdownMenuItem(value: 0, child: Text("Süreli")),
-                      DropdownMenuItem(value: 1, child: Text("Süresiz")),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        girildi = true;
-                        sureDurumu = value!;
-                      });
-                    },
-                  ),
-                  BiltekTarih(
-                    controller: baslangicController,
-                    format: Islemler.lisansNormalTarih,
-                    saatiGoster: false,
-                    label: "Başlangıç Tarihi",
-                    errorText: baslangicHata,
-                    onConfirm: (date) {
-                      baslangicTarihiGuncelle(date!);
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        girildi = true;
-                        baslangicHata = "";
-                      });
-                    },
-                  ),
-                  if (sureDurumu == 0)
-                    BiltekTarih(
-                      controller: bitisController,
-                      format: Islemler.lisansNormalTarih,
-                      saatiGoster: false,
-                      label: "Bitiş Tarihi",
-                      errorText: bitisHata,
-                      onConfirm: (date) {
-                        bitisTarihiGuncelle(date!);
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          girildi = true;
-                          bitisHata = "";
-                        });
-                      },
-                    ),
-                  if (widget.lisans != null)
-                    BiltekSelect<int>(
-                      title: "Aktif",
-                      value: aktifDurumu,
-                      items: [
-                        DropdownMenuItem(value: 1, child: Text("Evet")),
-                        DropdownMenuItem(value: 0, child: Text("Hayır")),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          girildi = true;
-                          aktifDurumu = value!;
-                        });
-                      },
-                    ),
-
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(),
-                            PrimaryButton(
-                              width: MediaQuery.of(context).size.width / 3,
-                              onPressed: () async {
-                                await _duzenle();
-                              },
-                              label: widget.lisans == null ? "Ekle" : "Kaydet",
-                            ),
-                            SizedBox(width: 10),
-                            SecondaryButton(
-                              width: MediaQuery.of(context).size.width / 3,
-                              onPressed: () {
-                                cikisKontrol();
-                              },
-                              label: "Kapat",
-                            ),
-                          ],
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      children: [
+                        BiltekTextField(
+                          controller: isimController,
+                          label: "İsim *",
+                          errorText: isimHata,
+                          onChanged: (value) {
+                            setState(() {
+                              girildi = true;
+                              isimHata = null;
+                            });
+                          },
                         ),
-                      ),
-                    ],
+                        BiltekSelect<int>(
+                          title: "Versiyon",
+                          value: versiyon,
+                          items: [
+                            DropdownMenuItem(
+                              value: 0,
+                              child: Text("Tüm Versiyonlar"),
+                            ),
+                            if (versiyonlar != null)
+                              for (
+                                int versiyonIndex = 0;
+                                versiyonIndex < versiyonlar!.length;
+                                versiyonIndex++
+                              )
+                                DropdownMenuItem(
+                                  value: versiyonlar![versiyonIndex].id,
+                                  child: Text(
+                                    versiyonlar![versiyonIndex].versiyon,
+                                  ),
+                                ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              girildi = true;
+                              versiyon = value!;
+                            });
+                          },
+                        ),
+                        BiltekSelect<int>(
+                          title: "Süre Durumu",
+                          value: sureDurumu,
+                          items: [
+                            DropdownMenuItem(value: 0, child: Text("Süreli")),
+                            DropdownMenuItem(value: 1, child: Text("Süresiz")),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              girildi = true;
+                              sureDurumu = value!;
+                            });
+                          },
+                        ),
+                        BiltekTarih(
+                          controller: baslangicController,
+                          format: Islemler.lisansNormalTarih,
+                          saatiGoster: false,
+                          label: "Başlangıç Tarihi",
+                          errorText: baslangicHata,
+                          onConfirm: (date) {
+                            baslangicTarihiGuncelle(date!);
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              girildi = true;
+                              baslangicHata = "";
+                            });
+                          },
+                        ),
+                        if (sureDurumu == 0)
+                          BiltekTarih(
+                            controller: bitisController,
+                            format: Islemler.lisansNormalTarih,
+                            saatiGoster: false,
+                            label: "Bitiş Tarihi",
+                            errorText: bitisHata,
+                            onConfirm: (date) {
+                              bitisTarihiGuncelle(date!);
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                girildi = true;
+                                bitisHata = "";
+                              });
+                            },
+                          ),
+                        if (widget.lisans != null)
+                          BiltekSelect<int>(
+                            title: "Aktif",
+                            value: aktifDurumu,
+                            items: [
+                              DropdownMenuItem(value: 1, child: Text("Evet")),
+                              DropdownMenuItem(value: 0, child: Text("Hayır")),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                girildi = true;
+                                aktifDurumu = value!;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 10,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(),
+                          PrimaryButton(
+                            width: MediaQuery.of(context).size.width / 3,
+                            onPressed: () async {
+                              await _duzenle();
+                            },
+                            label: widget.lisans == null ? "Ekle" : "Kaydet",
+                          ),
+                          SizedBox(width: 10),
+                          SecondaryButton(
+                            width: MediaQuery.of(context).size.width / 3,
+                            onPressed: () {
+                              cikisKontrol();
+                            },
+                            label: "Kapat",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
