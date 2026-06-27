@@ -13,10 +13,16 @@ class Sifreler_Model extends CI_Model
     {
         return DB_ON_EK_STR . "sifreler";
     }
-    public function getir()
+    public function getir($arama = "")
     {
-        $query = $this->db->reset_query()->order_by("musteri_adi", "ASC")->get($this->sifrelerTabloAdi())->result();
-        $result = $this->donustur($query);
+        $query = $this->db->reset_query();
+        if(strlen(trim($arama))> 0){
+            $query->like("musteri_adi", $arama);
+            $query->or_like("aciklama", $arama);
+            //$query->or_like("k_adi", $arama);
+        }
+        $result = $query->order_by("musteri_adi", "ASC")->get($this->sifrelerTabloAdi())->result();
+        $result = $this->donustur($result);
         return $result;
     }
     public function donustur($result)

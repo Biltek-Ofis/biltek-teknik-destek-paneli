@@ -1319,7 +1319,8 @@ class App extends CI_Controller
                 if ($ku != null) {
                     if ($ku->musteri != 1 && ($ku->yonetici == 1 || $ku->sifreler == 1)) {
                         $kayitlar = $this->hataMesaji(1);
-                        $kayitlar = $this->Sifreler_Model->getir();
+                        $arama = $this->input->post("arama");
+                        $kayitlar = $this->Sifreler_Model->getir(isset($arama) && strlen(trim($arama)) > 0 ? trim($arama) : "");
                         echo json_encode($kayitlar);
                     } else {
                         echo json_encode($this->hataMesaji(1));

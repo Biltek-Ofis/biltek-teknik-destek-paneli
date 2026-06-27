@@ -185,17 +185,17 @@ $this->load->view("inc/style_tablo");
             });
             var tabloDiv = "#sifrelerTablosu";
             sifrelerTablosu = $(tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari(
-                "[[ 4, \"desc\" ]]",
+                "[[ 0, \"asc\" ]]",
                 "true",
                 '"aoColumns": [
             null,
             null,
-            { "sType": "date-tr" },
-            null,
-            { "sType": "date-tr" },
             null,
             null,
-    ],'
+            null,
+            null,
+            null,
+    ],', "", TRUE
             ); ?>);
             $.extend($.fn.dataTable.ext.type.order, {
                 "date-tr-pre": function (name) {

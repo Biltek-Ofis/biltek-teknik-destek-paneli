@@ -1075,8 +1075,12 @@ class BiltekPost {
     return false;
   }
 
-  Future<List<SifreModel>> sifreleriGetir() async {
+  Future<List<SifreModel>> sifreleriGetir({String? arama}) async {
     Map<String, String> postData = {};
+
+    if (arama != null) {
+      postData.addAll({"arama": arama});
+    }
 
     var response = await post(Ayarlar.sifreler, postData);
     var resp = await response.stream.bytesToString();
