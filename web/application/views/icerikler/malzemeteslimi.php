@@ -314,7 +314,9 @@ $this->load->view("inc/style_tablo");
             { "sType": "date-tr" },
             { "sType": "status-tr" },
             null,
-    ],'
+    ],',
+    "",
+    TRUE
             ); ?>);
             $.extend($.fn.dataTable.ext.type.order, {
                 "date-tr-pre": function (name) {
