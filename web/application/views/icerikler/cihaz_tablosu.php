@@ -242,7 +242,7 @@ echo '
       try{
         data = $.parseJSON( msg );
         if(data["sonuc"]==1){
-          cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+          cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
           $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
           $("#cihaziSilModal").modal("hide");
           $("#basarili-mesaji").html("Kayıt başarıyla silindi.");
@@ -456,11 +456,11 @@ echo '<table id="cihaz_tablosu" class="table table-bordered mt-2" style="min-hei
                 <a href="javascript:void(0)" onclick="siralamaGuncelle($(\'#cihazTuruColumn\'), 3);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Tür</a>
                 <ul class="dropdown-menu cihazTurleriDropdown">';
 echo '<li class="dropdown-item cihazTurleriDropdownItemTumu active">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItemTumu\');">Tümü</a>
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItemTumu\');">Tümü</a>
                   </li>';
 foreach ($cTurleri as $cTuru) {
   echo '<li class="dropdown-item cihazTurleriDropdownItem' . $cTuru->id . '">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'' . $cTuru->id . '\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItem' . $cTuru->id . '\');">' . $cTuru->isim . '</a>
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, \'' . $cTuru->id . '\');cihazDropdownActive(\'.cihazTurleriDropdown\', \'.cihazTurleriDropdownItem' . $cTuru->id . '\');">' . $cTuru->isim . '</a>
                   </li>';
 }
 echo '
@@ -478,11 +478,11 @@ echo '
                       <a href="javascript:void(0)" class="d-block w-100">SIRALA</a>
                     </li>-->';
 echo '<li class="dropdown-item cihazDurumlariDropdownItemTumu active">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \'\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItemTumu\');">Tümü</a>
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, \'\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItemTumu\');">Tümü</a>
                   </li>';
 foreach ($cDurumlari as $cDurumu54) {
   echo '<li class="dropdown-item cihazDurumlariDropdownItem' . $cDurumu54->id . '">
-                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, \'' . $cDurumu54->id . '\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItem' . $cDurumu54->id . '\');">' . $cDurumu54->durum . '</a>
+                    <a href="javascript:void(0)" class="d-block w-100" onclick="cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, \'' . $cDurumu54->id . '\', cihazlarTurSpec);cihazDropdownActive(\'.cihazDurumlariDropdown\', \'.cihazDurumlariDropdownItem' . $cDurumu54->id . '\');">' . $cDurumu54->durum . '</a>
                   </li>';
 }
 echo '
@@ -590,11 +590,13 @@ $(document).ready(function(){
         $("#cihazlar_pegination2").css({
           height: document.getElementById("cihazlar_pegination1").offsetHeight
         });
+        kaydirabilir = true;
       } else {
         $("#cihazlar_pegination1").attr("style", "");
         $("#cihazlar_pegination2").css({
           height: "0"
         });  
+        kaydirabilir = false;
       }
 
       isFixed = true; // Tekrar tetiklenmesini önler
@@ -1717,7 +1719,7 @@ echo '
               var cihazlarDurumSpec = "";
               var cihazlarTurSpec = "";
               function sayfaButonuGetir(sayfa, aktif, devredisi, tiklanabilir, text, arama){
-                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', kaydirmaDurumu, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
+                return \'<li class="paginate_button page-item\'+( aktif ? " active" : "" )+\'\'+( devredisi ? " disabled" : "" )+\'"><a href="javascript:void(0)"\' + ( tiklanabilir ? \' onclick="cihazlariGetir(\'+sayfa+\', \\\'\'+donusturOnclick(arama)+\'\\\', cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec)"\' : "" ) + \' class="page-link">\'+text+\'</a></li>\';;
               }
               function sayfalariGuncelle(sayfa, arama, durumSpec, turSpec){
                 if (sayfalariGuncellePost !== undefined)
@@ -1801,8 +1803,8 @@ echo '
                       });
                 });
               }
-              
-              function cihazlariGetir(sayfa, arama, kaydir, orderIsim, orderDurum, durumSpec, turSpec){     
+              var kaydirabilir = false;
+              function cihazlariGetir(sayfa, arama, orderIsim, orderDurum, durumSpec, turSpec){     
                 if (cihazlariGetirPost !== undefined)
                 {
                   cihazlariGetirPost.abort();
@@ -1836,8 +1838,11 @@ echo '
                   cihazlarTablosu.draw();
                   cihazlarTablosu.columns.adjust();
                   $(".datatable_processing").addClass("hide");
-                  if(kaydir){
-                    $("html, body").scrollTop($(document).height()-$(window).height());
+                  if(kaydirabilir){
+                    //$("html, body").scrollTop(0);
+                    const cihaz_tablosu_wrapper_1 = document.getElementById("cihazTablosu");
+                    //element.scrollIntoView();
+                    cihaz_tablosu_wrapper_1.scrollIntoView({ behavior: "smooth", block: "start" });
                   }
                 }).fail(function(xhr, status, error) {
                   $(".datatable_processing").addClass("hide");
@@ -1880,11 +1885,11 @@ echo '
                 }
                 var od = [ sira, orderDurum.toLowerCase()];
                 cihazlarTablosu.order(od).draw();
-                cihazlariGetir(cihazlarSayfa, cihazlarArama, false, orderIsim, orderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+                cihazlariGetir(cihazlarSayfa, cihazlarArama, orderIsim, orderDurum, cihazlarDurumSpec, cihazlarTurSpec);
               }
 ';
 echo '$(document).ready(function() {
-            cihazlariGetir(1, "", false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+            cihazlariGetir(1, "", cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
             $("#cihazlar_main").append(\'<div class="datatable_processing"></div>\');
             $(".datatable_processing").html(\'<div class="flex-wrapper" style="margin: auto;"><div class="yukleniyorDaire"></div></div>\');
             $(".datatable_processing").css("background", "rgba(255, 255, 255, 0.4)");
@@ -1915,13 +1920,13 @@ echo '$(document).ready(function() {
                 }
                         
                 cihazlarArama = $("#cihaz_tablosu_ara").val();
-                cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+                cihazlariGetir(1, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
             });
             $("#cihaz_tablosu_ara").on("input", function(e) {
                 if (!e.currentTarget.value)
                 {
                   cihazlarArama = $("#cihaz_tablosu_ara").val();
-                  cihazlariGetir(1, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+                  cihazlariGetir(1, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
                 }
             });
             var orderSira = 0;
@@ -2027,7 +2032,7 @@ echo '
         $.each(JSON.parse(data), function(index, value) {
           const cihazVarmi = $( "#cihaz" + value.id).length > 0;
           if (cihazVarmi) {
-            cihazlariGetir(cihazlarSayfa, cihazlarArama, false, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
+            cihazlariGetir(cihazlarSayfa, cihazlarArama, cihazlarOrderIsim, cihazlarOrderDurum, cihazlarDurumSpec, cihazlarTurSpec);
             if(suankiCihaz == value.id && $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").hasClass("show")){
               $("#' . $this->Cihazlar_Model->cihazDetayModalAdi() . '").modal("hide");
               $("#cihaziSilModal").modal("hide");
