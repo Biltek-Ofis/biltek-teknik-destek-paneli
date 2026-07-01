@@ -110,7 +110,7 @@ echo '
 				engellenebilir = false;
 			}
 			for (let iClass = 0; iClass < ignoreInpClasses.length; iClass++) {
-				const elClass = array[iClass];
+				const elClass = ignoreInpClasses[iClass];
 				if ($(this).hasClass(elClass)) {
 					engellenebilir = false;
 					break;
