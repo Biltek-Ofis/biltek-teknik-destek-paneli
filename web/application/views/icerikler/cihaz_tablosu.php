@@ -1841,8 +1841,15 @@ echo '
                   if(kaydirabilir){
                     //$("html, body").scrollTop(0);
                     const cihaz_tablosu_wrapper_1 = document.getElementById("cihazTablosu");
-                    //element.scrollIntoView();
-                    cihaz_tablosu_wrapper_1.scrollIntoView({ behavior: "smooth", block: "start" });
+                    const offset = 100;
+
+                    const elementPosition = cihaz_tablosu_wrapper_1.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: "smooth"
+                    });
                   }
                 }).fail(function(xhr, status, error) {
                   $(".datatable_processing").addClass("hide");
