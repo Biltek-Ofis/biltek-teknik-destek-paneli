@@ -638,10 +638,10 @@ class App extends CI_Controller
                             $duzenle = $this->Cihazlar_Model->cihazDuzenle($id, $veri, $ku->id);
                             if ($duzenle) {
                                 $cihaz = $this->Cihazlar_Model->cihazBul($id);
-                                if (count($cihaz) > 0) {
-                                    $cihaz = $cihaz[0];
-                                    if (isset($cihaz["kull_id"]) && isset($cihaz["cagri_id"])) {
-                                        $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($cihaz["kull_id"], $cihaz["cagri_id"], "servis_kaydi_musteri", "Servis kaydınızdaki bilgiler güncellendi");
+                                if ($cihaz->num_rows() > 0) {
+                                    $cihaz = $cihaz->last_row();
+                                    if (isset($cihaz->kull_id) && !empty($cihaz->kull_id) && $cihaz->kull_id != 0 && isset($cihaz->cagri_id) && !empty($cihaz->cagri_id) && $cihaz->cagri_id != 0) {
+                                        $this->Kullanicilar_Model->bildirimGonderMusteriCagriServis($cihaz->kull_id, $cihaz->cagri_id, "servis_kaydi_musteri", "Servis kaydınızdaki bilgiler güncellendi");
                                     }
                                 }
                                 echo json_encode(array("mesaj" => "", "sonuc" => 1));
