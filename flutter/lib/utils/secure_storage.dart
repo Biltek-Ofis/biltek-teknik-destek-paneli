@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SecureStorage {
   static FlutterSecureStorage? secureStorage;
-  static SharedPreferences? sharedPreferences;
 
   static const darkThemeString = "darkTheme";
   static const kullaniciString = "kullanici";
@@ -19,12 +17,10 @@ class SecureStorage {
     SecureStorage.secureStorage = FlutterSecureStorage(
       aOptions: AndroidOptions(),
     );
-    SecureStorage.sharedPreferences = await SharedPreferences.getInstance();
   }
 
   static Future<void> checkInit() async {
-    if (SecureStorage.secureStorage == null ||
-        SecureStorage.sharedPreferences == null) {
+    if (SecureStorage.secureStorage == null) {
       await init();
     }
   }
@@ -34,12 +30,6 @@ class SecureStorage {
     String? defaultValue,
   }) async {
     await SecureStorage.checkInit();
-    String? valueSp = SecureStorage.sharedPreferences!.getString(key);
-    if (valueSp != null) {
-      SecureStorage.sharedPreferences!.remove(key);
-      SecureStorage.setString(key, valueSp);
-      return valueSp;
-    }
     return await SecureStorage.secureStorage!.read(key: key) ?? defaultValue;
   }
 
@@ -65,14 +55,6 @@ class SecureStorage {
   }) async {
     await SecureStorage.checkInit();
 
-    List<String>? valueSp = SecureStorage.sharedPreferences!.getStringList(key);
-    if (valueSp != null) {
-      SecureStorage.sharedPreferences!.remove(key);
-      await SecureStorage.setStringList(key, valueSp);
-      return valueSp;
-    }
-
-    // Secure storage'dan oku
     String? value = await SecureStorage.secureStorage!.read(key: key);
     if (value == null) return defaultValue;
 
@@ -112,12 +94,6 @@ class SecureStorage {
     int? defaultValue = 0,
   }) async {
     await SecureStorage.checkInit();
-    int? valueSp = SecureStorage.sharedPreferences!.getInt(key);
-    if (valueSp != null) {
-      SecureStorage.sharedPreferences!.remove(key);
-      SecureStorage.setInt(key, valueSp);
-      return valueSp;
-    }
     String? value = await SecureStorage.secureStorage!.read(key: key);
     return value != null ? int.parse(value) : defaultValue;
   }
@@ -137,12 +113,6 @@ class SecureStorage {
 
   static Future<bool?> getBoolNullable(String key, {bool? defaultValue}) async {
     await SecureStorage.checkInit();
-    bool? valueSp = SecureStorage.sharedPreferences!.getBool(key);
-    if (valueSp != null) {
-      SecureStorage.sharedPreferences!.remove(key);
-      SecureStorage.setBool(key, valueSp);
-      return valueSp;
-    }
     String? value = await SecureStorage.secureStorage!.read(key: key);
     return value != null ? bool.parse(value) : defaultValue;
   }
@@ -162,7 +132,6 @@ class SecureStorage {
 
   static Future<void> delete(String key) async {
     await SecureStorage.checkInit();
-    await SecureStorage.sharedPreferences!.remove(key);
     await SecureStorage.secureStorage!.delete(key: key);
   }
 }
