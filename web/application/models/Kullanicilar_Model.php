@@ -35,6 +35,10 @@ class Kullanicilar_Model extends CI_Model
     {
         return DB_ON_EK_STR . "kullanici_qr";
     }
+    public function kullaniciKodTabloAdi()
+    {
+        return DB_ON_EK_STR . "kullanici_kodlar";
+    }
     public function kullaniciTablosu($id = "", $kullanici_adi = "", $ad_soyad = "", $sifre = "", $yonetici = 0, $teknikservis = 0, $urunduzenleme = 0, $sifreler = 0, $musteri = 0, $tema = "oto")
     {
         return array(
@@ -85,18 +89,19 @@ class Kullanicilar_Model extends CI_Model
         }
         return array();
     }
-    public function kullaniciKontrol(){
+    public function kullaniciKontrol()
+    {
         $auth = $this->input->post("authM");
-        if(!isset($auth)){
+        if (!isset($auth)) {
             return null;
         }
-        if(strlen(trim($auth)) == 0){
+        if (strlen(trim($auth)) == 0) {
             return null;
         }
         $kullanici = $this->kullaniciGetirAuth($auth);
-        if(count($kullanici) > 0){
+        if (count($kullanici) > 0) {
             return $kullanici[0];
-        }else{
+        } else {
             return null;
         }
     }
@@ -563,5 +568,90 @@ class Kullanicilar_Model extends CI_Model
             return $resp;
         }
         return null;
+    }
+    public function kodGonder($authOnayKodu, $kullanici_adi)
+    {
+        $kullanici_query = $this->db->reset_query()->where(array("kullanici_adi" => $kullanici_adi))->get($this->kullanicilarTabloAdi());
+        if ($kullanici_query->num_rows() > 0) {
+            $kullanici = $kullanici_query->first_row();
+
+            $this->db->reset_query()->where(array(
+                "kullanici_id" => $kullanici->id,
+                'bitis <' => date('Y-m-d H:i:s'),
+            ))->delete($this->kullaniciKodTabloAdi());
+
+            $where = array(
+                "auth" => $authOnayKodu,
+                "kullanici_id" => $kullanici->id,
+            );
+            $query = $this->db->reset_query()->where($where)->get($this->kullaniciKodTabloAdi());
+            $kod = random_string('numeric', 4);
+            $dt = new DateTime();
+            $dt->modify('+5 minutes');
+            $bitis = $dt->format('Y-m-d H:i:s');
+            $sonuc = FALSE;
+            if ($query->num_rows() > 0) {
+                $sonuc = $this->db->reset_query()->where($where)->update($this->kullaniciKodTabloAdi(), array(
+                    "kod" => $kod,
+                    "bitis" => $bitis,
+                ));
+            } else {
+                $where["kod"] = $kod;
+                $where["bitis"] = $bitis;
+                $sonuc = $this->db->reset_query()->insert($this->kullaniciKodTabloAdi(), $where);
+            }
+            if ($sonuc) {
+                $this->bildirimGonder($kullanici->id, "Giriş Onay Kodunuz", $kod, "onaykodu", "1" . $kod);
+            }
+            return array(
+                $sonuc,
+                "Kod gönderme başarısız.",
+            );
+        } else {
+            return array(
+                FALSE,
+                "Kullanıcı bulunamadı"
+            );
+        }
+    }
+    public function kodOnayla($authOnayKodu, $kullanici_adi, $onay_kodu)
+    {
+        $kullanici_query = $this->db->reset_query()->where(array("kullanici_adi" => $kullanici_adi))->get($this->kullanicilarTabloAdi());
+        if ($kullanici_query->num_rows() > 0) {
+            $kullanici = $kullanici_query->first_row();
+            $where = array(
+                "auth" => $authOnayKodu,
+                "kod" => $onay_kodu,
+                "kullanici_id" => $kullanici->id,
+            );
+            $query = $this->db->reset_query()->where($where)->get($this->kullaniciKodTabloAdi());
+            if ($query->num_rows() > 0) {
+                $kod = $query->first_row();
+                if (date('Y-m-d H:i:s') <= $kod->bitis) {
+                    $this->db->reset_query()->where($where)->delete($this->kullaniciKodTabloAdi());
+                    $this->Giris_Model->kullaniciGirisYap($kullanici->kullanici_adi, "", FALSE);
+                    return array(
+                        TRUE,
+                        "Giriş başarılı."
+                    );
+                } else {
+                    return array(
+                        FALSE,
+                        "Kodun geçerlilik süresi dolmuş. Lütfen yeni bir kod alın."
+                    );
+                }
+            } else {
+                return array(
+                    FALSE,
+                    "Kod geçersiz!"
+                );
+            }
+        } else {
+            return array(
+                FALSE,
+                "Kullanıcı bulunamadı"
+            );
+        }
+
     }
 }

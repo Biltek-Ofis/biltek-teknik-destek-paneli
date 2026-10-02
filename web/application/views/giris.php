@@ -76,7 +76,7 @@ $ayarlar = $this->Ayarlar_Model->getir();
             sonBarkod = token;
             $("#girisBarkod > img").css({ "margin": "auto", "width": "3cm", "height": "3cm" });
             $("#girisBarkod").attr("title", "Bu barkodu mobil uygulamanızla okutarak hızlıca giriş yapabilirsiniz");
-            
+
         }
         function barkod_kontrol() {
             if (sonBarkod.length > 0) {
@@ -93,6 +93,111 @@ $ayarlar = $this->Ayarlar_Model->getir();
                 });
             }
         }
+        var authOnayKodu = "";
+        var onayKoduSure = 5 * 60 * 1000;
+        var onayKoduInterval = null;
+        function onayKoduSureSifirla() {
+            clearInterval(onayKoduInterval);
+            var onayKoduSure = 5 * 60 * 1000;
+            $("#kodGonderBtn").prop("disabled", false);
+            $("#onayKoduSure").html("");
+        }
+        function onayKoduSureBaslat() {
+            onayKoduInterval = setInterval(function () {
+                $("#kodGonderBtn").prop("disabled", true);
+                onayKoduSure = onayKoduSure - 1000;
+                const totalSeconds = Math.floor(onayKoduSure / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                $("#onayKoduSure").html((minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds));
+                if (onayKoduSure <= 0) {
+                    onayKoduSureSifirla();
+                }
+            }, 1000);
+        }
+        function authOlustur(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+        function onayKoduGirisAc() {
+            $("#onayKoduGirisModal").modal("show");
+        }
+        function kodIsımOnayi() {
+            var ceForm = document.getElementById("onayKoduIsimForm");
+            if (!ceForm.checkValidity()) {
+                ceForm.reportValidity();
+                return false;
+            }
+            return true;
+        }
+        function kodOnayi() {
+            var ceForm = document.getElementById("onayKoduForm");
+            if (!ceForm.checkValidity()) {
+                ceForm.reportValidity();
+                return false;
+            }
+            return true;
+        }
+        function kodGonder() {
+            if (!kodIsımOnayi()) {
+                return;
+            }
+            onayKoduSureSifirla();
+            $("#onayKoduIsimHata").html("");
+            $("#onayKoduIsimHata").hide();
+            $("#kodGonderBtn").prop("disabled", true);
+            var kullanici_adi = $("#kullanici_adi_kod").val();
+            $.ajax({
+                url: "<?= base_url("app/kodGonder"); ?>",
+                method: "POST",
+                data: { authOnayKodu: authOnayKodu, kullanici_adi: kullanici_adi },
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    if (data.sonuc == 1) {
+                        onayKoduSureBaslat();
+                    } else {
+                        $("#onayKoduIsimHata").html(data.data);
+                        $("#onayKoduIsimHata").show();
+                        $("#kodGonderBtn").prop("disabled", false);
+                    }
+                }
+            });
+        }
+        function onayKoduGiris() {
+            if (!kodIsımOnayi()) {
+                return;
+            }
+            if (!kodOnayi()) {
+                return;
+            }
+            onayKoduSureSifirla();
+            $("#onayKoduHata").html("");
+            $("#onayKoduHata").hide();
+            $("#kodOnaylaBtn").prop("disabled", true);
+            var kullanici_adi = $("#kullanici_adi_kod").val();
+            var onay_kodu = $("#onay_kodu").val();
+            $.ajax({
+                url: "<?= base_url("app/kodOnayla"); ?>",
+                method: "POST",
+                data: { authOnayKodu: authOnayKodu, kullanici_adi: kullanici_adi, onay_kodu: onay_kodu },
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    if (data.sonuc == 1) {
+                        $("#kodOnaylaBtn").prop("disabled", true);
+                        window.location.reload();
+                    } else {
+                        $("#onayKoduHata").html(data.data);
+                        $("#onayKoduHata").show();
+                        $("#kodOnaylaBtn").prop("disabled", false);
+                    }
+                }
+            });
+        }
         $(document).ready(function () {
             ayrilma_durumu_tetikle = false;
             $("input").each(function () {
@@ -100,14 +205,14 @@ $ayarlar = $this->Ayarlar_Model->getir();
                     ayrilmaEngeliIptal();
                 });
             });
-            $('.modal').on('show.bs.modal', function (e) {
+            $('#qrGirisModal').on('show.bs.modal', function (e) {
                 qrEnabled = true;
                 barkod_olustur();
-            })
+            });
 
-            $('.modal').on('hide.bs.modal', function (e) {
+            $('#qrGirisModal').on('hide.bs.modal', function (e) {
                 qrEnabled = false;
-            })
+            });
             setInterval(function () {
                 if (qrEnabled) {
                     barkod_olustur();
@@ -118,6 +223,8 @@ $ayarlar = $this->Ayarlar_Model->getir();
                     barkod_kontrol();
                 }
             }, 1000);
+
+            authOnayKodu = authOlustur(25);
         });
     </script>
 </head>
@@ -170,7 +277,7 @@ $ayarlar = $this->Ayarlar_Model->getir();
 
             <div class="form-floating">
                 <input id="kullanici_adi" name="kullanici_adi" type="username" class="form-control"
-                    placeholder="Kullanıcı Adı" required>
+                    placeholder="Kullanıcı Adı" autocomplete="username" required>
                 <label for="kullanici_adi">Kullanıcı Adı:</label>
             </div>
             <div class="form-floating">
@@ -179,6 +286,10 @@ $ayarlar = $this->Ayarlar_Model->getir();
             </div>
             <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
         </form>
+        <div class="col-12 mt-2">
+            <button onclick="onayKoduGirisAc();" class="btn btn-success btn-block w-100">Mobil Onay Kodu ile Hızlı
+                Giriş</button>
+        </div>
         <div class="col-12 mt-2">
             <button onclick="qrGirisAc();" class="btn btn-success btn-block w-100">QR ile Hızlı Giriş</button>
         </div>
@@ -224,6 +335,65 @@ $ayarlar = $this->Ayarlar_Model->getir();
                         </div>
                         <div class="text-center row col-12">
                             <div class="ms-3 my-2 col-12" id="girisBarkod"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="onayKoduGirisModal" tabindex="-1" aria-labelledby="onayKoduGirisModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="onayKoduGirisModalLabel">Mobil Onay Kodu ile Hızlı Giriş</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-100 mt-3 row">
+                        <div class="text-center col-12">
+                            Kullanıcı adınızı girdikten sonra <div class="fw-bold">Kod Gönder</div> butonuna basarak
+                            mobil uygulamanıza kodu gönderebilirsiniz.
+                        </div>
+                        <div class="text-center row col-12 mt-5 ms-3">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <form id="onayKoduIsimForm" method="post">
+                                        <label for="kullanici_adi">Kullanıcı Adı:</label>
+                                        <input id="kullanici_adi_kod" name="kullanici_adi_kod" type="username"
+                                            class="form-control" placeholder="Kullanıcı Adı" autocomplete="username"
+                                            required>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="onayKoduIsimHata" class="col-12 mt-2 alert alert-danger" style="display: none;">
+                            </div>
+                            <div class="col-12 mt-2">
+                                <button id="kodGonderBtn" onclick="kodGonder();"
+                                    class="btn btn-success btn-block w-100">Kod
+                                    Gönder</button>
+                            </div>
+                            <div id="onayKoduSure" class="col-12 mt-2">
+
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="form-floating">
+                                    <form id="onayKoduForm" method="post">
+                                        <input id="onay_kodu" name="onay_kodu" type="password" class="form-control"
+                                            placeholder="Onay Kodu" required>
+                                        <label for="sifre">Onay Kodu</label>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="onayKoduHata" class="col-12 mt-2 alert alert-danger" style="display: none;"></div>
+                            <div class="col-12 mt-2">
+                                <button id="kodOnaylaBtn" onclick="onayKoduGiris();"
+                                    class="btn btn-primary w-100 py-2">Giriş Yap</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

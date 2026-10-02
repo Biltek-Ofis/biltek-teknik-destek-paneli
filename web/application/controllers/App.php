@@ -1151,6 +1151,31 @@ class App extends CI_Controller
             echo json_encode($this->hataMesaji(1));
         }
     }
+    public function kodGonder()
+    {
+        $this->headerlar();
+        $authOnayKodu = $this->input->post("authOnayKodu");
+        $kullanici_adi = $this->input->post("kullanici_adi");
+        $resp = $this->Kullanicilar_Model->kodGonder($authOnayKodu, $kullanici_adi);
+        if ($resp != null) {
+            echo json_encode(array("sonuc" => $resp[0] ? 1 : 0, "data" => $resp[1]));
+        } else {
+            echo json_encode(array("sonuc" => 0, "data" => "Kod gönderme başarısız oldu."));
+        }
+    }
+    public function kodOnayla()
+    {
+        $this->headerlar();
+        $authOnayKodu = $this->input->post("authOnayKodu");
+        $kullanici_adi = $this->input->post("kullanici_adi");
+        $onay_kodu = $this->input->post("onay_kodu");
+        $resp = $this->Kullanicilar_Model->kodOnayla($authOnayKodu, $kullanici_adi, $onay_kodu);
+        if ($resp != null) {
+            echo json_encode(array("sonuc" => $resp[0] ? 1 : 0, "data" => $resp[1]));
+        } else {
+            echo json_encode(array("sonuc" => 0, "data" => "Kod gönderme başarısız oldu."));
+        }
+    }
 
     public function malzemeTeslimleri()
     {
