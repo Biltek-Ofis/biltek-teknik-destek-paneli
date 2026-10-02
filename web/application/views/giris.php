@@ -61,6 +61,7 @@ $ayarlar = $this->Ayarlar_Model->getir();
             $("#qrGirisModal").modal("show");
         }
         function barkod_olustur() {
+            $("#girisBarkod").html("");
             const array = new Uint8Array(16);
             crypto.getRandomValues(array);
             const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
@@ -109,7 +110,6 @@ $ayarlar = $this->Ayarlar_Model->getir();
             })
             setInterval(function () {
                 if (qrEnabled) {
-                    $("#girisBarkod").html("");
                     barkod_olustur();
                 }
             }, 30000);
