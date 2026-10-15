@@ -18,7 +18,7 @@ function donusturOnclick($oge)
         ?>
         ayrilma_durumu_tetikle = false;
         try {
-            var cagriTablosu = $("#cagriKaydiTablosu").DataTable(<?= $this->Islemler_Model->datatablesAyarlari('[0, "desc"]', 'true'); ?>);
+            var cagriTablosu = $("#cagriKaydiTablosu").DataTable(<?= $this->Islemler_Model->datatablesAyarlari('[0, "desc"]', 'true', "", "", TRUE); ?>);
         } catch (error) {
             console.error(error);
         }
@@ -170,6 +170,7 @@ if ($this->Giris_Model->kullaniciGiris()) {
                             <?php
                         }
                         ?>
+                        <th>Bölge / Birim</th>
                         <th>Servis No</th>
                         <th>Cihaz Türü</th>
                         <th>Cihaz Marka - Model</th>
@@ -206,7 +207,8 @@ if ($this->Giris_Model->kullaniciGiris()) {
                                 <?php
                             }
                             ?>
-                            <td><?= $cagri->cihazInfo != null ? $cagri->cihazInfo->servis_no : "-"; ?>
+                            <td><?= $cagri->cihazInfo != null ? $cagri->cihazInfo->musteri_adi : $cagri->bolge . " - " . $cagri->birim; ?></td>
+                            <td><?= $cagri->cihazInfo != null ? $cagri->cihazInfo->servis_no : "-"; ?></td>
                             <td><?= $this->Cihazlar_Model->cihazTuru($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_turu : $cagri->cihaz_turu); ?>
                             </td>
                             <td><?= ($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz : $cagri->cihaz) . ' - ' . ($cagri->cihazInfo != null ? $cagri->cihazInfo->cihaz_modeli : $cagri->cihaz_modeli); ?>
