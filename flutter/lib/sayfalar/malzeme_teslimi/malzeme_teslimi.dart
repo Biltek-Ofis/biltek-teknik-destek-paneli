@@ -39,6 +39,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
   ScrollController scrollController = ScrollController();
   bool malzemeTeslimleriYukleniyor = false;
   int suankiIndex = 0;
+  int suankiIndexTemp = 0;
 
   bool yukariKaydir = false;
 
@@ -87,8 +88,12 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
           await _malzemeTeslimleriiYenile(sifirla: false);
           setState(() {
             malzemeTeslimleriYukleniyor = false;
+            suankiIndexTemp = suankiIndex;
           });
         } on Exception catch (e) {
+          if (suankiIndex != suankiIndexTemp) {
+            suankiIndex = suankiIndexTemp;
+          }
           setState(() {
             malzemeTeslimleriYukleniyor = false;
           });
@@ -318,6 +323,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
     if (sifirla) {
       setState(() {
         suankiIndex = 0;
+        suankiIndexTemp = 0;
       });
     }
     List<MalzemeTeslimiModel> malzemeTeslimleriTemp = await BiltekPost.of(

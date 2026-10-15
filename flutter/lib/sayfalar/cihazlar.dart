@@ -55,6 +55,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   ScrollController scrollController = ScrollController();
   bool cihazlarYukleniyor = false;
   int suankiIndex = 0;
+  int suankiIndexTemp = 0;
 
   FocusNode searchbarFocus = FocusNode();
   String arama = "";
@@ -119,8 +120,12 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           await _cihazlariYenile(sifirla: false);
           setState(() {
             cihazlarYukleniyor = false;
+            suankiIndexTemp = suankiIndex;
           });
         } on Exception catch (e) {
+          if (suankiIndex != suankiIndexTemp) {
+            suankiIndex = suankiIndexTemp;
+          }
           setState(() {
             cihazlarYukleniyor = false;
           });
@@ -482,6 +487,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
     if (sifirla) {
       setState(() {
         suankiIndex = 0;
+        suankiIndexTemp = 0;
       });
     }
     List<Cihaz> cihazlarTemp = await BiltekPost.of(
