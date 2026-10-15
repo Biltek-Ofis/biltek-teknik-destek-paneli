@@ -65,73 +65,6 @@ class Cihazlar_Model extends CI_Model
         }
         $this->veriGuncellendiEkle();
     }
-    public function yapilanIslemleriAktar()
-    {
-        $cihazlar = $this->db->reset_query()->order_by("id", "ASC")->get($this->cihazlarTabloAdi())->result();
-        foreach ($cihazlar as $cihaz) {
-            if (isset($cihaz->i_ad_1)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 1,
-                    "ad" => $cihaz->i_ad_1,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_1,
-                    "miktar" => $cihaz->i_miktar_1,
-                    "kdv" => $cihaz->i_kdv_1
-                ));
-            }
-            if (isset($cihaz->i_ad_2)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 2,
-                    "ad" => $cihaz->i_ad_2,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_2,
-                    "miktar" => $cihaz->i_miktar_2,
-                    "kdv" => $cihaz->i_kdv_2
-                ));
-            }
-            if (isset($cihaz->i_ad_3)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 3,
-                    "ad" => $cihaz->i_ad_3,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_3,
-                    "miktar" => $cihaz->i_miktar_3,
-                    "kdv" => $cihaz->i_kdv_3
-                ));
-            }
-            if (isset($cihaz->i_ad_4)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 4,
-                    "ad" => $cihaz->i_ad_4,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_4,
-                    "miktar" => $cihaz->i_miktar_4,
-                    "kdv" => $cihaz->i_kdv_4
-                ));
-            }
-            if (isset($cihaz->i_ad_5)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 5,
-                    "ad" => $cihaz->i_ad_5,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_5,
-                    "miktar" => $cihaz->i_miktar_5,
-                    "kdv" => $cihaz->i_kdv_5
-                ));
-            }
-            if (isset($cihaz->i_ad_6)) {
-                $ekle = $this->db->reset_query()->insert($this->islemlerTabloAdi(), array(
-                    "cihaz_id" => $cihaz->id,
-                    "islem_sayisi" => 6,
-                    "ad" => $cihaz->i_ad_6,
-                    "birim_fiyat" => $cihaz->i_birim_fiyat_6,
-                    "miktar" => $cihaz->i_miktar_6,
-                    "kdv" => $cihaz->i_kdv_6
-                ));
-            }
-        }
-        $this->veriGuncellendiEkle();
-    }
     public function cihazToplamUcreti($cihaz_id)
     {
         $query = $this->db->reset_query()->where("cihaz_id", $cihaz_id)->get($this->islemlerTabloAdi());
@@ -393,51 +326,6 @@ class Cihazlar_Model extends CI_Model
             }
             if ($cihaz->cikis_tarihi == null) {
                 $cihaz->cikis_tarihi = "";
-            }
-            if ($cihaz->i_stok_kod_1 == null) {
-                $cihaz->i_stok_kod_1 = "";
-            }
-            if ($cihaz->i_ad_1 == null) {
-                $cihaz->i_ad_1 = "";
-            }
-            if ($cihaz->i_ad_1 == null) {
-                $cihaz->i_ad_1 = "";
-            }
-            if ($cihaz->i_stok_kod_2 == null) {
-                $cihaz->i_stok_kod_2 = "";
-            }
-            if ($cihaz->i_ad_2 == null) {
-                $cihaz->i_ad_2 = "";
-            }
-            if ($cihaz->i_stok_kod_3 == null) {
-                $cihaz->i_stok_kod_3 = "";
-            }
-            if ($cihaz->i_ad_3 == null) {
-                $cihaz->i_ad_3 = "";
-            }
-            if ($cihaz->i_stok_kod_4 == null) {
-                $cihaz->i_stok_kod_4 = "";
-            }
-            if ($cihaz->i_ad_4 == null) {
-                $cihaz->i_ad_4 = "";
-            }
-            if ($cihaz->i_stok_kod_5 == null) {
-                $cihaz->i_stok_kod_5 = "";
-            }
-            if ($cihaz->i_ad_5 == null) {
-                $cihaz->i_ad_5 = "";
-            }
-            if ($cihaz->i_stok_kod_6 == null) {
-                $cihaz->i_stok_kod_6 = "";
-            }
-            if ($cihaz->i_ad_6 == null) {
-                $cihaz->i_ad_6 = "";
-            }
-            if ($cihaz->i_ad_5 == null) {
-                $cihaz->i_ad_5 = "";
-            }
-            if ($cihaz->i_ad_5 == null) {
-                $cihaz->i_ad_5 = "";
             }
         }
         return $cihaz;

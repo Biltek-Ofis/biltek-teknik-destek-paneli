@@ -25,13 +25,6 @@ class Cihazyonetimi extends Varsayilancontroller
 			redirect(base_url());
 		}
 	}
-	public function yapilanIslemleriAktar()
-	{
-		if ($this->Giris_Model->kullaniciGiris()) {
-			$this->Cihazlar_Model->yapilanIslemleriAktar();
-			redirect(base_url());
-		}
-	}
 	public function bilgisayardaAcGetir($id){
 		if ($this->Giris_Model->kullaniciGiris()) {
 			echo json_encode($this->Cihazlar_Model->bilgisayardaAcGetir($id));

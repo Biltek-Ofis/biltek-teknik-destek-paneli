@@ -145,7 +145,6 @@ echo '<section class="content">
                     <div class="col-6 col-lg-6 text-end">';
                         if(TEST_ACIK){
                             echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/musterileriAktar").'">Müşterileri Aktar</a>';
-                            echo '<a class="btn btn-primary mr-3 mb-2" href="'.base_url("cihazyonetimi/yapilanIslemleriAktar").'">Yapilan İşlemleri Aktar</a>';
                         }
                         echo'<button id="yeniCihazGirisiBtn" type="button" class="btn btn-primary me-2 mb-2" style="display:none;" data-bs-toggle="modal" data-bs-target="#yeniCihazEkleModal">
                             Yeni Cihaz Girişi
