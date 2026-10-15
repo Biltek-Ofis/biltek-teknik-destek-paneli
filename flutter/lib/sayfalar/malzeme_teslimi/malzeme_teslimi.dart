@@ -75,20 +75,25 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
           yukariKaydir = false;
         });
       }
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        debugPrint("Max scroll");
-        setState(() {
-          suankiIndex += 1;
-        });
-        setState(() {
-          malzemeTeslimleriYukleniyor = true;
-          suankiIndex += 1;
-        });
-        await _malzemeTeslimleriiYenile(sifirla: false);
-        setState(() {
-          malzemeTeslimleriYukleniyor = false;
-        });
+      if (!malzemeTeslimleriYukleniyor &&
+          scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+        try {
+          debugPrint("Max scroll");
+          setState(() {
+            malzemeTeslimleriYukleniyor = true;
+            suankiIndex += 1;
+          });
+          await _malzemeTeslimleriiYenile(sifirla: false);
+          setState(() {
+            malzemeTeslimleriYukleniyor = false;
+          });
+        } on Exception catch (e) {
+          setState(() {
+            malzemeTeslimleriYukleniyor = false;
+          });
+          debugPrint(e.toString());
+        }
       }
     });
     Future.delayed(Duration.zero, () async {

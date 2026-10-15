@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -108,17 +107,25 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           yukariKaydir = false;
         });
       }
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        debugPrint("Max scroll");
-        setState(() {
-          cihazlarYukleniyor = true;
-          suankiIndex += 1;
-        });
-        await _cihazlariYenile(sifirla: false);
-        setState(() {
-          cihazlarYukleniyor = false;
-        });
+      if (!cihazlarYukleniyor &&
+          scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+        try {
+          debugPrint("Max scroll");
+          setState(() {
+            cihazlarYukleniyor = true;
+            suankiIndex += 1;
+          });
+          await _cihazlariYenile(sifirla: false);
+          setState(() {
+            cihazlarYukleniyor = false;
+          });
+        } on Exception catch (e) {
+          setState(() {
+            cihazlarYukleniyor = false;
+          });
+          debugPrint(e.toString());
+        }
       }
     });
     Future.delayed(Duration.zero, () async {
@@ -306,7 +313,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                     ? null
                     : (chatEnabled
                         ? FloatingActionButton(
-                          heroTag: "chat${Random().nextInt(1000)}",
+                          heroTag: "chat_fab",
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
