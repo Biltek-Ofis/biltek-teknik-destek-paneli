@@ -2,14 +2,15 @@
 $this->load->view("inc/datatables_scripts");
 $this->load->view("inc/style_tablo");
 $this->load->view("inc/styles_important");
-echo '<style>
+?>
+<style>
 .dt-buttons{
     display: none;
 }
-</style>';
+</style>
+<div class="content-wrapper">
+<?php
 $ayarlar = $this->Ayarlar_Model->getir();
-echo '<div class="content-wrapper">';
-
 $this->load->view("inc/content_header", array(
     "contentHeader" => array(
         "baslik" => "Rapor",
@@ -28,7 +29,8 @@ $this->load->view("inc/content_header", array(
         ),
     ),
 ));
-echo '<section class="content">
+?>
+<section class="content">
         <div class="card">
             <div class="card-body">
             <script>
@@ -176,11 +178,10 @@ echo '<section class="content">
             function baslik(){
                 var bugun = new Date();
                 bugun.setDate(bugun.getDate() + 20);
-                return "' . $ayarlar->site_basligi . ' Teknik Servis Raporu - " + bugun.getFullYear() + "/"
+                return "<?= $ayarlar->site_basligi;?> Teknik Servis Raporu - " + bugun.getFullYear() + "/"
                 + ("0" + bugun.getMonth()).slice(-2) + "/"
                 + ("0" + bugun.getDate()).slice(-2) + " " + ("0" + (bugun.getHours())).slice(-2) + ":" + ("0" + (bugun.getMinutes())).slice(-2);
             }
-            
             $(document).ready(function() {
                 topla();
                 var tutarHesapla = function(){
@@ -252,7 +253,7 @@ echo '<section class="content">
                     }
                     //doc.defaultStyle.fontSize = 16;
                 }
-                var cihazlarTablosu = $("#" + tabloDiv).DataTable(' . $this->Islemler_Model->datatablesAyarlari('[0, "desc"]', 'true', '
+                var cihazlarTablosu = $("#" + tabloDiv).DataTable(<?= $this->Islemler_Model->datatablesAyarlari('[0, "desc"]', 'true', '
                 "buttons": [{
                     extend: "csv",
                     title: baslik(),
@@ -285,7 +286,7 @@ echo '<section class="content">
                 tutarHtml();
                 kdvHtml();
                 genelToplamHtml();
-                cihazSayisiHtml();', TRUE) . ');
+                cihazSayisiHtml();', TRUE) ;?>);
                 girisTarBas = new DateTime($(girisTarihiInput1), {
                     format: "YYYY-MM-DD",
                     locale: "tr"
@@ -394,56 +395,73 @@ echo '<section class="content">
                                     <input id="cihaz_model_ara" type="text" class="form-control" placeholder="Cihaz Modeli">
                                 </div>
                             </td>
-                        </tr>';
+                        </tr>
+<?php
 $cihazTurleri = $this->Cihazlar_Model->cihazTurleri();
-echo '<tr>
+?>
+<tr>
                                                 <td class="p-1 m-0" colspan="6">
                                                     <div class="p-0 m-0">
                                                         <label class="form-label" for="cihaz_turu">Cihaz Türü</label>
                                                         <select id="cihaz_turu" class="form-select" aria-label="Cihaz Türü">
-                                                        <option value="">Cihaz Türü Seçin</option>';
+                                                        <option value="">Cihaz Türü Seçin</option>
+<?php
 foreach ($cihazTurleri as $cihazTuru) {
-    echo '<option value="' . $cihazTuru->isim . '">' . $cihazTuru->isim . '</option>';
+    ?>
+    <option value="<?= $cihazTuru->isim ;?>"><?= $cihazTuru->isim ;?></option>
+    
+    <?php
 }
-echo '</select>
+?>
+</select>
                                                     </div>
                                                 </td>
-                                                </tr>';
-echo '<tr>
+                                                </tr>
+                                                <tr>
         <td class="p-1 m-0" colspan="6">
             <div class="p-0 m-0">
                 <label class="form-label" for="cihaz_durumu">Cihaz Durumu</label>
                 <select id="cihaz_durumu" class="form-select" aria-label="Cihaz Durumu">
-                <option value="">Hepsi</option>';
+                <option value="">Hepsi</option>
+<?php
 $cihazDurumlari = $this->Cihazlar_Model->cihazDurumlari();
 foreach ($cihazDurumlari as $cihazDurumu) {
-    echo '<option value="' . $cihazDurumu->durum . '">' . $cihazDurumu->durum . '</option>';
+    ?>
+    <option value="<?= $cihazDurumu->durum ;?>"><?= $cihazDurumu->durum ;?></option>
+    <?php
 }
-echo '<option value="Belirtilmemiş">Belirtilmemiş</option>';
-echo '</select>
+?>
+<option value="Belirtilmemiş">Belirtilmemiş</option>
+</select>
                                                                             </div>
                                                                         </td>
-                                                                        </tr>';
-$personeller = $this->Kullanicilar_Model->kullanicilar(array());
-echo '<tr>
+                                                                        </tr>
+<tr>
         <td class="p-1 m-0" colspan="6">
             <div class="p-0 m-0">
                 <label class="form-label" for="personel">Personel</label>
                 <select id="personel" class="form-select" aria-label="Personel">
-                <option value="">Tümü</option>';
+                <option value="">Tümü</option>
+<?php
+$personeller = $this->Kullanicilar_Model->teknikServis();
 foreach ($personeller as $personel) {
-    echo '<option value="' . $personel->ad_soyad . '">' . $personel->ad_soyad . '</option>';
+    if(!isset(RP_KLNC_ESL[strval($personel->id)])){
+        ?>
+        <option value="<?= $personel->ad_soyad ;?>"><?= $personel->ad_soyad ;?></option>
+        <?php
+    }
 }
-echo '</select>
+?>
+</select>
                                                                             </div>
                                                                         </td>
-                                                                        </tr>';
-echo '<tr>
+                                                                        </tr>
+                                                                        <tr>
                             <td class="p-1 m-0" colspan="6">
                                 <div class="p-0 m-0">
                                     <label class="form-label" for="yil">Yıl</label>
-                                    <input id="yil" type="number" min="1900" max="2099" step="1" class="form-control" placeholder="' . date("Y") . '">
-                                </div>
+                                    <input id="yil" type="number" min="1900" max="2099" step="1" class="form-control" placeholder="<?= date("Y") ;?>">
+                                    </div>
                             </td>
                         </tr>
                         <tr>
@@ -534,7 +552,7 @@ echo '<tr>
                     <div class="col-6 col-lg-6 text-end">
                         <h6>Cihaz Sayısı: <span id="cihazSayisi"></span></h6>
                         <h6>,&nbsp;</h6>
-                        <h6>KDV\'siz Tutar: <span id="tutarToplam"></span> TL</h6>
+                        <h6>KDV'siz Tutar: <span id="tutarToplam"></span> TL</h6>
                         <h6>,&nbsp;</h6>
                         <h6>KDV: <span id="kdvToplam"></span> TL</h6>
                         <h6>,&nbsp;</h6>
@@ -559,17 +577,9 @@ echo '<tr>
                 </tr>
             </thead>
             <tbody>
-                ';
+<?php
 $cihazlar = $this->Cihazlar_Model->cihazlar();
 foreach ($cihazlar as $cihaz) {
-    echo '<tr>';
-    echo '<td>' . $cihaz->servis_no . '</td>';
-    echo '<td>' . $cihaz->musteri_adi . '</td>';
-    echo '<td>' . $cihaz->cihaz . '</td>';
-    echo '<td>' . $cihaz->cihaz_modeli . '</td>';
-    echo '<td>' . $cihaz->cihaz_turu . '</td>';
-    echo '<td>' . $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih) . '</td>';
-    echo '<td>' . $this->Islemler_Model->tarihDonusturSiralama($cihaz->cikis_tarihi) . '</td>';
     $toplam = 0;
     $kdv = 0;
     $genel_toplam = 0;
@@ -581,24 +591,38 @@ foreach ($cihazlar as $cihaz) {
             $kdv = $kdv + $kdv_suan;
         }
     }
-    echo '<td>' . $toplam . '</td>';
-    echo '<td>' . $kdv . '</td>';
-    echo '<td>' . ($toplam + $kdv) . '</td>';
-    echo '<td>' . $cihaz->sorumlu . '</td>';
-    $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
-    echo '<td>';
-    if ($cDurum->num_rows() > 0) {
-        echo $cDurum->result()[0]->durum;
-    } else {
-        echo "Belirtilmemiş";
+    $sorumlu = $cihaz->sorumlu;
+    if(isset(RP_KLNC_ESL[strval($cihaz->sorumlu_val)])){
+        $klnc = $this->Kullanicilar_Model->tekKullanici(RP_KLNC_ESL[strval($cihaz->sorumlu_val)]);
+        if($klnc != null){
+            $sorumlu = $klnc->ad_soyad;
+        }
     }
-    echo '</td>';
-    echo '</tr>';
+    $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
+    $dDurum = ($cDurum->num_rows() > 0) ? $cDurum->result()[0]->durum : "Belirtilmemiş";
+    ?>
+    
+    <tr>
+    <td><?= $cihaz->servis_no ;?></td>
+    <td><?= $cihaz->musteri_adi ;?></td>
+    <td><?= $cihaz->cihaz ;?></td>
+    <td><?= $cihaz->cihaz_modeli ;?></td>
+    <td><?= $cihaz->cihaz_turu ;?></td>
+    <td><?= $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih) ;?></td>
+    <td><?= $this->Islemler_Model->tarihDonusturSiralama($cihaz->cikis_tarihi) ;?></td>
+    <td><?= $toplam ;?></td>
+    <td><?= $kdv ;?></td>
+    <td><?= ($toplam + $kdv) ;?></td>
+    <td><?= $sorumlu ;?></td>
+    <td><?= $dDurum ;?></td>
+    </tr>
+<?php
 }
+?>
 
-echo '                  </tbody>
+</tbody>
         </table>
             </div>
         </div>
     </section>
-</div>';
+</div>

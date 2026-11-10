@@ -135,6 +135,10 @@ defined('BILTEKDESK')                or define('BILTEKDESK', TRUE);
 // Bazı inputlardaki oto tamamlama özelliğini devredışı bırakır.
 defined('OTO_TAMAMLAMA')                or define('OTO_TAMAMLAMA', FALSE);
 
+defined("RP_KLNC_ESL")       or define('RP_KLNC_ESL', array(
+    
+));
+
 defined('DEMO')                or define('DEMO', FALSE);
 
 # Buradaki ayar kullanıcı eklemez sadece giriş ekranında bilgileri gösterir.

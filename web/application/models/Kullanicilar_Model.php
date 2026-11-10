@@ -115,6 +115,11 @@ class Kullanicilar_Model extends CI_Model
         }
         return $this->db->reset_query()->where($where)->get($this->kullanicilarTabloAdi())->result();
     }
+    public function teknikServis($where = array()){
+        $where["teknikservis"] = "1";
+
+        return $this->kullanicilar($where);
+    }
     public function tekKullanici($id)
     {
         $sonuc = $this->db->reset_query()->where(array("id" => $id))->get($this->kullanicilarTabloAdi());
