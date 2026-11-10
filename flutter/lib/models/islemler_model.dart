@@ -57,7 +57,7 @@ class IslemlerModel {
       miktarController: TextEditingController(),
       miktarFocusNode: FocusNode(),
       maliyet: maliyet,
-      maliyetController: TextEditingController(),
+      maliyetController: TextEditingController(text: ""),
       maliyetFocusNode: FocusNode(),
       birimFiyati: birimFiyati,
       birimFiyatiController: TextEditingController(),

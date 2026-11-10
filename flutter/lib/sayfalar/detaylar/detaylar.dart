@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../ayarlar.dart';
+import '../../models/ayarlar.dart';
 import '../../models/cihaz.dart';
 import '../../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../../models/kullanici.dart';
@@ -50,9 +51,16 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   static const _accent = Colors.greenAccent;
 
+  AyarlarModel? ayarlarModel;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      AyarlarModel? ayarlarModelTemp =
+          await BiltekPost.of(widget.kullanici.auth).ayarlar();
+      setState(() {
+        ayarlarModel = ayarlarModelTemp;
+      });
       await _cihazDuzenlemeGetir();
       await _cihaziYenile();
     });
@@ -523,7 +531,10 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             ],
           ),
           const SizedBox(height: 12),
-          Islemler.liste(cihaz!.islemler, maliyetGosterButon: true),
+          Islemler.liste(
+            cihaz!.islemler,
+            maliyetGosterButon: ayarlarModel?.maliyetGoster ?? false,
+          ),
           const SizedBox(height: 12),
           SectionCard(
             icon: CupertinoIcons.creditcard_fill,

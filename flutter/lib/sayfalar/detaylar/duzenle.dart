@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/ayarlar.dart';
 import '../../models/cihaz.dart';
 import '../../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../../models/islemler_model.dart';
@@ -120,10 +121,18 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
   TextEditingController notlarController = TextEditingController();
 
   bool sayfaYukleniyor = true;
+
+  AyarlarModel? ayarlarModel;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
+      AyarlarModel? ayarlarModelTemp =
+          await BiltekPost.of(widget.kullanici.auth).ayarlar();
+      setState(() {
+        ayarlarModel = ayarlarModelTemp;
+      });
       await _cihazDuzenlemeGetir();
       musteriAdiController.text = widget.cihaz.musteriAdi;
       teslimEdenController.text = widget.cihaz.teslimEden;
@@ -955,48 +964,51 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                                                             _fiyatlariGuncelle();
                                                           },
                                                         ),
-                                                        BiltekTextField(
-                                                          controller:
-                                                              islemler[i]
-                                                                  .maliyetController,
-                                                          currentFocus:
-                                                              islemler[i]
-                                                                  .maliyetFocusNode,
-                                                          nextFocus:
-                                                              islemler[i]
-                                                                  .birimFiyatiFocusNode,
-                                                          keyboardType:
-                                                              TextInputType.numberWithOptions(
-                                                                decimal: true,
-                                                              ),
-                                                          label: "Maliyet",
-                                                          errorText:
-                                                              islemler[i]
-                                                                  .maliyetHata,
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              girildi = true;
-                                                              islemler[i]
-                                                                      .maliyetHata =
-                                                                  null;
-                                                              if (value
-                                                                  .isNotEmpty) {
+                                                        if (ayarlarModel
+                                                                ?.maliyetGoster ??
+                                                            false)
+                                                          BiltekTextField(
+                                                            controller:
                                                                 islemler[i]
-                                                                        .maliyet =
-                                                                    double.parse(
-                                                                      value,
-                                                                    ).toStringAsFixed(
-                                                                      2,
-                                                                    );
-                                                              } else {
+                                                                    .maliyetController,
+                                                            currentFocus:
                                                                 islemler[i]
-                                                                        .maliyet =
-                                                                    "0.00";
-                                                              }
-                                                            });
-                                                            _fiyatlariGuncelle();
-                                                          },
-                                                        ),
+                                                                    .maliyetFocusNode,
+                                                            nextFocus:
+                                                                islemler[i]
+                                                                    .birimFiyatiFocusNode,
+                                                            keyboardType:
+                                                                TextInputType.numberWithOptions(
+                                                                  decimal: true,
+                                                                ),
+                                                            label: "Maliyet",
+                                                            errorText:
+                                                                islemler[i]
+                                                                    .maliyetHata,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                girildi = true;
+                                                                islemler[i]
+                                                                        .maliyetHata =
+                                                                    null;
+                                                                if (value
+                                                                    .isNotEmpty) {
+                                                                  islemler[i]
+                                                                          .maliyet =
+                                                                      double.parse(
+                                                                        value,
+                                                                      ).toStringAsFixed(
+                                                                        2,
+                                                                      );
+                                                                } else {
+                                                                  islemler[i]
+                                                                          .maliyet =
+                                                                      "0.00";
+                                                                }
+                                                              });
+                                                              _fiyatlariGuncelle();
+                                                            },
+                                                          ),
                                                         BiltekTextField(
                                                           controller:
                                                               islemler[i]
