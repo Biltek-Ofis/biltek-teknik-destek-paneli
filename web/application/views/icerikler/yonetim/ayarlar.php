@@ -13,6 +13,7 @@ $ayarlar = $this->Ayarlar_Model->getir();
         }
     }
     $(document).ready(function () {
+        ayrilma_durumu_tetikle = false;
         $("#db_telefon").inputmask("+99 (999) 999-9999");
         parantezEkle($("#db_barkod_ad").val());
         $("#db_barkod_ad").keyup(function () {
@@ -21,26 +22,26 @@ $ayarlar = $this->Ayarlar_Model->getir();
     });
 </script>
 <div class="content-wrapper">
-<?php
-$this->load->view("inc/content_header", array(
-    "contentHeader" => array(
-        "baslik"=> $baslik,
-        "items"=> array(
-            array(
-                "link"=> base_url(),
-                "text"=> "Anasayfa",
-            ),
-            array(
-                "text"=> "Yonetim",
-            ),
-            array(
-                "active"=> TRUE,
-                "text"=> $baslik,
+    <?php
+    $this->load->view("inc/content_header", array(
+        "contentHeader" => array(
+            "baslik" => $baslik,
+            "items" => array(
+                array(
+                    "link" => base_url(),
+                    "text" => "Anasayfa",
+                ),
+                array(
+                    "text" => "Yonetim",
+                ),
+                array(
+                    "active" => TRUE,
+                    "text" => $baslik,
+                ),
             ),
         ),
-    ),
-));
-?>
+    ));
+    ?>
     <section class="content">
         <div class="card">
             <div class="card-body">
@@ -71,6 +72,14 @@ $this->load->view("inc/content_header", array(
                         <label class="form-label" for="db_telefon">Şirket Telefonu</label>
                         <input id="db_telefon" name="db_telefon" autocomplete="off" class="form-control" type="text"
                             placeholder="Şirket Telefonu" value="<?= $ayarlar->sirket_telefonu; ?>" required>
+                    </div>
+                    <div class="col">
+                        <label class="form-label" for="maliyet_goster">Maliyet Ekleme ve Düzenleme Aktif edilsin mi?</label>
+                        <select id="maliyet_goster" class="form-select" name="maliyet_goster"
+                            aria-label="Maliyet Ekleme ve Düzenleme Aktif edilsin mi?" required="">
+                            <option value="1"<?= $ayarlar->maliyet_goster == 1 ? " selected": ""; ?>>Evet</option>
+                            <option value="0"<?= $ayarlar->maliyet_goster == 0 || $ayarlar->maliyet_goster != 1 ? " selected": ""; ?>>Hayır</option>
+                        </select>
                     </div>
                     <div class="col">
                         <label class="form-label" for="db_tablo_oge">Tablolarda Sayfa Başına Gösterilecek Öğe

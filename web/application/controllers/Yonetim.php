@@ -240,6 +240,10 @@ class Yonetim extends Varsayilancontroller
 			if (isset($SIRKET_TELEFONU)) {
 				$veri["sirket_telefonu"] = $SIRKET_TELEFONU;
 			}
+			$MALIYET_GOSTER = $this->input->post("maliyet_goster");
+			if (isset($MALIYET_GOSTER)) {
+				$veri["maliyet_goster"] = $MALIYET_GOSTER;
+			}
 			$TABLO_OGE = $this->input->post("db_tablo_oge");
 			if (isset($TABLO_OGE)) {
 				$veri["tablo_oge"] = $TABLO_OGE;
