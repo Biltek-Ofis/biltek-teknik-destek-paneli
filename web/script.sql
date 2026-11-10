@@ -42,6 +42,7 @@ CREATE TABLE `ts1_ayarlar` (
   `barkod_numarasi_boyutu` int(11) NOT NULL,
   `barkod_musteri_adi_boyutu` int(11) NOT NULL,
   `barkod_sirket_adi_boyutu` int(11) NOT NULL,
+  `maliyet_goster` tinyint(1) NOT NULL DEFAULT '1',
   `app_version` varchar(10) NOT NULL DEFAULT '0.0.1',
   `biltekdesk_url` text NOT NULL,
   `kis_modu` tinyint(4) NOT NULL DEFAULT 0,

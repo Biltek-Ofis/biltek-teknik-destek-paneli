@@ -1,6 +1,7 @@
 <?php $this->load->view("inc/datatables_scripts");
 
 $tema = $this->Ayarlar_Model->kullaniciTema();
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<script src="' . base_url("dist/js/cihaz.min.js?v=1.2") . '"></script>
 <script src="' . base_url("dist/js/cihazyonetimi.min.js?v=1.0") . '"></script>
 <script src="' . base_url("dist/js/qrcode.min.js?v=1.0") . '"></script>';
@@ -814,7 +815,7 @@ $(document).ready(function(){
                 <li class="list-group-item" style="width:' . $ilkOgeGenislik . ';"><span class="fw-bold">Yapılan İşlem Açıklaması:</span></li>
                 <li class="list-group-item" style="width:' . $ikinciOgeGenislik . ';" id="yapilanIslemAciklamasi"></li>
               </ul>
-              <ul class="list-group list-group-horizontal">
+              <ul class="list-group list-group-horizontal"'.($ayarlar->maliyet_goster != 0 ? "" : ' style="display:none;"').'>
                 <li class="list-group-item w-100"><button id="maliyetGosterButon1" onclick="maliyetGoster(!maliyetiGoster);" class="btn btn-success btn-small"><i class="fas fa-eye" id="maliyetGosterButon1Icon"></i></button></li>
               </ul>
               <ul class="list-group list-group-horizontal">
@@ -996,7 +997,7 @@ $(document).ready(function(){
                             <!--<th>SK</th>-->
                             <th>Malzeme/İşçilik</th>
                             <th>Miktar</th>
-                            <th>Maliyet</th>
+                            <th'.($ayarlar->maliyet_goster != 0 ? "" : ' style="display:none;"').'>Maliyet</th>
                             <th>Birim Fiyat (TL)</th>
                             <th>KDV Oranı (%)</th>
                             <th>KDV</th>
@@ -1004,8 +1005,8 @@ $(document).ready(function(){
                             <th>Toplam</th>
                         </tr>
                       </thead>
-                      <tbody id="yapilanIslemBody">' . $yapilanIslemInputlari . '
-                        <tr>
+                      <tbody id="yapilanIslemBody">' . $yapilanIslemInputlari .'
+                        <tr'.($ayarlar->maliyet_goster != 0 ? "" : ' style="display:none;"').'>
                             <th colspan="5">Toplam Maliyet</th>
                             <td colspan="3" id="yapilanIslemToplamMaliyet">0 TL</td>
                         </tr>

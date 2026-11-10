@@ -1,4 +1,5 @@
 <?php
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<script>
     $(document).ready(function() {
         /*var hash = location.hash.replace(/^#/, \'\');
@@ -290,7 +291,7 @@ echo '</td>
                                             <!--<th>SK</th>-->
                                             <th>Malzeme/İşçilik</th>
                                             <th>Miktar</th>
-                                            <th>Maliyet</th>
+                                            <th'.($ayarlar->maliyet_goster != 0 ? "" : ' style="display:none;"').'>Maliyet</th>
                                             <th>Birim Fiyat (TL)</th>
                                             <th>KDV Oranı (%)</th>
                                             <th>Tutar</th>

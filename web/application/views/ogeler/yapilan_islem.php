@@ -28,6 +28,7 @@ if (!OTO_TAMAMLAMA) {
 }
 ?>
 <?php
+$ayarlar = $this->Ayarlar_Model->getir();
 echo '<tr id="yapilamIslemRow' . $index . '">
     <td>' . $index . '</td>
     <!--<td id="stokKodText' . $index . '">' . (isset($yapilanIslemArr["stok_kod"]) ? $yapilanIslemArr["stok_kod"] : "Yok") . '</td>-->
@@ -46,8 +47,7 @@ echo '<tr id="yapilamIslemRow' . $index . '">
             <input id="yapilanIslemMiktar' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="miktar' . $index . '" class="form-control" type="number" placeholder="Miktar" value="' . (isset($yapilanIslemArr["miktar"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["miktar"] : "") . '"' . (isset($yapilanIslemArr["islem"]) ? " required" : "") . '>
         </div>
     </td>
-    
-    <td>
+    <td'.($ayarlar->maliyet_goster != 0 ? "" : ' style="display:none;"').'>
         <div class="p-0 m-0 col">
             <input id="yapilanIslemMaliyet' . $index . '" autocomplete="' . $this->Islemler_Model->rastgele_yazi() . '" name="maliyet' . $index . '" class="form-control" type="number" placeholder="Maliyet" value="' . (isset($yapilanIslemArr["maliyet"]) && isset($yapilanIslemArr["islem"]) ? $yapilanIslemArr["maliyet"] : "") . '">
         </div>
