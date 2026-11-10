@@ -727,6 +727,7 @@ ALTER TABLE `ts1_guncelleme`
 --
 ALTER TABLE `ts1_islemler`
   ADD PRIMARY KEY (`id`);
+  ADD KEY `idx_islemler_cihaz` (`cihaz_id`);
 
 --
 -- Tablo için indeksler `ts1_kullanicilar`

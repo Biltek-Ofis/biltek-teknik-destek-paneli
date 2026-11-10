@@ -339,6 +339,49 @@ class Cihazlar_Model extends CI_Model
         $result = $result->get($this->cihazlarTabloAdi())->result();
         return $this->cihazVerileriniDonustur($result);
     }
+    public function raporCihazlari()
+    {
+        $this->load->model("Kullanicilar_Model");
+        $c = $this->cihazlarTabloAdi();
+        $t = $this->cihazTurleriTabloAdi();
+        $d = $this->cihazDurumlariTabloAdi();
+        $i = $this->islemlerTabloAdi();
+
+        $sql = "SELECT c.servis_no, c.musteri_adi, c.cihaz, c.cihaz_modeli, c.tarih, c.cikis_tarihi,
+                   c.sorumlu AS sorumlu_val,
+                   COALESCE(t.isim, 'Belirtilmemiş') AS cihaz_turu,
+                   COALESCE(d.durum, 'Belirtilmemiş') AS durum,
+                   COALESCE(x.toplam, 0) AS toplam,
+                   COALESCE(x.kdv, 0) AS kdv
+            FROM $c c
+            LEFT JOIN $t t ON t.id = c.cihaz_turu
+            LEFT JOIN $d d ON d.id = c.guncel_durum
+            LEFT JOIN (
+                SELECT cihaz_id,
+                       ROUND(SUM(miktar * birim_fiyat), 2) AS toplam,
+                       ROUND(SUM(ROUND(miktar * birim_fiyat / 100 * kdv, 2)), 2) AS kdv
+                FROM $i
+                GROUP BY cihaz_id
+            ) x ON x.cihaz_id = c.id
+            ORDER BY c.id DESC";
+        $rows = $this->db->reset_query()->query($sql)->result();
+
+        $kullanicilar = array();
+        $kq = $this->db->reset_query()->select("id, ad_soyad")->get($this->Kullanicilar_Model->kullanicilarTabloAdi())->result();
+        foreach ($kq as $k) {
+            $kullanicilar[$k->id] = $k->ad_soyad;
+        }
+
+        foreach ($rows as $r) {
+            $id = $r->sorumlu_val;
+            $esl = RP_KLNC_ESL[strval($id)] ?? null;
+            if ($esl !== null && isset($kullanicilar[$esl])) {
+                $id = $esl;
+            }
+            $r->sorumlu = $kullanicilar[$id] ?? "Atanmamış";
+        }
+        return $rows;
+    }
     public function islemleriGetir($cihazID)
     {
         return $this->db->reset_query()->where("cihaz_id", $cihazID)->order_by("islem_sayisi", "ASC")->get($this->islemlerTabloAdi())->result();

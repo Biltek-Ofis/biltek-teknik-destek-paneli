@@ -578,30 +578,9 @@ foreach ($personeller as $personel) {
             </thead>
             <tbody>
 <?php
-$cihazlar = $this->Cihazlar_Model->cihazlar();
+$cihazlar = $this->Cihazlar_Model->raporCihazlari();
 foreach ($cihazlar as $cihaz) {
-    $toplam = 0;
-    $kdv = 0;
-    $genel_toplam = 0;
-    if (count($cihaz->islemler) > 0) {
-        foreach ($cihaz->islemler as $islem) {
-            $toplam_islem_fiyati_suan = $islem->miktar * $islem->birim_fiyat;
-            $kdv_suan = $this->Islemler_Model->tutarGetir(($toplam_islem_fiyati_suan / 100) * $islem->kdv);
-            $toplam = $toplam + $toplam_islem_fiyati_suan;
-            $kdv = $kdv + $kdv_suan;
-        }
-    }
-    $sorumlu = $cihaz->sorumlu;
-    if(isset(RP_KLNC_ESL[strval($cihaz->sorumlu_val)])){
-        $klnc = $this->Kullanicilar_Model->tekKullanici(RP_KLNC_ESL[strval($cihaz->sorumlu_val)]);
-        if($klnc != null){
-            $sorumlu = $klnc->ad_soyad;
-        }
-    }
-    $cDurum = $this->Cihazlar_Model->cihazDurumuBul($cihaz->guncel_durum);
-    $dDurum = ($cDurum->num_rows() > 0) ? $cDurum->result()[0]->durum : "Belirtilmemiş";
     ?>
-    
     <tr>
     <td><?= $cihaz->servis_no ;?></td>
     <td><?= $cihaz->musteri_adi ;?></td>
@@ -610,11 +589,11 @@ foreach ($cihazlar as $cihaz) {
     <td><?= $cihaz->cihaz_turu ;?></td>
     <td><?= $this->Islemler_Model->tarihDonusturSiralama($cihaz->tarih) ;?></td>
     <td><?= $this->Islemler_Model->tarihDonusturSiralama($cihaz->cikis_tarihi) ;?></td>
-    <td><?= $toplam ;?></td>
-    <td><?= $kdv ;?></td>
-    <td><?= ($toplam + $kdv) ;?></td>
-    <td><?= $sorumlu ;?></td>
-    <td><?= $dDurum ;?></td>
+    <td><?= $cihaz->toplam ;?></td>
+    <td><?= $cihaz->kdv ;?></td>
+    <td><?= $this->Islemler_Model->tutarGetir($cihaz->toplam + $cihaz->kdv) ;?></td>
+    <td><?= $cihaz->sorumlu ;?></td>
+    <td><?= $cihaz->durum ;?></td>
     </tr>
 <?php
 }
