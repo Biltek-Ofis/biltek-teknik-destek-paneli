@@ -1022,10 +1022,6 @@ $(document).ready(function(){
                             <td colspan="3" id="yapilanIslemGenelToplam">0 TL</td>
                         </tr>
                         <tr>
-                            <th colspan="5">Toplam Kar</th>
-                            <td colspan="3" id="yapilanIslemToplamKar">0 TL</td>
-                        </tr>
-                        <tr>
                             <td colspan="8">
                                 <div class="p-0 m-0 col">
                                     <label for="yapilan_islem_aciklamasi" class="form-label fw-bold">Yapılan işlem açıklaması:</label>
@@ -1550,8 +1546,7 @@ echo '
             var toplamDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam).toFixed(2));
             var kdvDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "KDV").replaceAll("{toplam_fiyat}", parseFloat(kdv).toFixed(2));
             var genelToplamDiv = yapilanIslemToplam.replaceAll("{ek_class}", "").replaceAll("{toplam_aciklama}", "Genel Toplam").replaceAll("{toplam_fiyat}", parseFloat(toplam + kdv).toFixed(2));
-            var toplamKarDiv = yapilanIslemToplam.replaceAll("{ek_class}", " maliyet").replaceAll("{toplam_aciklama}", "Toplam Kar").replaceAll("{toplam_fiyat}", parseFloat(toplam - toplamMaliyet).toFixed(2));
-            yapilanIslemler += toplamMaliyetDiv + toplamDiv + kdvDiv + genelToplamDiv + toplamKarDiv;
+            yapilanIslemler += toplamMaliyetDiv + toplamDiv + kdvDiv + genelToplamDiv;
             $("#yapilanIslem").html(yapilanIslemler);
             maliyetDurumuGuncelle();
             //QRYenile(value.servis_no);
