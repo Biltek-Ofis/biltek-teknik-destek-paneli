@@ -146,8 +146,16 @@ $this->load->view("inc/style_tablo");
                         var tablo = '<tr>';
                         tablo += '<td>' + value.musteri_adi + '</td>';
                         tablo += '<td>' + value.aciklama + '</td>';
-                        tablo += '<td>' + value.k_adi + '<button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.k_adi) + '\')"><i class="fa-solid fa-copy"></i></button></td>';
-                        tablo += '<td><input id="sifreInput' + value.id + '" class="musteriSifresi" type="password" value="' + value.sifre + '" readonly><button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.sifre) + '\')"><i class="fa-solid fa-copy"></i></button><button class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifreInput' + value.id + '\')">Göster</button></td>';
+                        tablo += '<td>' + value.k_adi;
+                        if(value.k_adi.trim().length > 0){
+                            tablo += '<button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.k_adi) + '\')"><i class="fa-solid fa-copy"></i></button>';
+                        }
+                        tablo += '</td>';
+                        tablo += '<td><input id="sifreInput' + value.id + '" class="musteriSifresi" type="password" value="' + value.sifre + '" readonly>';
+                        if(value.sifre.trim().length > 0){
+                            tablo += '<button class="btn btn-sm btn-success ms-2" onclick="kopyala(\'' + donusturOnclick(value.sifre) + '\')"><i class="fa-solid fa-copy"></i></button>';
+                        }
+                        tablo += '<button class="btn btn-sm btn-primary ms-2" onclick="sifreGoster(\'sifreInput' + value.id + '\')">Göster</button></td>';
                         tablo += '<td>' + value.olusturan + '</td>';
                         tablo += '<td>' + (value.son_duzenleme == value.tarih ? "-" : value.duzenleyen) + '</td>';
                         tablo += '<td class="text-center">';
