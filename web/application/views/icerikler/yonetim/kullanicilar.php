@@ -123,7 +123,7 @@ if ($kullaniciTuru != 2) {
     echo '
                                 <th>Teknik Servis Elemanı</th>
                                 <th>Ürün Düzenleme</th>
-                                <th>Müşteri Şifreleri</th>';
+                                <th>Şifreler</th>';
 }
 echo '
                                 <th>İşlemler</th>

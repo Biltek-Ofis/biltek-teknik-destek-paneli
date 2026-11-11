@@ -115,7 +115,7 @@ if ($detect->isMobile() || $detect->isTablet() || $detect->isAndroidOS()) {
             <li class="nav-item">
               <a class="nav-link<?= $aktifSayfa == "sifreler" ? ' active" aria-current="page' : ''; ?>"
                 href="<?= base_url("sifreler"); ?>">
-                Müşteri Şifreleri
+                Şifreler
               </a>
             </li>
             <?php

@@ -19,7 +19,7 @@ class Sifreler extends Varsayilancontroller
 				$girebilir = True;
 			}
 			if ($girebilir) {
-				$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Müşteri Şifreleri", "sifreler", array(), "inc/datatables"));
+				$this->load->view("tasarim", $this->Islemler_Model->tasarimArray("Şifreler", "sifreler", array(), "inc/datatables"));
 			} else {
 				redirect(base_url());
 			}

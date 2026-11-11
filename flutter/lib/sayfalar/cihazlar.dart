@@ -744,7 +744,7 @@ Drawer biltekDrawer(
         if (!kullanici.musteri && (kullanici.yonetici || kullanici.sifreler))
           ListTile(
             contentPadding: linkPadding,
-            title: const Text("Müşteri Şifreleri"),
+            title: const Text("Şifreler"),
             selected: seciliSayfa == "sifreler",
             onTap: () {
               Navigator.pop(context);
