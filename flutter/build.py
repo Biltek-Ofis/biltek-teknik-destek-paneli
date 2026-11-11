@@ -7,12 +7,21 @@ import re
 from dotenv import load_dotenv
 from datetime import date
 from pathlib import Path
+import subprocess
+import json
 
 skip_android_dependency_validation = True
 
 load_dotenv()
 
 ENV_DOSYASI = ".env"
+
+ANDROID_STORE_PASSWORD=os.getenv("ANDROID_STORE_PASSWORD")
+ANDROID_KEY_PASSWORD=os.getenv("ANDROID_KEY_PASSWORD")
+ANDROID_KEY_ALIAS=os.getenv("ANDROID_KEY_ALIAS")
+ANDROID_STORE_FILE=os.getenv("ANDROID_STORE_FILE")
+keyStoreOlusturuldu = False
+
 def update_build_date(file_path: str = ENV_DOSYASI) -> None:
     path = Path(file_path)
  
@@ -96,6 +105,7 @@ def make_parser():
     
 
 def main():
+    global ANDROID_STORE_FILE, keyStoreOlusturuldu
     parser = make_parser()
     args = parser.parse_args()
     calisti = False
@@ -117,6 +127,32 @@ def main():
     ekArgsAndroid = ekArgs
     if skip_android_dependency_validation:
         ekArgsAndroid += " --android-skip-build-dependency-validation"
+    if args.apk or args.bundle or args.run:
+        check_keystore = False
+        if check_keystore and not all([
+            ANDROID_STORE_PASSWORD,
+            ANDROID_KEY_PASSWORD,
+            ANDROID_KEY_ALIAS,
+            ANDROID_STORE_FILE
+        ]):
+            print("Hata: Android imzalama bilgileri eksik!")
+            return
+        if ANDROID_STORE_FILE and not keyStoreOlusturuldu:
+            ANDROID_STORE_FILE = ANDROID_STORE_FILE.replace("\\", "\\\\")
+        keyStoreOlusturuldu = True
+        keypropertieslocation = r"android/key.properties"
+        with open(keypropertieslocation, "w", encoding="utf-8") as keyproperties:
+            keyproperties.write("""storePassword={0}
+keyPassword={1}
+keyAlias={2}
+storeFile={3}
+""".format(
+        ANDROID_STORE_PASSWORD if ANDROID_STORE_PASSWORD else "placeholder",
+        ANDROID_KEY_PASSWORD if ANDROID_KEY_PASSWORD else "placeholder",
+        ANDROID_KEY_ALIAS if ANDROID_KEY_ALIAS else "placeholder",
+        ANDROID_STORE_FILE if ANDROID_STORE_FILE else "placeholder"
+    ))
+
     if args.apk:
         if not calisti:
             update_build_date()
