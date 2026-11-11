@@ -220,32 +220,34 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
                                         text: sifre.kAdi,
                                         style: TextStyle(color: renk),
                                       ),
-
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.middle,
-                                        child: IconButton(
-                                          icon: const Icon(
-                                            Icons.copy,
-                                            color: Colors.green,
-                                          ),
-                                          onPressed: () async {
-                                            await Clipboard.setData(
-                                              ClipboardData(text: sifre.kAdi),
-                                            );
-                                            if (context.mounted) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                const SnackBar(
-                                                  content: Text('Kopyalandı!'),
-                                                ),
+                                      if (sifre.kAdi.trim().isNotEmpty)
+                                        WidgetSpan(
+                                          alignment:
+                                              PlaceholderAlignment.middle,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.copy,
+                                              color: Colors.green,
+                                            ),
+                                            onPressed: () async {
+                                              await Clipboard.setData(
+                                                ClipboardData(text: sifre.kAdi),
                                               );
-                                            }
-                                          },
-                                          constraints: const BoxConstraints(),
-                                          padding: EdgeInsets.zero,
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                          'Kopyalandı!',
+                                                        ),
+                                                      ),
+                                                    );
+                                              }
+                                            },
+                                            constraints: const BoxConstraints(),
+                                            padding: EdgeInsets.zero,
+                                          ),
                                         ),
-                                      ),
                                       TextSpan(
                                         text: "\nŞifre: ",
                                         style: TextStyle(
@@ -260,7 +262,10 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
                                           controller:
                                               sifreTextEditingController,
                                           readOnly: true,
-                                          canCopy: true,
+                                          canCopy: sifreTextEditingController
+                                              .text
+                                              .trim()
+                                              .isNotEmpty,
                                         ),
                                       ),
                                       TextSpan(
