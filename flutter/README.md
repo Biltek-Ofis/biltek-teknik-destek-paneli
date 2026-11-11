@@ -57,3 +57,19 @@ python build.py --all --base-href "/"
 ```
 python build.py --release --base-href "/"
 ```
+
+**Web'te flutter 3.50.0 ve üzeri kullanıyorsanız bazı dosya isimleri şifrelenecektir.**
+**Bu şifrelenecek dosyalar için hosting sağlayıcı ayarları alttadır.**
+
+| Hosting | Kullanılacak dosya |
+|------|-----|
+| Firebase | build/cache-config/firebase-hosting-headers.generated.json |
+| Vercel | build/cache-config/vercel-headers.generated.json |
+| Netlify | build/web/_headers |
+| Nginx | build/cache-config/nginx-cache.generated.conf |
+| Apache / cPanel | build/web/.htaccess |
+	
+	
+	
+ 	
+	

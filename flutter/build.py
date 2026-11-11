@@ -7,8 +7,7 @@ import re
 from dotenv import load_dotenv
 from datetime import date
 from pathlib import Path
-import subprocess
-import json
+import subprocess, shutil
 
 skip_android_dependency_validation = True
 
@@ -21,6 +20,8 @@ ANDROID_KEY_PASSWORD=os.getenv("ANDROID_KEY_PASSWORD")
 ANDROID_KEY_ALIAS=os.getenv("ANDROID_KEY_ALIAS")
 ANDROID_STORE_FILE=os.getenv("ANDROID_STORE_FILE")
 keyStoreOlusturuldu = False
+
+WEB_BUILD_DIR = Path("build/web")
 
 def update_build_date(file_path: str = ENV_DOSYASI) -> None:
     path = Path(file_path)
@@ -52,6 +53,25 @@ def system2(cmd):
         sys.stderr.write(f"Error occurred when executing: `{cmd}`. Exiting.\n")
         sys.exit(-1)
 
+def get_flutter_version():
+    flutter_path = shutil.which("flutter")
+    result = subprocess.run(
+        [flutter_path, "--version"],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+
+    match = re.search(
+        r"Flutter (\d+)\.(\d+)\.(\d+)",
+        result.stdout
+    )
+
+    if not match:
+        raise RuntimeError("Flutter versiyonu tespit edilemedi!")
+
+    return tuple(map(int, match.groups()))
+
 def make_parser():
     parser = argparse.ArgumentParser(description='Build script.')
     parser.add_argument(
@@ -73,7 +93,12 @@ def make_parser():
     parser.add_argument(
         '--web',
         action='store_true',
-        help='Web versionu derleme'
+        help='Web versiyonu derleme'
+    )
+    parser.add_argument(
+        '--web-hash',
+        action='store_true',
+        help='Web versiyonu icin hash ayar dosyalarini olusturur. Daha fazla bilgi icin README.md okuyun.'
     )
     parser.add_argument(
         '--base-href',
@@ -103,7 +128,19 @@ def make_parser():
             '\nBoş değer verilirse varsayılan cihazda çalıştırır.'
     )
     return parser
-    
+
+def clean_web_files():
+    print("Gereksiz dosyalar siliniyor.")
+    files_to_clean = {
+        "firebase-variables.js.example"
+    }
+
+    for file_name in files_to_clean:
+        file_path = WEB_BUILD_DIR / file_name
+
+        if file_path.is_file():
+            file_path.unlink()
+            print(f"Silindi: {file_name}")
 
 def main():
     global ANDROID_STORE_FILE, keyStoreOlusturuldu
@@ -114,11 +151,12 @@ def main():
         args.apk = True
         args.bundle = True
         args.web = True
+        args.web_hash = False
     
     if args.release:
         args.apk = False
         args.bundle = True
-        args.web = True
+        args.web_hash = False
 
     if args.all and args.release:
         print("Not: --all ve --release seçenekleri birlikte kullanıldığında sadece Play Store için Bundle ve Web derlemesi yapılır. APK derlemesi yapılmaz.")
@@ -171,7 +209,34 @@ storeFile={3}
             update_build_date()
         calisti = True
         print("Web versionu derleniyor...")
-        system2(f"flutter build web{ekArgs} --dart-define-from-file=.env --release --base-href \"{args.base_href}\"")
+        flutter_version = get_flutter_version()
+        run_cmd = f"flutter build web{ekArgs} --dart-define-from-file=.env --release"
+        if flutter_version >= (3, 50, 0):
+            run_cmd += f" --web-content-hash"
+            print("Web content hash aktif.")
+        else:
+            print("Web content hash desteklenmeyen surum, lütfen 3.50.0 ve sonrasini kullanin.")
+        run_cmd += f" --base-href \"{args.base_href}\""
+        system2(run_cmd)
+        clean_web_files()
+        if flutter_version >= (3, 50, 0):
+            system2(f"dart run tool/cache_config_generator.dart")
+        args.web_hash = False
+        if flutter_version >= (3, 50, 0):
+            print("Dosyalari yuklemeden once. Hash'li dosyalarininiz karismamasi icin onceki dosyalarinizi silin.")
+        klasor_adi = Path("build/web")
+        print(f"Build konumu: \033[32m{klasor_adi}\033[0m")
+
+
+    if args.web_hash:
+        calisti = True
+        flutter_version = get_flutter_version()
+        if flutter_version >= (3, 50, 0):
+            print("Web content hash aktif.")
+            system2(f"dart run tool/cache_config_generator.dart")
+        else:
+            print("Web content hash desteklenmeyen surum, lütfen 3.50.0 ve sonrasini kullanin.")
+
     if args.run is not None:
         if not calisti:
             update_build_date()
