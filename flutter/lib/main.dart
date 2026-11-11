@@ -54,10 +54,9 @@ class MyApp extends StatelessWidget {
               title: 'Biltek Teknik Servis',
               theme: ThemeModel.light,
               darkTheme: ThemeModel.dark,
-              themeMode:
-                  myNotifier.isDark == null
-                      ? ThemeMode.system
-                      : (myNotifier.isDark! ? ThemeMode.dark : ThemeMode.light),
+              themeMode: myNotifier.isDark == null
+                  ? ThemeMode.system
+                  : (myNotifier.isDark! ? ThemeMode.dark : ThemeMode.light),
               debugShowCheckedModeBanner: false,
               scrollBehavior: const MaterialScrollBehavior().copyWith(
                 dragDevices: {
@@ -113,38 +112,38 @@ class MainPage extends StatelessWidget {
                             future: BiltekPost.kullaniciGetir(
                               authSnapshot.data!,
                             ),
-                            builder: (
-                              context,
-                              AsyncSnapshot<KullaniciAuthModel?>
-                              kullaniciSnapshot,
-                            ) {
-                              if (kullaniciSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                if (kullaniciSnapshot.hasData &&
-                                    kullaniciSnapshot.data != null &&
-                                    kullaniciSnapshot.data!.id != 0) {
-                                  return Anasayfa(
-                                    sayfa:
-                                        kullaniciSnapshot.data!.musteri
+                            builder:
+                                (
+                                  context,
+                                  AsyncSnapshot<KullaniciAuthModel?>
+                                  kullaniciSnapshot,
+                                ) {
+                                  if (kullaniciSnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else {
+                                    if (kullaniciSnapshot.hasData &&
+                                        kullaniciSnapshot.data != null &&
+                                        kullaniciSnapshot.data!.id != 0) {
+                                      return Anasayfa(
+                                        sayfa: kullaniciSnapshot.data!.musteri
                                             ? "cagri"
                                             : (kullaniciSnapshot
-                                                    .data!
-                                                    .teknikservis
-                                                ? "cihazlarim"
-                                                : "anasayfa"),
-                                    kullanici: kullaniciSnapshot.data!,
-                                  );
-                                } else {
-                                  return GirisSayfasi(
-                                    spKullanici: myNotifier.kullanici,
-                                  );
-                                }
-                              }
-                            },
+                                                      .data!
+                                                      .teknikservis
+                                                  ? "cihazlarim"
+                                                  : "anasayfa"),
+                                        kullanici: kullaniciSnapshot.data!,
+                                      );
+                                    } else {
+                                      return GirisSayfasi(
+                                        spKullanici: myNotifier.kullanici,
+                                      );
+                                    }
+                                  }
+                                },
                           );
                         } else {
                           return GirisSayfasi(

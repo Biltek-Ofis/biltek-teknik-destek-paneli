@@ -1,6 +1,5 @@
 plugins {
     id("com.android.application")
-
     // START: FlutterFire Configuration
     id("com.google.gms.google-services")
     // END: FlutterFire Configuration
@@ -26,7 +25,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "tr.com.biltekbilgisayar.teknikservis"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.13846066"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         isCoreLibraryDesugaringEnabled  = true
@@ -34,15 +33,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "tr.com.biltekbilgisayar.teknikservis"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -57,6 +49,7 @@ android {
             keyPassword = keystoreProperties["keyPassword"] as String
         }
     }
+
     buildTypes {
         debug {
             signingConfig = signingConfigs.getByName("debug")
@@ -68,13 +61,19 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
     implementation("com.google.firebase:firebase-messaging")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     implementation("androidx.window:window:1.5.1")
     implementation("androidx.window:window-java:1.5.1")
     implementation("com.google.android.material:material:1.14.0")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
 flutter {

@@ -7,7 +7,7 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterFragmentActivity(){
+class MainActivity : FlutterFragmentActivity() {
     private val CHANNEL = "biltekteknikservis/notifications"
     private var methodChannel: MethodChannel? = null
     private var pendingNotificationData: Map<String, String?>? = null
@@ -42,7 +42,6 @@ class MainActivity : FlutterFragmentActivity(){
             if (methodChannel != null) {
                 methodChannel?.invokeMethod("notificationClicked", data)
             } else {
-                // FlutterEngine hazır olunca çağırılacak şekilde sakla
                 pendingNotificationData = data
             }
         }

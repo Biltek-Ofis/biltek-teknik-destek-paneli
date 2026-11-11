@@ -9,10 +9,10 @@ GeneratedPluginRegistrant.java
 
 # Remember to never publicly share your keystore.
 # See https://flutter.dev/to/reference-keystore
-build/
 key.properties
 **/*.keystore
 **/*.jks
+build/
 encryption_public_key.pem
 pepk.jar
 google-services.json

@@ -32,25 +32,25 @@ class _WebviewPageState extends State<WebviewPage> {
 
     pullToRefreshController =
         kIsWeb ||
-                ![
-                  TargetPlatform.iOS,
-                  TargetPlatform.android,
-                ].contains(defaultTargetPlatform)
-            ? null
-            : PullToRefreshController(
-              settings: PullToRefreshSettings(color: Colors.blue),
-              onRefresh: () async {
-                if (defaultTargetPlatform == TargetPlatform.android) {
-                  webViewController?.reload();
-                } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                  webViewController?.loadUrl(
-                    urlRequest: URLRequest(
-                      url: await webViewController?.getUrl(),
-                    ),
-                  );
-                }
-              },
-            );
+            ![
+              TargetPlatform.iOS,
+              TargetPlatform.android,
+            ].contains(defaultTargetPlatform)
+        ? null
+        : PullToRefreshController(
+            settings: PullToRefreshSettings(color: Colors.blue),
+            onRefresh: () async {
+              if (defaultTargetPlatform == TargetPlatform.android) {
+                webViewController?.reload();
+              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                webViewController?.loadUrl(
+                  urlRequest: URLRequest(
+                    url: await webViewController?.getUrl(),
+                  ),
+                );
+              }
+            },
+          );
   }
 
   @override
@@ -141,16 +141,13 @@ class _WebviewPageState extends State<WebviewPage> {
                     this.progress = progress / 100;
                   });
                 },
-                onUpdateVisitedHistory: (
-                  controller,
-                  url,
-                  androidIsReload,
-                ) async {
-                  String tt = await webViewController?.getTitle() ?? "";
-                  setState(() {
-                    title = tt;
-                  });
-                },
+                onUpdateVisitedHistory:
+                    (controller, url, androidIsReload) async {
+                      String tt = await webViewController?.getTitle() ?? "";
+                      setState(() {
+                        title = tt;
+                      });
+                    },
                 onConsoleMessage: (controller, consoleMessage) {
                   debugPrint(consoleMessage.message);
                   /*if (consoleMessage.message == "window.close();" ||

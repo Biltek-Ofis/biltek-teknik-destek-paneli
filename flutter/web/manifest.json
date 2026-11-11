@@ -1,6 +1,6 @@
 {
-    "name": "biltekteknikservis",
-    "short_name": "biltekteknikservis",
+    "name": "teknikservis",
+    "short_name": "teknikservis",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

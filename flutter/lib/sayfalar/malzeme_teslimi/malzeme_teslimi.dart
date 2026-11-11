@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,29 +42,9 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
 
   bool yukariKaydir = false;
 
-  StreamSubscription<String>? fcmStream;
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      await FirebaseMessaging.instance.requestPermission(provisional: true);
-      fcmStream = FirebaseMessaging.instance.onTokenRefresh.listen((
-        fcmToken,
-      ) async {
-        BiltekPost.of(
-          widget.kullanici.auth,
-        ).fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
-      });
-      fcmStream?.onError((err) {
-        debugPrint("Failed to get fcm token");
-      });
-      String? token = await FirebaseMessaging.instance.getToken();
-
-      BiltekPost.of(
-        widget.kullanici.auth,
-      ).fcmTokenGuncelle(widget.kullanici.auth, token);
-    });
     scrollController.addListener(() async {
       if (scrollController.position.pixels > 50) {
         setState(() {
@@ -110,7 +89,6 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
   @override
   void dispose() {
     scrollController.dispose();
-    fcmStream?.cancel();
     super.dispose();
   }
 
@@ -164,11 +142,10 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
                   case 3:
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder:
-                            (context) => AyarlarSayfasi(
-                              pcYenile: () {},
-                              kullanici: widget.kullanici,
-                            ),
+                        builder: (context) => AyarlarSayfasi(
+                          pcYenile: () {},
+                          kullanici: widget.kullanici,
+                        ),
                       ),
                     );
                     break;
@@ -214,80 +191,76 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
               child: Container(
                 decoration: BoxDecoration(color: Colors.white),
                 width: MediaQuery.of(context).size.width,
-                child:
-                    malzemeTeslimleri == null
-                        ? Center(child: CircularProgressIndicator())
-                        : RefreshIndicator(
-                          onRefresh: () async {
-                            await _malzemeTeslimleriiYenile();
-                          },
-                          child: ListView.builder(
-                            itemCount: malzemeTeslimleri!.length,
-                            controller: scrollController,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              MalzemeTeslimiModel malzemeTeslimi =
-                                  malzemeTeslimleri![index];
-                              String renkStr =
-                                  malzemeTeslimi.odendi
-                                      ? "bg-success"
-                                      : "bg-danger";
-                              Color? renkTemp = Islemler.yaziRengi(renkStr);
-                              return SectionCard(
-                                darkTheme: false,
-                                backgroundColor: Islemler.arkaRenk(renkStr),
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 0,
-                                  horizontal: 0,
-                                ),
-                                children: [
-                                  ListTile(
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        InfoTileList(
-                                          label: "No",
-                                          value:
-                                              malzemeTeslimi.teslimNo
-                                                  .toString(),
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Firma",
-                                          value: malzemeTeslimi.firma,
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Sipariş Tarihi",
-                                          value: malzemeTeslimi.siparisTarihi,
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Teslim Tarihi",
-                                          value: malzemeTeslimi.teslimTarihi,
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Vade Tarihi",
-                                          value: malzemeTeslimi.vadeTarihi,
-                                          textColor: renkTemp,
-                                        ),
-                                        InfoTileList(
-                                          label: "Ödeme Durumu",
-                                          value: malzemeTeslimi.vadeStr,
-                                          textColor: renkTemp,
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: PrimaryButton(
-                                      width: 40,
-                                      height: 40,
-                                      onPressed: () {
-                                        // TODO: Detaylar sayfası
-                                        /*
+                child: malzemeTeslimleri == null
+                    ? Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          await _malzemeTeslimleriiYenile();
+                        },
+                        child: ListView.builder(
+                          itemCount: malzemeTeslimleri!.length,
+                          controller: scrollController,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            MalzemeTeslimiModel malzemeTeslimi =
+                                malzemeTeslimleri![index];
+                            String renkStr = malzemeTeslimi.odendi
+                                ? "bg-success"
+                                : "bg-danger";
+                            Color? renkTemp = Islemler.yaziRengi(renkStr);
+                            return SectionCard(
+                              darkTheme: false,
+                              backgroundColor: Islemler.arkaRenk(renkStr),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 0,
+                              ),
+                              children: [
+                                ListTile(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      InfoTileList(
+                                        label: "No",
+                                        value: malzemeTeslimi.teslimNo
+                                            .toString(),
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Firma",
+                                        value: malzemeTeslimi.firma,
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Sipariş Tarihi",
+                                        value: malzemeTeslimi.siparisTarihi,
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Teslim Tarihi",
+                                        value: malzemeTeslimi.teslimTarihi,
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Vade Tarihi",
+                                        value: malzemeTeslimi.vadeTarihi,
+                                        textColor: renkTemp,
+                                      ),
+                                      InfoTileList(
+                                        label: "Ödeme Durumu",
+                                        value: malzemeTeslimi.vadeStr,
+                                        textColor: renkTemp,
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: PrimaryButton(
+                                    width: 40,
+                                    height: 40,
+                                    onPressed: () {
+                                      // TODO: Detaylar sayfası
+                                      /*
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder:
@@ -302,15 +275,15 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
                                           ),
                                         );
                                         */
-                                      },
-                                      icon: Icons.list_alt,
-                                    ),
+                                    },
+                                    icon: Icons.list_alt,
                                   ),
-                                ],
-                              );
-                            },
-                          ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
+                      ),
               ),
             ),
           );

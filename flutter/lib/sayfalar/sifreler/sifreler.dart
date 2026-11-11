@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:biltekteknikservis/widgets/input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +9,7 @@ import '../../models/kullanici.dart';
 import '../../models/sifre.dart';
 import '../../utils/post.dart';
 import '../../utils/types.dart';
+import '../../widgets/input.dart';
 import 'sifre_ekle_duzenle.dart';
 
 class SifrelerSayfasi extends StatefulWidget {
@@ -101,38 +101,34 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
         }
       },
       child: Scaffold(
-        appBar:
-            aramaEtkin
-                ? AppBar(
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: aramaAppBar,
-                )
-                : AppBar(
-                  title: Text(
-                    arama.isNotEmpty
-                        ? "\"$arama\" Arama Sonuçları"
-                        : "Şifreler",
-                  ),
-                  actions: [
-                    IconButton(
-                      icon: Icon(CupertinoIcons.search),
-                      onPressed: () {
-                        _aramaDurumuDuzenle(true);
-                      },
-                    ),
-                  ],
+        appBar: aramaEtkin
+            ? AppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: aramaAppBar,
+              )
+            : AppBar(
+                title: Text(
+                  arama.isNotEmpty ? "\"$arama\" Arama Sonuçları" : "Şifreler",
                 ),
+                actions: [
+                  IconButton(
+                    icon: Icon(CupertinoIcons.search),
+                    onPressed: () {
+                      _aramaDurumuDuzenle(true);
+                    },
+                  ),
+                ],
+              ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder:
-                    (context) => SifreEkleDuzenleSayfasi(
-                      kullanici: widget.kullanici,
-                      sifreleriYenile: () async {
-                        await _sifreleriGetir();
-                      },
-                    ),
+                builder: (context) => SifreEkleDuzenleSayfasi(
+                  kullanici: widget.kullanici,
+                  sifreleriYenile: () async {
+                    await _sifreleriGetir();
+                  },
+                ),
               ),
             );
           },
@@ -143,209 +139,191 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child:
-                sifreler != null
-                    ? RefreshIndicator(
-                      onRefresh: () async {
-                        setState(() {
-                          arama = "";
-                        });
-                        await _sifreleriGetir();
-                      },
-                      child:
-                          sifreler!.isEmpty
-                              ? ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (context, index) {
-                                  return SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height,
-                                    child: Center(
-                                      child: Text(
-                                        "Henüz bir şifre eklenmemiş.",
+            child: sifreler != null
+                ? RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        arama = "";
+                      });
+                      await _sifreleriGetir();
+                    },
+                    child: sifreler!.isEmpty
+                        ? ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: Center(
+                                  child: Text("Henüz bir şifre eklenmemiş."),
+                                ),
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: sifreler!.length,
+                            itemBuilder: (context, index) {
+                              SifreModel sifre = sifreler![index];
+                              Color? renk = Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color;
+                              TextEditingController sifreTextEditingController =
+                                  TextEditingController(text: sifre.sifre);
+                              return ListTile(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                title: RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: "Müşteri İsmi: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              )
-                              : ListView.builder(
-                                itemCount: sifreler!.length,
-                                itemBuilder: (context, index) {
-                                  SifreModel sifre = sifreler![index];
-                                  Color? renk =
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium?.color;
-                                  TextEditingController
-                                  sifreTextEditingController =
-                                      TextEditingController(text: sifre.sifre);
-                                  return ListTile(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
+                                      TextSpan(
+                                        text: sifre.musteriAdi,
+                                        style: TextStyle(color: renk),
                                       ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    title: RichText(
-                                      text: TextSpan(
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: "Müşteri İsmi: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: sifre.musteriAdi,
-                                            style: TextStyle(color: renk),
-                                          ),
-                                        ],
+                                    ],
+                                  ),
+                                ),
+                                subtitle: RichText(
+                                  text: TextSpan(
+                                    children: <InlineSpan>[
+                                      TextSpan(
+                                        text: "\nAçıklama: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
                                       ),
-                                    ),
-                                    subtitle: RichText(
-                                      text: TextSpan(
-                                        children: <InlineSpan>[
-                                          TextSpan(
-                                            text: "\nAçıklama: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: sifre.aciklama,
-                                            style: TextStyle(color: renk),
-                                          ),
-                                          TextSpan(
-                                            text: "\nKullanıcı Adı: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: sifre.kAdi,
-                                            style: TextStyle(color: renk),
-                                          ),
+                                      TextSpan(
+                                        text: sifre.aciklama,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                      TextSpan(
+                                        text: "\nKullanıcı Adı: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: sifre.kAdi,
+                                        style: TextStyle(color: renk),
+                                      ),
 
-                                          WidgetSpan(
-                                            alignment:
-                                                PlaceholderAlignment.middle,
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                Icons.copy,
-                                                color: Colors.green,
-                                              ),
-                                              onPressed: () async {
-                                                await Clipboard.setData(
-                                                  ClipboardData(
-                                                    text: sifre.kAdi,
-                                                  ),
-                                                );
-                                                if (context.mounted) {
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        'Kopyalandı!',
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              constraints:
-                                                  const BoxConstraints(),
-                                              padding: EdgeInsets.zero,
-                                            ),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.copy,
+                                            color: Colors.green,
                                           ),
-                                          TextSpan(
-                                            text: "\nŞifre: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          WidgetSpan(
-                                            alignment:
-                                                PlaceholderAlignment
-                                                    .middle, // Vertically centers the button with text
-                                            child: BiltekSifre(
-                                              controller:
-                                                  sifreTextEditingController,
-                                              readOnly: true,
-                                              canCopy: true,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: "\nOluşturan: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: sifre.olusturan,
-                                            style: TextStyle(color: renk),
-                                          ),
-                                          TextSpan(
-                                            text: "\nDüzenleyen: ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: renk,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                sifre.sonDuzenleme ==
-                                                        sifre.tarih
-                                                    ? "-"
-                                                    : sifre.duzenleyen,
-                                            style: TextStyle(color: renk),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (
-                                                      context,
-                                                    ) => SifreEkleDuzenleSayfasi(
-                                                      kullanici:
-                                                          widget.kullanici,
-                                                      sifre: sifre,
-                                                      sifreleriYenile: () async {
-                                                        await _sifreleriGetir();
-                                                      },
-                                                    ),
-                                              ),
+                                          onPressed: () async {
+                                            await Clipboard.setData(
+                                              ClipboardData(text: sifre.kAdi),
                                             );
+                                            if (context.mounted) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text('Kopyalandı!'),
+                                                ),
+                                              );
+                                            }
                                           },
-                                          icon: Icon(CupertinoIcons.pen),
+                                          constraints: const BoxConstraints(),
+                                          padding: EdgeInsets.zero,
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            _sifreSil(sifre.id);
-                                          },
-                                          icon: Icon(CupertinoIcons.delete),
+                                      ),
+                                      TextSpan(
+                                        text: "\nŞifre: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
                                         ),
-                                      ],
+                                      ),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle, // Vertically centers the button with text
+                                        child: BiltekSifre(
+                                          controller:
+                                              sifreTextEditingController,
+                                          readOnly: true,
+                                          canCopy: true,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "\nOluşturan: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: sifre.olusturan,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                      TextSpan(
+                                        text: "\nDüzenleyen: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: renk,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: sifre.sonDuzenleme == sifre.tarih
+                                            ? "-"
+                                            : sifre.duzenleyen,
+                                        style: TextStyle(color: renk),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SifreEkleDuzenleSayfasi(
+                                                  kullanici: widget.kullanici,
+                                                  sifre: sifre,
+                                                  sifreleriYenile: () async {
+                                                    await _sifreleriGetir();
+                                                  },
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.pen),
                                     ),
-                                  );
-                                },
-                              ),
-                    )
-                    : Center(child: CircularProgressIndicator()),
+                                    IconButton(
+                                      onPressed: () {
+                                        _sifreSil(sifre.id);
+                                      },
+                                      icon: Icon(CupertinoIcons.delete),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                  )
+                : Center(child: CircularProgressIndicator()),
           ),
         ),
       ),
@@ -356,9 +334,8 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
     setState(() {
       sifreler = null;
     });
-    List<SifreModel> sifrelerTemp = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).sifreleriGetir(arama: arama.isNotEmpty ? arama : null);
+    List<SifreModel> sifrelerTemp = await BiltekPost.of(widget.kullanici.auth)
+        .sifreleriGetir(arama: arama.isNotEmpty ? arama : null);
 
     setState(() {
       sifreler = sifrelerTemp;
@@ -377,30 +354,28 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
               onPressed: () async {
                 NavigatorState navigatorState = Navigator.of(context);
                 navigatorState.pop();
-                bool sil = await BiltekPost.of(
-                  widget.kullanici.auth,
-                ).sifreSil(id: id);
+                bool sil = await BiltekPost.of(widget.kullanici.auth)
+                    .sifreSil(id: id);
                 if (sil) {
                   await _sifreleriGetir();
                 } else {
                   if (context.mounted) {
                     showDialog(
                       context: context,
-                      builder:
-                          (context) => AlertDialog(
-                            title: Text("Şifre silinemedi."),
-                            content: Text(
-                              "Şifre silinirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Kapat"),
-                              ),
-                            ],
+                      builder: (context) => AlertDialog(
+                        title: Text("Şifre silinemedi."),
+                        content: Text(
+                          "Şifre silinirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Kapat"),
                           ),
+                        ],
+                      ),
                     );
                   }
                 }
