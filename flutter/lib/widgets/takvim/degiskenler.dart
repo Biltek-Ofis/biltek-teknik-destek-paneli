@@ -42,15 +42,13 @@ extension TarihSeciciArkaplanExtension on TarihSeciciArkaplan {
         url = 'https://cdn.wallpapersafari.com/92/98/xryMFe.jpg';
         break;
       case TarihSeciciArkaplan.smokyLeaves:
-        url =
-            'https://images.pexels.com/photos/1379636/pexels-photo-1379636.jpeg?cs=srgb&dl=pexels-irina-iriser-1379636.jpg&fm=jpg';
+        url = 'https://images.pexels.com/photos/1379636/pexels-photo-1379636.jpeg?cs=srgb&dl=pexels-irina-iriser-1379636.jpg&fm=jpg';
         break;
       case TarihSeciciArkaplan.snowFall:
         url = 'https://www.animationsoftware7.com/img/agifs/snow02.gif';
         break;
       case TarihSeciciArkaplan.summer:
-        url =
-            'https://i.pinimg.com/originals/0c/9e/dc/0c9edcff20e55cc4c10101b537e6a362.jpg';
+        url = 'https://i.pinimg.com/originals/0c/9e/dc/0c9edcff20e55cc4c10101b537e6a362.jpg';
         break;
       case TarihSeciciArkaplan.halloween:
         url = 'https://images7.alphacoders.com/133/1334604.png';

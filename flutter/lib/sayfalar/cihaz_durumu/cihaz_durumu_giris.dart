@@ -46,10 +46,9 @@ class _CihazDurumuGirisState extends State<CihazDurumuGiris> {
           alignment: Alignment.center,
           padding: EdgeInsets.all(10),
           child: SizedBox(
-            width:
-                MediaQuery.of(context).size.width > 400
-                    ? 400
-                    : MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width > 400
+                ? 400
+                : MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,

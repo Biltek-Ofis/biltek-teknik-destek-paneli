@@ -105,12 +105,11 @@ class _AnasayfaState extends State<Anasayfa> {
         if (idInt > 0) {
           navigatorState.push(
             MaterialPageRoute(
-              builder:
-                  (context) => DetaylarSayfasi(
-                    kullanici: widget.kullanici,
-                    no: idInt,
-                    cihazlariYenile: () async {},
-                  ),
+              builder: (context) => DetaylarSayfasi(
+                kullanici: widget.kullanici,
+                no: idInt,
+                cihazlariYenile: () async {},
+              ),
             ),
           );
         }
@@ -121,11 +120,10 @@ class _AnasayfaState extends State<Anasayfa> {
           if (idInt > 0) {
             navigatorState.push(
               MaterialPageRoute(
-                builder:
-                    (context) => CagriKaydiDetaySayfasi(
-                      kullanici: widget.kullanici,
-                      id: idInt,
-                    ),
+                builder: (context) => CagriKaydiDetaySayfasi(
+                  kullanici: widget.kullanici,
+                  id: idInt,
+                ),
               ),
             );
           }
@@ -134,9 +132,8 @@ class _AnasayfaState extends State<Anasayfa> {
       case "not":
         navigatorState.push(
           MaterialPageRoute(
-            builder:
-                (context) =>
-                    Anasayfa(sayfa: "notlar", kullanici: widget.kullanici),
+            builder: (context) =>
+                Anasayfa(sayfa: "notlar", kullanici: widget.kullanici),
           ),
         );
         break;

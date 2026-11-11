@@ -16,10 +16,12 @@ class FirebaseApi {
 
     await FirebaseAppCheck.instance.activate(
       providerWeb: ReCaptchaV3Provider(Ayarlar.firebase.recaptchaSiteKey),
-      providerAndroid:
-          kDebugMode ? AndroidDebugProvider() : AndroidPlayIntegrityProvider(),
-      providerApple:
-          kDebugMode ? AppleDebugProvider() : AppleAppAttestProvider(),
+      providerAndroid: kDebugMode
+          ? AndroidDebugProvider()
+          : AndroidPlayIntegrityProvider(),
+      providerApple: kDebugMode
+          ? AppleDebugProvider()
+          : AppleAppAttestProvider(),
     );
 
     /*FirebaseMessaging.onMessage.listen((message) {

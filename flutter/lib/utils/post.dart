@@ -126,17 +126,15 @@ class BiltekPost {
       }
     } on Exception catch (e) {
       debugPrint(e.toString());
-      hata =
-          "Ayarlar alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
+      hata = "Ayarlar alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
       return null;
     }
   }
 
   static Future<KullaniciAuthModel?> kullaniciGetir(String auth) async {
     try {
-      var response = await BiltekPost.of(
-        "",
-      ).post(Ayarlar.kullaniciGetir, {"auth": auth});
+      var response = await BiltekPost.of("")
+          .post(Ayarlar.kullaniciGetir, {"auth": auth});
       if (response.statusCode == 201) {
         var resp = await response.stream.bytesToString();
         KullaniciGetirModel kullaniciGetir = KullaniciGetirModel.fromJson(
@@ -192,8 +190,7 @@ class BiltekPost {
       return "Güncelleme başarısız oldu";
     } on Exception catch (e) {
       debugPrint(e.toString());
-      hata =
-          "Kullanıcı bilgileri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
+      hata = "Kullanıcı bilgileri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
       return "Güncelleme başarısız oldu";
     }
   }
@@ -242,9 +239,8 @@ class BiltekPost {
   static Future<Cihaz?> cihazGetirNoAuth({required int no}) async {
     Map<String, String> postData = {"servis_no": no.toString()};
 
-    var response = await BiltekPost.of(
-      "",
-    ).post(Ayarlar.tekCihazNoAuth, postData);
+    var response = await BiltekPost.of("")
+        .post(Ayarlar.tekCihazNoAuth, postData);
     var resp = await response.stream.bytesToString();
     if (response.statusCode == 201) {
       try {
@@ -342,10 +338,9 @@ class BiltekPost {
     if (response.statusCode == 201) {
       try {
         var map = jsonDecode(resp) as List<dynamic>;
-        List<MedyaModel> medyaList =
-            map
-                .map((m) => MedyaModel.fromJson(m as Map<String, dynamic>))
-                .toList();
+        List<MedyaModel> medyaList = map
+            .map((m) => MedyaModel.fromJson(m as Map<String, dynamic>))
+            .toList();
         return medyaList;
       } on Exception catch (e) {
         debugPrint(e.toString());

@@ -35,14 +35,12 @@ class BiltekBottomNavigationBar extends StatelessWidget {
           items: items,
           currentIndex: currentIndex < 0 ? 0 : currentIndex,
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          selectedItemColor:
-              currentIndex < 0
-                  ? (unselectedItemColor ??
-                      Theme.of(context).appBarTheme.iconTheme?.color)
-                  : (selectedItemColor ??
-                      Theme.of(
-                        context,
-                      ).appBarTheme.iconTheme?.color?.withAlpha(170)),
+          selectedItemColor: currentIndex < 0
+              ? (unselectedItemColor ??
+                    Theme.of(context).appBarTheme.iconTheme?.color)
+              : (selectedItemColor ??
+                    Theme.of(context).appBarTheme.iconTheme?.color
+                        ?.withAlpha(170)),
           unselectedItemColor:
               unselectedItemColor ??
               Theme.of(context).appBarTheme.iconTheme?.color,

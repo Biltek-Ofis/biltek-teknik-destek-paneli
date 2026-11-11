@@ -4,10 +4,7 @@ import '../models/kullanici.dart';
 import 'cihazlar.dart';
 
 class CihazlarimSayfasi extends StatelessWidget {
-  const CihazlarimSayfasi({
-    super.key,
-    required this.kullanici,
-  });
+  const CihazlarimSayfasi({super.key, required this.kullanici});
 
   final KullaniciAuthModel kullanici;
   @override

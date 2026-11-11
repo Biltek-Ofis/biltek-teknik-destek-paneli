@@ -37,10 +37,7 @@ class SaatSec extends StatelessWidget {
     return CupertinoTheme(
       data: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(
-          dateTimePickerTextStyle: TextStyle(
-            color: fontColor,
-            fontSize: 20,
-          ),
+          dateTimePickerTextStyle: TextStyle(color: fontColor, fontSize: 20),
         ),
       ),
       child: CupertinoDatePicker(

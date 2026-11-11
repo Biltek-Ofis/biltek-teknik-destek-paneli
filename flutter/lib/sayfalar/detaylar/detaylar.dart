@@ -56,8 +56,9 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      AyarlarModel? ayarlarModelTemp =
-          await BiltekPost.of(widget.kullanici.auth).ayarlar();
+      AyarlarModel? ayarlarModelTemp = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).ayarlar();
       setState(() {
         ayarlarModel = ayarlarModelTemp;
       });
@@ -80,30 +81,29 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title:
-              cihaz != null
-                  ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+          title: cihaz != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Servis #${cihaz!.servisNo}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    if (cihaz!.guncelDurumText.isNotEmpty)
                       Text(
-                        "Servis #${cihaz!.servisNo}",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                        cihaz!.guncelDurumText,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: _accent,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      if (cihaz!.guncelDurumText.isNotEmpty)
-                        Text(
-                          cihaz!.guncelDurumText,
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: _accent,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                    ],
-                  )
-                  : null,
+                  ],
+                )
+              : null,
         ),
 
         floatingActionButton: Builder(
@@ -116,16 +116,15 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                 onPressed: () async {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder:
-                          (context) => ImzaSayfasi(
-                            id: cihaz!.id,
-                            points: cihaz!.imzaJsonToPoint(),
-                            kullanici: widget.kullanici,
-                            teslimAlan: cihaz!.teslimAlan,
-                            onYuklendi: () async {
-                              await _cihaziYenile();
-                            },
-                          ),
+                      builder: (context) => ImzaSayfasi(
+                        id: cihaz!.id,
+                        points: cihaz!.imzaJsonToPoint(),
+                        kullanici: widget.kullanici,
+                        teslimAlan: cihaz!.teslimAlan,
+                        onYuklendi: () async {
+                          await _cihaziYenile();
+                        },
+                      ),
                     ),
                   );
                 },
@@ -160,14 +159,13 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
                     await _cihaziYenile();
                     nav.push(
                       MaterialPageRoute(
-                        builder:
-                            (context) => DetayDuzenle(
-                              kullanici: widget.kullanici,
-                              cihaz: cihaz!,
-                              cihazlariYenile: () async {
-                                await _cihaziYenile();
-                              },
-                            ),
+                        builder: (context) => DetayDuzenle(
+                          kullanici: widget.kullanici,
+                          cihaz: cihaz!,
+                          cihazlariYenile: () async {
+                            await _cihaziYenile();
+                          },
+                        ),
                       ),
                     );
                   },
@@ -177,26 +175,22 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children:
-                  fabBtns.reversed
-                      .map(
-                        (f) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: FloatingActionButton.small(
-                            heroTag: f.tag,
-                            onPressed: f.onPressed,
-                            tooltip: f.label,
-                            child: Icon(
-                              f.icon,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).appBarTheme.iconTheme?.color,
-                            ),
-                          ),
+              children: fabBtns.reversed
+                  .map(
+                    (f) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: FloatingActionButton.small(
+                        heroTag: f.tag,
+                        onPressed: f.onPressed,
+                        tooltip: f.label,
+                        child: Icon(
+                          f.icon,
+                          color: Theme.of(context).appBarTheme.iconTheme?.color,
                         ),
-                      )
-                      .toList(),
+                      ),
+                    ),
+                  )
+                  .toList(),
             );
           },
         ),
@@ -424,44 +418,44 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
             children: [
               cihaz!.cihazDeseni.isNotEmpty
                   ? SizedBox(
-                    height: 200,
-                    child: Desen(
-                      initDesen: Islemler.desenDonusturFlutter(
-                        cihaz!.cihazDeseni,
+                      height: 200,
+                      child: Desen(
+                        initDesen: Islemler.desenDonusturFlutter(
+                          cihaz!.cihazDeseni,
+                        ),
+                        duzenlenebilir: false,
+                        pointRadius: 8,
+                        showInput: true,
+                        dimension: 3,
+                        relativePadding: 0.7,
+                        selectThreshold: 25,
+                        fillPoints: true,
+                        onInputComplete: (list) {},
                       ),
-                      duzenlenebilir: false,
-                      pointRadius: 8,
-                      showInput: true,
-                      dimension: 3,
-                      relativePadding: 0.7,
-                      selectThreshold: 25,
-                      fillPoints: true,
-                      onInputComplete: (list) {},
-                    ),
-                  )
+                    )
                   : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.lock_open_fill,
-                          size: 16,
-                          color: Colors.amber,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          cihaz!.cihazSifresi.isEmpty
-                              ? "Belirtilmemiş"
-                              : cihaz!.cihazSifresi,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.5,
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            CupertinoIcons.lock_open_fill,
+                            size: 16,
+                            color: Colors.amber,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 8),
+                          Text(
+                            cihaz!.cihazSifresi.isEmpty
+                                ? "Belirtilmemiş"
+                                : cihaz!.cihazSifresi,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
             ],
           ),
         ],
@@ -512,14 +506,12 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
               ),
               InfoTile(
                 label: "Yedek Alınacak mı?",
-                value:
-                    cihaz!.yedekDurumu == 1
-                        ? "Evet"
-                        : (cihaz!.yedekDurumu == 0 ? "Hayır" : "Belirtilmemiş"),
-                icon:
-                    cihaz!.yedekDurumu == 1
-                        ? CupertinoIcons.checkmark_circle_fill
-                        : CupertinoIcons.xmark_circle_fill,
+                value: cihaz!.yedekDurumu == 1
+                    ? "Evet"
+                    : (cihaz!.yedekDurumu == 0 ? "Hayır" : "Belirtilmemiş"),
+                icon: cihaz!.yedekDurumu == 1
+                    ? CupertinoIcons.checkmark_circle_fill
+                    : CupertinoIcons.xmark_circle_fill,
                 iconColor: cihaz!.yedekDurumu == 1 ? Colors.green : Colors.red,
               ),
               InfoTile(
@@ -562,9 +554,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
 
   Future<void> _cihaziYenile() async {
     _yukleniyorGoster();
-    Cihaz? cihazTemp = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).cihazGetir(no: widget.no);
+    Cihaz? cihazTemp = await BiltekPost.of(widget.kullanici.auth)
+        .cihazGetir(no: widget.no);
     if (mounted) {
       setState(() => cihaz = cihazTemp);
     } else {
@@ -575,20 +566,19 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       if (mounted) {
         showDialog(
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text("Cihaz Bulunamadı"),
-                content: const Text("Cihaz bulunamadı. Silinmiş olabilir."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Geri"),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text("Cihaz Bulunamadı"),
+            content: const Text("Cihaz bulunamadı. Silinmiş olabilir."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text("Geri"),
               ),
+            ],
+          ),
         );
       }
       return;
@@ -609,26 +599,25 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   void kisiIzniUyari() {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text("Kişi İzni Reddedildi"),
-            content: const Text(
-              "Kişiler izni reddedilmiş. Bu işleme devam edebilmek için izin vermelisiniz. Ayarlardan izin verebilirsiniz.",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  openAppSettings();
-                },
-                child: const Text("Ayarları Aç"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("İptal"),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text("Kişi İzni Reddedildi"),
+        content: const Text(
+          "Kişiler izni reddedilmiş. Bu işleme devam edebilmek için izin vermelisiniz. Ayarlardan izin verebilirsiniz.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              openAppSettings();
+            },
+            child: const Text("Ayarları Aç"),
           ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("İptal"),
+          ),
+        ],
+      ),
     );
   }
 
@@ -664,66 +653,59 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
       showModalBottomSheet(
         context: context,
         constraints: const BoxConstraints(minWidth: double.infinity),
-        builder:
-            (ctx) => SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        builder: (ctx) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Rehbere Ekle",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                BiltekTextField(label: "İsim", controller: isimC),
+                const SizedBox(height: 8),
+                BiltekTextField(label: "Telefon Numarası", controller: telC),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(
-                      "Rehbere Ekle",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        try {
+                          FlutterContacts.create(
+                            Contact(
+                              phones: [Phone(number: telC.text)],
+                              name: Name(first: isimC.text),
+                            ),
+                          );
+                          showNotification(body: "Müşteri kaydedildi.");
+                        } catch (e) {
+                          showNotification(
+                            body: "Müşteri kaydedilirken bir hata oluştu.",
+                          );
+                        }
+                      },
+                      child: const Text("Kaydet"),
                     ),
-                    const SizedBox(height: 12),
-                    BiltekTextField(label: "İsim", controller: isimC),
-                    const SizedBox(height: 8),
-                    BiltekTextField(
-                      label: "Telefon Numarası",
-                      controller: telC,
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(ctx);
-                            try {
-                              FlutterContacts.create(
-                                Contact(
-                                  phones: [Phone(number: telC.text)],
-                                  name: Name(first: isimC.text),
-                                ),
-                              );
-                              showNotification(body: "Müşteri kaydedildi.");
-                            } catch (e) {
-                              showNotification(
-                                body: "Müşteri kaydedilirken bir hata oluştu.",
-                              );
-                            }
-                          },
-                          child: const Text("Kaydet"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(ctx);
-                            showNotification(
-                              body: "Müşteri kaydetme iptal edildi.",
-                            );
-                          },
-                          child: const Text("İptal"),
-                        ),
-                      ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        showNotification(
+                          body: "Müşteri kaydetme iptal edildi.",
+                        );
+                      },
+                      child: const Text("İptal"),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
       );
     } else {
       kisiIzniUyari();
@@ -751,17 +733,16 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   void _gecersizTelefonDialog() {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text("Geçersiz Telefon"),
-            content: const Text("Telefon numarası geçersiz"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Kapat"),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text("Geçersiz Telefon"),
+        content: const Text("Telefon numarası geçersiz"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Kapat"),
           ),
+        ],
+      ),
     );
   }
 
@@ -773,8 +754,8 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   bool telefonGecerli(String t) => t.isNotEmpty && t != "+90" && t != "+9";
 
   Future<void> _cihazDuzenlemeGetir() async {
-    final tmp =
-        await BiltekPost.of(widget.kullanici.auth).cihazDuzenlemeGetir();
+    final tmp = await BiltekPost.of(widget.kullanici.auth)
+        .cihazDuzenlemeGetir();
     setState(() => cihazDuzenleme = tmp);
   }
 
@@ -789,13 +770,12 @@ class _DetaylarSayfasiState extends State<DetaylarSayfasi> {
   void _galeriyiAc() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder:
-            (context) => DetaylarGaleri(
-              kullanici: widget.kullanici,
-              duzenle: duzenlenebilir(),
-              id: cihaz!.id,
-              servisNo: cihaz!.servisNo,
-            ),
+        builder: (context) => DetaylarGaleri(
+          kullanici: widget.kullanici,
+          duzenle: duzenlenebilir(),
+          id: cihaz!.id,
+          servisNo: cihaz!.servisNo,
+        ),
       ),
     );
   }

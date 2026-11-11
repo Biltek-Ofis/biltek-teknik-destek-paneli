@@ -30,7 +30,8 @@ class CihazTurleriModel {
           goster: goster == "1",
         ),
       _ => throw const FormatException(
-          "Cihaz Türleri getirilirken bir hata oluştu"),
+        "Cihaz Türleri getirilirken bir hata oluştu",
+      ),
     };
   }
 }

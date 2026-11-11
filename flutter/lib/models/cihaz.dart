@@ -294,13 +294,11 @@ class Cihaz {
           sorumluVal: int.tryParse(sorumluVal) ?? -1,
           imzaDosyasi: imzaDosyasi,
           imzaPoints: imzaPoints,
-          islemler:
-              islemler
-                  .map(
-                    (islem) =>
-                        YapilanIslem.fromJson(islem as Map<String, dynamic>),
-                  )
-                  .toList(),
+          islemler: islemler
+              .map(
+                (islem) => YapilanIslem.fromJson(islem as Map<String, dynamic>),
+              )
+              .toList(),
         ),
       _ => throw FormatException("Cihaz yüklenirken hata oluştu."),
     };

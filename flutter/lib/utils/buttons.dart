@@ -136,28 +136,27 @@ class _LabelButton extends StatelessWidget {
         ),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 180),
-          child:
-              loading
-                  ? _LoadingIndicator(color: textColor)
-                  : Row(
-                    key: const ValueKey('content'),
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (icon != null) ...[
-                        Icon(icon, size: 16, color: textColor),
-                        const SizedBox(width: 7),
-                      ],
-                      Text(
-                        label,
-                        style: TextStyle(
-                          color: textColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13.5,
-                          letterSpacing: 0.1,
-                        ),
-                      ),
+          child: loading
+              ? _LoadingIndicator(color: textColor)
+              : Row(
+                  key: const ValueKey('content'),
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (icon != null) ...[
+                      Icon(icon, size: 16, color: textColor),
+                      const SizedBox(width: 7),
                     ],
-                  ),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.5,
+                        letterSpacing: 0.1,
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

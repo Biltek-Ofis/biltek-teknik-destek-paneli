@@ -163,12 +163,11 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                       ),
                     ),
                     IconButton(
-                      onPressed:
-                          _canUndo
-                              ? () {
-                                _undo();
-                              }
-                              : null,
+                      onPressed: _canUndo
+                          ? () {
+                              _undo();
+                            }
+                          : null,
                       icon: Icon(
                         CupertinoIcons.arrow_uturn_left,
                         color: Theme.of(context).appBarTheme.iconTheme?.color,
@@ -185,12 +184,11 @@ class _ImzaSayfasiState extends State<ImzaSayfasi> {
                       ),
                     ),
                     IconButton(
-                      onPressed:
-                          _canRedo
-                              ? () {
-                                _redo();
-                              }
-                              : null,
+                      onPressed: _canRedo
+                          ? () {
+                              _redo();
+                            }
+                          : null,
                       icon: Icon(
                         CupertinoIcons.arrow_uturn_right,
                         color: Theme.of(context).appBarTheme.iconTheme?.color,

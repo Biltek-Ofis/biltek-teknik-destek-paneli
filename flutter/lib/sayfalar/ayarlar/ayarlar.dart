@@ -85,12 +85,9 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                   BiltekListTile(
                     leading: Icon(CupertinoIcons.moon_stars),
                     title: "Tema",
-                    subtitle:
-                        myNotifier.isDark == null
-                            ? "Sistem Varsayılanı"
-                            : (myNotifier.isDark == true
-                                ? "Karanlık"
-                                : "Aydınlık"),
+                    subtitle: myNotifier.isDark == null
+                        ? "Sistem Varsayılanı"
+                        : (myNotifier.isDark == true ? "Karanlık" : "Aydınlık"),
                     onTap: () {
                       showSelector<bool?>(
                         context,
@@ -109,15 +106,13 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                   BiltekListTile(
                     leading: Icon(CupertinoIcons.person),
                     title: "Profil Düzenle",
-                    subtitle:
-                        "Ad Soyad, Kullanıcı Adı ve Şifre bilgilerinizi düzenleyin",
+                    subtitle: "Ad Soyad, Kullanıcı Adı ve Şifre bilgilerinizi düzenleyin",
                     onTap: () async {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder:
-                              (context) => KullaniciDuzenleSayfasi(
-                                kullanici: widget.kullanici,
-                              ),
+                          builder: (context) => KullaniciDuzenleSayfasi(
+                            kullanici: widget.kullanici,
+                          ),
                         ),
                       );
                     },
@@ -129,9 +124,8 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  BildirimAyarlari(kullanici: widget.kullanici),
+                          builder: (context) =>
+                              BildirimAyarlari(kullanici: widget.kullanici),
                         ),
                       );
                     },
@@ -169,15 +163,12 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                       String? fcmToken = await SecureStorage.getString(
                         SecureStorage.fcmTokenString,
                       );
-                      await BiltekPost.of(
-                        widget.kullanici.auth,
-                      ).fcmTokenSifirla(fcmToken: fcmToken);
+                      await BiltekPost.of(widget.kullanici.auth)
+                          .fcmTokenSifirla(fcmToken: fcmToken);
                       navigatorState.pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder:
-                              (context) => GirisSayfasi(
-                                spKullanici: myNotifier.kullanici,
-                              ),
+                          builder: (context) =>
+                              GirisSayfasi(spKullanici: myNotifier.kullanici),
                         ),
                         (route) => false,
                       );
@@ -208,9 +199,7 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
             return AlertDialog(
               title: Text(elle ? "Başarılı" : "Eşleştirme"),
               content: Text(
-                elle
-                    ? "Ayarlarınız başarıyla kaydedildi"
-                    : "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir.",
+                elle ? "Ayarlarınız başarıyla kaydedildi" : "Windows uygulamasında yeşil onay resmi görüyorsanız işlem başarılı demektir.",
               ),
               actions: [
                 TextButton(
@@ -241,17 +230,16 @@ class _AyarlarSayfasiState extends State<AyarlarSayfasi> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) => BarkodOkuyucuAyarlari(
-                            onBOKaydet: (durum, elle) {
-                              barkodOkuyucuAyarlariDurumu(
-                                durum,
-                                elle,
-                                kaydedildi: kaydedildi,
-                                pcYenile: pcYenile,
-                              );
-                            },
-                          ),
+                      builder: (context) => BarkodOkuyucuAyarlari(
+                        onBOKaydet: (durum, elle) {
+                          barkodOkuyucuAyarlariDurumu(
+                            durum,
+                            elle,
+                            kaydedildi: kaydedildi,
+                            pcYenile: pcYenile,
+                          );
+                        },
+                      ),
                     ),
                   );
                 },

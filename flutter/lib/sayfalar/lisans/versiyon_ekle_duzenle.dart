@@ -193,13 +193,11 @@ class _VersiyonDuzenlemeSayfasiState extends State<VersiyonDuzenlemeSayfasi> {
       Map<String, String> postData = {"versiyon": versiyon};
       bool? duzenle;
       if (widget.versiyon != null) {
-        duzenle = await BiltekPost.of(
-          widget.kullanici.auth,
-        ).versiyonDuzenle(id: widget.versiyon!.id, postData: postData);
+        duzenle = await BiltekPost.of(widget.kullanici.auth)
+            .versiyonDuzenle(id: widget.versiyon!.id, postData: postData);
       } else {
-        duzenle = await BiltekPost.of(
-          widget.kullanici.auth,
-        ).versiyonEkle(postData: postData);
+        duzenle = await BiltekPost.of(widget.kullanici.auth)
+            .versiyonEkle(postData: postData);
       }
       if (duzenle) {
         widget.versiyonlariYenile.call();

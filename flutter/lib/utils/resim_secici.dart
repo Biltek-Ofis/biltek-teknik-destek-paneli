@@ -38,10 +38,7 @@ class ResimSecici {
     );
   }
 
-  void _modal({
-    required VoidCallback kamera,
-    required VoidCallback galeri,
-  }) {
+  void _modal({required VoidCallback kamera, required VoidCallback galeri}) {
     showModalBottomSheet<void>(
       context: _context,
       builder: (context) {

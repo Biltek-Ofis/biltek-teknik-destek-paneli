@@ -278,25 +278,22 @@ class _SifreEkleDuzenleSayfasiState extends State<SifreEkleDuzenleSayfasi> {
       if (mounted) {
         showDialog(
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: Text(
-                  widget.sifre != null
-                      ? "Şifre Düzenlenemedi"
-                      : "Şifre Eklenemedi",
-                ),
-                content: Text(
-                  "Şifre ${widget.sifre != null ? "düzenlenirken" : "eklenirken"} bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Kapat"),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: Text(
+              widget.sifre != null ? "Şifre Düzenlenemedi" : "Şifre Eklenemedi",
+            ),
+            content: Text(
+              "Şifre ${widget.sifre != null ? "düzenlenirken" : "eklenirken"} bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Kapat"),
               ),
+            ],
+          ),
         );
       }
     }

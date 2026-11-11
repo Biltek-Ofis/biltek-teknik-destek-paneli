@@ -63,10 +63,9 @@ class _AIChatPageState extends State<AIChatPage> {
       final aiChatHistoryString = await SecureStorage.getStringList(
         'ai_chat_history',
       );
-      aiChatList =
-          aiChatHistoryString
-              .map((e) => AiChatModel.fromJson(jsonDecode(e)))
-              .toList();
+      aiChatList = aiChatHistoryString
+          .map((e) => AiChatModel.fromJson(jsonDecode(e)))
+          .toList();
       aiChatHistory = _aiChatHistory(aiChatList);
       bool available = await speech.initialize(
         onStatus: (status) {
@@ -164,8 +163,9 @@ class _AIChatPageState extends State<AIChatPage> {
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount:
-                      botYaziyor ? aiChatList.length + 1 : aiChatList.length,
+                  itemCount: botYaziyor
+                      ? aiChatList.length + 1
+                      : aiChatList.length,
                   itemBuilder: (context, index) {
                     if (index == aiChatList.length && botYaziyor) {
                       return mesaj(
@@ -193,10 +193,9 @@ class _AIChatPageState extends State<AIChatPage> {
                     Expanded(
                       child: BiltekTextField(
                         controller: mesajController,
-                        onChanged:
-                            (value) => setState(() {
-                              mesajError = null;
-                            }),
+                        onChanged: (value) => setState(() {
+                          mesajError = null;
+                        }),
                         onSubmitted: (message) async {
                           await _mesajControl(message);
                         },
@@ -207,30 +206,29 @@ class _AIChatPageState extends State<AIChatPage> {
 
                     if (sttAvailable)
                       InkWell(
-                        onTap:
-                            mesajReadOnly
-                                ? null
-                                : () async {
-                                  if (!dinliyor) {
-                                    speech.listen(
-                                      onResult: (result) {
-                                        debugPrint(
-                                          "SpeechToText Result: ${result.recognizedWords}",
-                                        );
+                        onTap: mesajReadOnly
+                            ? null
+                            : () async {
+                                if (!dinliyor) {
+                                  speech.listen(
+                                    onResult: (result) {
+                                      debugPrint(
+                                        "SpeechToText Result: ${result.recognizedWords}",
+                                      );
 
-                                        _insertText(result.recognizedWords);
-                                        if (result.finalResult) {
-                                          setState(() {
-                                            dinliyor = false;
-                                          });
-                                        }
-                                      },
-                                    );
-                                  } else {
-                                    speech.stop();
-                                    speech.cancel();
-                                  }
-                                },
+                                      _insertText(result.recognizedWords);
+                                      if (result.finalResult) {
+                                        setState(() {
+                                          dinliyor = false;
+                                        });
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  speech.stop();
+                                  speech.cancel();
+                                }
+                              },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
@@ -251,19 +249,17 @@ class _AIChatPageState extends State<AIChatPage> {
                       ),
                     if (sttAvailable) SizedBox(width: 8),
                     InkWell(
-                      onTap:
-                          mesajReadOnly || dinliyor
-                              ? null
-                              : () async {
-                                await _mesajControl(mesajController.text);
-                              },
+                      onTap: mesajReadOnly || dinliyor
+                          ? null
+                          : () async {
+                              await _mesajControl(mesajController.text);
+                            },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(100)),
-                          color:
-                              mesajReadOnly || dinliyor
-                                  ? Colors.grey
-                                  : Colors.blue,
+                          color: mesajReadOnly || dinliyor
+                              ? Colors.grey
+                              : Colors.blue,
                         ),
                         width: 40,
                         height: 40,
@@ -333,11 +329,10 @@ class _AIChatPageState extends State<AIChatPage> {
     if (response.text != null && response.text!.isNotEmpty) {
       debugPrint("AI Response: ${response.text}");
       if (response.text!.startsWith("```json")) {
-        String responseText =
-            response.text!
-                .replaceAll("```json", "")
-                .replaceAll("```", "")
-                .trim();
+        String responseText = response.text!
+            .replaceAll("```json", "")
+            .replaceAll("```", "")
+            .trim();
         AiResponseModel aiResponseModel = AiResponseModel.fromJson(
           jsonDecode(responseText),
         );
@@ -429,10 +424,10 @@ class _AIChatPageState extends State<AIChatPage> {
           icon ??
           (chat.isUser
               ? Icon(
-                Icons.person,
-                color: Colors.blue,
-                size: 20, // ufak tutunca balonu taşırmaz
-              )
+                  Icons.person,
+                  color: Colors.blue,
+                  size: 20, // ufak tutunca balonu taşırmaz
+                )
               : Image.asset(BiltekAssets.icon, width: 20, height: 20)),
     );
     return GestureDetector(
@@ -450,8 +445,9 @@ class _AIChatPageState extends State<AIChatPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
-              mainAxisAlignment:
-                  chat.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+              mainAxisAlignment: chat.isUser
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start, // <‑‑ ikon tepede
               children: [
                 // Bot mesajıysa: ikon solda
@@ -469,19 +465,20 @@ class _AIChatPageState extends State<AIChatPage> {
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(12),
                           topRight: Radius.circular(12),
-                          bottomLeft:
-                              chat.isUser ? Radius.circular(12) : Radius.zero,
-                          bottomRight:
-                              chat.isUser ? Radius.zero : Radius.circular(12),
+                          bottomLeft: chat.isUser
+                              ? Radius.circular(12)
+                              : Radius.zero,
+                          bottomRight: chat.isUser
+                              ? Radius.zero
+                              : Radius.circular(12),
                         ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
-                          crossAxisAlignment:
-                              chat.isUser
-                                  ? CrossAxisAlignment.end
-                                  : CrossAxisAlignment.start,
+                          crossAxisAlignment: chat.isUser
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
                           children: [
                             MarkdownWidget(
                               data: chat.mesaj,
@@ -501,8 +498,8 @@ class _AIChatPageState extends State<AIChatPage> {
                                             !chat.isUser) {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder:
-                                                  (context) => DetaylarSayfasi(
+                                              builder: (context) =>
+                                                  DetaylarSayfasi(
                                                     kullanici: widget.kullanici,
                                                     no: int.parse(
                                                       url.replaceAll(
@@ -524,9 +521,8 @@ class _AIChatPageState extends State<AIChatPage> {
                             if (chat.tarih != null) ...[
                               const SizedBox(height: 4),
                               Text(
-                                DateFormat(
-                                  Islemler.tarihFormat,
-                                ).format(DateTime.parse(chat.tarih!)),
+                                DateFormat(Islemler.tarihFormat)
+                                    .format(DateTime.parse(chat.tarih!)),
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
@@ -554,10 +550,12 @@ class _AIChatPageState extends State<AIChatPage> {
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
-                      bottomLeft:
-                          chat.isUser ? Radius.circular(12) : Radius.zero,
-                      bottomRight:
-                          chat.isUser ? Radius.zero : Radius.circular(12),
+                      bottomLeft: chat.isUser
+                          ? Radius.circular(12)
+                          : Radius.zero,
+                      bottomRight: chat.isUser
+                          ? Radius.zero
+                          : Radius.circular(12),
                     ),
                   ),
                 ),

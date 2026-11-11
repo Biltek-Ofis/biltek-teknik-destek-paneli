@@ -164,9 +164,8 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
           kullaniciID: widget.kullanici.id,
         );
       } else {
-        duzenle = await BiltekPost.of(
-          widget.kullanici.auth,
-        ).notEkle(aciklama: aciklama, kullaniciID: widget.kullanici.id);
+        duzenle = await BiltekPost.of(widget.kullanici.auth)
+            .notEkle(aciklama: aciklama, kullaniciID: widget.kullanici.id);
       }
       if (duzenle) {
         widget.notlariYenile?.call();
@@ -175,23 +174,22 @@ class _NotEkleDuzenleSayfasiState extends State<NotEkleDuzenleSayfasi> {
         if (mounted) {
           showDialog(
             context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: Text(
-                    widget.not != null ? "Not Düzenlenemedi" : "Not Eklenemedi",
-                  ),
-                  content: Text(
-                    "Not ${widget.not != null ? "düzenlenirken" : "eklenirken"} bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("Kapat"),
-                    ),
-                  ],
+            builder: (context) => AlertDialog(
+              title: Text(
+                widget.not != null ? "Not Düzenlenemedi" : "Not Eklenemedi",
+              ),
+              content: Text(
+                "Not ${widget.not != null ? "düzenlenirken" : "eklenirken"} bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Kapat"),
                 ),
+              ],
+            ),
           );
         }
       }

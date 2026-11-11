@@ -69,27 +69,25 @@ class CagriKaydiModel {
   }
   factory CagriKaydiModel.fromJson(Map<String, dynamic> json) {
     debugPrint("CB Tipi${json["cihaz_bilgileri"].runtimeType.toString()}");
-    Map<String, dynamic> cihazBilgileri =
-        json.containsKey("cihaz_bilgileri")
-            ? json["cihaz_bilgileri"] as Map<String, dynamic>
-            : {};
-    List<YapilanIslem> yapilanIslemler =
-        cihazBilgileri.containsKey("islemler")
-            ? (cihazBilgileri["islemler"] as List<dynamic>)
-                .map(
-                  (i) => YapilanIslem.create(
-                    id: i["id"].toString(),
-                    cihazID: i["cihaz_id"].toString(),
-                    islemSayisi: i["islem_sayisi"].toString(),
-                    ad: i["ad"].toString(),
-                    maliyet: "0.00",
-                    birimFiyati: i["birim_fiyat"].toString(),
-                    miktar: i["miktar"].toString(),
-                    kdv: i["kdv"].toString(),
-                  ),
-                )
-                .toList()
-            : [];
+    Map<String, dynamic> cihazBilgileri = json.containsKey("cihaz_bilgileri")
+        ? json["cihaz_bilgileri"] as Map<String, dynamic>
+        : {};
+    List<YapilanIslem> yapilanIslemler = cihazBilgileri.containsKey("islemler")
+        ? (cihazBilgileri["islemler"] as List<dynamic>)
+              .map(
+                (i) => YapilanIslem.create(
+                  id: i["id"].toString(),
+                  cihazID: i["cihaz_id"].toString(),
+                  islemSayisi: i["islem_sayisi"].toString(),
+                  ad: i["ad"].toString(),
+                  maliyet: "0.00",
+                  birimFiyati: i["birim_fiyat"].toString(),
+                  miktar: i["miktar"].toString(),
+                  kdv: i["kdv"].toString(),
+                ),
+              )
+              .toList()
+        : [];
     return CagriKaydiModel(
       id: int.tryParse(json["id"].toString()) ?? 0,
       kullID: int.tryParse(json["kull_id"].toString()) ?? 0,
@@ -104,24 +102,22 @@ class CagriKaydiModel {
       arizaAciklamasi: json["ariza_aciklamasi"] ?? "",
       tarih: json["tarih"] ?? "2025-01-01 0:00:00",
       toplamUcret: double.tryParse(json["toplamUcret"].toString()) ?? 0.0,
-      cihazBilgileri:
-          cihazBilgileri.keys.isNotEmpty
-              ? Cihaz.create(
-                id: int.tryParse(cihazBilgileri["id"]) ?? 0,
-                servisNo: int.tryParse(cihazBilgileri["servis_no"]) ?? 0,
-                cihazTuru: cihazBilgileri["cihaz_turu"],
-                cihazTuruVal:
-                    int.tryParse(cihazBilgileri["cihaz_turu_val"]) ?? 0,
-                cihaz: cihazBilgileri["cihaz"],
-                cihazModeli: cihazBilgileri["cihaz_modeli"],
-                guncelDurum: int.tryParse(cihazBilgileri["guncel_durum"]) ?? 0,
-                guncelDurumRenk: cihazBilgileri["guncel_durum_renk"],
-                guncelDurumText: cihazBilgileri["guncel_durum_text"],
-                yapilanIslemAciklamasi:
-                    cihazBilgileri["yapilan_islem_aciklamasi"],
-                islemler: yapilanIslemler,
-              )
-              : null,
+      cihazBilgileri: cihazBilgileri.keys.isNotEmpty
+          ? Cihaz.create(
+              id: int.tryParse(cihazBilgileri["id"]) ?? 0,
+              servisNo: int.tryParse(cihazBilgileri["servis_no"]) ?? 0,
+              cihazTuru: cihazBilgileri["cihaz_turu"],
+              cihazTuruVal: int.tryParse(cihazBilgileri["cihaz_turu_val"]) ?? 0,
+              cihaz: cihazBilgileri["cihaz"],
+              cihazModeli: cihazBilgileri["cihaz_modeli"],
+              guncelDurum: int.tryParse(cihazBilgileri["guncel_durum"]) ?? 0,
+              guncelDurumRenk: cihazBilgileri["guncel_durum_renk"],
+              guncelDurumText: cihazBilgileri["guncel_durum_text"],
+              yapilanIslemAciklamasi:
+                  cihazBilgileri["yapilan_islem_aciklamasi"],
+              islemler: yapilanIslemler,
+            )
+          : null,
     );
   }
 }

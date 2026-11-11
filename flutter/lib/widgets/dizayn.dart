@@ -149,111 +149,100 @@ class InfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final empty = value.trim().isEmpty;
     final displayValue = empty ? "—" : value;
-    Color? emptyColor =
-        (textColor != null ? textColor?.withValues(alpha: 0.7) : Colors.grey);
+    Color? emptyColor = (textColor != null
+        ? textColor?.withValues(alpha: 0.7)
+        : Colors.grey);
 
     return Padding(
       padding: padding,
-      child:
-          multiline
-              ? Wrap(
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _labelWidget(),
-                        if (label.trim().isNotEmpty) const SizedBox(height: 3),
-                        if (selectable)
-                          SelectionArea(
-                            child: Text(
-                              displayValue,
-                              style: TextStyle(
-                                fontSize: valueFontSize,
-                                color: empty ? emptyColor : textColor,
-                              ),
-                            ),
-                          )
-                        else
-                          Text(
+      child: multiline
+          ? Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _labelWidget(),
+                      if (label.trim().isNotEmpty) const SizedBox(height: 3),
+                      if (selectable)
+                        SelectionArea(
+                          child: Text(
                             displayValue,
                             style: TextStyle(
                               fontSize: valueFontSize,
                               color: empty ? emptyColor : textColor,
                             ),
                           ),
-                        Divider(
-                          height: 12,
-                          thickness: 0.4,
-                          color: textColor ?? Colors.grey.withAlpha(80),
+                        )
+                      else
+                        Text(
+                          displayValue,
+                          style: TextStyle(
+                            fontSize: valueFontSize,
+                            color: empty ? emptyColor : textColor,
+                          ),
                         ),
-                      ],
-                    ),
+                      Divider(
+                        height: 12,
+                        thickness: 0.4,
+                        color: textColor ?? Colors.grey.withAlpha(80),
+                      ),
+                    ],
                   ),
+                ),
+              ],
+            )
+          : Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                if (icon != null) ...[
+                  Icon(
+                    icon,
+                    size: 14,
+                    color: iconColor ?? textColor ?? Colors.grey,
+                  ),
+                  const SizedBox(width: 4),
                 ],
-              )
-              : Wrap(
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: [
-                  if (icon != null) ...[
-                    Icon(
-                      icon,
-                      size: 14,
-                      color: iconColor ?? textColor ?? Colors.grey,
+                _labelWidget(),
+                SizedBox(width: 8),
+                if (badge)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 3,
                     ),
-                    const SizedBox(width: 4),
-                  ],
-                  _labelWidget(),
-                  SizedBox(width: 8),
-                  if (badge)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 3,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent.withAlpha(30),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.greenAccent.withAlpha(100),
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.greenAccent.withAlpha(30),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.greenAccent.withAlpha(100),
-                        ),
-                      ),
-                      child:
-                          selectable
-                              ? SelectionArea(
-                                child: Text(
-                                  displayValue,
-                                  style: TextStyle(
-                                    fontSize: valueFontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.greenAccent,
-                                  ),
-                                ),
-                              )
-                              : Text(
-                                displayValue,
-                                style: TextStyle(
-                                  fontSize: valueFontSize,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.greenAccent,
-                                ),
+                    ),
+                    child: selectable
+                        ? SelectionArea(
+                            child: Text(
+                              displayValue,
+                              style: TextStyle(
+                                fontSize: valueFontSize,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.greenAccent,
                               ),
-                    )
-                  else if (selectable)
-                    SelectionArea(
-                      child: Text(
-                        displayValue,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: valueFontSize,
-                          color: empty ? emptyColor : textColor,
-                        ),
-                      ),
-                    )
-                  else
-                    Text(
+                            ),
+                          )
+                        : Text(
+                            displayValue,
+                            style: TextStyle(
+                              fontSize: valueFontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.greenAccent,
+                            ),
+                          ),
+                  )
+                else if (selectable)
+                  SelectionArea(
+                    child: Text(
                       displayValue,
                       textAlign: TextAlign.start,
                       style: TextStyle(
@@ -261,22 +250,31 @@ class InfoTile extends StatelessWidget {
                         color: empty ? emptyColor : textColor,
                       ),
                     ),
-                ],
-              ),
+                  )
+                else
+                  Text(
+                    displayValue,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: valueFontSize,
+                      color: empty ? emptyColor : textColor,
+                    ),
+                  ),
+              ],
+            ),
     );
   }
 
-  Widget _labelWidget() =>
-      label.trim().isNotEmpty
-          ? Text(
-            "$label: ",
-            style: TextStyle(
-              fontSize: labelFontSize ?? 12,
-              color: textColor ?? Colors.grey.shade500,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-          : SizedBox();
+  Widget _labelWidget() => label.trim().isNotEmpty
+      ? Text(
+          "$label: ",
+          style: TextStyle(
+            fontSize: labelFontSize ?? 12,
+            color: textColor ?? Colors.grey.shade500,
+            fontWeight: FontWeight.bold,
+          ),
+        )
+      : SizedBox();
 }
 
 class InfoTileList extends StatelessWidget {
@@ -413,10 +411,9 @@ class AnimatedCheckbox extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: value ? _accent : _border, width: 1.5),
         ),
-        child:
-            value
-                ? const Icon(Icons.check_rounded, size: 14, color: _accent)
-                : null,
+        child: value
+            ? const Icon(Icons.check_rounded, size: 14, color: _accent)
+            : null,
       ),
     );
   }

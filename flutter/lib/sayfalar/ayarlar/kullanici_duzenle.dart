@@ -288,17 +288,16 @@ class _KullaniciDuzenleSayfasiState extends State<KullaniciDuzenleSayfasi> {
       error = null;
       succes = null;
     });
-    String? duzenle = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).kullaniciDuzenle(
-      auth: widget.kullanici.auth,
-      adSoyad: adSoyad,
-      kullaniciAdiOrjinal: widget.kullanici.kullaniciAdi,
-      kullaniciAdi: kullaniciAdi,
-      eskiSifre: eskiSifre,
-      yeniSifre: yeniSifre,
-      yeniSifreTekrar: yeniSifreTekrar,
-    );
+    String? duzenle = await BiltekPost.of(widget.kullanici.auth)
+        .kullaniciDuzenle(
+          auth: widget.kullanici.auth,
+          adSoyad: adSoyad,
+          kullaniciAdiOrjinal: widget.kullanici.kullaniciAdi,
+          kullaniciAdi: kullaniciAdi,
+          eskiSifre: eskiSifre,
+          yeniSifre: yeniSifre,
+          yeniSifreTekrar: yeniSifreTekrar,
+        );
     if (duzenle != null) {
       setState(() {
         error = duzenle;

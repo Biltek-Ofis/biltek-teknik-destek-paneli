@@ -43,13 +43,12 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
               if (!widget.kullanici.musteri)
                 BiltekListTile(
                   title: "Cihaz Bildirimleri",
-                  subtitle:
-                      "Sorumlu personel olarak seçildiğiniz cihazlarla ilgili bildirimler.",
+                  subtitle: "Sorumlu personel olarak seçildiğiniz cihazlarla ilgili bildirimler.",
                   trailing: Text(
                     yuklendi
                         ? (bildirimBul("cihaz", varsayilan: true).durum
-                            ? "Açık"
-                            : "Kapalı")
+                              ? "Açık"
+                              : "Kapalı")
                         : "",
                   ),
                   onTap: () {
@@ -59,19 +58,20 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         SelectorItem(text: "Açık", value: true),
                         SelectorItem(text: "Kapalı", value: false),
                       ],
-                      currentValue:
-                          bildirimBul("cihaz", varsayilan: true).durum,
+                      currentValue: bildirimBul(
+                        "cihaz",
+                        varsayilan: true,
+                      ).durum,
                       onSelect: (value) async {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.of(
-                          widget.kullanici.auth,
-                        ).bildirimAyarla(
-                          widget.kullanici.id,
-                          "cihaz",
-                          !bildirimBul("cihaz", varsayilan: true).durum,
-                        );
+                        bool durum = await BiltekPost.of(widget.kullanici.auth)
+                            .bildirimAyarla(
+                              widget.kullanici.id,
+                              "cihaz",
+                              !bildirimBul("cihaz", varsayilan: true).durum,
+                            );
                         if (durum) {
                           navigatorState.pop();
                           bildirimleriGetir();
@@ -89,23 +89,20 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
               if (!widget.kullanici.musteri)
                 BiltekListTile(
                   title: "Çağrı Kaydı Bildirimleri",
-                  subtitle:
-                      "Müşteriler çağrı kaydı açtığında alınacak bildirimleri düzenleyin",
+                  subtitle: "Müşteriler çağrı kaydı açtığında alınacak bildirimleri düzenleyin",
                   onTap: () {
                     showCheckSelector(
                       context,
-                      items:
-                          cihazTurleri.map((ct) {
-                            return SelectorItem(
-                              key: "${BildirimModel.cagriKey}-${ct.id}",
-                              text: ct.isim,
-                              value:
-                                  bildirimBul(
-                                    "${BildirimModel.cagriKey}-${ct.id}",
-                                    varsayilan: false,
-                                  ).durum,
-                            );
-                          }).toList(),
+                      items: cihazTurleri.map((ct) {
+                        return SelectorItem(
+                          key: "${BildirimModel.cagriKey}-${ct.id}",
+                          text: ct.isim,
+                          value: bildirimBul(
+                            "${BildirimModel.cagriKey}-${ct.id}",
+                            varsayilan: false,
+                          ).durum,
+                        );
+                      }).toList(),
                       onSaveItems: (items) async {
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
@@ -118,12 +115,11 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                             ),
                           );
                         }
-                        bool sonuc = await BiltekPost.of(
-                          widget.kullanici.auth,
-                        ).bildirimAyarlaToplu(
-                          widget.kullanici.id,
-                          bildirimlerTemp,
-                        );
+                        bool sonuc = await BiltekPost.of(widget.kullanici.auth)
+                            .bildirimAyarlaToplu(
+                              widget.kullanici.id,
+                              bildirimlerTemp,
+                            );
                         if (sonuc) {
                           await bildirimleriGetir();
                         } else {
@@ -147,25 +143,23 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         SelectorItem(text: "Açık", value: true),
                         SelectorItem(text: "Kapalı", value: false),
                       ],
-                      currentValue:
-                          bildirimBul(
-                            "cagri_kaydi_musteri",
-                            varsayilan: true,
-                          ).durum,
+                      currentValue: bildirimBul(
+                        "cagri_kaydi_musteri",
+                        varsayilan: true,
+                      ).durum,
                       onSelect: (value) async {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.of(
-                          widget.kullanici.auth,
-                        ).bildirimAyarla(
-                          widget.kullanici.id,
-                          "cagri_kaydi_musteri",
-                          !bildirimBul(
-                            "cagri_kaydi_musteri",
-                            varsayilan: true,
-                          ).durum,
-                        );
+                        bool durum = await BiltekPost.of(widget.kullanici.auth)
+                            .bildirimAyarla(
+                              widget.kullanici.id,
+                              "cagri_kaydi_musteri",
+                              !bildirimBul(
+                                "cagri_kaydi_musteri",
+                                varsayilan: true,
+                              ).durum,
+                            );
                         if (durum) {
                           navigatorState.pop();
                           bildirimleriGetir();
@@ -183,8 +177,7 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
               if (widget.kullanici.musteri)
                 BiltekListTile(
                   title: "Servis Kaydı Bildirimleri",
-                  subtitle:
-                      "Çağrı kaydınıza bir servis kaydı açıldığında ve bu servis kaydı güncellendiğinde bildirim alın",
+                  subtitle: "Çağrı kaydınıza bir servis kaydı açıldığında ve bu servis kaydı güncellendiğinde bildirim alın",
                   onTap: () {
                     showSelector<bool>(
                       context,
@@ -192,25 +185,23 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
                         SelectorItem(text: "Açık", value: true),
                         SelectorItem(text: "Kapalı", value: false),
                       ],
-                      currentValue:
-                          bildirimBul(
-                            "servis_kaydi_musteri",
-                            varsayilan: true,
-                          ).durum,
+                      currentValue: bildirimBul(
+                        "servis_kaydi_musteri",
+                        varsayilan: true,
+                      ).durum,
                       onSelect: (value) async {
                         NavigatorState navigatorState = Navigator.of(context);
                         ScaffoldMessengerState scaffoldMessengerState =
                             ScaffoldMessenger.of(context);
-                        bool durum = await BiltekPost.of(
-                          widget.kullanici.auth,
-                        ).bildirimAyarla(
-                          widget.kullanici.id,
-                          "servis_kaydi_musteri",
-                          !bildirimBul(
-                            "servis_kaydi_musteri",
-                            varsayilan: true,
-                          ).durum,
-                        );
+                        bool durum = await BiltekPost.of(widget.kullanici.auth)
+                            .bildirimAyarla(
+                              widget.kullanici.id,
+                              "servis_kaydi_musteri",
+                              !bildirimBul(
+                                "servis_kaydi_musteri",
+                                varsayilan: true,
+                              ).durum,
+                            );
                         if (durum) {
                           navigatorState.pop();
                           bildirimleriGetir();
@@ -233,9 +224,8 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
   }
 
   Future<void> bildirimleriGetir() async {
-    var bildirimlerTemp = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).bildirimleriGetir(widget.kullanici.id);
+    var bildirimlerTemp = await BiltekPost.of(widget.kullanici.auth)
+        .bildirimleriGetir(widget.kullanici.id);
     setState(() {
       bildirimler = bildirimlerTemp;
       yuklendi = true;
@@ -250,8 +240,9 @@ class _BildirimAyarlariState extends State<BildirimAyarlari> {
   }
 
   Future<void> cihazTurleriniGetir() async {
-    List<CihazTurleriModel> cihazTurleriTemp =
-        await BiltekPost.of(widget.kullanici.auth).cihazTurleri();
+    List<CihazTurleriModel> cihazTurleriTemp = await BiltekPost.of(
+      widget.kullanici.auth,
+    ).cihazTurleri();
     setState(() {
       cihazTurleri = cihazTurleriTemp;
     });

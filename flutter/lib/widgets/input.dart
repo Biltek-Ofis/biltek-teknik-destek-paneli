@@ -101,8 +101,9 @@ class BiltekTextFieldState extends State<BiltekTextField>
 
   @override
   Widget build(BuildContext context) {
-    final focused =
-        widget.currentFocus != null ? widget.currentFocus!.hasFocus : false;
+    final focused = widget.currentFocus != null
+        ? widget.currentFocus!.hasFocus
+        : false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,12 +113,11 @@ class BiltekTextFieldState extends State<BiltekTextField>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color:
-                  _hasError
-                      ? Theme.of(context).colorScheme.error
-                      : focused
-                      ? _accent.withAlpha(180)
-                      : Theme.of(context).colorScheme.primary,
+              color: _hasError
+                  ? Theme.of(context).colorScheme.error
+                  : focused
+                  ? _accent.withAlpha(180)
+                  : Theme.of(context).colorScheme.primary,
               width: focused ? 1.5 : 1,
             ),
           ),
@@ -129,10 +129,9 @@ class BiltekTextFieldState extends State<BiltekTextField>
                   child: Icon(
                     widget.prefixIcon,
                     size: 18,
-                    color:
-                        focused
-                            ? _accent
-                            : Theme.of(context).colorScheme.primary,
+                    color: focused
+                        ? _accent
+                        : Theme.of(context).colorScheme.primary,
                   ),
                 ),
               Expanded(
@@ -149,10 +148,9 @@ class BiltekTextFieldState extends State<BiltekTextField>
                   decoration: InputDecoration(
                     labelText: widget.label,
                     labelStyle: TextStyle(
-                      color:
-                          focused
-                              ? _accent.withAlpha(200)
-                              : Theme.of(context).colorScheme.primary,
+                      color: focused
+                          ? _accent.withAlpha(200)
+                          : Theme.of(context).colorScheme.primary,
                       fontSize: 13,
                     ),
                     border: InputBorder.none,
@@ -268,8 +266,9 @@ class _BiltekSifreState extends State<BiltekSifre> {
 
   @override
   Widget build(BuildContext context) {
-    final focused =
-        widget.currentFocus != null ? widget.currentFocus!.hasFocus : false;
+    final focused = widget.currentFocus != null
+        ? widget.currentFocus!.hasFocus
+        : false;
 
     return BiltekTextField(
       controller: widget.controller,
@@ -296,10 +295,9 @@ class _BiltekSifreState extends State<BiltekSifre> {
               (widget.sifreGoster ?? sifreyiGoster)
                   ? CupertinoIcons.eye
                   : CupertinoIcons.eye_slash,
-              color:
-                  focused
-                      ? BiltekTextFieldState._accent.withAlpha(180)
-                      : Theme.of(context).colorScheme.primary,
+              color: focused
+                  ? BiltekTextFieldState._accent.withAlpha(180)
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           if (widget.controller != null &&
@@ -386,26 +384,23 @@ class BiltekSelect<T> extends StatelessWidget {
           labelText: title,
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color:
-                  errorText != null
-                      ? Theme.of(context).colorScheme.error
-                      : Theme.of(context).colorScheme.primary,
+              color: errorText != null
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color:
-                  errorText != null
-                      ? Theme.of(context).colorScheme.error
-                      : Theme.of(context).colorScheme.primary,
+              color: errorText != null
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color:
-                  errorText != null
-                      ? Theme.of(context).colorScheme.error
-                      : Theme.of(context).colorScheme.primary,
+              color: errorText != null
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           errorText: errorText,
@@ -447,10 +442,9 @@ class BiltekTarih extends StatelessWidget {
         debugPrint(format);
         showTakvim(
           context,
-          initialDate:
-              controller.text.isEmpty
-                  ? DateTime.now()
-                  : DateFormat(format).parse(controller.text),
+          initialDate: controller.text.isEmpty
+              ? DateTime.now()
+              : DateFormat(format).parse(controller.text),
           onConfirm: (date) {
             onConfirm?.call(date!);
           },

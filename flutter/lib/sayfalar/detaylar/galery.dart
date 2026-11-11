@@ -117,11 +117,10 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
       body: SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
-          child:
-              yukleniyor
-                  ? Center(child: CircularProgressIndicator())
-                  : (medyalar.isNotEmpty
-                      ? PhotoViewGallery.builder(
+          child: yukleniyor
+              ? Center(child: CircularProgressIndicator())
+              : (medyalar.isNotEmpty
+                    ? PhotoViewGallery.builder(
                         itemCount: medyalar.length,
                         builder: (context, index) {
                           return PhotoViewGalleryPageOptions(
@@ -147,7 +146,7 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
                           color: Theme.of(context).canvasColor,
                         ),
                       )
-                      : Center(child: Text("Henüz resim yüklenmemiş"))),
+                    : Center(child: Text("Henüz resim yüklenmemiş"))),
         ),
       ),
     );
@@ -182,9 +181,8 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
         yukleniyor = true;
       });
     }
-    List<MedyaModel> medyalarTemp = await BiltekPost.of(
-      widget.kullanici.auth,
-    ).medyalariGetir(id: widget.id);
+    List<MedyaModel> medyalarTemp = await BiltekPost.of(widget.kullanici.auth)
+        .medyalariGetir(id: widget.id);
     if (mounted) {
       setState(() {
         medyalar = medyalarTemp.where((m) => m.tur == "resim").toList();
@@ -252,45 +250,43 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     Uint8List bytes = await resim.readAsBytes();
     navigatorState.push(
       MaterialPageRoute(
-        builder:
-            (context) => ResimDuzenle(
-              resim: bytes,
-              onEditComplete: (bytes) async {
-                NavigatorState navigatorState = Navigator.of(context);
-                _yukleniyorDialog();
+        builder: (context) => ResimDuzenle(
+          resim: bytes,
+          onEditComplete: (bytes) async {
+            NavigatorState navigatorState = Navigator.of(context);
+            _yukleniyorDialog();
 
-                bool resimYuklendi = await BiltekPost.of(
-                  widget.kullanici.auth,
-                ).medyaYukle(id: widget.id, medya: bytes);
-                navigatorState.pop();
-                if (resimYuklendi) {
-                  navigatorState.pop();
-                  await _medyalariYenile();
-                } else {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Başarısız"),
-                          content: Text(
-                            "Medya yüklenemedi lütfen daha sonra tekrar deneyin.",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Kapat"),
-                            ),
-                          ],
-                        );
-                      },
+            bool resimYuklendi = await BiltekPost.of(widget.kullanici.auth)
+                .medyaYukle(id: widget.id, medya: bytes);
+            navigatorState.pop();
+            if (resimYuklendi) {
+              navigatorState.pop();
+              await _medyalariYenile();
+            } else {
+              if (context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Başarısız"),
+                      content: Text(
+                        "Medya yüklenemedi lütfen daha sonra tekrar deneyin.",
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("Kapat"),
+                        ),
+                      ],
                     );
-                  }
-                }
-              },
-            ),
+                  },
+                );
+              }
+            }
+          },
+        ),
       ),
     );
   }
@@ -326,9 +322,8 @@ class _DetaylarGaleriState extends State<DetaylarGaleri> {
     if (medyalar.isNotEmpty) {
       NavigatorState navigatorState = Navigator.of(context);
       _yukleniyorDialog();
-      bool silindi = await BiltekPost.of(
-        widget.kullanici.auth,
-      ).medyaSil(id: medyalar[suankiResimIndex].id);
+      bool silindi = await BiltekPost.of(widget.kullanici.auth)
+          .medyaSil(id: medyalar[suankiResimIndex].id);
       navigatorState.pop();
       if (silindi) {
         await _medyalariYenile();

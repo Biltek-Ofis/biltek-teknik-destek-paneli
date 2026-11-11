@@ -34,7 +34,8 @@ class GuncelDurumModel {
           varsayilan: varsayilan.toString() == "1",
         ),
       _ => throw const FormatException(
-          "Güncel durumları getirilirken bir hata oluştu"),
+        "Güncel durumları getirilirken bir hata oluştu",
+      ),
     };
   }
 }

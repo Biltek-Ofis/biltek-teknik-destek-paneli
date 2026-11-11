@@ -50,8 +50,9 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      List<Versiyon> versiyonlarTemp =
-          await BiltekPost.of(widget.kullanici.auth).versiyonlariGetir();
+      List<Versiyon> versiyonlarTemp = await BiltekPost.of(
+        widget.kullanici.auth,
+      ).versiyonlariGetir();
       if (mounted) {
         setState(() {
           versiyonlar = versiyonlarTemp;
@@ -71,22 +72,16 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
         aktifDurumu = widget.lisans!.aktif ? 1 : 0;
       }
     });
-    DateTime baslangicTarihi =
-        widget.lisans != null
-            ? DateFormat(
-              Islemler.lisansSQLTarih,
-            ).parse(widget.lisans!.baslangic)
-            : DateTime.now().toLocal();
-    baslangicController.text = DateFormat(
-      Islemler.lisansNormalTarih,
-    ).format(baslangicTarihi);
-    DateTime bitisTarihi =
-        widget.lisans != null
-            ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.bitis)
-            : baslangicTarihi.add(Duration(days: 365));
-    bitisController.text = DateFormat(
-      Islemler.lisansNormalTarih,
-    ).format(bitisTarihi);
+    DateTime baslangicTarihi = widget.lisans != null
+        ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.baslangic)
+        : DateTime.now().toLocal();
+    baslangicController.text = DateFormat(Islemler.lisansNormalTarih)
+        .format(baslangicTarihi);
+    DateTime bitisTarihi = widget.lisans != null
+        ? DateFormat(Islemler.lisansSQLTarih).parse(widget.lisans!.bitis)
+        : baslangicTarihi.add(Duration(days: 365));
+    bitisController.text = DateFormat(Islemler.lisansNormalTarih)
+        .format(bitisTarihi);
     super.initState();
   }
 
@@ -326,9 +321,8 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
   }
 
   void baslangicTarihiGuncelle(DateTime tarih) {
-    baslangicController.text = DateFormat(
-      Islemler.lisansNormalTarih,
-    ).format(tarih);
+    baslangicController.text = DateFormat(Islemler.lisansNormalTarih)
+        .format(tarih);
   }
 
   void bitisTarihiGuncelle(DateTime tarih) {
@@ -345,16 +339,13 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
         if (sureDurumu == 1 || (sureDurumu == 0 && bitis.isNotEmpty)) {
           yukleniyor(context);
 
-          DateTime baslangicTarihi = DateFormat(
-            Islemler.lisansNormalTarih,
-          ).parse(baslangic);
-          baslangic = DateFormat(
-            Islemler.lisansSQLTarih,
-          ).format(baslangicTarihi);
+          DateTime baslangicTarihi = DateFormat(Islemler.lisansNormalTarih)
+              .parse(baslangic);
+          baslangic = DateFormat(Islemler.lisansSQLTarih)
+              .format(baslangicTarihi);
 
-          DateTime bitisTarihi = DateFormat(
-            Islemler.lisansNormalTarih,
-          ).parse(bitis);
+          DateTime bitisTarihi = DateFormat(Islemler.lisansNormalTarih)
+              .parse(bitis);
           bitis = DateFormat(Islemler.lisansSQLTarih).format(bitisTarihi);
           Map<String, String> postData = {
             "isim": isim,
@@ -370,13 +361,11 @@ class _LisansDuzenlemeSayfasiState extends State<LisansDuzenlemeSayfasi> {
             if (sureDurumu == 0) {
               postData.addAll({"aktif": aktifDurumu.toString()});
             }
-            duzenle = await BiltekPost.of(
-              widget.kullanici.auth,
-            ).lisansDuzenle(id: widget.lisans!.id, postData: postData);
+            duzenle = await BiltekPost.of(widget.kullanici.auth)
+                .lisansDuzenle(id: widget.lisans!.id, postData: postData);
           } else {
-            duzenle = await BiltekPost.of(
-              widget.kullanici.auth,
-            ).lisansEkle(postData: postData);
+            duzenle = await BiltekPost.of(widget.kullanici.auth)
+                .lisansEkle(postData: postData);
           }
           if (duzenle) {
             widget.lisanslariYenile.call();

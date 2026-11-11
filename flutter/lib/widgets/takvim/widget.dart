@@ -103,17 +103,23 @@ class TakvimSecici extends StatefulWidget {
     this.disablePastDates = false,
     this.monthYearMode = CupertinoDatePickerMode.monthYear,
     this.monthYearOrder,
-  })  : assert(!(datePickerOnly && brandIcon != null),
-            'You cannot use brandIcon when datePickerOnly is true. If you want to use brandIcon then remove datePickerOnly'),
-        assert(!(datePickerOnly && minuteInterval > 1),
-            'You cannot use minuteInterval when datePickerOnly is true. If you want to use minuteInterval then remove datePickerOnly'),
-        assert(!(datePickerOnly && use24hFormat),
-            'You cannot use use24hFormat when datePickerOnly is true. If you want to use use24hFormat then remove datePickerOnly'),
-        assert(
-          monthYearMode == CupertinoDatePickerMode.date ||
-              monthYearMode == CupertinoDatePickerMode.monthYear,
-          'Unsupported mode! Only CupertinoDatePickerMode.date and CupertinoDatePickerMode.monthYear are allowed here.',
-        );
+  }) : assert(
+         !(datePickerOnly && brandIcon != null),
+         'You cannot use brandIcon when datePickerOnly is true. If you want to use brandIcon then remove datePickerOnly',
+       ),
+       assert(
+         !(datePickerOnly && minuteInterval > 1),
+         'You cannot use minuteInterval when datePickerOnly is true. If you want to use minuteInterval then remove datePickerOnly',
+       ),
+       assert(
+         !(datePickerOnly && use24hFormat),
+         'You cannot use use24hFormat when datePickerOnly is true. If you want to use use24hFormat then remove datePickerOnly',
+       ),
+       assert(
+         monthYearMode == CupertinoDatePickerMode.date ||
+             monthYearMode == CupertinoDatePickerMode.monthYear,
+         'Unsupported mode! Only CupertinoDatePickerMode.date and CupertinoDatePickerMode.monthYear are allowed here.',
+       );
 
   @override
   State<TakvimSecici> createState() => _TakvimSeciciState();
@@ -204,8 +210,13 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                     _selectedDate!.day > 28) {
                   days = getDaysInMonth(value.year, value.month);
                 }
-                _selectedDate = DateTime(value.year, value.month, days,
-                    _selectedDate!.hour, _selectedDate!.minute);
+                _selectedDate = DateTime(
+                  value.year,
+                  value.month,
+                  days,
+                  _selectedDate!.hour,
+                  _selectedDate!.minute,
+                );
                 returnDate = _selectedDate;
                 if (widget.onSelection != null) {
                   widget.onSelection!(returnDate);
@@ -217,189 +228,214 @@ class _TakvimSeciciState extends State<TakvimSecici> {
             ),
           )
         : isTimeSelected!
-            ? SizedBox(
-                height: screenHeight * (isPortrait ? 0.29 : 0.55),
-                child: SaatSec(
-                  initialDateTime: _selectedDate!,
-                  minuteInterval: widget.minuteInterval,
-                  use24hForm: widget.use24hFormat,
-                  fontColor: widget.fontColor,
-                  onDateTimeChanged: (value) {
-                    _selectedDate = DateTime(
-                        _selectedDate!.year,
-                        _selectedDate!.month,
-                        _selectedDate!.day,
-                        value.hour,
-                        value.minute);
-                    isAM = _selectedDate!.hour < 12;
-                    returnDate = _selectedDate;
-                    if (widget.onSelection != null) {
-                      widget.onSelection!(returnDate);
-                    }
-                    _resetIfBeforeCurrentDate();
+        ? SizedBox(
+            height: screenHeight * (isPortrait ? 0.29 : 0.55),
+            child: SaatSec(
+              initialDateTime: _selectedDate!,
+              minuteInterval: widget.minuteInterval,
+              use24hForm: widget.use24hFormat,
+              fontColor: widget.fontColor,
+              onDateTimeChanged: (value) {
+                _selectedDate = DateTime(
+                  _selectedDate!.year,
+                  _selectedDate!.month,
+                  _selectedDate!.day,
+                  value.hour,
+                  value.minute,
+                );
+                isAM = _selectedDate!.hour < 12;
+                returnDate = _selectedDate;
+                if (widget.onSelection != null) {
+                  widget.onSelection!(returnDate);
+                }
+                _resetIfBeforeCurrentDate();
 
-                    setState(() {});
+                setState(() {});
+              },
+            ),
+          )
+        : SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GridView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: 7,
+                  // 7 days a week, 6 weeks maximum
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 7,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Center(
+                      child: Text(
+                        Constants.weekDayName[index].toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: widget.headingColor ?? Colors.grey.shade400,
+                        ),
+                      ),
+                    );
                   },
                 ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GridView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: 7,
-                      // 7 days a week, 6 weeks maximum
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 7,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Center(
-                          child: Text(
-                            Constants.weekDayName[index].toUpperCase(),
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: widget.headingColor ??
-                                    Colors.grey.shade400),
-                          ),
-                        );
-                      },
-                    ),
-                    GridView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: 7 * 6,
-                      // 7 days a week, 6 weeks maximum
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: (!isPortrait &&
-                                widget.datePickerOnly &&
-                                widget.action)
-                            ? 1.2
-                            : 1,
-                        crossAxisCount: 7,
-                      ),
-                      itemBuilder: (context, index) {
-                        final day = index -
-                            DateTime(_selectedDate!.year, _selectedDate!.month,
-                                    1)
-                                .weekday +
-                            2;
-                        final currentDate = DateTime(
-                            _selectedDate!.year, _selectedDate!.month, day);
+                GridView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: 7 * 6,
+                  // 7 days a week, 6 weeks maximum
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio:
+                        (!isPortrait && widget.datePickerOnly && widget.action)
+                        ? 1.2
+                        : 1,
+                    crossAxisCount: 7,
+                  ),
+                  itemBuilder: (context, index) {
+                    final day =
+                        index -
+                        DateTime(
+                          _selectedDate!.year,
+                          _selectedDate!.month,
+                          1,
+                        ).weekday +
+                        2;
+                    final currentDate = DateTime(
+                      _selectedDate!.year,
+                      _selectedDate!.month,
+                      day,
+                    );
 
-                        // Check if the day is selectable
-                        bool isSelectable = day > 0 &&
-                            day <=
-                                DateTime(_selectedDate!.year,
-                                        _selectedDate!.month + 1, 0)
-                                    .day &&
-                            (!widget.disablePastDates ||
-                                currentDate.isAfter(widget.initialDate
-                                    .subtract(const Duration(days: 1))) ||
-                                currentDate
-                                    .isAtSameMomentAs(widget.initialDate));
-
-                        // Determine the color of the date
-                        Color? textColor = day <= 0 ||
-                                day >
-                                    DateTime(_selectedDate!.year,
-                                            _selectedDate!.month + 1, 0)
-                                        .day
-                            ? Colors.transparent
-                            : _isSelectedDay(day)
-                                ? (widget.selectedColor ?? Colors.blue)
-                                : (widget.disablePastDates &&
-                                        (currentDate.isBefore(widget.initialDate
-                                                .toLocal()
-                                                .subtract(
-                                                    const Duration(days: 1))) ||
-                                            currentDate.isAtSameMomentAs(
-                                                widget.initialDate.toLocal())))
-                                    ? (currentDate.isAtSameMomentAs(
-                                            widget.initialDate.toLocal())
-                                        ? widget.fontColor
-                                        : Colors.grey)
-                                    : widget.fontColor;
-
-                        return GestureDetector(
-                          onTap: () {
-                            if (isSelectable) {
-                              setState(() {
-                                _selectedDate = DateTime(
-                                    _selectedDate!.year,
-                                    _selectedDate!.month,
-                                    day,
-                                    _selectedDate!.hour,
-                                    _selectedDate!.minute);
-                                returnDate = _selectedDate;
-                                if (widget.onSelection != null) {
-                                  widget.onSelection!(returnDate);
-                                }
-                                _resetIfBeforeCurrentDate();
-                              });
-                            }
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: day <= 0 ||
-                                      day >
-                                          DateTime(_selectedDate!.year,
-                                                  _selectedDate!.month + 1, 0)
-                                              .day
-                                  ? Colors.transparent
-                                  : _isSelectedDay(day)
-                                      ? (widget.selectedColor ?? Colors.blue)
-                                          .withAlpha(((255 / 100) * 10).floor())
-                                      : Colors.transparent,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              day <= 0 ||
-                                      day >
-                                          DateTime(_selectedDate!.year,
-                                                  _selectedDate!.month + 1, 0)
-                                              .day
-                                  ? ''
-                                  : '$day',
-                              style: TextStyle(
-                                fontWeight: _isSelectedDay(day)
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                                color: textColor,
+                    // Check if the day is selectable
+                    bool isSelectable =
+                        day > 0 &&
+                        day <=
+                            DateTime(
+                              _selectedDate!.year,
+                              _selectedDate!.month + 1,
+                              0,
+                            ).day &&
+                        (!widget.disablePastDates ||
+                            currentDate.isAfter(
+                              widget.initialDate.subtract(
+                                const Duration(days: 1),
                               ),
-                            ),
-                          ),
-                        );
+                            ) ||
+                            currentDate.isAtSameMomentAs(widget.initialDate));
+
+                    // Determine the color of the date
+                    Color? textColor =
+                        day <= 0 ||
+                            day >
+                                DateTime(
+                                  _selectedDate!.year,
+                                  _selectedDate!.month + 1,
+                                  0,
+                                ).day
+                        ? Colors.transparent
+                        : _isSelectedDay(day)
+                        ? (widget.selectedColor ?? Colors.blue)
+                        : (widget.disablePastDates &&
+                              (currentDate.isBefore(
+                                    widget.initialDate.toLocal().subtract(
+                                      const Duration(days: 1),
+                                    ),
+                                  ) ||
+                                  currentDate.isAtSameMomentAs(
+                                    widget.initialDate.toLocal(),
+                                  )))
+                        ? (currentDate.isAtSameMomentAs(
+                                widget.initialDate.toLocal(),
+                              )
+                              ? widget.fontColor
+                              : Colors.grey)
+                        : widget.fontColor;
+
+                    return GestureDetector(
+                      onTap: () {
+                        if (isSelectable) {
+                          setState(() {
+                            _selectedDate = DateTime(
+                              _selectedDate!.year,
+                              _selectedDate!.month,
+                              day,
+                              _selectedDate!.hour,
+                              _selectedDate!.minute,
+                            );
+                            returnDate = _selectedDate;
+                            if (widget.onSelection != null) {
+                              widget.onSelection!(returnDate);
+                            }
+                            _resetIfBeforeCurrentDate();
+                          });
+                        }
                       },
-                    ),
-                  ],
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color:
+                              day <= 0 ||
+                                  day >
+                                      DateTime(
+                                        _selectedDate!.year,
+                                        _selectedDate!.month + 1,
+                                        0,
+                                      ).day
+                              ? Colors.transparent
+                              : _isSelectedDay(day)
+                              ? (widget.selectedColor ?? Colors.blue).withAlpha(
+                                  ((255 / 100) * 10).floor(),
+                                )
+                              : Colors.transparent,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          day <= 0 ||
+                                  day >
+                                      DateTime(
+                                        _selectedDate!.year,
+                                        _selectedDate!.month + 1,
+                                        0,
+                                      ).day
+                              ? ''
+                              : '$day',
+                          style: TextStyle(
+                            fontWeight: _isSelectedDay(day)
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                            color: textColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
+              ],
+            ),
+          );
 
     Widget actionButton = GestureDetector(
-        onTap: () {
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-            DeviceOrientation.landscapeRight,
-            DeviceOrientation.landscapeLeft,
-          ]);
-          returnDate ??= _selectedDate;
-          widget.onConfirm?.call(returnDate);
-          Navigator.pop(context, returnDate);
-        },
-        child: Text(
-          "Kaydet",
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: widget.iconColor ?? Colors.blue,
-              fontSize: 15),
-        ));
+      onTap: () {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeRight,
+          DeviceOrientation.landscapeLeft,
+        ]);
+        returnDate ??= _selectedDate;
+        widget.onConfirm?.call(returnDate);
+        Navigator.pop(context, returnDate);
+      },
+      child: Text(
+        "Kaydet",
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: widget.iconColor ?? Colors.blue,
+          fontSize: 15,
+        ),
+      ),
+    );
 
     List<Widget> topArrowBody = [
       Row(
@@ -415,14 +451,13 @@ class _TakvimSeciciState extends State<TakvimSecici> {
             child: Text(
               "${monthNames[_selectedDate!.month - 1]} ${_selectedDate!.year}",
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: widget.headingColor),
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: widget.headingColor,
+              ),
             ),
           ),
-          const SizedBox(
-            width: 5,
-          ),
+          const SizedBox(width: 5),
           Icon(
             isYearSelected!
                 ? Icons.keyboard_arrow_down_rounded
@@ -436,7 +471,8 @@ class _TakvimSeciciState extends State<TakvimSecici> {
               onPressed: () => _handleMonthChange(false),
               icon: Icon(
                 Icons.arrow_back_ios_new_rounded,
-                color: _selectedDate!.year >
+                color:
+                    _selectedDate!.year >
                             (widget.minYear ?? DateTime.now().year) ||
                         _selectedDate!.month > DateTime.january
                     ? (widget.iconColor ?? Colors.blue)
@@ -450,7 +486,8 @@ class _TakvimSeciciState extends State<TakvimSecici> {
               onPressed: () => _handleMonthChange(true),
               icon: Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: _selectedDate!.year < (widget.maxYear ?? 2100) ||
+                color:
+                    _selectedDate!.year < (widget.maxYear ?? 2100) ||
                         _selectedDate!.month < DateTime.december
                     ? (widget.iconColor ?? Colors.blue)
                     : Colors.grey,
@@ -461,14 +498,15 @@ class _TakvimSeciciState extends State<TakvimSecici> {
             ),
           ],
         ],
-      )
+      ),
     ];
     Widget amPMWidget = Container(
       height: 40,
       width: screenWidth * (isPortrait ? 0.32 : 0.3),
       decoration: BoxDecoration(
-          color: widget.barColor ?? Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(5)),
+        color: widget.barColor ?? Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(5),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Center(
@@ -482,15 +520,16 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                       : () {
                           isAM = !isAM!;
                           _selectedDate = DateTime(
-                              _selectedDate!.year,
-                              _selectedDate!.month,
-                              _selectedDate!.day,
-                              isAM!
-                                  ? _selectedDate!.hour % 12 == 0
+                            _selectedDate!.year,
+                            _selectedDate!.month,
+                            _selectedDate!.day,
+                            isAM!
+                                ? _selectedDate!.hour % 12 == 0
                                       ? 12
                                       : _selectedDate!.hour % 12
-                                  : _selectedDate!.hour + 12,
-                              _selectedDate!.minute);
+                                : _selectedDate!.hour + 12,
+                            _selectedDate!.minute,
+                          );
                           returnDate = _selectedDate;
                           if (widget.onSelection != null) {
                             widget.onSelection!(returnDate);
@@ -501,10 +540,11 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                     // height: 40,
                     // width: screenWidth * 0.14,
                     decoration: BoxDecoration(
-                        color: isAM!
-                            ? widget.barForegroundColor ?? Colors.white
-                            : null,
-                        borderRadius: BorderRadius.circular(5)),
+                      color: isAM!
+                          ? widget.barForegroundColor ?? Colors.white
+                          : null,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
@@ -531,15 +571,16 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                       : () {
                           isAM = !isAM!;
                           _selectedDate = DateTime(
-                              _selectedDate!.year,
-                              _selectedDate!.month,
-                              _selectedDate!.day,
-                              isAM!
-                                  ? _selectedDate!.hour % 12 == 0
+                            _selectedDate!.year,
+                            _selectedDate!.month,
+                            _selectedDate!.day,
+                            isAM!
+                                ? _selectedDate!.hour % 12 == 0
                                       ? 12
                                       : _selectedDate!.hour % 12
-                                  : _selectedDate!.hour + 12,
-                              _selectedDate!.minute);
+                                : _selectedDate!.hour + 12,
+                            _selectedDate!.minute,
+                          );
                           returnDate = _selectedDate;
                           if (widget.onSelection != null) {
                             widget.onSelection!(returnDate);
@@ -550,10 +591,11 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                     // height: 40,
                     // width: screenWidth * 0.14,
                     decoration: BoxDecoration(
-                        color: !isAM!
-                            ? widget.barForegroundColor ?? Colors.white
-                            : null,
-                        borderRadius: BorderRadius.circular(5)),
+                      color: !isAM!
+                          ? widget.barForegroundColor ?? Colors.white
+                          : null,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
@@ -588,21 +630,24 @@ class _TakvimSeciciState extends State<TakvimSecici> {
         height: 40,
         width: screenWidth * (isPortrait ? 0.25 : 0.3),
         decoration: BoxDecoration(
-            color: (widget.barColor ?? Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(5)),
+          color: (widget.barColor ?? Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(5),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             // child: Text("${_selectedDate.hour}:${_selectedDate.minute}",
             child: FittedBox(
               child: Text(
-                _selectedDate!
-                    .format12Hour(use24HoursFormat: widget.use24hFormat),
+                _selectedDate!.format12Hour(
+                  use24HoursFormat: widget.use24hFormat,
+                ),
                 style: TextStyle(
-                    color: widget.barColor != null ? widget.fontColor : null,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                    letterSpacing: 3),
+                  color: widget.barColor != null ? widget.fontColor : null,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  letterSpacing: 3,
+                ),
               ),
             ),
           ),
@@ -616,15 +661,18 @@ class _TakvimSeciciState extends State<TakvimSecici> {
         if (widget.brandIcon != null)
           Center(
             child: SizedBox(
-                height: isPortrait ? 35 : 45, child: widget.brandIcon!),
+              height: isPortrait ? 35 : 45,
+              child: widget.brandIcon!,
+            ),
           )
         else
           Text(
             "Saat",
             style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
-                color: widget.headingColor),
+              fontWeight: FontWeight.w600,
+              fontSize: 17,
+              color: widget.headingColor,
+            ),
           ),
         if (isPortrait) Expanded(child: Container()),
         if (!isPortrait) Container(height: screenHeight * 0.1),
@@ -638,7 +686,7 @@ class _TakvimSeciciState extends State<TakvimSecici> {
       ...[
         if (isPortrait) SizedBox(width: screenWidth * 0.02),
         if (!isPortrait) Container(height: screenHeight * 0.1),
-        if (!widget.use24hFormat) amPMWidget
+        if (!widget.use24hFormat) amPMWidget,
       ],
 
       /// Action Widget
@@ -659,13 +707,12 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                 ...topArrowBody,
                 calendarBody,
                 // Lower Section
-                const Divider(
-                  thickness: 0.5,
-                ),
+                const Divider(thickness: 0.5),
                 Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: pickTimeBody),
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: pickTimeBody,
+                ),
               ],
             ),
           )
@@ -682,22 +729,24 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                          // height: screenHeight * 0.57,
-                          // width: screenWidth / 3,
-                          child: calendarBody),
+                        // height: screenHeight * 0.57,
+                        // width: screenWidth / 3,
+                        child: calendarBody,
+                      ),
                       // const Spacer(),
                       Expanded(
-                          // height: screenHeight * 0.57,
-                          // width: screenWidth / 3,
-                          child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: pickTimeBody,
+                        // height: screenHeight * 0.57,
+                        // width: screenWidth / 3,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: pickTimeBody,
+                          ),
                         ),
-                      )),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -714,11 +763,9 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                 calendarBody,
                 // Lower Section
                 if (widget.action) ...[
-                  const Divider(
-                    thickness: 0.5,
-                  ),
-                  actionButton
-                ]
+                  const Divider(thickness: 0.5),
+                  actionButton,
+                ],
                 // Row(
                 //     mainAxisSize: MainAxisSize.min,
                 //     crossAxisAlignment: CrossAxisAlignment.center,
@@ -736,11 +783,9 @@ class _TakvimSeciciState extends State<TakvimSecici> {
                   ...topArrowBody,
                   calendarBody,
                   if (widget.action) ...[
-                    const Divider(
-                      thickness: 0.5,
-                    ),
-                    actionButton
-                  ]
+                    const Divider(thickness: 0.5),
+                    actionButton,
+                  ],
                 ],
               ),
             ),
@@ -772,16 +817,15 @@ class _TakvimSeciciState extends State<TakvimSecici> {
               ? BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(widget.backgroundEffects.imageUrl)),
+                    fit: BoxFit.cover,
+                    image: NetworkImage(widget.backgroundEffects.imageUrl),
+                  ),
                 )
               : null,
           child: Padding(
-            padding: widget.contentPadding ??
-                const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15.0,
-                ),
+            padding:
+                widget.contentPadding ??
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 15.0),
             child: widget.datePickerOnly
                 ? calendarDatePickerOnly
                 : defaultCalendar,
@@ -791,7 +835,7 @@ class _TakvimSeciciState extends State<TakvimSecici> {
     );
   }
 
-// Handle month decrement
+  // Handle month decrement
   void _handleMonthChange(bool isForward) {
     int year = _selectedDate!.year;
     int month = _selectedDate!.month;
@@ -830,7 +874,12 @@ class _TakvimSeciciState extends State<TakvimSecici> {
 
     setState(() {
       _selectedDate = DateTime(
-          year, month, selectedDay, _selectedDate!.hour, _selectedDate!.minute);
+        year,
+        month,
+        selectedDay,
+        _selectedDate!.hour,
+        _selectedDate!.minute,
+      );
       returnDate = _selectedDate;
       if (widget.onSelection != null) {
         widget.onSelection!(returnDate);
@@ -862,7 +911,7 @@ class _TakvimSeciciState extends State<TakvimSecici> {
       30,
       31,
       30,
-      31
+      31,
     ];
     return daysInMonth[month - 1];
   }
@@ -876,7 +925,7 @@ enum TarihSeciciArkaplan {
   summer,
   halloween,
   smokyLeaves,
-  none
+  none,
 }
 
 extension DateTimeExtension on DateTime {

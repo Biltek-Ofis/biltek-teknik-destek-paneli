@@ -69,99 +69,90 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
             ),
           ],
         ),
-        floatingActionButton:
-            yukariKaydir
-                ? FloatingActionButton(
-                  onPressed: () {
-                    scrollController.animateTo(
-                      0,
-                      duration: Duration(seconds: 1),
-                      curve: Curves.bounceIn,
-                    );
-                  },
-                  child: Icon(CupertinoIcons.arrow_up, color: Colors.white),
-                )
-                : FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => VersiyonDuzenlemeSayfasi(
-                              kullanici: widget.kullanici,
-                              versiyonlariYenile: () async {
-                                await _versiyonlariYenile();
-                              },
-                            ),
+        floatingActionButton: yukariKaydir
+            ? FloatingActionButton(
+                onPressed: () {
+                  scrollController.animateTo(
+                    0,
+                    duration: Duration(seconds: 1),
+                    curve: Curves.bounceIn,
+                  );
+                },
+                child: Icon(CupertinoIcons.arrow_up, color: Colors.white),
+              )
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VersiyonDuzenlemeSayfasi(
+                        kullanici: widget.kullanici,
+                        versiyonlariYenile: () async {
+                          await _versiyonlariYenile();
+                        },
                       ),
-                    );
-                  },
-                  child: Icon(CupertinoIcons.add, color: Colors.white),
-                ),
+                    ),
+                  );
+                },
+                child: Icon(CupertinoIcons.add, color: Colors.white),
+              ),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child:
-                versiyonlar == null
-                    ? Center(child: CircularProgressIndicator())
-                    : RefreshIndicator(
-                      onRefresh: () async {
-                        await _versiyonlariYenile();
-                      },
-                      child:
-                          versiyonlar!.isEmpty
-                              ? Center(
-                                child: Text("Henüz Bir Versiyon Eklenmemiş"),
-                              )
-                              : ListView.builder(
-                                itemCount: versiyonlar?.length,
-                                controller: scrollController,
-                                physics: AlwaysScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  Versiyon versiyon = versiyonlar![index];
-                                  return ListTile(
-                                    title: Text(versiyon.versiyon),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (
-                                                      context,
-                                                    ) => VersiyonDuzenlemeSayfasi(
-                                                      kullanici:
-                                                          widget.kullanici,
-                                                      versiyon: versiyon,
-                                                      versiyonlariYenile: () async {
-                                                        await _versiyonlariYenile();
-                                                      },
-                                                    ),
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(CupertinoIcons.pen),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            _versiyonSil(
-                                              versiyon.id,
-                                              versiyon.versiyon,
-                                            );
-                                          },
-                                          icon: Icon(CupertinoIcons.delete),
-                                        ),
-                                      ],
+            child: versiyonlar == null
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      await _versiyonlariYenile();
+                    },
+                    child: versiyonlar!.isEmpty
+                        ? Center(child: Text("Henüz Bir Versiyon Eklenmemiş"))
+                        : ListView.builder(
+                            itemCount: versiyonlar?.length,
+                            controller: scrollController,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              Versiyon versiyon = versiyonlar![index];
+                              return ListTile(
+                                title: Text(versiyon.versiyon),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                VersiyonDuzenlemeSayfasi(
+                                                  kullanici: widget.kullanici,
+                                                  versiyon: versiyon,
+                                                  versiyonlariYenile: () async {
+                                                    await _versiyonlariYenile();
+                                                  },
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.pen),
                                     ),
-                                  );
-                                },
-                              ),
-                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        _versiyonSil(
+                                          versiyon.id,
+                                          versiyon.versiyon,
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.delete),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                  ),
           ),
         ),
       ),
@@ -196,8 +187,8 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
     } else {
       versiyonlar = null;
     }
-    List<Versiyon> versiyonlarTemp =
-        await BiltekPost.of(widget.kullanici.auth).versiyonlariGetir();
+    List<Versiyon> versiyonlarTemp = await BiltekPost.of(widget.kullanici.auth)
+        .versiyonlariGetir();
 
     if (mounted) {
       setState(() {
@@ -225,9 +216,8 @@ class _VersiyonSayfasiState extends State<VersiyonSayfasi> {
                 setState(() {
                   versiyonlar = null;
                 });
-                bool durum = await BiltekPost.of(
-                  widget.kullanici.auth,
-                ).versiyonSil(id);
+                bool durum = await BiltekPost.of(widget.kullanici.auth)
+                    .versiyonSil(id);
                 await _versiyonlariYenile();
                 if (!durum && context.mounted) {
                   _hataMesaji("Versiyon silinirken bir hata oluştu.");

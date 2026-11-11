@@ -19,12 +19,9 @@ class CihazDurumu extends StatelessWidget {
         child: Consumer<MyNotifier>(
           builder: (context, MyNotifier myNotifier, child) {
             var brightness = MediaQuery.of(context).platformBrightness;
-            Color renk =
-                myNotifier.isDark != null
-                    ? (myNotifier.isDark! ? Colors.white : Colors.black)
-                    : (brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black);
+            Color renk = myNotifier.isDark != null
+                ? (myNotifier.isDark! ? Colors.white : Colors.black)
+                : (brightness == Brightness.dark ? Colors.white : Colors.black);
             return Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(10),

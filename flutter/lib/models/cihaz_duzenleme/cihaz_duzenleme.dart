@@ -25,19 +25,22 @@ class CihazDuzenlemeModel {
         'tahsilatSekilleri': List<dynamic> tahsilatSekilleri,
       } =>
         CihazDuzenlemeModel(
-          cihazTurleri:
-              cihazTurleri.map((e) => CihazTurleriModel.fromJson(e)).toList(),
-          sorumlular:
-              sorumlular.map((e) => KullaniciModel.fromJson(e)).toList(),
-          cihazDurumlari:
-              cihazDurumlari.map((e) => GuncelDurumModel.fromJson(e)).toList(),
-          tahsilatSekilleri:
-              tahsilatSekilleri.map((e) => TahsilatSekli.fromJson(e)).toList(),
+          cihazTurleri: cihazTurleri
+              .map((e) => CihazTurleriModel.fromJson(e))
+              .toList(),
+          sorumlular: sorumlular
+              .map((e) => KullaniciModel.fromJson(e))
+              .toList(),
+          cihazDurumlari: cihazDurumlari
+              .map((e) => GuncelDurumModel.fromJson(e))
+              .toList(),
+          tahsilatSekilleri: tahsilatSekilleri
+              .map((e) => TahsilatSekli.fromJson(e))
+              .toList(),
         ),
-      _ =>
-        throw const FormatException(
-          "Cihaz Duzenleme getirilirken bir hata oluştu",
-        ),
+      _ => throw const FormatException(
+        "Cihaz Duzenleme getirilirken bir hata oluştu",
+      ),
     };
   }
   factory CihazDuzenlemeModel.bos() {

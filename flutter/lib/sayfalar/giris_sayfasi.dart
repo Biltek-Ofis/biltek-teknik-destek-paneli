@@ -199,13 +199,12 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             autofillHints: const [AutofillHints.username],
             errorText: _kullaniciAdiError,
             textInputAction: TextInputAction.next,
-            onChanged:
-                (_) => setState(() {
-                  _kullaniciAdiError = null;
-                  _hataMesaji = "";
-                }),
-            onEditingComplete:
-                () => FocusScope.of(context).requestFocus(_sifreFocus),
+            onChanged: (_) => setState(() {
+              _kullaniciAdiError = null;
+              _hataMesaji = "";
+            }),
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(_sifreFocus),
           ),
           const SizedBox(height: 16),
           BiltekSifre(
@@ -216,11 +215,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             autofillHints: const [AutofillHints.password],
             errorText: _sifreError,
             textInputAction: TextInputAction.done,
-            onChanged:
-                (_) => setState(() {
-                  _sifreError = null;
-                  _hataMesaji = "";
-                }),
+            onChanged: (_) => setState(() {
+              _sifreError = null;
+              _hataMesaji = "";
+            }),
             onSubmitted: (_) async {
               TextInput.finishAutofillContext();
               await _girisYap(notifier);
@@ -273,10 +271,9 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           backgroundColor: const Color(0xFF00E676),
           label: "Cihaz Durumunu Görüntüle",
           icon: Icons.search_rounded,
-          onPressed:
-              () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => CihazDurumuGiris())),
+          onPressed: () =>
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => CihazDurumuGiris())),
         ),
       ],
     );
@@ -356,14 +353,13 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           if (kullaniciModel != null) {
             kapatildi = true;
             if (myNotifier != null) {
-              myNotifier.kullanici =
-                  _beniHatirla
-                      ? SecureStorageKullanici.create(
-                        isim: kullaniciModel.adSoyad,
-                        kullaniciAdi: kullaniciAdi,
-                        sifre: sifre,
-                      )
-                      : null;
+              myNotifier.kullanici = _beniHatirla
+                  ? SecureStorageKullanici.create(
+                      isim: kullaniciModel.adSoyad,
+                      kullaniciAdi: kullaniciAdi,
+                      sifre: sifre,
+                    )
+                  : null;
             }
             await SecureStorage.setBool(
               SecureStorage.beniHatirlaString,
@@ -371,24 +367,21 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             );
             nav.pushAndRemoveUntil(
               MaterialPageRoute(
-                builder:
-                    (_) => Anasayfa(
-                      sayfa:
-                          kullaniciModel.musteri
-                              ? "cagri"
-                              : (kullaniciModel.teknikservis
-                                  ? "cihazlarim"
-                                  : "anasayfa"),
-                      kullanici: kullaniciModel,
-                    ),
+                builder: (_) => Anasayfa(
+                  sayfa: kullaniciModel.musteri
+                      ? "cagri"
+                      : (kullaniciModel.teknikservis
+                            ? "cihazlarim"
+                            : "anasayfa"),
+                  kullanici: kullaniciModel,
+                ),
               ),
               (_) => false,
             );
           } else {
             setState(
-              () =>
-                  _hataMesaji =
-                      "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+              () => _hataMesaji =
+                  "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
             );
           }
         } else {
@@ -402,9 +395,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           setState(() => _hataMesaji = hata.mesaj);
         } on Exception {
           setState(
-            () =>
-                _hataMesaji =
-                    "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+            () => _hataMesaji =
+                "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
           );
         }
       }
@@ -424,8 +416,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       final canAuth = canBio || await _localAuth.isDeviceSupported();
       if (canAuth) {
         final ok = await _localAuth.authenticate(
-          localizedReason:
-              'Daha önce giriş yapılmış bir hesabınız bulunuyor. Biyometrik kimliğinizi doğrulayarak tekrar giriş yapabilirsiniz.',
+          localizedReason: 'Daha önce giriş yapılmış bir hesabınız bulunuyor. Biyometrik kimliğinizi doğrulayarak tekrar giriş yapabilirsiniz.',
           authMessages: const <AuthMessages>[
             AndroidAuthMessages(
               signInTitle: 'Biyometrik Doğrulama ile Giriş Yapın',

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 Offset calcCirclePosition(
-    int n, Size size, int dimension, double relativePadding) {
+  int n,
+  Size size,
+  int dimension,
+  double relativePadding,
+) {
   final o = size.width > size.height
       ? Offset((size.width - size.height) / 2, 0)
       : Offset(0, (size.height - size.width) / 2);
@@ -101,15 +105,16 @@ class DesenState extends State<Desen> {
           return;
         }
         RenderBox referenceBox = context.findRenderObject() as RenderBox;
-        Offset localPosition =
-            referenceBox.globalToLocal(details.globalPosition);
+        Offset localPosition = referenceBox.globalToLocal(
+          details.globalPosition,
+        );
 
         Offset circlePosition(int n) => calcCirclePosition(
-              n,
-              referenceBox.size,
-              widget.dimension,
-              widget.relativePadding,
-            );
+          n,
+          referenceBox.size,
+          widget.dimension,
+          widget.relativePadding,
+        );
 
         setState(() {
           currentPoint = localPosition;
@@ -130,12 +135,13 @@ class DesenState extends State<Desen> {
                 used: used,
                 currentPoint: currentPoint,
                 relativePadding: widget.relativePadding,
-                selectedColor: widget.selectedColor ??
+                selectedColor:
+                    widget.selectedColor ??
                     Theme.of(context).textTheme.bodyMedium?.color ??
                     Theme.of(context).primaryColor,
                 notSelectedColor:
                     Theme.of(context).textTheme.bodyMedium?.color ??
-                        Colors.black45,
+                    Colors.black45,
                 pointRadius: widget.pointRadius,
                 showInput: widget.showInput,
                 fillPoints: widget.fillPoints,
@@ -143,10 +149,7 @@ class DesenState extends State<Desen> {
               size: Size.infinite,
             ),
           ),
-          Text(
-            desenHata,
-            style: TextStyle(color: Colors.red),
-          ),
+          Text(desenHata, style: TextStyle(color: Colors.red)),
         ],
       ),
     );
@@ -181,15 +184,15 @@ class _DesenPaint extends CustomPainter {
     required this.pointRadius,
     required this.showInput,
     required bool fillPoints,
-  })  : circlePaint = Paint()
-          ..color = notSelectedColor
-          ..style = fillPoints ? PaintingStyle.fill : PaintingStyle.stroke
-          ..strokeWidth = 2,
-        selectedPaint = Paint()
-          ..color = selectedColor
-          ..style = fillPoints ? PaintingStyle.fill : PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = 2;
+  }) : circlePaint = Paint()
+         ..color = notSelectedColor
+         ..style = fillPoints ? PaintingStyle.fill : PaintingStyle.stroke
+         ..strokeWidth = 2,
+       selectedPaint = Paint()
+         ..color = selectedColor
+         ..style = fillPoints ? PaintingStyle.fill : PaintingStyle.stroke
+         ..strokeCap = StrokeCap.round
+         ..strokeWidth = 2;
 
   @override
   void paint(Canvas canvas, Size size) {

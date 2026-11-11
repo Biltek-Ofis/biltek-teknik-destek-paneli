@@ -24,13 +24,9 @@ class BiltekListTile extends StatelessWidget {
       subtitleTextStyle: TextStyle(
         color: Theme.of(context).textTheme.bodySmall?.color?.withAlpha(200),
       ),
-      subtitle:
-          subtitle != null
-              ? Container(
-                padding: EdgeInsets.only(left: 5),
-                child: Text(subtitle!),
-              )
-              : null,
+      subtitle: subtitle != null
+          ? Container(padding: EdgeInsets.only(left: 5), child: Text(subtitle!))
+          : null,
       onTap: onTap,
     );
   }

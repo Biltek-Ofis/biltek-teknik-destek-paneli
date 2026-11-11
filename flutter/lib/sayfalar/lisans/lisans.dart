@@ -70,138 +70,122 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
             ),
           ],
         ),
-        floatingActionButton:
-            yukariKaydir
-                ? FloatingActionButton(
-                  onPressed: () {
-                    scrollController.animateTo(
-                      0,
-                      duration: Duration(seconds: 1),
-                      curve: Curves.bounceIn,
-                    );
-                  },
-                  child: Icon(CupertinoIcons.arrow_up, color: Colors.white),
-                )
-                : FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => LisansDuzenlemeSayfasi(
-                              kullanici: widget.kullanici,
-                              lisanslariYenile: () async {
-                                await _lisanslariYenile();
-                              },
-                            ),
+        floatingActionButton: yukariKaydir
+            ? FloatingActionButton(
+                onPressed: () {
+                  scrollController.animateTo(
+                    0,
+                    duration: Duration(seconds: 1),
+                    curve: Curves.bounceIn,
+                  );
+                },
+                child: Icon(CupertinoIcons.arrow_up, color: Colors.white),
+              )
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LisansDuzenlemeSayfasi(
+                        kullanici: widget.kullanici,
+                        lisanslariYenile: () async {
+                          await _lisanslariYenile();
+                        },
                       ),
-                    );
-                  },
-                  child: Icon(CupertinoIcons.add, color: Colors.white),
-                ),
+                    ),
+                  );
+                },
+                child: Icon(CupertinoIcons.add, color: Colors.white),
+              ),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child:
-                lisanslar == null
-                    ? Center(child: CircularProgressIndicator())
-                    : RefreshIndicator(
-                      onRefresh: () async {
-                        await _lisanslariYenile();
-                      },
-                      child:
-                          lisanslar!.isEmpty
-                              ? Center(
-                                child: Text("Henüz Bir Lisans Eklenmemiş"),
-                              )
-                              : ListView.builder(
-                                itemCount: lisanslar?.length,
-                                controller: scrollController,
-                                physics: AlwaysScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  Lisans lisans = lisanslar![index];
-                                  return ListTile(
-                                    title: Text(lisans.isim),
-                                    subtitle: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+            child: lisanslar == null
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      await _lisanslariYenile();
+                    },
+                    child: lisanslar!.isEmpty
+                        ? Center(child: Text("Henüz Bir Lisans Eklenmemiş"))
+                        : ListView.builder(
+                            itemCount: lisanslar?.length,
+                            controller: scrollController,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              Lisans lisans = lisanslar![index];
+                              return ListTile(
+                                title: Text(lisans.isim),
+                                subtitle: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(lisans.lisans),
+                                    Text("Versiyon: ${lisans.versiyon}"),
+                                    Text(
+                                      "Kayıt: ${Islemler.tarihGoruntule(lisans.kayit, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
+                                    ),
+                                    Text(
+                                      "Başlangıc: ${Islemler.tarihGoruntule(lisans.baslangic, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
+                                    ),
+                                    Row(
                                       children: [
-                                        Text(lisans.lisans),
-                                        Text("Versiyon: ${lisans.versiyon}"),
+                                        Text("Bitis:"),
                                         Text(
-                                          "Kayıt: ${Islemler.tarihGoruntule(lisans.kayit, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
+                                          " ${lisans.suresiz ? lisans.durum["mesaj"] : Islemler.tarihGoruntule(lisans.bitis, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
+                                          style: lisans.suresiz
+                                              ? TextStyle(color: Colors.green)
+                                              : null,
                                         ),
-                                        Text(
-                                          "Başlangıc: ${Islemler.tarihGoruntule(lisans.baslangic, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
+                                      ],
+                                    ),
+                                    if (!lisans.suresiz)
+                                      Text(
+                                        "(${lisans.durum["mesaj"]})",
+                                        style: TextStyle(
+                                          color: (lisans.durum["aktif"] as bool)
+                                              ? Colors.green
+                                              : Colors.red,
                                         ),
-                                        Row(
-                                          children: [
-                                            Text("Bitis:"),
-                                            Text(
-                                              " ${lisans.suresiz ? lisans.durum["mesaj"] : Islemler.tarihGoruntule(lisans.bitis, Islemler.lisansSQLTarih, Islemler.lisansNormalTarih)}",
-                                              style:
-                                                  lisans.suresiz
-                                                      ? TextStyle(
-                                                        color: Colors.green,
-                                                      )
-                                                      : null,
-                                            ),
-                                          ],
-                                        ),
-                                        if (!lisans.suresiz)
-                                          Text(
-                                            "(${lisans.durum["mesaj"]})",
-                                            style: TextStyle(
-                                              color:
-                                                  (lisans.durum["aktif"]
-                                                          as bool)
-                                                      ? Colors.green
-                                                      : Colors.red,
-                                            ),
+                                      ),
+                                  ],
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                LisansDuzenlemeSayfasi(
+                                                  kullanici: widget.kullanici,
+                                                  lisans: lisans,
+                                                  lisanslariYenile: () async {
+                                                    await _lisanslariYenile();
+                                                  },
+                                                ),
                                           ),
-                                      ],
+                                        );
+                                      },
+                                      icon: Icon(CupertinoIcons.pen),
                                     ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (
-                                                      context,
-                                                    ) => LisansDuzenlemeSayfasi(
-                                                      kullanici:
-                                                          widget.kullanici,
-                                                      lisans: lisans,
-                                                      lisanslariYenile: () async {
-                                                        await _lisanslariYenile();
-                                                      },
-                                                    ),
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(CupertinoIcons.pen),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            _lisansSil(lisans.id, lisans.isim);
-                                          },
-                                          icon: Icon(CupertinoIcons.delete),
-                                        ),
-                                      ],
+                                    IconButton(
+                                      onPressed: () {
+                                        _lisansSil(lisans.id, lisans.isim);
+                                      },
+                                      icon: Icon(CupertinoIcons.delete),
                                     ),
-                                  );
-                                },
-                              ),
-                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                  ),
           ),
         ),
       ),
@@ -236,8 +220,8 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
     } else {
       lisanslar = null;
     }
-    List<Lisans> lisanslarTemp =
-        await BiltekPost.of(widget.kullanici.auth).lisanslariGetir();
+    List<Lisans> lisanslarTemp = await BiltekPost.of(widget.kullanici.auth)
+        .lisanslariGetir();
 
     if (mounted) {
       setState(() {
@@ -263,9 +247,8 @@ class _LisansSayfasiState extends State<LisansSayfasi> {
                 setState(() {
                   lisanslar = null;
                 });
-                bool durum = await BiltekPost.of(
-                  widget.kullanici.auth,
-                ).lisansSil(id);
+                bool durum = await BiltekPost.of(widget.kullanici.auth)
+                    .lisansSil(id);
                 await _lisanslariYenile();
                 if (!durum && context.mounted) {
                   _hataMesaji("Lisans silinirken bir hata oluştu.");
