@@ -46,6 +46,7 @@ def update_build_date(file_path: str = ENV_DOSYASI) -> None:
     print(f"SURUM_TARIHI '{today}' olarak güncellendi.")
 
 def system2(cmd):
+    print(f"Komut calistiriliyor: {cmd}")
     exit_code = os.system(cmd)
     if exit_code != 0:
         sys.stderr.write(f"Error occurred when executing: `{cmd}`. Exiting.\n")
