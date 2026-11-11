@@ -255,6 +255,7 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
                                       ),
                                       WidgetSpan(
                                         alignment: PlaceholderAlignment.middle, // Vertically centers the button with text
+                                        // TODO: Width ile genişliğie sığdırılacak
                                         child: BiltekSifre(
                                           controller:
                                               sifreTextEditingController,

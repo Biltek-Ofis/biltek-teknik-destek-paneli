@@ -105,6 +105,7 @@ class BiltekTextFieldState extends State<BiltekTextField>
         ? widget.currentFocus!.hasFocus
         : false;
 
+    // TODO: Width değeri eklenecek
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
