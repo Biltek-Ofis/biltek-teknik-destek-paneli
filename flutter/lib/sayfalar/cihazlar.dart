@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ import '../utils/buttons.dart';
 import '../utils/common.dart';
 import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
+import '../utils/notification.dart';
 import '../utils/post.dart';
 import '../utils/secure_storage.dart';
 import '../utils/types.dart';
@@ -70,8 +70,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
 
   bool yukariKaydir = false;
 
-  StreamSubscription<String>? fcmStream;
-
   BarkodOkuyucu? barkodOkuyucu;
 
   bool chatEnabled = true;
@@ -80,17 +78,6 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      await FirebaseMessaging.instance.requestPermission(provisional: true);
-      fcmStream = FirebaseMessaging.instance.onRegistered.listen((
-        fcmToken,
-      ) async {
-        BiltekPost.of(widget.kullanici.auth)
-            .fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
-      });
-      fcmStream?.onError((err) {
-        biltekPrint("Failed to get fcm token");
-      });
-      await FirebaseMessaging.instance.register();
       await pcYenile();
     });
     scrollController.addListener(() async {
@@ -132,6 +119,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       await _cihazlariYenile();
     });
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NativeNotification.bildirimBaslat(context, kullanici: widget.kullanici);
+    });
     var keyboardVisibilityController = KeyboardVisibilityController();
 
     keyboardSubscription = keyboardVisibilityController.onChange.listen((
@@ -151,7 +142,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
   void dispose() {
     keyboardSubscription?.cancel();
     scrollController.dispose();
-    fcmStream?.cancel();
+    NativeNotification.unregisterMessaging();
     debounce?.cancel();
     super.dispose();
   }

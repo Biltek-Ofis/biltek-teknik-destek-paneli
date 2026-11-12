@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +14,7 @@ import '../../utils/buttons.dart';
 import '../../utils/common.dart';
 import '../../utils/extensions.dart';
 import '../../utils/islemler.dart';
+import '../../utils/notification.dart';
 import '../../utils/post.dart';
 import '../../utils/secure_storage.dart';
 import '../../widgets/dizayn.dart';
@@ -38,31 +38,21 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
   List<CagriKaydiModel>? cagriKayitlari;
   ScrollController scrollController = ScrollController();
 
-  StreamSubscription<String>? fcmStream;
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      await FirebaseMessaging.instance.requestPermission(provisional: true);
-      fcmStream = FirebaseMessaging.instance.onRegistered.listen((
-        fcmToken,
-      ) async {
-        BiltekPost.of(widget.kullanici.auth)
-            .fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
-      });
-      fcmStream?.onError((err) {
-        biltekPrint("Failed to get fcm token");
-      });
-      await FirebaseMessaging.instance.register();
       await cagriKayitlariniGetir();
     });
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NativeNotification.bildirimBaslat(context, kullanici: widget.kullanici);
+    });
   }
 
   @override
   void dispose() {
-    fcmStream?.cancel();
+    NativeNotification.unregisterMessaging();
     super.dispose();
   }
 
