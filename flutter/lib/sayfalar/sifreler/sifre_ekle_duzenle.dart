@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/kullanici.dart';
 import '../../models/sifre.dart';
 import '../../utils/buttons.dart';
+import '../../utils/common.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
 import '../../widgets/input.dart';
@@ -253,7 +254,7 @@ class _SifreEkleDuzenleSayfasiState extends State<SifreEkleDuzenleSayfasi> {
     NavigatorState navigatorState = Navigator.of(context);
     bool duzenle = false;
     if (widget.sifre != null) {
-      debugPrint("11");
+      biltekPrint("11");
       duzenle = await BiltekPost.of(widget.kullanici.auth).sifreDuzenle(
         id: widget.sifre!.id,
         musteriAdi: musteriAdi,

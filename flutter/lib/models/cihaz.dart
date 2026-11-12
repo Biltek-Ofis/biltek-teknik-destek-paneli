@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
+import '../utils/common.dart';
+
 class Cihaz {
   final int id;
   final int servisNo;
@@ -318,7 +320,7 @@ class Cihaz {
         pointList.add(pointMap);
       }
     } on Exception catch (e) {
-      debugPrint("Imza json'a dönüştürülemedi: $e");
+      biltekPrint("Imza json'a dönüştürülemedi: $e");
     }
     return jsonEncode(pointList);
   }
@@ -327,7 +329,7 @@ class Cihaz {
     if (imzaPoints.trim().isNotEmpty) {
       try {
         List<Point> points = [];
-        debugPrint("İmza points: $imzaPoints");
+        biltekPrint("İmza points: $imzaPoints");
         List<dynamic> pointList = jsonDecode(imzaPoints.trim());
         for (var i = 0; i < pointList.length; i++) {
           Map<String, dynamic> pointMap = pointList[i] as Map<String, dynamic>;
@@ -353,7 +355,7 @@ class Cihaz {
         }
         return points;
       } on Exception catch (e) {
-        debugPrint("Imza points'e dönüştürülemedi: $e");
+        biltekPrint("Imza points'e dönüştürülemedi: $e");
       }
     }
     return [];

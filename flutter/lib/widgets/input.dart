@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../utils/common.dart';
 import '../utils/islemler.dart';
 import 'takvim/dialog.dart';
 
@@ -440,7 +441,7 @@ class BiltekTarih extends StatelessWidget {
       decoration: InputDecoration(labelText: label, errorText: errorText),
       readOnly: true,
       onTap: () {
-        debugPrint(format);
+        biltekPrint(format);
         showTakvim(
           context,
           initialDate: controller.text.isEmpty

@@ -4,6 +4,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../utils/barkod_okuyucu.dart';
 import '../../utils/buttons.dart';
+import '../../utils/common.dart';
 import '../../utils/secure_storage.dart';
 import '../../widgets/input.dart';
 
@@ -84,7 +85,7 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
                   }
                 }
               } on Exception catch (e) {
-                debugPrint(e.toString());
+                biltekPrint(e.toString());
                 navigatorState.pop();
                 widget.onBOKaydet?.call(false, false);
               }
@@ -149,7 +150,7 @@ class _BarkodOkuyucuAyarlariState extends State<BarkodOkuyucuAyarlari> {
       widget.onBOKaydet?.call(true, elle);
       await barkodOkuyucu?.eslestir();
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       navigatorState.pop();
       widget.onBOKaydet?.call(false, elle);
     }

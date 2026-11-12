@@ -7,6 +7,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../../models/kullanici.dart';
 import '../../models/sifre.dart';
+import '../../utils/common.dart';
 import '../../utils/post.dart';
 import '../../utils/types.dart';
 import '../../widgets/input.dart';
@@ -50,7 +51,7 @@ class _SifrelerSayfasiState extends State<SifrelerSayfasi> {
       setState(() {
         klavyeAcik = visible;
       });
-      debugPrint("Klavye Durumu: $visible");
+      biltekPrint("Klavye Durumu: $visible");
       if (!visible) {
         _aramaDurumuDuzenle(false, klavyeYoluyla: true);
       }

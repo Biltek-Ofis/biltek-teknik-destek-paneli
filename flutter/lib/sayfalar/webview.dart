@@ -5,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
+import '../utils/common.dart';
 
 class WebviewPage extends StatefulWidget {
   const WebviewPage({super.key, required this.url});
@@ -149,7 +150,7 @@ class _WebviewPageState extends State<WebviewPage> {
                       });
                     },
                 onConsoleMessage: (controller, consoleMessage) {
-                  debugPrint(consoleMessage.message);
+                  biltekPrint(consoleMessage.message);
                   /*if (consoleMessage.message == "window.close();" ||
                       consoleMessage.message == "window.close()") {
                     Navigator.pop(context);

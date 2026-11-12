@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../models/kullanici.dart';
 import '../../models/malzeme_teslimi_model.dart';
 import '../../utils/buttons.dart';
+import '../../utils/common.dart';
 import '../../utils/islemler.dart';
 import '../../utils/my_notifier.dart';
 import '../../utils/post.dart';
@@ -59,7 +60,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
           scrollController.position.pixels ==
               scrollController.position.maxScrollExtent) {
         try {
-          debugPrint("Max scroll");
+          biltekPrint("Max scroll");
           setState(() {
             malzemeTeslimleriYukleniyor = true;
             suankiIndex += 1;
@@ -76,7 +77,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
           setState(() {
             malzemeTeslimleriYukleniyor = false;
           });
-          debugPrint(e.toString());
+          biltekPrint(e.toString());
         }
       }
     });
@@ -134,7 +135,7 @@ class _MalzemeTeslimiSayfasiState extends State<MalzemeTeslimiSayfasi> {
               ],
               selectedItemColor: Theme.of(context).appBarTheme.iconTheme?.color,
               onTap: (index) async {
-                debugPrint("Index: $index");
+                biltekPrint("Index: $index");
                 switch (index) {
                   case 0:
                     scaffoldKey.currentState?.openDrawer();

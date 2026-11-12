@@ -13,6 +13,7 @@ import '../models/cihaz.dart';
 import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/assets.dart';
+import '../utils/common.dart';
 import '../utils/firebase.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
@@ -69,7 +70,7 @@ class _AIChatPageState extends State<AIChatPage> {
       aiChatHistory = _aiChatHistory(aiChatList);
       bool available = await speech.initialize(
         onStatus: (status) {
-          debugPrint("SpeechToText Status: $status");
+          biltekPrint("SpeechToText Status: $status");
           if (status == stt.SpeechToText.listeningStatus) {
             mesajError = null;
             dinliyor = true;
@@ -79,7 +80,7 @@ class _AIChatPageState extends State<AIChatPage> {
           setState(() {});
         },
         onError: (error) {
-          debugPrint("SpeechToText Error: ${error.errorMsg}");
+          biltekPrint("SpeechToText Error: ${error.errorMsg}");
           setState(() {
             mesajError = "Sesli mesaj dinleme hatası: Lütfen tekrar deneyin.";
             dinliyor = false;
@@ -212,7 +213,7 @@ class _AIChatPageState extends State<AIChatPage> {
                                 if (!dinliyor) {
                                   speech.listen(
                                     onResult: (result) {
-                                      debugPrint(
+                                      biltekPrint(
                                         "SpeechToText Result: ${result.recognizedWords}",
                                       );
 
@@ -327,7 +328,7 @@ class _AIChatPageState extends State<AIChatPage> {
 
     final response = await chat.sendMessage(userMessage);
     if (response.text != null && response.text!.isNotEmpty) {
-      debugPrint("AI Response: ${response.text}");
+      biltekPrint("AI Response: ${response.text}");
       if (response.text!.startsWith("```json")) {
         String responseText = response.text!
             .replaceAll("```json", "")
@@ -386,7 +387,7 @@ class _AIChatPageState extends State<AIChatPage> {
         );
       }
     } else {
-      debugPrint("AI Response is empty or null");
+      biltekPrint("AI Response is empty or null");
       aiChatHistory.add(
         Content('model', [
           TextPart("**Bir hata oluştu. Lütfen daha sonra tekrar deneyin**"),

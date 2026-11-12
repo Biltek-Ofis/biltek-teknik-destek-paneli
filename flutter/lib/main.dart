@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'models/theme_model.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/giris_sayfasi.dart';
 import 'sayfalar/guncelleme.dart';
+import 'utils/common.dart';
 import 'utils/firebase.dart';
 import 'utils/my_notifier.dart';
 import 'utils/post.dart';
@@ -21,22 +24,44 @@ import 'widgets/restart.dart';
 WebViewEnvironment? webViewEnvironment;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      FlutterError.onError = (details) {
+        biltekPrint('FlutterError: ${details.exceptionAsString()}');
+        biltekPrint('${details.stack}');
+      };
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+      PlatformDispatcher.instance.onError = (error, stack) {
+        biltekPrint('PlatformError: $error\n$stack');
+        return true;
+      };
+      try {
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  await SecureStorage.init();
+        await SecureStorage.init();
 
-  await FirebaseApi.initialize();
+        await FirebaseApi.initialize();
 
-  LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });
-  if (!kIsWeb) {
-    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-  }
-  runApp(RestartWidget(child: const MyApp()));
+        LicenseRegistry.addLicense(() async* {
+          final license = await rootBundle.loadString('fonts/OFL.txt');
+          yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+        });
+        if (!kIsWeb) {
+          await InAppWebViewController.setWebContentsDebuggingEnabled(
+            kDebugMode,
+          );
+        }
+        runApp(RestartWidget(child: const MyApp()));
+      } catch (e, s) {
+        biltekPrint('main catch: $e\n$s');
+        rethrow;
+      }
+    },
+    (error, stack) {
+      biltekPrint('Zone error: $error\n$stack');
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {

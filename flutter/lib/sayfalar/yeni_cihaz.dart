@@ -6,6 +6,7 @@ import '../models/cihaz_duzenleme/cihaz_duzenleme.dart';
 import '../models/kullanici.dart';
 import '../utils/alerts.dart';
 import '../utils/buttons.dart';
+import '../utils/common.dart';
 import '../utils/desen.dart';
 import '../utils/islemler.dart';
 import '../utils/post.dart';
@@ -830,7 +831,7 @@ class _YeniCihazSayfasiState extends State<YeniCihazSayfasi> {
               selectThreshold: 25,
               fillPoints: true,
               onInputComplete: (List<int> input) {
-                debugPrint("Desen: $input");
+                biltekPrint("Desen: $input");
                 desenKey.currentState?.hataGoster("");
                 setState(() {
                   gecerliDesenListTemp = input;

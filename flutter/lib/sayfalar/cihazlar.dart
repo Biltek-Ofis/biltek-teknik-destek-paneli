@@ -19,6 +19,7 @@ import '../sayfalar/detaylar/detaylar.dart';
 import '../utils/assets.dart';
 import '../utils/barkod_okuyucu.dart';
 import '../utils/buttons.dart';
+import '../utils/common.dart';
 import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
@@ -87,7 +88,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
             .fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
       });
       fcmStream?.onError((err) {
-        debugPrint("Failed to get fcm token");
+        biltekPrint("Failed to get fcm token");
       });
       await FirebaseMessaging.instance.register();
       await pcYenile();
@@ -106,7 +107,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           scrollController.position.pixels ==
               scrollController.position.maxScrollExtent) {
         try {
-          debugPrint("Max scroll");
+          biltekPrint("Max scroll");
           setState(() {
             cihazlarYukleniyor = true;
             suankiIndex += 1;
@@ -123,7 +124,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
           setState(() {
             cihazlarYukleniyor = false;
           });
-          debugPrint(e.toString());
+          biltekPrint(e.toString());
         }
       }
     });
@@ -139,7 +140,7 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
       setState(() {
         klavyeAcik = visible;
       });
-      debugPrint("Klavye Durumu: $visible");
+      biltekPrint("Klavye Durumu: $visible");
       if (!visible) {
         _aramaDurumuDuzenle(false, klavyeYoluyla: true);
       }
@@ -265,10 +266,10 @@ class _CihazlarSayfasiState extends State<CihazlarSayfasi> {
                         .iconTheme
                         ?.color,
                     onTap: (index) async {
-                      debugPrint("Index: $index");
+                      biltekPrint("Index: $index");
                       switch (index) {
                         case 0:
-                          debugPrint("Index burasi $aramaEtkin");
+                          biltekPrint("Index burasi $aramaEtkin");
                           scaffoldKey.currentState?.openDrawer();
                           break;
                         case 1:
@@ -602,7 +603,7 @@ class CihazNo {
         );
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       if (context.mounted) {
         barkodGecersiz(context);
       }
@@ -617,7 +618,7 @@ class CihazNo {
         await acMusteri(no: no);
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       if (context.mounted) {
         barkodGecersiz(context);
       }
@@ -875,9 +876,9 @@ Future<void> barkodTara(
           }
           Future.delayed(Duration(seconds: 1), () async {
             navigatorState.pop();
-            debugPrint("Sonuc: $res");
+            biltekPrint("Sonuc: $res");
             if (sadeceGiris) {
-              debugPrint("Giriş sadece modunda tarandı: $res");
+              biltekPrint("Giriş sadece modunda tarandı: $res");
               if (res.isNotEmpty && res.startsWith("giris:")) {
                 var splt = res.split(":");
                 if (splt.length == 2) {
@@ -946,7 +947,7 @@ Future<void> barkodTara(
                       bilgisayardaAc: false,
                     );
                   } on Exception catch (e) {
-                    debugPrint(e.toString());
+                    biltekPrint(e.toString());
                     if (context.mounted) {
                       barkodGecersiz(context);
                     }
@@ -989,7 +990,7 @@ Future<void> barkodTara(
                           await BarkodOkuyucu.getir();
                       await barkodOkuyucu?.eslestir();
                     } on Exception catch (e) {
-                      debugPrint(e.toString());
+                      biltekPrint(e.toString());
                       if (context.mounted) {
                         barkodGecersiz(context);
                       }

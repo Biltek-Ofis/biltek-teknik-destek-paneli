@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-
+import '../utils/common.dart';
 import 'cihaz.dart';
 
 class CagriKaydiModel {
@@ -68,7 +67,7 @@ class CagriKaydiModel {
     );
   }
   factory CagriKaydiModel.fromJson(Map<String, dynamic> json) {
-    debugPrint("CB Tipi${json["cihaz_bilgileri"].runtimeType.toString()}");
+    biltekPrint("CB Tipi${json["cihaz_bilgileri"].runtimeType.toString()}");
     Map<String, dynamic> cihazBilgileri = json.containsKey("cihaz_bilgileri")
         ? json["cihaz_bilgileri"] as Map<String, dynamic>
         : {};

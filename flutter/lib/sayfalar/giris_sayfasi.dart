@@ -15,6 +15,7 @@ import '../models/giris.dart';
 import '../models/secure_storage_kullanici.dart';
 import '../utils/assets.dart';
 import '../utils/buttons.dart';
+import '../utils/common.dart';
 import '../utils/islemler.dart';
 import '../utils/my_notifier.dart';
 import '../utils/post.dart';
@@ -435,7 +436,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         }
       }
     } on LocalAuthException catch (e) {
-      debugPrint("LocalAuth Hatası.\n${e.description}");
+      biltekPrint("LocalAuth Hatası.\n${e.description}");
     }
   }
 
@@ -446,7 +447,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         cihazNoCls?.qrAcMusteri(qr: uri.toString());
       });
     } on PlatformException catch (e) {
-      debugPrint("Deep link hatası: $e");
+      biltekPrint("Deep link hatası: $e");
     }
   }
 }

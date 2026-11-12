@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../models/kullanici.dart';
+import '../utils/common.dart';
 import '../utils/notification.dart';
 import 'cagri_kayitlari/cagri_kaydi_detay.dart';
 import 'cagri_kayitlari/cagri_kayitlari.dart';
@@ -38,7 +39,7 @@ class _AnasayfaState extends State<Anasayfa> {
       if (mounted) {
         cihazNoCls = CihazNo.of(context);
         NativeNotification.init((tip, id) {
-          debugPrint("Bildirim tıklandı");
+          biltekPrint("Bildirim tıklandı");
           bildirimTiklamaYonlendir(tip: tip, id: id);
         });
         await initUniLinks();
@@ -156,7 +157,7 @@ class _AnasayfaState extends State<Anasayfa> {
         }
       });
     } on PlatformException catch (e) {
-      debugPrint("Failed to get initial link.\n$e");
+      biltekPrint("Failed to get initial link.\n$e");
     }
   }
 }

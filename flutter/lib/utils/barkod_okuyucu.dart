@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart';
 
+import 'common.dart';
 import 'secure_storage.dart';
 
 class BarkodOkuyucu {
@@ -56,10 +57,10 @@ class BarkodOkuyucu {
       int? port = await SecureStorage.getIntNullable(SecureStorage.barkodPort);
       if (ip != null && port != null) {
         socket = await Socket.connect(ip, port);
-        debugPrint('connected');
+        biltekPrint('connected');
 
         socket.listen((List<int> event) {
-          debugPrint(utf8.decode(event));
+          biltekPrint(utf8.decode(event));
         });
 
         socket.write(mesaj);
@@ -69,7 +70,7 @@ class BarkodOkuyucu {
         socket.close();
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       socket?.close();
     }
   }

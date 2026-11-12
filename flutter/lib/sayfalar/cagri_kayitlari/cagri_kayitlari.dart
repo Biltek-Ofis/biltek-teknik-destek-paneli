@@ -12,6 +12,7 @@ import '../../models/kullanici.dart';
 import '../../models/secure_storage_kullanici.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
+import '../../utils/common.dart';
 import '../../utils/extensions.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
@@ -51,7 +52,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
             .fcmTokenGuncelle(widget.kullanici.auth, fcmToken);
       });
       fcmStream?.onError((err) {
-        debugPrint("Failed to get fcm token");
+        biltekPrint("Failed to get fcm token");
       });
       await FirebaseMessaging.instance.register();
       await cagriKayitlariniGetir();
@@ -185,7 +186,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
             ),
           ],
           onTap: (index) async {
-            debugPrint("Index: $index");
+            biltekPrint("Index: $index");
             switch (index) {
               case 0:
                 scaffoldKey.currentState?.openDrawer();
@@ -253,7 +254,7 @@ class _CagriKayitlariSayfasiState extends State<CagriKayitlariSayfasi> {
                               String renk = cihaz != null
                                   ? cihaz.guncelDurumRenk
                                   : "bg-warning";
-                              debugPrint("Guncel Durum Renk $renk");
+                              biltekPrint("Guncel Durum Renk $renk");
                               Color? renkTemp = Islemler.yaziRengi(renk);
                               return SectionCard(
                                 backgroundColor: Islemler.arkaRenk(renk),

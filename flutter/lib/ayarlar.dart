@@ -80,6 +80,12 @@ class Ayarlar {
     return "${url}cihaz/teknik_servis_formu/$cihazID?auth=$auth&inApp=1";
   }
 
+  static const String _enableReleaseLogs = String.fromEnvironment(
+    'ENABLE_RELEASE_LOGS',
+  );
+  static bool get enableReleaseLogs =>
+      _enableReleaseLogs.toLowerCase() == "true";
+
   static const String _lisansEtkin = String.fromEnvironment('LISANS_ETKIN');
   static bool get lisansEtkin => _lisansEtkin.toLowerCase() == "true";
 

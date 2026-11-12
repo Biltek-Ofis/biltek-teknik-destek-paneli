@@ -9,6 +9,7 @@ import '../../models/islemler_model.dart';
 import '../../models/kullanici.dart';
 import '../../utils/alerts.dart';
 import '../../utils/buttons.dart';
+import '../../utils/common.dart';
 import '../../utils/desen.dart';
 import '../../utils/islemler.dart';
 import '../../utils/post.dart';
@@ -1368,7 +1369,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
               selectThreshold: 25,
               fillPoints: true,
               onInputComplete: (List<int> input) {
-                debugPrint("Desen: $input");
+                biltekPrint("Desen: $input");
                 desenKey.currentState?.hataGoster("");
                 setState(() {
                   gecerliDesenListTemp = input;
@@ -1393,7 +1394,7 @@ class _DetayDuzenleState extends State<DetayDuzenle> {
                 setState(() {
                   gecerliDesen = gecerliDesenTemp;
                 });
-                debugPrint("Desen: $gecerliDesen");
+                biltekPrint("Desen: $gecerliDesen");
                 Navigator.pop(context);
               },
               child: Text("Onayla"),

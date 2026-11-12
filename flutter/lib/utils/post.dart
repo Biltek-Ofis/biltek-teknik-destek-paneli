@@ -21,6 +21,7 @@ import '../models/medya.dart';
 import '../models/musteri.dart';
 import '../models/not.dart';
 import '../models/sifre.dart';
+import 'common.dart';
 import 'secure_storage.dart';
 
 class BiltekPost {
@@ -95,7 +96,7 @@ class BiltekPost {
         if (response.statusCode == 201) {
           var resp = await response.stream.bytesToString();
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
-          debugPrint("Current version: ${packageInfo.buildNumber}");
+          biltekPrint("Current version: ${packageInfo.buildNumber}");
           int currentVersion = int.parse(packageInfo.buildNumber);
           int updatedVersion = int.parse(resp);
           guncelle = currentVersion < updatedVersion;
@@ -105,7 +106,7 @@ class BiltekPost {
       }
       return guncelle;
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       return false;
     }
   }
@@ -115,7 +116,7 @@ class BiltekPost {
       var response = await post(Ayarlar.ayarlar, {});
 
       var resp = await response.stream.bytesToString();
-      debugPrint("Ayarlar sonuç: $resp");
+      biltekPrint("Ayarlar sonuç: $resp");
       if (response.statusCode == 201) {
         AyarlarModel ayarlar = AyarlarModel.fromJson(
           jsonDecode(resp) as Map<String, dynamic>,
@@ -125,7 +126,7 @@ class BiltekPost {
         return null;
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       hata = "Ayarlar alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
       return null;
     }
@@ -149,7 +150,7 @@ class BiltekPost {
         return null;
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       return null;
     }
   }
@@ -189,7 +190,7 @@ class BiltekPost {
       }
       return "Güncelleme başarısız oldu";
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       hata = "Kullanıcı bilgileri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
       return "Güncelleme başarısız oldu";
     }
@@ -224,7 +225,7 @@ class BiltekPost {
             .map((cihaz) => Cihaz.fromJson(cihaz as Map<String, dynamic>))
             .toList();
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         throw Exception(
           "Cihazlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
         );
@@ -247,11 +248,11 @@ class BiltekPost {
         Cihaz cihaz = Cihaz.fromJson(jsonDecode(resp) as Map<String, dynamic>);
         return cihaz;
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return null;
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return null;
@@ -268,11 +269,11 @@ class BiltekPost {
         Cihaz cihaz = Cihaz.fromJson(jsonDecode(resp) as Map<String, dynamic>);
         return cihaz;
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return null;
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Cihaz yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return null;
@@ -290,7 +291,7 @@ class BiltekPost {
       });
       await response.stream.bytesToString();
     } on Exception catch (e) {
-      debugPrint("fcmToken güncellenemedi: ${e.toString()}");
+      biltekPrint("fcmToken güncellenemedi: ${e.toString()}");
     }
   }
 
@@ -303,7 +304,7 @@ class BiltekPost {
         await response.stream.bytesToString();
       }
     } on Exception catch (e) {
-      debugPrint("fcmToken sıfırlanamadı: ${e.toString()}");
+      biltekPrint("fcmToken sıfırlanamadı: ${e.toString()}");
     }
   }
 
@@ -325,8 +326,8 @@ class BiltekPost {
       });
       await response.stream.bytesToString();
     } on Exception catch (e) {
-      debugPrint(e.toString());
-      debugPrint("Bilgisayarda ac çalışmadı");
+      biltekPrint(e.toString());
+      biltekPrint("Bilgisayarda ac çalışmadı");
     }
   }
 
@@ -343,11 +344,11 @@ class BiltekPost {
             .toList();
         return medyaList;
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return [];
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Medyalar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return [];
@@ -375,7 +376,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -384,7 +385,7 @@ class BiltekPost {
   Future<bool> medyaSil({required int id}) async {
     var response = await post(Ayarlar.medyaSil, {"id": id.toString()});
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
+    biltekPrint(resp);
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =
@@ -393,7 +394,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -411,11 +412,11 @@ class BiltekPost {
             )
             .toList();
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return [];
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Cihaz turleri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return [];
@@ -431,11 +432,11 @@ class BiltekPost {
 
         return CihazDuzenlemeModel.fromJson(map);
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return CihazDuzenlemeModel.bos();
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Cihaz Duzenleme yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return CihazDuzenlemeModel.bos();
@@ -453,7 +454,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -474,7 +475,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -489,7 +490,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         List<dynamic> musteriler = jsonDecode(resp) as List<dynamic>;
         return musteriler
             .map(
@@ -497,11 +498,11 @@ class BiltekPost {
             )
             .toList();
       } on Exception catch (e) {
-        debugPrint("Musteri bilgileri yüklenirken bir hata oluştu. $e");
+        biltekPrint("Musteri bilgileri yüklenirken bir hata oluştu. $e");
         return [];
       }
     } else {
-      debugPrint("Musteri bilgileri yüklenirken bir hata oluştu.");
+      biltekPrint("Musteri bilgileri yüklenirken bir hata oluştu.");
       return [];
     }
   }
@@ -513,13 +514,13 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         List<dynamic> lisanslar = jsonDecode(resp) as List<dynamic>;
         return lisanslar
             .map((cihaz) => Lisans.fromJson(cihaz as Map<String, dynamic>))
             .toList();
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         throw Exception(
           "Lisanslar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
         );
@@ -536,7 +537,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -544,7 +545,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -561,7 +562,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -569,7 +570,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -584,7 +585,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -592,7 +593,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -607,13 +608,13 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         List<dynamic> versiyonlar = jsonDecode(resp) as List<dynamic>;
         return versiyonlar
             .map((cihaz) => Versiyon.fromJson(cihaz as Map<String, dynamic>))
             .toList();
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         throw Exception(
           "Versiyonlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
         );
@@ -630,7 +631,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -638,7 +639,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -655,7 +656,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -663,7 +664,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -678,7 +679,7 @@ class BiltekPost {
     if (response.statusCode == 201) {
       var resp = await response.stream.bytesToString();
       try {
-        debugPrint(resp);
+        biltekPrint(resp);
         Map<String, dynamic> sonuc = jsonDecode(resp) as Map<String, dynamic>;
         if (sonuc.containsKey("durum")) {
           return sonuc["durum"] as bool;
@@ -686,7 +687,7 @@ class BiltekPost {
           return false;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
         return false;
       }
     } else {
@@ -712,7 +713,7 @@ class BiltekPost {
         return [];
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       return [];
     }
   }
@@ -725,7 +726,7 @@ class BiltekPost {
         "durum": durum.toString(),
       });
       var resp = await response.stream.bytesToString();
-      debugPrint("durum: $resp");
+      biltekPrint("durum: $resp");
       if (response.statusCode == 201) {
         Map<String, dynamic> map = jsonDecode(resp);
         if (map.containsKey("sonuc")) {
@@ -737,7 +738,7 @@ class BiltekPost {
         return false;
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       return false;
     }
   }
@@ -753,7 +754,7 @@ class BiltekPost {
         "bildirimler": b,
       });
       var resp = await response.stream.bytesToString();
-      debugPrint("durum: $resp");
+      biltekPrint("durum: $resp");
       if (response.statusCode == 201) {
         Map<String, dynamic> map = jsonDecode(resp);
         if (map.containsKey("sonuc")) {
@@ -765,7 +766,7 @@ class BiltekPost {
         return false;
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      biltekPrint(e.toString());
       return false;
     }
   }
@@ -790,7 +791,7 @@ class BiltekPost {
         return [];
       }
     } on Exception catch (ex) {
-      debugPrint("Cağrı kaydı hata: $ex");
+      biltekPrint("Cağrı kaydı hata: $ex");
       return [];
     }
   }
@@ -799,7 +800,7 @@ class BiltekPost {
     try {
       var response = await post(Ayarlar.cagriKaydi, {"id": id.toString()});
       var resp = await response.stream.bytesToString();
-      debugPrint("Çağrı kaydı sonuç: $resp");
+      biltekPrint("Çağrı kaydı sonuç: $resp");
       if (response.statusCode == 201) {
         var cagri = jsonDecode(resp) as Map<String, dynamic>;
         return CagriKaydiModel.fromJson(cagri);
@@ -807,7 +808,7 @@ class BiltekPost {
         return null;
       }
     } on Exception catch (ex) {
-      debugPrint("Cağrı kaydı hata: $ex");
+      biltekPrint("Cağrı kaydı hata: $ex");
       return null;
     }
   }
@@ -816,14 +817,14 @@ class BiltekPost {
     try {
       var response = await post(Ayarlar.fiyatiOnayla, {"id": id.toString()});
       var resp = await response.stream.bytesToString();
-      debugPrint("Fiyati onayla sonuç: $resp");
+      biltekPrint("Fiyati onayla sonuç: $resp");
       if (response.statusCode == 201) {
         return true;
       } else {
         return false;
       }
     } on Exception catch (ex) {
-      debugPrint("Fiyat onayı hata: $ex");
+      biltekPrint("Fiyat onayı hata: $ex");
       return false;
     }
   }
@@ -832,14 +833,14 @@ class BiltekPost {
     try {
       var response = await post(Ayarlar.fiyatiReddet, {"id": id.toString()});
       var resp = await response.stream.bytesToString();
-      debugPrint("Fiyati reddet sonuç: $resp");
+      biltekPrint("Fiyati reddet sonuç: $resp");
       if (response.statusCode == 201) {
         return true;
       } else {
         return false;
       }
     } on Exception catch (ex) {
-      debugPrint("Fiyat reddet hata: $ex");
+      biltekPrint("Fiyat reddet hata: $ex");
       return false;
     }
   }
@@ -858,7 +859,7 @@ class BiltekPost {
         return false;
       }
     } on Exception catch (ex) {
-      debugPrint("Çağrı kaydı sil hata: $ex");
+      biltekPrint("Çağrı kaydı sil hata: $ex");
       return false;
     }
   }
@@ -887,7 +888,7 @@ class BiltekPost {
       },
     );
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
+    biltekPrint(resp);
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =
@@ -896,7 +897,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -913,7 +914,7 @@ class BiltekPost {
       "teslim_alan": teslimAlan,
     });
     var resp = await response.stream.bytesToString();
-    debugPrint(resp);
+    biltekPrint(resp);
     if (response.statusCode == 201) {
       try {
         Map<String, dynamic> map =
@@ -922,7 +923,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -939,7 +940,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -969,13 +970,13 @@ class BiltekPost {
             )
             .toList();
       } on Exception catch (e) {
-        debugPrint(
+        biltekPrint(
           "Malzeme Teslimleri yüklenirken bir hata oluştu.\n${e.toString()}",
         );
         return [];
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Malzeme Teslimleri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return [];
@@ -994,11 +995,11 @@ class BiltekPost {
             .map((not) => NotModel.fromJson(not as Map<String, dynamic>))
             .toList();
       } on Exception catch (e) {
-        debugPrint("Notlar yüklenirken bir hata oluştu.\n${e.toString()}");
+        biltekPrint("Notlar yüklenirken bir hata oluştu.\n${e.toString()}");
         return [];
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Notlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return [];
@@ -1022,7 +1023,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -1047,7 +1048,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -1064,7 +1065,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -1086,11 +1087,11 @@ class BiltekPost {
             .map((sifre) => SifreModel.fromJson(sifre as Map<String, dynamic>))
             .toList();
       } on Exception catch (e) {
-        debugPrint("Şifreler yüklenirken bir hata oluştu.\n${e.toString()}");
+        biltekPrint("Şifreler yüklenirken bir hata oluştu.\n${e.toString()}");
         return [];
       }
     } else {
-      debugPrint(
+      biltekPrint(
         "Şifreler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin",
       );
       return [];
@@ -1120,7 +1121,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -1151,7 +1152,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
@@ -1168,7 +1169,7 @@ class BiltekPost {
           return true;
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        biltekPrint(e.toString());
       }
     }
     return false;
