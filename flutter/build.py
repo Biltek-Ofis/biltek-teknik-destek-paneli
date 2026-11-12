@@ -40,11 +40,11 @@ def update_build_date(file_path: str = ENV_DOSYASI) -> None:
     )
  
     if update_count == 0:
-        print("SURUM_TARIHI anahtarı .env dosyasında bulunamadı. Yenisi oluşturulacak.")
+        print("\033[33mSURUM_TARIHI anahtarı .env dosyasında bulunamadı. Yenisi oluşturulacak.\033[0m")
         path.write_text(f"{content}\nSURUM_TARIHI=\"{today}\"", encoding="utf-8")
     else:
         path.write_text(new_content, encoding="utf-8")
-    print(f"SURUM_TARIHI '{today}' olarak güncellendi.")
+    print(f"\033[32mSURUM_TARIHI '{today}' olarak güncellendi.\033[0m")
 
 def system2(cmd):
     print(f"Komut calistiriliyor: {cmd}")
@@ -156,10 +156,11 @@ def main():
     if args.release:
         args.apk = False
         args.bundle = True
+        args.web = True
         args.web_hash = False
 
     if args.all and args.release:
-        print("Not: --all ve --release seçenekleri birlikte kullanıldığında sadece Play Store için Bundle ve Web derlemesi yapılır. APK derlemesi yapılmaz.")
+        print("\033[33mNot: --all ve --release seçenekleri birlikte kullanıldığında sadece Play Store için Bundle ve Web derlemesi yapılır. APK derlemesi yapılmaz.\033[0m")
     ekArgs = ""
     if args.verbose:
         ekArgs += " -v"
@@ -174,7 +175,7 @@ def main():
             ANDROID_KEY_ALIAS,
             ANDROID_STORE_FILE
         ]):
-            print("Hata: Android imzalama bilgileri eksik!")
+            print("\033[31mHata: Android imzalama bilgileri eksik!\033[0m")
             return
         if ANDROID_STORE_FILE and not keyStoreOlusturuldu:
             ANDROID_STORE_FILE = ANDROID_STORE_FILE.replace("\\", "\\\\")
@@ -197,7 +198,7 @@ storeFile={3}
             update_build_date()
         calisti = True
         print("APK derleniyor...")
-        system2(f"flutter build apk{ekArgsAndroid} --dart-define-from-file=.env --release --obfuscate --split-debug-info ./split-debug-info")
+        system2(f"flutter build apk{ekArgsAndroid} --dart-define-from-file=.env")
     if args.bundle:
         if not calisti:
             update_build_date()
@@ -213,17 +214,16 @@ storeFile={3}
         run_cmd = f"flutter build web{ekArgs} --dart-define-from-file=.env --release"
         if flutter_version >= (3, 50, 0):
             run_cmd += f" --web-content-hash"
-            print("Web content hash aktif.")
+            print("\033[32mWeb content hash aktif.\033[0m")
         else:
-            print("Web content hash desteklenmeyen surum, lütfen 3.50.0 ve sonrasini kullanin.")
+            print("\033[33mWeb content hash desteklenmeyen flutter surumu, lütfen 3.50.0 ve sonrasini kullanin.\033[0m")
         run_cmd += f" --base-href \"{args.base_href}\""
         system2(run_cmd)
         clean_web_files()
         if flutter_version >= (3, 50, 0):
             system2(f"dart run tool/cache_config_generator.dart")
+            print("\033[33mDosyalari yuklemeden once. Hash'li dosyalarininiz karismamasi icin onceki dosyalarinizi silin.\033[0m")
         args.web_hash = False
-        if flutter_version >= (3, 50, 0):
-            print("Dosyalari yuklemeden once. Hash'li dosyalarininiz karismamasi icin onceki dosyalarinizi silin.")
         klasor_adi = Path("build/web")
         print(f"Build konumu: \033[32m{klasor_adi}\033[0m")
 
@@ -232,10 +232,10 @@ storeFile={3}
         calisti = True
         flutter_version = get_flutter_version()
         if flutter_version >= (3, 50, 0):
-            print("Web content hash aktif.")
+            print("\033[32mWeb content hash aktif.\033[0m")
             system2(f"dart run tool/cache_config_generator.dart")
         else:
-            print("Web content hash desteklenmeyen surum, lütfen 3.50.0 ve sonrasini kullanin.")
+            print("\033[33mWeb content hash desteklenmeyen flutter surumu, lütfen 3.50.0 ve sonrasini kullanin.\033[0m")
 
     if args.run is not None:
         if not calisti:
@@ -251,9 +251,8 @@ storeFile={3}
         run_cmd += " --dart-define-from-file=.env"
         system2(run_cmd)
     if calisti:
-        print("İşlem tamamlandı.")
+        print("\033[32mİşlem tamamlandı.\033[0m")
     else:
-        print("Hiçbir işlem seçilmedi. Lütfen en az bir seçenek belirtin. Yardım için --help kullanın.")
-        system2("python build.py --help")
+        print("\033[31mHiçbir işlem seçilmedi. Lütfen en az bir seçenek belirtin. Yardım için --help kullanın.\033[0m")
 if __name__ == "__main__":
     main() 
