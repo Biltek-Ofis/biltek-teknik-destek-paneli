@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 function openDB() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open("fcm_notifications", 1);
+        const request = indexedDB.open("fcm_notifications", 3);
         request.onupgradeneeded = event => {
             const db = event.target.result;
             if (!db.objectStoreNames.contains("locks")) {

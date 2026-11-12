@@ -1,6 +1,6 @@
 // Service Worker
-importScripts('https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/12.7.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/13.2.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging-compat.js');
 
 const siteDomain = "site-domain-https://-olmadan";
 
@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 function openDB() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open("fcm_notifications", 1);
+        const request = indexedDB.open("fcm_notifications", 3);
         request.onupgradeneeded = event => {
             const db = event.target.result;
             if (!db.objectStoreNames.contains("locks")) {
